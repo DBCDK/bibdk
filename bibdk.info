@@ -6,6 +6,7 @@ distribution_name = Bibliotek.dk
 
 dependencies[] = ding_user_frontend
 dependencies[] = artesis_user_frontend
+dependencies[] = bibdk_provider
 
 files[] = bibdk.profile
 

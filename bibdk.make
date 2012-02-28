@@ -57,3 +57,11 @@ projects[ding_debt][type] = "module"
 projects[ding_debt][download][type] = "git"
 projects[ding_debt][download][url] = "git@github.com:DBCDK/ding_debt.git"
 projects[ding_debt][download][tag] = "7.x-0.36+dbc.5"
+
+
+; --- Bibliotek.dk ---
+
+projects[bibdk_provider][type] = module
+projects[bibdk_provider][download][type] = git
+projects[bibdk_provider][download][url] = git@github.com:DBCDK/bibdk_provider.git
+; projects[bibdk_provider][download][tag] =
