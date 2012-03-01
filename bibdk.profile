@@ -64,7 +64,7 @@ function bibdk_install_tasks($install_state) {
   include_once('libraries/profiler/profiler_api.inc');
 
   $ret = array(
-    'ding2_fetch_ding_install_tasks' =>
+    'bibdk_fetch_ding_install_tasks' =>
       array(
         'display_name' => '...',
         /**
