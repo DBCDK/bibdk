@@ -1,7 +1,7 @@
 api = 2
 core = 7.x
 
-includes[] = https://raw.github.com/DBCDK/dbcore/7.x-0.4/dbcore.make
+includes[] = https://raw.github.com/DBCDK/dbcore/develop/dbcore.make
 
 ; Profiler lib for profile
 libraries[profiler][download][type] = "git"
