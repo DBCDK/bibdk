@@ -11,7 +11,7 @@ dependencies[] = bibdk_provider
 files[] = bibdk.profile
 
 ; Profiler extensions.
-base = ding2
+;base = ding2
 theme = artois
 
 

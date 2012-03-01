@@ -8,14 +8,9 @@
  */
 function bibdk_install() {
   // Enabling Artois theme and making it default theme.
-  theme_enable(array('artois'));
-  variable_set('theme_default', 'artois');
-
-  require_once(dirname(__FILE__) . '/../ding2/ding2.install');
-  ding2_install();
-
-  // Enable some standard blocks after install of Ding2 is done.
-  $default_theme = variable_get('theme_default', 'artois');
+  $default_theme = 'artois';
+  theme_enable(array($default_theme));
+  variable_set('theme_default', $default_theme);
 
   $values = array(
     array(
@@ -178,4 +173,57 @@ function bibdk_install() {
     $query->values($record);
   }
   $query->execute();
+
+  // Enable ting search as default.
+  variable_set('search_active_modules', array(
+      'node' => 'node',
+      'ting_search' => 'ting_search',
+      'user' => 0,
+      'mkdru' => 'mkdru',
+    ));
+  variable_set('search_default_module', 'ting_search');
+
+  // Enable the panel pages for ting objects and search.
+  variable_set('ting_ting_object_disabled', FALSE);
+  variable_set('ting_ting_collection_disabled', FALSE);
+  variable_set('page_manager_search_disabled_ting_search', FALSE);
+
+  // Allow visitor account creation, but with administrative approval.
+  variable_set('user_register', USER_REGISTER_ADMINISTRATORS_ONLY);
+
+  // Enable default permissions for system roles.
+  user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array('access content', 'search content'));
+  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array('access content', 'search content'));
+
+  // Create a default role for site administrators, with all available permissions assigned.
+  $admin_role = new stdClass();
+  $admin_role->name = 'administrator';
+  $admin_role->weight = 2;
+  user_role_save($admin_role);
+  user_role_grant_permissions($admin_role->rid, array_keys(module_invoke_all('permission')));
+  // Set this as the administrator role.
+  variable_set('user_admin_role', $admin_role->rid);
+
+  // Assign user 1 the "administrator" role.
+  db_insert('users_roles')
+    ->fields(array('uid' => 1, 'rid' => $admin_role->rid))
+    ->execute();
+
+  // Enable the admin theme.
+  db_update('system')
+    ->fields(array('status' => 1))
+    ->condition('type', 'theme')
+    ->condition('name', 'seven')
+    ->execute();
+  variable_set('admin_theme', 'seven');
+  variable_set('node_admin_theme', '1');
+
+  // Set default source language for i18n module
+  variable_set('i18n_string_source_language', 'en');
+
+  // Disable configurable timezones for users
+  variable_set('configurable_timezones', 0);
+
+  // Select the ding_frontpage as front page.
+  variable_set('site_frontpage', 'ding_frontpage');
 }
