@@ -4,11 +4,11 @@ core = 7.x
 includes[] = https://raw.github.com/DBCDK/dbcore/develop/dbcore.make
 
 ; Profiler lib for profile
-libraries[profiler][download][type] = "git"
-libraries[profiler][download][url] = "http://git.drupal.org/project/profiler.git"
-libraries[profiler][download][revision] = d0137cb42bc7a4e9ce0a0431f875806285d09758
+;libraries[profiler][download][type] = "git"
+;libraries[profiler][download][url] = "http://git.drupal.org/project/profiler.git"
+;libraries[profiler][download][revision] = d0137cb42bc7a4e9ce0a0431f875806285d09758
 ; Patch from http://drupal.org/node/1328796
-libraries[profiler][patch][] = http://drupal.org/files/profiler-reverse.patch
+;libraries[profiler][patch][] = http://drupal.org/files/profiler-reverse.patch
 
 projects[artesis_user_frontend][type] = "module"
 projects[artesis_user_frontend][download][type] = "git"
