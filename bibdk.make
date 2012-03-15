@@ -1,7 +1,7 @@
 api = 2
 core = 7.x
 
-includes[] = https://raw.github.com/DBCDK/dbcore/develop/dbcore.make
+includes[] = https://raw.github.com/DBCDK/dbcore/feature/omega/dbcore.make
 
 ; Profiler lib for profile
 ;libraries[profiler][download][type] = "git"
@@ -20,10 +20,13 @@ projects[snapengage][download][type] = "git"
 projects[snapengage][download][url] = "http://git.drupal.org/sandbox/arnested/1418742.git"
 projects[snapengage][download][branch] = "7.x-1.x"
 
-projects[artois][type] = "theme"
-projects[artois][download][type] = "git"
-projects[artois][download][url] = "git@github.com:DBCDK/artois.git"
-projects[artois][download][tag] = "7.x-0.32"
+;; Bibdk is not supposed to use artesis_basetheme but currently it is
+;; the one closest to where we will get.
+projects[artesis_basetheme][type] = "theme"
+projects[artesis_basetheme][download][type] = "git"
+projects[artesis_basetheme][download][url] = "git@github.com:DBCDK/artesis_basetheme.git"
+;; No tags yet.
+; projects[artesis_basetheme][download][tag] = "7.x-1.0"
 
 
 ; --- Artois versions of Ding2 modules ---
