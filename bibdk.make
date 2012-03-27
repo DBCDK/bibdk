@@ -68,3 +68,8 @@ projects[bibdk_provider][type] = module
 projects[bibdk_provider][download][type] = git
 projects[bibdk_provider][download][url] = git@github.com:DBCDK/bibdk_provider.git
 ; projects[bibdk_provider][download][tag] =
+
+projects[ding_omega_frontend_blocks][type] = module
+projects[ding_omega_frontend_blocks][download][type] = git
+projects[ding_omega_frontend_blocks][download][url] = git@github.com:DBCDK/ding_omega_frontend_blocks.git
+;projects[ding_omega_frontend_blocks][download][tag] =
