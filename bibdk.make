@@ -73,3 +73,6 @@ projects[ding_omega_frontend_blocks][type] = module
 projects[ding_omega_frontend_blocks][download][type] = git
 projects[ding_omega_frontend_blocks][download][url] = git@github.com:DBCDK/ding_omega_frontend_blocks.git
 ;projects[ding_omega_frontend_blocks][download][tag] =
+
+projects[features_extra][subdir]=contrib
+projects[features_extra][version]=1.x-dev
