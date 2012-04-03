@@ -81,5 +81,13 @@ projects[bibliomega_frontend_blocks][download][url] = git@github.com:DBCDK/bibli
 projects[features_extra][subdir]=contrib
 projects[features_extra][version]=1.x-dev
 
+projects[bibdkcaptcha][type] = module
+projects[bibdkcaptcha][download][type] = git
+projects[bibdkcaptcha][download][url] = git@github.com:DBCDK/bibdkcaptcha.git
+;projects[bibdkcaptcha][download][tag] =
+
+projects[captcha][subdir]=contrib
+projects[captcha][version]=7.x-1.0-beta2
+
 
 
