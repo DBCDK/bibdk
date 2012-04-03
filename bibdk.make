@@ -20,13 +20,12 @@ projects[snapengage][download][type] = "git"
 projects[snapengage][download][url] = "http://git.drupal.org/sandbox/arnested/1418742.git"
 projects[snapengage][download][branch] = "7.x-1.x"
 
-;; Bibdk is not supposed to use artesis_basetheme but currently it is
-;; the one closest to where we will get.
-projects[artesis_basetheme][type] = "theme"
-projects[artesis_basetheme][download][type] = "git"
-projects[artesis_basetheme][download][url] = "git@github.com:DBCDK/artesis_basetheme.git"
+;; bibliOmega is a subtheme for Bibliotek.dk on ding2omega
+projects[bibliOmega][type] = "theme"
+projects[bibliOmega][download][type] = "git"
+projects[bibliOmega][download][url] = "git@github.com:DBCDK/bibliOmega.git"
 ;; No tags yet.
-; projects[artesis_basetheme][download][tag] = "7.x-1.0"
+; projects[bibliOmega][download][tag] = "7.x-1.0"
 
 
 ; --- Artois versions of Ding2 modules ---
@@ -69,10 +68,18 @@ projects[bibdk_provider][download][type] = git
 projects[bibdk_provider][download][url] = git@github.com:DBCDK/bibdk_provider.git
 ; projects[bibdk_provider][download][tag] =
 
-projects[ding_omega_frontend_blocks][type] = module
-projects[ding_omega_frontend_blocks][download][type] = git
-projects[ding_omega_frontend_blocks][download][url] = git@github.com:DBCDK/ding_omega_frontend_blocks.git
-;projects[ding_omega_frontend_blocks][download][tag] =
+projects[bibliomega_frontend][type] = module
+projects[bibliomega_frontend][download][type] = git
+projects[bibliomega_frontend][download][url] = git@github.com:DBCDK/git@github.com:DBCDK/bibliomega_frontend.git.git
+;projects[bibliomega_frontend][download][tag] =
+
+projects[bibliomega_frontend_blocks][type] = module
+projects[bibliomega_frontend_blocks][download][type] = git
+projects[bibliomega_frontend_blocks][download][url] = git@github.com:DBCDK/bibliomega_frontend_blocks.git
+;projects[bibliomega_frontend_blocks][download][tag] =
 
 projects[features_extra][subdir]=contrib
 projects[features_extra][version]=1.x-dev
+
+
+
