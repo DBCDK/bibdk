@@ -70,7 +70,7 @@ projects[bibdk_provider][download][url] = git@github.com:DBCDK/bibdk_provider.gi
 
 projects[bibliomega_frontend][type] = module
 projects[bibliomega_frontend][download][type] = git
-projects[bibliomega_frontend][download][url] = git@github.com:DBCDK/git@github.com:DBCDK/bibliomega_frontend.git.git
+projects[bibliomega_frontend][download][url] = git@github.com:DBCDK/bibliomega_frontend.git.git
 ;projects[bibliomega_frontend][download][tag] =
 
 projects[bibliomega_frontend_blocks][type] = module
