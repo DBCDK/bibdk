@@ -88,7 +88,7 @@ projects[bibdkcaptcha][download][url] = git@github.com:DBCDK/bibdkcaptcha.git
 
 projects[captcha][subdir]=contrib
 projects[captcha][type] = module
-projects[captcha][version]=7.x-1.0-beta2
+projects[captcha][version] = 1.0-beta2
 
 
 
