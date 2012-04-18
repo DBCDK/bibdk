@@ -63,6 +63,11 @@ projects[ding_debt][download][tag] = "7.x-0.36+dbc.5"
 
 ; --- Bibliotek.dk ---
 
+projects[ting_search][type] = "module"
+projects[ting_search][download][type] = "git"
+projects[ting_search][download][url] = "git@github.com:DBCDK/ting_search.git"
+projects[ting_search][download][tag] = "7.x-0.26"
+
 projects[bibdk_provider][type] = module
 projects[bibdk_provider][download][type] = git
 projects[bibdk_provider][download][url] = git@github.com:DBCDK/bibdk_provider.git
