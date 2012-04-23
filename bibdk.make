@@ -95,5 +95,9 @@ projects[captcha][subdir]=contrib
 projects[captcha][type] = module
 projects[captcha][version] = 1.0-beta2
 
+projects[bibdk_searchhistory][type] = module
+projects[bibdk_searchhistory][download][type] = git
+projects[bibdk_searchhistory][download][url] = git@github.com:DBCDK/bibdk_searchhistory.git
+;projects[bibdk_searchhistory][download][tag] =
 
 
