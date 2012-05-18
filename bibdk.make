@@ -104,5 +104,5 @@ projects[bibdk_searchhistory][download][url] = git@github.com:DBCDK/bibdk_search
 
 projects[persistent_login][subdir] = contrib
 projects[persistent_login][type] = module
-projects[persistent_login][version] = 7.x-1.x
+projects[persistent_login][version] = 1.x-dev
 
