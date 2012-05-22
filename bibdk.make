@@ -15,10 +15,9 @@ projects[artesis_user_frontend][download][type] = "git"
 projects[artesis_user_frontend][download][url] = "git@github.com:DBCDK/artesis_user_frontend.git"
 projects[artesis_user_frontend][download][tag] = "7.x-0.1"
 
+projects[snapengage][subdir] = "contrib"
 projects[snapengage][type] = "module"
-projects[snapengage][download][type] = "git"
-projects[snapengage][download][url] = "http://git.drupal.org/sandbox/arnested/1418742.git"
-projects[snapengage][download][branch] = "7.x-1.x"
+projects[snapengage][version] = "1.0"
 
 ;; bibliOmega is a subtheme for Bibliotek.dk on ding2omega
 projects[bibliOmega][type] = "theme"
