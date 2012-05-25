@@ -99,6 +99,11 @@ projects[bibdk_searchhistory][download][type] = git
 projects[bibdk_searchhistory][download][url] = git@github.com:DBCDK/bibdk_searchhistory.git
 ;projects[bibdk_searchhistory][download][tag] =
 
+projects[ding_persistent_login][type] = module
+projects[ding_persistent_login][download][type] = git
+projects[ding_persistent_login][download][url] = git@github.com:DBCDK/ding_persistent_login.git
+;projects[ding_persistent_login][download][tag] =
+
 ; Contrib modules
 
 projects[persistent_login][subdir] = contrib
