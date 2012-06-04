@@ -60,6 +60,14 @@ projects[ding_debt][download][url] = "git@github.com:DBCDK/ding_debt.git"
 projects[ding_debt][download][tag] = "7.x-0.18+dbc.1"
 
 
+; --- Bibliotek.dk versions of Ding2 modules ---
+
+projects[ding_campaign][type] = "module"
+projects[ding_campaign][download][type] = "git"
+projects[ding_campaign][download][url] = "git@github.com:DBCDK/ding_campaign.git"
+projects[ding_campaign][download][tag] = "7.x-0.4+dbc.1"
+
+
 ; --- Bibliotek.dk ---
 
 projects[ting_search][type] = "module"
@@ -104,7 +112,7 @@ projects[ding_persistent_login][download][type] = git
 projects[ding_persistent_login][download][url] = git@github.com:DBCDK/ding_persistent_login.git
 ;projects[ding_persistent_login][download][tag] =
 
-; Contrib modules
+; --- Contrib modules ---
 
 projects[persistent_login][subdir] = contrib
 projects[persistent_login][type] = module
