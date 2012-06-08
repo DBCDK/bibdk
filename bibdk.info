@@ -18,7 +18,7 @@ dependencies[] = translation
 ;dependencies[] = ding_user_frontend
 ;dependencies[] = artesis_user_frontend
 dependencies[] = bibdk_provider
-dependencies[] = ding_omega_frontend
+;dependencies[] = ding_omega_frontend
 
 ; CMS (Curate)
 ;dependencies[] = ding_event
