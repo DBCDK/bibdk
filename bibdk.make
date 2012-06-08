@@ -10,6 +10,11 @@ libraries[profiler][download][revision] = d0137cb42bc7a4e9ce0a0431f875806285d097
 ; Patch from http://drupal.org/node/1328796
 libraries[profiler][patch][] = http://drupal.org/files/profiler-reverse.patch
 
+libraries[ckeditor][destination] = libraries
+libraries[ckeditor][directory_name] = ckeditor
+libraries[ckeditor][download][type] = get
+libraries[ckeditor][download][url] = http://download.cksource.com/CKEditor/CKEditor/CKEditor%203.6.2/ckeditor_3.6.2.zip
+
 
 ; --- Theming ---
 
@@ -130,3 +135,53 @@ projects[blackhole][download][url] = git@github.com:DBCDK/blackhole.git
 projects[virtual_field][subdir] = contrib
 projects[virtual_field][type] = module
 projects[virtual_field][version] = 1.0
+
+projects[ctools][subdir] = contrib
+projects[ctools][type] = module
+projects[ctools][version] = 1.0-rc1
+projects[ctools][patch][] = http://drupal.org/files/issues/user_edit_form-p0-format-1184168.patch
+projects[ctools][patch][] = https://raw.github.com/gist/2044786/6b4ef8173f080715a8752067f7b1511a99b8b816/ctools-page_manager_load_task_handlers_alter.patch
+
+projects[entity][subdir] = contrib
+projects[entity][type] = module
+projects[entity][version] = 1.0-rc1
+
+projects[features][subdir] = contrib
+projects[features][type] = module
+projects[features][version] = 1.0-beta4
+
+projects[libraries][subdir] = contrib
+projects[libraries][type] = module
+projects[libraries][version] = 1.0
+
+projects[nanosoap][subdir] = contrib
+projects[nanosoap][type] = module
+projects[nanosoap][version] = 1.0-beta3
+
+projects[panels_breadcrumbs][subdir] = contrib
+projects[panels_breadcrumbs][type] = module
+projects[panels_breadcrumbs][version] = 1.4
+
+projects[panels][subdir] = contrib
+projects[panels][type] = module
+projects[panels][version] = 3.0-alpha3
+
+projects[profile2][subdir] = contrib
+projects[profile2][type] = module
+projects[profile2][version] = 1.2
+
+projects[rules][subdir] = contrib
+projects[rules][type] = module
+projects[rules][version] = 2.0
+
+projects[strongarm][subdir] = contrib
+projects[strongarm][type] = module
+projects[strongarm][version] = 2.0-beta4
+
+projects[views][subdir] = contrib
+projects[views][type] = module
+projects[views][version] = 3.0
+
+projects[wysiwyg][subdir] = contrib
+projects[wysiwyg][type] = module
+projects[wysiwyg][version] = 2.1
