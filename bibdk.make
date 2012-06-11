@@ -65,10 +65,10 @@ projects[ding_user][download][type] = git
 projects[ding_user][download][url] = git@github.com:DBCDK/ding_user.git
 projects[ding_user][download][tag] = 7.x-0.19
 
-;projects[ding_popup][type] = module
-;projects[ding_popup][download][type] = git
-;projects[ding_popup][download][url] = git@github.com:DBCDK/ding_popup.git
-:projects[ding_popup][download][tag] = 7.x-0.4
+projects[ding_popup][type] = module
+projects[ding_popup][download][type] = git
+projects[ding_popup][download][url] = git@github.com:DBCDK/ding_popup.git
+projects[ding_popup][download][tag] = 7.x-0.4
 
 projects[ting][type] = module
 projects[ting][download][type] = git
