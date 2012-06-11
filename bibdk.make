@@ -127,10 +127,10 @@ projects[persistent_login][subdir] = contrib
 projects[persistent_login][type] = module
 projects[persistent_login][version] = 1.x-dev
 
-projects[blackhole][subdir] = contrib
-projects[blackhole][type] = module
-projects[blackhole][download][type] = git
-projects[blackhole][download][url] = git@github.com:DBCDK/blackhole.git
+;projects[blackhole][subdir] = contrib
+;projects[blackhole][type] = module
+;projects[blackhole][download][type] = git
+;projects[blackhole][download][url] = git@github.com:DBCDK/blackhole.git
 
 projects[virtual_field][subdir] = contrib
 projects[virtual_field][type] = module
