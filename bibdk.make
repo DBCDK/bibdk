@@ -106,7 +106,7 @@ projects[bibdkcaptcha][download][url] = git@github.com:DBCDK/bibdkcaptcha.git
 projects[bibdk_provider][type] = module
 projects[bibdk_provider][download][type] = git
 projects[bibdk_provider][download][url] = git@github.com:DBCDK/bibdk_provider.git
-; projects[bibdk_provider][download][tag] =
+;projects[bibdk_provider][download][tag] =
 
 projects[bibdk_searchhistory][type] = module
 projects[bibdk_searchhistory][download][type] = git
@@ -125,18 +125,22 @@ projects[captcha][subdir] = contrib
 projects[captcha][type] = module
 projects[captcha][version] = 1.0-beta2
 
-projects[features_extra][subdir]=contrib
-projects[features_extra][version]=1.x-dev
+projects[features_extra][subdir] = contrib
+projects[features_extra][type] = module
+projects[features_extra][version] = 1.x-dev
 
 projects[persistent_login][subdir] = contrib
 projects[persistent_login][type] = module
 projects[persistent_login][version] = 1.x-dev
 
+<<<<<<< HEAD
 ;projects[blackhole][subdir] = contrib
 ;projects[blackhole][type] = module
 ;projects[blackhole][download][type] = git
 ;projects[blackhole][download][url] = git@github.com:DBCDK/blackhole.git
 
+=======
+>>>>>>> .make file fixes. Removed blackhole module
 projects[virtual_field][subdir] = contrib
 projects[virtual_field][type] = module
 projects[virtual_field][version] = 1.0
