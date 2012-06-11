@@ -65,11 +65,6 @@ projects[ding_user][download][type] = git
 projects[ding_user][download][url] = git@github.com:DBCDK/ding_user.git
 projects[ding_user][download][tag] = 7.x-0.19
 
-projects[ding_popup][type] = module
-projects[ding_popup][download][type] = git
-projects[ding_popup][download][url] = git@github.com:DBCDK/ding_popup.git
-projects[ding_popup][download][tag] = 7.x-0.4
-
 projects[ting][type] = module
 projects[ting][download][type] = git
 projects[ting][download][url] = git@github.com:DBCDK/ting.git
@@ -133,14 +128,6 @@ projects[persistent_login][subdir] = contrib
 projects[persistent_login][type] = module
 projects[persistent_login][version] = 1.x-dev
 
-<<<<<<< HEAD
-;projects[blackhole][subdir] = contrib
-;projects[blackhole][type] = module
-;projects[blackhole][download][type] = git
-;projects[blackhole][download][url] = git@github.com:DBCDK/blackhole.git
-
-=======
->>>>>>> .make file fixes. Removed blackhole module
 projects[virtual_field][subdir] = contrib
 projects[virtual_field][type] = module
 projects[virtual_field][version] = 1.0
