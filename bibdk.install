@@ -16,6 +16,28 @@ function bibdk_install() {
 
   // set variables
   _bibdk_set_variables();
+
+  // enable selected modules
+  _bibdk_enable_modules();
+}
+
+function _bibdk_enable_modules() {
+  $module_list = 
+    array('search',
+	  'features',
+	  'ding_base',
+	  'ding_popup',
+	  'ding_provider',
+	  'virtual_field',
+	  'ding_entity',
+	  'ding_user',
+	  'ting_client',
+	  'entity',
+	  'profile2',
+	  'ting_client',
+);
+
+  module_enable($module_list);
 }
 
 /** \brief 
