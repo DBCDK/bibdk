@@ -34,7 +34,6 @@ function _bibdk_enable_modules() {
 	  'ting_client',
 	  'entity',
 	  'profile2',
-	  'ting_client',
 );
 
   module_enable($module_list);
