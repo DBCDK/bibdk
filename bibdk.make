@@ -139,17 +139,20 @@ projects[virtual_field][version] = 1.0
 
 projects[ctools][subdir] = contrib
 projects[ctools][type] = module
-projects[ctools][version] = 1.0-rc1
-projects[ctools][patch][] = http://drupal.org/files/issues/user_edit_form-p0-format-1184168.patch
+projects[ctools][version] = 1.0
 projects[ctools][patch][] = https://raw.github.com/gist/2044786/6b4ef8173f080715a8752067f7b1511a99b8b816/ctools-page_manager_load_task_handlers_alter.patch
 
 projects[entity][subdir] = contrib
 projects[entity][type] = module
-projects[entity][version] = 1.0-rc1
+projects[entity][version] = 1.0-rc3
 
 projects[features][subdir] = contrib
 projects[features][type] = module
-projects[features][version] = 1.0-beta4
+projects[features][version] = 1.0-rc3
+
+projects[i18n][subdir] = contrib
+projects[i18n][type] = module
+projects[i18n][version] = 1.5
 
 projects[libraries][subdir] = contrib
 projects[libraries][type] = module
@@ -157,15 +160,15 @@ projects[libraries][version] = 1.0
 
 projects[nanosoap][subdir] = contrib
 projects[nanosoap][type] = module
-projects[nanosoap][version] = 1.0-beta3
+projects[nanosoap][version] = 1.0
 
 projects[panels_breadcrumbs][subdir] = contrib
 projects[panels_breadcrumbs][type] = module
-projects[panels_breadcrumbs][version] = 1.4
+projects[panels_breadcrumbs][version] = 1.6
 
 projects[panels][subdir] = contrib
 projects[panels][type] = module
-projects[panels][version] = 3.0-alpha3
+projects[panels][version] = 3.2
 
 projects[profile2][subdir] = contrib
 projects[profile2][type] = module
@@ -173,11 +176,11 @@ projects[profile2][version] = 1.2
 
 projects[rules][subdir] = contrib
 projects[rules][type] = module
-projects[rules][version] = 2.0
+projects[rules][version] = 2.1
 
 projects[strongarm][subdir] = contrib
 projects[strongarm][type] = module
-projects[strongarm][version] = 2.0-beta4
+projects[strongarm][version] = 2.0
 
 projects[views][subdir] = contrib
 projects[views][type] = module
