@@ -107,7 +107,7 @@ function _bibdk_set_theme_blocks($default_theme) {
       'theme' => $default_theme,
       'status' => 1,
       'weight' => 0,
-      'region' => 'subheader',
+      'region' => 'action_search',
       'pages' => '',
       'cache' => -1,
       'title' => '',
