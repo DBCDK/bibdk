@@ -23,18 +23,22 @@ function bibdk_install() {
 
 function _bibdk_enable_modules() {
   $module_list = 
-    array('search',
-	  'features',
-	  'ding_base',
-	  'ding_popup',
-	  'ding_provider',
-	  'virtual_field',
-	  'ding_entity',
-	  'ding_user',
-	  'ting_client',
-	  'entity',
-	  'profile2',
-);
+    array(
+      'bibdkcaptcha',
+      'bibdk_provider',
+      'bibdk_searchhistory',
+      'bibliomega_frontend',
+      'bibliomega_frontend_blocks',
+      'ding_base',
+      'ding_campaign',
+      'ding_entity',
+      'ding_popup',
+      'ding_provider',
+      'ding_user',
+      'ting',
+      'ting_client',
+      'ting_search',
+    );
 
   module_enable($module_list);
 }
