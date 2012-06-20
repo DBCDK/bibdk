@@ -55,6 +55,11 @@ projects[ding_entity][download][type] = git
 projects[ding_entity][download][url] = git@github.com:DBCDK/ding_entity.git
 projects[ding_entity][download][tag] = 7.x-0.7
 
+projects[ding_frontpage][type] = module
+projects[ding_frontpage][download][type] = git
+projects[ding_frontpage][download][url] = git@github.com:DBCDK/ding_frontpage.git
+projects[ding_frontpage][download][tag] = 7.x-0.7
+
 projects[ding_provider][type] = module
 projects[ding_provider][download][type] = git
 projects[ding_provider][download][url] = git@github.com:DBCDK/ding_provider.git
@@ -92,11 +97,6 @@ projects[bibliomega_frontend][type] = module
 projects[bibliomega_frontend][download][type] = git
 projects[bibliomega_frontend][download][url] = git@github.com:DBCDK/bibliomega_frontend.git
 ;projects[bibliomega_frontend][download][tag] =
-
-projects[bibliomega_frontend_blocks][type] = module
-projects[bibliomega_frontend_blocks][download][type] = git
-projects[bibliomega_frontend_blocks][download][url] = git@github.com:DBCDK/bibliomega_frontend_blocks.git
-;projects[bibliomega_frontend_blocks][download][tag] =
 
 projects[bibdkcaptcha][type] = module
 projects[bibdkcaptcha][download][type] = git
