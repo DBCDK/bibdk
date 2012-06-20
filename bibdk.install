@@ -32,6 +32,7 @@ function _bibdk_enable_modules() {
       'ding_campaign',
       'ding_entity',
       'ding_frontpage',
+      'ding_persistent_login',
       'ding_popup',
       'ding_provider',
       'ding_user',
