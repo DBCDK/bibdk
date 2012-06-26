@@ -118,6 +118,11 @@ projects[ding_persistent_login][download][type] = git
 projects[ding_persistent_login][download][url] = git@github.com:DBCDK/ding_persistent_login.git
 ;projects[ding_persistent_login][download][tag] =
 
+projects[bibdk_custom_search][type] = module
+projects[bibdk_custom_search][download][type] = git
+projects[bibdk_custom_search][download][url] = git@github.com:DBCDK/bibdk_custom_search.git
+;projects[bibdk_custom_search][download][tag] =
+
 
 ; --- Contrib modules ---
 
