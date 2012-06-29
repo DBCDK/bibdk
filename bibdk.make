@@ -90,6 +90,11 @@ projects[ting_search][download][type] = git
 projects[ting_search][download][url] = git@github.com:DBCDK/ting_search.git
 projects[ting_search][download][tag] = 7.x-0.26
 
+projects[ding_facetbrowser][type] = module
+projects[ding_facetbrowser][download][type] = git
+projects[ding_facetbrowser][download][url] = git@github.com:DBCDK/ding_facetbrowser.git
+;projects[ding_facetbrowser][download][tag] = 7.x-0.13
+
 
 ; --- Bibliotek.dk ---
 
