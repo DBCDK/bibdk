@@ -123,6 +123,11 @@ projects[bibdk_custom_search][download][type] = git
 projects[bibdk_custom_search][download][url] = git@github.com:DBCDK/bibdk_custom_search.git
 ;projects[bibdk_custom_search][download][tag] =
 
+projects[ting_openformat][type] = module
+projects[ting_openformat][download][type] = git
+projects[ting_openformat][download][url] = git@github.com:DBCDK/ting_openformat.git
+;projects[ting_openformat][download][tag] =
+
 
 ; --- Contrib modules ---
 
