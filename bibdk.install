@@ -216,7 +216,7 @@ function _bibdk_set_theme_blocks($default_theme) {
 
 /**
  * Implements hook_update_N().
- * Add pane_id column to table 'ding_campaign'
+ * allow anonymous and authenticated users to search and view published content 
  */
 function bibdk_update_7001(&$sandbox) {
   user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array('access content', 'search content'));
