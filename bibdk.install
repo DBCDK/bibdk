@@ -7,9 +7,9 @@
  * Perform actions to set up the site for bibdk profile.
  */
 
-function bibdk_install() {  
+function bibdk_install() {
   // set default theme and theme blocks
-  _bibdk_set_theme_blocks();  
+  _bibdk_set_theme_blocks();
 
   // set default permissions and roles
   _bibdk_set_permissions_and_roles();
@@ -22,7 +22,7 @@ function bibdk_install() {
 }
 
 function _bibdk_enable_modules() {
-  $module_list = 
+  $module_list =
     array(
       'bibdkcaptcha',
       'bibdk_provider',
@@ -38,13 +38,14 @@ function _bibdk_enable_modules() {
       'ding_user',
       'ting',
       'ting_client',
-      'ting_search',
+      //      'ting_search',
+      'ting_openformat'
     );
 
   module_enable($module_list);
 }
 
-/** \brief 
+/** \brief
  * Set default permissions and roles
  */
 function _bibdk_set_permissions_and_roles() {
@@ -52,8 +53,8 @@ function _bibdk_set_permissions_and_roles() {
   variable_set('user_register', USER_REGISTER_ADMINISTRATORS_ONLY);
 
   // Enable default permissions for system roles.
-  //user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array('access content', 'search content'));
-  //user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array('access content', 'search content'));
+  user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array('access content', 'search content'));
+  ser_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array('access content', 'search content'));
 
   // Create a default role for site administrators, with all available permissions assigned.
   $admin_role = new stdClass();
@@ -67,7 +68,7 @@ function _bibdk_set_permissions_and_roles() {
   // Assign user 1 the "administrator" role.
   db_insert('users_roles')
     ->fields(array('uid' => 1, 'rid' => $admin_role->rid))
-    ->execute(); 
+    ->execute();
 
 }
 
@@ -115,7 +116,7 @@ function _bibdk_set_theme_blocks($default_theme) {
       'pages' => '',
       'cache' => -1,
       'title' => '',
-    ), 
+    ),
     /*array(
       'module' => 'locale',
       'delta' => 'language',
