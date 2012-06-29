@@ -54,7 +54,7 @@ function _bibdk_set_permissions_and_roles() {
 
   // Enable default permissions for system roles.
   user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array('access content', 'search content'));
-  ser_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array('access content', 'search content'));
+  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array('access content', 'search content'));
 
   // Create a default role for site administrators, with all available permissions assigned.
   $admin_role = new stdClass();
@@ -213,6 +213,16 @@ function _bibdk_set_theme_blocks($default_theme) {
   }
   $query->execute();
 }
+
+/**
+ * Implements hook_update_N().
+ * Add pane_id column to table 'ding_campaign'
+ */
+function bibdk_update_7001(&$sandbox) {
+  user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array('access content', 'search content'));
+  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array('access content', 'search content'));
+}
+
 
 
 /************* THIS IS THE ORIGINAL HOOK (hook_install) COMMENTED OUT ******************/
