@@ -36,6 +36,7 @@ function _bibdk_enable_modules() {
       'ding_popup',
       'ding_provider',
       'ding_user',
+      'ding_wayf',
       'ting',
       'ting_client',
       'search',
