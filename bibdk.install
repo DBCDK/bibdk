@@ -11,14 +11,14 @@ function bibdk_install() {
   // set default theme and theme blocks
   _bibdk_set_theme_blocks();
 
-  // set default permissions and roles
-  _bibdk_set_permissions_and_roles();
-
   // set variables
   _bibdk_set_variables();
 
   // enable selected modules
   _bibdk_enable_modules();
+
+  // set default permissions and roles
+  _bibdk_set_permissions_and_roles();
 }
 
 function _bibdk_enable_modules() {
@@ -38,6 +38,7 @@ function _bibdk_enable_modules() {
       'ding_user',
       'ting',
       'ting_client',
+      'search',
       //      'ting_search',
       'ting_openformat'
     );
