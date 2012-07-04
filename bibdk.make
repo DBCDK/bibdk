@@ -97,7 +97,7 @@ projects[ding_facetbrowser][download][url] = git@github.com:DBCDK/ding_facetbrow
 
 projects[ding_wayf][type] = module
 projects[ding_wayf][download][type] = git
-projects[ding_wayf][download][url] = git@github.com:ding2/ding_wayf.git
+projects[ding_wayf][download][url] = git@github.com:DBCDK/ding_wayf.git
 projects[ding_wayf][download][tag] = 7.x-0.3
 
 ; --- Bibliotek.dk ---
