@@ -94,7 +94,7 @@ function _bibdk_set_variables() {
   variable_set('configurable_timezones', 0);
 
   // Select the ding_frontpage as front page.
-  //variable_set('site_frontpage', 'ding_frontpage');
+  variable_set('site_frontpage', 'ding_frontpage');
 }
 
 /** \brief
@@ -141,28 +141,39 @@ function _bibdk_set_theme_blocks($default_theme) {
       'cache' => -1,
       'title' => '',
     ),
-    /* array(
+    array(
       'module' => 'user',
       'delta' => 'login',
       'theme' => $default_theme,
       'status' => 1,
       'weight' => 1,
-      'region' => 'subheader',
+      'region' => 'action_user',
       'pages' => '',
       'cache' => -1,
       'title' => '<none>',
-      ),*/
-    /* array(
+      ),
+    array(
+      'module' => 'ding_wayf',
+      'delta' => 'login',
+      'theme' => $default_theme,
+      'status' => 1,
+      'weight' => 2,
+      'region' => 'action_user',
+      'pages' => '',
+      'cache' => -1,
+      'title' => '<none>',
+      ),
+    array(
       'module' => 'system',
       'delta' => 'user-menu',
       'theme' => $default_theme,
       'status' => 1,
-      'weight' => 2,
-      'region' => 'subheader',
+      'weight' => 3,
+      'region' => 'action_user',
       'pages' => '',
       'cache' => -1,
       'title' => '<none>',
-      ), */
+      ),
     /*   array(
       'module' => 'menu',
       'delta' => 'menu-footer-menu-1',
