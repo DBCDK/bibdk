@@ -213,3 +213,7 @@ projects[views][version] = 3.0
 projects[wysiwyg][subdir] = contrib
 projects[wysiwyg][type] = module
 projects[wysiwyg][version] = 2.1
+
+projects[variable][subdir] = contrib
+projects[variable][type] = module
+projects[variable][version] = 2.1
