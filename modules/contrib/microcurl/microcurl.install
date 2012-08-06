@@ -1,0 +1,31 @@
+<?php
+/**
+ * @file
+ * Install file for MicroCURL module.
+ */
+
+/**
+ * Implementation of hook_requirements().
+ *
+ * This to make sure we have the required PHP extensions enabled.
+ */
+function microcurl_requirements($phase) {
+  $requirements = array(
+    'curl' => array(
+      'title' => 'PHP cURL extension',
+    ),
+  );
+
+  if (function_exists('curl_init')) {
+    $version = curl_version();
+    $requirements['curl']['value'] = $version['version'];
+    $requirements['curl']['severity'] = REQUIREMENT_OK;
+  }
+  else {
+    $requirements['curl']['value'] = t('Missing');
+    $requirements['curl']['severity'] = REQUIREMENT_ERROR;
+  }
+
+  return $requirements;
+}
+

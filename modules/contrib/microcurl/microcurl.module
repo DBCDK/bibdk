@@ -1,0 +1,11 @@
+<?php
+/**
+ * @file
+ * MicroCURL module for Drupal.
+ *
+ * This module contains no code besides the the cURL class provided 
+ * in microcurl.inc.
+ */
+
+// This space intentionally left blank.
+
