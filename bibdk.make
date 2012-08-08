@@ -142,6 +142,11 @@ projects[ting_openformat][download][type] = git
 projects[ting_openformat][download][url] = git@github.com:DBCDK/ting_openformat.git
 ;projects[ting_openformat][download][tag] =
 
+projects[bibdk_helpdesk][type] = module
+projects[bibdk_helpdesk][download][type] = git
+projects[bibdk_helpdesk][download][url] = git@github.com:DBCDK/bibdk_helpdesk.git
+;projects[bibdk_helpdesk][download][tag] =
+
 
 ; --- Contrib modules ---
 

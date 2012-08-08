@@ -40,6 +40,7 @@ function _bibdk_enable_modules() {
       'ting',
       'ting_client',
       'search',
+      'bibdk_helpdesk'
       //      'ting_search',
       'ting_openformat'
     );
