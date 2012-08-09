@@ -24,6 +24,7 @@ function bibdk_install() {
 function _bibdk_enable_modules() {
   $module_list =
     array(
+      'bibdk_frontpage',
       'bibdkcaptcha',
       'bibdk_provider',
       'bibdk_searchhistory',
@@ -40,9 +41,10 @@ function _bibdk_enable_modules() {
       'ting',
       'ting_client',
       'search',
-      'bibdk_helpdesk'
+      'microcurl',
+      'bibdk_helpdesk',
       //      'ting_search',
-      'ting_openformat'
+      'ting_openformat',
     );
 
   module_enable($module_list);

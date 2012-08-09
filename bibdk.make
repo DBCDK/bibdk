@@ -142,10 +142,21 @@ projects[ting_openformat][download][type] = git
 projects[ting_openformat][download][url] = git@github.com:DBCDK/ting_openformat.git
 ;projects[ting_openformat][download][tag] =
 
+projects[microcurl][type] = module
+projects[microcurl][download][type] = git
+projects[microcurl][download][url] = git@github.com:DBCDK/microcurl.git
+;projects[microcurl][download][tag] =
+
+projects[bibdk_frontend][type] = module
+projects[bibdk_frontend][download][type] = git
+projects[bibdk_frontend][download][url] = git@github.com:DBCDK/bibdk_frontend.git
+;projects[bibdk_frontend][download][tag] =
+
 projects[bibdk_helpdesk][type] = module
 projects[bibdk_helpdesk][download][type] = git
 projects[bibdk_helpdesk][download][url] = git@github.com:DBCDK/bibdk_helpdesk.git
 ;projects[bibdk_helpdesk][download][tag] =
+
 
 
 ; --- Contrib modules ---
