@@ -24,7 +24,7 @@ function bibdk_install() {
 function _bibdk_enable_modules() {
   $module_list =
     array(
-      'bibdk_frontpage',
+      'bibdk_frontend',
       'bibdkcaptcha',
       'bibdk_provider',
       'bibdk_searchhistory',
