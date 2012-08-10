@@ -15,7 +15,7 @@ function bibdk_install() {
   _bibdk_set_variables();
 
   // enable selected modules
-  _bibdk_enable_modules();
+//  _bibdk_enable_modules();
 
   // set default permissions and roles
   _bibdk_set_permissions_and_roles();
