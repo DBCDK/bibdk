@@ -27,7 +27,6 @@ function _bibdk_enable_modules() {
       'bibdk_frontend',
       'bibdkcaptcha',
       'bibdk_provider',
-      'bibdk_helpdesk',
       'bibdk_help',
       'bibdk_searchhistory',
       'bibliomega_frontend',
