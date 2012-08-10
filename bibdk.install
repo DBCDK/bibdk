@@ -27,6 +27,8 @@ function _bibdk_enable_modules() {
       'bibdk_frontend',
       'bibdkcaptcha',
       'bibdk_provider',
+      'bibdk_helpdesk',
+      'bibdk_help',
       'bibdk_searchhistory',
       'bibliomega_frontend',
       'ding_base',
@@ -43,9 +45,9 @@ function _bibdk_enable_modules() {
       'search',
       'microcurl',
       'bibdk_helpdesk',
-      //      'ting_search',
       'ting_openformat',
     );
+    //      'ting_search',
 
   module_enable($module_list);
 }
@@ -232,7 +234,7 @@ function _bibdk_set_theme_blocks($default_theme) {
 
 /**
  * Implements hook_update_N().
- * allow anonymous and authenticated users to search and view published content 
+ * allow anonymous and authenticated users to search and view published content
  */
 function bibdk_update_7001(&$sandbox) {
   user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array('access content', 'search content'));
