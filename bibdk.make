@@ -162,6 +162,11 @@ projects[bibdk_help][download][type] = git
 projects[bibdk_help][download][url] = git@github.com:DBCDK/bibdk_help.git
 ;projects[bibdk_help][download][tag] =
 
+projects[bibdk_linkme][type] = module
+projects[bibdk_linkme][download][type] = git
+projects[bibdk_linkme][download][url] = git@github.com:DBCDK/bibdk_linkme.git
+;projects[bibdk_linkme][download][tag] =
+
 
 
 ; --- Contrib modules ---

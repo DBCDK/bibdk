@@ -45,6 +45,7 @@ function _bibdk_enable_modules() {
       'microcurl',
       'bibdk_helpdesk',
       'ting_openformat',
+      'bibdk_linkme',
     );
     //      'ting_search',
 
