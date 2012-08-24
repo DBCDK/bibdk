@@ -243,3 +243,11 @@ projects[wysiwyg][version] = 2.1
 projects[variable][subdir] = contrib
 projects[variable][type] = module
 projects[variable][version] = 2.1
+
+projects[uuid][subdir] = contrib
+projects[uuid][type] = module
+projects[uuid][version] = 1.0-alpha3
+
+projects[node_export][subdir] = contrib
+projects[node_export][type] = module
+projects[node_export][version] = 3.0-rc4
