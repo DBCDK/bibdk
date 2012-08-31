@@ -46,6 +46,7 @@ function _bibdk_enable_modules() {
       'bibdk_helpdesk',
       'ting_openformat',
       'bibdk_linkme',
+      'bibdk_reservation',
     );
     //      'ting_search',
 
@@ -239,6 +240,14 @@ function _bibdk_set_theme_blocks($default_theme) {
 function bibdk_update_7001(&$sandbox) {
   user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array('access content', 'search content'));
   user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array('access content', 'search content'));
+}
+
+function bibdk_update_7002(&$sandbox) {
+  module_enable(array(
+     'ting_openformat',
+      'bibdk_linkme',
+      'bibdk_reservation',
+  ));
 }
 
 
