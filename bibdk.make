@@ -137,6 +137,11 @@ projects[bibdk_custom_search][download][type] = git
 projects[bibdk_custom_search][download][url] = git@github.com:DBCDK/bibdk_custom_search.git
 ;projects[bibdk_custom_search][download][tag] =
 
+projects[bibdk_custom_search_preprocess][type] = module
+projects[bibdk_custom_search_preprocess][download][type] = git
+projects[bibdk_custom_search_preprocess][download][url] = git@github.com:DBCDK/bibdk_custom_search_preprocess.git
+;projects[bibdk_custom_search_preprocess][tag] =
+
 projects[ting_openformat][type] = module
 projects[ting_openformat][download][type] = git
 projects[ting_openformat][download][url] = git@github.com:DBCDK/ting_openformat.git
