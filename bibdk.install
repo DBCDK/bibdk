@@ -15,7 +15,7 @@ function bibdk_install() {
   _bibdk_set_variables();
 
   // enable selected modules
-//  _bibdk_enable_modules();
+  _bibdk_enable_modules();
 
   // set default permissions and roles
   _bibdk_set_permissions_and_roles();
@@ -24,10 +24,13 @@ function bibdk_install() {
 function _bibdk_enable_modules() {
   $module_list =
     array(
-      'bibdk_frontend',
       'bibdkcaptcha',
-      'bibdk_provider',
+      'bibdk_frontend',
       'bibdk_help',
+      'bibdk_helpdesk',
+      'bibdk_linkme',
+      'bibdk_provider',
+      'bibdk_reservation',
       'bibdk_searchhistory',
       'bibliomega_frontend',
       'ding_base',
@@ -39,18 +42,16 @@ function _bibdk_enable_modules() {
       'ding_provider',
       'ding_user',
       'ding_wayf',
+      'microcurl',
+      'search',
       'ting',
       'ting_client',
-      'search',
-      'microcurl',
-      'bibdk_helpdesk',
       'ting_openformat',
-      'bibdk_linkme',
-      'bibdk_reservation',
     );
     //      'ting_search',
-
-  module_enable($module_list);
+  if(!module_enable($module_list)){
+    die('A module present in array \'$module_list\' in file \'bibdk.install\' was not found. Install process aborted.');
+  }
 }
 
 /** \brief
