@@ -108,7 +108,7 @@ function _bibdk_set_variables() {
  * define and set default theme blocks e.g header, content, subheader, menu ....
  *
  */
-function _bibdk_set_theme_blocks($default_theme) {
+function _bibdk_set_theme_blocks($default_theme=null) {
  // set and enable default theme
   $default_theme = 'bibliomega';
   theme_enable(array($default_theme));
