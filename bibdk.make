@@ -102,6 +102,11 @@ projects[ding_wayf][download][tag] = 7.x-0.3
 
 ; --- Bibliotek.dk ---
 
+projects[bibdk_favourite][type] = module
+projects[bibdk_favourite][download][type] = git
+projects[bibdk_favourite][download][url] = git@github.com:DBCDK/bibdk_favourite.git
+;projects[bibdk_favourite][download][tag] =
+
 projects[bibliomega_frontend][type] = module
 projects[bibliomega_frontend][download][type] = git
 projects[bibliomega_frontend][download][url] = git@github.com:DBCDK/bibliomega_frontend.git
