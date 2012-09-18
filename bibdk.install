@@ -25,10 +25,12 @@ function _bibdk_enable_modules() {
   $module_list =
     array(
       'bibdkcaptcha',
+      'bibdk_borchk',
       'bibdk_frontend',
       'bibdk_help',
       'bibdk_helpdesk',
       'bibdk_linkme',
+      'bibdk_openorder',
       'bibdk_provider',
       'bibdk_reservation',
       'bibdk_searchhistory',
