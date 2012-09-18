@@ -45,7 +45,7 @@ function _bibdk_enable_modules() {
       'microcurl',
       'search',
       'ting',
-      'ting_client',
+      'ting-client',
       'ting_openformat',
     );
     //      'ting_search',
