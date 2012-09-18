@@ -187,6 +187,11 @@ projects[bibdk_borchk][download][type] = git
 projects[bibdk_borchk][download][url] = git@github.com:DBCDK/bibdk_borchk.git
 ;projects[bibdk_borchk][download][tag] =
 
+projects[bibdk_openorder][type] = module
+projects[bibdk_openorder][download][type] = git
+projects[bibdk_openorder][download][url] = git@github.com:DBCDK/bibdk_openorder.git
+;projects[bibdk_openorder][download][tag] =
+
 
 ; --- Contrib modules ---
 
