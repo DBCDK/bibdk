@@ -43,9 +43,8 @@ function _bibdk_enable_modules() {
       'ding_user',
       'ding_wayf',
       'microcurl',
-      'search',
       'ting',
-      'ting-client',
+      'ting_client',
       'ting_openformat',
     );
     //      'ting_search',

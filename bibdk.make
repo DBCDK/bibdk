@@ -182,6 +182,10 @@ projects[bibdk_reservation][download][type] = git
 projects[bibdk_reservation][download][url] = git@github.com:DBCDK/bibdk_reservation.git
 ;projects[bibdk_reservation][download][tag] =
 
+projects[bibdk_borchk][type] = module
+projects[bibdk_borchk][download][type] = git
+projects[bibdk_borchk][download][url] = git@github.com:DBCDK/bibdk_borchk.git
+;projects[bibdk_borchk][download][tag] =
 
 
 ; --- Contrib modules ---
