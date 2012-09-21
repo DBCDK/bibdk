@@ -100,6 +100,11 @@ projects[ding_wayf][download][type] = git
 projects[ding_wayf][download][url] = git@github.com:DBCDK/ding_wayf.git
 projects[ding_wayf][download][tag] = 7.x-0.3
 
+projects[ting_covers][type] = module
+projects[ting_covers][download][type] = git
+projects[ting_covers][download][url] = https://github.com/DBCDK/ting_covers.git
+;projects[ting_covers][download][tag] = 7.x-0.22
+
 ; --- Bibliotek.dk ---
 
 projects[bibdk_favourite][type] = module

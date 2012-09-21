@@ -48,6 +48,7 @@ function _bibdk_enable_modules() {
       'ting',
       'ting_client',
       'ting_openformat',
+      'ting_covers',
     );
     //      'ting_search',
   if(!module_enable($module_list)){
