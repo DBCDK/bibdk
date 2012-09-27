@@ -37,6 +37,11 @@ projects[bibliOmega][download][url] = git@github.com:DBCDK/bibliOmega.git
 ;; No tags yet.
 ; projects[bibliOmega][download][tag] = 7.x-1.0
 
+;; New bibliotek.dk theme
+projects[bibdk_theme][type] = theme
+projects[bibdk_theme][download][type] = git
+projects[bibdk_theme][download][url] = git@github.com:DBCDK/bibdk_theme.git
+
 
 ; --- Bibliotek.dk versions of Ding2 modules ---
 
