@@ -10,10 +10,10 @@ libraries[profiler][download][revision] = d0137cb42bc7a4e9ce0a0431f875806285d097
 ; Patch from http://drupal.org/node/1328796
 libraries[profiler][patch][] = http://drupal.org/files/profiler-reverse.patch
 
-;libraries[ckeditor][destination] = libraries
-;libraries[ckeditor][directory_name] = ckeditor
-;libraries[ckeditor][download][type] = get
-;libraries[ckeditor][download][url] = http://download.cksource.com/CKEditor/CKEditor/CKEditor%203.6.2/ckeditor_3.6.2.zip
+libraries[ckeditor][destination] = libraries
+libraries[ckeditor][directory_name] = ckeditor
+libraries[ckeditor][download][type] = get
+libraries[ckeditor][download][url] = http://download.cksource.com/CKEditor/CKEditor/CKEditor%203.6.2/ckeditor_3.6.2.zip
 
 
 ; --- Theming ---
