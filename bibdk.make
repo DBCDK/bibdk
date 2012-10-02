@@ -17,26 +17,6 @@ libraries[ckeditor][download][url] = http://download.cksource.com/CKEditor/CKEdi
 
 
 ; --- Theming ---
-
-projects[omega][type] = theme
-;; Currently we'll track the latest released version of Omega. When we
-;; get closer to a release we will settle on the latest released
-;; version.
-; projects[omega][version] = 3.1
-
-projects[ding2omega][type] = theme
-projects[ding2omega][download][type] = git
-projects[ding2omega][download][url] = git@github.com:DBCDK/ding2omega.git
-;; No tags for ding2omega yet.
-; projects[ding2omega][download][tag] = 7.x-1.0
-
-;; bibliOmega is a subtheme for Bibliotek.dk on ding2omega
-projects[bibliOmega][type] = theme
-projects[bibliOmega][download][type] = git
-projects[bibliOmega][download][url] = git@github.com:DBCDK/bibliOmega.git
-;; No tags yet.
-; projects[bibliOmega][download][tag] = 7.x-1.0
-
 ;; New bibliotek.dk theme
 projects[bibdk_theme][type] = theme
 projects[bibdk_theme][download][type] = git
@@ -95,11 +75,6 @@ projects[ding_user][download][type] = git
 projects[ding_user][download][url] = git@github.com:DBCDK/ding_user.git
 projects[ding_user][download][tag] = 7.x-0.19
 
-projects[ding_wayf][type] = module
-projects[ding_wayf][download][type] = git
-projects[ding_wayf][download][url] = git@github.com:DBCDK/ding_wayf.git
-projects[ding_wayf][download][tag] = 7.x-0.3
-
 projects[ting][type] = module
 projects[ting][download][type] = git
 projects[ting][download][url] = git@github.com:DBCDK/ting.git
@@ -147,9 +122,9 @@ projects[bibdk_frontend][download][type] = git
 projects[bibdk_frontend][download][url] = git@github.com:DBCDK/bibdk_frontend.git
 ;projects[bibdk_frontend][download][tag] =
 
-projects[bibliomega_frontend][type] = module
-projects[bibliomega_frontend][download][type] = git
-projects[bibliomega_frontend][download][url] = git@github.com:DBCDK/bibliomega_frontend.git
+;projects[bibliomega_frontend][type] = module
+;projects[bibliomega_frontend][download][type] = git
+;projects[bibliomega_frontend][download][url] = git@github.com:DBCDK/bibliomega_frontend.git
 ;projects[bibliomega_frontend][download][tag] =
 
 projects[bibdk_help][type] = module
@@ -269,11 +244,6 @@ projects[profile2][version] = 1.2
 projects[rules][subdir] = contrib
 projects[rules][type] = module
 projects[rules][version] = 2.1
-
-projects[securepages][subdir] = contrib
-projects[securepages][type] = module
-projects[securepages][version] = 1.x-dev
-projects[securepages][patch][] = http://drupal.org/files/securepages_1226702_secure_user_login_block_and_keep_form_action_secured.patch
 
 projects[strongarm][subdir] = contrib
 projects[strongarm][type] = module

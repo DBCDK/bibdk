@@ -1,4 +1,5 @@
 <?php
+
 // $Id$
 
 /**
@@ -6,7 +7,6 @@
  *
  * Perform actions to set up the site for bibdk profile.
  */
-
 function bibdk_install() {
   // set default theme and theme blocks
   _bibdk_set_theme_blocks();
@@ -23,35 +23,37 @@ function bibdk_install() {
 
 function _bibdk_enable_modules() {
   $module_list =
-    array(
-      'bibdkcaptcha',
-      'bibdk_borchk',
-      'bibdk_frontend',
-      'bibdk_help',
-      'bibdk_helpdesk',
-      'bibdk_linkme',
-      'bibdk_openorder',
-      'bibdk_provider',
-      'bibdk_reservation',
-      'bibdk_searchhistory',
-      'bibliomega_frontend',
-      'ding_base',
-      'ding_campaign',
-      'ding_entity',
-      'ding_frontpage',
-      'ding_persistent_login',
-      'ding_popup',
-      'ding_provider',
-      'ding_user',
-      'ding_wayf',
-      'microcurl',
-      'ting',
-      'ting_client',
-      'ting_openformat',
-      'ting_covers',
-    );
-    //      'ting_search',
-  if(!module_enable($module_list)){
+      array(
+        'bibdkcaptcha',
+        'bibdk_borchk',
+        'bibdk_frontend',
+        'bibdk_help',
+        'bibdk_helpdesk',
+        'bibdk_linkme',
+        'bibdk_openorder',
+        'bibdk_provider',
+        'bibdk_reservation',
+        'bibdk_searchhistory',
+        'ding_base',
+        'ding_campaign',
+        'ding_entity',
+        'ding_frontpage',
+        'ding_persistent_login',
+        'ding_popup',
+        'ding_provider',
+        'ding_user',
+        'ding_wayf',
+        'microcurl',
+        'ting',
+        'ting_client',
+        'ting_openformat',
+        'ting_covers',
+        //features
+        'global_user_menu',
+        'topbar_menu_feature',
+  );
+  //      'ting_search',
+  if (!module_enable($module_list)) {
     die('A module present in array \'$module_list\' in file \'bibdk.install\' was not found. Install process aborted.');
   }
 }
@@ -60,7 +62,7 @@ function _bibdk_enable_modules() {
  * Set default permissions and roles
  */
 function _bibdk_set_permissions_and_roles() {
- // Allow visitor account creation, but with administrative approval.
+  // Allow visitor account creation, but with administrative approval.
   variable_set('user_register', USER_REGISTER_ADMINISTRATORS_ONLY);
 
   // Enable default permissions for system roles.
@@ -78,9 +80,8 @@ function _bibdk_set_permissions_and_roles() {
 
   // Assign user 1 the "administrator" role.
   db_insert('users_roles')
-    ->fields(array('uid' => 1, 'rid' => $admin_role->rid))
-    ->execute();
-
+      ->fields(array('uid' => 1, 'rid' => $admin_role->rid))
+      ->execute();
 }
 
 /** \brief
@@ -89,144 +90,83 @@ function _bibdk_set_permissions_and_roles() {
 function _bibdk_set_variables() {
   // Enable the admin theme.
   db_update('system')
-    ->fields(array('status' => 1))
-    ->condition('type', 'theme')
-    ->condition('name', 'seven')
-    ->execute();
+      ->fields(array('status' => 1))
+      ->condition('type', 'theme')
+      ->condition('name', 'bibdk_theme')
+      ->execute();
   variable_set('admin_theme', 'seven');
   variable_set('node_admin_theme', '1');
 
- // Set default source language for i18n module
-  //variable_set('i18n_string_source_language', 'en');
+  db_update('system')
+      ->fields(array('status' => 0))
+      ->condition('type', 'theme')
+      ->condition('name', 'bartik')
+      ->execute();
 
+  // Set default source language for i18n module
+  //variable_set('i18n_string_source_language', 'en');
   // Disable configurable timezones for users
   variable_set('configurable_timezones', 0);
 
   // Select the ding_frontpage as front page.
-  variable_set('site_frontpage', 'ding_frontpage');
+  #variable_set('site_frontpage', 'ding_frontpage');
 }
 
 /** \brief
  * define and set default theme blocks e.g header, content, subheader, menu ....
  *
  */
-function _bibdk_set_theme_blocks($default_theme=null) {
- // set and enable default theme
-  $default_theme = 'bibliomega';
+function _bibdk_set_theme_blocks($default_theme = null) {
+  // set and enable default theme
+  $default_theme = 'bibdk_theme';
   theme_enable(array($default_theme));
   variable_set('theme_default', $default_theme);
 
   $values = array(
     array(
-      'module' => 'system',
-      'delta' => 'main',
+      'module' => 'menu',
+      'delta' => 'menu-topbar-menu',
+      'theme' => 'bibdk_theme',
+      'status' => '1',
+      'weight' => '-15',
+      'region' => 'topbar',
+      'pages' => '',
+      'cache' => -1,
+      'title' => '<none>',
+    ),
+    array(
+      'module' => 'menu',
+      'delta' => 'menu-global-user-menu',
+      'theme' => 'bibdk_theme',
+      'status' => '1',
+      'weight' => '15',
+      'region' => 'topbar',
+      'pages' => '',
+      'cache' => -1,
+      'title' => '<none>',
+    ),
+    array(
+      'module' => 'bibdk_vejviser',
+      'delta' => 'bibdk_vejviser',
       'theme' => $default_theme,
       'status' => 1,
       'weight' => 0,
-      'region' => 'content',
-      'pages' => '',
-      'cache' => -1,
-      'title' => '',
-    ),
-    /*array(
-      'module' => 'locale',
-      'delta' => 'language',
-      'theme' => $default_theme,
-      'status' => 1,
-      'weight' => 1,
       'region' => 'header',
       'pages' => '',
       'cache' => -1,
       'title' => '<none>',
-      ),*/
+    ),
     array(
-      'module' => 'search',
-      'delta' => 'form',
+      'module' => 'bibdk_custom_search',
+      'delta' => 'bibdk-search-menu',
       'theme' => $default_theme,
       'status' => 1,
       'weight' => 0,
-      'region' => 'action_search',
-      'pages' => '',
-      'cache' => -1,
-      'title' => '',
-    ),
-    array(
-      'module' => 'user',
-      'delta' => 'login',
-      'theme' => $default_theme,
-      'status' => 1,
-      'weight' => 1,
-      'region' => 'action_user',
+      'region' => 'search_panel',
       'pages' => '',
       'cache' => -1,
       'title' => '<none>',
-      ),
-    array(
-      'module' => 'ding_wayf',
-      'delta' => 'login',
-      'theme' => $default_theme,
-      'status' => 1,
-      'weight' => 2,
-      'region' => 'action_user',
-      'pages' => '',
-      'cache' => -1,
-      'title' => '<none>',
-      ),
-    array(
-      'module' => 'system',
-      'delta' => 'user-menu',
-      'theme' => $default_theme,
-      'status' => 1,
-      'weight' => 3,
-      'region' => 'action_user',
-      'pages' => '',
-      'cache' => -1,
-      'title' => '<none>',
-      ),
-    /*   array(
-      'module' => 'menu',
-      'delta' => 'menu-footer-menu-1',
-      'theme' => $default_theme,
-      'status' => 1,
-      'weight' => 1,
-      'region' => 'footer',
-      'pages' => '',
-      'cache' => -1,
-      'title' => '',
     ),
-    array(
-      'module' => 'menu',
-      'delta' => 'menu-footer-menu-2',
-      'theme' => $default_theme,
-      'status' => 1,
-      'weight' => 2,
-      'region' => 'footer',
-      'pages' => '',
-      'cache' => -1,
-      'title' => '',
-    ),
-    array(
-      'module' => 'menu',
-      'delta' => 'menu-footer-menu-3',
-      'theme' => $default_theme,
-      'status' => 1,
-      'weight' => 3,
-      'region' => 'footer',
-      'pages' => '',
-      'cache' => -1,
-      'title' => '',
-    ),
-    array(
-      'module' => 'menu',
-      'delta' => 'menu-footer-menu-4',
-      'theme' => $default_theme,
-      'status' => 1,
-      'weight' => 4,
-      'region' => 'footer',
-      'pages' => '',
-      'cache' => -1,
-      'title' => '',
-      ),    */
   );
 
   $query = db_insert('block')->fields(array('module', 'delta', 'theme', 'status', 'weight', 'region', 'pages', 'cache', 'title'));
@@ -247,13 +187,11 @@ function bibdk_update_7001(&$sandbox) {
 
 function bibdk_update_7002(&$sandbox) {
   module_enable(array(
-     'ting_openformat',
-      'bibdk_linkme',
-      'bibdk_reservation',
+    'ting_openformat',
+    'bibdk_linkme',
+    'bibdk_reservation',
   ));
 }
-
-
 
 /************* THIS IS THE ORIGINAL HOOK (hook_install) COMMENTED OUT ******************/
 

@@ -30,4 +30,4 @@ files[] = bibdk.profile
 
 ; Profiler extensions.
 ;base = ding2
-theme = bibliomega 
+theme = bibdk_theme
