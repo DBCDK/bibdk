@@ -26,6 +26,8 @@ function _bibdk_enable_modules() {
       array(
         'bibdkcaptcha',
         'bibdk_borchk',
+        'bibdk_custom_search',
+        'bibdk_custom_search_preprocess',
         'bibdk_frontend',
         'bibdk_help',
         'bibdk_helpdesk',
@@ -34,6 +36,7 @@ function _bibdk_enable_modules() {
         'bibdk_provider',
         'bibdk_reservation',
         'bibdk_searchhistory',
+        'bibdk_vejviser',
         'ding_base',
         'ding_campaign',
         'ding_entity',
