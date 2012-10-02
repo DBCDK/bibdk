@@ -95,6 +95,11 @@ projects[ding_user][download][type] = git
 projects[ding_user][download][url] = git@github.com:DBCDK/ding_user.git
 projects[ding_user][download][tag] = 7.x-0.19
 
+projects[ding_wayf][type] = module
+projects[ding_wayf][download][type] = git
+projects[ding_wayf][download][url] = git@github.com:DBCDK/ding_wayf.git
+projects[ding_wayf][download][tag] = 7.x-0.3
+
 projects[ting][type] = module
 projects[ting][download][type] = git
 projects[ting][download][url] = git@github.com:DBCDK/ting.git
@@ -264,6 +269,11 @@ projects[profile2][version] = 1.2
 projects[rules][subdir] = contrib
 projects[rules][type] = module
 projects[rules][version] = 2.1
+
+projects[securepages][subdir] = contrib
+projects[securepages][type] = module
+projects[securepages][version] = 1.x-dev
+projects[securepages][patch][] = http://drupal.org/files/securepages_1226702_secure_user_login_block_and_keep_form_action_secured.patch
 
 projects[strongarm][subdir] = contrib
 projects[strongarm][type] = module
