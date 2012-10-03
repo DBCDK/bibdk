@@ -9,7 +9,7 @@
  */
 function bibdk_install() {
   // set default theme and theme blocks
-  _bibdk_set_theme_blocks();
+  //_bibdk_set_theme_blocks();
 
   // set variables
   _bibdk_set_variables();
@@ -28,6 +28,7 @@ function _bibdk_enable_modules() {
         'bibdk_borchk',
         'bibdk_custom_search',
         'bibdk_custom_search_preprocess',
+        'bibdk_favorite',
         'bibdk_frontend',
         'bibdk_help',
         'bibdk_helpdesk',
@@ -47,13 +48,9 @@ function _bibdk_enable_modules() {
         'ding_user',
         'ding_wayf',
         'microcurl',
-        'ting',
         'ting_client',
         'ting_openformat',
         'ting_covers',
-        //features
-        'global_user_menu',
-        'topbar_menu_feature',
   );
   //      'ting_search',
   if (!module_enable($module_list)) {
@@ -110,73 +107,6 @@ function _bibdk_set_variables() {
   //variable_set('i18n_string_source_language', 'en');
   // Disable configurable timezones for users
   variable_set('configurable_timezones', 0);
-
-  // Select the ding_frontpage as front page.
-  #variable_set('site_frontpage', 'ding_frontpage');
-}
-
-/** \brief
- * define and set default theme blocks e.g header, content, subheader, menu ....
- *
- */
-function _bibdk_set_theme_blocks($default_theme = null) {
-  // set and enable default theme
-  $default_theme = 'bibdk_theme';
-  theme_enable(array($default_theme));
-  variable_set('theme_default', $default_theme);
-
-  $values = array(
-    array(
-      'module' => 'menu',
-      'delta' => 'menu-topbar-menu',
-      'theme' => 'bibdk_theme',
-      'status' => '1',
-      'weight' => '-15',
-      'region' => 'topbar',
-      'pages' => '',
-      'cache' => -1,
-      'title' => '<none>',
-    ),
-    array(
-      'module' => 'menu',
-      'delta' => 'menu-global-user-menu',
-      'theme' => 'bibdk_theme',
-      'status' => '1',
-      'weight' => '15',
-      'region' => 'topbar',
-      'pages' => '',
-      'cache' => -1,
-      'title' => '<none>',
-    ),
-    array(
-      'module' => 'bibdk_vejviser',
-      'delta' => 'bibdk_vejviser',
-      'theme' => $default_theme,
-      'status' => 1,
-      'weight' => 0,
-      'region' => 'header',
-      'pages' => '',
-      'cache' => -1,
-      'title' => '<none>',
-    ),
-    array(
-      'module' => 'bibdk_custom_search',
-      'delta' => 'bibdk-search-menu',
-      'theme' => $default_theme,
-      'status' => 1,
-      'weight' => 0,
-      'region' => 'search_panel',
-      'pages' => '',
-      'cache' => -1,
-      'title' => '<none>',
-    ),
-  );
-
-  $query = db_insert('block')->fields(array('module', 'delta', 'theme', 'status', 'weight', 'region', 'pages', 'cache', 'title'));
-  foreach ($values as $record) {
-    $query->values($record);
-  }
-  $query->execute();
 }
 
 /**
@@ -195,238 +125,3 @@ function bibdk_update_7002(&$sandbox) {
     'bibdk_reservation',
   ));
 }
-
-/************* THIS IS THE ORIGINAL HOOK (hook_install) COMMENTED OUT ******************/
-
-
-/**
- * Implements hook_install().
- *
- * Perform actions to set up the site for this profile.
- */
-
-/*
-function bibdk_install() {
-  // Enabling Artois theme and making it default theme.
-  $default_theme = 'artois';
-  theme_enable(array($default_theme));
-  variable_set('theme_default', $default_theme);
-
-  $values = array(
-    array(
-      'module' => 'system',
-      'delta' => 'main',
-      'theme' => $default_theme,
-      'status' => 1,
-      'weight' => 0,
-      'region' => 'content',
-      'pages' => '',
-      'cache' => -1,
-      'title' => '',
-    ),
-    array(
-      'module' => 'ding_library',
-      'delta' => 'ding_menu',
-      'theme' => $default_theme,
-      'status' => 1,
-      'weight' => 1,
-      'region' => 'header',
-      'pages' => '',
-      'cache' => -1,
-      'title' => '<none>',
-    ),
-    array(
-      'module' => 'ding_library',
-      'delta' => 'library_menu',
-      'theme' => $default_theme,
-      'status' => 1,
-      'weight' => 1,
-      'region' => 'header',
-      'pages' => '',
-      'cache' => -1,
-      'title' => '<none>',
-    ),
-    array(
-      'module' => 'locale',
-      'delta' => 'language',
-      'theme' => $default_theme,
-      'status' => 1,
-      'weight' => 1,
-      'region' => 'header',
-      'pages' => '',
-      'cache' => -1,
-      'title' => '<none>',
-    ),
-    array(
-      'module' => 'search',
-      'delta' => 'form',
-      'theme' => $default_theme,
-      'status' => 1,
-      'weight' => 0,
-      'region' => 'subheader',
-      'pages' => '',
-      'cache' => -1,
-      'title' => '',
-    ),
-    array(
-      'module' => 'user',
-      'delta' => 'login',
-      'theme' => $default_theme,
-      'status' => 1,
-      'weight' => 1,
-      'region' => 'subheader',
-      'pages' => '',
-      'cache' => -1,
-      'title' => '<none>',
-    ),
-    array(
-      'module' => 'system',
-      'delta' => 'user-menu',
-      'theme' => $default_theme,
-      'status' => 1,
-      'weight' => 2,
-      'region' => 'subheader',
-      'pages' => '',
-      'cache' => -1,
-      'title' => '<none>',
-    ),
-    array(
-      'module' => 'ding_user_frontend',
-      'delta' => 'ding-username',
-      'theme' => $default_theme,
-      'status' => 1,
-      'weight' => 3,
-      'region' => 'subheader',
-      'pages' => '',
-      'cache' => -1,
-      'title' => '<none>',
-    ),
-    array(
-      'module' => 'ding_user_frontend',
-      'delta' => 'ding-user-loan-number',
-      'theme' => $default_theme,
-      'status' => 1,
-      'weight' => 4,
-      'region' => 'subheader',
-      'pages' => '',
-      'cache' => -1,
-      'title' => '<none>',
-    ),
-    array(
-      'module' => 'menu',
-      'delta' => 'menu-footer-menu-1',
-      'theme' => $default_theme,
-      'status' => 1,
-      'weight' => 1,
-      'region' => 'footer',
-      'pages' => '',
-      'cache' => -1,
-      'title' => '',
-    ),
-    array(
-      'module' => 'menu',
-      'delta' => 'menu-footer-menu-2',
-      'theme' => $default_theme,
-      'status' => 1,
-      'weight' => 2,
-      'region' => 'footer',
-      'pages' => '',
-      'cache' => -1,
-      'title' => '',
-    ),
-    array(
-      'module' => 'menu',
-      'delta' => 'menu-footer-menu-3',
-      'theme' => $default_theme,
-      'status' => 1,
-      'weight' => 3,
-      'region' => 'footer',
-      'pages' => '',
-      'cache' => -1,
-      'title' => '',
-    ),
-    array(
-      'module' => 'menu',
-      'delta' => 'menu-footer-menu-4',
-      'theme' => $default_theme,
-      'status' => 1,
-      'weight' => 4,
-      'region' => 'footer',
-      'pages' => '',
-      'cache' => -1,
-      'title' => '',
-    ),
-    array(
-      'module' => 'ding_library',
-      'delta' => 'library_address',
-      'theme' => $default_theme,
-      'status' => 1,
-      'weight' => 5,
-      'region' => 'footer',
-      'pages' => '',
-      'cache' => 8,
-      'title' => '',
-    ),
-  );
-  // PJO TESTING
-$query = db_insert('block')->fields(array('module', 'delta', 'theme', 'status', 'weight', 'region', 'pages', 'cache', 'title'));
-  foreach ($values as $record) {
-    $query->values($record);
-  }
-  $query->execute();
-
-
-  // Enable ting search as default.
-  variable_set('search_active_modules', array(
-      'node' => 'node',
-      'ting_search' => 'ting_search',
-      'user' => 0,
-      'mkdru' => 'mkdru',
-    ));
-  variable_set('search_default_module', 'ting_search');
-
-  // Enable the panel pages for ting objects and search.
-  variable_set('ting_ting_object_disabled', FALSE);
-  variable_set('ting_ting_collection_disabled', FALSE);
-  variable_set('page_manager_search_disabled_ting_search', FALSE);
-
-  // Allow visitor account creation, but with administrative approval.
-  variable_set('user_register', USER_REGISTER_ADMINISTRATORS_ONLY);
-
-  // Enable default permissions for system roles.
-  user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array('access content', 'search content'));
-  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array('access content', 'search content'));
-
-  // Create a default role for site administrators, with all available permissions assigned.
-  $admin_role = new stdClass();
-  $admin_role->name = 'administrator';
-  $admin_role->weight = 2;
-  user_role_save($admin_role);
-  user_role_grant_permissions($admin_role->rid, array_keys(module_invoke_all('permission')));
-  // Set this as the administrator role.
-  variable_set('user_admin_role', $admin_role->rid);
-
-  // Assign user 1 the "administrator" role.
-  db_insert('users_roles')
-    ->fields(array('uid' => 1, 'rid' => $admin_role->rid))
-    ->execute();
-
-  // Enable the admin theme.
-  db_update('system')
-    ->fields(array('status' => 1))
-    ->condition('type', 'theme')
-    ->condition('name', 'seven')
-    ->execute();
-  variable_set('admin_theme', 'seven');
-  variable_set('node_admin_theme', '1');
-
-  // Set default source language for i18n module
-  variable_set('i18n_string_source_language', 'en');
-
-  // Disable configurable timezones for users
-  variable_set('configurable_timezones', 0);
-
-  // Select the ding_frontpage as front page.
-  variable_set('site_frontpage', 'ding_frontpage');
-}
-*/

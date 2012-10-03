@@ -90,6 +90,16 @@ projects[ting_search][download][type] = git
 projects[ting_search][download][url] = git@github.com:DBCDK/ting_search.git
 projects[ting_search][download][tag] = 7.x-0.26
 
+projects[ting_covers][type] = module
+projects[ting_covers][download][type] = git
+projects[ting_covers][download][url] = git@github.com:DBCDK/ting_covers.git
+;projects[ting_covers][download][tag] = 7.x-0.22
+
+projects[ting_openformat][type] = module
+projects[ting_openformat][download][type] = git
+projects[ting_openformat][download][url] = git@github.com:DBCDK/ting_openformat.git
+;projects[ting_openformat][download][tag] =
+
 ; --- Bibliotek.dk ---
 
 projects[bibdk_borchk][type] = module
@@ -171,16 +181,6 @@ projects[microcurl][type] = module
 projects[microcurl][download][type] = git
 projects[microcurl][download][url] = git@github.com:DBCDK/microcurl.git
 ;projects[microcurl][download][tag] =
-
-projects[ting_covers][type] = module
-projects[ting_covers][download][type] = git
-projects[ting_covers][download][url] = git@github.com:DBCDK/ting_covers.git
-;projects[ting_covers][download][tag] = 7.x-0.22
-
-projects[ting_openformat][type] = module
-projects[ting_openformat][download][type] = git
-projects[ting_openformat][download][url] = git@github.com:DBCDK/ting_openformat.git
-;projects[ting_openformat][download][tag] =
 
 ; --- Contrib modules ---
 
