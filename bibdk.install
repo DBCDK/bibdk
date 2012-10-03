@@ -8,9 +8,8 @@
  * Perform actions to set up the site for bibdk profile.
  */
 function bibdk_install() {
-  // set default theme and theme blocks
-  //_bibdk_set_theme_blocks();
 
+  _bibdk_set_default_theme();
   // set variables
   _bibdk_set_variables();
 
@@ -28,8 +27,7 @@ function _bibdk_enable_modules() {
         'bibdk_borchk',
         'bibdk_custom_search',
         'bibdk_custom_search_preprocess',
-        'bibdk_favorite',
-        'bibdk_frontend',
+        'bibdk_favourite',
         'bibdk_help',
         'bibdk_helpdesk',
         'bibdk_linkme',
@@ -41,7 +39,6 @@ function _bibdk_enable_modules() {
         'ding_base',
         'ding_campaign',
         'ding_entity',
-        'ding_frontpage',
         'ding_persistent_login',
         'ding_popup',
         'ding_provider',
@@ -56,6 +53,27 @@ function _bibdk_enable_modules() {
   if (!module_enable($module_list)) {
     die('A module present in array \'$module_list\' in file \'bibdk.install\' was not found. Install process aborted.');
   }
+}
+
+function _bibdk_set_default_theme() {
+  // Enable the admin theme.
+  db_update('system')
+      ->fields(array('status' => 0))
+      ->condition('type', 'theme')
+      ->execute();
+  db_update('system')
+      ->fields(array('status' => 1))
+      ->condition('type', 'theme')
+      ->condition('name', 'bibdk_theme')
+      ->execute();
+  
+  variable_set('admin_theme', 'seven');
+  variable_set('node_admin_theme', '1');
+  variable_set('theme_default', 'bibdk_theme');
+
+  theme_enable(array('bibdk_theme'));
+
+  module_enable(array('bibdk_frontend'));
 }
 
 /** \brief
@@ -88,23 +106,6 @@ function _bibdk_set_permissions_and_roles() {
  * Set various variables; admin theme, timezone ..
  */
 function _bibdk_set_variables() {
-  // Enable the admin theme.
-  db_update('system')
-      ->fields(array('status' => 1))
-      ->condition('type', 'theme')
-      ->condition('name', 'bibdk_theme')
-      ->execute();
-  variable_set('admin_theme', 'seven');
-  variable_set('node_admin_theme', '1');
-
-  db_update('system')
-      ->fields(array('status' => 0))
-      ->condition('type', 'theme')
-      ->condition('name', 'bartik')
-      ->execute();
-
-  // Set default source language for i18n module
-  //variable_set('i18n_string_source_language', 'en');
   // Disable configurable timezones for users
   variable_set('configurable_timezones', 0);
 }
