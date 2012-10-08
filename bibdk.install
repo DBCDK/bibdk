@@ -73,8 +73,6 @@ function _bibdk_set_default_theme() {
   variable_set('theme_default', 'bibdk_theme');
 
   theme_enable(array('bibdk_theme'));
-
-  module_enable(array('bibdk_frontend'));
 }
 
 /** \brief
