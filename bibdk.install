@@ -38,7 +38,6 @@ function _bibdk_enable_modules() {
         'bibdk_searchhistory',
         'bibdk_vejviser',
         'ding_base',
-        'ding_campaign',
         'ding_entity',
         'ding_persistent_login',
         'ding_popup',
