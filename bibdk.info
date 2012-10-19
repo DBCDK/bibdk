@@ -1,0 +1,19 @@
+name = Bibliotek.dk
+description = Install a Bibliotek.dk based library site.
+version = 7.x-0.1
+core = 7.x
+distribution_name = Bibliotek.dk
+
+dependencies[] = block
+dependencies[] = contextual
+dependencies[] = menu
+dependencies[] = dblog
+dependencies[] = shortcut
+dependencies[] = toolbar
+dependencies[] = overlay
+dependencies[] = color
+dependencies[] = translation
+
+files[] = bibdk.profile
+
+theme = bibdk_theme

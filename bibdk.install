@@ -1,0 +1,126 @@
+<?php
+
+// $Id$
+
+/**
+ * Implements hook_install().
+ *
+ * Perform actions to set up the site for bibdk profile.
+ */
+function bibdk_install() {
+
+  _bibdk_set_default_theme();
+  // set variables
+  _bibdk_set_variables();
+
+  // enable selected modules
+  _bibdk_enable_modules();
+
+  // set default permissions and roles
+  _bibdk_set_permissions_and_roles();
+}
+
+function _bibdk_enable_modules() {
+  $module_list =
+      array(
+        'bibdkcaptcha',
+        'bibdk_borchk',
+        'bibdk_custom_search',
+        'bibdk_custom_search_preprocess',
+        'bibdk_favourite',
+        'bibdk_frontend',
+        'bibdk_help',
+        'bibdk_helpdesk',
+        'bibdk_linkme',
+        'bibdk_openorder',
+        'bibdk_provider',
+        'bibdk_reservation',
+        'bibdk_searchhistory',
+        'bibdk_vejviser',
+        'ding_base',
+        'ding_entity',
+        'ding_persistent_login',
+        'ding_popup',
+        'ding_provider',
+        'ding_user',
+        'ding_wayf',
+        'microcurl',
+        'ting_client',
+        'ting_openformat',
+        'ting_covers',
+  );
+  //      'ting_search',
+  if (!module_enable($module_list)) {
+    die('A module present in array \'$module_list\' in file \'bibdk.install\' was not found. Install process aborted.');
+  }
+}
+
+function _bibdk_set_default_theme() {
+  // Enable the admin theme.
+  db_update('system')
+      ->fields(array('status' => 0))
+      ->condition('type', 'theme')
+      ->execute();
+  db_update('system')
+      ->fields(array('status' => 1))
+      ->condition('type', 'theme')
+      ->condition('name', 'bibdk_theme')
+      ->execute();
+  
+  variable_set('admin_theme', 'seven');
+  variable_set('node_admin_theme', '1');
+  variable_set('theme_default', 'bibdk_theme');
+
+  theme_enable(array('bibdk_theme'));
+}
+
+/** \brief
+ * Set default permissions and roles
+ */
+function _bibdk_set_permissions_and_roles() {
+  // Allow visitor account creation, but with administrative approval.
+  variable_set('user_register', USER_REGISTER_ADMINISTRATORS_ONLY);
+
+  // Enable default permissions for system roles.
+  user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array('access content', 'search content'));
+  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array('access content', 'search content'));
+
+  // Create a default role for site administrators, with all available permissions assigned.
+  $admin_role = new stdClass();
+  $admin_role->name = 'administrator';
+  $admin_role->weight = 2;
+  user_role_save($admin_role);
+  user_role_grant_permissions($admin_role->rid, array_keys(module_invoke_all('permission')));
+  // Set this as the administrator role.
+  variable_set('user_admin_role', $admin_role->rid);
+
+  // Assign user 1 the "administrator" role.
+  db_insert('users_roles')
+      ->fields(array('uid' => 1, 'rid' => $admin_role->rid))
+      ->execute();
+}
+
+/** \brief
+ * Set various variables; admin theme, timezone ..
+ */
+function _bibdk_set_variables() {
+  // Disable configurable timezones for users
+  variable_set('configurable_timezones', 0);
+}
+
+/**
+ * Implements hook_update_N().
+ * allow anonymous and authenticated users to search and view published content
+ */
+function bibdk_update_7001(&$sandbox) {
+  user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array('access content', 'search content'));
+  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array('access content', 'search content'));
+}
+
+function bibdk_update_7002(&$sandbox) {
+  module_enable(array(
+    'ting_openformat',
+    'bibdk_linkme',
+    'bibdk_reservation',
+  ));
+}
