@@ -85,11 +85,6 @@ projects[ting-client][download][type] = git
 projects[ting-client][download][url] = git@github.com:DBCDK/ting-client.git
 ;projects[ting-client][download][tag] = 7.x-2.1-dev
 
-projects[ting_search][type] = module
-projects[ting_search][download][type] = git
-projects[ting_search][download][url] = git@github.com:DBCDK/ting_search.git
-projects[ting_search][download][tag] = 7.x-0.26
-
 projects[ting_covers][type] = module
 projects[ting_covers][download][type] = git
 projects[ting_covers][download][url] = git@github.com:DBCDK/ting_covers.git
