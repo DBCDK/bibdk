@@ -30,10 +30,10 @@ projects[ding_base][download][type] = git
 projects[ding_base][download][url] = git@github.com:DBCDK/ding_base.git
 projects[ding_base][download][tag] = 7.x-0.4
 
-projects[ding_campaign][type] = module
-projects[ding_campaign][download][type] = git
-projects[ding_campaign][download][url] = git@github.com:DBCDK/ding_campaign.git
-projects[ding_campaign][download][tag] = 7.x-0.4+dbc.1
+;projects[ding_campaign][type] = module
+;projects[ding_campaign][download][type] = git
+;projects[ding_campaign][download][url] = git@github.com:DBCDK/ding_campaign.git
+;projects[ding_campaign][download][tag] = 7.x-0.4+dbc.1
 
 projects[ding_entity][type] = module
 projects[ding_entity][download][type] = git
