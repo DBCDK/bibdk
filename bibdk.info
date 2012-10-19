@@ -1,6 +1,6 @@
 name = Bibliotek.dk
 description = Install a Bibliotek.dk based library site.
-version = 7.x-0.0
+version = 7.x-0.1
 core = 7.x
 distribution_name = Bibliotek.dk
 
@@ -14,20 +14,6 @@ dependencies[] = overlay
 dependencies[] = color
 dependencies[] = translation
 
-;dependencies[] = ding_ting_frontend
-;dependencies[] = ding_user_frontend
-;dependencies[] = artesis_user_frontend
-;dependencies[] = bibdk_provider
-;dependencies[] = ding_omega_frontend
-
-; CMS (Curate)
-;dependencies[] = ding_event
-;dependencies[] = ding_frontpage
-;dependencies[] = ding_library_menu
-;dependencies[] = ding_news
-
 files[] = bibdk.profile
 
-; Profiler extensions.
-;base = ding2
 theme = bibdk_theme
