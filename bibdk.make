@@ -86,6 +86,11 @@ projects[ting_openformat][download][type] = git
 projects[ting_openformat][download][url] = git@github.com:DBCDK/ting_openformat.git
 projects[ting_openformat][download][tag] = 7.x-0.1
 
+projects[ting_agency][type] = module
+projects[ting_agency][download][type] = git
+projects[ting_agency][download][url] = git@github.com:DBCDK/ting_agency.git
+;projects[ting_agency][download][tag] =
+
 ; --- Bibliotek.dk ---
 
 projects[bibdk_borchk][type] = module
