@@ -44,6 +44,7 @@ function _bibdk_enable_modules() {
         'ding_provider',
         'ding_user',
         'ding_wayf',
+        'ding_facetbrowser',
         'microcurl',
         'ting_agency',
         'ting_client',
@@ -67,7 +68,7 @@ function _bibdk_set_default_theme() {
       ->condition('type', 'theme')
       ->condition('name', 'bibdk_theme')
       ->execute();
-  
+
   variable_set('admin_theme', 'seven');
   variable_set('node_admin_theme', '1');
   variable_set('theme_default', 'bibdk_theme');
