@@ -199,6 +199,10 @@ projects[libraries][subdir] = contrib
 projects[libraries][type] = module
 projects[libraries][version] = 1.0
 
+projects[memcache][subdir] = contrib
+projects[memcache][type] = module
+projects[memcache][version] = 1.0
+
 projects[menu_attributes][subdir] = contrib
 projects[menu_attributes][type] = module
 projects[menu_attributes][version] = 1.0-rc2
