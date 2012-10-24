@@ -108,6 +108,52 @@ function _bibdk_set_permissions_and_roles() {
 function _bibdk_set_variables() {
   // Disable configurable timezones for users
   variable_set('configurable_timezones', 0);
+  $ding_facetbrowser_facets = array(
+      0 => Array
+          (
+              'name' => 'facet.language',
+              'title' => 'Sprog',
+              'weight' => 10,
+          ),
+      1 => Array
+          (
+              'name' => 'facet.acSource',
+              'title' => 'Kilde',
+              'weight' => 12,
+          ),
+      2 => Array
+          (
+              'name' => 'facet.type',
+              'title' => 'Materialeype',
+              'weight' => 14,
+          ),
+      3 => Array
+          (
+              'name' => 'facet.subject',
+              'title' => 'Emne',
+              'weight' => 16,
+          ),
+      4 => Array
+          (
+              'name' => 'facet.date',
+              'title' => 'Ã
+r',
+              'weight' => 18,
+          ),
+      5 => Array
+          (
+              'name' => 'facet.creator',
+              'title' => 'Forfatter',
+              'weight' => 20,
+          ),
+      6 => Array
+          (
+              'name' => 'facet.category',
+              'title' => 'Kategori',
+              'weight' => 22,
+      ),
+  );
+  variable_set('ding_facetbrowser_facets', serialize($ding_facetbrowser_facets));
 }
 
 /**
