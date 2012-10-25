@@ -235,6 +235,11 @@ projects[rules][subdir] = contrib
 projects[rules][type] = module
 projects[rules][version] = 2.1
 
+projects[securepages][subdir] = contrib
+projects[securepages][type] = module
+projects[securepages][version] = 1.x-dev
+projects[securepages][patch][] = http://drupal.org/files/securepages_1226702_secure_user_login_block_and_keep_form_action_secured.patch
+
 projects[strongarm][subdir] = contrib
 projects[strongarm][type] = module
 projects[strongarm][version] = 2.0
