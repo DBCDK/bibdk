@@ -53,7 +53,7 @@ function _bibdk_enable_modules() {
   );
   //      'ting_search',
   if (!module_enable($module_list)) {
-    die('A module ('.echo current($module_list).')  present in array \'$module_list\' in file \'bibdk.install\' was not found. Install process aborted.');
+    die('A module ('. current($module_list) . ' ) present in array \'$module_list\' in file \'bibdk.install\' was not found. Install process aborted.');
   }
 }
 
@@ -136,7 +136,7 @@ function _bibdk_set_variables() {
       4 => Array
           (
               'name' => 'facet.date',
-              'title' => 'Ã
+              'title' => 'ï¿½
 r',
               'weight' => 18,
           ),
