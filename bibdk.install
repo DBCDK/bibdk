@@ -153,7 +153,7 @@ r',
               'weight' => 22,
       ),
   );
-  variable_set('ding_facetbrowser_facets', serialize($ding_facetbrowser_facets));
+  variable_set('ding_facetbrowser_facets', $ding_facetbrowser_facets);
 }
 
 /**
