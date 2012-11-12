@@ -50,6 +50,7 @@ function _bibdk_enable_modules() {
         'ting_client',
         'ting_openformat',
         'ting_covers',
+        'i18n_variable',
   );
   //      'ting_search',
   if (!module_enable($module_list)) {
