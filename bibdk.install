@@ -153,9 +153,7 @@ function _bibdk_set_variables() {
               'weight' => 22,
       ),
   );
-  variable_set('ding_facetbrowser_facets', $ding_facetbrowser_facets);
-  // enable the panel page showing the facets
-  variable_set('page_manager_search_disabled_ting_openformat',0);
+  variable_set('ding_facetbrowser_facets', $ding_facetbrowser_facets); 
 }
 
 /**
