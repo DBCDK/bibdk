@@ -81,8 +81,7 @@ function _bibdk_set_default_theme() {
  * Set default permissions and roles
  */
 function _bibdk_set_permissions_and_roles() {
-  // Allow visitor account creation, but with administrative approval.
-  variable_set('user_register', USER_REGISTER_ADMINISTRATORS_ONLY);
+  variable_set('user_register', USER_REGISTER_VISITORS);
 
   // Enable default permissions for system roles.
   user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array('access content', 'search content'));
