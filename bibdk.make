@@ -74,12 +74,12 @@ projects[ding_user][download][tag] = 7.x-0.19+dbc.2
 projects[ting_agency][type] = module
 projects[ting_agency][download][type] = git
 projects[ting_agency][download][url] = git@github.com:DBCDK/ting_agency.git
-projects[ting_agency][download][tag] = 7.x-0.1
+projects[ting_agency][download][tag] = 7.x-0.1.1
 
 projects[ting-client][type] = module
 projects[ting-client][download][type] = git
 projects[ting-client][download][url] = git@github.com:DBCDK/ting-client.git
-projects[ting-client][download][tag] = 7.x-2.2
+projects[ting-client][download][tag] = 7.x-2.2.1
 
 projects[ting_covers][type] = module
 projects[ting_covers][download][type] = git
@@ -141,7 +141,7 @@ projects[bibdk_linkme][download][tag] = 7.x-0.1
 projects[bibdk_openorder][type] = module
 projects[bibdk_openorder][download][type] = git
 projects[bibdk_openorder][download][url] = git@github.com:DBCDK/bibdk_openorder.git
-projects[bibdk_openorder][download][tag] = 7.x-0.2
+projects[bibdk_openorder][download][tag] = 7.x-0.2.1
 
 projects[bibdk_provider][type] = module
 projects[bibdk_provider][download][type] = git
