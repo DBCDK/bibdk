@@ -25,8 +25,8 @@ function _bibdk_enable_modules() {
     array(
       'bibdkcaptcha',
       'bibdk_borchk',
-      #'bibdk_custom_search',
-      #'bibdk_custom_search_preprocess',
+      'bibdk_custom_search',
+      'bibdk_custom_search_preprocess',
       'bibdk_favourite',
       'bibdk_frontend',
       'bibdk_help',
@@ -44,6 +44,7 @@ function _bibdk_enable_modules() {
       'ding_provider',
       'ding_user',
       'ding_wayf',
+      'ding_webtrends',
       'ding_facetbrowser',
       'microcurl',
       'ting_agency',
