@@ -26,8 +26,6 @@ projects[bibdk_theme][download][tag] = 7.x-0.2
 
 ; --- Bibliotek.dk versions of Ding2 modules ---
 
-git@github.com:DBCDK/ding_webtrends.git
-
 projects[ding_webtrends][type] = module
 projects[ding_webtrends][download][type] = git
 projects[ding_webtrends][download][url] = git@github.com:DBCDK/ding_webtrends.git
