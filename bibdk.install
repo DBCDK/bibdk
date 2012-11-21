@@ -22,54 +22,54 @@ function bibdk_install() {
 
 function _bibdk_enable_modules() {
   $module_list =
-      array(
-        'bibdkcaptcha',
-        'bibdk_borchk',
-        'bibdk_custom_search',
-        'bibdk_custom_search_preprocess',
-        'bibdk_favourite',
-        'bibdk_frontend',
-        'bibdk_help',
-        'bibdk_helpdesk',
-        'bibdk_linkme',
-        'bibdk_openorder',
-        'bibdk_provider',
-        'bibdk_reservation',
-        'bibdk_searchhistory',
-        'bibdk_vejviser',
-        'ding_base',
-        'ding_entity',
-        'ding_persistent_login',
-        'ding_popup',
-        'ding_provider',
-        'ding_user',
-        'ding_wayf',
-        'ding_facetbrowser',
-        'microcurl',
-        'ting_agency',
-        'ting_client',
-        'ting_openformat',
-        'ting_covers',
-        'i18n_variable',
-        'i18n_field',
-  );
+    array(
+      'bibdkcaptcha',
+      'bibdk_borchk',
+      #'bibdk_custom_search',
+      #'bibdk_custom_search_preprocess',
+      'bibdk_favourite',
+      'bibdk_frontend',
+      'bibdk_help',
+      'bibdk_helpdesk',
+      'bibdk_linkme',
+      'bibdk_openorder',
+      'bibdk_provider',
+      'bibdk_reservation',
+      'bibdk_searchhistory',
+      'bibdk_vejviser',
+      'ding_base',
+      'ding_entity',
+      'ding_persistent_login',
+      'ding_popup',
+      'ding_provider',
+      'ding_user',
+      'ding_wayf',
+      'ding_facetbrowser',
+      'microcurl',
+      'ting_agency',
+      'ting_client',
+      'ting_openformat',
+      'ting_covers',
+      'i18n_variable',
+      'i18n_field',
+    );
   //      'ting_search',
   if (!module_enable($module_list)) {
-    die('A module ('. current($module_list) . ' ) present in array \'$module_list\' in file \'bibdk.install\' was not found. Install process aborted.');
+    die('A module (' . current($module_list) . ' ) present in array \'$module_list\' in file \'bibdk.install\' was not found. Install process aborted.');
   }
 }
 
 function _bibdk_set_default_theme() {
   // Enable the admin theme.
   db_update('system')
-      ->fields(array('status' => 0))
-      ->condition('type', 'theme')
-      ->execute();
+    ->fields(array('status' => 0))
+    ->condition('type', 'theme')
+    ->execute();
   db_update('system')
-      ->fields(array('status' => 1))
-      ->condition('type', 'theme')
-      ->condition('name', 'bibdk_theme')
-      ->execute();
+    ->fields(array('status' => 1))
+    ->condition('type', 'theme')
+    ->condition('name', 'bibdk_theme')
+    ->execute();
 
   variable_set('admin_theme', 'seven');
   variable_set('node_admin_theme', '1');
@@ -99,8 +99,8 @@ function _bibdk_set_permissions_and_roles() {
 
   // Assign user 1 the "administrator" role.
   db_insert('users_roles')
-      ->fields(array('uid' => 1, 'rid' => $admin_role->rid))
-      ->execute();
+    ->fields(array('uid' => 1, 'rid' => $admin_role->rid))
+    ->execute();
 }
 
 /** \brief
@@ -110,50 +110,50 @@ function _bibdk_set_variables() {
   // Disable configurable timezones for users
   variable_set('configurable_timezones', 0);
   $ding_facetbrowser_facets = array(
-      0 => Array
-          (
-              'name' => 'facet.language',
-              'title' => 'Sprog',
-              'weight' => 10,
-          ),
-      1 => Array
-          (
-              'name' => 'facet.acSource',
-              'title' => 'Kilde',
-              'weight' => 12,
-          ),
-      2 => Array
-          (
-              'name' => 'facet.type',
-              'title' => 'Materialeype',
-              'weight' => 14,
-          ),
-      3 => Array
-          (
-              'name' => 'facet.subject',
-              'title' => 'Emne',
-              'weight' => 16,
-          ),
-      4 => Array
-          (
-              'name' => 'facet.date',
-              'title' => 'År',
-              'weight' => 18,
-          ),
-      5 => Array
-          (
-              'name' => 'facet.creator',
-              'title' => 'Forfatter',
-              'weight' => 20,
-          ),
-      6 => Array
-          (
-              'name' => 'facet.category',
-              'title' => 'Kategori',
-              'weight' => 22,
-      ),
+    0 => Array
+    (
+      'name' => 'facet.language',
+      'title' => 'Sprog',
+      'weight' => 10,
+    ),
+    1 => Array
+    (
+      'name' => 'facet.acSource',
+      'title' => 'Kilde',
+      'weight' => 12,
+    ),
+    2 => Array
+    (
+      'name' => 'facet.type',
+      'title' => 'Materialeype',
+      'weight' => 14,
+    ),
+    3 => Array
+    (
+      'name' => 'facet.subject',
+      'title' => 'Emne',
+      'weight' => 16,
+    ),
+    4 => Array
+    (
+      'name' => 'facet.date',
+      'title' => 'År',
+      'weight' => 18,
+    ),
+    5 => Array
+    (
+      'name' => 'facet.creator',
+      'title' => 'Forfatter',
+      'weight' => 20,
+    ),
+    6 => Array
+    (
+      'name' => 'facet.category',
+      'title' => 'Kategori',
+      'weight' => 22,
+    ),
   );
-  variable_set('ding_facetbrowser_facets', $ding_facetbrowser_facets); 
+  variable_set('ding_facetbrowser_facets', $ding_facetbrowser_facets);
 }
 
 /**
