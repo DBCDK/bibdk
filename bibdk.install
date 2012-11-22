@@ -52,7 +52,6 @@ function _bibdk_enable_modules() {
       'ting_openformat',
       'ting_covers',
       'i18n_variable',
-      'i18n_field',
     );
   //      'ting_search',
   if (!module_enable($module_list)) {
