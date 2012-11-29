@@ -181,7 +181,7 @@ projects[captcha][version] = 1.0-beta2
 
 projects[ctools][subdir] = contrib
 projects[ctools][type] = module
-projects[ctools][version] = 1.0
+projects[ctools][version] = 1.2
 projects[ctools][patch][] = https://raw.github.com/gist/2044786/6b4ef8173f080715a8752067f7b1511a99b8b816/ctools-page_manager_load_task_handlers_alter.patch
 
 projects[entity][subdir] = contrib
@@ -190,7 +190,7 @@ projects[entity][version] = 1.0-rc3
 
 projects[features][subdir] = contrib
 projects[features][type] = module
-projects[features][version] = 1.0-rc3
+projects[features][version] = 1.0
 
 projects[features_extra][subdir] = contrib
 projects[features_extra][type] = module
@@ -198,7 +198,7 @@ projects[features_extra][version] = 1.x-dev
 
 projects[i18n][subdir] = contrib
 projects[i18n][type] = module
-projects[i18n][version] = 1.5
+projects[i18n][version] = 1.7
 
 projects[libraries][subdir] = contrib
 projects[libraries][type] = module
@@ -222,7 +222,7 @@ projects[node_export][version] = 3.0-rc4
 
 projects[panels][subdir] = contrib
 projects[panels][type] = module
-projects[panels][version] = 3.2
+projects[panels][version] = 3.3
 
 projects[panels_breadcrumbs][subdir] = contrib
 projects[panels_breadcrumbs][type] = module
@@ -230,7 +230,7 @@ projects[panels_breadcrumbs][version] = 1.6
 
 projects[persistent_login][subdir] = contrib
 projects[persistent_login][type] = module
-projects[persistent_login][version] = 1.x-dev
+projects[persistent_login][version] = 1.0-beta1
 
 projects[profile2][subdir] = contrib
 projects[profile2][type] = module
@@ -238,7 +238,7 @@ projects[profile2][version] = 1.2
 
 projects[rules][subdir] = contrib
 projects[rules][type] = module
-projects[rules][version] = 2.1
+projects[rules][version] = 2.2
 
 projects[securepages][subdir] = contrib
 projects[securepages][type] = module
@@ -259,7 +259,7 @@ projects[variable][version] = 2.1
 
 projects[views][subdir] = contrib
 projects[views][type] = module
-projects[views][version] = 3.0
+projects[views][version] = 3.5
 
 projects[virtual_field][subdir] = contrib
 projects[virtual_field][type] = module
