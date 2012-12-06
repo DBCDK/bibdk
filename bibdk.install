@@ -154,6 +154,7 @@ function _bibdk_set_variables() {
     ),
   );
   variable_set('ding_facetbrowser_facets', $ding_facetbrowser_facets);
+  variable_set('ding_user_creds_lifetime', 7200);
 }
 
 /**
@@ -172,6 +173,18 @@ function bibdk_update_7002(&$sandbox) {
     'bibdk_reservation',
   ));
 }
+
 function bibdk_update_7003(&$sandbox) {
   user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array('access content', 'search content', 'cancel account'));
+}
+
+/**
+ * Increase timeout before logging out ding users to 2 hours if value not set.
+ */
+function bibdk_update_7004(&$sandbox) {
+  $lifetime = variable_get('ding_user_creds_lifetime');
+
+  if (empty($lifetime)) {
+    variable_set('ding_user_creds_lifetime', 7200);
+  }
 }
