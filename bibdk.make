@@ -194,7 +194,7 @@ projects[features][version] = 1.0
 
 projects[features_extra][subdir] = contrib
 projects[features_extra][type] = module
-projects[features_extra][version] = 1.x-dev
+projects[features_extra][version] = 1.0-alpha1
 
 projects[i18n][subdir] = contrib
 projects[i18n][type] = module
