@@ -220,6 +220,7 @@ projects[menu_attributes][version] = 1.0-rc2
 projects[nanosoap][subdir] = contrib
 projects[nanosoap][type] = module
 projects[nanosoap][version] = 1.0
+projects[nanosoap][patch][] = https://raw.github.com/DBCDK/patches/master/nanosoap_simpletest_enabled.patch
 
 projects[node_export][subdir] = contrib
 projects[node_export][type] = module
