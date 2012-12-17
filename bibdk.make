@@ -143,6 +143,11 @@ projects[bibdk_linkme][download][type] = git
 projects[bibdk_linkme][download][url] = git@github.com:DBCDK/bibdk_linkme.git
 projects[bibdk_linkme][download][tag] = 7.x-0.2
 
+projects[bibdk_migration][type] = module
+projects[bibdk_migration][download][type] = git
+projects[bibdk_migration][download][url] = git@github.com:DBCDK/bibdk_migration.git
+;projects[bibdk_migration][download][tag] =
+
 projects[bibdk_openorder][type] = module
 projects[bibdk_openorder][download][type] = git
 projects[bibdk_openorder][download][url] = git@github.com:DBCDK/bibdk_openorder.git

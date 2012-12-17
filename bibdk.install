@@ -52,6 +52,8 @@ function _bibdk_enable_modules() {
       'ting_openformat',
       'ting_covers',
       'i18n_variable',
+      'node_export',
+      'bibdk_migration',
     );
   //      'ting_search',
   if (!module_enable($module_list)) {
@@ -187,4 +189,14 @@ function bibdk_update_7004(&$sandbox) {
   if (empty($lifetime)) {
     variable_set('ding_user_creds_lifetime', 7200);
   }
+}
+
+/**
+ * Enable node_export and bibdk_migration
+ */
+function bibdk_update_7005(&$sandbox) {
+  module_enable(array(
+    'node_export',
+    'bibdk_migration',
+  ));
 }
