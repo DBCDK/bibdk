@@ -205,6 +205,15 @@ projects[i18n][subdir] = contrib
 projects[i18n][type] = module
 projects[i18n][version] = 1.7
 
+projects[l10n_client][subdir] = contrib
+projects[l10n_client][type] = module
+projects[l10n_client][version] = 1.1
+projects[l10n_client][patch][] = https://raw.github.com/DBCDK/patches/master/dbc_l10n_client/dbc_l10n_client_patch.patch
+
+projects[l10n_update][subdir] = contrib
+projects[l10n_update][type] = module
+projects[l10n_update][version] = 1.0-beta3
+
 projects[libraries][subdir] = contrib
 projects[libraries][type] = module
 projects[libraries][version] = 1.0
