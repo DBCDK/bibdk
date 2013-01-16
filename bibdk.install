@@ -200,3 +200,12 @@ function bibdk_update_7005(&$sandbox) {
     'bibdk_migration',
   ));
 }
+
+/**
+* Enable Date API
+*/
+function bibdk_update_7006(&$sandbox) {
+  module_enable(array(
+    'date_api',
+  ));
+}
