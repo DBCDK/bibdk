@@ -89,7 +89,7 @@ projects[ting-client][download][tag] = 7.x-2.3
 projects[ting_covers][type] = module
 projects[ting_covers][download][type] = git
 projects[ting_covers][download][url] = git@github.com:DBCDK/ting_covers.git
-projects[ting_covers][download][tag] = 7.x-0.22+dbc.4
+projects[ting_covers][download][tag] = 7.x-0.22+dbc.3
 
 projects[ting_openformat][type] = module
 projects[ting_openformat][download][type] = git
