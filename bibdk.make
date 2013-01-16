@@ -111,7 +111,7 @@ projects[bibdkcaptcha][download][tag] = 7.x-0.2
 projects[bibdk_custom_search][type] = module
 projects[bibdk_custom_search][download][type] = git
 projects[bibdk_custom_search][download][url] = git@github.com:DBCDK/bibdk_custom_search.git
-projects[bibdk_custom_search][download][tag] = 7.x-0.4
+projects[bibdk_custom_search][download][tag] = 7.x-0.4.1
 
 projects[bibdk_custom_search_preprocess][type] = module
 projects[bibdk_custom_search_preprocess][download][type] = git
