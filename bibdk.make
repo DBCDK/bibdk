@@ -189,6 +189,10 @@ projects[ctools][type] = module
 projects[ctools][version] = 1.2
 projects[ctools][patch][] = https://raw.github.com/gist/2044786/6b4ef8173f080715a8752067f7b1511a99b8b816/ctools-page_manager_load_task_handlers_alter.patch
 
+projects[date][subdir] = contrib
+projects[date][type] = module
+projects[date][version] = 2.6
+
 projects[entity][subdir] = contrib
 projects[entity][type] = module
 projects[entity][version] = 1.0-rc3
