@@ -173,6 +173,16 @@ projects[bibdk_vejviser][download][type] = git
 projects[bibdk_vejviser][download][url] = git@github.com:DBCDK/bibdk_vejviser.git
 projects[bibdk_vejviser][download][tag] = 7.x-0.5
 
+projects[bibdk_holdingstatus][type] = module
+projects[bibdk_holdingstatus][download][type] = git
+projects[bibdk_holdingstatus][download][url] = git@github.com:DBCDK/bibdk_holdingstatus.git
+// projects[bibdk_holdingstatus][download][tag] = 7.x-0.0
+
+projects[open_holdingstatus][type] = module
+projects[open_holdingstatus][download][type] = git
+projects[open_holdingstatus][download][url] = git@github.com:DBCDK/open_holdingstatus.git
+// projects[bibdk_holdingstatus][download][tag] = 7.x-0.0
+
 projects[microcurl][type] = module
 projects[microcurl][download][type] = git
 projects[microcurl][download][url] = git@github.com:DBCDK/microcurl.git
