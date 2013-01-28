@@ -37,6 +37,8 @@ function _bibdk_enable_modules() {
       'bibdk_reservation',
       'bibdk_searchhistory',
       'bibdk_vejviser',
+      'bibdk_holdingstatus',
+      'open_holdingstatus',
       'ding_base',
       'ding_entity',
       'ding_persistent_login',
@@ -198,5 +200,14 @@ function bibdk_update_7005(&$sandbox) {
   module_enable(array(
     'node_export',
     'bibdk_migration',
+  ));
+}
+
+/**
+* Enable Date API
+*/
+function bibdk_update_7006(&$sandbox) {
+  module_enable(array(
+    'date_api',
   ));
 }
