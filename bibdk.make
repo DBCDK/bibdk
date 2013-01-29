@@ -106,7 +106,7 @@ projects[bibdk_borchk][download][tag] = 7.x-0.3
 projects[bibdkcaptcha][type] = module
 projects[bibdkcaptcha][download][type] = git
 projects[bibdkcaptcha][download][url] = git@github.com:DBCDK/bibdkcaptcha.git
-projects[bibdkcaptcha][download][tag] = 7.x-0.2
+projects[bibdkcaptcha][download][tag] = 7.x-0.3
 
 projects[bibdk_custom_search][type] = module
 projects[bibdk_custom_search][download][type] = git
@@ -126,7 +126,7 @@ projects[bibdk_favourite][download][tag] = 7.x-0.7
 projects[bibdk_frontend][type] = module
 projects[bibdk_frontend][download][type] = git
 projects[bibdk_frontend][download][url] = git@github.com:DBCDK/bibdk_frontend.git
-projects[bibdk_frontend][download][tag] = 7.x-0.7
+projects[bibdk_frontend][download][tag] = 7.x-0.8
 
 projects[bibdk_help][type] = module
 projects[bibdk_help][download][type] = git
