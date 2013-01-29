@@ -161,7 +161,7 @@ projects[bibdk_provider][download][tag] = 7.x-0.7
 projects[bibdk_reservation][type] = module
 projects[bibdk_reservation][download][type] = git
 projects[bibdk_reservation][download][url] = git@github.com:DBCDK/bibdk_reservation.git
-projects[bibdk_reservation][download][tag] = 7.x-0.8
+projects[bibdk_reservation][download][tag] = 7.x-0.8.1
 
 projects[bibdk_searchhistory][type] = module
 projects[bibdk_searchhistory][download][type] = git
