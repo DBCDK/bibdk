@@ -176,7 +176,7 @@ projects[bibdk_vejviser][download][tag] = 7.x-0.5
 projects[bibdk_holdingstatus][type] = module
 projects[bibdk_holdingstatus][download][type] = git
 projects[bibdk_holdingstatus][download][url] = git@github.com:DBCDK/bibdk_holdingstatus.git
-projects[bibdk_holdingstatus][download][tag] = 7.x-0.1.1
+projects[bibdk_holdingstatus][download][tag] = 7.x-0.1.2
 
 projects[open_holdingstatus][type] = module
 projects[open_holdingstatus][download][type] = git
