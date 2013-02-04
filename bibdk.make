@@ -188,6 +188,11 @@ projects[microcurl][download][type] = git
 projects[microcurl][download][url] = git@github.com:DBCDK/microcurl.git
 projects[microcurl][download][tag] = 7.x-0.1
 
+projects[bibdk_tracelog][type] = module
+projects[bibdk_tracelog][download][type] = git
+projects[bibdk_tracelog][download][url] = git@github.com:DBCDK/bibdk_tracelog.git
+;projects[bibdk_tracelog][download][tag] =
+
 ; --- Contrib modules ---
 
 projects[captcha][subdir] = contrib
