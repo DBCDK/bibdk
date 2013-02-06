@@ -193,6 +193,11 @@ projects[bibdk_tracelog][download][type] = git
 projects[bibdk_tracelog][download][url] = git@github.com:DBCDK/bibdk_tracelog.git
 ;projects[bibdk_tracelog][download][tag] =
 
+projects[bibdk_adhl][type] = module
+projects[bibdk_adhl][download][type] = git
+projects[bibdk_adhl][download][url] = git@github.com:DBCDK/bibdk_adhl.git
+;projects[bibdk_adhl][download][tag] =
+
 ; --- Contrib modules ---
 
 projects[captcha][subdir] = contrib
