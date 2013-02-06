@@ -198,6 +198,11 @@ projects[bibdk_adhl][download][type] = git
 projects[bibdk_adhl][download][url] = git@github.com:DBCDK/bibdk_adhl.git
 ;projects[bibdk_adhl][download][tag] =
 
+projects[bibdk_search_controls][type] = module
+projects[bibdk_search_controls][download][type] = git
+projects[bibdk_search_controls][download][url] = git@github.com:DBCDK/bibdk_search_controls.git
+;projects[bibdk_search_controls][download][tag] =
+
 ; --- Contrib modules ---
 
 projects[captcha][subdir] = contrib
