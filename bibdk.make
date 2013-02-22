@@ -206,7 +206,7 @@ projects[bibdk_search_controls][download][tag] = 7.x-0.1
 projects[bibdk_mypage][type] = module
 projects[bibdk_mypage][download][type] = git
 projects[bibdk_mypage][download][url] = git@github.com:DBCDK/bibdk_mypage.git
-// projects[bibdk_mypage][download][branch] = feature/690-my-page
+projects[bibdk_mypage][download][branch] = feature/690-my-page
 
 ; --- Contrib modules ---
 
