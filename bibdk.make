@@ -21,7 +21,7 @@ libraries[ckeditor][download][url] = http://download.cksource.com/CKEditor/CKEdi
 projects[bibdk_theme][type] = theme
 projects[bibdk_theme][download][type] = git
 projects[bibdk_theme][download][url] = git@github.com:DBCDK/bibdk_theme.git
-projects[bibdk_theme][download][branch] = 690-my-page
+projects[bibdk_theme][download][branch] = feature/690-my-page
 
 
 ; --- Bibliotek.dk versions of Ding2 modules ---
@@ -121,12 +121,12 @@ projects[bibdk_custom_search_preprocess][tag] = 7.x-0.3
 projects[bibdk_favourite][type] = module
 projects[bibdk_favourite][download][type] = git
 projects[bibdk_favourite][download][url] = git@github.com:DBCDK/bibdk_favourite.git
-projects[bibdk_favourite][download][branch] = 690-my-page
+projects[bibdk_favourite][download][branch] = feature/690-my-page
 
 projects[bibdk_frontend][type] = module
 projects[bibdk_frontend][download][type] = git
 projects[bibdk_frontend][download][url] = git@github.com:DBCDK/bibdk_frontend.git
-projects[bibdk_frontend][download][branch] = 690-my-page
+projects[bibdk_frontend][download][branch] = feature/690-my-page
 
 projects[bibdk_help][type] = module
 projects[bibdk_help][download][type] = git
@@ -166,7 +166,7 @@ projects[bibdk_reservation][download][tag] = 7.x-0.9
 projects[bibdk_searchhistory][type] = module
 projects[bibdk_searchhistory][download][type] = git
 projects[bibdk_searchhistory][download][url] = git@github.com:DBCDK/bibdk_searchhistory.git
-projects[bibdk_searchhistory][download][branch] = 690-my-page
+projects[bibdk_searchhistory][download][branch] = feature/690-my-page
 
 projects[bibdk_vejviser][type] = module
 projects[bibdk_vejviser][download][type] = git
@@ -206,7 +206,7 @@ projects[bibdk_search_controls][download][tag] = 7.x-0.1
 projects[bibdk_mypage][type] = module
 projects[bibdk_mypage][download][type] = git
 projects[bibdk_mypage][download][url] = git@github.com:DBCDK/bibdk_mypage.git
-// projects[bibdk_mypage][download][branch] = 690-my-page
+// projects[bibdk_mypage][download][branch] = feature/690-my-page
 
 ; --- Contrib modules ---
 
