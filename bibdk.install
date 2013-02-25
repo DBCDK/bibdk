@@ -38,6 +38,7 @@ function _bibdk_enable_modules() {
       'bibdk_searchhistory',
       'bibdk_vejviser',
       'bibdk_holdingstatus',
+      'bibdk_mypage',
       'open_holdingstatus',
       'ding_base',
       'ding_entity',
