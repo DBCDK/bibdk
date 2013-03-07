@@ -122,7 +122,7 @@ projects[bibdk_custom_search_preprocess][tag] = 7.x-0.3
 projects[bibdk_favourite][type] = module
 projects[bibdk_favourite][download][type] = git
 projects[bibdk_favourite][download][url] = git@github.com:DBCDK/bibdk_favourite.git
-projects[bibdk_favourite][branch] = feature/597-save_favourite_data_in_reservation
+projects[bibdk_favourite][download][branch] = feature/597-save_favourite_data_in_reservation
 ;projects[bibdk_favourite][tag] = 7.x-0.9
 
 projects[bibdk_frontend][type] = module
