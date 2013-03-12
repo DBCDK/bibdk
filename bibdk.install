@@ -222,5 +222,6 @@ function bibdk_update_7007(&$sandbox) {
   module_enable(array(
     'bibdk_actions',
     'bibdk_cart',
+    'bibdk_mypage'
   ));
 }
