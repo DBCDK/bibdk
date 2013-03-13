@@ -79,8 +79,7 @@ projects[ding_user][download][tag] = 7.x-0.19+dbc.7
 projects[ting_agency][type] = module
 projects[ting_agency][download][type] = git
 projects[ting_agency][download][url] = git@github.com:DBCDK/ting_agency.git
-projects[ting_agency][download][branch] = feature/597-save_favourite_data_in_reservation
-;projects[ting_agency][download][tag] = 7.x-0.8
+projects[ting_agency][download][tag] = 7.x-0.8
 
 projects[ting-client][type] = module
 projects[ting-client][download][type] = git
@@ -132,7 +131,6 @@ projects[bibdk_custom_search_preprocess][tag] = 7.x-0.3
 projects[bibdk_favourite][type] = module
 projects[bibdk_favourite][download][type] = git
 projects[bibdk_favourite][download][url] = git@github.com:DBCDK/bibdk_favourite.git
-projects[bibdk_favourite][download][branch] = feature/597-save_favourite_data_in_reservation
 ;projects[bibdk_favourite][tag] = 7.x-0.9
 
 projects[bibdk_frontend][type] = module
@@ -173,7 +171,6 @@ projects[bibdk_provider][download][tag] = 7.x-0.9
 projects[bibdk_reservation][type] = module
 projects[bibdk_reservation][download][type] = git
 projects[bibdk_reservation][download][url] = git@github.com:DBCDK/bibdk_reservation.git
-projects[bibdk_reservation][download][branch] = feature/597-save_favourite_data_in_reservation
 ;projects[bibdk_reservation][download][tag] = 7.x-0.10
 
 projects[bibdk_searchhistory][type] = module
