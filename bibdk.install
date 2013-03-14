@@ -23,6 +23,8 @@ function bibdk_install() {
 function _bibdk_enable_modules() {
   $module_list =
     array(
+      'bibdk_actions',
+      'bibdk_cart',
       'bibdkcaptcha',
       'bibdk_borchk',
       'bibdk_custom_search',
@@ -57,7 +59,7 @@ function _bibdk_enable_modules() {
       'i18n_variable',
 #      'node_export',
 #      'bibdk_migration',
-    );
+  );
   //      'ting_search',
   if (!module_enable($module_list)) {
     die('A module (' . current($module_list) . ' ) present in array \'$module_list\' in file \'bibdk.install\' was not found. Install process aborted.');
@@ -205,10 +207,21 @@ function bibdk_update_7005(&$sandbox) {
 }
 
 /**
-* Enable Date API
-*/
+ * Enable Date API
+ */
 function bibdk_update_7006(&$sandbox) {
   module_enable(array(
     'date_api',
+  ));
+}
+
+/**
+ * Enable Bibdk Cart and Bibdk Actions
+ */
+function bibdk_update_7007(&$sandbox) {
+  module_enable(array(
+    'bibdk_actions',
+    'bibdk_cart',
+    'bibdk_mypage'
   ));
 }
