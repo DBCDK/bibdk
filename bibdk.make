@@ -101,7 +101,7 @@ projects[ting_openformat][download][tag] = 7.x-0.14
 projects[bibdk_actions][type] = module
 projects[bibdk_actions][download][type] = git
 projects[bibdk_actions][download][url] = https://github.com/DBCDK/bibdk_actions.git
-projects[bibdk_actions][download][tag] = 7.x-0.2
+projects[bibdk_actions][download][tag] = 7.x-0.3
 
 projects[bibdk_borchk][type] = module
 projects[bibdk_borchk][download][type] = git
@@ -111,7 +111,7 @@ projects[bibdk_borchk][download][tag] = 7.x-0.3
 projects[bibdk_cart][type] = module
 projects[bibdk_cart][download][type] = git
 projects[bibdk_cart][download][url] = https://github.com/DBCDK/bibdk_cart.git
-projects[bibdk_cart][download][tag] = 7.x-0.4
+projects[bibdk_cart][download][tag] = 7.x-0.5
 
 projects[bibdkcaptcha][type] = module
 projects[bibdkcaptcha][download][type] = git
@@ -216,7 +216,7 @@ projects[bibdk_search_controls][download][tag] = 7.x-0.1
 projects[bibdk_mypage][type] = module
 projects[bibdk_mypage][download][type] = git
 projects[bibdk_mypage][download][url] = git@github.com:DBCDK/bibdk_mypage.git
-projects[bibdk_mypage][download][tag] = 7.x-0.1
+projects[bibdk_mypage][download][tag] = 7.x-0.2
 
 ; --- Contrib modules ---
 
