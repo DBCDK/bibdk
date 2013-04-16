@@ -20,7 +20,8 @@ libraries[ckeditor][download][url] = http://download.cksource.com/CKEditor/CKEdi
 ;; New bibliotek.dk theme
 projects[bibdk_theme][type] = theme
 projects[bibdk_theme][download][type] = git
-projects[bibdk_theme][download][url] = git@github.com:DBCDK/bibdk_theme.git
+; projects[bibdk_theme][download][url] = git@github.com:DBCDK/bibdk_theme.git
+projects[bibdk_theme][download][branch] = feature/78-show_infomedia_link_before_login
 projects[bibdk_theme][download][tag] = 7.x-0.15
 
 
@@ -93,8 +94,15 @@ projects[ting_covers][download][tag] = 7.x-0.22+dbc.3
 
 projects[ting_openformat][type] = module
 projects[ting_openformat][download][type] = git
-projects[ting_openformat][download][url] = git@github.com:DBCDK/ting_openformat.git
+; projects[ting_openformat][download][url] = git@github.com:DBCDK/ting_openformat.git
+projects[ting_openformat][download][branch] = feature/78-show_infomedia_link_before_login
 projects[ting_openformat][download][tag] = 7.x-0.14
+
+projects[ting_infomedia][type] = module
+projects[ting_infomedia][download][type] = git
+; projects[ting_infomedia][download][url] = git@github.com:DBCDK/ting_openformat.git
+projects[ting_infomedia][download][branch] = feature/78-show_infomedia_link_before_login
+projects[ting_infomedia][download][tag] = 7.x-1.8
 
 ; --- Bibliotek.dk ---
 
