@@ -85,7 +85,7 @@ projects[ting_agency][download][tag] = 7.x-0.10
 projects[ting-client][type] = module
 projects[ting-client][download][type] = git
 ;projects[ting-client][download][url] = git@github.com:DBCDK/ting-client.git
-projects[ting-client][download][branch] = develop
+projects[ting-client][download][branch] = feature/78-show_infomedia_link_before_login
 projects[ting-client][download][tag] = 7.x-2.7
 
 projects[ting_covers][type] = module
@@ -232,6 +232,12 @@ projects[bibdk_mypage][type] = module
 projects[bibdk_mypage][download][type] = git
 projects[bibdk_mypage][download][url] = git@github.com:DBCDK/bibdk_mypage.git
 projects[bibdk_mypage][download][tag] = 7.x-0.2
+
+projects[bibdk_navfors][type] = module
+projects[bibdk_navfors][download][type] = git
+; projects[bibdk_navfors][download][url] = git@github.com:DBCDK/bibdk_navfors.git
+projects[bibdk_navfors][download][branch] = develop
+
 
 ; --- Contrib modules ---
 
