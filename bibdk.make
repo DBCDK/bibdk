@@ -103,6 +103,11 @@ projects[bibdk_jslog][download][type] = git
 projects[bibdk_jslog][download][url] = https://github.com/DBCDK/bibdk_jslog.git
 projects[bibdk_jslog][download][tag] = 7.x-0.1
 
+projects[bibdk_navfors][type] = module
+projects[bibdk_navfors][download][type] = git
+projects[bibdk_navfors][download][url] = https://github.com/DBCDK/bibdk_navfors.git
+;projects[bibdk_navfors][download][tag] = 7.x-0.1
+
 projects[bibdk_actions][type] = module
 projects[bibdk_actions][download][type] = git
 projects[bibdk_actions][download][url] = https://github.com/DBCDK/bibdk_actions.git
