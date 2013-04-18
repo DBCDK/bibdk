@@ -143,7 +143,8 @@ projects[bibdk_custom_search_preprocess][download][tag] = 7.x-0.3
 
 projects[bibdk_favourite][type] = module
 projects[bibdk_favourite][download][type] = git
-projects[bibdk_favourite][download][url] = git@github.com:DBCDK/bibdk_favourite.git
+;projects[bibdk_favourite][download][url] = git@github.com:DBCDK/bibdk_favourite.git
+projects[bibdk_favourite][download][branch] = develop
 projects[bibdk_favourite][download][tag] = 7.x-0.12
 
 projects[bibdk_frontend][type] = module
