@@ -46,6 +46,7 @@ projects[ding_facetbrowser][download][type] = git
 projects[ding_facetbrowser][download][url] = git@github.com:DBCDK/ding_facetbrowser.git
 projects[ding_facetbrowser][download][tag] = 7.x-0.13+dbc.4
 
+projects[ding_frontpage][type] = module
 projects[ding_frontpage][download][type] = git
 projects[ding_frontpage][download][url] = git@github.com:DBCDK/ding_frontpage.git
 projects[ding_frontpage][download][tag] = 7.x-0.7+dbc.2
