@@ -60,10 +60,8 @@ function _bibdk_enable_modules() {
       'ting_openformat',
       'ting_covers',
       'i18n_variable',
-#      'node_export',
-#      'bibdk_migration',
-  );
-  //      'ting_search',
+    );
+
   if (!module_enable($module_list)) {
     die('A module (' . current($module_list) . ' ) present in array \'$module_list\' in file \'bibdk.install\' was not found. Install process aborted.');
   }
