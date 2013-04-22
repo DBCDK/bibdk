@@ -100,7 +100,7 @@ projects[ting_openformat][download][tag] = 7.x-0.15
 
 projects[bibdk_actions][type] = module
 projects[bibdk_actions][download][type] = git
-projects[bibdk_actions][download][url] = https://github.com/DBCDK/bibdk_actions.git
+projects[bibdk_actions][download][url] = git@github.com:DBCDK/bibdk_actions.git
 projects[bibdk_actions][download][tag] = 7.x-0.4
 
 projects[bibdk_adhl][type] = module
@@ -115,7 +115,7 @@ projects[bibdk_borchk][download][tag] = 7.x-0.3
 
 projects[bibdk_cart][type] = module
 projects[bibdk_cart][download][type] = git
-projects[bibdk_cart][download][url] = https://github.com/DBCDK/bibdk_cart.git
+projects[bibdk_cart][download][url] = git@github.com:DBCDK/bibdk_cart.git
 projects[bibdk_cart][download][tag] = 7.x-0.6
 
 projects[bibdkcaptcha][type] = module
@@ -137,6 +137,11 @@ projects[bibdk_deploy][type] = module
 projects[bibdk_deploy][download][type] = git
 projects[bibdk_deploy][download][url] = git@github.com:DBCDK/bibdk_deploy.git
 projects[bibdk_deploy][download][tag] = 7.x-0.1
+
+projects[bibdk_entity_dependency][type] = module
+projects[bibdk_entity_dependency][download][type] = git
+projects[bibdk_entity_dependency][download][url] = git@github.com:DBCDK/bibdk_entity_dependency.git
+projects[bibdk_entity_dependency][download][tag] = 7.x-1.0-alpha1+7-dev-0.1
 
 projects[bibdk_favourite][type] = module
 projects[bibdk_favourite][download][type] = git
@@ -170,7 +175,7 @@ projects[bibdk_holdingstatus][download][tag] = 7.x-0.3
 
 projects[bibdk_jslog][type] = module
 projects[bibdk_jslog][download][type] = git
-projects[bibdk_jslog][download][url] = https://github.com/DBCDK/bibdk_jslog.git
+projects[bibdk_jslog][download][url] = git@github.com:DBCDK/bibdk_jslog.git
 projects[bibdk_jslog][download][tag] = 7.x-0.1
 
 projects[bibdk_linkme][type] = module
@@ -190,7 +195,7 @@ projects[bibdk_mypage][download][tag] = 7.x-0.2
 
 projects[bibdk_navfors][type] = module
 projects[bibdk_navfors][download][type] = git
-projects[bibdk_navfors][download][url] = https://github.com/DBCDK/bibdk_navfors.git
+projects[bibdk_navfors][download][url] = git@github.com:DBCDK/bibdk_navfors.git
 projects[bibdk_navfors][download][tag] = 7.x-0.2
 
 projects[bibdk_openorder][type] = module
@@ -222,6 +227,11 @@ projects[bibdk_tracelog][type] = module
 projects[bibdk_tracelog][download][type] = git
 projects[bibdk_tracelog][download][url] = git@github.com:DBCDK/bibdk_tracelog.git
 projects[bibdk_tracelog][download][tag] = 7.x-0.1
+
+projects[bibdk_uuid][type] = module
+projects[bibdk_uuid][download][type] = git
+projects[bibdk_uuid][download][url] = git@github.com:DBCDK/bibdk_uuid.git
+projects[bibdk_uuid][download][tag] = 7.x-1.0-alpha3+52-dev-01
 
 projects[bibdk_vejviser][type] = module
 projects[bibdk_vejviser][download][type] = git
@@ -284,7 +294,7 @@ projects[l10n_update][version] = 1.0-beta3
 
 projects[libraries][subdir] = contrib
 projects[libraries][type] = module
-projects[libraries][version] = 1.0
+projects[libraries][version] = 2.1
 
 projects[memcache][subdir] = contrib
 projects[memcache][type] = module
@@ -329,14 +339,18 @@ projects[securepages][type] = module
 projects[securepages][version] = 1.0-beta1
 projects[securepages][patch][] = http://drupal.org/files/securepages_1226702_secure_user_login_block_and_keep_form_action_secured_7.x-1.0-beta1.patch
 
+projects[services][subdir] = contrib
+projects[services][type] = module
+projects[services][version] = 3.3
+
 projects[strongarm][subdir] = contrib
 projects[strongarm][type] = module
 projects[strongarm][version] = 2.0
 
-projects[uuid][subdir] = contrib
-projects[uuid][type] = module
-projects[uuid][version] = 1.0-alpha3
-projects[uuid][patch][] = https://raw.github.com/DBCDK/patches/master/uuid_patch.diff
+;projects[uuid][subdir] = contrib
+:projects[uuid][type] = module
+;projects[uuid][version] = 1.0-alpha3
+;projects[uuid][patch][] = https://raw.github.com/DBCDK/patches/master/uuid_patch.diff
 
 projects[variable][subdir] = contrib
 projects[variable][type] = module
