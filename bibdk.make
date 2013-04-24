@@ -133,10 +133,10 @@ projects[bibdk_custom_search_preprocess][download][type] = git
 projects[bibdk_custom_search_preprocess][download][url] = git@github.com:DBCDK/bibdk_custom_search_preprocess.git
 projects[bibdk_custom_search_preprocess][download][tag] = 7.x-0.3
 
-projects[bibdk_deploy][type] = module
-projects[bibdk_deploy][download][type] = git
-projects[bibdk_deploy][download][url] = git@github.com:DBCDK/bibdk_deploy.git
-projects[bibdk_deploy][download][tag] = 7.x-0.1
+;projects[bibdk_deploy][type] = module
+;projects[bibdk_deploy][download][type] = git
+;projects[bibdk_deploy][download][url] = git@github.com:DBCDK/bibdk_deploy.git
+;projects[bibdk_deploy][download][tag] = 7.x-0.1
 
 projects[bibdk_entity_dependency][type] = module
 projects[bibdk_entity_dependency][download][type] = git
