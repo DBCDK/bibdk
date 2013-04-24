@@ -17,12 +17,12 @@ libraries[ckeditor][download][url] = http://download.cksource.com/CKEditor/CKEdi
 
 
 ; --- Theming ---
-;; New bibliotek.dk theme
+; New bibliotek.dk theme
 projects[bibdk_theme][type] = theme
 projects[bibdk_theme][download][type] = git
-; projects[bibdk_theme][download][url] = git@github.com:DBCDK/bibdk_theme.git
+projects[bibdk_theme][download][url] = git@github.com:DBCDK/bibdk_theme.git
 projects[bibdk_theme][download][branch] = feature/78-show_infomedia_link_before_login
-projects[bibdk_theme][download][tag] = 7.x-0.15
+; projects[bibdk_theme][download][tag] = 7.x-0.15
 
 
 ; --- Bibliotek.dk versions of Ding2 modules ---
@@ -84,9 +84,9 @@ projects[ting_agency][download][tag] = 7.x-0.10
 
 projects[ting-client][type] = module
 projects[ting-client][download][type] = git
-;projects[ting-client][download][url] = git@github.com:DBCDK/ting-client.git
+projects[ting-client][download][url] = git@github.com:DBCDK/ting-client.git
 projects[ting-client][download][branch] = feature/78-show_infomedia_link_before_login
-projects[ting-client][download][tag] = 7.x-2.7
+; projects[ting-client][download][tag] = 7.x-2.7
 
 projects[ting_covers][type] = module
 projects[ting_covers][download][type] = git
@@ -95,15 +95,15 @@ projects[ting_covers][download][tag] = 7.x-0.22+dbc.3
 
 projects[ting_openformat][type] = module
 projects[ting_openformat][download][type] = git
-; projects[ting_openformat][download][url] = git@github.com:DBCDK/ting_openformat.git
+projects[ting_openformat][download][url] = git@github.com:DBCDK/ting_openformat.git
 projects[ting_openformat][download][branch] = feature/78-show_infomedia_link_before_login
-projects[ting_openformat][download][tag] = 7.x-0.14
+; projects[ting_openformat][download][tag] = 7.x-0.14
 
 projects[ting_infomedia][type] = module
 projects[ting_infomedia][download][type] = git
-; projects[ting_infomedia][download][url] = git@github.com:DBCDK/ting_openformat.git
+projects[ting_infomedia][download][url] = git@github.com:DBCDK/ting_openformat.git
 projects[ting_infomedia][download][branch] = feature/78-show_infomedia_link_before_login
-projects[ting_infomedia][download][tag] = 7.x-1.8
+; projects[ting_infomedia][download][tag] = 7.x-1.8
 
 ; --- Bibliotek.dk ---
 
@@ -144,9 +144,9 @@ projects[bibdk_custom_search_preprocess][download][tag] = 7.x-0.3
 
 projects[bibdk_favourite][type] = module
 projects[bibdk_favourite][download][type] = git
-;projects[bibdk_favourite][download][url] = git@github.com:DBCDK/bibdk_favourite.git
+projects[bibdk_favourite][download][url] = git@github.com:DBCDK/bibdk_favourite.git
 projects[bibdk_favourite][download][branch] = develop
-projects[bibdk_favourite][download][tag] = 7.x-0.12
+; projects[bibdk_favourite][download][tag] = 7.x-0.12
 
 projects[bibdk_frontend][type] = module
 projects[bibdk_frontend][download][type] = git
@@ -235,7 +235,7 @@ projects[bibdk_mypage][download][tag] = 7.x-0.2
 
 projects[bibdk_navfors][type] = module
 projects[bibdk_navfors][download][type] = git
-; projects[bibdk_navfors][download][url] = git@github.com:DBCDK/bibdk_navfors.git
+projects[bibdk_navfors][download][url] = git@github.com:DBCDK/bibdk_navfors.git
 projects[bibdk_navfors][download][branch] = develop
 
 
