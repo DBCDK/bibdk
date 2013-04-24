@@ -133,10 +133,10 @@ projects[bibdk_custom_search_preprocess][download][type] = git
 projects[bibdk_custom_search_preprocess][download][url] = git@github.com:DBCDK/bibdk_custom_search_preprocess.git
 projects[bibdk_custom_search_preprocess][download][tag] = 7.x-0.3
 
-projects[bibdk_deploy][type] = module
-projects[bibdk_deploy][download][type] = git
-projects[bibdk_deploy][download][url] = git@github.com:DBCDK/bibdk_deploy.git
-projects[bibdk_deploy][download][tag] = 7.x-0.1
+;projects[bibdk_deploy][type] = module
+;projects[bibdk_deploy][download][type] = git
+;projects[bibdk_deploy][download][url] = git@github.com:DBCDK/bibdk_deploy.git
+;projects[bibdk_deploy][download][tag] = 7.x-0.1
 
 projects[bibdk_entity_dependency][type] = module
 projects[bibdk_entity_dependency][download][type] = git
@@ -339,9 +339,9 @@ projects[securepages][type] = module
 projects[securepages][version] = 1.0-beta1
 projects[securepages][patch][] = http://drupal.org/files/securepages_1226702_secure_user_login_block_and_keep_form_action_secured_7.x-1.0-beta1.patch
 
-projects[services][subdir] = contrib
-projects[services][type] = module
-projects[services][version] = 3.3
+;projects[services][subdir] = contrib
+;projects[services][type] = module
+;projects[services][version] = 3.3
 
 projects[strongarm][subdir] = contrib
 projects[strongarm][type] = module
