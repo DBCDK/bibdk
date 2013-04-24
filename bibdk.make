@@ -109,12 +109,12 @@ projects[ting_infomedia][download][tag] = 7.x-1.8
 
 projects[bibdk_jslog][type] = module
 projects[bibdk_jslog][download][type] = git
-projects[bibdk_jslog][download][url] = https://github.com/DBCDK/bibdk_jslog.git
+projects[bibdk_jslog][download][url] = git@github.com:DBCDK/bibdk_jslog.git
 projects[bibdk_jslog][download][tag] = 7.x-0.1
 
 projects[bibdk_actions][type] = module
 projects[bibdk_actions][download][type] = git
-projects[bibdk_actions][download][url] = https://github.com/DBCDK/bibdk_actions.git
+projects[bibdk_actions][download][url] = git@github.com:DBCDK/bibdk_actions.git
 projects[bibdk_actions][download][tag] = 7.x-0.3
 
 projects[bibdk_borchk][type] = module
@@ -124,7 +124,7 @@ projects[bibdk_borchk][download][tag] = 7.x-0.3
 
 projects[bibdk_cart][type] = module
 projects[bibdk_cart][download][type] = git
-projects[bibdk_cart][download][url] = https://github.com/DBCDK/bibdk_cart.git
+projects[bibdk_cart][download][url] = git@github.com:DBCDK/bibdk_cart.git
 projects[bibdk_cart][download][tag] = 7.x-0.5
 
 projects[bibdkcaptcha][type] = module
