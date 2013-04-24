@@ -101,7 +101,7 @@ projects[ting_openformat][download][branch] = feature/78-show_infomedia_link_bef
 
 projects[ting_infomedia][type] = module
 projects[ting_infomedia][download][type] = git
-projects[ting_infomedia][download][url] = git@github.com:DBCDK/ting_openformat.git
+projects[ting_infomedia][download][url] = git@github.com:DBCDK/ting_infomedia.git
 projects[ting_infomedia][download][branch] = feature/78-show_infomedia_link_before_login
 ; projects[ting_infomedia][download][tag] = 7.x-1.8
 
