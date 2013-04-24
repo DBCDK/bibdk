@@ -56,7 +56,7 @@ function _bibdk_enable_modules() {
       'ting_client',
       'ting_openformat',
       'ting_covers',
-      'ting_infomedia',
+#      'ting_infomedia',
       'i18n_variable',
 #      'node_export',
 #      'bibdk_migration',
