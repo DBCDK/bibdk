@@ -42,6 +42,7 @@ function _bibdk_enable_modules() {
       'bibdk_vejviser',
       'bibdk_holdingstatus',
       'bibdk_mypage',
+      'bibdk_reviews',
       'open_holdingstatus',
       'ding_base',
       'ding_entity',
@@ -232,8 +233,17 @@ function bibdk_update_7007(&$sandbox) {
  */
 function bibdk_update_7008(&$sandbox) {
   module_enable(array(
-    'bibdk_deploy',
     'bibdk_furthersearch',
     'eu_cookie_compliance',
+  ));
+}
+
+/**
+ * Enable bibdk_reviews, ting_infomedia
+ */
+function bibdk_update_7009(&$sandbox) {
+  module_enable(array(
+    'bibdk_reviews',
+    'ting_infomedia',
   ));
 }
