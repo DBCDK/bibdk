@@ -21,8 +21,12 @@ libraries[ckeditor][download][url] = http://download.cksource.com/CKEditor/CKEdi
 projects[bibdk_theme][type] = theme
 projects[bibdk_theme][download][type] = git
 projects[bibdk_theme][download][url] = git@github.com:DBCDK/bibdk_theme.git
+<<<<<<< HEAD
 projects[bibdk_theme][download][branch] = feature/78-show_infomedia_link_before_login
 ; projects[bibdk_theme][download][tag] = 7.x-0.16
+=======
+projects[bibdk_theme][download][tag] = 7.x-0.17
+>>>>>>> 8008045f1ff42af95b82cf2d09251221203c8d6d
 
 
 ; --- Bibliotek.dk versions of Ding2 modules ---
@@ -130,7 +134,7 @@ projects[bibdk_borchk][download][tag] = 7.x-0.3
 projects[bibdk_cart][type] = module
 projects[bibdk_cart][download][type] = git
 projects[bibdk_cart][download][url] = git@github.com:DBCDK/bibdk_cart.git
-projects[bibdk_cart][download][tag] = 7.x-0.6
+projects[bibdk_cart][download][tag] = 7.x-0.7
 
 projects[bibdkcaptcha][type] = module
 projects[bibdkcaptcha][download][type] = git
@@ -236,7 +240,7 @@ projects[bibdk_search_controls][download][tag] = 7.x-0.1
 projects[bibdk_searchhistory][type] = module
 projects[bibdk_searchhistory][download][type] = git
 projects[bibdk_searchhistory][download][url] = git@github.com:DBCDK/bibdk_searchhistory.git
-projects[bibdk_searchhistory][download][tag] = 7.x-0.7
+projects[bibdk_searchhistory][download][tag] = 7.x-0.8
 
 projects[bibdk_tracelog][type] = module
 projects[bibdk_tracelog][download][type] = git
