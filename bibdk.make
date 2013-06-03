@@ -303,6 +303,10 @@ projects[l10n_update][subdir] = contrib
 projects[l10n_update][type] = module
 projects[l10n_update][version] = 1.0-beta3
 
+projects[lightbox2][subdir] = contrib
+projects[lightbox2][type] = module
+projects[lightbox2][version] = 1.0-beta1
+
 projects[libraries][subdir] = contrib
 projects[libraries][type] = module
 projects[libraries][version] = 2.1
