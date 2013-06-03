@@ -1,6 +1,6 @@
 name = Bibliotek.dk
 description = Install a Bibliotek.dk based library site.
-version = 7.x-0.18.2
+version = 7.x-0.19
 core = 7.x
 distribution_name = Bibliotek.dk
 
