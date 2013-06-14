@@ -96,6 +96,11 @@ projects[ting_openformat][download][type] = git
 projects[ting_openformat][download][url] = git@github.com:DBCDK/ting_openformat.git
 projects[ting_openformat][download][tag] = 7.x-0.18.1
 
+projects[ting_openuserstatus][type] = module
+projects[ting_openuserstatus][download][type] = git
+projects[ting_openuserstatus][download][url] = git@github.com:DBCDK/ting_openuserstatus.git
+;projects[ting_openuserstatus][download][tag] = 7.x-0.1
+
 projects[ting_infomedia][type] = module
 projects[ting_infomedia][download][type] = git
 projects[ting_infomedia][download][url] = git@github.com:DBCDK/ting_infomedia.git
@@ -207,6 +212,11 @@ projects[bibdk_openorder][type] = module
 projects[bibdk_openorder][download][type] = git
 projects[bibdk_openorder][download][url] = git@github.com:DBCDK/bibdk_openorder.git
 projects[bibdk_openorder][download][tag] = 7.x-0.6
+
+projects[bibdk_openuserstatus][type] = module
+projects[bibdk_openuserstatus][download][type] = git
+projects[bibdk_openuserstatus][download][url] = git@github.com:DBCDK/bibdk_openuserstatus.git
+;projects[bibdk_openuserstatus][download][tag] = 7.x-0.1
 
 projects[bibdk_provider][type] = module
 projects[bibdk_provider][download][type] = git
