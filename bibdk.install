@@ -43,6 +43,7 @@ function _bibdk_enable_modules() {
       'bibdk_holdingstatus',
       'bibdk_mypage',
       'bibdk_reviews',
+      'bibdk_forsrights',
       'open_holdingstatus',
       'ding_base',
       'ding_entity',

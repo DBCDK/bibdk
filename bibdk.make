@@ -198,10 +198,10 @@ projects[bibdk_mypage][download][type] = git
 projects[bibdk_mypage][download][url] = git@github.com:DBCDK/bibdk_mypage.git
 projects[bibdk_mypage][download][tag] = 7.x-0.2.1
 
-projects[bibdk_navfors][type] = module
-projects[bibdk_navfors][download][type] = git
-projects[bibdk_navfors][download][url] = git@github.com:DBCDK/bibdk_navfors.git
-projects[bibdk_navfors][download][tag] = 7.x-0.4
+projects[bibdk_forsrights][type] = module
+projects[bibdk_forsrights][download][type] = git
+projects[bibdk_forsrights][download][url] = git@github.com:DBCDK/bibdk_forsrights.git
+projects[bibdk_forsrights][download][tag] = 7.x-0.1
 
 projects[bibdk_openorder][type] = module
 projects[bibdk_openorder][download][type] = git
