@@ -123,6 +123,11 @@ projects[bibdk_adhl][download][type] = git
 projects[bibdk_adhl][download][url] = git@github.com:DBCDK/bibdk_adhl.git
 projects[bibdk_adhl][download][tag] = 7.x-0.3
 
+projects[bibdk_behaviour][type] = module
+projects[bibdk_behaviour][download][type] = git
+projects[bibdk_behaviour][download][url] = git@github.com:DBCDK/bibdk_behaviour.git
+;projects[bibdk_behaviour][download][tag] = 7.x-0.1-dev
+
 projects[bibdk_borchk][type] = module
 projects[bibdk_borchk][download][type] = git
 projects[bibdk_borchk][download][url] = git@github.com:DBCDK/bibdk_borchk.git
