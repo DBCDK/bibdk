@@ -104,7 +104,7 @@ projects[ting_openuserstatus][download][tag] = 7.x-0.1
 projects[ting_infomedia][type] = module
 projects[ting_infomedia][download][type] = git
 projects[ting_infomedia][download][url] = git@github.com:DBCDK/ting_infomedia.git
-projects[ting_infomedia][download][tag] = 7.x-1.11
+projects[ting_infomedia][download][tag] = 7.x-1.12
 
 ; --- Bibliotek.dk ---
 
@@ -226,7 +226,7 @@ projects[bibdk_openuserstatus][download][tag] = 7.x-0.1
 projects[bibdk_provider][type] = module
 projects[bibdk_provider][download][type] = git
 projects[bibdk_provider][download][url] = git@github.com:DBCDK/bibdk_provider.git
-projects[bibdk_provider][download][tag] = 7.x-0.15
+projects[bibdk_provider][download][tag] = 7.x-0.16
 
 projects[bibdk_reservation][type] = module
 projects[bibdk_reservation][download][type] = git
