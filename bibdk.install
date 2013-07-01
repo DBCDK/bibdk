@@ -46,6 +46,7 @@ function _bibdk_enable_modules() {
       'bibdk_reviews',
       'bibdk_forsrights',
       'bibdk_openuserstatus',
+      'bibdk_usersettings',
       'ting_openuserstatus',
       'open_holdingstatus',
       'ding_base',
