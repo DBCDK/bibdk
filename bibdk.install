@@ -265,3 +265,12 @@ function bibdk_update_7010(&$sandbox) {
     'bibdk_behaviour',
   ));
 }
+
+/**
+ * Enable bibdk_reviews, ting_infomedia, bibdk_behaviour
+ */
+function bibdk_update_7011(&$sandbox) {
+  module_enable(array(
+    'bibdk_usersettings',
+  ));
+}
