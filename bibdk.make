@@ -21,7 +21,7 @@ libraries[ckeditor][download][url] = http://download.cksource.com/CKEditor/CKEdi
 projects[bibdk_theme][type] = theme
 projects[bibdk_theme][download][type] = git
 projects[bibdk_theme][download][url] = git@github.com:DBCDK/bibdk_theme.git
-projects[bibdk_theme][download][tag] = 7.x-0.22
+projects[bibdk_theme][download][tag] = 7.x-0.23
 
 
 ; --- Bibliotek.dk versions of Ding2 modules ---
@@ -44,7 +44,7 @@ projects[ding_entity][download][tag] = 7.x-0.7+dbc.3
 projects[ding_facetbrowser][type] = module
 projects[ding_facetbrowser][download][type] = git
 projects[ding_facetbrowser][download][url] = git@github.com:DBCDK/ding_facetbrowser.git
-projects[ding_facetbrowser][download][tag] = 7.x-0.13+dbc.6
+projects[ding_facetbrowser][download][tag] = 7.x-0.13+dbc.7
 
 projects[ding_frontpage][type] = module
 projects[ding_frontpage][download][type] = git
@@ -94,7 +94,7 @@ projects[ting_covers][download][tag] = 7.x-0.22+dbc.4
 projects[ting_openformat][type] = module
 projects[ting_openformat][download][type] = git
 projects[ting_openformat][download][url] = git@github.com:DBCDK/ting_openformat.git
-projects[ting_openformat][download][tag] = 7.x-0.19
+projects[ting_openformat][download][tag] = 7.x-0.20
 
 projects[ting_openuserstatus][type] = module
 projects[ting_openuserstatus][download][type] = git
@@ -104,7 +104,7 @@ projects[ting_openuserstatus][download][tag] = 7.x-0.1
 projects[ting_infomedia][type] = module
 projects[ting_infomedia][download][type] = git
 projects[ting_infomedia][download][url] = git@github.com:DBCDK/ting_infomedia.git
-projects[ting_infomedia][download][tag] = 7.x-1.12
+projects[ting_infomedia][download][tag] = 7.x-1.13
 
 ; --- Bibliotek.dk ---
 
@@ -116,7 +116,7 @@ projects[bibdk_jslog][download][tag] = 7.x-0.1
 projects[bibdk_actions][type] = module
 projects[bibdk_actions][download][type] = git
 projects[bibdk_actions][download][url] = git@github.com:DBCDK/bibdk_actions.git
-projects[bibdk_actions][download][tag] = 7.x-0.6
+projects[bibdk_actions][download][tag] = 7.x-0.7
 
 projects[bibdk_adhl][type] = module
 projects[bibdk_adhl][download][type] = git
@@ -126,7 +126,7 @@ projects[bibdk_adhl][download][tag] = 7.x-0.3
 projects[bibdk_behaviour][type] = module
 projects[bibdk_behaviour][download][type] = git
 projects[bibdk_behaviour][download][url] = git@github.com:DBCDK/bibdk_behaviour.git
-;projects[bibdk_behaviour][download][tag] = 7.x-0.1-dev
+projects[bibdk_behaviour][download][tag] = 7.x-0.1
 
 projects[bibdk_borchk][type] = module
 projects[bibdk_borchk][download][type] = git
@@ -136,7 +136,7 @@ projects[bibdk_borchk][download][tag] = 7.x-0.4
 projects[bibdk_cart][type] = module
 projects[bibdk_cart][download][type] = git
 projects[bibdk_cart][download][url] = git@github.com:DBCDK/bibdk_cart.git
-projects[bibdk_cart][download][tag] = 7.x-1.0
+projects[bibdk_cart][download][tag] = 7.x-1.1
 
 projects[bibdkcaptcha][type] = module
 projects[bibdkcaptcha][download][type] = git
@@ -166,7 +166,7 @@ projects[bibdk_favourite][download][tag] = 7.x-0.15
 projects[bibdk_frontend][type] = module
 projects[bibdk_frontend][download][type] = git
 projects[bibdk_frontend][download][url] = git@github.com:DBCDK/bibdk_frontend.git
-projects[bibdk_frontend][download][tag] = 7.x-0.17
+projects[bibdk_frontend][download][tag] = 7.x-0.18
 
 projects[bibdk_furthersearch][type] = module
 projects[bibdk_furthersearch][download][type] = git
@@ -186,7 +186,7 @@ projects[bibdk_helpdesk][download][tag] = 7.x-0.9
 projects[bibdk_holdingstatus][type] = module
 projects[bibdk_holdingstatus][download][type] = git
 projects[bibdk_holdingstatus][download][url] = git@github.com:DBCDK/bibdk_holdingstatus.git
-projects[bibdk_holdingstatus][download][tag] = 7.x-0.5
+projects[bibdk_holdingstatus][download][tag] = 7.x-0.6
 
 projects[bibdk_jslog][type] = module
 projects[bibdk_jslog][download][type] = git
@@ -196,7 +196,7 @@ projects[bibdk_jslog][download][tag] = 7.x-0.2
 projects[bibdk_linkme][type] = module
 projects[bibdk_linkme][download][type] = git
 projects[bibdk_linkme][download][url] = git@github.com:DBCDK/bibdk_linkme.git
-projects[bibdk_linkme][download][tag] = 7.x-0.4
+projects[bibdk_linkme][download][tag] = 7.x-0.5
 
 projects[bibdk_migration][type] = module
 projects[bibdk_migration][download][type] = git
@@ -221,7 +221,7 @@ projects[bibdk_openorder][download][tag] = 7.x-0.7
 projects[bibdk_openuserstatus][type] = module
 projects[bibdk_openuserstatus][download][type] = git
 projects[bibdk_openuserstatus][download][url] = git@github.com:DBCDK/bibdk_openuserstatus.git
-projects[bibdk_openuserstatus][download][tag] = 7.x-0.1
+projects[bibdk_openuserstatus][download][tag] = 7.x-0.2
 
 projects[bibdk_provider][type] = module
 projects[bibdk_provider][download][type] = git
@@ -231,7 +231,7 @@ projects[bibdk_provider][download][tag] = 7.x-0.16
 projects[bibdk_reservation][type] = module
 projects[bibdk_reservation][download][type] = git
 projects[bibdk_reservation][download][url] = git@github.com:DBCDK/bibdk_reservation.git
-projects[bibdk_reservation][download][tag] = 7.x-0.15
+projects[bibdk_reservation][download][tag] = 7.x-0.16
 
 projects[bibdk_reviews][type] = module
 projects[bibdk_reviews][download][type] = git
@@ -246,7 +246,7 @@ projects[bibdk_search_controls][download][tag] = 7.x-0.1
 projects[bibdk_searchhistory][type] = module
 projects[bibdk_searchhistory][download][type] = git
 projects[bibdk_searchhistory][download][url] = git@github.com:DBCDK/bibdk_searchhistory.git
-projects[bibdk_searchhistory][download][tag] = 7.x-1.0
+projects[bibdk_searchhistory][download][tag] = 7.x-1.1
 
 projects[bibdk_tracelog][type] = module
 projects[bibdk_tracelog][download][type] = git
@@ -256,7 +256,7 @@ projects[bibdk_tracelog][download][tag] = 7.x-0.2
 projects[bibdk_usersettings][type] = module
 projects[bibdk_usersettings][download][type] = git
 projects[bibdk_usersettings][download][url] = git@github.com:DBCDK/bibdk_usersettings.git
-projects[bibdk_usersettings][download][branch] = develop
+projects[bibdk_usersettings][download][tag] = 7.x-0.1
 
 projects[bibdk_uuid][type] = module
 projects[bibdk_uuid][download][type] = git
