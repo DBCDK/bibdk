@@ -46,6 +46,7 @@ function _bibdk_enable_modules() {
       'bibdk_reviews',
       'bibdk_forsrights',
       'bibdk_openuserstatus',
+      'bibdk_usersettings',
       'ting_openuserstatus',
       'open_holdingstatus',
       'ding_base',
@@ -66,6 +67,7 @@ function _bibdk_enable_modules() {
       'ting_infomedia',
       'i18n_variable',
       'lightbox2',
+      'worktabs',
     );
 
   if (!module_enable($module_list)) {
@@ -261,5 +263,14 @@ function bibdk_update_7010(&$sandbox) {
     'ting_openuserstatus',
     'bibdk_openuserstatus',
     'bibdk_behaviour',
+  ));
+}
+
+/**
+ * Enable bibdk_reviews, ting_infomedia, bibdk_behaviour
+ */
+function bibdk_update_7011(&$sandbox) {
+  module_enable(array(
+    'bibdk_usersettings',
   ));
 }
