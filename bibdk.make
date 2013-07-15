@@ -120,7 +120,8 @@ projects[bibdk_actions][download][tag] = 7.x-0.7
 projects[bibdk_adhl][type] = module
 projects[bibdk_adhl][download][type] = git
 projects[bibdk_adhl][download][url] = git@github.com:DBCDK/bibdk_adhl.git
-projects[bibdk_adhl][download][tag] = 7.x-0.3
+;projects[bibdk_adhl][download][tag] = 7.x-0.3
+projects[bibdk_adhl][download][branch] = feature/969_adhlPopup
 
 projects[bibdk_behaviour][type] = module
 projects[bibdk_behaviour][download][type] = git
