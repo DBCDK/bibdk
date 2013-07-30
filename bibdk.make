@@ -160,7 +160,7 @@ projects[bibdk_entity_dependency][download][tag] = 7.x-1.0-alpha1+7-dev-0.1
 projects[bibdk_favourite][type] = module
 projects[bibdk_favourite][download][type] = git
 projects[bibdk_favourite][download][url] = git@github.com:DBCDK/bibdk_favourite.git
-projects[bibdk_favourite][download][tag] = 7.x-0.16
+projects[bibdk_favourite][download][tag] = 7.x-0.17
 
 projects[bibdk_frontend][type] = module
 projects[bibdk_frontend][download][type] = git
