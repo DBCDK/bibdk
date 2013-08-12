@@ -39,6 +39,7 @@ function _bibdk_enable_modules() {
       'bibdk_openorder',
       'bibdk_provider',
       'bibdk_reservation',
+      'bibdk_sbkopi',
       'bibdk_searchhistory',
       'bibdk_vejviser',
       'bibdk_holdingstatus',
