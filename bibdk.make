@@ -292,7 +292,7 @@ projects[captcha][version] = 1.0-beta2
 projects[ctools][subdir] = contrib
 projects[ctools][type] = module
 projects[ctools][version] = 1.2
-projects[ctools][patch][] = https://raw.github.com/gist/2044786/6b4ef8173f080715a8752067f7b1511a99b8b816/ctools-page_manager_load_task_handlers_alter.patch
+projects[ctools][patch][] = https://raw.github.com/DBCDK/drush-features-export-page-variant/master/ctools-page_manager_load_task_handlers_alter.patch
 
 projects[date][subdir] = contrib
 projects[date][type] = module
