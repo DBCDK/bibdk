@@ -10,7 +10,7 @@
 ; In a DBC development context this command could be used to check out develop
 ; branches as git repositories:
 ;
-;     $ drush make --working-copy --dbc-modules=develop --no-gitinfofile --contrib-destination=profiles/bibdk prof/dist.make [NAME]
+;     $ drush make --working-copy --dbc-modules=develop --no-gitinfofile --contrib-destination=profiles/bibdk prof/dist.make [directory]
 
 api = 2
 core = 7.x
