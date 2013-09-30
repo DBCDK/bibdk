@@ -20,6 +20,7 @@ projects[drupal][type] = core
 ; uncomment to specify drupal version. Otherwise newest version is downloaded
 ; projects[drupal][version] = "7.23"
 projects[drupal][patch][1852888] = https://drupal.org/files/1852888-sort-translations-by-context-2.diff
+;TODO all patches on drupal core should go here
 
 projects[bibdk][type] = profile
 projects[bibdk][download][type] = git
