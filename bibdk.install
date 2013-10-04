@@ -20,6 +20,7 @@ function bibdk_install() {
   _bibdk_set_permissions_and_roles();
 }
 
+//TODO instead of enabling modules as part of the install hook modules should be moved to the .info file as dependecies
 function _bibdk_enable_modules() {
   $module_list =
     array(
