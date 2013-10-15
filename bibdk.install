@@ -29,6 +29,7 @@ function _bibdk_enable_modules() {
       'bibdkcaptcha',
       'bibdk_borchk',
       'bibdk_behaviour',
+      'bibdk_config',
       'bibdk_custom_search',
       'bibdk_custom_search_preprocess',
       'bibdk_favourite',
