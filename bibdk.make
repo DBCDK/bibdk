@@ -276,6 +276,13 @@ projects[open_holdingstatus][download][type] = git
 projects[open_holdingstatus][download][url] = git@github.com:DBCDK/open_holdingstatus.git
 projects[open_holdingstatus][download][tag] = 7.x-0.7
 
+; THIS MODULE IS ONLY AVAILABLE WITHIN THE DBC A/S ORGANISATION
+; PLEASE UNCOMMENT AS THE MODULE WONT BE DOWNLOADABLE OUTSIDE DBC A/S
+projects[bibdk_config][type] = module
+projects[bibdk_config][download][type] = git
+projects[bibdk_config][download][url] = git.dbc.dk:/repos/bibliotek.dk/bibdk_config.git
+projects[bibdk_config][download][tag] = 7.x-0.1
+
 
 ; --- Contrib modules ---
 
@@ -320,6 +327,7 @@ projects[l10n_client][patch][] = https://raw.github.com/DBCDK/patches/master/dbc
 projects[l10n_update][subdir] = contrib
 projects[l10n_update][type] = module
 projects[l10n_update][version] = 1.0-beta3
+projects[l10n_update][patch][] = https://drupal.org/files/l10n_update-drush_l10n_update_specify_modules-1982580-3.patch
 
 projects[lightbox2][subdir] = contrib
 projects[lightbox2][type] = module
