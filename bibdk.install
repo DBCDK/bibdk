@@ -69,6 +69,7 @@ function _bibdk_enable_modules() {
       'ting_covers',
       'ting_infomedia',
       'i18n_variable',
+      'l10n_update',
       'lightbox2',
       'worktabs',
     );
@@ -174,6 +175,7 @@ function _bibdk_set_variables() {
   );
   variable_set('ding_facetbrowser_facets', $ding_facetbrowser_facets);
   variable_set('ding_user_creds_lifetime', 7200);
+  variable_set('cron_safe_threshold', 3600);
 }
 
 /**
