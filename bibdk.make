@@ -281,7 +281,7 @@ projects[open_holdingstatus][download][tag] = 7.x-0.7
 projects[bibdk_config][type] = module
 projects[bibdk_config][download][type] = git
 projects[bibdk_config][download][url] = git.dbc.dk:/repos/bibliotek.dk/bibdk_config.git
-projects[bibdk_config][download][tag] = 7.x-0.2
+projects[bibdk_config][download][branch] = develop
 
 
 ; --- Contrib modules ---
