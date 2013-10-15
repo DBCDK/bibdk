@@ -282,7 +282,7 @@ function bibdk_update_7011(&$sandbox) {
 }
 
 /**
- * Enable bibdk_reviews, ting_infomedia, bibdk_behaviour
+ * Enable bibdk_config
  */
 function bibdk_update_7012(&$sandbox) {
   module_enable(array(
