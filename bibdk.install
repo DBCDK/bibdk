@@ -29,6 +29,7 @@ function _bibdk_enable_modules() {
       'bibdkcaptcha',
       'bibdk_borchk',
       'bibdk_behaviour',
+      'bibdk_config',
       'bibdk_custom_search',
       'bibdk_custom_search_preprocess',
       'bibdk_favourite',
@@ -68,6 +69,7 @@ function _bibdk_enable_modules() {
       'ting_openformat',
       'ting_covers',
       'ting_infomedia',
+      'ting_search_carousel',
       'i18n_variable',
       'lightbox2',
       'worktabs',
@@ -174,6 +176,7 @@ function _bibdk_set_variables() {
   );
   variable_set('ding_facetbrowser_facets', $ding_facetbrowser_facets);
   variable_set('ding_user_creds_lifetime', 7200);
+  variable_set('cron_safe_threshold', 3600);
 }
 
 /**
@@ -275,5 +278,14 @@ function bibdk_update_7010(&$sandbox) {
 function bibdk_update_7011(&$sandbox) {
   module_enable(array(
     'bibdk_usersettings',
+  ));
+}
+
+/**
+ * Enable bibdk_config
+ */
+function bibdk_update_7012(&$sandbox) {
+  module_enable(array(
+    'bibdk_config',
   ));
 }
