@@ -281,6 +281,11 @@ projects[open_holdingstatus][download][type] = git
 projects[open_holdingstatus][download][url] = git@github.com:DBCDK/open_holdingstatus.git
 projects[open_holdingstatus][download][tag] = 7.x-0.8
 
+projects[bibdk_subject_hierarchy][type] = module
+projects[bibdk_subject_hierarchy][download][type] = git
+projects[bibdk_subject_hierarchy][download][url] = git@github.com:DBCDK/bibdk_subject_hierarchy.git
+; projects[bibdk_subject_hierarchy][download][tag] = 7.x-0.1
+
 ; THIS MODULE IS ONLY AVAILABLE WITHIN THE DBC A/S ORGANISATION
 ; PLEASE UNCOMMENT AS THE MODULE WONT BE DOWNLOADABLE OUTSIDE DBC A/S
 projects[bibdk_config][type] = module
