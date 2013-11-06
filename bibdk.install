@@ -74,6 +74,7 @@ function _bibdk_enable_modules() {
       'i18n_variable',
       'lightbox2',
       'worktabs',
+      'help',
     );
 
   if (!module_enable($module_list)) {
@@ -159,7 +160,7 @@ function _bibdk_set_variables() {
     4 => Array
     (
       'name' => 'facet.date',
-      'title' => 'Ã…r',
+      'title' => 'År',
       'weight' => 18,
     ),
     5 => Array
@@ -288,5 +289,15 @@ function bibdk_update_7011(&$sandbox) {
 function bibdk_update_7012(&$sandbox) {
   module_enable(array(
     'bibdk_config',
+  ));
+}
+
+/**
+ * Enable bibdk_subject_hierarchy
+ */
+function bibdk_update_7013(&$sandbox) {
+  module_enable(array(
+    'bibdk_subject_hierarchy',
+    'help',
   ));
 }
