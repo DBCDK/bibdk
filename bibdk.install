@@ -160,7 +160,7 @@ function _bibdk_set_variables() {
     4 => Array
     (
       'name' => 'facet.date',
-      'title' => 'År',
+      'title' => 'Ã…r',
       'weight' => 18,
     ),
     5 => Array
