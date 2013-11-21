@@ -337,7 +337,7 @@ projects[l10n_client][patch][] = https://raw.github.com/DBCDK/patches/master/dbc
 projects[l10n_update][subdir] = contrib
 projects[l10n_update][type] = module
 projects[l10n_update][version] = 1.0-beta3
-projects[l10n_update][patch][] = https://drupal.org/files/l10n_update-drush_l10n_update_specify_modules-1982580-3.patch
+projects[l10n_update][patch][] = http://drupal.org/files/l10n_update-drush_l10n_update_specify_modules-1982580-3.patch
 
 projects[lightbox2][subdir] = contrib
 projects[lightbox2][type] = module
