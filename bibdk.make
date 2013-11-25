@@ -25,11 +25,6 @@ projects[bibdk_theme][download][tag] = 7.x-0.38
 
 ; --- Bibliotek.dk versions of Ding2 modules ---
 
-projects[bibdk_usersettings][type] = module
-projects[bibdk_usersettings][download][type] = git
-projects[bibdk_usersettings][download][url] = git@github.com:DBCDK/bibdk_usersettings.git
-projects[bibdk_usersettings][download][tag] = 7.x-0.3
-
 projects[ding_base][type] = module
 projects[ding_base][download][type] = git
 projects[ding_base][download][url] = git@github.com:DBCDK/ding_base.git
@@ -116,7 +111,6 @@ projects[ting_search_carousel][download][url] = git@github.com:DBCDK/ting_search
 projects[ting_search_carousel][download][tag] = 7.x-0.5+dbc.1
 
 ; --- Bibliotek.dk ---
-
 projects[bibdk_actions][type] = module
 projects[bibdk_actions][download][type] = git
 projects[bibdk_actions][download][url] = git@github.com:DBCDK/bibdk_actions.git
@@ -257,6 +251,11 @@ projects[bibdk_tracelog][download][type] = git
 projects[bibdk_tracelog][download][url] = git@github.com:DBCDK/bibdk_tracelog.git
 projects[bibdk_tracelog][download][tag] = 7.x-0.4
 
+projects[bibdk_usersettings][type] = module
+projects[bibdk_usersettings][download][type] = git
+projects[bibdk_usersettings][download][url] = git@github.com:DBCDK/bibdk_usersettings.git
+projects[bibdk_usersettings][download][tag] = 7.x-0.3
+
 projects[bibdk_uuid][type] = module
 projects[bibdk_uuid][download][type] = git
 projects[bibdk_uuid][download][url] = git@github.com:DBCDK/bibdk_uuid.git
@@ -317,6 +316,7 @@ projects[entity][version] = 1.0-rc3
 projects[eu-cookie-compliance][subdir] = contrib
 projects[eu-cookie-compliance][type] = module
 projects[eu-cookie-compliance][version] = 1.8
+
 projects[features][subdir] = contrib
 projects[features][type] = module
 projects[features][version] = 1.0
