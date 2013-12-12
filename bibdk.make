@@ -419,3 +419,11 @@ projects[virtual_field][version] = 1.0
 projects[wysiwyg][subdir] = contrib
 projects[wysiwyg][type] = module
 projects[wysiwyg][version] = 2.1
+
+projects[user_alert][subdir] = contrib
+projects[user_alert][type] = module
+projects[user_alert][version] = 1.10
+
+projects[scheduler][subdir] = contrib
+projects[scheduler][type] = module
+projects[scheduler][version] = 1.1
