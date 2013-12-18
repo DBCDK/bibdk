@@ -124,7 +124,7 @@ projects[bibdk_adhl][download][tag] = 7.x-0.5
 projects[bibdk_behaviour][type] = module
 projects[bibdk_behaviour][download][type] = git
 projects[bibdk_behaviour][download][url] = git@github.com:DBCDK/bibdk_behaviour.git
-projects[bibdk_behaviour][download][tag] = 7.x-0.5
+projects[bibdk_behaviour][download][tag] = 7.x-0.6
 
 projects[bibdk_borchk][type] = module
 projects[bibdk_borchk][download][type] = git
@@ -164,7 +164,7 @@ projects[bibdk_forsrights][download][tag] = 7.x-0.2
 projects[bibdk_frontend][type] = module
 projects[bibdk_frontend][download][type] = git
 projects[bibdk_frontend][download][url] = git@github.com:DBCDK/bibdk_frontend.git
-projects[bibdk_frontend][download][tag] = 7.x-0.35
+projects[bibdk_frontend][download][tag] = 7.x-0.36
 
 projects[bibdk_furthersearch][type] = module
 projects[bibdk_furthersearch][download][type] = git
@@ -219,7 +219,7 @@ projects[bibdk_openuserstatus][download][tag] = 7.x-0.13
 projects[bibdk_provider][type] = module
 projects[bibdk_provider][download][type] = git
 projects[bibdk_provider][download][url] = git@github.com:DBCDK/bibdk_provider.git
-projects[bibdk_provider][download][tag] = 7.x-0.24
+projects[bibdk_provider][download][tag] = 7.x-0.25
 
 projects[bibdk_reservation][type] = module
 projects[bibdk_reservation][download][type] = git
@@ -229,7 +229,7 @@ projects[bibdk_reservation][download][tag] = 7.x-0.28
 projects[bibdk_reviews][type] = module
 projects[bibdk_reviews][download][type] = git
 projects[bibdk_reviews][download][url] = git@github.com:DBCDK/bibdk_reviews.git
-projects[bibdk_reviews][download][tag] = 7.x-0.4
+projects[bibdk_reviews][download][tag] = 7.x-0.5
 
 projects[bibdk_sbkopi][type] = module
 projects[bibdk_sbkopi][download][type] = git
