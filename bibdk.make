@@ -209,7 +209,7 @@ projects[bibdk_mypage][download][tag] = 7.x-0.4
 projects[bibdk_openorder][type] = module
 projects[bibdk_openorder][download][type] = git
 projects[bibdk_openorder][download][url] = git@github.com:DBCDK/bibdk_openorder.git
-projects[bibdk_openorder][download][tag] = 7.x-0.12
+projects[bibdk_openorder][download][tag] = 7.x-0.13
 
 projects[bibdk_openuserstatus][type] = module
 projects[bibdk_openuserstatus][download][type] = git
