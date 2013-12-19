@@ -139,7 +139,7 @@ projects[bibdk_cart][download][tag] = 7.x-1.11
 projects[bibdk_custom_search][type] = module
 projects[bibdk_custom_search][download][type] = git
 projects[bibdk_custom_search][download][url] = git@github.com:DBCDK/bibdk_custom_search.git
-projects[bibdk_custom_search][download][tag] = 7.x-0.23.1
+projects[bibdk_custom_search][download][tag] = 7.x-0.23.2
 
 projects[bibdk_custom_search_preprocess][type] = module
 projects[bibdk_custom_search_preprocess][download][type] = git
