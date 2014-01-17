@@ -246,6 +246,10 @@ projects[bibdk_searchhistory][download][type] = git
 projects[bibdk_searchhistory][download][url] = git@github.com:DBCDK/bibdk_searchhistory.git
 projects[bibdk_searchhistory][download][tag] = 7.x-1.5
 
+projects[bibdk_timetrace][type] = module
+projects[bibdk_timetrace][download][type] = git
+projects[bibdk_timetrace][download][url] = git@github.com:DBCDK/bibdk_timetrace.git
+
 projects[bibdk_tracelog][type] = module
 projects[bibdk_tracelog][download][type] = git
 projects[bibdk_tracelog][download][url] = git@github.com:DBCDK/bibdk_tracelog.git
