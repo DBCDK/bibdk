@@ -290,6 +290,11 @@ projects[bibdk_subject_hierarchy][download][type] = git
 projects[bibdk_subject_hierarchy][download][url] = git@github.com:DBCDK/bibdk_subject_hierarchy.git
 projects[bibdk_subject_hierarchy][download][tag] = 7.x-0.2
 
+projects[bibdk_about_author][type] = module
+projects[bibdk_about_author][download][type] = git
+projects[bibdk_about_author][download][url] = git@github.com:DBCDK/bibdk_about_author.git
+;projects[bibdk_about_author][download][tag] = 7.x-0.1
+
 ; THIS MODULE IS ONLY AVAILABLE WITHIN THE DBC A/S ORGANISATION
 ; PLEASE UNCOMMENT AS THE MODULE WONT BE DOWNLOADABLE OUTSIDE DBC A/S
 projects[bibdk_config][type] = module
