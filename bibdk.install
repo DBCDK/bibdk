@@ -52,6 +52,7 @@ function _bibdk_enable_modules() {
       'bibdk_usersettings',
       'bibdk_search_controls',
       'bibdk_subject_hierarchy',
+      'bibdk_about_author',
       'ting_openuserstatus',
       'open_holdingstatus',
       'ding_base',
