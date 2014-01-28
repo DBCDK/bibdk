@@ -164,11 +164,8 @@ projects[bibdk_forsrights][download][tag] = 7.x-0.2
 projects[bibdk_frontend][type] = module
 projects[bibdk_frontend][download][type] = git
 projects[bibdk_frontend][download][url] = git@github.com:DBCDK/bibdk_frontend.git
-<<<<<<< HEAD
 projects[bibdk_frontend][download][tag] = 7.x-0.36+banner
-=======
 projects[bibdk_frontend][download][tag] = 7.x-0.37
->>>>>>> release/7.x-0.41
 
 projects[bibdk_furthersearch][type] = module
 projects[bibdk_furthersearch][download][type] = git
