@@ -224,7 +224,7 @@ projects[bibdk_provider][download][tag] = 7.x-0.26
 projects[bibdk_reservation][type] = module
 projects[bibdk_reservation][download][type] = git
 projects[bibdk_reservation][download][url] = git@github.com:DBCDK/bibdk_reservation.git
-projects[bibdk_reservation][download][tag] = 7.x-0.29
+projects[bibdk_reservation][download][tag] = 7.x-0.30
 
 projects[bibdk_reviews][type] = module
 projects[bibdk_reviews][download][type] = git
