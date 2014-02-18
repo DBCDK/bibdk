@@ -254,6 +254,7 @@ projects[bibdk_subject_hierarchy][download][tag] = 7.x-0.4
 projects[bibdk_timetrace][type] = module
 projects[bibdk_timetrace][download][type] = git
 projects[bibdk_timetrace][download][url] = git@github.com:DBCDK/bibdk_timetrace.git
+projects[bibdk_timetrace][download][tag] = 7.x-0.1
 
 projects[bibdk_tracelog][type] = module
 projects[bibdk_tracelog][download][type] = git
