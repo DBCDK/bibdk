@@ -291,10 +291,20 @@ projects[open_holdingstatus][download][type] = git
 projects[open_holdingstatus][download][url] = git@github.com:DBCDK/open_holdingstatus.git
 projects[open_holdingstatus][download][tag] = 7.x-0.10
 
+projects[open_moreinfo][type] = module
+projects[open_moreinfo][download][type] = git
+projects[open_moreinfo][download][url] = git@github.com:DBCDK/open_moreinfo.git
+projects[open_moreinfo][download][tag] = 7.x-0.1
+
 projects[bibdk_about_author][type] = module
 projects[bibdk_about_author][download][type] = git
 projects[bibdk_about_author][download][url] = git@github.com:DBCDK/bibdk_about_author.git
 projects[bibdk_about_author][download][tag] = 7.x-0.1
+
+projects[bibdk_netarchive][type] = module
+projects[bibdk_netarchive][download][type] = git
+projects[bibdk_netarchive][download][url] = git@github.com:DBCDK/bibdk_netarchive.git
+projects[bibdk_netarchive][download][tag] = 7.x-0.1
 
 ; THIS MODULE IS ONLY AVAILABLE WITHIN THE DBC A/S ORGANISATION
 ; PLEASE UNCOMMENT AS THE MODULE WONT BE DOWNLOADABLE OUTSIDE DBC A/S
