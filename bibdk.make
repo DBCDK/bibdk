@@ -244,7 +244,7 @@ projects[bibdk_search_controls][download][tag] = 7.x-0.5
 projects[bibdk_searchhistory][type] = module
 projects[bibdk_searchhistory][download][type] = git
 projects[bibdk_searchhistory][download][url] = git@github.com:DBCDK/bibdk_searchhistory.git
-projects[bibdk_searchhistory][download][tag] = 7.x-1.8
+projects[bibdk_searchhistory][download][tag] = 7.x-1.9
 
 projects[bibdk_subject_hierarchy][type] = module
 projects[bibdk_subject_hierarchy][download][type] = git
