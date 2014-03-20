@@ -79,6 +79,7 @@ function _bibdk_enable_modules() {
       'worktabs',
       'help',
       'user_alert',
+      'scheduler',
     );
 
   if (!module_enable($module_list)) {
