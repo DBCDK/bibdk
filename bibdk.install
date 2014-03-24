@@ -78,6 +78,8 @@ function _bibdk_enable_modules() {
       'lightbox2',
       'worktabs',
       'help',
+      'user_alert',
+      'scheduler',
     );
 
   if (!module_enable($module_list)) {
