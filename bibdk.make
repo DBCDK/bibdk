@@ -98,7 +98,7 @@ projects[ting_infomedia][download][tag] = 7.x-1.22
 projects[ting_openformat][type] = module
 projects[ting_openformat][download][type] = git
 projects[ting_openformat][download][url] = git@github.com:DBCDK/ting_openformat.git
-projects[ting_openformat][download][tag] = 7.x-0.43
+projects[ting_openformat][download][tag] = 7.x-0.44
 
 projects[ting_openuserstatus][type] = module
 projects[ting_openuserstatus][download][type] = git
@@ -224,7 +224,7 @@ projects[bibdk_provider][download][tag] = 7.x-0.31
 projects[bibdk_reservation][type] = module
 projects[bibdk_reservation][download][type] = git
 projects[bibdk_reservation][download][url] = git@github.com:DBCDK/bibdk_reservation.git
-projects[bibdk_reservation][download][tag] = 7.x-0.35
+projects[bibdk_reservation][download][tag] = 7.x-0.36
 
 projects[bibdk_reviews][type] = module
 projects[bibdk_reviews][download][type] = git
