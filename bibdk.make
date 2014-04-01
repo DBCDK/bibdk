@@ -314,6 +314,12 @@ projects[bibdk_config][download][url] = git.dbc.dk:/repos/bibliotek.dk/bibdk_con
 projects[bibdk_config][download][tag] = 7.x-0.14
 
 
+; --- Non Ding2 or Bibliotek.dk specific
+
+projects[translatable][type] = module
+projects[translatable][download][url] = git@github.com:DBCDK/translatable.git
+projects[translatable][download][tag] = 7.x-1.0
+
 ; --- Contrib modules ---
 
 projects[captcha][subdir] = contrib
