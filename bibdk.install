@@ -66,6 +66,7 @@ function _bibdk_enable_modules() {
       'ding_webtrends',
       'bibdk_netarchive',
       'ding_facetbrowser',
+      'admin_menu',
       'eu_cookie_compliance',
       'microcurl',
       'ting_agency',
