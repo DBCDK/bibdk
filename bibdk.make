@@ -324,7 +324,7 @@ projects[translatable][download][tag] = 7.x-1.0
 
 projects[admin_menu][subdir] = contrib
 projects[admin_menu][type] = module
-projects[admin_menu][version] = 7.x-3.0-rc4
+projects[admin_menu][version] = 3.0-rc4
 
 projects[captcha][subdir] = contrib
 projects[captcha][type] = module
