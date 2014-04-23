@@ -458,3 +458,7 @@ projects[user_alert][patch][] = https://raw2.github.com/DBCDK/patches/master/use
 projects[scheduler][subdir] = contrib
 projects[scheduler][type] = module
 projects[scheduler][version] = 1.1
+
+projects[simple_mobile_redirect][subdir] = contrib
+projects[simple_mobile_redirect][type] = module
+projects[simple_mobile_redirect][version] = 7.x-1.1
