@@ -164,7 +164,8 @@ projects[bibdk_forsrights][download][tag] = 7.x-0.2
 projects[bibdk_frontend][type] = module
 projects[bibdk_frontend][download][type] = git
 projects[bibdk_frontend][download][url] = git@github.com:DBCDK/bibdk_frontend.git
-projects[bibdk_frontend][download][tag] = 7.x-0.45.3
+; projects[bibdk_frontend][download][tag] = 7.x-0.45.3
+projects[bibdk_frontend][download][branch] = feature/1347-mobile_redirect
 
 projects[bibdk_furthersearch][type] = module
 projects[bibdk_furthersearch][download][type] = git
@@ -463,3 +464,7 @@ projects[user_alert][patch][] = https://raw2.github.com/DBCDK/patches/master/use
 projects[scheduler][subdir] = contrib
 projects[scheduler][type] = module
 projects[scheduler][version] = 1.1
+
+projects[simple_mobile_redirect][subdir] = contrib
+projects[simple_mobile_redirect][type] = module
+projects[simple_mobile_redirect][version] = 7.x-1.1

@@ -81,6 +81,7 @@ function _bibdk_enable_modules() {
       'help',
       'user_alert',
       'scheduler',
+      'simple_mobile_redirect',
     );
 
   if (!module_enable($module_list)) {
