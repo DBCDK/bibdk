@@ -286,6 +286,11 @@ projects[microcurl][download][type] = git
 projects[microcurl][download][url] = git@github.com:DBCDK/microcurl.git
 projects[microcurl][download][tag] = 7.x-0.1
 
+projects[open_adhl][type] = module
+projects[open_adhl][download][type] = git
+projects[open_adhl][download][url] = git@github.com:DBCDK/open_adhl.git
+projects[open_adhl][download][branch] = develop
+
 projects[open_holdingstatus][type] = module
 projects[open_holdingstatus][download][type] = git
 projects[open_holdingstatus][download][url] = git@github.com:DBCDK/open_holdingstatus.git
