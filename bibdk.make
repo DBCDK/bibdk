@@ -25,6 +25,14 @@ projects[bibdk_theme][download][tag] = 7.x-0.50.3
 
 ; --- Bibliotek.dk versions of Ding2 modules ---
 
+projects[bibdk_voxb][type] = module
+projects[bibdk_voxb][download][type] = git
+projects[bibdk_voxb][download][url] = git@github.com:DBCDK/bibdk_voxb.git
+
+projects[open_voxb][type] = module
+projects[open_voxb][download][type] = git
+projects[open_voxb][download][url] = git@github.com:DBCDK/open_voxb.git
+
 projects[ding_base][type] = module
 projects[ding_base][download][type] = git
 projects[ding_base][download][url] = git@github.com:DBCDK/ding_base.git
