@@ -23,6 +23,12 @@ projects[bibdk_theme][download][type] = git
 projects[bibdk_theme][download][url] = git@github.com:DBCDK/bibdk_theme.git
 projects[bibdk_theme][download][tag] = 7.x-0.50.3
 
+; administration theme
+projects[bibdk_admin_theme][type] = theme
+projects[bibdk_admin_theme][download][type] = git
+projects[bibdk_admin_theme][download][url] = git@github.com:DBCDK/bibdk_admin_theme.git
+projects[bibdk_admin_theme][download][tag] = 7.x-0.1
+
 ; --- Bibliotek.dk versions of Ding2 modules ---
 
 projects[bibdk_voxb][type] = module
