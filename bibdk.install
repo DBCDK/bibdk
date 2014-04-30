@@ -317,3 +317,12 @@ function bibdk_update_7014(&$sandbox) {
     'bibdk_about_author',
   ));
 }
+
+/**
+ * Enable simple_mobile_redirect
+ */
+function bibdk_update_7015(&$sandbox) {
+  module_enable(array(
+    'simple_mobile_redirect',
+  ));
+}
