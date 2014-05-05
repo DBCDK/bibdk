@@ -81,6 +81,7 @@ function _bibdk_enable_modules() {
       'help',
       'user_alert',
       'scheduler',
+      'simple_mobile_redirect',
     );
 
   if (!module_enable($module_list)) {
@@ -314,5 +315,14 @@ function bibdk_update_7013(&$sandbox) {
 function bibdk_update_7014(&$sandbox) {
   module_enable(array(
     'bibdk_about_author',
+  ));
+}
+
+/**
+ * Enable simple_mobile_redirect
+ */
+function bibdk_update_7015(&$sandbox) {
+  module_enable(array(
+    'simple_mobile_redirect',
   ));
 }
