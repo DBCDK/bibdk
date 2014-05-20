@@ -150,7 +150,7 @@ projects[bibdk_borchk][download][tag] = 7.x-0.7
 projects[bibdk_cart][type] = module
 projects[bibdk_cart][download][type] = git
 projects[bibdk_cart][download][url] = git@github.com:DBCDK/bibdk_cart.git
-projects[bibdk_cart][download][tag] = 7.x-1.17
+projects[bibdk_cart][download][tag] = 7.x-1.17.1
 
 projects[bibdk_custom_search][type] = module
 projects[bibdk_custom_search][download][type] = git
