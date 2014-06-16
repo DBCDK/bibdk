@@ -94,12 +94,12 @@ projects[ding_webtrends][download][tag] = 7.x-0.2+dbc.2
 projects[ting_agency][type] = module
 projects[ting_agency][download][type] = git
 projects[ting_agency][download][url] = git@github.com:DBCDK/ting_agency.git
-projects[ting_agency][download][tag] = 7.x-0.29
+projects[ting_agency][download][tag] = 7.x-0.30
 
 projects[ting-client][type] = module
 projects[ting-client][download][type] = git
 projects[ting-client][download][url] = git@github.com:DBCDK/ting-client.git
-projects[ting-client][download][tag] = 7.x-2.20
+projects[ting-client][download][tag] = 7.x-2.22
 
 projects[ting_covers][type] = module
 projects[ting_covers][download][type] = git
@@ -109,12 +109,12 @@ projects[ting_covers][download][tag] = 7.x-0.22+dbc.12
 projects[ting_infomedia][type] = module
 projects[ting_infomedia][download][type] = git
 projects[ting_infomedia][download][url] = git@github.com:DBCDK/ting_infomedia.git
-projects[ting_infomedia][download][tag] = 7.x-1.23
+projects[ting_infomedia][download][tag] = 7.x-1.24
 
 projects[ting_openformat][type] = module
 projects[ting_openformat][download][type] = git
 projects[ting_openformat][download][url] = git@github.com:DBCDK/ting_openformat.git
-projects[ting_openformat][download][tag] = 7.x-0.47.1
+projects[ting_openformat][download][tag] = 7.x-0.48
 
 projects[ting_openuserstatus][type] = module
 projects[ting_openuserstatus][download][type] = git
@@ -130,7 +130,7 @@ projects[ting_search_carousel][download][tag] = 7.x-0.5+dbc.3
 projects[bibdk_actions][type] = module
 projects[bibdk_actions][download][type] = git
 projects[bibdk_actions][download][url] = git@github.com:DBCDK/bibdk_actions.git
-projects[bibdk_actions][download][tag] = 7.x-0.10
+projects[bibdk_actions][download][tag] = 7.x-0.11
 
 projects[bibdk_adhl][type] = module
 projects[bibdk_adhl][download][type] = git
@@ -150,12 +150,12 @@ projects[bibdk_borchk][download][tag] = 7.x-0.7
 projects[bibdk_cart][type] = module
 projects[bibdk_cart][download][type] = git
 projects[bibdk_cart][download][url] = git@github.com:DBCDK/bibdk_cart.git
-projects[bibdk_cart][download][tag] = 7.x-1.17.1
+projects[bibdk_cart][download][tag] = 7.x-1.18
 
 projects[bibdk_custom_search][type] = module
 projects[bibdk_custom_search][download][type] = git
 projects[bibdk_custom_search][download][url] = git@github.com:DBCDK/bibdk_custom_search.git
-projects[bibdk_custom_search][download][tag] = 7.x-0.28
+projects[bibdk_custom_search][download][tag] = 7.x-0.29
 
 projects[bibdk_custom_search_preprocess][type] = module
 projects[bibdk_custom_search_preprocess][download][type] = git
@@ -170,7 +170,7 @@ projects[bibdk_entity_dependency][download][tag] = 7.x-1.0-alpha1+7-dev-0.1
 projects[bibdk_favourite][type] = module
 projects[bibdk_favourite][download][type] = git
 projects[bibdk_favourite][download][url] = git@github.com:DBCDK/bibdk_favourite.git
-projects[bibdk_favourite][download][tag] = 7.x-0.32
+projects[bibdk_favourite][download][tag] = 7.x-0.33
 
 projects[bibdk_forsrights][type] = module
 projects[bibdk_forsrights][download][type] = git
@@ -200,7 +200,7 @@ projects[bibdk_helpdesk][download][tag] = 7.x-0.16
 projects[bibdk_holdingstatus][type] = module
 projects[bibdk_holdingstatus][download][type] = git
 projects[bibdk_holdingstatus][download][url] = git@github.com:DBCDK/bibdk_holdingstatus.git
-projects[bibdk_holdingstatus][download][tag] = 7.x-0.20
+projects[bibdk_holdingstatus][download][tag] = 7.x-0.21
 
 projects[bibdk_jslog][type] = module
 projects[bibdk_jslog][download][type] = git
@@ -235,12 +235,12 @@ projects[bibdk_openuserstatus][download][tag] = 7.x-0.19
 projects[bibdk_provider][type] = module
 projects[bibdk_provider][download][type] = git
 projects[bibdk_provider][download][url] = git@github.com:DBCDK/bibdk_provider.git
-projects[bibdk_provider][download][tag] = 7.x-0.34
+projects[bibdk_provider][download][tag] = 7.x-0.35
 
 projects[bibdk_reservation][type] = module
 projects[bibdk_reservation][download][type] = git
 projects[bibdk_reservation][download][url] = git@github.com:DBCDK/bibdk_reservation.git
-projects[bibdk_reservation][download][tag] = 7.x-0.39
+projects[bibdk_reservation][download][tag] = 7.x-0.40
 
 projects[bibdk_reviews][type] = module
 projects[bibdk_reviews][download][type] = git
@@ -265,7 +265,7 @@ projects[bibdk_searchhistory][download][tag] = 7.x-1.11
 projects[bibdk_subject_hierarchy][type] = module
 projects[bibdk_subject_hierarchy][download][type] = git
 projects[bibdk_subject_hierarchy][download][url] = git@github.com:DBCDK/bibdk_subject_hierarchy.git
-projects[bibdk_subject_hierarchy][download][tag] = 7.x-0.6
+projects[bibdk_subject_hierarchy][download][tag] = 7.x-0.7
 
 projects[bibdk_timetrace][type] = module
 projects[bibdk_timetrace][download][type] = git
@@ -325,7 +325,7 @@ projects[bibdk_about_author][download][tag] = 7.x-0.3
 projects[bibdk_netarchive][type] = module
 projects[bibdk_netarchive][download][type] = git
 projects[bibdk_netarchive][download][url] = git@github.com:DBCDK/bibdk_netarchive.git
-projects[bibdk_netarchive][download][tag] = 7.x-0.3
+projects[bibdk_netarchive][download][tag] = 7.x-0.4
 
 ; THIS MODULE IS ONLY AVAILABLE WITHIN THE DBC A/S ORGANISATION
 ; PLEASE UNCOMMENT AS THE MODULE WONT BE DOWNLOADABLE OUTSIDE DBC A/S
@@ -475,7 +475,7 @@ projects[user_alert][subdir] = contrib
 projects[user_alert][type] = module
 projects[user_alert][version] = 1.10
 ;projects[user_alert][patch][] = https://raw2.github.com/DBCDK/patches/master/user_alert_check_for_element_before_ajax.patch
-projects[user_alert][patch][] = https://raw.githubusercontent.com/DBCDK/patches/master/user_alert_no_ajax_at_all.patch
+projects[user_alert][patch][] = https://raw.githubusercontent.com/DBCDK/patches/master/user_alert_almost_no_ajax.patch
 
 
 projects[scheduler][subdir] = contrib
