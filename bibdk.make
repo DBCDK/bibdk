@@ -130,7 +130,7 @@ projects[ting_search_carousel][download][tag] = 7.x-0.5+dbc.3
 projects[bibdk_actions][type] = module
 projects[bibdk_actions][download][type] = git
 projects[bibdk_actions][download][url] = git@github.com:DBCDK/bibdk_actions.git
-projects[bibdk_actions][download][tag] = 7.x-0.11
+projects[bibdk_actions][download][tag] = 7.x-0.12
 
 projects[bibdk_adhl][type] = module
 projects[bibdk_adhl][download][type] = git
@@ -180,7 +180,7 @@ projects[bibdk_forsrights][download][tag] = 7.x-0.2
 projects[bibdk_frontend][type] = module
 projects[bibdk_frontend][download][type] = git
 projects[bibdk_frontend][download][url] = git@github.com:DBCDK/bibdk_frontend.git
-projects[bibdk_frontend][download][tag] = 7.x-0.49
+projects[bibdk_frontend][download][tag] = 7.x-0.50
 
 projects[bibdk_furthersearch][type] = module
 projects[bibdk_furthersearch][download][type] = git
