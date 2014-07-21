@@ -54,7 +54,7 @@ projects[ding_entity][download][tag] = 7.x-0.7+dbc.3
 projects[ding_facetbrowser][type] = module
 projects[ding_facetbrowser][download][type] = git
 projects[ding_facetbrowser][download][url] = git@github.com:DBCDK/ding_facetbrowser.git
-projects[ding_facetbrowser][download][tag] = 7.x-0.13+dbc.16
+projects[ding_facetbrowser][download][branch] = feature/1401-localstorage
 
 projects[ding_frontpage][type] = module
 projects[ding_frontpage][download][type] = git
@@ -99,7 +99,7 @@ projects[ting_agency][download][tag] = 7.x-0.31
 projects[ting-client][type] = module
 projects[ting-client][download][type] = git
 projects[ting-client][download][url] = git@github.com:DBCDK/ting-client.git
-projects[ting-client][download][tag] = 7.x-2.22
+projects[ting-client][download][branch] = feature/1401-localstorage
 
 projects[ting_covers][type] = module
 projects[ting_covers][download][type] = git
@@ -114,7 +114,7 @@ projects[ting_infomedia][download][tag] = 7.x-1.25
 projects[ting_openformat][type] = module
 projects[ting_openformat][download][type] = git
 projects[ting_openformat][download][url] = git@github.com:DBCDK/ting_openformat.git
-projects[ting_openformat][download][tag] = 7.x-0.50
+projects[ting_openformat][download][branch] = feature/1401-localstorage
 
 projects[ting_openuserstatus][type] = module
 projects[ting_openuserstatus][download][type] = git
