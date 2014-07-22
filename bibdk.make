@@ -355,6 +355,7 @@ projects[ctools][subdir] = contrib
 projects[ctools][type] = module
 projects[ctools][version] = 1.2
 projects[ctools][patch][] = https://raw.github.com/DBCDK/drush-features-export-page-variant/master/ctools-page_manager_load_task_handlers_alter.patch
+projects[ctools][patch][] = https://www.drupal.org/files/issues/jquery_object_always_true_whether_empty_or_not.diff
 
 projects[date][subdir] = contrib
 projects[date][type] = module
