@@ -327,6 +327,11 @@ projects[bibdk_netarchive][download][type] = git
 projects[bibdk_netarchive][download][url] = git@github.com:DBCDK/bibdk_netarchive.git
 projects[bibdk_netarchive][download][tag] = 7.x-0.5
 
+projects[bibdk_newsroom][type] = module
+projects[bibdk_newsroom][download][type] = git
+projects[bibdk_newsroom][download][url] = git@github.com:DBCDK/bibdk_newsroom.git
+projects[bibdk_newsroom][download][tag] = 7.x-0.1
+
 ; THIS MODULE IS ONLY AVAILABLE WITHIN THE DBC A/S ORGANISATION
 ; PLEASE UNCOMMENT AS THE MODULE WONT BE DOWNLOADABLE OUTSIDE DBC A/S
 projects[bibdk_config][type] = module
