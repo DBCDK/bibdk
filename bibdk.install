@@ -327,3 +327,12 @@ function bibdk_update_7015(&$sandbox) {
     'simple_mobile_redirect',
   ));
 }
+
+/**
+ * Enable simple_mobile_redirect
+ */
+function bibdk_update_7016(&$sandbox) {
+  module_enable(array(
+    'bibdk_newsroom',
+  ));
+}
