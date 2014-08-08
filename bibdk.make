@@ -39,7 +39,7 @@ projects[bibdk_voxb][download][tag] = 7.x-0.1
 projects[open_voxb][type] = module
 projects[open_voxb][download][type] = git
 projects[open_voxb][download][url] = git@github.com:DBCDK/open_voxb.git
-projects[open_voxb][download][tag] = 7.x-0.2
+projects[open_voxb][download][tag] = 7.x-0.1.2
 
 projects[ding_base][type] = module
 projects[ding_base][download][type] = git
