@@ -53,6 +53,7 @@ function _bibdk_enable_modules() {
       'bibdk_search_controls',
       'bibdk_subject_hierarchy',
       'bibdk_about_author',
+      'bibdk_newsroom',
       'ting_openuserstatus',
       'open_holdingstatus',
       'open_moreinfo',
@@ -324,5 +325,14 @@ function bibdk_update_7014(&$sandbox) {
 function bibdk_update_7015(&$sandbox) {
   module_enable(array(
     'simple_mobile_redirect',
+  ));
+}
+
+/**
+ * Enable simple_mobile_redirect
+ */
+function bibdk_update_7016(&$sandbox) {
+  module_enable(array(
+    'bibdk_newsroom',
   ));
 }
