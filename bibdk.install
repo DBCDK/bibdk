@@ -336,3 +336,12 @@ function bibdk_update_7016(&$sandbox) {
     'bibdk_newsroom',
   ));
 }
+
+/**
+ * Enable Advacned Aggregate
+ */
+function bibdk_update_7017(&$sandbox) {
+  module_enable(array(
+    'advagg',
+  ));
+}
