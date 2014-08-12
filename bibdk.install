@@ -83,6 +83,11 @@ function _bibdk_enable_modules() {
       'user_alert',
       'scheduler',
       'simple_mobile_redirect',
+      //Advanced aggregation
+      'advagg',
+      'advagg_css_compress',
+      'advagg_js_compress',
+      'advagg_mod',
     );
 
   if (!module_enable($module_list)) {
@@ -338,10 +343,13 @@ function bibdk_update_7016(&$sandbox) {
 }
 
 /**
- * Enable Advacned Aggregate
+ * Enable Advacned Aggregate modules
  */
 function bibdk_update_7017(&$sandbox) {
   module_enable(array(
     'advagg',
+    'advagg_css_compress',
+    'advagg_js_compress',
+    'advagg_mod',
   ));
 }
