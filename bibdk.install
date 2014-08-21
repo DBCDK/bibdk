@@ -54,6 +54,7 @@ function _bibdk_enable_modules() {
       'bibdk_subject_hierarchy',
       'bibdk_about_author',
       'bibdk_newsroom',
+      'cql_strict_parser',
       'ting_openuserstatus',
       'open_holdingstatus',
       'open_moreinfo',
@@ -334,5 +335,14 @@ function bibdk_update_7015(&$sandbox) {
 function bibdk_update_7016(&$sandbox) {
   module_enable(array(
     'bibdk_newsroom',
+  ));
+}
+
+/**
+ * Enable cql_parser
+ */
+function bibdk_update_7017(&$sandbox) {
+  module_enable(array(
+    'cql_strict_parser',
   ));
 }
