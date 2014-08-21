@@ -458,6 +458,10 @@ projects[securepages][patch][] = http://drupal.org/files/securepages_1226702_sec
 ;projects[services][type] = module
 ;projects[services][version] = 3.3
 
+projects[shortcode][subdir] = contrib
+projects[shortcode][type] = module
+projects[shortcode][version] = 2.1
+
 projects[strongarm][subdir] = contrib
 projects[strongarm][type] = module
 projects[strongarm][version] = 2.0
