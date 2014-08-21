@@ -365,3 +365,12 @@ function bibdk_update_7017(&$sandbox) {
     'advagg_mod',
   ));
 }
+
+/**
+ * Enable shortcode
+ */
+function bibdk_update_7018(&$sandbox) {
+  module_enable(array(
+    'shortcode',
+  ));
+}
