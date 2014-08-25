@@ -22,68 +22,73 @@ function bibdk_install() {
 
 //TODO instead of enabling modules as part of the install hook modules should be moved to the .info file as dependecies
 function _bibdk_enable_modules() {
-  $module_list =
-    array(
-      'bibdk_actions',
-      'bibdk_cart',
-      'bibdkcaptcha',
-      'bibdk_borchk',
-      'bibdk_behaviour',
-      'bibdk_config',
-      'bibdk_custom_search',
-      'bibdk_custom_search_preprocess',
-      'bibdk_favourite',
-      'bibdk_frontend',
-      'bibdk_furthersearch',
-      'bibdk_help',
-      'bibdk_helpdesk',
-      'bibdk_linkme',
-      'bibdk_openorder',
-      'bibdk_provider',
-      'bibdk_reservation',
-      'bibdk_sbkopi',
-      'bibdk_searchhistory',
-      'bibdk_vejviser',
-      'bibdk_holdingstatus',
-      'bibdk_mypage',
-      'bibdk_reviews',
-      'bibdk_forsrights',
-      'bibdk_openuserstatus',
-      'bibdk_usersettings',
-      'bibdk_search_controls',
-      'bibdk_subject_hierarchy',
-      'bibdk_about_author',
-      'bibdk_newsroom',
-      'ting_openuserstatus',
-      'open_holdingstatus',
-      'open_moreinfo',
-      'ding_base',
-      'ding_entity',
-      'ding_persistent_login',
-      'ding_popup',
-      'ding_provider',
-      'ding_user',
-      'ding_wayf',
-      'ding_webtrends',
-      'bibdk_netarchive',
-      'ding_facetbrowser',
-      'admin_menu',
-      'eu_cookie_compliance',
-      'microcurl',
-      'ting_agency',
-      'ting_client',
-      'ting_openformat',
-      'ting_covers',
-      'ting_infomedia',
-      'ting_search_carousel',
-      'i18n_variable',
-      'lightbox2',
-      'worktabs',
-      'help',
-      'user_alert',
-      'scheduler',
-      'simple_mobile_redirect',
-    );
+  $module_list = array(
+    'bibdk_actions',
+    'bibdk_cart',
+    'bibdkcaptcha',
+    'bibdk_borchk',
+    'bibdk_behaviour',
+    'bibdk_config',
+    'bibdk_custom_search',
+    'bibdk_custom_search_preprocess',
+    'bibdk_favourite',
+    'bibdk_frontend',
+    'bibdk_furthersearch',
+    'bibdk_help',
+    'bibdk_helpdesk',
+    'bibdk_linkme',
+    'bibdk_openorder',
+    'bibdk_provider',
+    'bibdk_reservation',
+    'bibdk_sbkopi',
+    'bibdk_searchhistory',
+    'bibdk_vejviser',
+    'bibdk_holdingstatus',
+    'bibdk_mypage',
+    'bibdk_reviews',
+    'bibdk_forsrights',
+    'bibdk_openuserstatus',
+    'bibdk_usersettings',
+    'bibdk_search_controls',
+    'bibdk_subject_hierarchy',
+    'bibdk_about_author',
+    'bibdk_newsroom',
+    'cql_strict_parser',
+    'ting_openuserstatus',
+    'open_holdingstatus',
+    'open_moreinfo',
+    'ding_base',
+    'ding_entity',
+    'ding_persistent_login',
+    'ding_popup',
+    'ding_provider',
+    'ding_user',
+    'ding_wayf',
+    'ding_webtrends',
+    'bibdk_netarchive',
+    'ding_facetbrowser',
+    'admin_menu',
+    'eu_cookie_compliance',
+    'microcurl',
+    'ting_agency',
+    'ting_client',
+    'ting_openformat',
+    'ting_covers',
+    'ting_infomedia',
+    'ting_search_carousel',
+    'i18n_variable',
+    'lightbox2',
+    'worktabs',
+    'help',
+    'user_alert',
+    'scheduler',
+    'simple_mobile_redirect',
+    //Advanced aggregation
+    'advagg',
+    'advagg_css_compress',
+    'advagg_js_compress',
+    'advagg_mod',
+  );
 
   if (!module_enable($module_list)) {
     die('A module (' . current($module_list) . ' ) present in array \'$module_list\' in file \'bibdk.install\' was not found. Install process aborted.');
@@ -116,8 +121,15 @@ function _bibdk_set_permissions_and_roles() {
   variable_set('user_register', USER_REGISTER_VISITORS);
 
   // Enable default permissions for system roles.
-  user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array('access content', 'search content'));
-  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array('access content', 'search content', 'cancel account'));
+  user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array(
+    'access content',
+    'search content'
+  ));
+  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array(
+    'access content',
+    'search content',
+    'cancel account'
+  ));
 
   // Create a default role for site administrators, with all available permissions assigned.
   $admin_role = new stdClass();
@@ -141,44 +153,37 @@ function _bibdk_set_variables() {
   // Disable configurable timezones for users
   variable_set('configurable_timezones', 0);
   $ding_facetbrowser_facets = array(
-    0 => Array
-    (
+    0 => Array(
       'name' => 'facet.language',
       'title' => 'Sprog',
       'weight' => 10,
     ),
-    1 => Array
-    (
+    1 => Array(
       'name' => 'facet.acSource',
       'title' => 'Kilde',
       'weight' => 12,
     ),
-    2 => Array
-    (
+    2 => Array(
       'name' => 'facet.type',
       'title' => 'Materialeype',
       'weight' => 14,
     ),
-    3 => Array
-    (
+    3 => Array(
       'name' => 'facet.subject',
       'title' => 'Emne',
       'weight' => 16,
     ),
-    4 => Array
-    (
+    4 => Array(
       'name' => 'facet.date',
       'title' => 'År',
       'weight' => 18,
     ),
-    5 => Array
-    (
+    5 => Array(
       'name' => 'facet.creator',
       'title' => 'Forfatter',
       'weight' => 20,
     ),
-    6 => Array
-    (
+    6 => Array(
       'name' => 'facet.category',
       'title' => 'Kategori',
       'weight' => 22,
@@ -194,8 +199,14 @@ function _bibdk_set_variables() {
  * allow anonymous and authenticated users to search and view published content
  */
 function bibdk_update_7001(&$sandbox) {
-  user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array('access content', 'search content'));
-  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array('access content', 'search content'));
+  user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array(
+    'access content',
+    'search content'
+  ));
+  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array(
+    'access content',
+    'search content'
+  ));
 }
 
 function bibdk_update_7002(&$sandbox) {
@@ -207,7 +218,11 @@ function bibdk_update_7002(&$sandbox) {
 }
 
 function bibdk_update_7003(&$sandbox) {
-  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array('access content', 'search content', 'cancel account'));
+  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array(
+    'access content',
+    'search content',
+    'cancel account'
+  ));
 }
 
 /**
@@ -334,5 +349,28 @@ function bibdk_update_7015(&$sandbox) {
 function bibdk_update_7016(&$sandbox) {
   module_enable(array(
     'bibdk_newsroom',
+  ));
+}
+
+/**
+ * - Enable cql_parser
+ * - Enable Advacned Aggregate modules
+ */
+function bibdk_update_7017(&$sandbox) {
+  module_enable(array(
+    'cql_strict_parser',
+    'advagg',
+    'advagg_css_compress',
+    'advagg_js_compress',
+    'advagg_mod',
+  ));
+}
+
+/**
+ * Enable shortcode
+ */
+function bibdk_update_7018(&$sandbox) {
+  module_enable(array(
+    'shortcode',
   ));
 }
