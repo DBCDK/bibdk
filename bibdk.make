@@ -335,7 +335,7 @@ projects[open_moreinfo][download][tag] = 7.x-0.3
 projects[cql_strict_parser][type] = module
 projects[cql_strict_parser][download][type] = git
 projects[cql_strict_parser][download][url] = git@github.com:DBCDK/cql_strict_parser.git
-projects[open_holdingstatus][download][tag] = 7.x-0.2
+projects[cql_strict_parser][download][tag] = 7.x-0.2
 
 
 ; THIS MODULE IS ONLY AVAILABLE WITHIN THE DBC A/S ORGANISATION
