@@ -86,6 +86,7 @@ projects[ding_webtrends][download][type] = git
 projects[ding_webtrends][download][url] = git@github.com:DBCDK/ding_webtrends.git
 projects[ding_webtrends][download][tag] = 7.x-0.2+dbc.2
 
+
 projects[ding_webtrends_2014][type] = module
 projects[ding_webtrends_2014][download][type] = git
 projects[ding_webtrends_2014][download][url] = git@github.com:DBCDK/ding_webtrends_2014.git
