@@ -1,0 +1,74 @@
+<?php
+/**
+* @file
+* Tests the functionality of bibdk user help content types.
+*/
+
+class BibdkHelpTestCase extends DrupalWebTestCase {
+  protected $privileged_user;
+
+  public static function getInfo() {
+    return array(
+      'name' => 'Bibdk help',
+      'description' => 'Bibdk help test.',
+      'group' => 'bibliotek.dk',
+    );
+  }
+
+  public function setUp() {
+
+    // Enable any modules required for the test
+    parent::setUp('bibdk_help', 'search');
+
+    menu_rebuild();
+
+    // Create and log in our privileged user.
+    $this->privileged_user = $this->drupalCreateUser(array(
+      'create userhelp content',
+      'search content',
+      ));
+    $this->drupalLogin($this->privileged_user);
+
+  }
+
+  /**
+    * Test creation and search of a bibliotek.dk help node.
+    */
+  public function testBibdkHelp() {
+    // Create node to edit.
+    $edit = array();
+    $node_title = $edit['title'] = $this->randomName(8);
+    $node_nody = $edit["body[und][0][value]"] = $this->randomName(16);
+    $this->drupalPost('node/add/userhelp', $edit, t('Save'));
+    $this->assertText(t('User help @title has been created.', array('@title' => $edit['title'])));
+
+    // Test that the '/overlay/help' panel page is available, and the node is in the list.
+    // NB: The list don't show on the page in the test setup.
+    // $this->drupalGet('overlay/help');
+    // $this->assertText($node_title, t('The node title "@node_title" was found', array('@node_title' => $node_title)));
+
+    // Test that this page has a a search block.
+    $this->drupalGet('overlay/help');
+    $this->assertFieldByName(
+      'search_block_form'
+    );
+
+    // Test that there is a 'Search' button.
+    $this->assertText('Search', t('The "Search" button was found'));
+
+    // Check if search module is installed
+    $exists = module_exists('search');
+    $this->assertTrue($exists, 'Search is enabled');
+
+    // run bibdk_help_update_index
+    $this->cronRun();
+
+    // Test that search on node title return a list with the node.
+    $edit = array();
+    $edit['search_help'] = $node_title;
+    $this->drupalPost('overlay/help', $edit, t('Search'), array(), array(), 'bibdk-help-search-form', NULL);
+    $this->assertNoText('Search returned no results.', t('Search returned a search result'));
+
+  }
+
+}
