@@ -1,0 +1,216 @@
+<?php
+
+class BibdkProviderWAYFTestCase extends DrupalWebTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => 'bibdk provider wayf test',
+      'description' => 'Test bibdk provider wayf functionality.',
+      'group' => 'Bibliotek.dk - Provider',
+    );
+  }
+
+  function setUp() {
+    parent::setup(array('bibdk_provider', 'ding_user', 'ding_wayf', 'wayf_test_gateway', 'bibdk_webservice'));
+    //variable_set('bibdk_provider_webservice_url', 'http://guesstimate/~pjo/webservices/OpenUserInfo/trunk/server.php');
+    variable_set('bibdk_provider_webservice_url', $this->getAbsoluteUrl('bibdk_webservice'));
+    variable_set('bibdk_provider_security_code', 'securityCode');
+    variable_set('user_register', USER_REGISTER_VISITORS);
+  }
+
+  public function testRunner() {
+    module_load_include('BibdkUser.php', 'bibdk_provider');
+    BibdkUser::instance()->delete('dummy@dbc.dk');
+    $this->testWayfNotActivated();
+    $this->setupConfiguration();
+    $this->testWayfIsActivated();
+    $this->testNewUser();
+    $this->testExistingUserWithBinding();
+    $this->testExistingUserNoBind();
+    $this->testExistingUserNoEmail();
+    $this->testWayfUserChangeEmailMessage();
+  }
+
+  private function testNewUser() {
+    $mail = 'new_user@dbc.dk';
+    $wayf_id = 'WAYF-new-ID';
+
+    $this->drupalGet('wayf/login', array(
+      'query' => array(
+        'idp' => 'nemlogin',
+        'destination' => 'user/login,'
+      )));
+    $this->assertUrl($this->getAbsoluteUrl('wayf/gateway') . '?returnUrl=' . $this->getAbsoluteUrl('/') . 'wayf/login&idp=nemlogin', array(), t('User is redirected to gateway'));
+    $this->drupalPost(null, array('mail[]' => $mail, 'eduPersonTargetedID[]' => $wayf_id), 'accept');
+
+    // check if acceptpage is ok
+    $this->assertUrl('wayf/accept');
+    $this->assertText(t('You have been authenticated by wayf, but you either have no account or has not yet accepted wayfbinding'));
+    $this->assertField('accept');
+    $this->assertField('mail');
+    // no fields set
+    $this->drupalPost(null, array(), 'Update/create account');
+    $this->assertText(t('You must accept binding your bibliotek.dk username with wayf id'));
+
+    // Accept is set. Mail not set
+    $edit['accept'] = TRUE;
+    $edit['mail'] = '';
+    $this->drupalPost(null, $edit, 'Update/create account');
+    $this->assertText(t('E-mail address field is required.'));
+
+    // Accept is set. Mail invalid
+    $edit['mail'] = 'test@dbc';
+    $this->drupalPost(null, $edit, 'Update/create account');
+    $this->assertNoText(t('E-mail address field is required.'));
+    $this->assertText(t('You need to provide a valid email address'));
+
+    // Accept is set. Mail invalid
+    $edit['mail'] = 'new_user@dbc.dk';
+    $this->drupalPost(null, $edit, 'Update/create account');
+    $this->assertNoText(t('E-mail address field is required.'));
+    $this->assertNoText(t('You need to provide a valid email address'));
+    $this->assertText(t('A welcome message with further instructions has been sent to your e-mail address.'), t('new account have been created'));
+    $this->assertUrl('<front>');
+
+    $this->assertMail('subject', t('Account details for ' . $mail . ' at Drupal'));
+    $this->assertMail('to', $mail);
+    $this->assertMail('id', 'user_register_no_approval_required');
+
+
+    // test user have been created
+    $users = user_load_multiple(array(), array('mail' => $mail, 'status' => '1'));
+    $this->assertTrue(count($users) == 1, 'non validated user have been created');
+  }
+
+  private function testWayfNotActivated() {
+    $this->drupalGet('user/login');
+    $this->assertNoLinkByHref('wayf/login', t('Nemlogin found'));
+  }
+
+  private function testWayfIsActivated() {
+    $this->drupalGet('user/login');
+    $this->assertLinkByHref('wayf/login', 0, t('Nemlogin found'));
+    $this->assertLinkByHref('wayf/login', 1, t('wayf found'));
+  }
+
+
+  private function testExistingUserWithBinding() {
+    //test existing user
+    $this->setupConfiguration();
+    $this->drupalLogout();
+    // login with nemlogin
+    $this->drupalGet('wayf/login', array(
+      'query' => array(
+        'idp' => 'nemlogin',
+        'destination' => 'user/login,'
+      )));
+    $this->assertUrl($this->getAbsoluteUrl('wayf/gateway') . '?returnUrl=' . $this->getAbsoluteUrl('/') . 'wayf/login&idp=nemlogin', array(), t('User is redirected to gateway'));
+    // At the moment bibdk_provider does not redirect properly without the bibdk_frontend module
+    $this->drupalPost(null, array('mail[]' => 'existing_user@dbc.dk'), 'accept');
+
+    // test if we are logged in
+    $this->drupalGet('');
+    $this->assertLink(t('My account'));
+    $this->assertLink(t('Log out'));
+    $this->clickLink('Log out');
+  }
+
+  private function testExistingUserNoBind() {
+    $mail = 'existing_user_no_bind@dbc.dk';
+
+    // login with nemlogin
+    $this->drupalGet('wayf/login', array(
+      'query' => array(
+        'idp' => 'nemlogin',
+        'destination' => 'user/login,'
+      )));
+    $this->assertUrl($this->getAbsoluteUrl('wayf/gateway') . '?returnUrl=' . $this->getAbsoluteUrl('/') . 'wayf/login&idp=nemlogin', array(), t('User is redirected to gateway'));
+    $this->drupalPost(null, array('mail[]' => $mail, 'eduPersonTargetedID[]' => 'WAYF-new-ID'), 'accept');
+    // Test we end up at the right url
+    $this->assertUrl('wayf/accept');
+    // Accept
+    $edit['accept'] = TRUE;
+    $edit['mail'] = $mail;
+    $this->drupalPost(null, $edit, 'Update/create account');
+
+    // Mail have been send
+    $this->assertText(t('Confirmation mail have been sent'));
+
+    $this->assertMail('subject', t('confirm wayf binding for ' . $mail . ' at Drupal'));
+    $this->assertMail('to', $mail);
+    $this->assertMail('id', 'bibdk_provider_wayf_confirm_user');
+    // generate confirm - link
+    $account = user_load_by_mail($mail);
+    $account->data['accept_wayf']['pass'] = 'WAYF-test-ID-new-bind';
+    $account->data['wayf_login']['eduPersonTargetedID'] = array('WAYF-test-ID-new-bind');
+    user_save($account);
+    $timestamp = REQUEST_TIME;
+    // Validate account
+    $url = url("user/wayf/$account->uid/confirm/$timestamp/" . user_pass_rehash($account->pass, $timestamp, $account->login), array('absolute' => TRUE));
+    $this->drupalGet("user/wayf/$account->uid/confirm/$timestamp/" . user_pass_rehash($account->pass, $timestamp, $account->login));
+    $this->drupalPost(null, array(), t('Log in'));
+    $this->assertLink(t('My account'), 0, t('user have been logged in'));
+
+    // log out
+    $this->clickLink(t('Log out'));
+    $this->assertText(t('User login'), t('user is logged out'));
+
+  }
+
+  private function testExistingUserNoEmail() {
+    //test existing user
+    $this->setupConfiguration();
+    $this->drupalLogout();
+    // login with nemlogin
+    $this->drupalGet('wayf/login', array(
+      'query' => array(
+        'idp' => 'nemlogin',
+        'destination' => 'user/login,'
+      )));
+    $this->assertUrl($this->getAbsoluteUrl('wayf/gateway') . '?returnUrl=' . $this->getAbsoluteUrl('/') . 'wayf/login&idp=nemlogin', array(), t('User is redirected to gateway'));
+    // At the moment bibdk_provider does not redirect properly without the bibdk_frontend module
+    $this->drupalPost(null, array('mail[]' => ''), 'accept');
+
+    // test if we are logged in
+    $this->drupalGet('');
+    $this->assertLink(t('My account'));
+    $this->assertLink(t('Log out'));
+    $this->clickLink('Log out');
+  }
+
+
+ private function testWayfUserChangeEmailMessage() {
+   //test existing user
+   $this->setupConfiguration();
+   $this->drupalLogout();
+   // login with nemlogin
+   $this->drupalGet('wayf/login', array(
+     'query' => array(
+       'idp' => 'nemlogin',
+       'destination' => 'user/login,'
+     )));
+   $this->assertUrl($this->getAbsoluteUrl('wayf/gateway') . '?returnUrl=' . $this->getAbsoluteUrl('/') . 'wayf/login&idp=nemlogin', array(), t('User is redirected to gateway'));
+   // At the moment bibdk_provider does not redirect properly without the bibdk_frontend module
+   $this->drupalPost(null, array('mail[]' => 'dummy@dbc.dk'), 'accept');
+   $this->assertUrl($this->getAbsoluteUrl('wayf/accept'));
+   $this->assertText('This wayf_id is already connected to a different email. If you accept this connection, wayf_id will be bound to new email');
+  }
+
+
+  private function setupConfiguration() {
+    $securepages = array();
+    $ding_wayf = array(
+      'ding_wayf[installdir]' => drupal_get_path('module', 'ding_wayf'),
+      'ding_wayf[redirect]' => 'user',
+      'ding_wayf[wayflogin]' => 1,
+      'ding_wayf[nemlogin]' => 1,
+      'ding_wayf[gatewayf]' => $this->getAbsoluteUrl('wayf/gateway'),
+    );
+    $account = $this->drupalCreateUser(array('administer site configuration', 'configure wayf'));
+    $this->drupalLogin($account);
+    $this->drupalPost('admin/config/system/securepages', $securepages, t('Save configuration'));
+    $this->drupalPost('admin/config/ding/wayf', $ding_wayf, t('Save configuration'));
+    $this->drupalLogout();
+  }
+}
+

@@ -1,0 +1,301 @@
+<?php
+
+/**
+ * @file
+ * Test bibdk user provider implementation.
+ *
+ * Only testing error messages when log in fails.
+ *
+ * @TODO: testing all types of requests against webservice mockup.
+ */
+
+
+class BibdkUserProviderImplementationTestCase extends DrupalWebTestCase {
+  public static function getInfo() {
+    return array(
+      'name' => 'bibdk provider webtest',
+      'description' => 'Test bibdk user provider functionality.',
+      'group' => 'Bibliotek.dk - Provider',
+    );
+  }
+
+  function setUp() {
+    parent::setup(array('bibdk_provider', 'bibdk_webservice'));
+    variable_set('bibdk_provider_webservice_url', $this->getAbsoluteUrl('bibdk_webservice'));
+    variable_set('bibdk_provider_security_code', 'securityCode');
+  }
+
+  function getGoodUser() {
+    return array('name' => 'dummy@dbc.dk', 'pass' => 'secretPassword');
+  }
+
+  /**
+   * Test runner
+   *
+   * Methods called here must be private otherwise they will run twice if name start with 'test'
+   */
+  function testRunner() {
+    $this->testCorrectLogin();
+    $this->testMissingPartOfUserCredentials();
+    $this->testCapsLockMaybeOn();
+    $this->testPasswordIsPINCode();
+    $this->testUsernameNotEmailAddress();
+  }
+
+  private function testCorrectLogin() {
+    $this->drupalPost('user', array('name' => 'dummy@dbc.dk', 'pass' => 'secretPassword'), t('Log in'));
+    $this->assertNoText('Log in');
+    $this->drupalLogout();
+  }
+
+  /**
+   * Validate that login messages are present or not
+   */
+  private function validateLoginMessages($credentials) {
+    foreach ($credentials as $c) {
+      $msgs = $c['msgs'];
+      $caller = array('file' => __FILE__, 'function' => __CLASS__ . '->' . $c['function'] . '()', 'line' => $c['line']);
+      unset($c['msgs'], $c['function'], $c['line']);
+      $this->drupalPost('user', $c, t('Log in'));
+
+      // Taken from DrupalWebTestCase->assertText()
+      if ($this->plainTextContent === FALSE) {
+        $this->plainTextContent = filter_xss($this->drupalGetContent(), array());
+      }
+
+      $this->assertText('Log in');
+
+      foreach ($msgs as $msg => $positiveAssert) {
+        $this->assert($positiveAssert != (strpos($this->plainTextContent, $msg) === FALSE), t('!found: !msg', array('!msg' => $msg, '!found' => ($positiveAssert ? t('Found') : t('Not found')))), 'Other', $caller);
+      }
+    }
+  }
+
+  /**
+   * Display error message if username and/or password are missing.
+   * This is Drupal default behaviour.
+   */
+  private function testMissingPartOfUserCredentials() {
+    $missing_username = t("Username field is required.");
+    $missing_password = t("Password field is required.");
+    $credentials = array(
+      array( // acceptable username and password, but not valid
+        'name' => 'dummy@dbc.dk',
+        'pass' => 'test',
+        'msgs' => array($missing_username => FALSE, $missing_password => FALSE, ),
+				'line' => __LINE__ - 1,
+				'function' => __FUNCTION__,
+        ),
+      array( // username and password both empty
+        'name' => '',
+        'pass' => '',
+        'msgs' => array($missing_username => TRUE, $missing_password => TRUE, ),
+				'line' => __LINE__ - 1,
+				'function' => __FUNCTION__,
+        ),
+      array( // missing password
+        'name' => 'dummy@dbc.dk',
+        'pass' => '',
+        'msgs' => array($missing_username => FALSE, $missing_password => TRUE, ),
+				'line' => __LINE__ - 1,
+				'function' => __FUNCTION__,
+        ),
+      array( // missing username
+        'name' => '',
+        'pass' => 'test',
+        'msgs' => array($missing_username => TRUE, $missing_password => FALSE, ),
+				'line' => __LINE__ - 1,
+				'function' => __FUNCTION__,
+        ),
+    );
+
+    $this->validateLoginMessages($credentials);
+  }
+
+  /**
+   * Display warning message if username and/or password are capitalized possibly due to caps lock is on.
+   */
+  private function testCapsLockMaybeOn() {
+    $warning = t('Remember to turn off caps lock.');
+    $credentials = array(
+      array( // username and password have no capitals
+        'name' => 'dummy@dbc.dk',
+        'pass' => 'test',
+        'msgs' => array($warning => FALSE, ),
+				'line' => __LINE__ - 1,
+				'function' => __FUNCTION__,
+      ),
+      array( // username capitalized
+        'name' => 'DUMMY@DBC.DK',
+        'pass' => 'test',
+        'msgs' => array($warning => TRUE, ),
+				'line' => __LINE__ - 1,
+				'function' => __FUNCTION__,
+      ),
+      array( // password capitalized
+        'name' => 'dummy@dbc.dk',
+        'pass' => 'TEST',
+        'msgs' => array($warning => TRUE, ),
+				'line' => __LINE__ - 1,
+				'function' => __FUNCTION__,
+      ),
+      array( // password not entirely capitalized
+        'name' => 'dummy@dbc.dk',
+        'pass' => 'TeST',
+        'msgs' => array($warning => FALSE, ),
+				'line' => __LINE__ - 1,
+				'function' => __FUNCTION__,
+      ),
+      array( // password capitalized
+        'name' => 'dummy@dbc.dk',
+        'pass' => 'T3ST',
+        'msgs' => array($warning => TRUE, ),
+				'line' => __LINE__ - 1,
+				'function' => __FUNCTION__,
+      ),
+    );
+
+    $this->validateLoginMessages($credentials);
+  }
+
+  /**
+   * Display warning message if password is four or five digit - possible PIN code for local library.
+   */
+  private function testPasswordIsPINCode() {
+    $warning = t('Use your Bibliotek.dk password, not your PIN code for your local library.');
+    $credentials = array(
+      array( // password has no digits
+        'name' => 'dummy@dbc.dk',
+        'pass' => 'test',
+        'msgs' => array($warning => FALSE, ),
+				'line' => __LINE__ - 1,
+				'function' => __FUNCTION__,
+      ),
+      array(   // password is four digit PIN code
+        'name' => 'dummy@dbc.dk',
+        'pass' => '1234',
+        'msgs' => array($warning => TRUE, ),
+				'line' => __LINE__ - 1,
+				'function' => __FUNCTION__,
+      ),
+      array(  // password looks like four digit PIN code
+        'name' => 'dummy@dbc.dk',
+        'pass' => 'a1234',
+        'msgs' => array($warning => FALSE, ),
+				'line' => __LINE__ - 1,
+				'function' => __FUNCTION__,
+      ),
+      array(  // password looks like four digit PIN code
+        'name' => 'dummy@dbc.dk',
+        'pass' => '1234e',
+        'msgs' => array($warning => FALSE, ),
+				'line' => __LINE__ - 1,
+				'function' => __FUNCTION__,
+      ),
+      array(  // password looks like four digit PIN code
+        'name' => 'dummy@dbc.dk',
+        'pass' => '12x34',
+        'msgs' => array($warning => FALSE, ),
+				'line' => __LINE__ - 1,
+				'function' => __FUNCTION__,
+      ),
+      array(  // password is five digit PIN code
+        'name' => 'dummy@dbc.dk',
+        'pass' => '12345',
+        'msgs' => array($warning => TRUE, ),
+				'line' => __LINE__ - 1,
+				'function' => __FUNCTION__,
+      ),
+      array( // password looks like five digit PIN code
+        'name' => 'dummy@dbc.dk',
+        'pass' => 'a12345',
+        'msgs' => array($warning => FALSE, ),
+				'line' => __LINE__ - 1,
+				'function' => __FUNCTION__,
+      ),
+      array( // password looks like five digit PIN code
+        'name' => 'dummy@dbc.dk',
+        'pass' => '12345f',
+        'msgs' => array($warning => FALSE, ),
+				'line' => __LINE__ - 1,
+				'function' => __FUNCTION__,
+      ),
+      array( // password looks like five digit PIN code
+        'name' => 'dummy@dbc.dk',
+        'pass' => '1234x5',
+        'msgs' => array($warning => FALSE, ),
+				'line' => __LINE__ - 1,
+				'function' => __FUNCTION__,
+      ),
+      array( // password is six digit password
+        'name' => 'dummy@dbc.dk',
+        'pass' => '123456',
+        'msgs' => array($warning => FALSE, ),
+				'line' => __LINE__ - 1,
+				'function' => __FUNCTION__,
+      ),
+    );
+
+    $this->validateLoginMessages($credentials);
+  }
+
+  /**
+   * Display warning message if username is not an email address.
+   */
+  private function testUsernameNotEmailAddress() {
+    $warning = t('Your username is your email-address.');
+    $credentials = array(
+      array( // acceptable username
+        'name' => 'dummy@dbc.dk',
+        'pass' => 'test',
+        'msgs' => array($warning => FALSE, ),
+				'line' => __LINE__ - 1,
+				'function' => __FUNCTION__,
+      ),
+      array( // username not email address
+        'name' => 'dummy@dbc',
+        'pass' => 'test',
+        'msgs' => array($warning => TRUE, ),
+				'line' => __LINE__ - 1,
+				'function' => __FUNCTION__,
+      ),
+      array( // username not email address
+        'name' => 'dummy@dbc.',
+        'pass' => 'test',
+        'msgs' => array($warning => TRUE, ),
+				'line' => __LINE__ - 1,
+				'function' => __FUNCTION__,
+      ),
+      array( // username is email address with FQDN
+        'name' => 'dummy@dbc.dk.',
+        'pass' => 'test',
+        'msgs' => array($warning => FALSE, ),
+				'line' => __LINE__ - 1,
+				'function' => __FUNCTION__,
+      ),
+      array( // username is email address subdomain
+        'name' => 'dummy@test.dbc.dk.',
+        'pass' => 'test',
+        'msgs' => array($warning => FALSE, ),
+				'line' => __LINE__ - 1,
+				'function' => __FUNCTION__,
+      ),
+      array( // username is email at IP address
+        'name' => 'dummy@127.1.3.4',
+        'pass' => 'test',
+        'msgs' => array($warning => FALSE, ),
+				'line' => __LINE__ - 1,
+				'function' => __FUNCTION__,
+      ),
+      array( // username is email at IPv4 address
+        'name' => 'dummy@127.1.3.4',
+        'pass' => 'test',
+        'msgs' => array($warning => FALSE, ),
+				'line' => __LINE__ - 1,
+				'function' => __FUNCTION__,
+      ),
+    );
+
+    $this->validateLoginMessages($credentials);
+  }
+}
