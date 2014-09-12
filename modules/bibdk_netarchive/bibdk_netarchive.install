@@ -1,0 +1,15 @@
+<?php
+/**
+ * @file
+ * Bibliotek.dk NetArchive - install file
+ */
+
+/** Implements hook_update_N
+ * Add translation for string constants
+ */
+function bibdk_netarchive_update_7001() {
+  t("netarchive_cover_header", array(), array('context' => 'bibdk_netarchive'));
+  t("netarchive_cover_leadtext", array(), array('context' => 'bibdk_netarchive'));
+  t("netarchive_cover_footer", array(), array('context' => 'bibdk_netarchive'));
+  t("netarchive_cover_error", array(), array('context' => 'bibdk_netarchive'));
+}
