@@ -1,0 +1,53 @@
+ul#user-help-topbar-menu {
+  list-style: none outside none;
+  margin-right: 0.5em;
+}
+
+ul#user-help-topbar-menu li {
+  display: block;
+  float: left;
+}
+
+div.block-bibdk-help {
+  float: left;
+}
+
+.node-type-userhelp section#section-content {
+  clear: both;
+}
+
+.page-help div.tabs,
+.node-type-userhelp div.tabs {
+  display: none;
+}
+
+.page-help#breadcrumb,
+.node-type-userhelp #breadcrumb {
+  height: 1.6em;
+}
+
+
+#bibdk-user-help-menu li {
+  display: block;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+  float: left;
+  width: 33%;
+  max-width: 33%;
+  font-weight: bold;
+}
+
+#bibdk-user-help-menu li li {
+  font-weight: normal;
+  margin-left: 1em;
+  margin-right: 0;
+  width: auto;
+  max-width: none;
+  float: none;
+}
+
+#bibdk-user-help-menu li:nth-child(4n) {
+  clear: left;
+}

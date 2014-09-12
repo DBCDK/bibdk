@@ -247,10 +247,11 @@ projects[bibdk_holdingstatus][download][tag] = 7.x-0.24
 ;projects[bibdk_netarchive][download][url] = git@github.com:DBCDK/bibdk_netarchive.git
 ;projects[bibdk_netarchive][download][tag] = 7.x-0.7
 
-projects[bibdk_newsroom][type] = module
-projects[bibdk_newsroom][download][type] = git
-projects[bibdk_newsroom][download][url] = git@github.com:DBCDK/bibdk_newsroom.git
-projects[bibdk_newsroom][download][tag] = 7.x-0.1
+;bibdk_newsroom added to bibdk repo
+;projects[bibdk_newsroom][type] = module
+;projects[bibdk_newsroom][download][type] = git
+;projects[bibdk_newsroom][download][url] = git@github.com:DBCDK/bibdk_newsroom.git
+;projects[bibdk_newsroom][download][tag] = 7.x-0.1
 
 projects[bibdk_openorder][type] = module
 projects[bibdk_openorder][download][type] = git

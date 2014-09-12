@@ -1,0 +1,148 @@
+<?php
+
+/**
+ * @file
+ * Code for bibdk_newsroom search.
+ */
+include_once('bibdk_newsroom.search.inc');
+
+/**
+ * Implements hook_help().
+ */
+function bibdk_newsroom_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#bibdk_newsroom';
+      $file = drupal_get_path('module', 'bibdk_newsroom') . "/help/bibdk_newsroom.html";
+      return $output = file_get_contents($file);
+    break;
+  }
+}
+
+
+/**
+ * Implements hook_block_info().
+ */
+function bibdk_newsroom_block_info() {
+  // configure default menu for newsroom content.
+  $blocks['bibdk-newsroom-popup-menu'] = array(
+      'info' => t('Bibdk newsroom popup menu block'),
+      'cache' => DRUPAL_CACHE_PER_PAGE,
+    );
+  $blocks['bibdk-newsroom-popup-menu-eng'] = array(
+      'info' => t('Bibdk newsroom popup menu block (eng)'),
+      'cache' => DRUPAL_CACHE_PER_PAGE,
+    );
+  $blocks['bibdk-newsroom-form'] = array(
+      'info' => t('Bibdk newsroom search block'),
+      'cache' => DRUPAL_CACHE_PER_PAGE,
+    );
+  return $blocks;
+}
+
+
+/**
+ * Implements hook_block_view().
+ */
+function bibdk_newsroom_block_view($delta = '') {
+  $block = array();
+  $language = '';
+  switch ($delta) {
+    case 'bibdk-newsroom-popup-menu-eng':
+      $language = 'eng';
+    case 'bibdk-newsroom-popup-menu':
+      drupal_add_css(
+        drupal_get_path('module', 'bibdk_newsroom') . '/css/bibdk_newsroom.css',
+        array('group' => CSS_DEFAULT,
+        'every_page' => TRUE)
+      );
+
+      $block['subject'] = t('Bibliotek.dk newsroom menu %lang', array('%lang' => ($language) ? '(' . $language . ')' : ''));
+
+      $block['content']['newsroom_menu_header']['#type'] = 'container';
+      $block['content']['newsroom_menu_header']['#attributes'] = array('class' => array('newsroom-subheader'));
+      $block['content']['newsroom_menu_header']['header_text']['#type'] = 'markup';
+      $block['content']['newsroom_menu_header']['header_text']['#markup'] = t('newsroom_menu_header', array(), array('context' => 'bibdk_newsroom'));
+
+      $menu = menu_tree('bibdk-newsroom-menu' . (($language) ? '-' . $language : ''));
+      foreach ($menu as $key => $menu_item) {
+        // set path to overlay/newsroom/%nodeid
+        $menu[$key] =  _bibdk_newsroom_replace_link($menu_item);
+      }
+      $menu['#attributes'] = array('class' => array('menu', 'newsroom-menu'));
+      $block['content']['menu'] = $menu;
+
+      break;
+
+    case 'bibdk-newsroom-form':
+      $block['subject'] = t('Bibliotek.dk newsroom search');
+      $block['content'] = drupal_get_form('bibdk_newsroom_search_form');
+      break;
+  }
+  return $block;
+}
+
+function _bibdk_newsroom_replace_link($menu_item) {
+  if ( isset($menu_item['#href']) ) {
+    $menu_item['#href'] = str_replace('node/', 'overlay/newsroom/', $menu_item['#href']);
+  }
+  if ( !empty($menu_item['#below']) ) {
+    foreach ($menu_item['#below'] as $key => $menu_item_below) {
+      $menu_item['#below'][$key] =  _bibdk_newsroom_replace_link($menu_item_below);
+    }
+  }
+  return $menu_item;
+}
+
+/**
+ * Implements hook_entity_info_alter().
+ *
+ * We need to modify the default node entity info by adding a new view mode to
+ * be used in functions like node_view() or node_build_content().
+ */
+function bibdk_newsroom_entity_info_alter(&$entity_info) {
+  $entity_info['node']['view modes']['bibdk_newsroom_list'] = array(
+    'label' => t('User newsroom list'),
+    'custom settings' => TRUE,
+  );
+}
+
+
+/**
+ * Implements hook_theme().
+ */
+/*
+function bibdk_newsroom_theme($existing, $type, $theme, $path) {
+  $path = drupal_get_path('module', 'bibdk_newsroom') . '/theme';
+  return array(
+   'theme-bibdk-newsroom-topbar-menu' => array(
+     'template'    => 'bibdk-newsroom-topbar-menu',
+     'path'        => $path,
+   ),
+  );
+}
+*/
+
+/**
+ * Implement hook_ctools_plugin_api().
+ *
+ * CTools will pick up default panels pages in <modulename>.pages_default.inc
+ */
+function bibdk_newsroom_ctools_plugin_api($module, $api) {
+  if ($module == 'panels_mini' && $api == 'panels_default') {
+    return array('version' => 1);
+  }
+  if ($module == 'page_manager' && $api == 'pages_default') {
+    return array('version' => 1);
+  }
+}
+
+
+/*
+* Implements hook_ctools_plugin_directory()
+*/
+function bibdk_newsroom_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'ctools' && !empty($plugin)) {
+    return "plugins/$plugin";
+  }
+}
+
