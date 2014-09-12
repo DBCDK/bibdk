@@ -1,0 +1,36 @@
+<?php
+
+/** Implements hook_bibdk_usersettings_user_tabs
+ * @return array
+ */
+function bibdk_usersettings_test_bibdk_usersettings_user_tabs(){
+
+  $tab['test'] = array(
+    'title'  => t('Test'),
+    'description' => t('Test if the user settings api works'),
+    'weight' => 5,
+  );
+
+  return $tab;
+}
+
+
+/** Implements hook_bibdk_usersettings_user_settings
+ * @return array
+ */
+function bibdk_usersettings_test_bibdk_usersettings_user_settings() {
+
+  $form = array();
+
+  $form['test'] = array(
+    '#type' => 'container',
+    '#weight' => 0,
+    '#tab' => 'test',
+  );
+
+  $form['test']['element'] = array(
+    '#markup' => 'Test element is present',
+  );
+
+  return $form;
+}

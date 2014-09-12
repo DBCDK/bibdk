@@ -317,10 +317,11 @@ projects[bibdk_sbkopi][download][tag] = 7.x-0.7
 ;projects[bibdk_tracelog][download][url] = git@github.com:DBCDK/bibdk_tracelog.git
 ;projects[bibdk_tracelog][download][tag] = 7.x-0.4
 
-projects[bibdk_usersettings][type] = module
-projects[bibdk_usersettings][download][type] = git
-projects[bibdk_usersettings][download][url] = git@github.com:DBCDK/bibdk_usersettings.git
-projects[bibdk_usersettings][download][tag] = 7.x-0.9
+;bibdk_usersettings added to bibdk repo
+;projects[bibdk_usersettings][type] = module
+;projects[bibdk_usersettings][download][type] = git
+;projects[bibdk_usersettings][download][url] = git@github.com:DBCDK/bibdk_usersettings.git
+;projects[bibdk_usersettings][download][tag] = 7.x-0.9
 
 projects[bibdk_uuid][type] = module
 projects[bibdk_uuid][download][type] = git
