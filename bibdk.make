@@ -276,10 +276,11 @@ projects[bibdk_reservation][download][type] = git
 projects[bibdk_reservation][download][url] = git@github.com:DBCDK/bibdk_reservation.git
 projects[bibdk_reservation][download][tag] = 7.x-0.45
 
-projects[bibdk_reviews][type] = module
-projects[bibdk_reviews][download][type] = git
-projects[bibdk_reviews][download][url] = git@github.com:DBCDK/bibdk_reviews.git
-projects[bibdk_reviews][download][tag] = 7.x-0.8
+;bibdk_reviews added to bibdk repo
+;projects[bibdk_reviews][type] = module
+;projects[bibdk_reviews][download][type] = git
+;projects[bibdk_reviews][download][url] = git@github.com:DBCDK/bibdk_reviews.git
+;projects[bibdk_reviews][download][tag] = 7.x-0.8
 
 projects[bibdk_sbkopi][type] = module
 projects[bibdk_sbkopi][download][type] = git

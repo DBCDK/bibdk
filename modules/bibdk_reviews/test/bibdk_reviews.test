@@ -1,0 +1,127 @@
+<?php
+
+/**
+* @file
+* DrupalUnitTestCases and DrupalWebTestCases for Bibliotek.dk Reviews.
+*/
+
+class BibdkReviewsUnitTestCase extends DrupalUnitTestCase {
+  protected $path;
+  public static function getInfo() {
+    return array(
+      'name' => t('Bibliotek.dk Reviews'),
+      'description' => t('Unit test of BibdkReview'),
+      'group' => t('Bibliotek.dk Reviews'),
+    );
+  }
+
+  public function setUp() {
+    module_load_include('inc', 'bibdk_reviews', 'includes/BibdkReview');
+    module_load_include('module', 'bibdk_reviews', 'bibdk_reviews');
+    $this->path = drupal_get_path('module', 'bibdk_reviews');
+    parent::setUp();
+
+  }
+
+  public function testBibdkReview() {
+    $xml = file_get_contents($this->path . '/test/xml/one_response.xml');
+
+    // Test method _bibdk_review_convert_result_to_bibdk_reviews
+    $reviews = _bibdk_review_convert_result_to_bibdk_reviews($xml);
+    $this->assertTrue(count($reviews) == 1 && is_object(current($reviews)) && get_class(current($reviews)) == 'BibdkReview', '_bibdk_review_convert_result_to_bibdk_reviews parses one object of type BibdkReview from xml');
+
+    $review = current($reviews);
+
+    //Test getTitle
+    $expected = array(
+      0 => 'Lektørudtalelse',
+    );
+    $this->assertEqual($review->getTitle(), $expected, 'Title is parsed correct');
+
+    //Test getSections
+    $expected = array(
+      0 =>
+      array(
+        'title' => 'Anvendelse/målgruppe/niveau',
+        'para' => 'Denne svenske skærgårds- og familieroman, tilsat troldsplinter vil give sin læser en både besættende, vanvittig og smuk oplevelse. På forsiden står "skrækroman", og hermed tunes man ind på romanens stil, hvor en families spøgelser og genfærd spiller en helt reel rolle',
+      ),
+      1 =>
+      array(
+        'title' => 'Beskrivelse',
+        'para' => 'Barndomskæresteparret Anders og Cecilie tager en smuk vinterdag deres lille datter Maja med på en tur over isen. Men Maja forsvinder sporløst. Sorg og skilsmisse ødelægger resten af parrets liv, og 6 år senere vender Anders tilbage til skærgårdsøen for at lede efter Maja. Sammen med sine bedsteforældre dykker han længere og længere ned dels i sine egne erindringer dels i øens samlede erindringsvolumen, og der viser sig dramatiske historier om folks sporløse forsvinden og havet som en krævende og magisk modspiller. Romanen inddrager elementer fra et overnaturligt univers, hvor spøgelser og genfærd dukker op og kræver deres ret. Det fungerer fantastisk medrivende og udgør et uhyggeligt modspil til de kærlighedshistorier, der også er i romanen: bedsteforældrenes og Anders\' skyldtyngede kærlighed til sin datter',
+      ),
+      2 =>
+      array(
+        'title' => 'Sammenligning',
+        'para' => 'Det er oplagt at prøve kræfter med forfatterens tidligere Håndteringen af udøde, og dertil nogle af Stephen Kings bedste, selv om Ajvide er i en højere litterær klasse',
+      ),
+      3 =>
+      array(
+        'title' => 'Samlet konklusion',
+        'para' => 'Svensk roman, der både er bevægende og fuld af gru, om en skærgårdsø, en familie og en fars sorg over sit barn - med denne sære inddragelse af det overnaturlige element, som øger fornemmelsen for menneskets kampe mod de indre dæmoner',
+      ),
+    );
+
+    $this->assertEqual($review->getSections(), $expected, 'Sections are parsed correct');
+
+    //Test getAuthor
+    $expected = array(
+        'Helle Winther Olsen',
+    );
+    $this->assertEqual($review->getAuthor(), $expected, 'Author is parsed correct');
+
+    // Test empty result
+    $review = new BibdkReview('');
+    $expected = array();
+    $this->assertEqual($review->getAuthor(), $expected, 'Author is empty array');
+    $this->assertEqual($review->getSections(), $expected, 'Sections is empty array');
+    $this->assertEqual($review->getTitle(), $expected, 'Title is empty array');
+
+  }
+
+
+}
+
+class BibdkReviewsWebTestCase extends DrupalWebTestCase {
+  public static function getInfo() {
+    return array(
+      'name' => t('Bibliotek.dk Reviews'),
+      'description' => t('Test functionality in the bibdk_reviews module'),
+      'group' => t('Bibliotek.dk Reviews'),
+    );
+  }
+
+  public function setUp() {
+    parent::setUp(array('bibdk_reviews', 'ting_openformat', 'worktabs', 'devel'));
+    variable_set('ting_search_url', 'http://lakiseks.dbc.dk/openbibdk/0.5/');
+
+  }
+
+  /* US1083-test : Disable failing tests
+  public function testReviewView(){
+
+    //Test one review
+    $ids = array('870976-anmeld:30885732');
+    $view = bibdk_reviews_view($ids);
+    $this->assertTrue(strpos($view, 'Anvendelse/målgruppe/niveau'), 'First para title found');
+    $this->assertTrue(strpos($view, 'Beskrivelse'), 'Second para title found');
+    $this->assertTrue(strpos($view, 'Det er oplagt at prøve kræfter'), 'Third para found');
+    $this->assertTrue(strpos($view, 'Lektørudtalelse'), 'Type found');
+    $this->assertTrue(strpos($view, 'Helle Winther Olsen'), 'Author found');
+
+    // Test two reviews
+    $ids = array('870976-anmeld:30390342', '870976-anmeld:30390334');
+    $view = bibdk_reviews_view($ids);
+    $this->assertEqual(preg_match_all('@bibdk-review@', $view, $matches), 2, 'two reviews found');
+    $this->assertTrue(strpos($view, 'Tove Delica'), 'First Author found');
+    $this->assertTrue(strpos($view, 'Thomas Sloth'), 'Second Author found');
+
+    // Test no reviews
+    $ids = array();
+    $view = bibdk_reviews_view($ids);
+    $this->assertEqual($view, t('no_reviews_found'), 'No reviews found');
+  }
+  */
+
+}
+
