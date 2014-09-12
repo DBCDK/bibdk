@@ -166,10 +166,11 @@ projects[bibdk_custom_search][download][type] = git
 projects[bibdk_custom_search][download][url] = git@github.com:DBCDK/bibdk_custom_search.git
 projects[bibdk_custom_search][download][tag] = 7.x-0.33
 
-projects[bibdk_custom_search_preprocess][type] = module
-projects[bibdk_custom_search_preprocess][download][type] = git
-projects[bibdk_custom_search_preprocess][download][url] = git@github.com:DBCDK/bibdk_custom_search_preprocess.git
-projects[bibdk_custom_search_preprocess][download][tag] = 7.x-0.12
+;bibdk_custom_search_preprocess added to bibdk repo
+;projects[bibdk_custom_search_preprocess][type] = module
+;projects[bibdk_custom_search_preprocess][download][type] = git
+;projects[bibdk_custom_search_preprocess][download][url] = git@github.com:DBCDK/bibdk_custom_search_preprocess.git
+;projects[bibdk_custom_search_preprocess][download][tag] = 7.x-0.12
 
 projects[bibdk_entity_dependency][type] = module
 projects[bibdk_entity_dependency][download][type] = git

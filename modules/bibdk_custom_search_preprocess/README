@@ -1,0 +1,8 @@
+Module for handling combined search form values.
+
+Since the form element ID's are different for each website,
+the search pre-process and javascript attach functions need to be maintained seperately.
+
+For example:
+'Select year' is two select elements - a 'select operator' ('=','<=' or '=>'), plus a year selector ('2012','2011','2010',[...]), and it needs to be combined into a single search statement ('year=2012', year<=1978, [...]).
+
