@@ -172,10 +172,11 @@ projects[bibdk_custom_search][download][tag] = 7.x-0.33
 ;projects[bibdk_custom_search_preprocess][download][url] = git@github.com:DBCDK/bibdk_custom_search_preprocess.git
 ;projects[bibdk_custom_search_preprocess][download][tag] = 7.x-0.12
 
-projects[bibdk_entity_dependency][type] = module
-projects[bibdk_entity_dependency][download][type] = git
-projects[bibdk_entity_dependency][download][url] = git@github.com:DBCDK/bibdk_entity_dependency.git
-projects[bibdk_entity_dependency][download][tag] = 7.x-1.0-alpha1+7-dev-0.1
+;bibdk_entity_dependency added to bibdk repo
+;projects[bibdk_entity_dependency][type] = module
+;projects[bibdk_entity_dependency][download][type] = git
+;projects[bibdk_entity_dependency][download][url] = git@github.com:DBCDK/bibdk_entity_dependency.git
+;projects[bibdk_entity_dependency][download][tag] = 7.x-1.0-alpha1+7-dev-0.1
 
 projects[bibdk_favourite][type] = module
 projects[bibdk_favourite][download][type] = git
