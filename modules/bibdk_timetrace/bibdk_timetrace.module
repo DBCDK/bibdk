@@ -1,0 +1,88 @@
+<?php
+
+/** A module to log time for start of request (hook_boot) to end of request (hook_exit)
+ * sofar only search-requests are tracked, but feel free to track some more
+ * 
+ * WATCHDOG output :
+ * SERVICE_PREFIX::TRACKINGID::OPERATION::METHOD_[END,START]::TIMESTAMP
+ * 
+ * EXAMPLE:
+ * BIBDK_GUI::2014-01-16T14:18:35:985027:9895::SEARCH::GET_END::2014-01-16T14:18:42:667730
+ * BIBDK_GUI::2014-01-16T14:18:35:985027:9895::SEARCH::GET_START::2014-01-16T14:18:40:769062
+ * BIBDK_GUI::2014-01-16T14:18:35:985027:9895::SEARCH::POST_END::2014-01-16T14:18:40:550547
+ * BIBDK_GUI::2014-01-16T14:18:35:985027:9895::SEARCH::POST_START::2014-01-16T14:18:35:985049
+ * 
+ */
+
+DEFINE('SERVICE_PREFIX', 'BIBDK_GUI');
+
+/**
+ * Implements hook_boot
+ * log timer for start of request
+ */
+function bibdk_timetrace_boot() {  
+  $path = $_GET['q'];
+  //LOG start og POST request
+  // check if this is a post from search_block
+  if (!empty($_POST['form_id']) && $_POST['form_id'] == 'search_block_form') {
+    // first step in search cycle
+    // drupal first does a post and then a redirect (@see search.pages.inc::search_view())
+    $tracking_id = bibdk_timetrace_get_trackid();
+    // set a tracking id in session to be reused in next step
+    $_SESSION['timetrace']['trackingid'] = $tracking_id;
+    $message = SERVICE_PREFIX . '::' . $tracking_id . '::SEARCH::POST_START::' . bibdk_timetrace_get_timestamp();
+    watchdog('TRACKING', $message);
+  }
+  // LOG start of GET request
+  // check if this is the GET part of a searchrequest
+  elseif (strpos($path, 'search/') === 0 || strpos($path, 'da/search/') === 0 || strpos($path, 'eng/search/') === 0 ) {
+    // check if this is second part of the search cycle
+    if (isset($_SESSION['timetrace']['trackingid'])) {
+      $tracking_id = $_SESSION['timetrace']['trackingid'];      
+    }
+    // this is simply a GET request (search)
+    else {
+      $tracking_id = bibdk_timetrace_get_trackid();
+      $_SESSION['timetrace']['trackingid'] = $tracking_id;
+    }
+    $message = SERVICE_PREFIX . '::' . $tracking_id . '::SEARCH::GET_START::' . bibdk_timetrace_get_timestamp();
+    watchdog('TRACKING', $message);
+  }
+}
+
+/**
+ * Implements hook_exit 
+ * log timer for end of request
+ */
+function bibdk_timetrace_exit() {
+  $path = $_GET['q'];
+  
+  // LOG end of postrequest
+  if (!empty($_POST['form_id']) && $_POST['form_id'] == 'search_block_form') {
+    $tracking_id = $_SESSION['timetrace']['trackingid'];
+    $message = SERVICE_PREFIX . '::' . $tracking_id . '::SEARCH::POST_END::' . bibdk_timetrace_get_timestamp();
+    watchdog('TRACKING', $message);
+  }
+  // LOG end of GET request
+  elseif (strpos($path, 'search/') === 0 || strpos($path, 'da/search/') === 0 || strpos($path, 'eng/search/') === 0) {
+    $tracking_id = $_SESSION['timetrace']['trackingid'];
+    $message = SERVICE_PREFIX . '::' . $tracking_id . '::SEARCH::GET_END::' . bibdk_timetrace_get_timestamp();
+    watchdog('TRACKING', $message);
+    
+    // search has finished - unset $_SESSION params
+    unset($_SESSION['timetrace']['trackingid']);
+  }
+}
+
+
+
+function bibdk_timetrace_get_timestamp() {
+  $time_stamp = date('Y-m-d\TH:i:s:') . substr((string) microtime(), 2, 6);
+  return $time_stamp;
+}
+
+function bibdk_timetrace_get_trackid() {
+  $track_id = date('Y-m-d\TH:i:s:') . substr((string) microtime(), 2, 6) . ':' . getmypid();
+  return $track_id;
+}
+

@@ -305,10 +305,11 @@ projects[bibdk_sbkopi][download][tag] = 7.x-0.7
 ;projects[bibdk_subject_hierarchy][download][url] = git@github.com:DBCDK/bibdk_subject_hierarchy.git
 ;projects[bibdk_subject_hierarchy][download][tag] = 7.x-0.13
 
-projects[bibdk_timetrace][type] = module
-projects[bibdk_timetrace][download][type] = git
-projects[bibdk_timetrace][download][url] = git@github.com:DBCDK/bibdk_timetrace.git
-projects[bibdk_timetrace][download][tag] = 7.x-0.3
+;bibdk_timetrace added to bibdk repo
+;projects[bibdk_timetrace][type] = module
+;projects[bibdk_timetrace][download][type] = git
+;projects[bibdk_timetrace][download][url] = git@github.com:DBCDK/bibdk_timetrace.git
+;projects[bibdk_timetrace][download][tag] = 7.x-0.3
 
 projects[bibdk_tracelog][type] = module
 projects[bibdk_tracelog][download][type] = git

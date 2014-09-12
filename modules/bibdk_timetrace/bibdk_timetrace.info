@@ -1,0 +1,7 @@
+name = time tracer
+description = track time from drupal boot till page is delivered
+core = 7.x
+version = 7.x-0.3
+package = Bibdk Frontend
+project = bibliotekdk
+files[] = bibdk_timetrace.test
