@@ -1,0 +1,32 @@
+<?php
+/**
+ * @file
+ * Install, update and uninstall functions for the bibdk_mypage module
+ */
+
+/**
+ * Implements hook_disable;
+ * delete the profile type defined in this module
+ **/
+function bibdk_mypage_disable() {
+  if( function_exists( 'bibdk_mypage_user_profile2_tabs' ) ) {
+    $function = 'bibdk_mypage_user_profile2_tabs';
+    $profile = call_user_func($function);
+
+    $profile_type = profile2_get_types($profile->type);
+    if( !empty($profile_type) ) {
+      profile2_type_delete($profile_type);
+    }
+  }
+}
+
+/**
+ * Implements hook_install().
+ */
+function bibdk_mypage_install() {
+  db_update('system')
+    ->fields(array('weight' => 10))
+    ->condition('name', 'bibdk_mypage', '=')
+    ->execute();
+}
+
