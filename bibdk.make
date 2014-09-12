@@ -206,10 +206,11 @@ projects[bibdk_frontend][download][tag] = 7.x-0.59
 ;projects[bibdk_help][download][url] = git@github.com:DBCDK/bibdk_help.git
 ;projects[bibdk_help][download][tag] = 7.x-0.12
 
-projects[bibdk_helpdesk][type] = module
-projects[bibdk_helpdesk][download][type] = git
-projects[bibdk_helpdesk][download][url] = git@github.com:DBCDK/bibdk_helpdesk.git
-projects[bibdk_helpdesk][download][tag] = 7.x-0.16
+;bibdk_helpdesk added to bibdk repo
+;projects[bibdk_helpdesk][type] = module
+;projects[bibdk_helpdesk][download][type] = git
+;projects[bibdk_helpdesk][download][url] = git@github.com:DBCDK/bibdk_helpdesk.git
+;projects[bibdk_helpdesk][download][tag] = 7.x-0.16
 
 projects[bibdk_holdingstatus][type] = module
 projects[bibdk_holdingstatus][download][type] = git

@@ -1,0 +1,311 @@
+<?php
+
+/**
+ * @file
+ * Create an interface for the library helpdesk
+ */
+
+
+/**
+ * Implements hook_menu();
+ */
+function bibdk_helpdesk_menu() {
+
+  $items['overlay/helpdesk'] = array(
+    'title' => 'Help desk',
+    'description' => 'Library helpdesk form.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bibdk_helpdesk_form'),
+    'access arguments' => array('access content'),
+    'file' => 'bibdk_helpdesk.form.inc',
+  );
+
+  $items['overlay/helpdesk/receipt'] = array(
+    'title' => t('Help desk reciept'),
+    'description' => 'Library helpdesk receipt form.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bibdk_helpdesk_receipt'),
+    'access arguments' => array('access content'),
+  );
+
+  $items['admin/config/user-interface/bibdk_helpdesk'] = array(
+    'title' => 'Bibliotek.dk helpdesk',
+    'description' => 'Customize the helpdesk settings.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bibdk_helpdesk_admin'),
+    'access arguments' => array('administer blocks'),
+    'file' => 'bibdk_helpdesk.admin.inc',
+  );
+
+  return $items;
+}
+
+
+/** Returns a receipt to the user when question have been submitted
+ * @param $form
+ * @param $form_state
+ * @return mixed
+ */
+function bibdk_helpdesk_receipt($form, $form_state){
+
+
+  $form['title'] = array(
+    '#type' => 'html_tag',
+    '#tag' => 'h1',
+    '#attributes' => array(
+      'id' => 'title',
+    ),
+    '#value' => t('bibdk_helpdesk_receipt_headline'),
+  );
+
+
+  $form['contain'] = array(
+    '#type' => 'container',
+  );
+
+  $form['contain']['content'] = array(
+    '#type' => 'html_tag',
+    '#tag' => 'p',
+    '#value' =>   t('bibdk_helpdesk_receipt_text'),
+  );
+
+  $form['contain']['close'] = array(
+      '#type' => 'markup',
+      '#markup' => '<a href="JavaScript:window.close();" class="btn btn-blue form-submit" />' . t('close') . '</a>',
+  );
+
+
+  return $form;
+
+}
+
+/**
+ * Implements hook_ting_client_webservice (@see ting_client.module)
+ * */
+function bibdk_helpdesk_ting_client_webservice() {
+  $ret = array();
+  $ret['helpdesk']['class'] = 'bibdkHelpdeskRequest';
+  $ret['helpdesk']['url'] = 'bibdk_openquestion_url';
+  return $ret;
+}
+
+/**
+ * do a request
+ * */
+function bibdk_helpdesk_request($values) {
+  if (!is_array($values))
+    return null;
+
+  $client = new ting_client_class();
+
+  $default_values = array(
+    'agencyId' => variable_get('bibdk_openquestion_agencyId', FALSE),
+    'qandaServiceName' => variable_get('bibdk_openquestion_qandaServiceName', FALSE),
+    'outputType' => 'json'
+  );
+
+  $values += $default_values;
+
+  $response = $client->do_request('helpdesk', $values);
+
+  return $response;
+}
+
+
+/**
+ * Implements hook_block_info().
+ */
+function bibdk_helpdesk_block_info() {
+  $blocks['bibdk-helpdesk-teaser'] = array(
+    'info' => t('Bibdk: Helpdesk teaser'),
+    'cache' => DRUPAL_NO_CACHE,
+    'description' => t('Library helpdesk teaser form.'),
+  );
+  $blocks['header_action'] = array(
+    'info' => t('Bibdk: Helpdesk header action'),
+    'description' => t('Link to helpdesk in header region'),
+  );
+  return $blocks;
+}
+
+
+/**
+ * Implements hook_block_view().
+ */
+function bibdk_helpdesk_block_view($delta = '') {
+
+  $bibdk_helpdesk_settings = variable_get('bibdk_helpdesk_settings', $default = array());
+
+  $block = array();
+  switch ($delta) {
+    case 'bibdk-helpdesk-teaser':
+      $block['subject'] = t('Library Helpdesk');
+      $block['content'] =
+        theme('bibdk_helpdesk_block', array(
+            'description' => t($bibdk_helpdesk_settings['description']),
+            'link' => l(t($bibdk_helpdesk_settings['link']), 'overlay/helpdesk', array(
+              'attributes' => array(
+                'class' => array('bibdk-popup-link', 'text-white'),
+                'data-rel' => array('helpdesk'),
+              )
+            )),
+            'image' => theme('image', array(
+              'path' => _bibdk_get_random_helpdesk_image('normal'),
+              'alt' => t($bibdk_helpdesk_settings['title']),
+              'title' => t($bibdk_helpdesk_settings['title']),
+              'attributes' => array())
+            ),
+            'image_data' => array(
+              'path' => _bibdk_get_random_helpdesk_image('normal'),
+              'title' => t($bibdk_helpdesk_settings['title']),
+            ),
+            'title' => t($bibdk_helpdesk_settings['title']),
+          )
+        );
+      break;
+
+    case 'header_action':
+      $block['subject'] = '<none>';
+      $block['content'] = _bibdk_helpdesk_create_render_array($delta);
+      break;
+  }
+  return $block;
+}
+
+
+/**
+ * Helper function: Creates render arrays for blocks
+ *
+ * @param delta
+ * @return array
+ */
+function _bibdk_helpdesk_create_render_array($delta) {
+
+  $render = array();
+
+  switch ($delta) {
+    case 'header_action':
+      $render = array(
+        'link' => array(
+          '#type' => 'link',
+          '#title' => t('Ask Helpdesk'),
+          '#href' => 'overlay/helpdesk',
+          '#attributes' => array(
+            'class' => array('bibdk-popup-link'),
+            'id' => array('selid-helpdesk-ask-helpdesk'),
+            'data-rel' => array('helpdesk'),
+          ),
+        ),
+        'image' => array(
+          '#theme' => 'image',
+          '#path' => _bibdk_get_random_helpdesk_image('header'),
+        ),
+      );
+      break;
+  }
+  return $render;
+}
+
+
+/**
+ * Helper function: Returns random image path
+ * params: $size is the subfolder within /images/
+ */
+function _bibdk_get_random_helpdesk_image($size) {
+
+  $bibdk_helpdesk_settings = variable_get('bibdk_helpdesk_settings', $default = array());
+
+  switch ($size) {
+    case 'header':
+      $images_path = drupal_get_path('module', 'bibdk_helpdesk') . '/images/header';
+      $images = file_scan_directory($images_path, '/./', array('key' => 'filename'));
+      return $images_path . '/' . array_rand($images);;
+      break;
+    case 'normal':
+      $style['name'] = 'normal';
+      $style['module'] = 'bibdk_helpdesk';
+      $style['effects'][] = array(
+        'effect callback' => 'image_scale_effect',
+        'module' => 'image',
+        'name' => 'image_scale',
+        'data' => array(
+            'width' => $bibdk_helpdesk_settings['image']['normal']['width'],
+            'height' => $bibdk_helpdesk_settings['image']['normal']['height'],
+            'upscale' => 1,
+        ),
+        'weight' => 0,
+      );
+    default:
+      $images_path = drupal_get_path('module', 'bibdk_helpdesk') . '/images/content';
+      $images = file_scan_directory($images_path, '/./', array('key' => 'filename'));
+      $image = $images_path . '/' . array_rand($images);
+      if ( file_exists($image) ) {
+        $preview_file = image_style_path($style['name'], $image);
+        if ( !file_exists($preview_file) ) {
+          image_style_create_derivative($style, $image, $preview_file);
+        }
+        $preview_url = file_create_url($preview_file) . '?cache_bypass=' . REQUEST_TIME;
+        return $preview_url;
+      }
+
+  }
+
+  return '';
+
+}
+
+
+/**
+ * Implements hook_theme().
+ */
+function bibdk_helpdesk_theme() {
+  $path = drupal_get_path('module', 'bibdk_helpdesk') . '/theme';
+  $theme_array = array(
+    'bibdk_helpdesk_block' => array(
+      'path' => $path,
+      'template' => 'bibdk-helpdesk-block',
+    ),
+  );
+  return $theme_array;
+}
+
+
+/**
+ * Implements hook_form_FORM_ID_alter (ting_client_admin_webservices_settings)
+ * add field to webservice client settings
+ *
+ * */
+function bibdk_helpdesk_form_ting_client_admin_webservices_settings_alter(&$form, &$form_state) {
+  $form['openquestion'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('OpenQuestionservice settings'),
+    '#description' => t('Setting for openQuestion webservice'),
+    '#weight' => -2,
+  );
+
+  $form['openquestion']['bibdk_openquestion_url'] = array(
+    '#type' => 'textfield',
+    '#title' => t('OpenQuestionservice URL'),
+    '#description' => t('URL to openquestion e.g. https://openquestion.addi.dk/1.1/'),
+    '#required' => TRUE,
+    '#default_value' => variable_get('bibdk_openquestion_url', FALSE),
+  );
+
+  $form['openquestion']['bibdk_openquestion_agencyId'] = array(
+    '#type' => 'textfield',
+    '#title' => t('AgencyId'),
+    '#description' => t('AgencyId for openquestion e.g. DK-190101'),
+    '#required' => TRUE,
+    '#default_value' => variable_get('bibdk_openquestion_agencyId', FALSE),
+  );
+
+  $form['openquestion']['bibdk_openquestion_qandaServiceName'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Qanda Service Name'),
+    '#description' => t('qandaServiceName for openquestion e.g. bibliotekdk'),
+    '#required' => TRUE,
+    '#default_value' => variable_get('bibdk_openquestion_qandaServiceName', FALSE),
+  );
+
+
+}

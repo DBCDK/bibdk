@@ -1,0 +1,6 @@
+name = "bibdk helpdesk mockup"
+description = "Support module for bibdk_helpdesk test."
+package = bibliotek.dk
+version = VERSION
+core = 7.x
+hidden = TRUE;

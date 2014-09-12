@@ -1,0 +1,16 @@
+
+
+#edit-bibdk-helpdesk .form-item, #edit-image .form-item {
+  width: 25%;
+  float: left;
+}
+
+#edit-bibdk-helpdesk .form-item.form-item-bibdk-helpdesk-description {
+  width: 50%;
+  float: left;
+}
+
+#edit-bibdk-helpdesk .form-item input, #edit-image .form-item input {
+  width: 90%;
+}
+
