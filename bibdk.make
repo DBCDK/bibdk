@@ -311,10 +311,11 @@ projects[bibdk_sbkopi][download][tag] = 7.x-0.7
 ;projects[bibdk_timetrace][download][url] = git@github.com:DBCDK/bibdk_timetrace.git
 ;projects[bibdk_timetrace][download][tag] = 7.x-0.3
 
-projects[bibdk_tracelog][type] = module
-projects[bibdk_tracelog][download][type] = git
-projects[bibdk_tracelog][download][url] = git@github.com:DBCDK/bibdk_tracelog.git
-projects[bibdk_tracelog][download][tag] = 7.x-0.4
+;bibdk_tracelog added to bibdk repo
+;projects[bibdk_tracelog][type] = module
+;projects[bibdk_tracelog][download][type] = git
+;projects[bibdk_tracelog][download][url] = git@github.com:DBCDK/bibdk_tracelog.git
+;projects[bibdk_tracelog][download][tag] = 7.x-0.4
 
 projects[bibdk_usersettings][type] = module
 projects[bibdk_usersettings][download][type] = git

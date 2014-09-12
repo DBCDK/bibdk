@@ -1,0 +1,135 @@
+<?php
+
+/**
+ * Implements hook_menu
+ */
+function bibdk_tracelog_menu() {
+  $items['admin/config/serviceclient/tracelog'] = array(
+    'title' => 'Tracelog Settings',
+    'description' => 'Config settings for tracelog',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bibdk_tracelog_admin_form'),
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  $items['test/tracelog/%'] = array(
+    'title' => 'Tracelog Test',
+    'page callback' => 'bibdk_tracelog_test',
+    'page arguments' => array('message' => 2),
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  return $items;
+}
+
+// Maybe we can use this if we want to log page render time as well
+/*function bibdk_tracelog_page_alter($page){
+  $devel_timers = module_invoke_all('ding_devel_timers');
+}*/
+
+/**
+ * implements hook_watchdog
+ *
+ */
+function bibdk_tracelog_watchdog(array $log_entry){
+  if (!variable_get('tracelog_state'))
+    return;
+  // Tracelog is only implementet for ting_client.
+  if($log_entry['type'] == 'ting client'){
+    extract(_bibdk_tracelog_message_parse($log_entry));
+    try{
+      bibdk_tracelog_log($message, $type);
+    }catch(Exception $e){
+      drupal_set_message($e, 'error');
+    }
+  }
+}
+
+/**
+ *
+ * Basic logging wrapper for the verbose class
+ * @param $message
+ * @param $type
+ * @param null $file
+ */
+function bibdk_tracelog_log($message, $type, $file = null){
+  module_load_include('php', 'bibdk_tracelog', 'lib/verbose_class');
+  if (!$file){
+    $file_name = variable_get('tracelog_file_name', "tracelog.log");
+    $file_dir = variable_get('tracelog_file_url', null);
+    $file_dir .= substr($file_dir, -1) == '/' ? '' : '/';
+    $file = $file_dir.$file_name;
+  }
+  verbose::open($file, $type);
+  verbose::log(constant($type), $message);
+}
+
+/**
+ * Parse message and log-type form watchdog log_entry (Maybe this could be more clean)
+ * @param $log_entry
+ * @return array
+ */
+function _bibdk_tracelog_message_parse($log_entry){
+  $variables = $log_entry['variables'];
+  $variables['@link'] = $log_entry['link'];
+    if (isset($variables['@error'])){
+      $message = '@action:: @error';
+      $type = 'ERROR';
+    }
+  else {
+    $message = '@action:: Total:@time Wsdl:@wsdlUrl Link:@link';
+    $type = 'TIMER';
+  }
+  return array(
+    'message' => format_string($message, $variables),
+    'type' => $type
+  );
+}
+
+/**
+ * Admin settings form. Implements hook_form
+ */
+function bibdk_tracelog_admin_form($form, $form_state){
+  $form = array();
+  $form['tracelog_state'] = array(
+    '#type' => 'checkbox',
+    '#description' => 'Enable/disable tracelog',
+    '#title' => 'Enable tracelog',
+    '#default_value' => variable_get('tracelog_state', 0),
+  );
+  $form['tracelog_file_url'] = array(
+    '#type' => 'textfield',
+    '#title' => t('File base url'),
+    '#default_value' => variable_get('tracelog_file_url', null),
+    '#description' => t("e.g. /tmp/logs/"),
+    '#required' => TRUE,
+  );
+  $form['tracelog_file_name'] = array(
+    '#type' => 'textfield',
+    '#title' => t('File Name'),
+    '#default_value' => variable_get('tracelog_file_name', "tracelog.log"),
+    '#description' => t("e.g. tracelog.log"),
+    '#required' => TRUE,
+  );
+
+  return system_settings_form($form);
+}
+
+/**
+ * Implements hook_validate. Check if log-folder exists and is writeable
+ * @param $form
+ * @param $form_state
+ */
+function bibdk_tracelog_admin_form_validate($form, $form_state){
+  if (!$form_state['values']['tracelog_state']){
+    return;
+  }
+  $file_dir = $form_state['values']['tracelog_file_url'];
+  $file_name = $form_state['values']['tracelog_file_name'];
+  $file_dir .= substr($file_dir, -1) == '/' ? '' : '/';
+  try{
+    bibdk_tracelog_log('Initial Test', 'DEBUG', $file_dir.$file_name);
+  }catch(Exception $e){
+    form_set_error('tracelog_file_url', t('Tracelog cannot write to '.$file_dir.$file_name.'. Please make sure the folder exists and is writeable'));
+  }
+}
