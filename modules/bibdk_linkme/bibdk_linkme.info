@@ -1,0 +1,11 @@
+name = Bibliotek.dk linkme permalink
+description = Adds a linkme permalink to ding entity
+core = 7.x
+version = 7.x-0.12
+package = Bibliotek.dk
+
+files[] = test/bibdk_linkme.test
+
+dependencies[] = microcurl
+
+configure = admin/config/linkme

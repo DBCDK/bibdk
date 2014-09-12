@@ -223,10 +223,11 @@ projects[bibdk_holdingstatus][download][tag] = 7.x-0.24
 ;projects[bibdk_jslog][download][url] = git@github.com:DBCDK/bibdk_jslog.git
 ;projects[bibdk_jslog][download][tag] = 7.x-0.3
 
-projects[bibdk_linkme][type] = module
-projects[bibdk_linkme][download][type] = git
-projects[bibdk_linkme][download][url] = git@github.com:DBCDK/bibdk_linkme.git
-projects[bibdk_linkme][download][tag] = 7.x-0.12
+;bibdk_linkme added to bibdk repo
+;projects[bibdk_linkme][type] = module
+;projects[bibdk_linkme][download][type] = git
+;projects[bibdk_linkme][download][url] = git@github.com:DBCDK/bibdk_linkme.git
+;projects[bibdk_linkme][download][tag] = 7.x-0.12
 
 projects[bibdk_migration][type] = module
 projects[bibdk_migration][download][type] = git

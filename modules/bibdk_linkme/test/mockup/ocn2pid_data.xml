@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<pidList xmlns="http://oss.dbc.dk/ns/oclc-integration/ocn2pid/20140320" resource="http://ocn2pid.addi.dk/ocn2pid/ocn-collection/60996742">
+  <pid value="810010-katalog:003162004">
+    <libraryNumber>810010</libraryNumber>
+    <format>katalog</format>
+    <idNumber>003162004</idNumber>
+  </pid>
+</pidList>

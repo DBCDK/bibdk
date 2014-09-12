@@ -1,0 +1,240 @@
+<?php
+
+// Load Field module hooks.
+module_load_include('inc', 'bibdk_linkme', 'bibdk_linkme.field');
+
+/**
+ * Implements hook_menu();
+ */
+function bibdk_linkme_menu() {
+  $items['linkme.php'] = array(
+    'title' => 'linkme',
+    'description' => 'Linkme landing page',
+    'page callback' => 'bibdk_linkme_page',
+    'access arguments' => array('access content'),
+    'type' => MENU_LOCAL_TASK,
+  );
+  $items['admin/config/linkme'] = array(
+    'title' => 'Linkme',
+    'description' => 'Handle linkme module',
+    'position' => 'left',
+    'weight' => 1,
+    'page callback' => 'system_admin_menu_block_page',
+    'access arguments' => array('access administration pages'),
+    'file' => 'system.admin.inc',
+    'file path' => drupal_get_path('module', 'system'),
+  );
+  $items['admin/config/linkme/url'] = array(
+    'title' => 'Linkme Settings',
+    'description' => 'Set the base URL for linkme syntax',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bibdk_linkme_admin'),
+    'access arguments' => array('administer bibdk_linkme settings'),
+    'type' => MENU_NORMAL_ITEM,
+   );
+
+  return $items;
+
+}
+
+
+/**
+ * Administration form
+ */
+function bibdk_linkme_admin() {
+  $form = array();
+
+  $form['linkme_url'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Linkme base url'),
+    '#default_value' => variable_get('linkme_url', "http://bibliotek.dk/linkme.php"),
+    '#description' => t("e.g. http://bibliotek.dk/linkme.php"),
+    '#required' => TRUE,
+  );
+
+  $form['linkme_url_ccl'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Linkme base url for ccl formatted links'),
+    '#default_value' => variable_get('linkme_url_ccl', "http://old.bibliotek.dk/linkme.php"),
+    '#description' => t("e.g. http://old.bibliotek.dk/linkme.php"),
+    '#required' => TRUE,
+  );
+
+  $form['linkme_url_ocn2pid'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Linkme base url for OCN2PID webservice'),
+    '#default_value' => variable_get('linkme_url_ocn2pid', "http://ocn2pid.addi.dk/ocn2pid/ocn-collection/"),
+    '#description' =>
+      t("e.g. http://ocn2pid.addi.dk/ocn2pid/ocn-collection/") .
+      '<br/>' .
+      t('(REST URL. Redo as a standard webservice client once we have a SOAP webservice.)'),
+    '#required' => TRUE,
+  );
+
+  return system_settings_form($form);
+}
+
+
+/*
+ * Implementation of hook_theme
+ */
+function bibdk_linkme_theme(){
+  return array(
+    'bibdk_linkme_button' => array(
+      'variables' => array('link_text' => '', 'path' => '', 'query' => array(), 'link_attributes' => array(), 'link_form' => array(), 'selid' => ''),
+      'template' => 'theme/bibdk_linkme_button',
+    ),
+  );
+}
+
+
+/**
+ * Construct the linkme.php page
+ */
+function bibdk_linkme_page() {
+
+  $query = drupal_get_query_parameters();
+
+  // OCLC reference format
+  if ( isset($query['ref']) && $query['ref'] == 'worldcat' ) {
+
+    $ccl = explode('=',urldecode($query['ccl']));
+    if ( isset($ccl[1]) ) {
+
+      // set language to english: we're redirecting from an english library system.
+      $language = (object) array('language' => 'en-gb', 'name' => 'English', 'native' => 'English', 'direction' => 0, 'enabled' => 1, 'plurals' => 2, 'formula' => '', 'domain' => '', 'prefix' => 'eng', 'weight' => 0, 'javascript' => '');
+      $url = variable_get('linkme_url_ocn2pid', NULL);
+      $pids = array();
+      if ( $url ) {
+        $url = $url . $ccl[1];
+
+        $curl = new MicroCURL();
+
+        if ( $simpletest_prefix = drupal_valid_test_ua() ) {
+          $curl->set_option(CURLOPT_USERAGENT, drupal_generate_test_ua($simpletest_prefix));
+        }
+
+        $result = $curl->get(array($url));
+
+        $curl->close();
+        if ( !empty($result) ) {
+          $p = xml_parser_create();
+          xml_parse_into_struct($p, $result, $vals, $index);
+          xml_parser_free($p);
+          foreach ( $vals as $value ) {
+            if ( $value['tag'] == 'PID' && !empty($value['attributes']) && !empty($value['attributes']['VALUE']) ) {
+              $pids[] = '(rec.id=' . $value['attributes']['VALUE'] . ')';
+            }
+          }
+        }
+        else {
+          watchdog('bibdk_linkme', 'ocn2pid return empty set for ' . $url, array(), $severity = WATCHDOG_NOTICE);
+        }
+
+        $options['query']['search_block_form'] = implode(' or ', $pids);
+        $options['query']['ref'] = 'worldcat';
+        $options['fragment'] = 'content';
+        $options['language'] = $language;
+        drupal_set_message(t('LINKME_WORLDCAT_NOTICE', array(), array('context' => 'bibdk_linkme')), 'status');
+        drupal_goto("search/work", $options);
+        return FALSE;
+      }
+    }
+
+  }
+
+  // Old format
+  if ( isset($query['ccl']) ) {
+    // make sure ccl is url-encoded
+    $ccl = urldecode($query['ccl']);
+    $ccl = urlencode($ccl);
+    $url = variable_get('linkme_url_ccl', 'http://old.bibliotek.dk/linkme.php') . '?ccl=' . $ccl;
+
+    drupal_goto($url);
+    // For now we redirect ccl queries t
+    extract(_parseCCLQuery($query['ccl']));
+    // Query format "dkcclphrase.lid=$lid AND dkcclterm.ln=$lok"
+    drupal_set_message(t('Get the Manifistation with lid : @lid and lok : @lok', array('@lid' => $lid, '@lok' => $lok), array('context' => 'bibdk_linkme')), 'status');
+  }
+  else if ( isset($query['cql'])) {
+    $options['query']['search_block_form'] = $query['cql'];
+    $options['fragment'] = 'content';
+    drupal_goto("search/work", $options);
+  }
+  //single ID
+  else if (isset($query['rec_id'])) {
+    drupal_goto("work/".$query['rec_id']);
+  }
+  // Linkme query is missing
+  else{
+    drupal_set_message(t('Query does not have the right format', array(), array('context' => 'bibdk_linkme')), "error");
+  }
+  return "";
+}
+
+/** Implements hook_ting_openformat_actions
+ * Add actions to work, subwork and manifestations
+ * @param $type
+ * @param $entity
+ * @param $view_mode
+ * @param $langcode
+ * @return array
+ */
+function bibdk_linkme_ting_openformat_actions($type, $entity, $view_mode, $langcode){
+  $element = array();
+  if ($type == 'bibdkManifestation'){
+    $link = bibdk_linkme_generate_permalink($entity->id);
+    $form = drupal_get_form('bibdk_linkme_button_form_element', $link);
+
+    $element['linkme'] = array(
+      '#theme' => 'bibdk_linkme_button',
+      '#link_text' => t('Get permalink'),
+      '#path' => $link,
+      '#link_form' => $form,
+      '#weight' => 10,
+      '#selid' => 'selid-linkme-' . drupal_html_id($entity->id),
+    );
+  }
+
+  return $element;
+}
+
+function bibdk_linkme_button_form_element($form, &$form_state, $path){
+  $form = array();
+  $form['link'] = array(
+    '#type' => 'textfield',
+    '#default_value' => $path,
+    //'#disabled' => true,
+  );
+
+
+  return $form;
+}
+
+
+
+/**
+ *
+ * Extract lid and lok from CCL query
+ *
+ * @param string $ccl
+ * @return array containing the variables of the CCL query
+ */
+function _parseCCLQuery($ccl){
+  $ccl = preg_replace("/ og /","&", $ccl);
+  parse_str($ccl, $arr);
+  return $arr;
+}
+
+/**
+ *
+ * Generate linkme permalink
+ *
+ * @param string $id
+ * @return string formatted as absolute URL
+ */
+function bibdk_linkme_generate_permalink($id){
+
+  return url(variable_get('linkme_url', "http://bibliotek.dk/linkme"), array("absolute" => TRUE, "query" => array("rec.id" => $id)));
+}
+
