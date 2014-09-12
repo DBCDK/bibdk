@@ -1,0 +1,45 @@
+<?php
+
+class BibdkSubjectHierarchyWebTestCase extends DrupalWebTestCase {
+
+  protected $privileged_user;
+
+  public static function getInfo() {
+    return array(
+      'name' => 'Bibdk Subject Hierarchy Web Test',
+      'description' => 'Bibdk Subject Hierarchy Web test.',
+      'group' => 'Bibliotek.dk  - Subject Hierarchy',
+    );
+  }
+
+  public function setUp() {
+    // $this->profile = 'minimal';
+    parent::setUp('bibdk_subject_hierarchy');
+    user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array(
+      'access content',
+      'search content'
+    ));
+    menu_rebuild();
+  }
+
+  public function testRunner() {
+
+    // Create and log in our privileged user.
+    $this->privileged_user = $this->drupalCreateUser(array(
+      'administer blocks',
+      'search content',
+    ));
+    $this->drupalLogin($this->privileged_user);
+    $this->_testBibdkSubjectHierarchy();
+
+    return TRUE;
+
+  }
+
+  private function _testBibdkSubjectHierarchy() {
+    // assert foobar
+    $this->drupalGet('');
+    $this->assertFieldByName('search_block_form');
+  }
+
+}

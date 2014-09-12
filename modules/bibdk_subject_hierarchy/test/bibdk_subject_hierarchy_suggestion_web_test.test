@@ -1,0 +1,122 @@
+<?php
+
+class BibdkSubjectHierarchySuggestionWebTestCase extends DrupalWebTestCase {
+
+  protected $privileged_user;
+
+  public static function getInfo() {
+    return array(
+      'name' => 'Bibdk Subject Hierarchy suggestion web test',
+      'description' => 'Bibdk Subject Hierarchy suggestion web test.',
+      'group' => 'Bibliotek.dk  - Subject Hierarchy',
+    );
+  }
+
+
+  public function setUp() {
+    parent::setUp('bibdk_subject_hierarchy', 'bibdk_subject_hierarchy_mockup', 'ting_client');
+    variable_set('ting_search_url', $this->getAbsoluteUrl('bibdk_subject_hierarchy_mockup'));
+  }
+
+
+  public function testRunner() {
+    $this->setupBlock('bibdk_subject_hierarchy_bibdk-subject-hierarchy');
+    $this->_testSuggestFormAjax();
+  }
+
+
+  private function _testSuggestFormAjax() {
+
+    // suggestion form
+    $value = $this->ajaxSearch('', 1);
+    $this->assertNoString($value, 'HEADER_HIERARCHY_SEND_SUGGESTION');
+    $this->assertNoString($value, 'TEXT_HIERARCHY_SEND_SUGGESTION');
+
+    $this->setupAdminEmail();
+
+    $value = $this->ajaxSearch('', 2);
+    $this->assertString($value, 'HEADER_HIERARCHY_SEND_SUGGESTION');
+    $this->assertString($value, 'TEXT_HIERARCHY_SEND_SUGGESTION');
+
+  }
+
+
+  /** Helper function: Search in subject hierarchy
+   * @param $string
+   * @return string
+   */
+  private function ajaxSearch($string, $key) {
+    $edit = array(
+      'search-hierarchy-input' => $string,
+    );
+    $result = $this->drupalPostAJAX(null, $edit, array('op' => t('search')));
+    $value = isset($result[$key]['value']) ? $result[$key]['value'] : '';
+
+    return $value;
+  }
+
+
+  /** Helper function: Test if string is in content
+   * @param $content
+   * @param $string
+   * @param string $message
+   * @param string $group
+   */
+  private function assertString($content, $string, $message='', $group = 'Other') {
+    if (!$message) {
+      $message = t('String "@string" found', array('@string' => $string));
+    }
+    $this->assert(strpos($content, $string) !== FALSE, $message, $group);
+  }
+
+
+  /** Helper function: Test if string is not in content
+   * @param $content
+   * @param $string
+   * @param string $message
+   * @param string $group
+   */
+  private function assertNoString($content, $string, $message='', $group = 'Other') {
+    if (!$message) {
+      $message = t('String "@string" not found', array('@string' => $string));
+    }
+    $this->assert(strpos($content, $string) !== TRUE, $message, $group);
+  }
+
+
+  /** Login and setup block in region
+   * @param $name
+   * @param string $region
+   */
+  private function setupBlock($name, $region = 'content') {
+
+    $this->admin_user = $this->drupalCreateUser(array(
+      'administer blocks'
+    ));
+    $this->drupalLogin($this->admin_user);
+    $edit["blocks[$name][region]"] = $region;
+    $this->drupalPost('admin/structure/block', $edit, t('Save blocks'));
+    $this->drupalLogout();
+  }
+
+
+  /** Login and setup admin email
+   * @param $name
+   * @param string $region
+   */
+  private function setupAdminEmail() {
+
+    $this->admin_user = $this->drupalCreateUser(array(
+      'administer search'
+    ));
+    $this->drupalLogin($this->admin_user);
+
+    $edit = array();
+    $_bibdk_subject_hierarchy_email_to = $edit['bibdk_subject_hierarchy_email_to'] = $this->randomName(8) . '@' . $this->randomName(8) . '.dk';
+    $this->drupalPost('admin/config/search/bibdk_subject_hierarchy', $edit, 'Save configuration');
+    $this->assertRaw('The configuration options have been saved.');
+
+    $this->drupalLogout();
+  }
+}
+
