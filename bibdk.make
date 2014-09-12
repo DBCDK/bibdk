@@ -150,10 +150,11 @@ projects[bibdk_behaviour][download][type] = git
 projects[bibdk_behaviour][download][url] = git@github.com:DBCDK/bibdk_behaviour.git
 projects[bibdk_behaviour][download][tag] = 7.x-0.6
 
-projects[bibdk_borchk][type] = module
-projects[bibdk_borchk][download][type] = git
-projects[bibdk_borchk][download][url] = git@github.com:DBCDK/bibdk_borchk.git
-projects[bibdk_borchk][download][tag] = 7.x-0.8
+;bibdk_borchk added to bibdk repo
+;projects[bibdk_borchk][type] = module
+;projects[bibdk_borchk][download][type] = git
+;projects[bibdk_borchk][download][url] = git@github.com:DBCDK/bibdk_borchk.git
+;projects[bibdk_borchk][download][tag] = 7.x-0.8
 
 projects[bibdk_cart][type] = module
 projects[bibdk_cart][download][type] = git

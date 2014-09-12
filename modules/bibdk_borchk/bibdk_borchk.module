@@ -1,0 +1,63 @@
+<?php
+
+/**
+ * Implements hook_ting_client_webservice (@see ting_client.module)
+ * */
+function bibdk_borchk_ting_client_webservice() {
+  $ret = array();
+  $ret['borchk']['class'] = 'bibdk_borchk';
+  $ret['borchk']['url'] = 'bibdk_borchk_url';
+  return $ret;
+}
+
+/**
+ * do a request
+ * */
+function bibdk_borchk_request($userId, $userPincode, $libraryCode, $outputType = 'json', $serviceRequester = NULL) {
+  if(empty($serviceRequester)){
+    $serviceRequester = variable_get('bibdk_borchk_servicerequester');
+  }
+
+  // this is the real request
+  $client = new ting_client_class();
+  $response = $client->do_request('borchk',array(
+    'userId' => $userId,
+    'userPincode' => $userPincode,
+    'serviceRequester' => $serviceRequester,
+    'libraryCode' => $libraryCode,
+    'outputType' => $outputType,
+  ));
+
+  return $response;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter (ting_client_admin_webservices_settings)
+ * add 2 fields to webservice client settings
+ * @url to borchk
+ * @servicerequester
+ * */
+function bibdk_borchk_form_ting_client_admin_webservices_settings_alter(&$form, &$form_state) {
+  $form['ting']['bibdk_borchk_url'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Borchk URL'),
+    '#description' => t('URL to borchk e.g.  http://borchk.addi.dk/2.3/'),
+    '#required' => TRUE,
+    '#default_value' => variable_get('bibdk_borchk_url', FALSE),
+  );
+  $form['ting']['bibdk_borchk_servicerequester'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Service requester parameter for borchk'),
+    '#description' => t('the default service requester (if no other given) e.g. bibliotek.dk'),
+    '#required' => TRUE,
+    '#default_value' => variable_get('bibdk_borchk_servicerequester', FALSE),
+  );
+}
+
+/**
+ * Implements hook_how_r_u()
+ * @return Array
+ */
+function bibdk_borchk_how_r_u() {
+  return array('Borchk' => variable_get('bibdk_borchk_url'));
+}
