@@ -1,0 +1,8 @@
+name = Universally Unique ID
+description = Extends the entity functionality and adds support for universally unique identifiers.
+core = 7.x
+version = 7.x-1.0-alpha3+52-dev-02
+package = UUID
+configure = admin/config/system/uuid
+;files[] = uuid.test
+
