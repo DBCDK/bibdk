@@ -183,10 +183,11 @@ projects[bibdk_favourite][download][type] = git
 projects[bibdk_favourite][download][url] = git@github.com:DBCDK/bibdk_favourite.git
 projects[bibdk_favourite][download][tag] = 7.x-0.37
 
-projects[bibdk_forsrights][type] = module
-projects[bibdk_forsrights][download][type] = git
-projects[bibdk_forsrights][download][url] = git@github.com:DBCDK/bibdk_forsrights.git
-projects[bibdk_forsrights][download][tag] = 7.x-0.2
+;bibdk_forsrights added to bibdk repo
+;projects[bibdk_forsrights][type] = module
+;projects[bibdk_forsrights][download][type] = git
+;projects[bibdk_forsrights][download][url] = git@github.com:DBCDK/bibdk_forsrights.git
+;projects[bibdk_forsrights][download][tag] = 7.x-0.2
 
 projects[bibdk_frontend][type] = module
 projects[bibdk_frontend][download][type] = git
