@@ -1,0 +1,10 @@
+name = Bibdk CAPTCHA
+description = Extending the CAPTCHA module to provide captcha with Danish spoken language.
+dependencies[] = captcha
+dependencies[] = image_captcha
+package = Spam control
+core = 7.x
+version = 7.x-0.5
+scripts[] = js/bibdkcaptcha.js
+files[] = tests/bibdkcaptcha.test
+files[] = tests/bibdkcaptcha.audio.test

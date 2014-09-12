@@ -1,0 +1,182 @@
+<?php
+
+/**
+ * @file
+ * Extending the CAPTCHA module with dansih and english language audio support.
+ */
+
+/**
+ * Implements hook_help().
+ */
+function bibdkcaptcha_help($path, $arg) {
+  $output = '';
+  switch ($path) {
+    case 'admin/modules#name':
+      $output .= t('Bibdk Captcha');
+      break;
+    case 'admin/modules#description':
+    case 'admin/user/captcha/bibdkcaptcha':
+      break;
+    case 'admin/help#bibdkcaptcha':
+      break;
+  }
+  return $output;
+}
+
+/**
+ * Implements hook_menu().
+ */
+function bibdkcaptcha_menu() {
+  $items = array();
+  $items['captcha/refreshcaptcha'] = array(
+    'page callback' => 'bibdkcaptcha_callback_refresh',
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('access content'),
+  );
+
+  $items['captcha/playaudiocaptcha/%/%/%'] = array(
+    'page callback' => 'bibdkcaptcha_generate_audio_file',
+    'page arguments' => array(2, 3, 4),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+/**
+ * Implementation of hook_captcha().
+ *
+ */
+function bibdkcaptcha_captcha($op, $captcha_type = '', $sid = NULL) {
+  drupal_add_js(drupal_get_path('module', 'bibdkcaptcha') . '/js/bibdkcaptcha.js');
+  switch ($op) {
+    case 'list':
+      return array('Bibdk Captcha');
+    case 'generate':
+      if ($captcha_type == 'Bibdk Captcha') {
+        $captcha = image_captcha_captcha($op, 'Image', $sid);
+        $markup = _bibdkcaptcha_get_markup($captcha['form']['captcha_image']['#markup']);
+        $captcha['form']['captcha_image']['#markup'] = $markup;
+        return $captcha;
+      }
+      break;
+    case 'refresh':
+      module_load_include('inc', 'captcha');
+      $captcha_sid = _captcha_generate_captcha_session('user_register_form');
+      $captcha = image_captcha_captcha('generate', 'Image', $captcha_sid);
+      $token = _bibdkcaptcha_update_captcha_session($captcha_sid, $captcha['solution']);
+      $data = array(
+        'sid' => $captcha_sid,
+        'captcha' => $captcha['form']['captcha_image']['#markup'],
+        'token' => $token
+      );
+      return $data;
+      break;
+  }
+}
+
+/**
+ * Helper function for updating the solution in the CAPTCHA session table.
+ *
+ * @param $captcha_sid the CAPTCHA session ID to update.
+ * @param $solution the new solution to associate with the given CAPTCHA session.
+ */
+function _bibdkcaptcha_update_captcha_session($captcha_sid, $solution) {
+  $query = db_select('captcha_sessions', 'c')
+    ->condition('csid', $captcha_sid, '=')
+    ->fields('c', array('solution'));
+  $result = $query->execute();
+  $token = $result->fetchField();
+
+  db_update('captcha_sessions')
+    ->condition('csid', $captcha_sid)
+    ->fields(array(
+    'token' => $token,
+    'timestamp' => REQUEST_TIME,
+    'solution' => $solution,
+  ))
+    ->execute();
+  return $token;
+}
+
+/**
+ * Helper function for appending refresh and audio buttons to image markup
+ *
+ * @param string $markup
+ * @return string
+ */
+function _bibdkcaptcha_get_markup($markup) {
+  $module_path = base_path() . drupal_get_path('module', 'bibdkcaptcha');
+  $captcha_url = $markup;
+  $markup = theme('bibdkcaptcha', array('captcha' => $captcha_url, 'module_path' => $module_path));
+  return $markup;
+}
+
+/**
+ * Implementation of hook_theme().
+ */
+function bibdkcaptcha_theme() {
+  return array(
+    'bibdkcaptcha' => array(
+      'variables' => array(),
+      'template' => 'template/bibdkcaptcha',
+    ),
+  );
+}
+
+/**
+ * Callback function. Requests a new captcha image and returns it to jQuery that updates the DOM
+ */
+function bibdkcaptcha_callback_refresh() {
+  $data = bibdkcaptcha_captcha('refresh');
+  drupal_json_output($data);
+}
+
+/**
+ * Called when the user requests a audio-captcha. Retrieves the solution for the given captcha from the database and sends it to the bibdkcaptcha_play_audio_file method
+ *
+ * @param type $captcha_sid
+ * @param type $token
+ * @param type $type 'mp3' or 'wav' - depends on browser type
+ */
+function bibdkcaptcha_generate_audio_file($captcha_sid, $token, $type) {
+  #$result = db_query("SELECT solution FROM {captcha_sessions} WHERE csid = :csid AND token = :token", array(':csid' => $captcha_sid, ':token' => $token));
+  $query = db_select('captcha_sessions', 'c')
+    ->condition('csid', $captcha_sid, '=')
+    ->condition('token', $token, '=')
+    ->fields('c', array('solution'));
+  $result = $query->execute();
+
+  $solution = $result->fetchField();
+  bibdkcaptcha_play_audio_file($solution, $type);
+}
+
+/**
+ * Creates an audio-captcha based on the received solution and type, and echoes it with an appropriate header
+ *
+ * @param String $solution
+ * @param String $type 'mp3' or 'wav' - depends on browser type
+ */
+function bibdkcaptcha_play_audio_file($solution, $type) {
+  module_load_include('inc', 'bibdkcaptcha', 'bibdkcaptcha.audio');
+
+  $case_sentitive = variable_get('captcha_default_validation');
+
+  if ($type == 'mp3') {
+    header('Content-type: audio/mpeg');
+    $ext = 'mp3';
+    $audio = bibdkcaptcha_generate_audio_mpeg($solution, $case_sentitive);
+  }
+  else {
+    header('Content-type: audio/wav');
+    $ext = 'wav';
+    $audio = bibdkcaptcha_generate_audio_wav($solution, $case_sentitive);
+  }
+  header("Content-Disposition: attachment; filename=bibdkcaptcha_audio.$ext");
+  header('Cache-Control: no-store, no-cache, must-revalidate');
+  header('Expires: Sun, 1 Jan 2000 12:00:00 GMT');
+  header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . 'GMT');
+  header('Content-Length: ' . strlen($audio));
+  echo $audio;
+  exit();
+}

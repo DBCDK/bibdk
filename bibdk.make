@@ -339,10 +339,11 @@ projects[bibdk_voxb][download][type] = git
 projects[bibdk_voxb][download][url] = git@github.com:DBCDK/bibdk_voxb.git
 projects[bibdk_voxb][download][tag] = 7.x-0.2
 
-projects[bibdkcaptcha][type] = module
-projects[bibdkcaptcha][download][type] = git
-projects[bibdkcaptcha][download][url] = git@github.com:DBCDK/bibdkcaptcha.git
-projects[bibdkcaptcha][download][tag] = 7.x-0.5
+;bibdkcaptcha added to bibdk repo
+;projects[bibdkcaptcha][type] = module
+;projects[bibdkcaptcha][download][type] = git
+;projects[bibdkcaptcha][download][url] = git@github.com:DBCDK/bibdkcaptcha.git
+;projects[bibdkcaptcha][download][tag] = 7.x-0.5
 
 projects[microcurl][type] = module
 projects[microcurl][download][type] = git
