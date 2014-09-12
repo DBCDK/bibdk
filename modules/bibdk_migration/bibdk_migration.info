@@ -1,0 +1,5 @@
+name = Bibliotek.dk migration
+description = Tools to handle migration of content and settings from one drupal installation to another
+core = 7.x
+version = 7.x-0.1
+package = Bibliotek.dk
