@@ -1,0 +1,150 @@
+<?php
+
+function openuserstatus_webservice_mockup_menu() {
+  $items['openuserstatus_webservice_mockup/renew'] = array(
+    'page callback' => 'openuserstatus_webservice_mockup_renew',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  $items['openuserstatus_webservice_mockup/renew_all'] = array(
+    'page callback' => 'openuserstatus_webservice_mockup_renew_all',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  $items['openuserstatus_webservice_mockup/cancel_reservation'] = array(
+    'page callback' => 'openuserstatus_webservice_mockup_cancel_reservation',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  $items['openuserstatus_webservice_mockup'] = array(
+    'page callback' => 'openuserstatus_webservice_mockup_request',
+    'access callback' => TRUE,
+  );
+
+  $items['openuserstatus_webservice_mockup/test'] = array(
+    'page callback' => 'openuserstatus_webservice_mockup_request',
+    'access callback' => TRUE,
+  );
+  return $items;
+}
+
+/**
+ * Form for testing mockup requests
+ * @return string
+ */
+function openuserstatus_webservice_mockup_test() {
+  return '<form name="test" action="openuserstatus_webservice_mockup" method="POST" target="_blank"><textarea name="xml"></textarea><input type="submit" name="sub" value="submit"/></form>';
+}
+
+/**
+ * Response loader method
+ * @return bool|void
+ */
+function openuserstatus_webservice_mockup_request() {
+  if (isset($_POST['xml'])) {
+    $data = rawurldecode($_POST['xml']);
+  }
+  else {
+    $data = file_get_contents('php://input');
+  }
+
+  try {
+    $envelope = new SimpleXMLElement($data);
+    $body = $envelope->children('SOAP-ENV', TRUE);
+    $request = $body->Body->children();
+
+    switch ($request->getName()) {
+      case 'getUserStatusRequest':
+        openuserstatus_webservice_mockup_getUserStatusRequest($request);
+        break;
+      case 'renewLoanRequest':
+        openuserstatus_webservice_mockup_renewLoanRequest($request);
+        break;
+      case 'findLibraryRequest':
+        openuserstatus_webservice_mockup_findLibraryRequest($request);
+        break;
+      default:
+        return FALSE;
+    }
+  }
+  catch (Exception $e) {
+    return FALSE;
+  }
+}
+
+/**
+ * Load response for bibdk_openuserstatus_webtest.test getUserStatusRequest
+ * @param $request
+ */
+function openuserstatus_webservice_mockup_getUserStatusRequest($request) {
+  $path = drupal_get_path('module', 'openuserstatus_webservice_mockup');
+  echo file_get_contents($path . '/response/get_userstatus_reponse.json');
+  die();
+}
+
+/**
+ * Load response for bibdk_openuserstatus_webtest.test renewLoanRequest
+ * @param $request
+ */
+
+function openuserstatus_webservice_mockup_renewLoanRequest($request) {
+  $path = drupal_get_path('module', 'openuserstatus_webservice_mockup');
+  $loan_id = (string) $request->renewLoanRequest->loanId;
+  switch ($loan_id){
+    case 'test_loan_id' :
+      $return = file_get_contents($path . '/response/renew_loanes_ineligible.json');
+      break;
+    case 'test_loan_id_2' :
+      $return = file_get_contents($path . '/response/renew_loanes_good.json');
+      break;
+  }
+  echo $return;
+  die();
+}
+
+/**
+ * Load response for bibdk_openuserstatus_webtest.test findLibraryRequest
+ * @param $request
+ */
+function openuserstatus_webservice_mockup_findLibraryRequest($request) {
+  $path = drupal_get_path('module', 'openuserstatus_webservice_mockup');
+  echo file_get_contents($path . '/response/find_library_100450.json');
+  die();
+}
+
+
+/**
+ * Loads the saved renew_loanes_response.json, decodes it and returns.
+ * Used for testing only.
+ *
+ * @return array
+ */
+function openuserstatus_webservice_mockup_renew() {
+  $response = drupal_json_decode(file_get_contents(drupal_get_path('module', 'bibdk_openuserstatus') . '/test/mockup/renew_loanes_response.json'));
+  drupal_json_output($response['response']);
+  drupal_exit();
+}
+
+/**
+ * Loads the saved renew_loanes_response.json, decodes it and returns.
+ * Used for testing only.
+ *
+ * @return array
+ */
+function openuserstatus_webservice_mockup_renew_all() {
+  $response = drupal_json_decode(file_get_contents(drupal_get_path('module', 'bibdk_openuserstatus') . '/test/mockup/renew_loanes_all_response.json'));
+  drupal_json_output($response['response']);
+  drupal_exit();
+}
+
+/**
+ * Loads the saved cancel_response.json, decodes it and returns.
+ * Used for testing only.
+ *
+ * @return array
+ */
+function openuserstatus_webservice_mockup_cancel_reservation() {
+  $response = drupal_json_decode(file_get_contents(drupal_get_path('module', 'bibdk_openuserstatus') . '/test/mockup/cancel_reservation_response.json'));
+  drupal_json_output($response['response']);
+  drupal_exit();
+}
