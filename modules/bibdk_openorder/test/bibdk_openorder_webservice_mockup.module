@@ -1,0 +1,127 @@
+<?php
+
+/**
+ * @file
+ * Webservice mockup of Open Agency
+ */
+function bibdk_openorder_webservice_mockup_menu() {
+  $items['bibdk_openorder_webservice'] = array(
+    'page callback' => 'bibdk_openorder_webservice_mockup_request',
+    'access callback' => TRUE,
+  );
+  $items['bibdk_openorder_webservice/openorder_xsd'] = array(
+    'page callback' => 'bibdk_openorder_webservice_mockup_request_xsd',
+    'access callback' => TRUE,
+  );
+  $items['bibdk_openorder_webservice/test'] = array(
+    'page callback' => 'bibdk_openorder_webservice_mockup_test',
+    'access callback' => TRUE,
+  );
+
+  return $items;
+}
+
+function bibdk_openorder_webservice_mockup_test() {
+  return '<form name="test" action="bibdk_openorder_webservice" method="POST" target="_blank"><textarea name="xml"></textarea><input type="submit" name="sub" value="submit"/></form>';
+}
+
+/**
+ * Faking the request and returns result.
+ * @return String json
+ */
+function bibdk_openorder_webservice_mockup_request() {
+  if (isset($_POST['xml'])) {
+    $data = rawurldecode($_POST['xml']);
+  }
+  else {
+    $data = file_get_contents('php://input');
+  }
+
+  //kpr($data);
+  $body = bibdk_openorder_webservice_mockup_parse_xml($data);
+
+  try {
+    $request = $body->children();
+    switch ($request->getName()) {
+      case 'checkOrderPolicyRequest' :
+        return bibdk_openorder_webservice_checkOrderPolicyRequest($request->checkOrderPolicyRequest);
+        break;
+      case 'placeOrderRequest' :
+        return bibdk_openorder_webservice_placeOrderRequest($request->placeOrderRequest);
+        break;
+      case 'incrementRedirectStatRequest' :
+        return bibdk_openorder_webservice_incrementRedirectStatRequest($request->incrementRedirectStatRequest);
+        break;
+
+      default:
+        return SOAP_FAULT;
+    }
+  } catch (Exception $e) {
+    return SOAP_FAULT;
+  }
+}
+
+
+/**
+ * Faking the request and returns result.
+ * @return String json
+ */
+function bibdk_openorder_webservice_mockup_request_xsd() {
+  $path = drupal_get_path('module', 'bibdk_openorder');
+  $file = file_get_contents($path.'/test/openorder.xsd');
+  print $file;
+  exit;
+}
+
+function bibdk_openorder_webservice_placeOrderRequest($request){
+  $path = drupal_get_path('module', 'bibdk_openorder_webservice_mockup');
+  drupal_add_http_header('Content-Type', 'application/json');
+  $resp = file_get_contents($path . '/placeOrder.json');
+  print $resp;
+
+}
+
+function bibdk_openorder_webservice_incrementRedirectStatRequest($request){
+  $path = drupal_get_path('module', 'bibdk_openorder_webservice_mockup');
+  drupal_add_http_header('Content-Type', 'application/json');
+  if(empty($request->agencyId))
+    $resp = file_get_contents($path . '/incrementRedirectStatFail.json');
+  else
+    $resp = file_get_contents($path . '/incrementRedirectStat.json');
+  print $resp;
+
+}
+
+
+function bibdk_openorder_webservice_checkOrderPolicyRequest($request){
+  $path = drupal_get_path('module', 'bibdk_openorder_webservice_mockup');
+
+  $query = $request->pickUpAgencyId;
+
+  if ($query == 'DK-746112'){
+      drupal_add_http_header('Content-Type', 'application/json');
+      $resp = file_get_contents($path . '/policy-lookupurl.json');
+  }else {
+      // No results
+     drupal_add_http_header('Content-Type', 'application/json');
+    $resp = file_get_contents($path . '/policy-ok.json');
+  }
+
+  print $resp;
+}
+
+/**
+ * Parsing the request into a xml object
+ * @param type request from ting-client
+ * @return \SimpleXMLElement
+ */
+function bibdk_openorder_webservice_mockup_parse_xml($soap){
+  $envelope = new SimpleXMLElement($soap);
+  $envelope->registerXPathNamespace("s", 'http://schemas.xmlsoap.org/soap/envelope/');
+  $envelope->registerXPathNamespace("ns", 'http://oss.dbc.dk/ns/openorder');
+  return current($envelope->xpath('/s:Envelope/s:Body'));
+}
+
+function bibdk_openorder_webservice_mockup_access() {
+  return TRUE;
+}

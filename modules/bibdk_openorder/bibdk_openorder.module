@@ -1,0 +1,222 @@
+<?php
+
+function bibdk_openorder_do_placeOrder($params) {
+  $params += _bibdk_openorder_set_fixed_parameters();
+  $additional = _bibdk_openorder_set_fixed_placeorder_params();
+  $params = array_merge($additional, $params);
+  $params['action'] = 'placeOrderRequest';
+
+  $missing = _bibdk_openorder_check_required_params($params);
+  if (empty($missing)) {
+    $client = new ting_client_class();
+    $response = $client->do_request('openorder', $params);
+
+    return $response;
+  }
+  else {
+    $message = t('a required parameter is missing in placeorder request - please contact system administrator if problem persists');
+    drupal_set_message($message, 'warning');
+    watchdog('openorder', $message.'%values', array('%values'=>implode(', ',$missing)), WATCHDOG_ERROR);
+  }
+}
+
+function _bibdk_openorder_check_required_params($params){
+  $required = array('copy','needBeforeDate','orderSystem','userIdAuthenticated','userId','verificationReferenceSource','action');
+  $missing = array();
+  foreach($required as $value){
+    if(!array_key_exists($value, $params)){
+      $missing[] = $value;
+    }
+  }
+  return $missing;
+}
+
+
+
+function _bibdk_openorder_set_fixed_placeorder_params() {
+  // @TODO; is this value fixed?? or should we get it from somewhere else .. openagency maybe
+  $params['copy'] = 'false';
+  // @TODO; is this value fixed?? or should we get it from somewhere else .. openagency maybe
+  //$params['exactEdition'] = 'true';
+  // @TODO; get this value from userinput
+  //$params['needBeforeDate'] = date('d-m-YTH:i:s', strtotime('now+3 months'));
+  // @TODO; this value is the same as service_requester --- is it always so ?? or should it be set in config ??
+  $params['orderSystem'] = 'bibliotekdk';
+  // @TODO; get this value from openagency -- not yet implemented
+  $params['userIdAuthenticated'] = 'true';
+  // @TODO; get this value from openagency -- not yet implemented
+  //$params['userIdType'] = 'optional'; //BibdkReservationOrderObject::GetObject()->getFields()->getUserIdKey();
+  // @TODO this value should probably be set in config -- ask somebody
+  $params['verificationReferenceSource'] = variable_get('bibdk_openorder_verification_reference_source', FALSE);
+  return $params;
+}
+
+function bibdk_openorder_do_checkArticleDeliveryRequest($pid) {
+  $params = _bibdk_openorder_set_fixed_parameters();
+  $params['action'] = 'checkArticleDeliveryRequest';
+  $params['pid'] = $pid;
+  $params['outputType'] = 'xml';
+  $client = new ting_client_class();
+  $response = $client->do_request('openorder', $params);
+
+  return $response;
+}
+
+/**
+ * do a checkOrderPolicyRequest
+ *
+ * return OrderPolicy
+ * */
+function bibdk_openorder_do_checkOrderPolicy($pickupAgencyId, $pid) {
+  $params = _bibdk_openorder_set_fixed_parameters();
+  $params['action'] = 'checkOrderPolicyRequest';
+
+  // testing
+  $params['pickUpAgencyId'] = $pickupAgencyId;
+  $params['pid'] = $pid;
+
+  $client = new ting_client_class();
+  $response = $client->do_request('openorder', $params);
+  $orderpolicy = BibdkOpenorderPolicyResponse::SetObject();
+  BibdkOpenorderPolicyResponse::GetObject()->setResponse($response);
+  BibdkOpenorderPolicyResponse::GetObject()->setAgencyId($pickupAgencyId);
+  return $orderpolicy;
+}
+
+/**
+ * do a incrementRedirectStat
+ *
+ * */
+function bibdk_openorder_do_incrementRedirectStat($agencyid) {
+  $params = _bibdk_openorder_set_fixed_parameters();
+  $params['action'] = 'incrementRedirectStatRequest';
+
+  // testing
+  $params['agencyId'] = $agencyid;
+
+  $client = new ting_client_class();
+  $response = $client->do_request('openorder', $params);
+
+  if (
+    !isset($response->incrementRedirectStatResponse->incrementRedirectStatStatus->{'$'}) || 
+    $response->incrementRedirectStatResponse->incrementRedirectStatStatus->{'$'} === 'false')
+  {
+    watchdog('openOrder', 'Could not register incrementRedirectStat for agency : @agencyID', array('@agencyID' => $agencyid), WATCHDOG_ERROR);
+    return false;
+  }
+
+  return true;
+}
+
+/**
+ * parameters common for all request
+ * */
+function _bibdk_openorder_set_fixed_parameters() {
+  $authentication = array();
+  $authentication['groupIdAut'] = variable_get('bibdk_openorder_groupIdAut');
+  $authentication['passwordAut'] = variable_get('bibdk_openorder_passwordAut');
+  $authentication['userIdAut'] = variable_get('bibdk_openorder_userIdAut');
+  $params['authentication'] = $authentication;
+
+  $params['serviceRequester'] = variable_get('bibdk_openorder_serviceRequester');
+
+  return $params;
+}
+
+/**
+ * Implements hook_ting_client_webservice (
+ *
+ * @see ting_client.module)
+ * */
+function bibdk_openorder_ting_client_webservice() {
+  $ret = array();
+  $ret['openorder']['class'] = 'bibdk_openorder';
+  $ret['openorder']['url'] = 'bibdk_openorder_url';
+  $ret['openorder']['xsd_url'] = 'bibdk_openorder_xsd_url';
+  $ret['openorder']['xsdNamespace'] = array(0 => 'http://oss.dbc.dk/ns/openorder');
+  // return array('openorder' => 'bibdk_openorder_url',);
+  return $ret;
+}
+
+/**
+ * Implements hook_how_r_u();
+ *
+ * @return array
+ */
+function bibdk_openorder_how_r_u() {
+  return array('Open Order' => variable_get('bibdk_openorder_url'));
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter (ting_client_admin_webservices_settings)
+ * add field to webservice client settings
+ *
+ * @url to openorder
+ * */
+function bibdk_openorder_form_ting_client_admin_webservices_settings_alter(&$form, &$form_state) {
+
+  // don't start by defining the fieldset as an array. This way other modules can extend the fieldset.
+  $form['openorder']['#type'] = 'fieldset';
+  $form['openorder']['#title'] = t('OpenOrder settings');
+  $form['openorder']['#description'] = t('Setting for openorder webservice');
+  $form['openorder']['#collapsible'] = TRUE;
+  $form['openorder']['#collapsed'] = FALSE;
+  $form['openorder']['#tree'] = FALSE;
+  $form['openorder']['#weight'] = -2;
+
+  $form['openorder']['bibdk_openorder_url'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Openorder URL'),
+    '#description' => t('URL to openorder e.g. http://openorder.addi.dk/2.2/'),
+    '#required' => TRUE,
+    '#default_value' => variable_get('bibdk_openorder_url', FALSE),
+  );
+
+  $form['openorder']['bibdk_openorder_xsd_url'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Openorder XSD URL'),
+    '#description' => t('URL to openorder e.g. https://openorder.addi.dk/x.x/openorder.xsd'),
+    '#required' => TRUE,
+    '#default_value' => variable_get('bibdk_openorder_xsd_url', FALSE),
+  );
+
+  $form['openorder']['bibdk_openorder_groupIdAut'] = array(
+    '#type' => 'textfield',
+    '#title' => t('groupID authentication'),
+    '#description' => t('groupIdAut for openorder e.g. 010100'),
+    '#required' => TRUE,
+    '#default_value' => variable_get('bibdk_openorder_groupIdAut', FALSE),
+  );
+
+  $form['openorder']['bibdk_openorder_passwordAut'] = array(
+    '#type' => 'textfield',
+    '#title' => t('password authentication'),
+    '#description' => t('passwordAut for openorder e.g. 20Koster'),
+    '#required' => TRUE,
+    '#default_value' => variable_get('bibdk_openorder_passwordAut', FALSE),
+  );
+
+  $form['openorder']['bibdk_openorder_userIdAut'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Userid authentication'),
+    '#description' => t('userIdAut for openorder e.g. netpunkt'),
+    '#required' => TRUE,
+    '#default_value' => variable_get('bibdk_openorder_userIdAut', FALSE),
+  );
+
+  $form['openorder']['bibdk_openorder_serviceRequester'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Servicerequester'),
+    '#description' => t('Servicerequester for openorder e.g. 190101'),
+    '#required' => TRUE,
+    '#default_value' => variable_get('bibdk_openorder_serviceRequester', FALSE),
+  );
+
+  $form['openorder']['bibdk_openorder_verification_reference_source'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Verification reference source'),
+    '#description' => t('Reference to a database, or a bibliographic information-system, where the item ordered has been verified e.g. dbcdatawell (test) or bibliotekdk'),
+    '#required' => TRUE,
+    '#default_value' => variable_get('bibdk_openorder_verification_reference_source', FALSE),
+  );
+}
