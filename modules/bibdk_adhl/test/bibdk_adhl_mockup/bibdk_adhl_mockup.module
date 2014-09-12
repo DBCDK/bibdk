@@ -1,0 +1,82 @@
+<?php
+
+function bibdk_adhl_mockup_menu() {
+  $item['bibdk_adhl_mockup'] = array(
+    'page callback' => 'bibdk_adhl_mockup_request',
+    'access callback' => true,
+  );
+  $item['bibdk_adhl_mockup/xsd'] = array(
+    'page callback' => 'bibdk_adhl_mockup_xsd',
+    'access callback' => true,
+  );
+  $item['bibdk_adhl_mockup/test'] = array(
+    'page callback' => 'bibdk_adhl_mockup_test',
+    'access callback' => true,
+  );
+
+  return $item;
+}
+
+function bibdk_adhl_mockup_xsd() {
+  $path = drupal_get_path('module', 'bibdk_adhl_mockup');
+  drupal_add_http_header('Content-Type', 'application/xml');
+  echo file_get_contents($path . '/xsd/adhl.xsd');
+  exit;
+
+}
+
+function bibdk_adhl_mockup_test() {
+  return '<form name="test" action="bibdk_adhl_mockup" method="POST" target="_blank"><textarea name="xml"></textarea><input type="submit" name="sub" value="submit"/></form>';
+}
+
+function bibdk_adhl_mockup_request($reset = false) {
+  if (isset($_POST['xml'])) {
+    $data = rawurldecode($_POST['xml']);
+  }
+  else {
+    $data = file_get_contents('php://input');
+  }
+
+    $envelope = new SimpleXMLElement($data);
+    $body = $envelope->children('SOAP-ENV', TRUE);
+    $request = $body->Body->children();
+    switch ($request->getName()) {
+      case 'adhlRequest':
+        $return = bibdk_adhl_mockup_adhlRequest($request);
+        break;
+
+      case 'topTenRequest':
+        $return = bibdk_adhl_mockup_topTenRequest($request);
+        break;
+
+      default:
+        $return = 'error';
+    }
+
+  drupal_add_http_header('Content-Type', 'application/json');
+  print $return;
+  exit;
+}
+
+
+function bibdk_adhl_mockup_adhlRequest($request) {
+  $path = drupal_get_path('module', 'bibdk_adhl_mockup');
+  $pid = $request->adhlRequest->id->pid;
+  if ($pid == '870970-basis:22677780'){
+    return file_get_contents($path . '/response/adhl_response_22677780.json');
+  }
+  else if($pid == '870970-basis:invalid') {
+    return file_get_contents($path . '/response/adhl_response_invalid.json');
+  }
+}
+
+function bibdk_adhl_mockup_topTenRequest($request) {
+  $path = drupal_get_path('module', 'bibdk_adhl_mockup');
+  $numRecords = $request->topTenRequest->numRecords;
+  if ($numRecords == 10){
+    return file_get_contents($path . '/response/topten_response_5.json');
+  }
+  if ($numRecords == 25){
+    return file_get_contents($path . '/response/topten_response_20.json');
+  }
+}

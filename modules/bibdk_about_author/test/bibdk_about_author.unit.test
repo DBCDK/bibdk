@@ -1,0 +1,22 @@
+<?php
+/**
+ * @file
+ * bibdk_about_author.unit.test
+ */
+
+class BibdkAboutAuthorUnitTestCase extends DrupalUnitTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => 'About Author Unit Test',
+      'description' => 'Test About Author functionality',
+      'group' => 'Bibliotek.dk - About Author',
+    );
+  }
+
+  public function setUp() {
+    module_load_include('module', 'bibdk_about_author', 'bibdk_about_author');
+    parent::setUp();
+  }
+
+}

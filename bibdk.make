@@ -128,20 +128,22 @@ projects[ting_search_carousel][download][url] = git@github.com:DBCDK/ting_search
 projects[ting_search_carousel][download][tag] = 7.x-0.5+dbc.5
 
 ; --- Bibliotek.dk ---
-projects[bibdk_about_author][type] = module
-projects[bibdk_about_author][download][type] = git
-projects[bibdk_about_author][download][url] = git@github.com:DBCDK/bibdk_about_author.git
-projects[bibdk_about_author][download][tag] = 7.x-0.4
+;bibdk_about_author added to bibdk repo
+;projects[bibdk_about_author][type] = module
+;projects[bibdk_about_author][download][type] = git
+;projects[bibdk_about_author][download][url] = git@github.com:DBCDK/bibdk_about_author.git
+;projects[bibdk_about_author][download][tag] = 7.x-0.4
 
 projects[bibdk_actions][type] = module
 projects[bibdk_actions][download][type] = git
 projects[bibdk_actions][download][url] = git@github.com:DBCDK/bibdk_actions.git
 projects[bibdk_actions][download][tag] = 7.x-0.14
 
-projects[bibdk_adhl][type] = module
-projects[bibdk_adhl][download][type] = git
-projects[bibdk_adhl][download][url] = git@github.com:DBCDK/bibdk_adhl.git
-projects[bibdk_adhl][download][tag] = 7.x-0.9
+;bibdk_adhl added to bibdk repo
+;projects[bibdk_adhl][type] = module
+;projects[bibdk_adhl][download][type] = git
+;projects[bibdk_adhl][download][url] = git@github.com:DBCDK/bibdk_adhl.git
+;projects[bibdk_adhl][download][tag] = 7.x-0.9
 
 projects[bibdk_behaviour][type] = module
 projects[bibdk_behaviour][download][type] = git
