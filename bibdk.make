@@ -293,10 +293,11 @@ projects[bibdk_sbkopi][download][tag] = 7.x-0.7
 ;projects[bibdk_search_controls][download][url] = git@github.com:DBCDK/bibdk_search_controls.git
 ;projects[bibdk_search_controls][download][tag] = 7.x-0.6
 
-projects[bibdk_searchhistory][type] = module
-projects[bibdk_searchhistory][download][type] = git
-projects[bibdk_searchhistory][download][url] = git@github.com:DBCDK/bibdk_searchhistory.git
-projects[bibdk_searchhistory][download][tag] = 7.x-1.15
+;bibdk_searchhistory added to bibdk repo
+;projects[bibdk_searchhistory][type] = module
+;projects[bibdk_searchhistory][download][type] = git
+;projects[bibdk_searchhistory][download][url] = git@github.com:DBCDK/bibdk_searchhistory.git
+;projects[bibdk_searchhistory][download][tag] = 7.x-1.15
 
 projects[bibdk_subject_hierarchy][type] = module
 projects[bibdk_subject_hierarchy][download][type] = git

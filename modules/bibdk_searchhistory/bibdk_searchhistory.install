@@ -1,0 +1,73 @@
+<?php
+/**
+ * @file
+ * Install, update and uninstall functions for the bibdk_searchhistory module
+ */
+
+/**
+ * Creates database table and fields
+ * Implements hook_schema().
+ *
+ */
+
+function bibdk_searchhistory_schema() {
+
+  $schema['bibdk_searchhistory_memolist'] = array(
+    'description' => 'Stores searches added to memolist by users',
+    'fields' => array(
+      'sid' => array(
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => 'Primary Key: unique search ID',
+      ),
+      'timestamp' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => "Timestamp - makes it possible to sort searches based on when they are executed",
+      ),
+      'uid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => "User ID",
+      ),
+      'string' => array(
+        'type' => 'text',
+        'size' => 'medium',
+        'not null' => TRUE,
+        'description' => 'The search string',
+      ),
+      'count' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'description' => 'Result count for the given search',
+      ),
+    ),
+    'primary key' => array('sid'),
+    'indexes' => array(
+      'sid' => array('sid'),
+      'timestamp' => array('timestamp'),
+      'uid' => array('uid'),
+    ),
+  );
+
+
+  return $schema;
+}
+
+/**
+ * Implements hook_disable;
+ * delete the profile type defined in this module
+ **/
+function bibdk_searchhistory_disable() {
+  if (function_exists('bibdk_searchhistory_user_profile2_tabs')) {
+    $function = 'bibdk_searchhistory_user_profile2_tabs';
+    $profile = call_user_func($function);
+
+    $profile_type = profile2_get_types($profile->type);
+    if (!empty($profile_type)) {
+      profile2_type_delete($profile_type);
+    }
+  }
+}
