@@ -23,7 +23,7 @@ projects[drupal][patch][] = http://drupal.org/files/1852888-sort-translations-by
 projects[drupal][patch][] = https://raw.github.com/DBCDK/patches/master/file_create_url-no_change_of_relative_url_to_absolute-all_tests.patch
 projects[drupal][patch][] = https://raw.github.com/DBCDK/patches/master/drupal_http_build_query_html5_encode_brackets.patch
 projects[drupal][patch][] = http://drupal.org/files/issues/autocomplete-1232416-17-7x.patch
-projects[drupal][patch][] = https://raw.githubusercontent.com/DBCDK/patches/master/print_missing_module_on_install.diff
+;projects[drupal][patch][] = https://raw.githubusercontent.com/DBCDK/patches/master/print_missing_module_on_install.diff
 
 ;TODO all patches on drupal core should go here
 
