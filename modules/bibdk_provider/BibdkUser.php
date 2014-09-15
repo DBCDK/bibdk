@@ -326,6 +326,7 @@ class BibdkUser {
    * @return array
    */
   public function getCartCount($username) {
+    static $ret;
     $params = array('oui:userId' => $username);
     $response = $this->makeRequest('getCartCountRequest', $params);
 
