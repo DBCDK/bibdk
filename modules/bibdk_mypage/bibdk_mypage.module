@@ -1,0 +1,266 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ * Sets up menu items.
+ */
+function bibdk_mypage_menu() {
+  $items['admin/config/people/bibdk_mypage'] = array(
+    'title' => 'Bibliotek.dk : User frontpage settings',
+    'description' => 'Settings for the user\'s overview page',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bibdk_mypage_admin'),
+    'access arguments' => array('administer users'),
+    'file' => 'bibdk_mypage.admin.inc',
+  );
+
+  return $items;
+}
+
+
+/**
+* Implements hook_menu_alter().
+*/
+function bibdk_mypage_menu_alter(&$items) {
+  if ( module_exists('bibdk_modal') ) {
+    $items['user']['page callback'] = 'bibdk_mypage_page';
+    $items['user']['module'] = 'bibdk_mypage';
+    $items['user']['file'] = FALSE;
+  }
+}
+
+
+/**
+ * Access callback for path /user.
+ *
+ * Displays user profile if user is logged in, or login form for anonymous users.
+ */
+function bibdk_mypage_page() {
+  global $user;
+  if ( $user->uid ) {
+    menu_set_active_item('user/' . $user->uid);
+    return menu_execute_active_handler(NULL, FALSE);
+  }
+  else {
+    drupal_set_title( t('mypage_front_title', array(), array('context' => 'bibdk_mypage')) );
+    $element['mypage_front'] = array(
+      '#markup' => theme(
+        'bibdk_mypage_front',
+        array(
+          'title' => t('mypage_front_body_header', array(), array('context' => 'bibdk_mypage')),
+          'main'  => t('mypage_front_body', array(), array('context' => 'bibdk_mypage'))
+        )
+      ),
+      '#weight' => 1
+    );
+    return $element;
+  }
+}
+
+
+
+/**
+ * Collect a fieldset from each module that implement hook_bibdk_mypage_tabs.
+ *
+ * @param type $form
+ */
+function bibdk_mypage_form($form) {
+
+  $max_rows = variable_get('bibdk_mypage_max_items', 3);
+  $my_pages = module_invoke_all('bibdk_mypage_tabs', $max_rows);
+
+  uasort($my_pages, 'drupal_sort_weight');
+
+  foreach ($my_pages as $key => $my_page) {
+    $form[$key] = bibdk_my_page_customize_form_elements($my_page);
+  }
+  return $form;
+}
+
+
+function bibdk_my_page_customize_form_elements($my_page) {
+  $form = array(
+    '#type' => 'fieldset',
+    '#attributes' => array(
+      'class' => array(
+        'element-wrapper',
+        'bibdk-mypage-wrapper'
+      )
+    ),
+  );
+
+  if (isset($my_page['attached'])) {
+    $form['#attached'] = $my_page['attached'];
+  }
+
+  $form['header'] = array(
+    '#type' => 'markup',
+    '#markup' => $my_page['header'],
+    '#prefix' => '<h2>',
+    '#suffix' => '</h2>',
+  );
+
+  $form['rows'] = array(
+    '#type' => 'container',
+  );
+
+  if (isset($my_page['rows']['attributes'])) {
+    $form['rows']['#attributes'] = $my_page['rows']['attributes'];
+  }
+
+  if (is_Array($my_page['rows']['values'])) {
+    foreach ($my_page['rows']['values'] as $values) {
+      foreach ($values as $key => $val) {
+        $row[$key] = array(
+          '#type' => 'markup',
+          '#markup' => '<p class="' . drupal_html_class($key) . '">' . $val . '</p>',
+        );
+      }
+      $row['#prefix'] = '<div class="bibdk-mypage-row clearfix">';
+      $row['#suffix'] = '</div>';
+      $rows[] = $row;
+    }
+    $form['rows']['values'] = $rows;
+  }
+
+  if (isset($my_page['link'])) {
+    $form['link']= array(
+      '#prefix'  => '<span class="bibdk-mypage-link" >',
+      '#suffix' => '</span>');
+        
+    $form['link']['link_profile2_tab'] = array(
+      '#type' => 'link',
+      '#title' => $my_page['link']['title'],
+      '#title_display' => 'invisible',
+      '#href' => $my_page['link']['href'],
+      '#options' => array(
+        'attributes' => array(
+          'title' => $my_page['link']['title'],
+          'id' => array(
+            'selid-mypage-' . drupal_html_id($my_page['header'])
+          ),
+        ),
+      ),
+    );
+  }
+  
+  // helptext elements 
+  if ( isset($my_page['help_text_key']) ) {
+    $helptext = bibdk_help_get_help_text_from_db($my_page['help_text_key']);
+    if (isset($helptext)) {
+     
+      $form['help_link_wrapper']['help_link'] = array(
+        '#prefix' => '<p class="helptext popover-button" title=$helptext>',
+        '#type' => 'link',
+        '#title' => '?',
+        '#title_display' => 'invisible',
+        '#href' => '#',
+        '#options' => array(
+          'attributes' => array(
+            'title' => $helptext,
+          ),
+        ),
+        '#suffix' => '</p>',
+      );
+      
+      $form['help_text_wrapper'] = array(
+        '#type' => 'container',
+        '#attributes' => array(
+          'class' => array(
+            'popover', 'element-wrapper', 'visuallyhidden', 'linkme-wrapper',
+          ),
+        ),
+      );
+
+      $form['help_text_wrapper']['help_text_msg'] = array(
+        '#prefix' => '<p class="user-msg">',
+        '#markup' => $helptext, 
+        '#suffix' => '</p>',
+      );
+
+      $form['help_text_wrapper']['help_link_close'] = array(
+        '#type' => 'link',
+        '#title' => '',
+        '#title_display' => 'invisible',
+        '#href' => '#',
+        '#options' => array(
+          'attributes' => array(
+            'tabindex' => '0',
+            'class' => array(
+              'close', 'icon', 'icon-left', 'icon-red-x',
+            ),
+          ),
+        ),
+      );
+    }
+  }
+
+  return $form;
+}
+
+
+/**
+ * Implements hook_theme().
+ */
+function bibdk_mypage_theme() {
+  $path = drupal_get_path('module', 'bibdk_mypage') . '/theme';
+  $bibdk_mypage_theme_array = array(
+    'bibdk_mypage-form' => array(
+      'render element' => 'form',
+      'path' => $path,
+      'template' => 'bibdk_mypage-form',
+    ),
+    'bibdk_mypage_front' => array(
+      'variables' => array('title' => NULL, 'main' => NULL),
+      'template' => 'theme/bibdk-mypage-front'
+    ),
+  );
+  return $bibdk_mypage_theme_array;
+}
+
+
+/**
+ * Implements hook_bibdk_mypage_tabs().
+ */
+function bibdk_mypage_bibdk_mypage_tabs($max_rows) {
+  global $user;
+
+  $ret = array();
+  $ret['bibdk_mypage']['header'] = t('Account');
+  $ret['bibdk_mypage']['rows']['values'] = bibdk_mypage_my_page_get_rows($max_rows);
+  $ret['bibdk_mypage']['link'] = array(
+    'title' => t('Edit settings'),
+    'href' => 'user/' . $user->uid . '/edit',
+  );
+  $ret['bibdk_mypage']['weight'] = 35;
+  $ret['bibdk_mypage']['help_text_key'] = 'account_mypage_help_key';
+
+  return $ret;
+}
+
+/**
+ * Implements hook_user_view
+ *
+ * Add the mypage content to user user profile page.
+ * */
+function bibdk_mypage_user_view($account, $view_mode, $langcode) {
+  $account->content = drupal_get_form('bibdk_mypage_form');
+}
+
+
+function bibdk_mypage_my_page_get_rows($max_rows) {
+  global $user;
+  $languages = language_list('enabled');
+  $ret[] = array(
+    'label_row' => t('Language'),
+    'value_row' => (isset($languages) && isset($languages[1][$user->language]->native)) ? $languages[1][$user->language]->native : t('undefined'),
+  );
+  return $ret;
+}
+
+/**
+ * Implements hook to user_help_list
+ * */
+function bibdk_mypage_user_help_list() {
+  return array('account_mypage_help_key'=>'account_mypage_help_label');
+}

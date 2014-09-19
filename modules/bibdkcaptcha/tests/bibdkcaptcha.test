@@ -1,0 +1,104 @@
+<?php
+
+class BibdkCaptchaRequirementsTestCase extends DrupalWebTestCase {
+  public static function getInfo() {
+    return array(
+      'name' => 'Bibdkcaptcha requirements test',
+      'description' => 'Test bibdkcaptcha requirements.',
+      'group' => 'Bibliotek.dk - captcha',
+    );
+  }
+
+  public function setUp() {
+    parent::setUp(array('captcha', 'image_captcha', 'bibdkcaptcha', 'securepages'));
+  }
+
+  public function testRequirements() {
+    $account = $this->drupalCreateUser(array('administer site configuration'));
+    $this->drupalLogin($account);
+    $this->drupalGet('admin/reports/status');
+    $this->assertNoText(t('Access denied'), t('Has rights to access status report.'));
+
+    variable_set('securepages_enable', TRUE);
+    $pages = variable_get('securepages_pages', '');
+    $ignore = variable_get('securepages_ignore', '');
+    /*
+      It is somehow necessary to initialize the variables securepages_pages and
+      securepages_ignore make the tests pass otherwise access is denied to
+      admin/repors/status.
+      After each test the variables are reset.
+    */
+    variable_set('securepages_pages', $pages);
+    variable_set('securepages_ignore', $ignore);
+    $this->testSecurePagesPagesAudio();
+    variable_set('securepages_pages', $pages);
+    variable_set('securepages_ignore', $ignore);
+    $this->testSecurePagesPagesImages();
+    variable_set('securepages_pages', $pages);
+    variable_set('securepages_ignore', $ignore);
+    $this->testSecurePagesIgnoreAudio();
+    variable_set('securepages_pages', $pages);
+    variable_set('securepages_ignore', $ignore);
+    $this->testSecurePagesIgnoreImages();
+  }
+
+  private function testSecurePagesPagesAudio() {
+    variable_set('securepages_secure', TRUE);
+    $this->drupalGet('admin/reports/status');
+    $this->assertTrue(variable_get('securepages_secure'), t('Activate Secure Pages for selected pages.'));
+    $this->assertNoText(t('Access denied'), t('Has rights to access status report.'));
+    $this->assertText('Status report');
+    $this->assertText('Captcha audio requires "captcha" and "captcha/*" added to Pages at Secure Pages configuration page');
+    $this->assertText('Captcha images requires "image_captcha" and "image_captcha/*" added to Pages at Secure Pages configuration page');
+    $pages = variable_get('securepages_pages');
+    variable_set('securepages_pages', $pages . "\r\n\ncaptcha\r\n\ncaptcha/*");
+    $this->drupalGet('admin/reports/status');
+    $this->assertNoText('Captcha audio requires "captcha" and "captcha/*" added to Pages at Secure Pages configuration page');
+    $this->assertText('Captcha images requires "image_captcha" and "image_captcha/*" added to Pages at Secure Pages configuration page');
+  }
+
+  private function testSecurePagesPagesImages() {
+    variable_set('securepages_secure', TRUE);
+    $this->drupalGet('admin/reports/status');
+    $this->assertTrue(variable_get('securepages_secure'), t('Activate Secure Pages for selected pages.'));
+    $this->assertNoText(t('Access denied'), t('Has rights to access status report.'));
+    $this->assertText('Status report');
+    $this->assertText('Captcha audio requires "captcha" and "captcha/*" added to Pages at Secure Pages configuration page');
+    $this->assertText('Captcha images requires "image_captcha" and "image_captcha/*" added to Pages at Secure Pages configuration page');
+    $pages = variable_get('securepages_pages');
+    variable_set('securepages_pages', $pages . "\r\n\nimage_captcha\r\n\nimage_captcha/*");
+    $this->drupalGet('admin/reports/status');
+    $this->assertText('Captcha audio requires "captcha" and "captcha/*" added to Pages at Secure Pages configuration page');
+    $this->assertNoText('Captcha images requires "image_captcha" and "image_captcha/*" added to Pages at Secure Pages configuration page');
+  }
+
+  private function testSecurePagesIgnoreAudio() {
+    variable_set('securepages_secure', FALSE);
+    $this->drupalGet('admin/reports/status');
+    $this->assertFalse(variable_get('securepages_secure'), t('Activate Secure Pages for selected pages.'));
+    $this->assertNoText(t('Access denied'), t('Has rights to access status report.'));
+    $this->assertText('Status report');
+    $this->assertNoText('Captcha audio requires that "captcha" and "captcha/*" are not included in Ignore Pages at Secure Pages configuration page');
+    $this->assertNoText('Captcha images requires that "image_captcha" and "image_captcha/*" are not included in Ignore Pages at Secure Pages configuration page');
+    $ignore = variable_get('securepages_ignore');
+    variable_set('securepages_ignore', $ignore . "\r\n\ncaptcha\r\n\ncaptcha/*");
+    $this->drupalGet('admin/reports/status');
+    $this->assertText('Captcha audio requires that "captcha" and "captcha/*" are not included in Ignore Pages at Secure Pages configuration page');
+    $this->assertNoText('Captcha images requires that "image_captcha" and "image_captcha/*" are not included in Ignore Pages at Secure Pages configuration page');
+  }
+
+  private function testSecurePagesIgnoreImages() {
+    variable_set('securepages_secure', FALSE);
+    $this->drupalGet('admin/reports/status');
+    $this->assertFalse(variable_get('securepages_secure'), t('Activate Secure Pages for selected pages.'));
+    $this->assertNoText(t('Access denied'), t('Has rights to access status report.'));
+    $this->assertText('Status report');
+    $this->assertNoText('Captcha audio requires that "captcha" and "captcha/*" are not included in Ignore Pages at Secure Pages configuration page');
+    $this->assertNoText('Captcha images requires that "image_captcha" and "image_captcha/*" are not included in Ignore Pages at Secure Pages configuration page');
+    $ignore = variable_get('securepages_ignore');
+    variable_set('securepages_ignore', $ignore . "\r\n\nimage_captcha\r\n\nimage_captcha/*");
+    $this->drupalGet('admin/reports/status');
+    $this->assertNoText('Captcha audio requires that "captcha" and "captcha/*" are not included in Ignore Pages at Secure Pages configuration page');
+    $this->assertText('Captcha images requires that "image_captcha" and "image_captcha/*" are not included in Ignore Pages at Secure Pages configuration page');
+  }
+}

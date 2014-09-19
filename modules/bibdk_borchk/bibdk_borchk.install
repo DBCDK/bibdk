@@ -1,0 +1,31 @@
+<?php
+
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function bibdk_borchk_schema() {
+  $schema['cache_borchk_webservice'] = drupal_get_schema_unprocessed('system', 'cache');
+  return $schema;
+}
+
+/**
+ * Implements hook_update_N;
+ * Install cache_borchk_webservice table
+ * */
+function bibdk_borchk_update_7001() {
+  $name = 'cache_borchk_webservice';
+  $schema = drupal_get_schema_unprocessed('system', 'cache');
+  try {
+    db_create_table($name, $schema);
+  } catch (Exception $e) {
+    // do nothing table probably already exists
+  }
+}
+
+
+?>

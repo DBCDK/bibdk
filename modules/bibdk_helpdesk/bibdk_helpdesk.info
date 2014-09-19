@@ -1,0 +1,15 @@
+name = Bibliotek.dk - Helpdesk
+description = Provide a form for the library helpdesk, and a teaser block.
+core = 7.x
+version = 7.x-0.16
+package = Bibliotek.dk
+
+dependencies[] = image
+dependencies[] = ting_client
+
+files[] = test/bibdk_helpdesk.form.test
+files[] = test/bibdk_helpdesk.block.test
+files[] = test/bibdk_helpdesk.webservice.test
+files[] = client/bibdk_helpdesk.request.inc
+
+configure = admin/config/user-interface/bibdk_helpdesk

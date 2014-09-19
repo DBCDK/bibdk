@@ -1,0 +1,382 @@
+<?php
+
+require_once('bibdk_provider.user.inc');
+require_once('bibdk_provider.wayf.inc');
+
+/**
+ * implements hook_menu()
+ */
+function bibdk_provider_menu(){
+  $items['user/wayf/%/confirm/%/%'] = array(
+    'title' => 'Verify WAYF/NEMID',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bibdk_provider_wayf_confirm_form', 2, 4, 5),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'file' => 'bibdk_provider.wayf.inc',
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_username_alter().
+ * show email address instead of username when administering people
+ */
+function bibdk_provider_username_alter(&$name, $account) {
+  if (ding_user_is_provider_user($account)) {
+    $user = user_load($account->uid);
+    $name = $user->mail;
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter ( user_register_form )
+ * we use mail for username - set username=mail
+ * add a submit handler for verifiying new user against bibdk - they might already be registred
+ */
+function bibdk_provider_form_user_register_form_alter(&$form, &$form_state) {
+
+  // Hide name from register form
+  $form['account']['name'] = array('#access' => FALSE);
+
+  // add custom submit function
+  $form['#submit'] = array('bibdk_provider_form_user_register_form_submit');
+
+  // add validation handler for bibdk
+  $form['#validate'][] = 'bibdk_provider_user_register_form_validate';
+
+  // Alter form for wayf registration
+  bibdk_provider_wayf_alter_user_register_form($form, $form_state);
+}
+
+/**
+ * custom validator for user_register_form
+ * calls bibdk_provider_user_verify to see if user exists
+ */
+function bibdk_provider_user_register_form_validate(&$form, &$form_state) {
+  $mail = check_plain($form_state['values']['mail']);
+
+  if (valid_email_address($mail) && bibdk_provider_user_verify($mail)) {
+    form_set_error('mail', t('The e-mail address %email is already registered. <a href="@password">Have you forgotten your password?</a>', array('%email' => $form_state['values']['mail'], '@password' => url('user/password'))));
+  }
+
+}
+
+
+/**
+ * custom submit method ('user_register_form')
+ *
+ * At this time we know its a new user with a valid email adresse
+ *
+ * @see bibdk_provider_user_register_form_validate
+ */
+function bibdk_provider_form_user_register_form_submit($form, &$form_state) {
+  $email = $form_state['values']['mail'];
+  if (bibdk_provider_register_new_user($email)){
+    $form_state['redirect'] = '';
+  }
+}
+
+
+/**
+ * Create a new user and send a registration link
+ *
+ * @param $email
+ */
+function bibdk_provider_register_new_user($email){
+  $account = _ding_user_create_account($email, array());
+  bibdk_provider_user_create_account($email, $account->pass);
+
+  // User_email_verification is required
+  if ($account->status) {
+    // Send registration mail to user as in a normal drupal registration
+    _user_mail_notify('register_no_approval_required', $account);
+    drupal_set_message(t('A welcome message with further instructions has been sent to your e-mail address.'));
+
+  }
+  return $account;
+}
+
+/**
+ * Implements hook_user_login()
+ * If user logs in using a reset link. Temporary credential
+ */
+function bibdk_provider_user_login(&$edit, $account) {
+  if ($account) {
+    if (arg(0) == 'user' && arg(1) == 'reset'){
+      $creds = array(
+        'creds' => array(
+          'name' => $account->mail,
+          'pass' => user_password(),
+        ),
+      );
+      ding_user_save_creds($creds, $account);
+    }
+  }
+
+  // add custom functionallity when using wayf
+  _bibdk_provider_wayf_user_login($edit, $account);
+}
+
+
+/**
+ * Implements hook_form_FORM_ID_alter (user_profile_form)
+ * catch username and password (not encrypted) and save them using ding_user_creds_save
+ */
+function bibdk_provider_form_user_profile_form_alter(&$form, &$form_state) {
+  //make email-address readonly for now
+  $form['account']['mail']['#attributes']['readonly'] = 'readonly';
+  global $user;
+
+  if (ding_user_is_provider_user($user)) {
+    $form['account']['pass']['#process'][] = 'form_process_password_confirm';
+  }
+
+  $form['account']['pass']['#process'][] = 'user_form_process_password_confirm';
+
+  // set length of password field
+  $form['account']['pass']['#size'] = 16;
+  $form['account']['pass']['#maxlength'] = 64;
+  $form['account']['pass']['#minlength'] = 6;
+
+  // Delete account without using password
+  $form['actions']['cancel']['#limit_validation_errors'] = array();
+
+  // add a handler for updating bibdk_provider password
+  $form['#validate'][] = '_bibdk_provider_user_profile_form_validate';
+  $form['#submit'][] = '_bibdk_provider_user_profile_form_submit';
+}
+
+/**
+ * impletements hook_form_validate()
+ *
+ * Check if password has minimum length
+ * @param $form
+ * @param $form_state
+ */
+function _bibdk_provider_user_profile_form_validate($form, &$form_state) {
+  // check if password i min. 6 characters
+  if(!empty($form_state['values']['pass'])){
+    if (strlen($form_state['values']['pass']) < $form['account']['pass']['#minlength']) {
+      form_set_error('pass', t('Password must be !length characters or more', array('!length' => $form['account']['pass']['#minlength']), array('context' => 'bibdk_provider')));
+    }
+  }
+}
+
+/**
+ * submits user_profile_form
+ * @see user_profile_form
+ *
+ * Updates password on provider user
+ */
+function _bibdk_provider_user_profile_form_submit($form, &$form_state) {
+
+  if (!empty($form_state['values']['mail']) && !empty($form_state['values']['pass'])) {
+    bibdk_provider_user_update_password($form_state['values']['mail'], $form_state['values']['pass']);
+    if (variable_get('bibdk_provider_enable_logging')) {
+      watchdog('BIBDK', 'password updated for user : %name', array('%name' => $form_state['values']['mail']), WATCHDOG_NOTICE);
+    }
+  }
+}
+
+/** Implements hook_form_FORM_ID_alter()
+ * @param $form
+ * @param $form_state
+ * @param $form_id
+ */
+function bibdk_provider_form_user_cancel_confirm_form_alter(&$form, &$form_state, $form_id) {
+  // Create custom form submition, in order to be able to control the cancellation process
+  $form['#submit'] = array('bibdk_provider_user_cancel_form_submit');
+}
+
+/**
+ * Submit handler for the account cancellation confirm form.
+ *
+ * @see user_cancel_confirm_form_submit in user.pages.inc
+ */
+function bibdk_provider_user_cancel_form_submit($form, &$form_state) {
+  global $user;
+  $account = $form_state['values']['_account'];
+
+  // Cancel account immediately, if the current user has administrative
+  // privileges, no confirmation mail shall be sent, and the user does not
+  // attempt to cancel the own account.
+  // @see user_cancel_confirm_form_submit
+  // in user.pages.inc
+  if (user_access('administer users') && empty($form_state['values']['user_cancel_confirm']) && $account->uid != $user->uid) {
+    user_cancel($form_state['values'], $account->uid, $form_state['values']['user_cancel_method']);
+    $form_state['redirect'] = 'admin/people';
+  }
+  // If user is not admin and user is trying to cancel own account, delete it emmediately
+  else if (!user_access('administer users') && $account->uid == $user->uid) {
+    user_delete($account->uid);
+    drupal_set_message(t('Your account has been deleted', array(), array('context' => 'bibdk_provider')));
+    $form_state['redirect'] = "";
+  }
+}
+
+/** implements hook_user_id_from_voxb_id (@see bibdk_voxb.node.inc)
+ * @param $voxbid
+ */
+function bibdk_provider_user_id_from_voxb_id($voxbid){
+  $ret =bibdk_provider_user_verify_voxb($voxbid);
+  return $ret;
+}
+
+/**
+ * Implements hook_user_delete().
+ */
+function bibdk_provider_user_delete($account) {
+  if (ding_user_is_provider_user($account)) {
+
+    try {
+      bibdk_provider_user_delete_account($account->mail);
+
+      if (variable_get('bibdk_provider_enable_logging')) {
+        watchdog('BIBDK user_delete', $account->mail);
+      }
+
+      drupal_set_message(t('Your account has been deleted', array(), array('context' => 'bibdk_provider')));
+    }
+    catch (Exception $e) {
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter ('user_pass') (forgot password)
+ * add custom validate function
+ */
+function bibdk_provider_form_user_pass_alter(&$form, &$form_state) {
+  array_unshift($form['#validate'], '_bibdk_provider_user_pass_validate');
+}
+
+/**
+ * custom validator for user_pass (change password)
+ * check if user exists on drupal if not create a user
+ * in drupal to have an email to confirm against
+ */
+function _bibdk_provider_user_pass_validate(&$form, &$form_state) {
+  $mail = $form_state['values']['name'];
+
+  if (valid_email_address($mail)) {
+    if (bibdk_provider_user_verify($mail) && !user_load_by_mail($mail)) {
+      // create a drupal user here, for drupal to have an email-address to confirm against
+      _ding_user_create_account($mail, array());
+    }
+  }
+}
+
+/**
+ * Implement user_account_update called from ding_user/ding_user_user_presave
+ * this method handles updates when user is a ding_provider_user
+ */
+function bibdk_provider_user_account_update($account, $changes) {
+  $result = array();
+  // if pass is not set do nothing
+  if (isset($changes['pass'])) {
+    if (!bibdk_provider_user_update_password($account->mail, $changes['pass'])) {
+      // Password could not be updated
+      drupal_set_message(t('Bibliotek.dk password was not saved. You can log on the site with your password, but library specific settings will not be available', array(), array('context' => 'bibdk_provider')));
+    }
+    else {
+      // Log changes
+      if (variable_get('bibdk_provider_enable_logging')) {
+        watchdog('BIBDK', '%user , %pass user_account_update', array('%user' => $account->mail, '%pass' => $changes['pass']));
+      }
+      // Set new password locally.
+      $creds['pass'] = $changes['pass'];
+      $creds['name'] = $account->mail;
+      // Update creds.
+      $result['creds'] = $creds;
+    }
+  }
+  return $result;
+}
+
+/**
+ * Implement hook_ding_provider().
+ */
+function bibdk_provider_ding_provider() {
+  return array(
+    'title' => 'Bibliotek.dk provider',
+    'settings' => 'bibdk_provider_settings_form',
+    'provides' => array(
+      'user' => array(
+        'prefix' => 'user',
+        'file' => drupal_get_path('module', 'bibdk_provider') . '/bibdk_provider.user.inc',
+      ),
+      'wayf' => array(
+        'prefix' => 'wayf',
+        'file' => drupal_get_path('module', 'bibdk_provider') . '/bibdk_provider.wayf.inc',
+      ),
+    ),
+  );
+}
+
+/**
+ * Form callback for provider module settings.
+ *
+ * This is a regular form callback.
+ */
+function bibdk_provider_settings_form() {
+  $form['bibdk_provider'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Bibdk provider service settings'),
+    '#tree' => FALSE,
+  );
+
+  $form['bibdk_provider']['bibdk_provider_webservice_url'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Bibdk provider URL'),
+    '#description' => t('The URL for Bibdk provider SOAP service, usually something like http://openuserinfo.addi.dk/1.0/'),
+    '#required' => TRUE,
+    '#default_value' => variable_get('bibdk_provider_webservice_url', ''),
+  );
+
+  $form['bibdk_provider']['bibdk_provider_security_code'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Bibdk provider security code'),
+    '#description' => t('The security-code for Bibdk provider SOAP service'),
+    '#required' => TRUE,
+    '#default_value' => variable_get('bibdk_provider_security_code', ''),
+  );
+
+  $form['bibdk_provider']['bibdk_provider_enable_logging'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable logging'),
+    '#default_value' => variable_get('bibdk_provider_enable_logging', FALSE),
+    '#description' => t('Logs requests to the Bibdk provider webservice. Sensitive information such as CPR number and PIN code is stripped from the requests.'),
+  );
+
+  return system_settings_form($form);
+}
+
+/** \brief Implements hook_mail
+
+ * @param type $key
+ * @param type $message
+ * @param type $params
+ */
+function bibdk_provider_mail($key, &$message, $params) {
+  $language = $message['language'];
+  $variables = array('user' => $params['account']);
+  $message['subject'] = _bibdk_provider_wayf_mail_text($key . '_subject', $language, $variables);
+  $message['body'][] = _bibdk_provider_wayf_mail_text($key .  '_body', $language, $variables);
+}
+
+
+/** Implements hook_form_formID_alter
+ * Skip the confirmation page when resetting your password
+ * @param $form
+ * @param $form_state
+ */
+function bibdk_provider_form_user_pass_reset_alter($form, &$form_state) {
+  if (isset($form['#action'])) {
+    $user_id = $form_state['build_info']['args'][0];
+    $timestamp = $form_state['build_info']['args'][1];
+    $token = $form_state['build_info']['args'][2];
+    drupal_goto("user/reset/$user_id/$timestamp/$token/login");
+  }
+}

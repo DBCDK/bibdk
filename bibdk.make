@@ -24,10 +24,11 @@ projects[bibdk_theme][download][url] = git@github.com:DBCDK/bibdk_theme.git
 projects[bibdk_theme][download][tag] = 7.x-0.63
 
 ; administration theme
-projects[bibdk_admin_theme][type] = theme
-projects[bibdk_admin_theme][download][type] = git
-projects[bibdk_admin_theme][download][url] = git@github.com:DBCDK/bibdk_admin_theme.git
-projects[bibdk_admin_theme][download][tag] = 7.x-0.1
+;bibdk_admin_theme added to bibdk repo
+;projects[bibdk_admin_theme][type] = theme
+;projects[bibdk_admin_theme][download][type] = git
+;projects[bibdk_admin_theme][download][url] = git@github.com:DBCDK/bibdk_admin_theme.git
+;projects[bibdk_admin_theme][download][tag] = 7.x-0.1
 
 ; --- Bibliotek.dk versions of Ding2 modules ---
 
@@ -128,30 +129,33 @@ projects[ting_search_carousel][download][url] = git@github.com:DBCDK/ting_search
 projects[ting_search_carousel][download][tag] = 7.x-0.5+dbc.5
 
 ; --- Bibliotek.dk ---
-projects[bibdk_about_author][type] = module
-projects[bibdk_about_author][download][type] = git
-projects[bibdk_about_author][download][url] = git@github.com:DBCDK/bibdk_about_author.git
-projects[bibdk_about_author][download][tag] = 7.x-0.4
+;bibdk_about_author added to bibdk repo
+;projects[bibdk_about_author][type] = module
+;projects[bibdk_about_author][download][type] = git
+;projects[bibdk_about_author][download][url] = git@github.com:DBCDK/bibdk_about_author.git
+;projects[bibdk_about_author][download][tag] = 7.x-0.4
 
 projects[bibdk_actions][type] = module
 projects[bibdk_actions][download][type] = git
 projects[bibdk_actions][download][url] = git@github.com:DBCDK/bibdk_actions.git
 projects[bibdk_actions][download][tag] = 7.x-0.14
 
-projects[bibdk_adhl][type] = module
-projects[bibdk_adhl][download][type] = git
-projects[bibdk_adhl][download][url] = git@github.com:DBCDK/bibdk_adhl.git
-projects[bibdk_adhl][download][tag] = 7.x-0.9
+;bibdk_adhl added to bibdk repo
+;projects[bibdk_adhl][type] = module
+;projects[bibdk_adhl][download][type] = git
+;projects[bibdk_adhl][download][url] = git@github.com:DBCDK/bibdk_adhl.git
+;projects[bibdk_adhl][download][tag] = 7.x-0.9
 
 projects[bibdk_behaviour][type] = module
 projects[bibdk_behaviour][download][type] = git
 projects[bibdk_behaviour][download][url] = git@github.com:DBCDK/bibdk_behaviour.git
 projects[bibdk_behaviour][download][tag] = 7.x-0.6
 
-projects[bibdk_borchk][type] = module
-projects[bibdk_borchk][download][type] = git
-projects[bibdk_borchk][download][url] = git@github.com:DBCDK/bibdk_borchk.git
-projects[bibdk_borchk][download][tag] = 7.x-0.8
+;bibdk_borchk added to bibdk repo
+;projects[bibdk_borchk][type] = module
+;projects[bibdk_borchk][download][type] = git
+;projects[bibdk_borchk][download][url] = git@github.com:DBCDK/bibdk_borchk.git
+;projects[bibdk_borchk][download][tag] = 7.x-0.8
 
 projects[bibdk_cart][type] = module
 projects[bibdk_cart][download][type] = git
@@ -163,145 +167,168 @@ projects[bibdk_custom_search][download][type] = git
 projects[bibdk_custom_search][download][url] = git@github.com:DBCDK/bibdk_custom_search.git
 projects[bibdk_custom_search][download][tag] = 7.x-0.33
 
-projects[bibdk_custom_search_preprocess][type] = module
-projects[bibdk_custom_search_preprocess][download][type] = git
-projects[bibdk_custom_search_preprocess][download][url] = git@github.com:DBCDK/bibdk_custom_search_preprocess.git
-projects[bibdk_custom_search_preprocess][download][tag] = 7.x-0.12
+;bibdk_custom_search_preprocess added to bibdk repo
+;projects[bibdk_custom_search_preprocess][type] = module
+;projects[bibdk_custom_search_preprocess][download][type] = git
+;projects[bibdk_custom_search_preprocess][download][url] = git@github.com:DBCDK/bibdk_custom_search_preprocess.git
+;projects[bibdk_custom_search_preprocess][download][tag] = 7.x-0.12
 
-projects[bibdk_entity_dependency][type] = module
-projects[bibdk_entity_dependency][download][type] = git
-projects[bibdk_entity_dependency][download][url] = git@github.com:DBCDK/bibdk_entity_dependency.git
-projects[bibdk_entity_dependency][download][tag] = 7.x-1.0-alpha1+7-dev-0.1
+;bibdk_entity_dependency added to bibdk repo
+;projects[bibdk_entity_dependency][type] = module
+;projects[bibdk_entity_dependency][download][type] = git
+;projects[bibdk_entity_dependency][download][url] = git@github.com:DBCDK/bibdk_entity_dependency.git
+;projects[bibdk_entity_dependency][download][tag] = 7.x-1.0-alpha1+7-dev-0.1
 
 projects[bibdk_favourite][type] = module
 projects[bibdk_favourite][download][type] = git
 projects[bibdk_favourite][download][url] = git@github.com:DBCDK/bibdk_favourite.git
 projects[bibdk_favourite][download][tag] = 7.x-0.37
 
-projects[bibdk_forsrights][type] = module
-projects[bibdk_forsrights][download][type] = git
-projects[bibdk_forsrights][download][url] = git@github.com:DBCDK/bibdk_forsrights.git
-projects[bibdk_forsrights][download][tag] = 7.x-0.2
+;bibdk_forsrights added to bibdk repo
+;projects[bibdk_forsrights][type] = module
+;projects[bibdk_forsrights][download][type] = git
+;projects[bibdk_forsrights][download][url] = git@github.com:DBCDK/bibdk_forsrights.git
+;projects[bibdk_forsrights][download][tag] = 7.x-0.2
 
 projects[bibdk_frontend][type] = module
 projects[bibdk_frontend][download][type] = git
 projects[bibdk_frontend][download][url] = git@github.com:DBCDK/bibdk_frontend.git
 projects[bibdk_frontend][download][tag] = 7.x-0.59
 
-projects[bibdk_furthersearch][type] = module
-projects[bibdk_furthersearch][download][type] = git
-projects[bibdk_furthersearch][download][url] = git@github.com:DBCDK/bibdk_furthersearch.git
-projects[bibdk_furthersearch][download][tag] = 7.x-0.8
+;bibdk_furthersearch added to bibdk repo
+;projects[bibdk_furthersearch][type] = module
+;projects[bibdk_furthersearch][download][type] = git
+;projects[bibdk_furthersearch][download][url] = git@github.com:DBCDK/bibdk_furthersearch.git
+;projects[bibdk_furthersearch][download][tag] = 7.x-0.8
 
-projects[bibdk_help][type] = module
-projects[bibdk_help][download][type] = git
-projects[bibdk_help][download][url] = git@github.com:DBCDK/bibdk_help.git
-projects[bibdk_help][download][tag] = 7.x-0.12
+;bibdk_help added to bibdk repo
+;projects[bibdk_help][type] = module
+;projects[bibdk_help][download][type] = git
+;projects[bibdk_help][download][url] = git@github.com:DBCDK/bibdk_help.git
+;projects[bibdk_help][download][tag] = 7.x-0.12
 
-projects[bibdk_helpdesk][type] = module
-projects[bibdk_helpdesk][download][type] = git
-projects[bibdk_helpdesk][download][url] = git@github.com:DBCDK/bibdk_helpdesk.git
-projects[bibdk_helpdesk][download][tag] = 7.x-0.16
+;bibdk_helpdesk added to bibdk repo
+;projects[bibdk_helpdesk][type] = module
+;projects[bibdk_helpdesk][download][type] = git
+;projects[bibdk_helpdesk][download][url] = git@github.com:DBCDK/bibdk_helpdesk.git
+;projects[bibdk_helpdesk][download][tag] = 7.x-0.16
 
 projects[bibdk_holdingstatus][type] = module
 projects[bibdk_holdingstatus][download][type] = git
 projects[bibdk_holdingstatus][download][url] = git@github.com:DBCDK/bibdk_holdingstatus.git
 projects[bibdk_holdingstatus][download][tag] = 7.x-0.24
 
-projects[bibdk_jslog][type] = module
-projects[bibdk_jslog][download][type] = git
-projects[bibdk_jslog][download][url] = git@github.com:DBCDK/bibdk_jslog.git
-projects[bibdk_jslog][download][tag] = 7.x-0.3
+;bibdk_jslog added to bibdk repo
+;projects[bibdk_jslog][type] = module
+;projects[bibdk_jslog][download][type] = git
+;projects[bibdk_jslog][download][url] = git@github.com:DBCDK/bibdk_jslog.git
+;projects[bibdk_jslog][download][tag] = 7.x-0.3
 
-projects[bibdk_linkme][type] = module
-projects[bibdk_linkme][download][type] = git
-projects[bibdk_linkme][download][url] = git@github.com:DBCDK/bibdk_linkme.git
-projects[bibdk_linkme][download][tag] = 7.x-0.12
+;bibdk_linkme added to bibdk repo
+;projects[bibdk_linkme][type] = module
+;projects[bibdk_linkme][download][type] = git
+;projects[bibdk_linkme][download][url] = git@github.com:DBCDK/bibdk_linkme.git
+;projects[bibdk_linkme][download][tag] = 7.x-0.12
 
-projects[bibdk_migration][type] = module
-projects[bibdk_migration][download][type] = git
-projects[bibdk_migration][download][url] = git@github.com:DBCDK/bibdk_migration.git
-projects[bibdk_migration][download][tag] = 7.x-0.1
+;bibdk_migration added to bibdk repo
+;projects[bibdk_migration][type] = module
+;projects[bibdk_migration][download][type] = git
+;projects[bibdk_migration][download][url] = git@github.com:DBCDK/bibdk_migration.git
+;projects[bibdk_migration][download][tag] = 7.x-0.1
 
-projects[bibdk_mypage][type] = module
-projects[bibdk_mypage][download][type] = git
-projects[bibdk_mypage][download][url] = git@github.com:DBCDK/bibdk_mypage.git
-projects[bibdk_mypage][download][tag] = 7.x-0.7
+;bibdk_mypage added to bibdk repo
+;projects[bibdk_mypage][type] = module
+;projects[bibdk_mypage][download][type] = git
+;projects[bibdk_mypage][download][url] = git@github.com:DBCDK/bibdk_mypage.git
+;projects[bibdk_mypage][download][tag] = 7.x-0.7
 
-projects[bibdk_netarchive][type] = module
-projects[bibdk_netarchive][download][type] = git
-projects[bibdk_netarchive][download][url] = git@github.com:DBCDK/bibdk_netarchive.git
-projects[bibdk_netarchive][download][tag] = 7.x-0.7
+;bibdk_netarchive added to bibdk repo
+;projects[bibdk_netarchive][type] = module
+;projects[bibdk_netarchive][download][type] = git
+;projects[bibdk_netarchive][download][url] = git@github.com:DBCDK/bibdk_netarchive.git
+;projects[bibdk_netarchive][download][tag] = 7.x-0.7
 
-projects[bibdk_newsroom][type] = module
-projects[bibdk_newsroom][download][type] = git
-projects[bibdk_newsroom][download][url] = git@github.com:DBCDK/bibdk_newsroom.git
-projects[bibdk_newsroom][download][tag] = 7.x-0.1
+;bibdk_newsroom added to bibdk repo
+;projects[bibdk_newsroom][type] = module
+;projects[bibdk_newsroom][download][type] = git
+;projects[bibdk_newsroom][download][url] = git@github.com:DBCDK/bibdk_newsroom.git
+;projects[bibdk_newsroom][download][tag] = 7.x-0.1
 
-projects[bibdk_openorder][type] = module
-projects[bibdk_openorder][download][type] = git
-projects[bibdk_openorder][download][url] = git@github.com:DBCDK/bibdk_openorder.git
-projects[bibdk_openorder][download][tag] = 7.x-0.19
+;bibdk_openorder added to bibdk repo
+;projects[bibdk_openorder][type] = module
+;projects[bibdk_openorder][download][type] = git
+;projects[bibdk_openorder][download][url] = git@github.com:DBCDK/bibdk_openorder.git
+;projects[bibdk_openorder][download][tag] = 7.x-0.19
 
-projects[bibdk_openuserstatus][type] = module
-projects[bibdk_openuserstatus][download][type] = git
-projects[bibdk_openuserstatus][download][url] = git@github.com:DBCDK/bibdk_openuserstatus.git
-projects[bibdk_openuserstatus][download][tag] = 7.x-0.20
+;bibdk_openuserstatus added to bibdk repo
+;projects[bibdk_openuserstatus][type] = module
+;projects[bibdk_openuserstatus][download][type] = git
+;projects[bibdk_openuserstatus][download][url] = git@github.com:DBCDK/bibdk_openuserstatus.git
+;projects[bibdk_openuserstatus][download][tag] = 7.x-0.20
 
-projects[bibdk_provider][type] = module
-projects[bibdk_provider][download][type] = git
-projects[bibdk_provider][download][url] = git@github.com:DBCDK/bibdk_provider.git
-projects[bibdk_provider][download][tag] = 7.x-0.38
+;bibdk_provider added to bibdk repo
+;projects[bibdk_provider][type] = module
+;projects[bibdk_provider][download][type] = git
+;projects[bibdk_provider][download][url] = git@github.com:DBCDK/bibdk_provider.git
+;projects[bibdk_provider][download][tag] = 7.x-0.38
 
 projects[bibdk_reservation][type] = module
 projects[bibdk_reservation][download][type] = git
 projects[bibdk_reservation][download][url] = git@github.com:DBCDK/bibdk_reservation.git
 projects[bibdk_reservation][download][tag] = 7.x-0.45
 
-projects[bibdk_reviews][type] = module
-projects[bibdk_reviews][download][type] = git
-projects[bibdk_reviews][download][url] = git@github.com:DBCDK/bibdk_reviews.git
-projects[bibdk_reviews][download][tag] = 7.x-0.8
+;bibdk_reviews added to bibdk repo
+;projects[bibdk_reviews][type] = module
+;projects[bibdk_reviews][download][type] = git
+;projects[bibdk_reviews][download][url] = git@github.com:DBCDK/bibdk_reviews.git
+;projects[bibdk_reviews][download][tag] = 7.x-0.8
 
 projects[bibdk_sbkopi][type] = module
 projects[bibdk_sbkopi][download][type] = git
 projects[bibdk_sbkopi][download][url] = git@github.com:DBCDK/bibdk_sbkopi.git
 projects[bibdk_sbkopi][download][tag] = 7.x-0.7
 
-projects[bibdk_search_controls][type] = module
-projects[bibdk_search_controls][download][type] = git
-projects[bibdk_search_controls][download][url] = git@github.com:DBCDK/bibdk_search_controls.git
-projects[bibdk_search_controls][download][tag] = 7.x-0.6
+;bibdk_search_controls added to bibdk repo
+;projects[bibdk_search_controls][type] = module
+;projects[bibdk_search_controls][download][type] = git
+;projects[bibdk_search_controls][download][url] = git@github.com:DBCDK/bibdk_search_controls.git
+;projects[bibdk_search_controls][download][tag] = 7.x-0.6
 
-projects[bibdk_searchhistory][type] = module
-projects[bibdk_searchhistory][download][type] = git
-projects[bibdk_searchhistory][download][url] = git@github.com:DBCDK/bibdk_searchhistory.git
-projects[bibdk_searchhistory][download][tag] = 7.x-1.15
+;bibdk_searchhistory added to bibdk repo
+;projects[bibdk_searchhistory][type] = module
+;projects[bibdk_searchhistory][download][type] = git
+;projects[bibdk_searchhistory][download][url] = git@github.com:DBCDK/bibdk_searchhistory.git
+;projects[bibdk_searchhistory][download][tag] = 7.x-1.15
 
-projects[bibdk_subject_hierarchy][type] = module
-projects[bibdk_subject_hierarchy][download][type] = git
-projects[bibdk_subject_hierarchy][download][url] = git@github.com:DBCDK/bibdk_subject_hierarchy.git
-projects[bibdk_subject_hierarchy][download][tag] = 7.x-0.13
+;bibdk_subject_hierarchy added to bibdk repo
+;projects[bibdk_subject_hierarchy][type] = module
+;projects[bibdk_subject_hierarchy][download][type] = git
+;projects[bibdk_subject_hierarchy][download][url] = git@github.com:DBCDK/bibdk_subject_hierarchy.git
+;projects[bibdk_subject_hierarchy][download][tag] = 7.x-0.13
 
-projects[bibdk_timetrace][type] = module
-projects[bibdk_timetrace][download][type] = git
-projects[bibdk_timetrace][download][url] = git@github.com:DBCDK/bibdk_timetrace.git
-projects[bibdk_timetrace][download][tag] = 7.x-0.3
+;bibdk_timetrace added to bibdk repo
+;projects[bibdk_timetrace][type] = module
+;projects[bibdk_timetrace][download][type] = git
+;projects[bibdk_timetrace][download][url] = git@github.com:DBCDK/bibdk_timetrace.git
+;projects[bibdk_timetrace][download][tag] = 7.x-0.3
 
-projects[bibdk_tracelog][type] = module
-projects[bibdk_tracelog][download][type] = git
-projects[bibdk_tracelog][download][url] = git@github.com:DBCDK/bibdk_tracelog.git
-projects[bibdk_tracelog][download][tag] = 7.x-0.4
+;bibdk_tracelog added to bibdk repo
+;projects[bibdk_tracelog][type] = module
+;projects[bibdk_tracelog][download][type] = git
+;projects[bibdk_tracelog][download][url] = git@github.com:DBCDK/bibdk_tracelog.git
+;projects[bibdk_tracelog][download][tag] = 7.x-0.4
 
-projects[bibdk_usersettings][type] = module
-projects[bibdk_usersettings][download][type] = git
-projects[bibdk_usersettings][download][url] = git@github.com:DBCDK/bibdk_usersettings.git
-projects[bibdk_usersettings][download][tag] = 7.x-0.9
+;bibdk_usersettings added to bibdk repo
+;projects[bibdk_usersettings][type] = module
+;projects[bibdk_usersettings][download][type] = git
+;projects[bibdk_usersettings][download][url] = git@github.com:DBCDK/bibdk_usersettings.git
+;projects[bibdk_usersettings][download][tag] = 7.x-0.9
 
-projects[bibdk_uuid][type] = module
-projects[bibdk_uuid][download][type] = git
-projects[bibdk_uuid][download][url] = git@github.com:DBCDK/bibdk_uuid.git
-projects[bibdk_uuid][download][tag] = 7.x-1.0-alpha3+52-dev-02
+;bibdk_uuid added to bibdk repo
+;projects[bibdk_uuid][type] = module
+;projects[bibdk_uuid][download][type] = git
+;projects[bibdk_uuid][download][url] = git@github.com:DBCDK/bibdk_uuid.git
+;projects[bibdk_uuid][download][tag] = 7.x-1.0-alpha3+52-dev-02
 
 projects[bibdk_vejviser][type] = module
 projects[bibdk_vejviser][download][type] = git
@@ -313,10 +340,11 @@ projects[bibdk_voxb][download][type] = git
 projects[bibdk_voxb][download][url] = git@github.com:DBCDK/bibdk_voxb.git
 projects[bibdk_voxb][download][tag] = 7.x-0.2
 
-projects[bibdkcaptcha][type] = module
-projects[bibdkcaptcha][download][type] = git
-projects[bibdkcaptcha][download][url] = git@github.com:DBCDK/bibdkcaptcha.git
-projects[bibdkcaptcha][download][tag] = 7.x-0.5
+;bibdkcaptcha added to bibdk repo
+;projects[bibdkcaptcha][type] = module
+;projects[bibdkcaptcha][download][type] = git
+;projects[bibdkcaptcha][download][url] = git@github.com:DBCDK/bibdkcaptcha.git
+;projects[bibdkcaptcha][download][tag] = 7.x-0.5
 
 projects[microcurl][type] = module
 projects[microcurl][download][type] = git

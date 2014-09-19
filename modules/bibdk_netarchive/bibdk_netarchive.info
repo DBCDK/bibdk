@@ -1,0 +1,10 @@
+name = Bibliotek.dk NetArchive
+description = Add link to archived pdf articles of Ting objects
+package = Bibliotek.dk
+core = 7.x
+version = 7.x-0.7
+
+files[] = test/bibdk_netarchive.test
+
+dependencies[] = open_moreinfo
+dependencies[] = ting_openformat

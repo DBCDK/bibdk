@@ -1,0 +1,52 @@
+<?php
+
+/**
+ * Implements hook_bibdk_mypage_tabs().
+ */
+
+function bibdk_mypage_api_test_bibdk_mypage_tabs($max_rows = 3) {
+  global $user;
+
+  $ret['tab_1'] = array(
+    'header' => t('Test tab 1'),
+    'rows' => bibdk_mypage_api_test_my_page_get_rows($max_rows),
+    'link' => array(
+      'title' => t('Go to test tab 1'),
+      'href' => 'user/' . $user->uid,
+    ),
+    'weight' => 15,
+  );
+
+  $ret['tab_2'] = array(
+    'header' => t('Test tab 2'),
+    'rows' => bibdk_mypage_api_test_my_page_get_rows($max_rows),
+    'link' => array(
+      'title' => t('Go to test tab 2'),
+      'href' => 'user/' . $user->uid,
+    ),
+    'weight' => 5,
+  );
+
+  $ret['tab_3'] = array(
+    'header' => t('Test tab 3'),
+    'rows' => bibdk_mypage_api_test_my_page_get_rows($max_rows),
+    'link' => array(
+      'title' => t('Go to test tab 3'),
+      'href' => 'user/' . $user->uid,
+    ),
+    'weight' => 8,
+  );
+  return $ret;
+}
+
+function bibdk_mypage_api_test_my_page_get_rows($max_rows) {
+  $rows = 0;
+  $ret = array();
+  while ($rows < $max_rows) {
+    $rows++;
+    $ret['values'][] = array(
+      'item_row' => 'row number ' . $rows,
+    );
+  }
+  return $ret;
+}

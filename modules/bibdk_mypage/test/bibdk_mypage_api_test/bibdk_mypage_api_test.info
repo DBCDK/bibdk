@@ -1,0 +1,5 @@
+name = Bibliotek.dk Mypage API test module
+description = A mockup to test functionallity of the bibdk_mypage module
+core = 7.x
+package = DBCDK
+hidden = TRUE

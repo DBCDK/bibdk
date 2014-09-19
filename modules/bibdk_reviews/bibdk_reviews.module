@@ -1,0 +1,162 @@
+<?php
+
+
+module_load_include('inc', 'bibdk_reviews', 'bibdk_reviews.material_review');
+module_load_include('inc', 'bibdk_reviews', 'bibdk_reviews.article_review');
+
+/**
+ * Implements hook_ting_openformat_getobject_params_alter
+ *
+ * @param $params
+ * @return array
+ */
+function bibdk_reviews_ting_openformat_getobject_params_alter($params) {
+
+  $params['relationData'] = 'uri';
+}
+
+
+/** Implements hook_thme
+ * @return array
+ */
+function bibdk_reviews_theme() {
+  return array(
+    'bibdk-review-material-review' => array(
+      'variables' => array(
+        'titles' => array(),
+        'sections' => array(),
+        'authors' => array(),
+      ),
+      'template' => 'theme/bibdk_review_material_review',
+    ),
+    'bibdk_review_article_review' => array(
+      'variables' => array(
+        'title' => '',
+        'publisher' => '',
+        'creator' => '',
+        'rating' => '',
+        'link' => '',
+        'netarchive' => '',
+      ),
+      'template' => 'theme/bibdk_review_article_review',
+    ),
+    'bibdk_review_rating' => array(
+      'variables' => array(
+        'rating' => '',
+        'total_stars' => '',
+      ),
+      //'template' => 'theme/bibdk-review-rating',
+    ),
+  );
+}
+
+
+/**
+ * Form with a trigger button to load reviews for works
+ *
+ * @param $form
+ * @param $form_state
+ * @param $manifestations_ids
+ * @param $submit_function
+ * @return array
+ */
+function bibdk_reviews_ajax_trigger_form($form, &$form_state, $manifestations_ids, $submit_function) {
+  $ids = $manifestations_ids;
+
+  if (!isset($ids) || count($ids) == 0) {
+    $form['no_reviews'] = array(
+      '#markup' => t('no_reviews_for_this_work'),
+    );
+  }
+  else {
+    $form['ajax_trigger'] = array(
+      '#type' => 'submit',
+      '#value' => 'get-reviews',
+      '#ajax' => array(
+        'callback' => $submit_function,
+        'event' => 'click',
+      ),
+      '#ids' => $ids,
+      '#attributes' => array(
+        'class' => array('visuallyhidden ajax-trigger')
+      ),
+      '#attached' => array(
+        'js' => array(drupal_get_path('module', 'bibdk_reviews') . '/js/bibdk_reviews.js'),
+      ),
+    );
+
+  }
+
+  return $form;
+}
+
+/**
+ * Get bibdkWork object containing all manifestations (in dkabm format) and all relations connected to a given work
+ *
+ * @param $ids
+ * @return array|BibdkWork
+ */
+function _bibdk_reviews_get_work_entity_from_manifestation_ids($ids) {
+
+  $client = new ting_client_class();
+  $params = array(
+    'objectFormat' => 'dkabm',
+    'objectId' => $ids,
+    'includeHoldingsCount' => FALSE,
+    'relationData' => 'uri',
+  );
+
+  $result = $client->do_request('object', $params);
+
+  if (empty($result->collections)) {
+    return array();
+  }
+  /* @var $TingClientObjectCollection TingClientObjectCollection */
+  foreach ($result->collections as $TingClientObjectCollection) {
+    foreach ($TingClientObjectCollection->getObjects() as $TingClientObject) {
+      $objects[$TingClientObject->id] = $TingClientObject;
+    }
+  }
+
+  $work = new BibdkWork();
+  $work->setManifestations($objects);
+
+  return $work;
+}
+
+
+/**
+ * Implements hook_worktabs_items
+ *
+ * @param $entity
+ * @return array
+ */
+function bibdk_reviews_worktabs_items($entity) {
+  $tabs = array('reviews' => array());
+  $manifestation_ids = array_keys($entity->getManifestations());
+  $material_form = drupal_get_form('bibdk_reviews_ajax_trigger_form', $manifestation_ids, 'bibdk_reviews_material_ajax_trigger_form_submit');
+
+
+  $tabs['reviews']['material_review'] = array(
+    '#entity' => $entity->id,
+    '#title' => array(
+      '#type' => 'translatable',
+      '#translate' => 'material review',
+    ),
+    '#content' => $material_form,
+    '#weight' => 0,
+  );
+
+  $article_form = drupal_get_form('bibdk_reviews_ajax_trigger_form', $manifestation_ids, 'bibdk_reviews_article_ajax_trigger_form_submit');
+  $tabs['reviews']['other_review'] = array(
+    '#entity' => $entity->id,
+    '#title' => array(
+      '#type' => 'translatable',
+      '#translate' => 'other review',
+    ),
+    '#content' => $article_form,
+    '#weight' => 0,
+  );
+
+  return $tabs;
+}

@@ -1,0 +1,168 @@
+<?php
+
+/**
+ * Class BibdkOpenuserstatusUnitTest
+ */
+class BibdkOpenuserstatusFormUnitTest extends DrupalUnitTestCase {
+
+  /**
+   * @return array
+   */
+  public static function getInfo() {
+    return array(
+      'name' => t('Bibdk OpenUserstatus Form Unit Test'),
+      'description' => t('Unittest Bibdk OpenUserstatus form'),
+      'group' => t('Bibliotek.dk - OpenUserstatus'),
+    );
+  }
+
+  public function setUp() {
+    module_load_include('inc', 'bibdk_openuserstatus', 'includes/bibdk_openuserstatus.form');
+    module_load_include('php', 'bibdk_openuserstatus', 'test/AgencyMockObject');
+    module_load_include('php', 'bibdk_openuserstatus', 'test/function_mocks.form');
+    parent::setUp();
+  }
+
+  public function test_bibdk_openuserstatus_get_group_elements() {
+    $empty_status = array();
+    $group = 'test group';
+    $element = 'elem';
+    $empty_result = bibdk_openuserstatus_get_group_elements($empty_status, $group, $element);
+    $this->assertTrue(empty($empty_result), 'Empty array input returns empty array.');
+
+    $no_object = array('1' => 'string');
+    $no_object_result = bibdk_openuserstatus_get_group_elements($no_object, $group, $element);
+    $this->assertTrue(empty($no_object_result), 'No object returns empty array.');
+
+    $mock = new AgencyMockObject($group, $element, array());
+    $empty_agency_data = array('1' => $mock);
+    $wrong_group = bibdk_openuserstatus_get_group_elements($empty_agency_data, 'wrong', $element);
+    $this->assertTrue(empty($wrong_group), 'Wrong group returns empty array.');
+    $wrong_element = bibdk_openuserstatus_get_group_elements($empty_agency_data, $group, 'wrong');
+    $this->assertTrue(empty($wrong_element), 'Wrong element returns empty array.');
+    $correct = bibdk_openuserstatus_get_group_elements($empty_agency_data, $group, $element);
+    $this->assertTrue(empty($wrong_element), 'Empty item returns empty array.');
+
+    $mock = new AgencyMockObject($group, $element, array(array()));
+    $empty_list = array('2' => $mock);
+    $got_result = bibdk_openuserstatus_get_group_elements($empty_list, $group, $element);
+    $this->assertTrue($got_result[0]['agencyId'] == 2, 'AgencyId set for empty element.');
+
+    $first = array('first' => 1);
+    $second = array('second' => 2);
+    $mock = new AgencyMockObject($group, $element, array($first, $second));
+    $list = array('3' => $mock);
+    $multiple = bibdk_openuserstatus_get_group_elements($list, $group, $element);
+    $this->assertTrue($multiple[0]['first'] == 1, 'First unmodified.');
+    $this->assertTrue($multiple[0]['agencyId'] == 3, 'First has got agencyId.');
+    $this->assertTrue($multiple[1]['second'] == 2, 'Second unmodified.');
+    $this->assertTrue($multiple[1]['agencyId'] == 3, 'First has got agencyId.');
+  }
+
+  public function test_bibdk_openuserstatus_check_returndate() {
+    $past_date = '01-01-1979';
+    $future_date = '02-02-2037';
+    $invalid_date = '32-13-2000';
+    $now = date('d.m.Y');
+
+    $past = bibdk_openuserstatus_check_returndate($past_date);
+    $future = bibdk_openuserstatus_check_returndate($future_date);
+    $invalid = bibdk_openuserstatus_check_returndate($invalid_date);
+    $today = bibdk_openuserstatus_check_returndate($now);
+
+
+    $this->assertTrue($invalid == '', 'Invalid date returns empty string.');
+    $this->assertTrue(is_array($past), 'Past date returns render array');
+    $this->assertTrue($past['data']['#overdue'], 'Past date is overdue.');
+    $this->assertTrue(is_array($future), 'Future date returns render array');
+    $this->assertFalse($future['data']['#overdue'], 'Future date is not overdue.');
+    $this->assertTrue(is_array($today), 'Current date returns render array');
+    $this->assertFalse($today['data']['#overdue'], 'Today date is not overdue.');
+  }
+
+  public function test_bibdk_openuserstatus_select() {
+    $reservation = array('pickUpAgency' => '1234', 'orderId' => 'xyz', 'agencyId' => 'abc');
+    $dkreservation = array('pickUpAgency' => 'DK-1234') + $reservation;
+    $subreservation = array('pickUpAgencySubdivision' => '789') + $reservation;
+    $agencies = array();
+
+    $res_result = bibdk_openuserstatus_select($agencies, $reservation);
+    $dkres_result = bibdk_openuserstatus_select($agencies, $dkreservation);
+    $subres_result = bibdk_openuserstatus_select($agencies, $subreservation);
+
+    $this->assertTrue($res_result['select']['#value'] == '1234', 'Selected agency is set to 1234.');
+    $this->assertTrue($dkres_result['select']['#value'] == '1234', 'Selected agency is stripped for \'DK-\'.');
+    $this->assertTrue($subres_result['select']['#value'] == '1234-789', 'pickUpAgencySubdivision is appended to agencyId.');
+  }
+
+  public function test_get_pickupagencies_from_material_list() {
+    $empty = array();
+    $no_agencyId = array(
+      array(
+        'author' => 'someone',
+        'title' => 'No title',
+      ),
+    );
+    $list = array(
+      array(
+        'agencyId' => '100451',
+        'author' => 'someone',
+        'title' => 'No title',
+      ),
+      array(
+        'agencyId' => '100451',
+        'author' => 'someother',
+        'title' => 'No title - the mising part',
+      ),
+      array(
+        'agencyId' => '100452',
+        'author' => 'a third author',
+        'title' => 'Blank',
+      ),
+    );
+
+    $empty_r = bibdk_openuserstatus_get_pickup_agencies_from_material_list($empty);
+    $no_agencyId_r = bibdk_openuserstatus_get_pickup_agencies_from_material_list($no_agencyId);
+    $list_r = bibdk_openuserstatus_get_pickup_agencies_from_material_list($list);
+    $this->assertTrue($empty_r == array(), 'Empty list gives no agencies.');
+    $this->assertTrue($no_agencyId_r == array(), 'No agencyId gives no agencies.');
+    $this->assertTrue(count($list_r) == 2, 'Found two agencies.');
+    $this->assertTrue(in_array('100451', $list_r) && in_array('100452', $list_r), 'The two agencies found as expected.');
+  }
+
+  public function test_get_agency_names() {
+    $empty = array();
+    $not_empty = array('100451');
+    $empty_r = bibdk_openuserstatus_agency_names($empty);
+    $not_empty_r = bibdk_openuserstatus_agency_names($not_empty);
+    $this->assertTrue($empty_r == array(), 'Empty list returns empty list.');
+    $this->assertTrue(count($not_empty) == count($not_empty_r), 'Number of elements for input and output are equal.');
+    $this->assertTrue(isset($not_empty_r['100451']) && $not_empty_r['100451']  == 'name', 'Got name for agency.');
+  }
+
+  public function test_bibdk_openuserstatus_material() {
+    $empty = array();
+    $has_author = array(
+      'author' => 'some name',
+    );
+    $has_title = array(
+      'title' => 'some title',
+    );
+    $has_both = $has_author + $has_title;
+    $r = array(
+      'data' => array(
+        '#theme' => 'bibdk_openuserstatus_row_item',
+        '#author' => '',
+        '#title' => '',
+      ),
+    );
+    $empty_r = _bibdk_openuserstatus_material($empty);
+    $has_author_r = _bibdk_openuserstatus_material($has_author);
+    $has_title_r = _bibdk_openuserstatus_material($has_title);
+    $has_both_r = _bibdk_openuserstatus_material($has_both);
+    $this->assertTrue($empty_r == $r, 'Both author and title is empty strings.');
+    $this->assertTrue($has_author_r == array('data' => array('#author' => 'some name') + $r['data']), 'Author is set correctly.');
+    $this->assertTrue($has_title_r == array('data' => array('#title' => 'some title') + $r['data']), 'Title is set correctly.');
+    $this->assertTrue($has_both_r == array('data' => array('#author' => 'some name', '#title' => 'some title') + $r['data']), 'Author and title are set correctly.');
+  }
+}

@@ -1,0 +1,8 @@
+name = "openorder mockup"
+description = "Support module for openorder test."
+package = bibliotek.dk
+version = VERSION
+core = 7.x
+hidden = TRUE;
+
+files[] = bibdk_openorder_webservice_mockup;

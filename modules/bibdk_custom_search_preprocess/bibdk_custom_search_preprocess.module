@@ -1,0 +1,130 @@
+<?php
+/**
+ * @file
+ * Bibliotek.dk custom search preprocess functions for combined form values.
+ *
+ * Since the form element ID's and form value search codes are different for each website,
+ * the search pre-process and javascript attach functions need to be maintained seperately.
+ */
+
+/**
+ * Implements hook_ting_openformat_qe_preprocess().
+ */
+function bibdk_custom_search_preprocess_ting_openformat_qe_preprocess($qe) {
+  $qe['#preprocessed'] = array();
+  $qe  = _bibdk_custom_search_preprocess_na_terms($qe);
+  $qe  = _bibdk_custom_search_preprocess_year($qe);
+  $qe  = _bibdk_custom_search_preprocess_foo($qe, CQL_AND);
+  $qe  = _bibdk_custom_search_preprocess_query($qe);
+  return $qe;
+}
+
+/**
+ * Processes searches with a [term]=[value] set defined in value.
+ *
+ * @param array $qe
+ * @return array
+ */
+function _bibdk_custom_search_preprocess_na_terms($qe) {
+  if ( isset($qe['n/a']) ) {
+    $values = array();
+    foreach ( $qe['n/a'] as $key => $terms ) {
+      foreach ( $terms as $n => $term ) {
+        $terms[$n] = '(' . urldecode($term) . ')';
+      }
+      $values[] = '(' . implode(CQL_OR, $terms) . ')';
+    }
+    if ( sizeof($values) > 0 ) {
+      $qe['#preprocessed'][] = '(' . implode(CQL_AND, $values) . ')';
+    }
+    unset($qe['n/a']);
+  }
+  return $qe;
+}
+
+
+/**
+ * Processes searches containing year as a search parameter.
+ *
+ * @param array $qe
+ * @return array
+ */
+function _bibdk_custom_search_preprocess_year($qe) {
+  if (isset($qe['year.op'])) {
+    if (isset($qe['year.value'])) {
+      $value = urldecode($qe['year.value'][0]);
+      if(isset($qe['year.op'][0])) {
+        $operator = urldecode($qe['year.op'][0]);
+        $operator = str_replace('"', '', $operator);
+        switch ( $operator ) { // år, operator
+          case 'year_gt':
+            $qe['#preprocessed'][] = 'dkcclterm.år>' . $value; //år, årstal
+            break;
+          case 'year_lt':
+            $qe['#preprocessed'][] = 'dkcclterm.år<' . $value; //år, årstal
+            break;
+          case 'year_eq':
+            $qe['#preprocessed'][] = 'dkcclterm.år=' . $value; //år, årstal
+            break;
+        }
+      }
+      unset($qe['year.value']);
+    }
+    unset($qe['year.op']);
+  }
+  return $qe;
+}
+
+/**
+ * Processes searches containing multiple dkcclterm.fo which must be
+ * concatinated with AND operators.
+ *
+ * !!! this is the only known term which must be concatinated this way. !!!
+ *
+ * @param array $qe
+ * @param string $op
+ * @return array
+ */
+function _bibdk_custom_search_preprocess_foo($qe, $op) {
+  if (isset($qe['dkcclterm.fo']) && is_array($qe['dkcclterm.fo'])) {
+    $f = function ($e) {
+      return 'dkcclterm.fo=(' . ting_openformat_string_to_cql($e) . ')';
+    };
+    $foos = join(array_map($f, $qe['dkcclterm.fo']), $op);
+    $qe['#preprocessed'][] = "($foos)";
+    unset($qe['dkcclterm.fo']);
+  }
+
+  return $qe;
+}
+
+/**
+ * Processes searches from a get search form
+ * *
+ * @param array $qe
+ * @return array
+ */
+function _bibdk_custom_search_preprocess_query($qe) {
+  if (!empty($qe['query'])) {
+    $q = urldecode($qe['query']);
+    $qe['#preprocessed'][] = '(' . ting_openformat_string_to_cql($q) . ')';
+    unset($qe['query']);
+  }
+  return $qe;
+}
+
+
+/**
+ * Implements hook_bibdk_custom_search_add_js().
+ */
+function bibdk_custom_search_preprocess_bibdk_custom_search_add_js($element_ids=array()) {
+  $js = array();
+  foreach ( $element_ids as $element_id => $value_ids ) { // f.ex.: '4' => array('2','5')
+    switch ($element_id) {
+      case '35':
+        $js[] = drupal_get_path('module', 'bibdk_custom_search_preprocess') . '/js/bibdk_custom_search_datepicker.js';
+        break;
+    }
+  }
+  return $js;
+}

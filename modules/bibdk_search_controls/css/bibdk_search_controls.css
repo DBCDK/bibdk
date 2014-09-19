@@ -1,0 +1,69 @@
+.edit-search-control {
+  clear: both;
+  margin: 0.5em 0;
+}
+
+.edit-search-control p {
+  float: left;
+  margin: 0 1em 0 0;
+}
+
+.edit-search-control p.title {
+  font-weight: bold;
+}
+
+.edit-search-control p.description {
+  color: #ccc;
+}
+
+#edit-search-page-element div.left {
+  width: 50%;
+  float: left;
+}
+
+#edit-search-page-element div.center {
+  width: 40%;
+  float: left;
+}
+
+#edit-search-page-element div.right {
+  width: 10%;
+  float: left;
+}
+
+#edit-search-page-element div.wrapper,
+#edit-search-page-element div.form-item.form-type-textarea {
+  margin: 0 1em 0 0;
+}
+
+#edit-search-page-element div.right div.wrapper {
+  margin: 0;
+}
+
+#edit-search-page-element div.wrapper > div.form-item {
+  padding: 0;
+}
+
+#edit-search-page-element div.left div.wrapper > div.form-item {
+  width: 50%;
+  float: left;
+}
+
+#edit-search-page-element input.form-text,
+#edit-search-page-element select.form-select {
+  width: 90%;
+}
+
+#edit-search-page-element textarea.form-textarea {
+  width: 100%;
+  height: 7em;
+}
+
+tr.region-populated {
+  display:none;
+}
+
+
+#edit-bibdk-search-control-values input.form-text {
+  width: 93%;
+}

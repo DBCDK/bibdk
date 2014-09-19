@@ -1,0 +1,214 @@
+<?php
+
+class BibdkOpenOrderUnitTestCase extends DrupalUnitTestCase {
+
+  private $orderPolicy;
+
+  public static function getInfo() {
+    return array(
+      'name' => t('OrderPolicy - LookUpUrl availability'),
+      'description' => t('Tests that the BibdkOpenorderPolicyResponse class is functional and correctly returns a lookUpUrl'),
+      'group' => t('Bibliotek.dk - OpenOrder'),
+    );
+  }
+
+  public function setUp() {
+    $this->_createPolicyObject();
+    parent::setup();
+    module_load_include('module', 'bibdk_openorder');
+  }
+
+  // checck _bibdk_openorder_check_required_params method
+  public function testRequiredParamsMethod() {
+    $values = array('copy' => 'hest',
+      'needBeforeDate' => 'hest'
+    , 'orderSystem' => 'hest',
+      'userIdAuthenticated' => 'hest',
+      'userId' => 'hest',
+      'verificationReferenceSource' => 'hest',
+      'action' => 'hest');
+    $missing = _bibdk_openorder_check_required_params($values);
+
+    $this->assertTrue(empty($missing), 'all parameters checked out');
+
+    $values = array('copy' => 'hest',
+      'exactEdition' => 'hest',
+      'needBeforeDate' => 'hest'
+    , 'orderSystem' => 'hest',
+      'userIdAuthenticated' => 'hest',
+      'userId' => 'hest',
+      'verificationReferenceSource' => 'hest');
+
+    $missing = _bibdk_openorder_check_required_params($values);
+    $this->assertTrue(in_array('action', $missing), 'action missing in required params');
+  }
+
+  public function testAgencyId() {
+    $agencyId = BibdkOpenorderPolicyResponse::GetObject()->getAgencyId();
+    $this->assertEqual('DK-765700', $agencyId, 'AgencyID correctly set and read');
+  }
+
+  public function testOrderPolicy() {
+    $policy = BibdkOpenorderPolicyResponse::GetObject()->getOrderPossible();
+    $this->assertFalse($policy, 'Order is not possible');
+  }
+
+  public function testOrderPossibleReason() {
+    $reason = BibdkOpenorderPolicyResponse::GetObject()->getOrderPossibleReason();
+    $this->assertEqual($reason, 'owned_own_catalogue', 'Reason correctly set: owned_own_catalogue');
+  }
+
+  public function testUrlAvailablity() {
+    $url = BibdkOpenorderPolicyResponse::GetObject()->getLookUpUrl();
+    $this->assertNotNull($url, 'URL is available: ' . $url);
+  }
+
+  public function testOrderPolicyOk() {
+    $file = file_get_contents(drupal_get_path('module', 'bibdk_openorder') . '/test/bibdk_orderpolicy_test_bool.json');
+    $response = json_decode($file);
+
+    BibdkOpenorderPolicyResponse::GetObject()->setResponse($response[0]);
+    $policy = BibdkOpenorderPolicyResponse::GetObject()->getOrderPossible();
+    $this->assertTrue($policy, 'Order is possible');
+
+    BibdkOpenorderPolicyResponse::GetObject()->setResponse($response[1]);
+    $policy = BibdkOpenorderPolicyResponse::GetObject()->getOrderPossible();
+    $this->assertTrue($policy, 'Order is possible');
+
+    BibdkOpenorderPolicyResponse::GetObject()->setResponse($response[2]);
+    $policy = BibdkOpenorderPolicyResponse::GetObject()->getOrderPossible();
+    $this->assertTrue($policy, 'Order is possible');
+
+    BibdkOpenorderPolicyResponse::GetObject()->setResponse($response[3]);
+    $policy = BibdkOpenorderPolicyResponse::GetObject()->getOrderPossible();
+    $this->assertFalse($policy, 'Order is possible');
+
+    BibdkOpenorderPolicyResponse::GetObject()->setResponse($response[4]);
+    $policy = BibdkOpenorderPolicyResponse::GetObject()->getOrderPossible();
+    $this->assertFalse($policy, 'Order is possible');
+  }
+
+  public function testGetLookUpUrl() {
+
+    // Test with no repsonse
+    $response_object = new BibdkOpenorderPolicyResponse();
+    $result = $response_object->getLookUpUrl();
+    $expected_result = array();
+    $this->assertEqual($result, $expected_result, 'getLookupUrl should always return an array');
+
+    // Test with no agencyId
+    $lookupUrl[] = new stdClass();
+    $lookupUrl[0]->{'$'} = 'look_up_url_1';
+
+    $response = new stdClass();
+    $response->checkOrderPolicyResponse->lookUpUrl = $lookupUrl;
+    $response_object->setResponse($response);
+    $result = $response_object->getLookUpUrl();
+    $expected_result = array(
+      0 =>
+        array(
+          'url' => 'look_up_url_1',
+          'agencyId' => NULL,
+        )
+    );
+    $this->assertEqual($result, $expected_result, 'one lookup url, no agencyId');
+
+    // test one lookupUrl
+    $lookupUrl[0]->{'$'} = 'look_up_url_1';
+    $lookupUrl[0]->{'@agencyId'}->{'$'} = 'agency_id_1';
+
+    $response = new stdClass();
+    $response->checkOrderPolicyResponse->lookUpUrl = $lookupUrl;
+    $response_object->setResponse($response);
+    $result = $response_object->getLookUpUrl();
+    $expected_result = array(
+      0 =>
+        array(
+          'url' => 'look_up_url_1',
+          'agencyId' => 'agency_id_1',
+        )
+    );
+    $this->assertEqual($result, $expected_result, 'one lookup url');
+
+
+    // Test more than one lookupUrl
+    $lookupUrl[] = new stdClass();
+    $lookupUrl[1]->{'$'} = 'look_up_url_2';
+    $lookupUrl[1]->{'@agencyId'}->{'$'} = 'agency_id_2';
+    $response->checkOrderPolicyResponse->lookUpUrl = $lookupUrl;
+    $response_object->setResponse($response);
+    $result = $response_object->getLookUpUrl();
+    $expected_result = array(
+      0 =>
+        array(
+          'url' => 'look_up_url_1',
+          'agencyId' => 'agency_id_1',
+        ),
+      1 =>
+        array(
+          'url' => 'look_up_url_2',
+          'agencyId' => 'agency_id_2',
+        )
+    );
+
+    $this->assertEqual($result, $expected_result, 'two lookup url');
+  }
+
+  private function _createPolicyObject() {
+    module_load_include('php', 'bibdk_openorder', 'BibdkOpenorderPolicyResponse');
+    $file = file_get_contents(drupal_get_path('module', 'bibdk_openorder') . '/test/bibdk_orderpolicy_test_source.json');
+    $response = json_decode($file);
+    $this->orderPolicy = BibdkOpenorderPolicyResponse::SetObject();
+    BibdkOpenorderPolicyResponse::GetObject()->setResponse($response[0]);
+    BibdkOpenorderPolicyResponse::GetObject()->setAgencyId($response[1]->pickUpAgencyId);
+  }
+}
+
+
+class BibdkOpenOrderWebTestCase extends DrupalWebTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => t('OpenOrder webservice'),
+      'description' => t('Test webservice methods'),
+      'group' => t('Bibliotek.dk - OpenOrder'),
+    );
+
+  }
+
+  public function setUp() {
+    module_enable(array('bibdk_openorder_webservice_mockup'));
+    menu_rebuild();
+    parent::setUp(array('bibdk_openorder', 'bibdk_openorder_webservice_mockup'));
+    variable_set('bibdk_openorder_url', $this->getAbsoluteUrl('bibdk_openorder_webservice'));
+    variable_set('bibdk_openorder_xsd_url', $this->getAbsoluteUrl('bibdk_openorder_webservice/openorder_xsd'));
+  }
+
+  public function tearDown() {
+    parent::tearDown();
+    module_disable(array('bibdk_openorder_webservice_mockup'));
+  }
+
+  public function testIncrementRedirectStatTrue() {
+    module_load_include('module', 'bibdk_openorder', 'bibdk_openorder');
+
+    // The Stats have been updated
+    $result = bibdk_openorder_do_incrementRedirectStat('1111');
+    $this->assertTrue($result, 'Valid number have been updated');
+
+    // The stats have not been updated
+    $result = bibdk_openorder_do_incrementRedirectStat(null);
+    $this->assertFalse($result, 'Invalid number have not been updated');
+
+    // log have been added to watchdog
+    $query = db_select('watchdog', 'w')
+      ->fields('w', array('message'))
+      ->orderBy('wid', 'desc')
+      ->range(0, 1);
+    $result = $query->execute();
+    $record = $result->fetchAssoc();
+    $this->assertEqual($record['message'], 'Could not register incrementRedirectStat for agency : @agencyID', 'Log have been added to watchdog');
+
+  }
+
+}

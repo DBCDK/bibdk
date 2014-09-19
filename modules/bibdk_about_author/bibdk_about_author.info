@@ -1,0 +1,10 @@
+name = Bibliotek.dk - About author
+description = Create a worktab item if a query on the aboutAuthorElement searchCode return records
+core = 7.x
+version = 7.x-0.4
+package = Bibliotek.dk
+
+files[] = bibdk_about_author.ajax.inc
+files[] = bibdk_about_author.worktabs.inc
+files[] = test/bibdk_about_author.unit.test
+files[] = test/bibdk_about_author.web.test

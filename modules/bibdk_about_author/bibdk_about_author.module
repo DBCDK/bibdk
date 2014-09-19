@@ -1,0 +1,120 @@
+<?php
+
+module_load_include('inc', 'bibdk_about_author', 'bibdk_about_author.worktabs');
+
+/**
+ * Implements hook_menu
+ */
+function bibdk_about_author_menu() {
+  $items['about_author/ajax'] = array(
+    'page callback' => 'bibdk_about_author_ajax_get_about_author',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+    'file' => 'bibdk_about_author.ajax.inc',
+  );
+  return $items;
+}
+
+
+
+/**
+ * Check if there's at least one a valid query
+ * @param string $queries
+ * @return array
+ */
+function bibdk_about_author_get_about_author($queries = '') {
+
+  if ( empty($queries) ) {
+    return array();
+  }
+
+  $hits = array();
+  $about_authors = unserialize(urldecode($queries));
+
+  foreach ( $about_authors['aboutAuthorElement'] as $about_author )  {
+    if ( bibdk_about_author_do_search($about_author['searchCode']) ) {
+      $hits[] = $about_author;
+    }
+  }
+
+  return $hits;
+
+}
+
+
+
+/**
+ * Execute about_author request
+ * @param string $query
+ * @return integer
+ */
+function bibdk_about_author_do_search($query) {
+
+  if ( empty($query) ) {
+    return 0;
+  }
+
+  $params['query'] = urldecode($query);
+
+  // results pr. page (opensearch::stepValue). We just need one to set value = TRUE
+  $params['numResults'] = 1;
+
+  // search profile (opensearch::profile)
+  $params['profile'] = variable_get('ting_search_profile', FALSE);
+  if ( !($params['profile']) ) {
+    watchdog('bibdk_about_author', 'search profile is not set - yields no search results', array(), WATCHDOG_ERROR, url('admin/config/ting/settings'));
+  }
+
+  // agency (opensearch::agency)
+  $params['agency'] = variable_get('ting_agency');
+  if (!($params['agency'])) {
+    watchdog('bibdk_about_author', 'agency is not set - yields no search results', array(), WATCHDOG_ERROR, url('admin/config/ting/settings'));
+  }
+
+  // set Object Format
+  $params['objectFormat'] = variable_get('objectFormat', 'briefDisplay');
+
+  // do the actual search via ting_client_class
+  $client = new ting_client_class();
+
+  $result = $client->do_request('search', $params);
+
+  if ( !$result ) {
+    return 0;
+  }
+
+  // static cache result - used in hook_ding_facetbrowser, ting_search etc.
+  drupal_static('ting_search_results', $result);
+
+  return $result->numTotalCollections;
+
+}
+
+
+
+/*
+ * Implements hook_theme
+ */
+function bibdk_about_author_theme() {
+  $themes = array(
+    'bibdk_about_author_links' => array(
+      'variables' => array('about_author_links' => NULL),
+      'template' => 'theme/bibdk-about-author-links'
+    ),
+  );
+  return $themes;
+}
+
+
+
+/**
+ * Translated text constants
+ */
+t('bibdk_about_authors', array(), array('context' => 'bibdk_about_author'));
+t('view_more', array(), array('context' => 'bibdk_about_author'));
+
+t('bibdk_about_author_empty_query', array(), array('context' => 'bibdk_about_author'));
+t('bibdk_about_author_toggle_text_error', array(), array('context' => 'bibdk_about_author'));
+
+t('bibdk_about_author_no_records', array(), array('context' => 'bibdk_about_author'));
+t('bibdk_about_author_toggle_text_empty', array(), array('context' => 'bibdk_about_author'));

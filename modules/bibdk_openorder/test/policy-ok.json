@@ -1,0 +1,1 @@
+{"checkOrderPolicyResponse":{"orderPossible":{"$":"TRUE"},"orderPossibleReason":{"$":"No holdings"}},"@namespaces":{"$":"http:\/\/oss.dbc.dk\/ns\/openorder"}}

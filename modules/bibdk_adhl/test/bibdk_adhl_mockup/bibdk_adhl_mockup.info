@@ -1,0 +1,6 @@
+name = "bibdk_adhl mockup"
+description = "Support module for open_adhl test."
+package = bibliotek.dk
+version = VERSION
+core = 7.x
+hidden = TRUE;

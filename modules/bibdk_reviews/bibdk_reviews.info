@@ -1,0 +1,9 @@
+name = Bibliotek.dk Reviews
+description = Add reviews to the work view
+core = 7.x
+version = 7.x-0.8
+package = Bibliotek.dk
+
+files[] = includes/BibdkReview.inc
+files[] = bibdk_reviews.material_review.inc
+files[] = test/bibdk_reviews.test

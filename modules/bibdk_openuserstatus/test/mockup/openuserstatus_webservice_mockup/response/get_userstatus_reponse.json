@@ -1,0 +1,115 @@
+{"getUserStatusResponse": {
+    "userId": {
+        "$": "1234",
+        "@": "ous"
+    },
+    "userStatus": {
+        "loanedItems": {
+            "loan": [
+                {
+                    "publicationDate": {
+                        "$": "2008",
+                        "@": "ous"
+                    },
+                    "author": {
+                        "$": "B. Oring",
+                        "@": "ous"
+                    },
+                    "title": {
+                        "$": "Hvordan organisationer fungerer",
+                        "@": "ous"
+                    },
+                    "dateDue": {
+                        "$": "2012-01-18T00:00:00+01:00",
+                        "@": "ous"
+                    },
+                    "loanId": {
+                        "$": "test_loan_id",
+                        "@": "ous"
+                    },
+                    "@": "ous"
+                },
+               {
+                    "publicationDate": {
+                        "$": "2008",
+                        "@": "ous"
+                    },
+                    "author": {
+                        "$": "F. Antastic",
+                        "@": "ous"
+                    },
+                    "title": {
+                        "$": "Hvordan organisationer burde fungere",
+                        "@": "ous"
+                    },
+                    "dateDue": {
+                        "$": "2012-01-18T00:00:00+01:00",
+                        "@": "ous"
+                    },
+                    "loanId": {
+                        "$": "test_loan_id_2",
+                        "@": "ous"
+                    },
+                    "@": "ous"
+                }
+            ],
+            "loansCount": {
+                "$": "2",
+                "@": "ous"
+            },
+            "@": "ous"
+        },
+        "orderedItems": {
+            "order": [
+                {
+                    "publicationDate": {
+                        "$": "2006",
+                        "@": "ous"
+                    },
+                    "title": {
+                        "$": "International politik",
+                        "@": "ous"
+                    },
+                    "orderDate": {
+                        "$": "2013-07-19T00:00:00+02:00",
+                        "@": "ous"
+                    },
+                    "orderId": {
+                        "$": "test_order_id",
+                        "@": "ous"
+                    },
+                    "orderStatus": {
+                        "$": "In process",
+                        "@": "ous"
+                    },
+                    "orderType": {
+                        "$": "Hold",
+                        "@": "ous"
+                    },
+                    "pickUpDate": {
+                        "$": "2013-07-19T00:00:00+02:00",
+                        "@": "ous"
+                    },
+                    "pickUpExpiryDate": {
+                        "$": "2013-07-29T00:00:00+02:00",
+                        "@": "ous"
+                    },
+                    "pickUpAgency": {
+                        "$": "DK-100450",
+                        "@": "ous"
+                    },
+                    "@": "ous"
+                }
+            ],
+            "ordersCount": {
+                "$": "1",
+                "@": "ous"
+            },
+            "@": "ous"
+        },
+        "@": "ous"
+    },
+    "@": "ous"
+}, "@namespaces": {
+    "ous": "http:\\/\\/oss.dbc.dk\\/ns\\/openuserstatus"
+}}

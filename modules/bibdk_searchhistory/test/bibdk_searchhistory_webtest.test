@@ -1,0 +1,254 @@
+<?php
+
+/**
+ * @file
+ * Tets class intented to act as simpletest for the bibdk_searchhistory module
+ */
+
+class BibdkSearchHistoryTestCase extends DrupalWebTestCase {
+
+  /**
+   *Info for this test case
+   */
+  public function getInfo() {
+    return array(
+      'name' => 'Bibdk Search History functionality',
+      'description' => t('Test the functionality of Bibdk Search History'),
+      'group' => 'bibliotek.dk - Search History',
+    );
+  }
+
+  public function setUp() {
+    parent::setUp('search', 'ting_openformat', 'bibdk_searchhistory', 'ding_provider', 'bibdk_provider', 'profile2'); //, 'bibdk_webservice');
+    variable_set('ting_search_url', 'http://opensearch.addi.dk/3.1/');
+    variable_set('bibdk_provider_webservice_url', 'http://bibliotek.dk/openuserinfo/');
+    variable_set('bibdk_provider_security_code', 'testhest');
+    variable_set('search_active_modules', array('ting_openformat' => 'ting_openformat'));
+    variable_set('search_default_module', 'ting_openformat');
+    variable_set('search_history_accepted_params', 'dkcclterm,term');
+    user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array(
+      'access content',
+      'search content'
+    ));
+
+    menu_rebuild();
+
+  }
+
+  public function testRunner() {
+    $this->_removeProviderUser();
+    $this->_testCheckProfileTypeDelete();
+    $this->_testAddSearchHistoryToWebservice();
+    $this->_testBibdkSearchHistoryClass();
+    $this->_test_bibdk_searchhistory_get_search_string();
+    $this->_test_bibdk_searchhistory_parse_params();
+  }
+
+
+  private function _testBibdkSearchHistoryClass() {
+    global $user;
+    $user = $this->_createProviderUser();
+
+    BibdkSearchHistory::clearAllSearchHistory();
+    $result = BibdkSearchHistory::getAllElements();
+    // Test base is empty
+    $this->assertTrue($result == array(), 'No elements in searchhistory');
+
+
+    // Test if element is added to session
+    $element = array(
+      'string' => 'test string',
+      'params' => array('testArr' => array()),
+      'timestamp' => 'testTime',
+      'count' => 1234
+    );
+    BibdkSearchHistory::addElementToSession($element);
+    $result = BibdkSearchHistory::getAllElements();
+
+    $expected_result[$element['string']] = $element;
+    $this->assertTrue($result == $expected_result, t('search: @string added to session', array('@string' => $element['string'])));
+
+    //Test if element is added to webservice
+    $element = BibdkSearchHistory::addElementToWebservice($element);
+    $result = BibdkSearchHistory::getAllElements();
+    $this->assertTrue($result[$element['string']]['id'] == $element['id'], t('search: @string added to webservice and given id @id', array(
+        '@string' => $element['string'],
+        '@id' => $element['id'],
+      )));
+
+    //Test if element is removed from webservice & Session
+    BibdkSearchHistory::removeElementFromWebservice($element);
+    $result = BibdkSearchHistory::getAllElements();
+    $expected_result = array();
+    $this->assertTrue($result == $expected_result, t('search: @string removed from webservice and session', array(
+        '@string' => $element['string'],
+      )));
+
+
+    // Delete provider user
+    $this->_removeProviderUser();
+
+  }
+
+  private function _testAddSearchHistoryToWebservice() {
+    $user = $this->_createProviderUser();
+
+    $element = array(
+      'searchHistoryString' => 'test string',
+      'searchHistoryParams' => json_encode(array('testArr' => array())),
+      'searchHistoryTime' => 'testTime',
+      'searchHistoryCount' => 1234
+    );
+
+    // Test add searchhistory element
+    $result = _bibdk_searchhistory_add_element_webservice($element, $user);
+    $this->assertTrue(is_numeric($result), t('@result is numeric', array('@result' => $result)));
+
+    $element = array(
+      'searchHistoryString' => 'test string 2',
+      'searchHistoryParams' => json_encode(array('testArr_2' => array())),
+      'searchHistoryTime' => 'testTime 2',
+      'searchHistoryCount' => 12345
+    );
+
+    // Test add searchhistory element id is incrementing
+    $result2 = _bibdk_searchhistory_add_element_webservice($element, $user);
+    $this->assertTrue(($result2 - $result) >= 1, t('@res2 is incremented 1 from @res1', array(
+        '@res1' => $result,
+        '@res2' => $result2
+      )));
+
+    //Test searchHistory list is returned
+    $list = _bibdk_searchhistory_get_elements_webservice($user);
+
+    $this->assertTrue($list['test string'] == array(
+        'string' => 'test string',
+        'params' => array('testArr' => array()),
+        'time' => 'testTime',
+        'count' => 1234,
+        'id' => $result,
+      ), t('element with id: @result is on the list of search history results', array('@result' => $result)));
+
+    $this->assertTrue($list['test string 2'] == array(
+        'string' => 'test string 2',
+        'params' => array('testArr_2' => array()),
+        'time' => 'testTime 2',
+        'count' => 12345,
+        'id' => $result2,
+      ), t('element with id: @result is on the list of search history results', array('@result' => $result2)));
+
+    // Test element is removed
+    $element = array(
+      'searchHistoryId' => $result,
+    );
+    $remove_result = _bibdk_searchhistory_remove_element_webservice($element, $user);
+    $this->assertTrue($result == $remove_result);
+
+    //Confirm element is removed
+    $list = _bibdk_searchhistory_get_elements_webservice($user);
+
+    $this->assertFalse(isset($list[$result]), t('element with id: @result is NOT on the list of search history results', array('@result' => $result)));
+
+
+    $this->_removeProviderUser();
+  }
+
+  function _test_bibdk_searchhistory_get_search_string() {
+    $element = array(
+      'string' => 'test string',
+    );
+
+    $expected = t('freetext_search', array(), array('context' => 'bibdk_searchhistory')) . ' = test string';
+    $this->assertEqual($expected, _bibdk_searchhistory_get_search_string($element), 'Got ecpexted string');
+
+    $expected = 'test string';
+    $raw = TRUE;
+    $this->assertEqual($expected, _bibdk_searchhistory_get_search_string($element, $raw), 'Got ecpexted string');
+
+    $element = array(
+      'string' => 'test string?params',
+    );
+
+    $expected = t('freetext_search', array(), array('context' => 'bibdk_searchhistory')) . ' = test string';
+    $this->assertEqual($expected, _bibdk_searchhistory_get_search_string($element), 'Got ecpexted string');
+
+    $raw = TRUE;
+    $expected = 'test string';
+    $this->assertEqual($expected, _bibdk_searchhistory_get_search_string($element, $raw), 'Got ecpexted string');
+  }
+
+  function _test_bibdk_searchhistory_parse_params() {
+    $params = json_decode('{"qe":{"term.type":["bog ELLER term.workType=literature"],"year.op":["year_eq"],"term.language":["ara","bos","bul"],"dkcclterm.fo":["Hest"],"dkcclterm.ti":["Flodhest"],"dkcclterm.em":["Gyngehest"]},"sort":"date_descending"}', TRUE);
+    $parsed = bibdk_searchhistory_parse_params($params);
+    $expected = 'term.type = bog ELLER term.workType=literature<br />term.language = ara, bos, bul<br />dkcclterm.fo = Hest<br />dkcclterm.ti = Flodhest<br />dkcclterm.em = Gyngehest';
+    $this->assertEqual($expected, $parsed, 'Got expected string');
+  }
+
+  private function _createProviderUser() {
+    $name = 'dummy@dbc.dk';
+    $pass = 'pass';
+    bibdk_provider_user_create_account($name, $pass);
+    db_insert('authmap')->fields(array(
+      'uid' => 2,
+      'module' => 'ding_user',
+      'authname' => $name
+    ))->execute();
+
+    $user = new stdClass();
+    $user->uid = 2;
+    $user->name = $name;
+    $user->roles = array();
+    ding_user_save_creds(array(
+      'creds' => array(
+        'name' => $name,
+        'pass' => $pass,
+      )
+    ), $user);
+
+    return $user;
+  }
+
+  private function _removeProviderUser() {
+    $name = 'dummy@dbc.dk';
+    db_delete('authmap')->condition('authname', $name)->execute();
+    bibdk_provider_user_delete_account($name);
+  }
+
+  // check if profiletype is deleted when module is disabled and created after module has been enabled
+  // and user logs in.
+  private function _testCheckProfileTypeDelete() {
+    $this->_createProviderUser();
+    //first disable module
+    module_disable(array('bibdk_searchhistory'));
+    menu_rebuild();
+
+    //Assert that search history is not present
+    $this->drupalGet('user');
+    $this->assertNoLink('Search history');
+
+    // enable module
+    module_enable(array('bibdk_searchhistory'));
+    menu_rebuild();
+
+    //Assert that search history is present
+    $this->drupalGet('user');
+    $this->assertLink('Search history');
+    $this->clickLink('Search history');
+    $this->assertUrl('user/searchhistory');
+
+    // we have to submit the user_login_block form to log in as provider user
+    $edit['name'] = 'dummy@dbc.dk';
+    $edit['pass'] = 'pass';
+    $this->drupalPost('user', $edit, 'Log in', array(), array(), 'user-login', NULL);
+
+    //Assert that search history is present
+    $this->drupalGet('user');
+    $this->assertLink('Search history');
+    $this->clickLink('Search history');
+    $this->assertUrl('user/2/searchhistory');
+
+    //clean up
+    $this->_removeProviderUser();
+  }
+
+}

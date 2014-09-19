@@ -1,0 +1,71 @@
+<?php
+
+
+/**
+ * Testing: Teaserblock and redirection to form
+ */
+class BibdkHelpdeskTeaserblockTestcase extends DrupalWebTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => 'Teaser block',
+      'description' => t('Test that teaser block is actived, and link is active'),
+      'group' => t('Bibliotek.dk - Helpdesk'),
+    );
+  }
+
+  public function setUp() {
+    parent::setUp('bibdk_helpdesk', 'microcurl');
+
+  }
+
+  /**
+   * Ensuring that the block is visible, and test if link in block redirects to helpdesk
+   */
+  public function testTeaserLink() {
+    // Put block in content area.
+    $admin = $this->drupalCreateUser(
+      array('administer blocks')
+    );
+    $this->drupalLogin($admin);
+
+    $this->drupalPost('admin/structure/block', array('blocks[bibdk_helpdesk_header_action][region]' => 'content'), t('Save blocks'));
+
+    // Test creation of a custom search page.
+    $edit = array();
+    $helpdesk_submit_url  = $edit['helpdesk_submit_url']          = $this->randomName(8);
+    $block_title          = $edit['bibdk_helpdesk[title]']        = $this->randomName(8);
+    $block_link           = $edit['bibdk_helpdesk[link]']         = $this->randomName(8);
+    $block_description    = $edit['bibdk_helpdesk[description]']  = $this->randomName(8);
+
+    $this->drupalPost('admin/config/user-interface/bibdk_helpdesk', $edit, 'Save');
+
+    $this->assertFieldByName(
+      'helpdesk_submit_url',
+      $helpdesk_submit_url,
+      t('Helpdesk submit_url have been updated.')
+    );
+    $this->assertFieldByName(
+      'bibdk_helpdesk[title]',
+      $block_title,
+      t('Teaser block title have been updated.')
+    );
+    $this->assertFieldByName(
+      'bibdk_helpdesk[link]',
+      $block_link,
+      t('Teaser block link have been updated.')
+    );
+    $this->assertFieldByName(
+      'bibdk_helpdesk[description]',
+      $block_description,
+      t('Teaser block description have been updated.')
+    );
+
+    $this->drupalLogout();
+    $this->drupalGet('');
+    $this->assertText('Ask Helpdesk', t('Block is present at frontpage'));
+    $this->clickLink(t('Ask Helpdesk'));
+    $this->assertUrl('overlay/helpdesk', array(), t('Teaserblock redirects to "overlay/helpdesk"'));
+  }
+}
+

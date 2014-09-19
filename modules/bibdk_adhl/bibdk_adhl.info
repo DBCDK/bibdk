@@ -1,0 +1,10 @@
+name = Bibliotek.dk - ADHL
+description = Provides information to the user about what other users have borrowed
+core = 7.x
+version = 7.x-0.9
+package = Bibliotek.dk
+
+dependencies[] = open_adhl
+dependencies[] = ting_openformat
+
+files[] = test/bibdk_adhl.test

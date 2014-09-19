@@ -1,0 +1,16 @@
+name = Bibliotek.dk admin theme 
+description = Admin theme for bibliotek.dk, based on Seven.
+core = 7.x
+base theme = seven
+version = 7.x-0.1
+
+stylesheets[screen][] = seven_style.css
+settings[shortcut_module_link] = 1
+regions[content] = Content
+regions[help] = Help
+regions[page_top] = Page top
+regions[page_bottom] = Page bottom
+regions[sidebar_first] = First sidebar
+regions_hidden[] = sidebar_first
+
+project = "drupal"

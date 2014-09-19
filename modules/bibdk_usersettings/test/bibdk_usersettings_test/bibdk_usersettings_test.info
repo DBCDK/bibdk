@@ -1,0 +1,6 @@
+name = Bibliotek.dk usersettings Test module
+description = Helper module to test functionality
+package = Bibliotek.dk
+core = 7.x
+hidden = TRUE
+

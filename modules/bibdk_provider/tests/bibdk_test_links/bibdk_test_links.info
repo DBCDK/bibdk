@@ -1,0 +1,5 @@
+name = bibdk_test_links
+description = A mockup for creating accept/reset links
+core = 7.x
+package = DBCDK
+hidden = TRUE

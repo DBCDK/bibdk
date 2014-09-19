@@ -1,0 +1,1 @@
+{"checkOrderPolicyResponse":{"lookUpUrl":{"$":"https:\/\/baser.herningbib.dk\/sites\/WWX\/pub\/search.html?doaction=showfull&data=format%3dfull%20keyno_list%3d28794932"},"orderPossible":{"$":"FALSE"},"orderPossibleReason":{"$":"owned_own_catalogue"}},"@namespaces":{"$":"http:\/\/oss.dbc.dk\/ns\/openorder"}}

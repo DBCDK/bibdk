@@ -1,0 +1,78 @@
+<?php
+
+/**
+ * @file
+ * Webservice mockup of Open Question Service
+ */
+function bibdk_helpdesk_webservice_mockup_menu() {
+  $items['bibdk_helpdesk_webservice'] = array(
+    'page callback' => 'bibdk_helpdesk_webservice_mockup_request',
+    'access callback' => 'bibdk_helpdesk_webservice_mockup_access',
+  );
+  $items['bibdk_helpdesk_webservice/test'] = array(
+    'page callback' => 'bibdk_helpdesk_webservice_test',
+    'access callback' => TRUE
+  );
+
+  return $items;
+}
+
+function bibdk_helpdesk_webservice_test() {
+  return '<form name="test" action="bibdk_helpdesk_webservice" method="POST" target="_blank"><textarea name="xml"></textarea><input type="submit" name="sub" value="submit"/></form>';
+}
+
+/**
+ * Faking the request and returns result. If other requests are made than on city = københavn an error will be returned.
+ * @return String json
+ */
+function bibdk_helpdesk_webservice_mockup_request() {
+   if (isset($_POST['xml'])) {
+    $data = rawurldecode($_POST['xml']);
+  }
+  else {
+    $data = file_get_contents('php://input');
+  }
+  $path = drupal_get_path('module', 'bibdk_helpdesk_webservice_mockup');
+  if( $data ) {
+    $envelope = bibdk_helpdesk_webservice_mockup_parse_xml($data);
+  }
+  else {
+    echo t('welcome to bibdk_helpdesk_webservice mockup');
+    return;
+  }
+
+  $request = $envelope->Body->children()->createQuestionRequest;
+  drupal_add_http_header('Content-Type', 'application/json');
+  if( $request->qandaServiceName == 'bibvagtenGood' ) {
+    $resp = file_get_contents($path.'/goodRequest.json');
+  }
+  elseif ($request->qandaServiceName == 'bibvagtenBad'){
+    $resp = file_get_contents($path.'/badRequest.json');
+  }
+
+  else if ($request->qandaServiceName == 'bibvagtenReturn'){
+    $resp = json_encode($request);
+  }
+  else {
+    $resp = file_get_contents($path.'/badRequest.json');
+  }
+  print $resp;
+}
+
+/**
+ * Parsing the request into a xml object
+ * @param type request from ting-client
+ * @return \SimpleXMLElement
+ */
+function bibdk_helpdesk_webservice_mockup_parse_xml($soap){
+  $pattern = "/:?SOAP-ENV:?/";
+  $replace = '';
+  $xml = preg_replace($pattern, $replace, $soap);
+
+  $envelope = new SimpleXMLElement($xml);
+  return $envelope;
+}
+
+function bibdk_helpdesk_webservice_mockup_access() {
+  return TRUE;
+}

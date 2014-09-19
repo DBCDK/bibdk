@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<oui:getFavouritesResponse xmlns:oui="http://oss.dbc.dk/ns/openuserinfo">
+    <agency>
+        <oui:agencyId>710101</oui:agencyId>
+        <oui:userData/>
+        <oui:orderAgency>TRUE</oui:orderAgency>
+    </agency>
+    <agency>
+        <oui:agencyId>710100</oui:agencyId>
+        <oui:userData/>
+        <oui:orderAgency>FALSE</oui:orderAgency>
+    </agency>
+    <agency>
+        <oui:agencyId>872920</oui:agencyId>
+        <oui:userData/>
+        <oui:orderAgency>FALSE</oui:orderAgency>
+    </agency>
+</oui:getFavouritesResponse>
+

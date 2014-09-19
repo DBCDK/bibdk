@@ -1,0 +1,22 @@
+name = Bibdk provider 
+description = Implementation of bibdk provider API. 
+core = 7.x 
+package = DBCDK 
+php = 5.2.4 
+version = 7.x-0.38
+project = bibdk_provider
+
+dependencies[] = ding_user
+
+dependencies[] = nanosoap
+
+configure = admin/config/ding/provider/bibdk_provider
+
+files[] = bibdk_provider.user.inc
+files[] = BibdkUser.php
+files[] = tests/bibdk_provider.test
+files[] = tests/bibdk_provider_registration.test
+files[] = tests/bibdk_webservice.test
+;files[] = tests/BibdkUser.test
+files[] = tests/bibdk_provider.wayf.test
+files[] = bibdk_provider.wayf.inc

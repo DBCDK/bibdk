@@ -1,0 +1,71 @@
+<?php
+
+class BibdkOpenuserstatusCancelReservationTest extends DrupalWebTestCase {
+
+  private $baseurl;
+
+  /**
+   * @return array
+   */
+  public static function getInfo() {
+    return array(
+      'name' => t('Bibdk OpenUserstatus Cancel Reservation Test'),
+      'description' => t('Testclass that specifically tests the OpenUserstatus \'Cancel Reservation\' functionality'),
+      'group' => t('Bibliotek.dk - OpenUserstatus'),
+    );
+  }
+
+  public function setUp() {
+    module_enable(array('openuserstatus_webservice_mockup'));
+    //Note that openuserstatus_webservice_mockup should be enabled in local installation when testing locally
+    parent::setUp('bibdk_openuserstatus', 'ting_agency','openagency_webservice_mockup', 'openuserstatus_webservice_mockup', 'ting_openuserstatus', 'ting_client');
+
+    global $base_url;
+    $this->baseurl = $base_url;
+
+    variable_set('openuserstatus_url', $this->baseurl . '/openuserstatus_webservice_mockup/cancel_reservation');
+    variable_set('agency_search_url', 'http://openagency.addi.dk/2.2/');
+    variable_set('agency_search_xsd_url',$this->getAbsoluteUrl('/openagency_webservice/openagency.xsd'));
+  }
+
+  public function tearDown(){
+    module_disable(array('openuserstatus_webservice_mockup'));
+    parent::tearDown();
+  }
+
+  public function testRunner() {
+    $this->_setSession();
+    $this->test_bibdk_openuserstatus_cancel_selected_submit();
+  }
+
+  private function test_bibdk_openuserstatus_cancel_selected_submit() {
+    drupal_get_messages();
+    $form_state = drupal_json_decode($this->_loadFile('form_submit_cancel_reservation.json'));
+    bibdk_openuserstatus_cancel_selected_submit(array(), $form_state);
+
+    $messages = drupal_get_messages();
+    $this->assertTrue(array_key_exists('status', $messages), 'Found arraykey notice in messages array');
+    $this->assertTrue((strstr($messages['status'][0], 'Your order(s) was successfully canceled')), 'Found text: "Your order(s) was successfully canceled"');
+  }
+
+  /**
+   * Loads a file with the given filename ($filename) from
+   * biodk_openuserstatus/test/mockup and returns its content
+   *
+   * @param String $filename
+   * @return mixed
+   */
+  private function _loadFile($filename) {
+    return file_get_contents(drupal_get_path('module', 'bibdk_openuserstatus') . '/test/mockup/' . $filename);
+  }
+
+  /**
+   * Sets the value of $_SESSION to a mocked up value
+   * (equal the content of biodk_openuserstatus/test/mockup/session.serialized)
+   * to avoid unnecessary calls to webservices
+   */
+  private function _setSession() {
+    $session = unserialize($this->_loadFile('session.serialized'));
+    $_SESSION = isset($_SESSION) ? array_merge($_SESSION, $session) : $session;
+  }
+}

@@ -1,0 +1,108 @@
+<?php
+
+/**
+ * Class BibdkFurtherSearchTestCase
+ */
+class BibdkFurtherSearchTestCase extends DrupalWebTestCase {
+
+  private $furtherSearchArray;
+
+  /**
+   * @return array
+   */
+  public static function getInfo() {
+    return array(
+      'name' => t('Bibdk Further Search Test'),
+      'description' => t('Test Further Search Functionality'),
+      'group' => t('Bibliotek.dk - Further Search'),
+    );
+  }
+
+  public function setUp() {
+    parent::setUp('bibdk_furthersearch');
+  }
+
+  public function testRunner() {
+    $this->loadIncludes();
+    $this->testParseEntity();
+    $this->testGetRows();
+
+    $this->testTableGeneration();
+  }
+
+  private function testParseEntity() {
+    debug('testParseEntity begun:');
+    $furtherSearches = drupal_json_decode($this->loadFile('furtherSearches_mockup.json'));
+    $this->furtherSearchArray = _bibdk_furthersearch_get_further_search($furtherSearches);
+    $this->assertTrue(array_key_exists('types', $this->furtherSearchArray));
+    $this->assertTrue(is_array($this->furtherSearchArray['types']));
+    $this->assertTrue(array_key_exists('elements', $this->furtherSearchArray));
+    $this->assertTrue(is_array($this->furtherSearchArray['elements']));
+    $this->assertTrue(array_key_exists('fictions', $this->furtherSearchArray));
+    $this->assertTrue(is_array($this->furtherSearchArray['fictions']));
+
+    debug(' Testing if no furtherSearches are provided:');
+    $this->furtherSearchArray = _bibdk_furthersearch_get_further_search(array());
+    $this->assertTrue(array_key_exists('types', $this->furtherSearchArray));
+    $this->assertTrue(is_array($this->furtherSearchArray['types']));
+    $this->assertTrue(array_key_exists('elements', $this->furtherSearchArray));
+    $this->assertTrue(is_array($this->furtherSearchArray['elements']));
+    $this->assertTrue(array_key_exists('fictions', $this->furtherSearchArray));
+    $this->assertTrue(is_array($this->furtherSearchArray['fictions']));
+    debug('testParseEntity finished');
+  }
+
+  private function testGetRows() {
+    debug('testGetRows begun:');
+    $furtherSearches = drupal_json_decode($this->loadFile('furtherSearches_mockup.json'));
+    $this->furtherSearchArray = _bibdk_furthersearch_get_further_search($furtherSearches);
+
+    $rows = _bibdk_furthersearch_get_rows($this->furtherSearchArray);
+    $this->assertTrue(is_array($rows));
+    $this->assertEqual(count($rows), 3);
+
+    $rows = _bibdk_furthersearch_get_rows(array(
+      'types' => array(),
+      'elements' => array(),
+      'fictions' => array(),
+    ));
+
+    $this->assertTrue(is_array($rows));
+    $this->assertEqual(count($rows), 0);
+    debug('testGetRows finished');
+  }
+
+  private function testTableGeneration() {
+    debug('testTableGeneration begun:');
+    $furtherSearches = drupal_json_decode($this->loadFile('furtherSearches_mockup.json'));
+    $this->furtherSearchArray = _bibdk_furthersearch_get_further_search($furtherSearches);
+
+    $entity = drupal_json_decode($this->loadFile('entity_mockup.json'));
+    $table = bibdk_furthersearch_get_table($this->furtherSearchArray, $entity['id']);
+
+    $this->assertTrue(array_key_exists('table', $table));
+    $this->assertTrue(array_key_exists('#theme', $table['table']));
+    $this->assertEqual($table['table']['#theme'], 'table');
+    $this->assertTrue(array_key_exists('#header', $table['table']));
+    $this->assertTrue(is_array($table['table']['#header']));
+    $this->assertTrue(array_key_exists('#rows', $table['table']));
+    $this->assertTrue(array_key_exists('#empty', $table['table']));
+
+    $this->assertTrue(array_key_exists('submit', $table));
+    $this->assertTrue(array_key_exists('#theme', $table['submit']));
+    $this->assertEqual(_bibdk_furthersearch_trim_string($entity['id']), $table['submit']['#attributes']['data-id'][0]);
+    debug('testTableGeneration finished');
+  }
+
+  /**
+   * @param $filename
+   * @return string
+   */
+  private function loadFile($filename) {
+    return file_get_contents(drupal_get_path('module', 'bibdk_furthersearch') . '/test/mockup/' . $filename);
+  }
+
+  private function loadIncludes() {
+    module_load_include('inc', 'bibdk_furthersearch', 'bibdk_furthersearch.field');
+  }
+}

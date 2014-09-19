@@ -1,0 +1,38 @@
+<?php
+
+/**
+ * Implements hook_install().
+ */
+function bibdk_helpdesk_install() {
+  $default_values = array(
+    'description' => st('You can contact a librarian, if you need a personalized service.', array(), array('context' => 'bibdk_helpdesk')),
+    'title' => st('Ask helpdesk', array(), array('context' => 'bibdk_helpdesk')),
+    'link' => st('Ask helpdesk', array(), array('context' => 'bibdk_helpdesk')),
+    'image' => array(
+      'normal' => array(
+        'height' => 190,
+        'width' => 190,
+      ),
+    ),
+  );
+  variable_set('bibdk_helpdesk_settings', $default_values);
+}
+
+
+/**
+ * Set default helpdesk settings
+ */
+function bibdk_helpdesk_update_7001(&$sandbox) {
+  $default_values = array(
+    'description' => st('You can contact a librarian, if you need a personalized service.', array(), array('context' => 'bibdk_helpdesk')),
+    'title' => st('Ask helpdesk', array(), array('context' => 'bibdk_helpdesk')),
+    'link' => st('Ask helpdesk', array(), array('context' => 'bibdk_helpdesk')),
+    'image' => array(
+      'normal' => array(
+        'height' => 190,
+        'width' => 190,
+      ),
+    ),
+  );
+  variable_set('bibdk_helpdesk_settings', $default_values);
+}

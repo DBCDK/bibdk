@@ -1,0 +1,10 @@
+/*
+ * This module creates a 'userhelp' content type with two viewmodes, a panel page,
+ * and a block with a 'help' link, to open help pages in a popup window.
+ *
+ * After installing, copy the files node--userhelp.tpl.php and page--userhelp.tpl.php
+ * to the active theme's '/templates' folder
+ *
+ * We use $content['help_url'] instead of $node_url, in order to make
+ * the links in the bibdk_help_list viewmode point to our contenttype.
+ */

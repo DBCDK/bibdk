@@ -1,0 +1,135 @@
+<?php
+/**
+ *
+ */
+
+// ommitted - drush cannot detect document_root, making this unittest fail /svi
+/*class BibdkTraceLogUnitTestCase extends DrupalUnitTestCase {
+
+  private $path;
+
+  public static function getInfo() {
+    return array(
+      'name' => t('Bibdk Tracelog UNIT Test'),
+      'description' => t('Unittest of bibdk_tracelog functionality'),
+      'group' => t('bibliotek.dk'),
+    );
+  }
+
+  public function setUp() {
+    global $base_path;
+    $this->path = $_SERVER['DOCUMENT_ROOT'].$base_path.drupal_get_path('module', 'bibdk_tracelog');
+    parent::setUp('bibdk_tracelog');
+  }
+
+  public function testVerboseClass(){
+    module_load_include('module', 'bibdk_tracelog', 'bibdk_tracelog');
+
+    $path = $this->path;
+
+    $file = $path.'/test/test.log';
+    bibdk_tracelog_log('This is a test', 'DEBUG', $file);
+
+    // Check if file has been created
+    $file_exists = file_exists($file);
+    $this->assertTrue($file_exists, 'File has been created');
+
+    // Check if message have been written to file
+    $content = file_get_contents($file);
+    $match = preg_match('@This is a test@', $content);
+    $this->assertTrue($match, 'Message have been written to file');
+
+    //Clean up
+    unlink($file);
+    $file_exists = file_exists($file);
+    $this->assertFalse($file_exists, 'File has been deleted');
+
+
+  }
+
+}*/
+
+class BibdkTraceLogWebTestCase extends DrupalWebTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => t('Bibdk Tracelog Test'),
+      'description' => t('Webtest of bibdk_tracelog functionality'),
+      'group' => t('bibliotek.dk'),
+    );
+  }
+
+
+  public function setUp() {
+    $this->profile = 'minimal';
+    parent::setUp('bibdk_tracelog');
+  }
+
+  public function testRunner(){
+    //$this->testAdminPage();
+    $this->testMessageParser();
+  }
+
+  private function testMessageParser(){
+    $log_entry = array(
+      'type' => 'ting client',
+      'variables' => array(
+        '@action' => 'searchRequest',
+        '@time' => '0.24',
+        '@wsdlUrl' => 'wsdlURL',
+      ),
+      'link' => 'testUrl',
+    );
+    // Test if message is correctly parsed
+    $result = _bibdk_tracelog_message_parse($log_entry);
+    $expected_result = array(
+      'message' => 'searchRequest:: Total:0.24 Wsdl:wsdlURL Link:testUrl',
+      'type'  => 'TIMER'
+    );
+    // Test if Error is Correctly parsed
+    $this->assertEqual($result, $expected_result, 'message is correctly parsed');
+    $log_entry['variables']['@error'] = 'TestError';
+    $result = _bibdk_tracelog_message_parse($log_entry);
+    $expected_result = array(
+      'message' => 'searchRequest:: TestError',
+      'type'  => 'ERROR'
+    );
+    $this->assertEqual($result, $expected_result, 'Error is correctly parsed');
+
+
+
+  }
+
+  private function testAdminPage(){
+    $this->drupalGet('/admin/config/serviceclient/tracelog');
+    // No Access without permissions
+    $this->assertText('Access denied');
+    // Create user with permissions
+    $admin = $this->drupalCreateUser(array('administer site configuration'));
+    $this->drupalLogin($admin);
+    $this->drupalGet('/admin/config/serviceclient/tracelog');
+    // Check if settings fields exists
+    $this->assertField('tracelog_state', 'checkbox exists');
+    $this->assertField('tracelog_file_url', 'file field exists');
+
+    // Test that settings have not been set
+    $tracelog_state = variable_get('tracelog_state');
+    $tracelog_file_url = variable_get('tracelog_file_url');
+    $this->assertNotEqual($tracelog_state, 1, 'State is set to 1');
+    $this->assertNotEqual($tracelog_file_url, 'test_file_url', 'url is set to test_file_url');
+
+    // Set settings
+    $this->drupalPost(Null, array(
+      'tracelog_state' => 1,
+      'tracelog_file_url' => 'test_path',
+      'tracelog_file_name' => 'test_file_name',
+    ), t('Save configuration'));
+
+    // Test that settings have been set
+    $tracelog_state = variable_get('tracelog_state');
+    $tracelog_file_name = variable_get('tracelog_file_name');
+    $this->assertEqual($tracelog_state, 1, 'State is set to 1');
+    $this->assertEqual($tracelog_file_name, 'test_file_name', 'url is set to test_file_url');
+  }
+
+}

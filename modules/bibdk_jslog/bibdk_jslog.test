@@ -1,0 +1,126 @@
+<?php
+
+class BibdkJsLogUnitTestCase extends DrupalUnitTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => 'bibliotek.dk - jslog unit test',
+      'description' => 'Test methods in bibdk_jslog',
+      'group' => 'Bibliotek.dk-jslog',
+    );
+  }
+
+  public function setUp() {
+    module_load_include('module', 'bibdk_jslog');
+    parent::setUp();
+  }
+
+  // test bibdk_jslog_sanitize_post method (TingClientRequest.php)
+  public function testSanitizePost() {
+    // valid $_POST
+    self::validPost();
+    $params = bibdk_jslog_sanitize_post();
+    $this->assertTrue(count($params) == 5, 'valid $_POST data sanitized');
+    // empty $_POST (all values should be set to NULL)
+    $this->emptyPost();    
+    $params = bibdk_jslog_sanitize_post();
+    $flag = TRUE;
+    foreach( $params as $key=>$value ) {
+      if( $value !== NULL ){
+        $flag = FALSE;
+      }
+    }
+    $this->assertTrue($flag, 'empty $_POST data returned NULL values');
+    // wrong types (all values should be set to NULL)
+    self::wrongPost();
+    $params = bibdk_jslog_sanitize_post();
+    $flag = TRUE;
+    foreach( $params as $key=>$value ) {
+      if( $value !== NULL ){
+        $flag = FALSE;
+      }
+    }
+    $this->assertTrue($flag, 'invalid $_POST data was sanitized away');
+  }
+
+  private function emptyPost() {
+    $_POST = array();
+  }
+
+  public static function validPost() {
+    $_POST = array(
+      'type' => 'JSLOG_TESTHEST',
+      'message' => 'HEj med dig',
+      'severity' => '2',
+      'link' => 'http://gogle.dk',
+    );
+  }
+
+  public static function wrongPost() {
+    $_POST = array(
+      // invalid type (should be string)
+      'type' => 123,
+      // invalid type (should be string)
+      'message' => 26,   
+      // invalid type (should be array)
+      'variables' => 'TESTHEST',
+      // invalid type (should be numeric)
+      'severity' => 'HEST',
+      // invalid type (should be string
+      'link' => array('TESTHEST'),
+    );
+  }
+
+}
+
+class BidkJsLogTestCase extends DrupalWebTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => t('Bibdk jslog test'),
+      'description' => t('Test javascript logging functionality'),
+      'group' => 'Bibliotek.dk-jslog'
+    );
+  }
+
+  public function setUp() {
+    $this->profile = 'minimal';
+    parent::setUp('bibdk_jslog');
+    variable_set('jslog_enable', '1');
+    variable_set('jslog_flood', '1');
+  }
+
+  public function testRunner() {
+
+    flood_clear_event('jslog_flood');
+
+    // get valid $_POST data
+    BibdkJsLogUnitTestCase::validPost();
+
+
+    global $base_url;
+    $path = $base_url . '/jslog';
+    $data = $_POST;
+
+    // nested arrays takes special handling in $_POST ..
+    // make it a string
+    
+    // prepare a call with post parameters
+    $curl_options = array(
+      CURLOPT_URL => $path,
+      CURLOPT_POST => 1,
+      CURLOPT_POSTFIELDS => $data,
+    );
+    
+    $this->curlExec($curl_options);
+    // get watchdog types
+    $query = db_select('watchdog', 'w')->fields('w', array('type'));
+    $result = db_query($query);
+    $watchdog_types = $result->fetchAll(PDO::FETCH_ASSOC);
+    // assert that TESTHEST was inserted
+    $this->assertTrue(in_array(array('type' => 'JSLOG_TESTHEST'), $watchdog_types), 'Watchdog message inserted from $_POST data');
+  }
+
+}
+
+?>

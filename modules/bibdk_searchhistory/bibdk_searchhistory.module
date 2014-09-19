@@ -1,0 +1,125 @@
+<?php
+module_load_include('inc', 'bibdk_searchhistory', 'bibdk_searchhistory.form');
+module_load_include('inc', 'bibdk_searchhistory', 'bibdk_searchhistory.block');
+module_load_include('inc', 'bibdk_searchhistory', 'bibdk_searchhistory.webservice');
+module_load_include('inc', 'bibdk_searchhistory', 'includes/bibdk_searchhistory.mypage');
+
+
+/**
+ * @file
+ * Adding support for saving and reuse of old searches
+ */
+
+/**
+ * Implements hook_menu().
+ * Sets up menu items.
+ *
+ */
+function bibdk_searchhistory_menu() {
+  $items = array();
+  $items['bibdk_searchhistory/ajax/%/%'] = array(
+    'page callback' => 'bibdk_searchhistory_action_link_callback',
+    'page arguments' => array(2, 3),
+    'access callback' => TRUE,
+    'file' => 'bibdk_searchhistory.form.inc',
+    'type' => MENU_CALLBACK,
+  );
+  $items['admin/config/search/bibdk_searchhistory'] = array(
+    'title' => 'Search History',
+    'description' => 'Settings for display of search history',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bibdk_searchhistory_admin'),
+    'access arguments' => array('administer bibdk search history settings'),
+    'file' => 'includes/bibdk_searchhistory_settings.admin.inc',
+  );
+
+  $items['user/searchhistory'] = array(
+    'title' => 'Search history',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bibdk_searchhistory_form'),
+    'access arguments' => array('access content'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 10,
+  );
+
+  $items['user/%user/searchhistory'] =  array(
+    'title' => 'Search history',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bibdk_searchhistory_form'),
+    'access callback' => 'user_edit_access',
+    'access arguments'=> array(1),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 15,
+  );
+  return $items;
+
+}
+
+/**
+ * Implements hook_permission().
+ */
+function bibdk_searchhistory_permission() {
+  return array(
+    'administer bibdk search history settings' => array(
+      'title' => t('Administer search history settings'),
+      'description' => t('Allow users to modify settings for search history'),
+    ),
+  );
+}
+
+/**
+ * Implement hook_ctools_plugin_api().
+ */
+function bibdk_searchhistory_ctools_plugin_api($module, $api) {
+  if ($module == 'page_manager' && $api == 'pages_default') {
+    return array('version' => 1);
+  }
+}
+
+/**
+ * Implements hook_ting_openformat_search_results.
+ *
+ * Called from ting_search when a search is being executed.
+ * Saves the search string and number of results in the $_SESSION variable
+ *
+ * @param String $keys - searchstring
+ * @param int $searchsresult - result count
+ * @param String $params
+ */
+function bibdk_searchhistory_ting_openformat_search_results($keys, $searchsresult, $params) {
+  // An array of unwanted values from the params array
+  $illegal_params = array('trackingId');
+
+  // Remove unwanted values from the params array before saving it
+  $params = array_diff_key($params, array_flip($illegal_params));
+
+  if (!empty($params['facets']) && variable_get('search_history_save_facet_search', 0) !== 1) {
+    return;
+  }
+
+  if(empty($keys) && isset($params['qe']['query'])){
+    $keys = $params['qe']['query'];
+    unset($params['qe']['query']);
+  }
+
+  $string = url($keys, array(
+    'query' => $params,
+    'external' => TRUE
+  ));
+
+  $element = array(
+    'string' => str_replace(array('[', ']'), '', $string),
+    'params' => $params,
+    'count' => isset($searchsresult->numTotalObjects) ? $searchsresult->numTotalObjects : 0,
+    'timestamp' => time(),
+  );
+
+  BibdkSearchHistory::addElementToSession($element);
+}
+
+/**
+ * Implements hook to user_help_list
+ * */
+function bibdk_searchhistory_user_help_list() {
+  return array('search_history_mypage_help_key'=>'search_history_mypage_help_label');
+}

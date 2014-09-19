@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:types="http://oss.dbc.dk/ns/adhl" targetNamespace="http://oss.dbc.dk/ns/adhl" elementFormDefault="qualified">
+    <xs:annotation>
+        <xs:documentation xml:lang="eng">This file is part of OpenSearch.
+            Copyright © 2009, Dansk Bibliotekscenter a/s,  Tempovej 7-11, DK-2750 Ballerup, Denmark. CVR: 15149043
+
+            OpenSearch is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+            OpenSearch is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+
+            You should have received a copy of the GNU Affero General Public License along with OpenSearch.  If not, see http://www.gnu.org/licenses/</xs:documentation>
+    </xs:annotation>
+    <xs:element name="adhlRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="types:id"/>
+                <xs:element ref="types:numRecords" minOccurs="0"/>
+                <!--
+                <xs:element ref="types:sex" minOccurs="0"/>
+                <xs:element ref="types:age" minOccurs="0"/>
+                <xs:element ref="types:dateInterval" minOccurs="0"/>
+                -->
+                <xs:element ref="types:outputType" minOccurs="0"/>
+                <xs:element ref="types:callback" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="adhlResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="types:pid" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="types:error" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="topTenRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="types:numRecords" minOccurs="0"/>
+                <xs:element ref="types:outputType" minOccurs="0"/>
+                <xs:element ref="types:callback" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="topTenResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="types:pid" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="types:error" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="pingRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="types:id"/>
+                <!--
+                <xs:element ref="types:numRecords" minOccurs="0"/>
+                <xs:element ref="types:sex" minOccurs="0"/>
+                <xs:element ref="types:age" minOccurs="0"/>
+                <xs:element ref="types:dateInterval" minOccurs="0"/>
+                -->
+                <xs:element ref="types:outputType" minOccurs="0"/>
+                <xs:element ref="types:callback" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="pingResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="types:pid" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="types:error" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="age">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="types:minAge" />
+                <xs:element ref="types:maxAge" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="dateInterval">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="types:from" />
+                <xs:element ref="types:to" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="id">
+        <xs:complexType>
+            <xs:sequence>
+                <!--
+                <xs:element ref="types:localId"/>
+                -->
+                <xs:element ref="types:pid" minOccurs="1" maxOccurs="unbounded"/>
+                <!--
+                <xs:element ref="types:isbn"/>
+                <xs:element ref="types:faust"/>
+                -->
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="record">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="types:url" minOccurs="0"/>
+                <xs:element ref="types:recordId"/>
+                <xs:element ref="types:identifier" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="types:creator" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="types:alternativeName" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="types:title" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="types:alternative" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="types:description" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="types:type" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="types:rankValue" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="localId">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="types:lok"/>
+                <xs:element ref="types:lid"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="alternative" type="xs:string"/>
+    <xs:element name="alternativeName" type="xs:string"/>
+    <xs:element name="callback" type="xs:string"/>
+    <xs:element name="creator" type="xs:string"/>
+    <xs:element name="description" type="xs:string"/>
+    <xs:element name="error" type="xs:string"/>
+    <xs:element name="faust" type="xs:string"/>
+    <xs:element name="from" type="xs:date"/>
+    <xs:element name="identifier" type="xs:string"/>
+    <xs:element name="pid" type="xs:string"/>
+    <xs:element name="isbn" type="xs:string"/>
+    <xs:element name="lid" type="xs:string"/>
+    <xs:element name="lok" type="xs:integer"/>
+    <xs:element name="maxAge" type="xs:integer" />
+    <xs:element name="minAge" type="xs:integer" />
+    <xs:element name="numRecords" type="xs:integer"/>
+    <xs:element name="outputType" type="types:outputType"/>
+    <xs:element name="rankValue" type="xs:string"/>
+    <xs:element name="recordId" type="xs:string"/>
+    <xs:element name="sex" type="types:sexType"/>
+    <xs:element name="title" type="xs:string"/>
+    <xs:element name="to" type="xs:date"/>
+    <xs:element name="type" type="xs:string"/>
+    <xs:element name="url" type="xs:string"/>
+    <xs:simpleType name="outputType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="XML"/>
+            <xs:enumeration value="JSON"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="sexType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="m"/>
+            <xs:enumeration value="k"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

@@ -1,0 +1,9 @@
+name = Bibliotek.dk borrower check
+description = verify a borrower against borchk.addi.dk.
+core = 7.x
+version = 7.x-0.8
+package = Bibliotek.dk
+files[] = bibdk_borchk.module
+files[] = bibdk_borchk.request.inc
+files[] = test/bibdk_borchk.test
+dependencies[] = ting_client
