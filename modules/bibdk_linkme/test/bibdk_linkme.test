@@ -44,7 +44,6 @@ class BibdkLinkmeTestCase extends DrupalWebTestCase {
 
     // activate reservation module
     module_enable(array('bibdk_linkme'));
-    cache_clear_all();
     menu_rebuild();
 
     // confim reservation link is present
