@@ -48,9 +48,7 @@ class BibdkTimeTraceTestCase extends DrupalWebTestCase {
 
     // make a date from the two
     $date1 = strtotime($time1);
-    debug($date1);
     $date2 = strtotime($time2);
-    debug($date1);
 
     // assert that 2 is smaller than 1
     $this->assertTrue(($date2 < $date1), 'Date 2 is smaller than date 1');
