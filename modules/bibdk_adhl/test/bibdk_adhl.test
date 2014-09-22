@@ -18,7 +18,7 @@ class BibdkAdhlUnitTest extends DrupalWebTestCase {
     parent::setUp('bibdk_adhl', 'worktabs', 'bibdk_adhl_mockup');
 
     //search service
-    variable_set('ting_search_url', 'http://bibdk-prod-ws.dbc.dk/opensearch/3.0/');
+    variable_set('ting_search_url', 'http://bibdk-prod-ws.dbc.dk/opensearch/3.1/');
 
     //adhl service
     variable_set('ting_recommendation_url', $this->getAbsoluteUrl('bibdk_adhl_mockup'));
