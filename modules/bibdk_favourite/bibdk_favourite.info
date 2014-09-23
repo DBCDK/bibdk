@@ -1,0 +1,14 @@
+name = Bibdk Favourite
+description = Handle favourite libraries
+package = Bibliotek.dk
+core = 7.x
+version = 7.x-0.37
+dependencies[] = ding_provider
+dependencies[] = ting_agency
+dependencies[] = bibdk_borchk
+dependencies[] = shortcode
+; tests (needs review - testing against live (dead) webservices)
+files[] = bibdk_favourite.agencies.inc
+files[] = bibdk_favourite.mypage.inc
+files[] = test/bibdk_favourite.test
+files[] = test/bibdk_favourite_unit.test

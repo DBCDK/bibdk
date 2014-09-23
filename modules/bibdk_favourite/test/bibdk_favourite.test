@@ -1,0 +1,155 @@
+<?php
+
+/**
+ * @file
+ * Test bibdk favourite implementation.
+ */
+// test deletion of profile type
+/**
+ * Check that basic user login functionality works.
+ */
+class bibdkFavouriteTest extends DrupalWebTestCase {
+
+  private $admin_user;
+
+  public function setUp() {
+    module_enable(array('openagency_webservice_mockup'));
+    parent::setUp(array('ding_user', 'bibdk_test_provider', 'ting_agency', 'openagency_webservice_mockup','bibdk_favourite', 'shortcode'));
+    //$this->standard_user = $this->drupalCreateUser();
+    variable_set('agency_search_xsd_url',$this->getAbsoluteUrl('/openagency_webservice/openagency.xsd'));
+    variable_set('agency_search_url',  $this->getAbsoluteUrl('/openagency_webservice/'));
+  }
+
+  /**
+   * Info for this test case
+   */
+  public function getInfo() {
+    return array(
+      'name' => 'Bibdk favourite',
+      'description' => t('Test favourites tab and no library message'),
+      'group' => 'Bibliotek.dk - Favourites',
+    );
+  }
+
+// check if profiletype is created after module has been enabled
+// and user logs in.
+  function testCheckProfileType() {
+    $edit['name'] = 'testuser@test.dk';
+    $edit['pass'] = 'password';
+    // we have to submit the user_login_block form to log in as provider user
+    $this->drupalPost('user/login', $edit, t('Log in'), array(), array(), 'user-login', NULL);
+    //$this->drupalGet('user/2');
+
+    // got to edit page
+    $this->drupalGet('user/2/edit');
+    $edit = array();
+    $edit['mail'] = 'testuser@test.dk';
+    // change password to assert that no_favourites message is displayed
+    $edit['pass[pass1]'] = 'hest';
+    $edit['pass[pass2]'] = 'hest';
+    $this->drupalPost(NULL,$edit, t('Save'));
+    $this->assertText(t('remember_to_add_favourite_libraries'),'add favourite message is set when no favourites are set');
+    //first disable module
+    module_disable(array('bibdk_favourite'));
+    menu_rebuild();
+    $this->drupalGet('user/logout');
+    // reset edit array
+    $edit = array();
+    $edit['name'] = 'testuser';
+    $edit['pass'] = 'password';
+    // we have to submit the user_login_block form to log in as provider user
+    $this->drupalPost('user/login', $edit, t('Log in'), array(), array(), 'user-login', NULL);
+    $this->drupalGet('user/3');
+    $this->assertNoLink('Favourites');
+    // enable module
+    module_enable(array('bibdk_favourite'));
+    menu_rebuild();
+    global $base_url;
+  //  variable_set('agency_search_url', $base_url . '/openagency_webservice/');
+    //variable_set('agency_search_url', 'http://openagency.addi.dk/2.8/');
+    $this->drupalGet('user/3');
+    $this->assertLink('Favourites');
+    $this->clickLink('Favourites');
+    // assert that profile tab is shown
+    $this->assertLink('set_as_favourite');
+    $this->assertLink('Find library');
+    $this->assertText('Copenhagen Townhall', 'profile tab is set');
+  }
+
+  function test_favourite_shortcode() {
+
+    // Setup bibdk_favourite shortcode for text filter
+    $this->admin_user = $this->drupalCreateUser(array(
+      'administer content types',
+      'bypass node access',
+      'administer filters',
+      'use text format filtered_html',
+      'use text format full_html'
+
+    ));
+    $this->drupalLogin($this->admin_user);
+
+    $body = array(
+      'value' => '[favourite_library]This text is default text if no favourite exists[/favourite_library]',
+      'format' => filter_default_format(),
+    );
+    $node = array('body' => array(LANGUAGE_NONE => array($body)));
+    $this->drupalCreateNode($node);
+
+    $edit = array(
+      'filters[shortcode][status]' => 1
+    );
+    $this->drupalPost('admin/config/content/formats/filtered_html', $edit, 'Save configuration');
+    $edit = array(
+      'filters[shortcode][settings][favourite_library]' => 1
+    );
+    $this->drupalPost('admin/config/content/formats/filtered_html', $edit, 'Save configuration');
+
+    $this->drupalGet('node/1/edit');
+    return;
+    // Assert default text for non provider user
+    $this->drupalLogout();
+    $this->drupalGet('node/1');
+    $this->assertText('This text is default text if no favourite exists');
+    $this->assertNoText('[favourite_library]');
+
+    // Assert contact info for provider user
+    $edit = array();
+    $edit['name'] = 'testuser';
+    $edit['pass'] = 'password';
+    // we have to submit the user_login_block form to log in as provider user
+    $this->drupalPost('user/login', $edit, t('Log in'), array(), array(), 'user-login', NULL);
+    $this->drupalGet('node/1');
+    $this->assertText('Copenhagen Townhall');
+    $this->assertText('ting_agency_address');
+    $this->assertNoText('more_info');
+  }
+
+  // Check bibdk_favourite_parse_borchk for a 'not_ok' user request
+  // used when choosing personal data in favourite libraries
+  function test_bibdk_favourite_borchk_bad_user() {
+    $path = drupal_get_path('module', 'bibdk_favourite');
+
+    $filename = $path.'/test/borchck_not_ok.xml';
+    $ret_not_ok = file_get_contents($filename);
+    //Can be used for testprint to test.log
+    //error_log(print_r(bibdk_favourite_parse_borchk($ret_not_ok),1));
+    $res_not_ok = bibdk_favourite_parse_borchk($ret_not_ok);
+    $this->assertTrue($res_not_ok['status'] == 'error' ,'Parse file borchck_not_ok is OK');
+
+  }
+
+  // Check bibdk_favourite_parse_borchk for a 'ok' user request
+  // used when choosing personal data in favourite libraries
+  function test_bibdk_favourite_borchk_good_user() {
+    $path = drupal_get_path('module', 'bibdk_favourite');
+
+    $filename = $path.'/test/borchck_ok.xml';
+    $ret_ok = file_get_contents($filename);
+    //Can be used for testprint to test.log
+    //error_log(print_r(bibdk_favourite_parse_borchk($ret_ok),1));
+    $res_ok= bibdk_favourite_parse_borchk($ret_ok);
+    $this->assertTrue($res_ok['status'] == 'ok' ,'Parse file borchck_ok is OK');
+
+  }
+}
