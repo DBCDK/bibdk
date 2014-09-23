@@ -4,7 +4,7 @@ function bibdk_sbkopi_ajax_get_options() {
   $result = bibdk_sbkopi_ajax_openorder_request($_REQUEST['pid']);
   $data['pid'] = $_REQUEST['pid'];
   if ($result != 'error') {
-    $result['#options']['attributes']['class'] = array('bibdk-popup-link');
+    $result['#options']['attributes']['class'] += array('bibdk-popup-link');
     $result = drupal_render($result);
   }
   $data['link'] = $result;
@@ -62,7 +62,9 @@ function _bibdk_sb_kopi_get_link($pid, $label, $type) {
     '#text' => $label,
     '#path' => 'reservation',
     '#options' => array(
-      'attributes' => array(),
+      'attributes' => array(
+        'class' => array('link-sbkopi'),
+      ),
       'html' => true,
       'query' => array('ids'=>$pid,'bestil_kopi'=>$type)
     ),
