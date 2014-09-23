@@ -520,6 +520,7 @@ projects[user_alert][subdir] = contrib
 projects[user_alert][type] = module
 projects[user_alert][version] = 1.10
 projects[user_alert][patch][] = https://raw.githubusercontent.com/DBCDK/patches/master/user_alert_almost_no_ajax.patch
+projects[user_alert][patch][] = https://raw.githubusercontent.com/DBCDK/patches/master/user_alert_avoiding_exception.patch
 
 projects[scheduler][subdir] = contrib
 projects[scheduler][type] = module
