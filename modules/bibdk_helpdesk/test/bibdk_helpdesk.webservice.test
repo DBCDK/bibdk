@@ -18,7 +18,7 @@ class BibdkHelpdeskWebserviceTestCast extends DrupalUnitTestCase {
   public function test_request() {
     module_load_include('inc', 'bibdk_helpdesk', 'test/mockup/ting_client_class');
     module_load_include('module', 'bibdk_helpdesk');
-    
+
     $result = bibdk_helpdesk_request(null);
     $this->assertNull($result, 'result is null');
 
