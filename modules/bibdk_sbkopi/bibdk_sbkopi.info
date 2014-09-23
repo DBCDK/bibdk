@@ -1,0 +1,12 @@
+name = Bibliotek.dk - SB Kopi
+description = ability to order from sb_kopi service
+core = 7.x
+version = 7.x-0.7
+package = Bibliotek.dk
+
+files[] = bibdk_sbkopi.ajax.inc
+files[] = bibdk_sbkopi.test
+files[] = bibdk_sbkopi.request.inc
+
+; we need a call to openorder so ..
+dependencies[] = bibdk_openorder
