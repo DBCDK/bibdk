@@ -1,0 +1,353 @@
+<?php
+/**
+ * @file
+ * bibdk_autocomplete web testcase
+ */
+
+
+class BibdkAutocompleteWebTestCase extends DrupalWebTestCase {
+
+  protected $privileged_user;
+
+  public static function getInfo() {
+    return array(
+      'name' => 'Autocomplete Web Test',
+      'description' => 'Bibdk Autocomplete test.',
+      'group' => 'Bibliotek.dk - Autocomplete',
+    );
+  }
+
+  public function setUp() {
+    // $this->profile = 'minimal';
+    parent::setUp('bibdk_autocomplete', 'bibdk_custom_search', 'uuid');
+    user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array(
+      'access content',
+      'search content'
+    ));
+    menu_rebuild();
+  }
+
+
+  public function testRunner() {
+
+    // Create and log in our privileged user.
+    $this->privileged_user = $this->drupalCreateUser(array(
+      'administer bibdk custom search pages',
+      'administer search',
+      'administer blocks',
+      'search content',
+    ));
+    $this->drupalLogin($this->privileged_user);
+    $this->_testBibdkCustomSearchCreatePage();
+    $this->_testBibdkAutocompleteAdmin();
+    $this->_testBibdkAutocompletePage();
+  }
+
+
+  /*
+   * Autocomplete settings.
+   */
+  private function _testBibdkAutocompletePage() {
+    global $_bibdk_custom_search_page_path;
+
+    $this->drupalGet($_bibdk_custom_search_page_path);
+    
+    $this->assertRaw(
+      'class="form-text form-autocomplete"',
+      'Custom search input field on search page has autocomplete'
+    );
+    
+  }
+
+
+  /*
+   * Autocomplete settings.
+   */
+  private function _testBibdkAutocompleteAdmin() {
+    global $_bibdk_custom_search_p_uuid;
+    global $_bibdk_custom_search_v_uuid;
+
+    $this->drupalGet('admin/config/search/bibdk_autocomplete');
+    $this->assertField('bibdk_autocomplete_rest_url', 'bibdk_autocomplete_rest_url is present');
+    $this->assertField('bibdk_autocomplete_settings[agency]', 'Agency field is present');
+    $this->assertField('bibdk_autocomplete_settings[maxSuggestions]', 'Max suggestions field is present');
+    $this->assertField('bibdk_autocomplete_settings[maxTime]', 'Max request time field is present');
+    $this->assertField('bibdk_autocomplete_settings[profile]', 'Profile  field is present');
+    $this->assertField('bibdk_autocomplete_settings[highlight]', ' Highlight field is present');
+    $this->assertField('bibdk_autocomplete_settings[highlight.pre]', 'Highlight prefix field is present');
+    $this->assertField('bibdk_autocomplete_settings[highlight.post]', 'Highlight suffix field is present');
+    
+    $this->assertField('bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][autocomplete]', 'Autocomplete field "autocomplete" is present');
+    $this->assertField('bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][index]', 'Autocomplete field "index" is present');
+    $this->assertField('bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][facetIndex]', 'Autocomplete field "facetIndex" is present');
+    $this->assertField('bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][filterQuery]', 'Autocomplete field "filterQuery" is present');
+    $this->assertField('bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][sort]', 'Autocomplete field "sort" is present');
+
+    $edit = array();
+    $_bibdk_autocomplete_rest_url       = $edit['bibdk_autocomplete_rest_url'] = $this->randomName(8);
+    $_bibdk_autocomplete_agency         = $edit['bibdk_autocomplete_settings[agency]'] = $this->randomName(8);
+    $_bibdk_autocomplete_maxSuggestions = $edit['bibdk_autocomplete_settings[maxSuggestions]'] = $this->randomName(8);
+    $_bibdk_autocomplete_maxTime        = $edit['bibdk_autocomplete_settings[maxTime]'] = $this->randomName(8);
+    $_bibdk_autocomplete_profile        = $edit['bibdk_autocomplete_settings[profile]'] = $this->randomName(8);
+    $_bibdk_autocomplete_highlight      =  $edit['bibdk_autocomplete_settings[highlight]'] = TRUE;
+    $_bibdk_autocomplete_highlight_pre  = $edit['bibdk_autocomplete_settings[highlight.pre]'] = $this->randomName(8);
+    $_bibdk_autocomplete_highlight_post = $edit['bibdk_autocomplete_settings[highlight.post]'] = $this->randomName(8);
+
+    $_bibdk_autocomplete_autocomplete   = $edit['bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][autocomplete]'] = TRUE;
+    $_bibdk_autocomplete_index          = $edit['bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][index]'] = $this->randomName(8);
+    $_bibdk_autocomplete_facetIndex     = $edit['bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][facetIndex]'] = $this->randomName(8);
+    $_bibdk_autocomplete_filterQuery    = $edit['bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][filterQuery]'] = $this->randomName(8);
+    $_bibdk_autocomplete_sort           = $edit['bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][sort]'] = 'count';
+
+    $this->assertField('bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][autocomplete]', 'Autocomplete field "autocomplete" is present');
+    $this->assertField('bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][index]', 'Autocomplete field "index" is present');
+    $this->assertField('bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][facetIndex]', 'Autocomplete field "facetIndex" is present');
+    $this->assertField('bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][filterQuery]', 'Autocomplete field "filterQuery" is present');
+    $this->assertField('bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][sort]', 'Autocomplete field "sort" is present');
+
+    $this->drupalPost('admin/config/search/bibdk_autocomplete', $edit, 'Save configuration');
+
+    $this->assertFieldByName(
+      'bibdk_autocomplete_rest_url',
+      $_bibdk_autocomplete_rest_url,
+      'Webservice URL set to "' . $_bibdk_autocomplete_rest_url . '"'
+    );
+    $this->assertFieldByName(
+      'bibdk_autocomplete_settings[agency]',
+      $_bibdk_autocomplete_agency,
+      'Agency set to "' . $_bibdk_autocomplete_agency . '"'
+    );
+    $this->assertFieldByName(
+      'bibdk_autocomplete_settings[maxSuggestions]',
+      $_bibdk_autocomplete_maxSuggestions,
+      'Max suggestions set to "' . $_bibdk_autocomplete_maxSuggestions . '"'
+    );
+    $this->assertFieldByName(
+      'bibdk_autocomplete_settings[maxTime]',
+      $_bibdk_autocomplete_maxTime,
+      'maxTime set to "' . $_bibdk_autocomplete_maxTime . '"'
+    );
+    $this->assertFieldByName(
+      'bibdk_autocomplete_settings[profile]',
+      $_bibdk_autocomplete_profile,
+      'Profile set to "' . $_bibdk_autocomplete_profile . '"'
+    );
+    $this->assertFieldChecked(
+      'edit-bibdk-autocomplete-settings-highlight',
+      'Highlight set to TRUE'
+    );
+    $this->assertFieldByName(
+      'bibdk_autocomplete_settings[highlight.pre]',
+      $_bibdk_autocomplete_highlight_pre,
+      'Highlight prefix set to "' . $_bibdk_autocomplete_highlight_pre . '"'
+    );
+    $this->assertFieldByName(
+      'bibdk_autocomplete_settings[highlight.post]',
+      $_bibdk_autocomplete_highlight_post,
+      'Highlight suffix set to "' . $_bibdk_autocomplete_highlight_post . '"'
+    );
+
+    $this->assertFieldChecked(
+      'edit-bibdk-autocomplete-var-' . $_bibdk_custom_search_p_uuid . '-vars-' . $_bibdk_custom_search_v_uuid . '-autocomplete',
+      'Autocomplete set to TRUE'
+    );
+    $this->assertFieldByName(
+      'bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][index]',
+      $_bibdk_autocomplete_index,
+      'Autocomplete field "index" set to "' . $_bibdk_autocomplete_index . '"'
+    );
+    $this->assertFieldByName(
+      'bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][facetIndex]',
+      $_bibdk_autocomplete_facetIndex,
+      'Autocomplete field "facetIndex" set to "' . $_bibdk_autocomplete_facetIndex . '"'
+    );
+    $this->assertFieldByName(
+      'bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][filterQuery]',
+      $_bibdk_autocomplete_filterQuery,
+      'Autocomplete field "filterQuery" set to "' . $_bibdk_autocomplete_filterQuery . '"'
+    );
+    $this->assertFieldByName(
+      'bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][sort]',
+      $_bibdk_autocomplete_sort,
+      'Autocomplete field "sort" set to "' . $_bibdk_autocomplete_sort . '"'
+    );
+
+  }
+
+
+  private function _testBibdkCustomSearchCreatePage() {
+    global $_bibdk_custom_search_value_title;
+    global $_bibdk_custom_search_page_path;
+    global $_bibdk_custom_search_p_uuid;
+    global $_bibdk_custom_search_v_uuid;
+    global $_bibdk_custom_search_page_menu_title;
+    global $_bibdk_custom_search_page_title;
+    global $_bibdk_custom_search_value_search_code;
+
+    // Test creation of a custom search page.
+    $edit = array();
+    $_bibdk_custom_search_page_title = $edit['bibdk_custom_search[0][page_title]'] = $this->randomName(8);
+    $this->drupalPost('admin/config/search/bibdk_custom_search', $edit, 'Save');
+
+    // Test creation of a custom search element.
+    $edit = array();
+    $element_title = $edit['bibdk_custom_search_page_elements[0][element_title]'] = $this->randomName(8);
+    $this->drupalPost('admin/config/search/bibdk_custom_search/elements', $edit, 'Save');
+
+    // Test creation of a custom search value.
+    $edit = array();
+    $_bibdk_custom_search_value_title = $edit['bibdk_custom_search[0][value_title]'] = $this->randomName(8);
+    $this->drupalPost('admin/config/search/bibdk_custom_search/values', $edit, 'Save');
+
+    // Test editing a custom search value.
+    //$this->drupalPost('admin/config/search/bibdk_custom_search/values', null, 'edit');
+    $this->clickLink('edit');
+    $edit = array();
+    $edit['element_value[value_type]'] = 'textfield';
+    $edit['element_value[search_code]'] = $_bibdk_custom_search_value_search_code = $this->randomName(8);
+    $this->drupalPost(NULL, $edit, 'Save');
+    $this->assertFieldByName(
+      'element_value[value_type]',
+      $edit['element_value[value_type]'],
+      format_string('The value "@value_title" have been set to a type "@type".', array(
+        '@value_title' => $_bibdk_custom_search_value_title,
+        '@type' => $edit['element_value[value_type]']
+      ))
+    );
+    $this->assertFieldByName(
+      'element_value[search_code]',
+      $edit['element_value[search_code]'],
+      format_string('The value "@value_title" have been assigned a search code "@code".', array(
+        '@value_title' => $_bibdk_custom_search_value_title,
+        '@code' => $edit['element_value[search_code]']
+      ))
+    );
+
+    // Test editing a custom search element.
+    $value = db_select('bibdk_custom_search_elements', 't')
+      ->fields('t', array('e_uuid'))->condition('eid', 1, '=')->execute()
+      ->fetchAssoc();
+    $e_uuid = $value['e_uuid'];
+
+    $this->drupalGet('admin/config/search/bibdk_custom_search/elements');
+
+    $this->clickLink('edit');
+    $edit = array();
+    $element_label = $edit['bibdk_custom_search_page_element[element_label]'] = $this->randomName(8);
+    $edit['bibdk_custom_search_page_element[access_key]'] = $this->randomName(1);
+    $edit['bibdk_custom_search_page_element[tab_index]'] = rand(0, 100);
+    $element_description = $edit['bibdk_custom_search_page_element[description]'] = $this->randomName(40);
+    $edit['bibdk_custom_search_page_element[help_text]'] = $this->randomName(10);
+    $this->drupalPost(NULL, $edit, 'Save');
+    $this->assertFieldByName(
+      'bibdk_custom_search_page_element[element_label]',
+      $edit['bibdk_custom_search_page_element[element_label]'],
+      format_string('The element "@element_title" have been assigned a label "@val".', array(
+        '@element_title' => $element_title,
+        '@val' => $edit['bibdk_custom_search_page_element[element_label]']
+      ))
+    );
+    $this->assertFieldByName(
+      'bibdk_custom_search_page_element[access_key]',
+      $edit['bibdk_custom_search_page_element[access_key]'],
+      format_string('The element "@element_title" have been assigned an accesskey "@val".', array(
+        '@element_title' => $element_title,
+        '@val' => $edit['bibdk_custom_search_page_element[access_key]']
+      ))
+    );
+    $this->assertFieldByName(
+      'bibdk_custom_search_page_element[tab_index]',
+      $edit['bibdk_custom_search_page_element[tab_index]'],
+      format_string('The element "@element_title" have been assigned a tabindex "@val".', array(
+        '@element_title' => $element_title,
+        '@val' => $edit['bibdk_custom_search_page_element[tab_index]']
+      ))
+    );
+    $this->assertFieldByName(
+      'bibdk_custom_search_page_element[description]',
+      $edit['bibdk_custom_search_page_element[description]'],
+      format_string('The element "@element_title" have been assigned a description "@val".', array(
+        '@element_title' => $element_title,
+        '@val' => substr($edit['bibdk_custom_search_page_element[description]'], 0, 40) . '[...]'
+      ))
+    );
+
+    // Test adding a value to a custom search element.
+    $value = db_select('bibdk_custom_search_values', 'v')
+      ->fields('v', array('v_uuid'))->condition('vid', 1, '=')->execute()
+      ->fetchAssoc();
+    $_bibdk_custom_search_v_uuid = $value['v_uuid'];
+
+    $edit = array();
+    $edit['bibdk_custom_search_page_element_values[0][v_uuid]'] = $_bibdk_custom_search_v_uuid;
+    //$this->drupalPost(null, $edit, 'Save');
+    $this->drupalPost('admin/config/search/bibdk_custom_search/elements/' . $e_uuid . '/edit', $edit, 'Save');
+    $this->assertText($_bibdk_custom_search_value_title, format_string('The value "@value_title" was found.', array('@value_title' => $_bibdk_custom_search_value_title)));
+    $this->assertLinkByHref(
+      'admin/config/search/bibdk_custom_search/values/' . $_bibdk_custom_search_v_uuid . '/edit'
+    );
+    $value = db_select('bibdk_custom_search_map_values', 'v')
+      ->fields('v', array('mv_uuid'))->condition('mid', 1, '=')->execute()
+      ->fetchAssoc();
+    $mv_uuid = $value['mv_uuid'];
+
+    $this->assertLinkByHref(
+      'admin/config/search/bibdk_custom_search/elements/' . $e_uuid . '/remove_value/' . $mv_uuid
+    );
+
+    // Test editing a custom search page.
+    $value = db_select('bibdk_custom_search', 't')->fields('t', array('p_uuid'))
+      ->condition('pid', 1, '=')->execute()->fetchAssoc();
+    $_bibdk_custom_search_p_uuid = $value['p_uuid'];
+
+    $edit = array();
+    $frontpage = variable_get('site_frontpage', 'node');
+    $_bibdk_custom_search_page_menu_title = $edit['page[menu_title]'] = $this->randomName(8);
+    $_bibdk_custom_search_page_path = $edit['page[page_path]'] = $frontpage;
+    $this->drupalPost('admin/config/search/bibdk_custom_search/' . $_bibdk_custom_search_p_uuid . '/edit', $edit, 'Save');
+    $this->assertFieldByName(
+      'page[menu_title]',
+      $edit['page[menu_title]'],
+      format_string('The page "@page_title" have been assigned a menu title "@val".', array(
+        '@page_title' => $_bibdk_custom_search_page_title,
+        '@val' => $edit['page[menu_title]']
+      ))
+    );
+    $this->assertFieldByName(
+      'page[page_path]',
+      $edit['page[page_path]'],
+      format_string('The page "@page_title" have been assigned a path "@val".', array(
+        '@page_title' => $_bibdk_custom_search_page_title,
+        '@val' => $edit['page[page_path]']
+      ))
+    );
+
+    // Test adding an element to a custom search page.
+    $value = db_select('bibdk_custom_search_map_elements', 't')
+      ->fields('t', array('me_uuid'))->condition('mid', 1, '=')->execute()
+      ->fetchAssoc();
+    $me_uuid = $value['me_uuid'];
+    $edit = array();
+    $edit['elements[0][e_uuid]'] = $e_uuid;
+    $edit['elements[0][region]'] = 'main';
+    $this->drupalPost('admin/config/search/bibdk_custom_search/' . $_bibdk_custom_search_p_uuid . '/edit', $edit, 'Save');
+    $this->assertText($element_title);
+    $this->assertLinkByHref(
+      'admin/config/search/bibdk_custom_search/elements/' . $e_uuid . '/edit'
+    );
+    $this->assertLinkByHref(
+      'admin/config/search/bibdk_custom_search/' . $_bibdk_custom_search_p_uuid . '/remove_element/' . $me_uuid
+    );
+
+    // Test a custom search page form.
+    $this->drupalGet($_bibdk_custom_search_page_path);
+    $this->assertFieldByName(
+      'search_block_form'
+    );
+    $this->assertText($element_label, format_string('The element label "@element_label" was found', array('@element_label' => $element_label)));
+    $this->assertText($element_description, format_string('The element description "@element_description" was found', array('@element_description' => substr($element_description, 0, 40) . '[...]')));
+    $this->assertFieldByName($_bibdk_custom_search_value_search_code . '[' . $_bibdk_custom_search_value_title . ']');
+
+  }
+
+}

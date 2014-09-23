@@ -1,0 +1,73 @@
+<h1>Bibliotek.dk Autocomplete</h1>
+
+<p>
+The suggestion service returns auto completion suggestions from the Solr-index of the Data Well that can be used for consecutive searches.
+</p>
+
+<p>
+The service currently has two operations: Terms and Facets
+</p>
+
+<h2>Terms</h2>
+
+<p>
+Accessible through <context root>/rest/terms path on the service.
+</p>
+
+<p>
+Retrieve suggestions based on the Solr TermsComponent, including frequency data of how often words or phrases occur in the specified index, which indicates how many objects in the Data Well that match the query.
+</p>
+
+<p>
+Term indexes return only single terms while phrase indexes return entire phrases. Entries in the specified index that begin with the specified query string are returned. For term indexes the query string can only contain one term. Phrase indexes can be queried with strings consisting of multiple terms.
+</p>
+
+<p>
+Required parameters:<br/>
+<code>query</code> The string to find suggestions for<br/>
+<code>index</code> The index to find suggestions in<br/>
+</p>
+
+<p>Examples:<br/>
+http://<hostname and service path>/rest/terms?query=goblet&index=scanterm.title<br/>
+http://<hostname and service path>/rest/terms?query=harry+potter&index=scanphrase.title<br/>
+</p>
+
+<h2>Facets</h3>
+<p>
+Accessible through <context root>/rest/facets path on the service.
+</p>
+
+<p>
+Retrieve suggestions based on the Solr Facets, including frequency data of how often words or phrases occur in the specified index, which indicates how many objects in the Data Well that matches each of the returned facets.
+</p>
+
+<p>
+This variant looks in the specified index for entries that contain the words from specified query string and then counts results in groups based on the specified facet index. This will also provide suggestions for phrases that contain the words from the query string.
+</p>
+
+<p>
+Care should be taken in selecting a suitable pair of indexes. The facet index should be an index generated from the same data as the match index. The match index should be a term index and the facetIndex should be a phrase index. If the chosen facet index contain data different from the match index, the returned suggestions may not contain the required query.
+</p>
+
+<p>
+Required parameters:<br/>
+<code>query</code> The prefix string to find suggestions for<br/>
+<code>index</code> The index to find matches in<br/>
+<code>facetIndex</code>  The index to find suggestions in<br/>
+</p>
+
+<p>Examples:<br/>
+http://<hostname and service path>/rest/facets?query=goblet+fire&index=scanterm.mainTitle&facetIndex=scanphrase.mainTitle
+</p>
+
+<p>Optional parameters<br/>
+<code>filterQuery</code> A query that may be used to filter the area you want to get suggestions from<br/>
+<code>agency</code>  Only get suggestions from data accessible to the specified agency<br/>
+<code>profile</code> Only get suggestions from data accessible to the specified search profile<br/>
+<code>highlight</code> Produce highlight tags to mark the substrings that match the query. (true/false, default is false)<br/>
+<code>highlight.pre</code> Set highlight prefix tag to use if highlighting is enabled (default is <em>)<br/>
+<code>highlight.post</code>  Set highlight postfix tag to use if highlighting is enabled (default is </em>)<br/>
+<code>maxSuggestions</code>  Maximum number of suggestions to return. (default is 10)<br/>
+<code>maxTime</code> When filtering suggestions with filterQuery, agency and/or profile, stop looking for suggestions after this number of milliseconds. Used to avoid waiting a long time when an index has many matches for the query but not many for the filter (default is 2000)<br/>
+</p>
