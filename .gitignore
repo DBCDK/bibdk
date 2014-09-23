@@ -1,4 +1,4 @@
 libraries
-ting_*
-open_*
+modules/ting_*
+modules/open_*
 modules/contrib
