@@ -80,6 +80,10 @@ function bibdk_reviews_article_view($manifestation) {
     $link = array(
       '#theme'                => 'ting_infomedia_button',
       '#ting_infomedia_button' => $link,
+      '#attr' => array(
+        'class' => array('infomedia-button', 'text-small', 'bibdk-popup-link'),
+        'data-rel' => 'reservation',
+      ),
     );
   }
   elseif ( $url = $manifestation->getAccessInformation() ) {
