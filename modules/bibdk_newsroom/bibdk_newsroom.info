@@ -1,0 +1,14 @@
+name = Bibliotek.dk - Newsroom
+description = Provide a newsroom content type for Bibliotek.dk.
+core = 7.x
+version = 7.x-0.1
+package = Bibliotek.dk
+
+dependencies[] = ctools
+dependencies[] = panels
+dependencies[] = page_manager
+dependencies[] = i18n
+dependencies[] = i18n_menu
+dependencies[] = i18n_block
+
+files[] = bibdk_newsroom.test

@@ -1,0 +1,7 @@
+<SOAP-ENV:Envelope>
+<SOAP-ENV:Body>
+<ns1:borrowerCheckResponse>
+<ns1:userId>0019</ns1:userId>
+<ns1:requestStatus>ok</ns1:requestStatus>
+</ns1:borrowerCheckResponse>
+</SOAP-ENV:Body></SOAP-ENV:Envelope>

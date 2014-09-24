@@ -1,0 +1,136 @@
+<?php
+/**
+ * @file
+ * bibdk_about_author.web.test
+ */
+
+class BibdkAboutAuthorTest extends DrupalWebTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => t('About Author web test'),
+      'description' => t('Test About Author functionality'),
+      'group' => t('Bibliotek.dk - About Author'),
+    );
+  }
+
+
+  public function setUp() {
+    parent::setUp('bibdk_about_author', 'ting_openformat', 'worktabs');
+
+    //search service
+    variable_set('ting_search_url', 'http://bibdk-prod-ws.dbc.dk/opensearch/3.1/');
+
+  }
+
+
+  public function testRunner() {
+    $this->_testAjaxResponseEmpty();
+    $this->_testAjaxResponseNoRecords();
+    $this->_testAjaxResponseHasRecords();
+    $this->_testAboutAuthorWorktabs();
+    $this->_testGetLinkListViewValid();
+    $this->_testGetLinkListViewEmpty();
+  }
+
+
+  /**
+   * Tests the output data of bibdk_about_author.ajax.inc
+   */
+  private function _testAjaxResponseEmpty() {
+    $url = $this->getAbsoluteUrl('about_author/ajax');
+    $options = array(
+      'query' => array(
+        'query' => '',
+      ),
+    );
+    $result = $this->drupalGetAJAX($url, $options);
+    $error_msg = 'bibdk_about_author_empty_query_error';
+    $this->assertRaw($error_msg, 'Empty query return an error.');
+  }
+
+
+  /**
+   * Tests the output data of bibdk_about_author.ajax.inc
+   */
+  private function _testAjaxResponseNoRecords() {
+    $url = $this->getAbsoluteUrl('about_author/ajax');
+
+    $query = array(
+      'aboutAuthorElement' => array(
+        'foo' => array(
+          'searchCode' => 'dkcclphrase.lem="xsw2cde3vfr4"',
+          'display' => 'foo',
+        ),
+      ),
+    );
+
+    $options = array(
+      'query' => array(
+        'query' => urlencode(serialize($query)),
+      ),
+    );
+
+    $result = $this->drupalGetAJAX($url, $options);
+    $error_msg = 'bibdk_about_author_no_records';
+    $this->assertRaw($error_msg, 'Gibberish query return no records.');
+  }
+
+
+  /**
+   * Tests the output data of bibdk_about_author.ajax.inc
+   */
+  private function _testAjaxResponseHasRecords() {
+    $url = $this->getAbsoluteUrl('about_author/ajax');
+
+    $query = array(
+      'aboutAuthorElement' => array(
+        'Murakami, Haruki' => array(
+          'searchCode' => 'dkcclphrase.lem="Murakami Haruki"',
+          'display' => 'Murakami, Haruki',
+        ),
+      ),
+    );
+
+    $options = array(
+      'query' => array(
+        'query' => urlencode(serialize($query)),
+      ),
+    );
+
+    $result = $this->drupalGetAJAX($url, $options);
+    $this->assertRaw('list', 'AJAX contain a list of links');
+  }
+
+  private function _testAboutAuthorWorktabs() {
+    $this->drupalGet('work/870970-basis:28934297');
+    $this->assertText(' bibdk_about_authors ', 'About authors title is present.');
+    $this->assertRaw('about-author-load', 'About authors loader is present');
+  }
+
+  private function _testGetLinkListViewEmpty() {
+
+    // Test empty bibdk_about_author_get_link_list_view()
+    $query = array();
+    $res = bibdk_about_author_get_link_list_view($query);
+    // Check for returnvalue itemlist
+    $this->assertTrue($res['#theme'] == 'item_list','About author render itemlist parsed correctly with a valid query with empty query');
+    // Check for empty array
+    $this->assertTrue(count($res['#items']) == 0,'About author render itemlist/items parsed correctly with a valid query with empty query' );
+
+  }
+
+  private function _testGetLinkListViewValid() {
+
+    //Test bibdk_about_author_get_link_list_view()
+    $ser_in  = 'a:1:{i:0;a:2:{s:10:"searchCode";s:33:"dkcclphrase.lem="Murakami Haruki"";s:7:"display";s:16:"Murakami, Haruki";}}';
+    $query    = unserialize($ser_in);
+    $res = bibdk_about_author_get_link_list_view($query);
+    // Check for returnvalue itemlist
+    $this->assertTrue($res['#theme'] == 'item_list','About author render itemlist parsed correctly with a valid query.');
+    // Check for text exist in item
+    $this->assertFalse(in_array('bibdk_about_author_read Murakami, Haruki',$res['#items']),'Item text: bibdk_about_author_read Murakami, Haruki exist' );
+
+  }
+
+}

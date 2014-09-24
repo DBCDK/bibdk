@@ -1,0 +1,84 @@
+<?php
+
+/**
+ * Class BibdkOpenuserstatusRenewAllTest
+ */
+class BibdkOpenuserstatusRenewAllTest extends DrupalWebTestCase {
+  private $baseurl;
+
+  /**
+   * @return array
+   */
+  public static function getInfo() {
+    return array(
+      'name' => t('Bibdk OpenUserstatus Renew All Test'),
+      'description' => t('Testclass that specifically tests the OpenUserstatus \'Renew All\' functionality'),
+      'group' => t('Bibliotek.dk - OpenUserstatus'),
+    );
+  }
+
+  public function setUp() {
+    module_enable(array('openuserstatus_webservice_mockup'));
+    menu_rebuild();
+    //Note that openuserstatus_webservice_mockup should be enabled in local installation when testing locally
+    parent::setUp('bibdk_openuserstatus', 'ting_agency', 'openagency_webservice_mockup','openuserstatus_webservice_mockup', 'ting_openuserstatus', 'ting_client');
+
+    global $base_url;
+    $this->baseurl = $base_url;
+
+    variable_set('openuserstatus_url', $this->baseurl . '/openuserstatus_webservice_mockup/renew_all');
+    variable_set('agency_search_url', 'http://openagency.addi.dk/2.8/');
+    variable_set('agency_search_xsd_url',$this->getAbsoluteUrl('/openagency_webservice/openagency.xsd'));
+  }
+
+  public function tearDown(){
+    module_disable(array('openuserstatus_webservice_mockup'));
+    parent::tearDown();
+  }
+
+  public function testRunner() {
+    $this->_setSession();
+    $this->test_bibdk_openuserstatus_renew_all_submit();
+  }
+
+  private function test_bibdk_openuserstatus_renew_all_submit() {
+    drupal_get_messages();
+    $form_state = drupal_json_decode($this->_loadFile('form_submit_renew_all.json'));
+    bibdk_openuserstatus_renew_all_submit(array(), $form_state);
+
+    $messages = drupal_get_messages();
+    $this->assertTrue(array_key_exists('error', $messages), 'Found arraykey error in messages array');
+    $this->assertTrue(array_key_exists('status', $messages), 'Found arraykey status in messages array');
+
+    $index = 0;
+    if(strstr($messages['error'][0], 'security updates available for one or more of your modules or themes')){
+      $index = 1;
+    }
+
+    $this->assertTrue((strstr($messages['error'][$index], 'Adler-Olsen, Jussi: Alfabethuset. - 6. udgave') && strstr($messages['error'][$index], 'items are not renewable')), 'Adler-Olsen, Jussi: Alfabethuset found as not renewable');
+    $this->assertTrue((strstr($messages['error'][$index], 'Andersen, Benny, f. 1929: Samlede noveller') && strstr($messages['error'][$index], 'items are not renewable')), 'Andersen, Benny, f. 1929: Samlede noveller found as not renewable');
+    $this->assertTrue((strstr($messages['status'][0], 'Jacobsen, Steffen, f. 1956') && strstr($messages['status'][0], 'materials was sucessfully renewed')), 'Jacobsen, Steffen, f. 1956: Passageren found as renewed');
+    $this->assertTrue((strstr($messages['status'][0], 'Kerr, Philip: En stille ild') && strstr($messages['status'][0], 'materials was sucessfully renewed')), 'Kerr, Philip: En stille ild found as renewed');
+  }
+
+  /**
+   * Loads a file with the given filename ($filename) from
+   * biodk_openuserstatus/test/mockup and returns its content
+   *
+   * @param String $filename
+   * @return mixed
+   */
+  private function _loadFile($filename) {
+    return file_get_contents(drupal_get_path('module', 'bibdk_openuserstatus') . '/test/mockup/' . $filename);
+  }
+
+  /**
+   * Sets the value of $_SESSION to a mocked up value
+   * (equal the content of biodk_openuserstatus/test/mockup/session.serialized)
+   * to avoid unnecessary calls to webservices
+   */
+  private function _setSession() {
+    $session = unserialize($this->_loadFile('session.serialized'));
+    $_SESSION = isset($_SESSION) ? array_merge($_SESSION, $session) : $session;
+  }
+}

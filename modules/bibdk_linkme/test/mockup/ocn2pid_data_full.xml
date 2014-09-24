@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<pidList xmlns="http://oss.dbc.dk/ns/oclc-integration/ocn2pid/20140320" resource="http://ocn2pid.addi.dk/ocn2pid/ocn-collection/60996742">
+  <pid value="820010-katalog:2590246"><libraryNumber>820010</libraryNumber><format>katalog</format><idNumber>2590246</idNumber></pid>
+  <pid value="831020-katalog:JVR0100530"><libraryNumber>831020</libraryNumber><format>katalog</format><idNumber>JVR0100530</idNumber></pid>
+  <pid value="830690-katalog:24869466"><libraryNumber>830690</libraryNumber><format>katalog</format><idNumber>24869466</idNumber></pid>
+  <pid value="830190-katalog:VYR0153553"><libraryNumber>830190</libraryNumber><format>katalog</format><idNumber>VYR0153553</idNumber></pid>
+  <pid value="820050-katalog:001337641"><libraryNumber>820050</libraryNumber><format>katalog</format><idNumber>001337641</idNumber></pid>
+  <pid value="830060-katalog:HR92409139"><libraryNumber>830060</libraryNumber><format>katalog</format><idNumber>HR92409139</idNumber></pid>
+  <pid value="830060-katalog:24869466"><libraryNumber>830060</libraryNumber><format>katalog</format><idNumber>24869466</idNumber></pid>
+  <pid value="830380-katalog:C000024606"><libraryNumber>830380</libraryNumber><format>katalog</format><idNumber>C000024606</idNumber></pid>
+  <pid value="810015-katalog:002950188"><libraryNumber>810015</libraryNumber><format>katalog</format><idNumber>002950188</idNumber></pid>
+  <pid value="862170-katalog:x307960888"><libraryNumber>862170</libraryNumber><format>katalog</format><idNumber>x307960888</idNumber></pid>
+  <pid value="810010-katalog:006661593"><libraryNumber>810010</libraryNumber><format>katalog</format><idNumber>006661593</idNumber></pid>
+  <pid value="870970-basis:24869466"><libraryNumber>870970</libraryNumber><format>basis</format><idNumber>24869466</idNumber></pid>
+  <pid value="810010-katalog:003162004">
+    <libraryNumber>810010</libraryNumber>
+    <format>katalog</format>
+    <idNumber>003162004</idNumber>
+  </pid>
+</pidList>

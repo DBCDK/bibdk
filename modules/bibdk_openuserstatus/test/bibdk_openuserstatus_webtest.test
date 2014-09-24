@@ -1,0 +1,82 @@
+<?php
+
+/**
+ * Class BibdkOpenuserstatusWebTest
+ */
+class BibdkOpenuserstatusWebTest extends DrupalWebTestCase {
+
+  /**
+   * @return array
+   */
+  public static function getInfo() {
+    return array(
+      'name' => t('Bibdk OpenUserstatus Webtest'),
+      'description' => t('Test Bibdk OpenUserstatus UI'),
+      'group' => t('Bibliotek.dk - OpenUserstatus'),
+    );
+  }
+
+  public function setUp() {
+    parent::setUp('bibdk_openuserstatus', 'openuserstatus_webservice_mockup', 'openagency_webservice_mockup', 'bibdk_provider', 'bibdk_webservice');
+    variable_set('bibdk_provider_webservice_url', $this->getAbsoluteUrl('bibdk_webservice'));
+    variable_set('bibdk_provider_security_code', 'securityCode');
+    variable_set('openuserstatus_url', $this->getAbsoluteUrl('openuserstatus_webservice_mockup'));
+    variable_set('agency_search_url', $this->getAbsoluteUrl('http://openagency.addi.dk/2.8/'));
+    variable_set('agency_search_xsd_url',$this->getAbsoluteUrl('/openagency_webservice/openagency.xsd'));
+  }
+
+  public function tearDown() {
+    parent::tearDown();
+  }
+
+  public function testRenewFailure() {
+    // Login user
+    $this->_userlogin();
+    // Goto user status page
+    $this->drupalGet('user/2/bibdk_openuserstatus');
+
+    // Renew ineligible loan
+    $edit['loans_table[test_loan_id;100450]'] = 1;
+    $this->drupalPost(null, $edit, 'renew_marked');
+    $this->assertText('User ineligible to renew this item : B. Oring: Hvordan organisationer fungerer');
+    $this->assertNoText('The following materials was sucessfully renewed');
+
+    // Renew acceptable loan
+    $edit = array('loans_table[test_loan_id_2;100450]' => 1);
+    $this->drupalPost(null, $edit, 'renew_marked');
+    $this->assertNoText('User ineligible to renew this item');
+    $this->assertText('The following materials was sucessfully renewed: F. Antastic: Hvordan organisationer burde fungere');
+
+  }
+
+  private function _userLogin() {
+    $this->_createProviderUser();
+    $edit['name'] = 'dummy@dbc.dk';
+    $edit['pass'] = 'secretPassword';
+    $this->drupalPost('user', $edit, 'Log in', array(), array(), 'user-login', NULL);
+  }
+
+  private function _createProviderUser() {
+    $name = 'dummy@dbc.dk';
+    $pass = 'secretPassword';
+    bibdk_provider_user_create_account($name, $pass);
+    db_insert('authmap')->fields(array(
+      'uid' => 2,
+      'module' => 'ding_user',
+      'authname' => $name
+    ))->execute();
+
+    $user = new stdClass();
+    $user->uid = 2;
+    $user->name = $name;
+    $user->roles = array();
+    ding_user_save_creds(array(
+      'creds' => array(
+        'name' => $name,
+        'pass' => $pass,
+      )
+    ), $user);
+    return $user;
+  }
+
+}

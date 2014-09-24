@@ -1,0 +1,127 @@
+<?php
+
+/** Implements hook_permission
+ */
+function bibdk_jslog_permission() {
+  return array(
+    'administer bibdk ajax errors' => array(
+      'title' => t('watchdog via javascript'),
+      'description' => t('Log javascript messages in watchdog'),
+    ),
+  );
+}
+
+/** Implements hook_menu
+ * 
+ */
+function bibdk_jslog_menu() {
+  $items['jslog'] = array(
+    'page callback' => 'bibdk_jslog_log',
+    'access callback' => 1,
+  );
+  // admin
+  $items['admin/config/serviceclient/ajaxerrors'] = array(
+    'title' => 'Handle ajaxerrors',
+    'description' => 'configure settings for logging javascript errors',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bibdk_jslog_admin_form'),
+    'access arguments' => array('administer bibdk ajax errors'),
+  );
+  return $items;
+}
+
+function bibdk_jslog_admin_form() {
+  $form['jslog_enable'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable javascript logging'),
+    //'#description' => t('log from javascript to watchdog'),
+    '#default_value' => variable_get('jslog_enable', FALSE),
+  );
+
+  $form['jslog_flood'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Flood control'),
+    '#description' => t('Basic database control; how many ajax-errors allowed/user/day in watchdog'),
+    '#default_value' => variable_get('jslog_flood', 1),
+  );
+
+  $form['buttons']['save'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save changes'),
+  );
+  return $form;
+}
+
+function bibdk_jslog_admin_form_submit($form, $form_state) {
+  variable_set('jslog_enable', $form_state['values']['jslog_enable']);
+  variable_set('jslog_flood', $form_state['values']['jslog_flood']);
+}
+
+/** \brief logging function (page callback)
+ * 
+ * log to watchdog with parameters given in $_POST
+ */
+function bibdk_jslog_log() { 
+  $params = bibdk_jslog_sanitize_post();
+  if (!empty($params)) {
+    if (bibdk_jslog_flood_check()) {
+      if (isset($params[0]) && isset($params[1])) {
+        call_user_func_array('watchdog', $params);
+      }
+    }
+  }
+  // exit here
+  return;
+}
+
+function bibdk_jslog_preprocess_page(&$variables) {
+  bibdk_jslog_add_js();
+}
+
+/**
+ * add a variable to drupal.setting to avoid drupal bootstrap if not needed
+ * @staticvar type $done 
+ */
+function bibdk_jslog_add_js() {
+  // only add once pr. roundtrip
+  static $done;
+  if (!isset($done)) {
+    drupal_add_js(array('jslog_flood' => variable_get('jslog_flood', 1)), 'setting');
+    $done = 1;
+  }
+}
+
+/**
+ * flood control. only allow {$threshold} ajaxerrors pr.user/day
+ * @return boolean 
+ */
+function bibdk_jslog_flood_check() {
+  $threshold = variable_get('jslog_flood');
+  if (flood_is_allowed('log ajax error', $threshold, 86400)) {
+    flood_register_event('log ajax error', 86400);
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/** \ Grab, check and return expected variables from $_POST as array
+ *
+ * @return array; expected $_POST variables checked for type
+ */
+function bibdk_jslog_sanitize_post() {
+  // expected arguments from service-call
+  // arguments for watchdog sanitized via function (is_string(), is_array() etc.)
+  $arguments = array(
+    'type' => 'is_string',
+    'message' => 'is_string',
+    'variables' => 'is_array',
+    'severity' => 'is_numeric',
+    'link' => 'is_string',
+  );
+
+  $params = array();
+  foreach ($arguments as $key => $func) {
+    $params[] = (!empty($_POST[$key]) && $func($_POST[$key])) ? $_POST[$key] : NULL;
+  }
+  return $params;
+}

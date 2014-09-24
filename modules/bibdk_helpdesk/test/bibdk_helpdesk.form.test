@@ -1,0 +1,79 @@
+<?php
+
+class BibdkHelpdeskFormSubmitTestCase extends DrupalWebTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => t('Form presence and validation'),
+      'description' => t('Test if the form is present'),
+      'group' => t('Bibliotek.dk - Helpdesk'),
+    );
+  }
+
+  public function setUp() {
+    parent::setUp('ting_client', 'bibdk_helpdesk', 'bibdk_helpdesk_webservice_mockup');
+    variable_set('bibdk_openquestion_url', $this->getAbsoluteUrl('bibdk_helpdesk_webservice/'));
+    variable_set('bibdk_openquestion_agencyId', 'DK-test');
+  }
+
+  public function testRunner(){
+    $this->testNoUserInput();
+    $this->testEmailField();
+    $this->testInValidQuestion();
+    $this->testValidQuestion();
+  }
+
+  // Test validation error if user makes no input
+  private function testNoUserInput() {
+    $this->drupalGet('overlay/helpdesk');
+    $this->drupalPost(NULL, array(), t('Send'));
+    $this->assertText('Name field is required');
+    $this->assertText('PostalCode field is required');
+    $this->assertText('My question is field is required');
+    $this->assertText('Please state a purpose');
+  }
+
+  // Test validation error if email has wrong format
+  private function testEmailField() {
+    $this->drupalGet('overlay/helpdesk');
+    $fields['userEmail'] = $this->randomName(8);
+    $this->drupalPost(NULL, $fields, t('Send'));
+    $this->assertText('Email needs to be a valid email');
+  }
+
+  // Test when submission fails
+  private function testInValidQuestion(){
+
+    // bibvagtenBad will always fail
+    variable_set('bibdk_openquestion_qandaServiceName', 'bibvagtenBad');
+    $fields['userName'] = $this->randomName(8);
+    $fields['userEmail'] = 'email@test.dk';
+    $fields['userPostalCode'] = '1234';
+    $fields['userMobilePhone'] = '12345678';
+    $fields['questionContent'] = $this->randomString(32);
+    $fields['questionDeadline'] = -1;
+    $fields['questionUsage'] = 'personal';
+
+    $this->drupalPost('overlay/helpdesk', $fields, t('Send'));
+    $this->assertUrl('overlay/helpdesk');
+    $this->assertText(t('drupal_bibdk_helpdesk_question_not_acknowledged'), 'Question not acknowledged');
+  }
+
+  private function testValidQuestion(){
+    // bibvagtenBad will always be acknowledged
+    variable_set('bibdk_openquestion_qandaServiceName', 'bibvagtenGood');
+    $fields['userName'] = $this->randomName(8);
+    $fields['userEmail'] = 'email@test.dk';
+    $fields['userPostalCode'] = '1234';
+    $fields['userMobilePhone'] = '12345678';
+    $fields['questionContent'] = $this->randomString(32);
+    $fields['questionDeadline'] = -1;
+    $fields['questionUsage'] = 'personal';
+
+    $this->drupalPost('overlay/helpdesk', $fields, t('Send'));
+    $this->assertUrl('overlay/helpdesk/receipt');
+    $this->assertNoText(t('drupal_bibdk_helpdesk_question_not_acknowledged'), 'Question Is acknowledged');
+    $this->assertText(t('bibdk_helpdesk_receipt_text'), 'Receipt text is present');
+  }
+
+}

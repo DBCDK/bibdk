@@ -1,0 +1,7 @@
+<oui:getFavouritesResponse xmlns:oui="http://oss.dbc.dk/ns/openuserinfo">
+    <agency>
+        <oui:agencyId>100450</oui:agencyId>
+        <oui:userData>a:3:{s:6:&quot;userId&quot;;s:4:&quot;1234&quot;;s:7:&quot;pincode&quot;;s:4:&quot;1234&quot;;s:8:&quot;userName&quot;;s:4:&quot;Test&quot;;}</oui:userData>
+        <oui:orderAgency>FALSE</oui:orderAgency>
+    </agency>
+</oui:getFavouritesResponse>

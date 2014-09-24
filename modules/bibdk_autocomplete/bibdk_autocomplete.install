@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Install, update, and uninstall functions for the bibdk autocomplete module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function bibdk_autocomplete_install() {
+  db_update('system')
+    ->fields(array('weight' => 15))
+    ->condition('name', 'bibdk_autocomplete', '=')
+    ->execute();
+}
+
+/**
+ * Enable module
+ */
+function bibdk_autocomplete_update_7001(&$sandbox) {
+  $module_list = array('bibdk_autocomplete');
+  module_enable($module_list);
+}

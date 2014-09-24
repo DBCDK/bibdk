@@ -1,0 +1,248 @@
+<?php
+
+/**
+ * Test suite to verify functionality of webservice mockup.
+ */
+class BibdkProviderRegistrationTestCase extends DrupalWebTestCase {
+
+  /**
+   * Description of tests
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'bibdk provider user registration test',
+      'description' => 'Test bibdk provider registration',
+      'group' => 'Bibliotek.dk - Provider',
+    );
+  }
+
+  /**
+   * Setting up webservice mockup.
+   */
+  function setUp() {
+    parent::setUp('bibdk_provider', 'bibdk_webservice');
+    variable_set('securityCode', 'testhest');
+    variable_set('bibdk_provider_webservice_url', $this->getAbsoluteUrl('bibdk_webservice'));
+    variable_set('bibdk_provider_security_code', 'securityCode');
+  }
+
+  /**
+   * Runner
+   */
+  public function testRunTestSuite() {
+    $this->testRegistrationForm();
+    $this->testRegisterNewUser();
+    $this->testRegisterExistingDrupalUser();
+    $this->testRegisterExistingProviderUser();
+    $this->testInvalidEmail();
+    $this->testRegistrationLink();
+    $this->testLoginOnlyProviderUser();
+    $this->testUserPasswordResetNonexistingMail();
+    $this->testUserPasswordResetOnlyProviderUser();
+    $this->testUserPasswordDrupalUser();
+    $this->testUserPasswordResetExpired();
+  }
+
+  private function testRegistrationForm() {
+    $this->drupalGet('user/register');
+    $this->assertFieldByName('mail');
+    $this->assertNoFieldByName('name');
+
+  }
+
+  private function testRegisterNewUser() {
+    $mail = 'dummy@dbc.dk';
+    $edit = array(
+      'mail' => $mail
+    );
+    // register user
+    $this->drupalPost('user/register', $edit, t('Create new account'));
+
+    // Assert email is send
+    $this->assertText('A welcome message with further instructions has been sent to your e-mail address.');
+    $this->assertMail('id', 'user_register_no_approval_required');
+    $this->assertMail('to', $mail);
+
+    // Assert new user is created
+    $accounts = user_load_multiple(array(), array('mail' => $mail));
+    $this->assertTrue(count($accounts) == 1);
+    $account = reset($accounts);
+    $this->assertTrue($account->status);
+
+    // Assert new user is provider user
+    $result = $names = db_select('authmap')
+      ->fields('authmap', array('authname'))
+      ->condition('module', 'ding_user')
+      ->condition('uid', $account->uid)
+      ->execute()->fetchAssoc();
+    $this->assertEqual($result['authname'], $mail);
+    user_delete($account->uid);
+  }
+
+  private function testRegisterExistingDrupalUser() {
+    $user = $this->drupalCreateUser();
+    $edit = array(
+      'mail' => $user->mail,
+    );
+    // register user
+    $this->drupalPost('user/register', $edit, t('Create new account'));
+    $this->assertText('The e-mail address ' . $user->mail . ' is already registered');
+  }
+
+  private function testRegisterExistingProviderUser() {
+    $mail = 'existing_user@dbc.dk';
+    $edit = array(
+      'mail' => $mail,
+    );
+    // register user
+    $this->drupalPost('user/register', $edit, t('Create new account'));
+    $this->assertText('The e-mail address ' . $mail . ' is already registered');
+  }
+
+  private function testInvalidEmail() {
+    $email_adresses = array(
+      array(
+        'mail' => 'dummy',
+      ),
+      array(
+        'mail' => 'dummy@dbc',
+      ),
+      array(
+        'mail' => 'dummy@dbc.',
+      ),
+      array(
+        'mail' => 'dummy@dbc@dk',
+      ),
+    );
+
+    foreach ($email_adresses as $edit) {
+      // register user
+      $this->drupalPost('user/register', $edit, t('Create new account'));
+      $this->assertText("The e-mail address " . $edit['mail'] . " is not valid.");
+    }
+
+  }
+
+  private function testRegistrationLink() {
+    $mail = 'dummy@dbc.dk';
+    $edit = array(
+      'mail' => $mail
+    );
+    // register user
+    $this->drupalPost('user/register', $edit, t('Create new account'));
+    $accounts = user_load_multiple(array(), array('mail' => $mail));
+    $account = reset($accounts);
+
+    // Test valid registration link
+    $timestamp = REQUEST_TIME;
+    $this->drupalGet("user/reset/$account->uid/$timestamp/" . user_pass_rehash($account->pass, $timestamp, $account->login));
+    //$this->drupalPost(null, array(), t('Log in'));
+    $this->assertText('You have just used your one-time login link. It is no longer necessary to use this link to log in. Please change your password.');
+
+
+    // Test registration link when allready logged in
+    $timestamp = REQUEST_TIME;
+    $this->drupalGet("user/reset/$account->uid/$timestamp/" . user_pass_rehash($account->pass, $timestamp, $account->login));
+    $this->assertText('You are logged in as ' . $account->name);
+
+    $this->drupalLogout();
+
+    // Test double click on registration link
+    $this->drupalGet("user/reset/$account->uid/$timestamp/" . user_pass_rehash($account->pass, $timestamp, $account->login));
+    $this->assertText('You have tried to use a one-time login link that has either been used or is no longer valid. Please request a new one using the form below.');
+  }
+
+  private function testLoginOnlyProviderUser() {
+    $mail = 'existing_user@dbc.dk';
+    // Create a user.
+    $this->drupalPost('user', array('name' => $mail, 'pass' => 'pass'), t('Log in'));
+    $this->assertLink('Log out');
+
+    $account = user_load_by_mail($mail);
+    $this->assertTrue($account, 'user has been created');
+
+    user_delete($account->uid);
+  }
+
+  private function testUserPasswordResetNonexistingMail(){
+    // Not a mail address
+    $edit = array('name' => 'invalid_user');
+    $this->drupalPost('user/password', $edit, t('E-mail new password'));
+    $this->assertText('Sorry, invalid_user is not recognized as a user name or an e-mail address.');
+
+    // Unknown mail address
+    $edit = array('name' => 'non_existing_user@dbc.dk');
+    $this->drupalPost('user/password', $edit, t('E-mail new password'));
+    $this->assertText('Sorry, non_existing_user@dbc.dk is not recognized as a user name or an e-mail address.');
+  }
+
+
+  /**
+   * Tests password reset functionality.
+   */
+  private function testUserPasswordResetOnlyProviderUser() {
+    $mail = 'existing_user@dbc.dk';
+
+    // Make sure drupaluser does not exist
+    if ($account = user_load_by_mail($mail)) {
+      debug('he does exists');
+      user_delete($account->uid);
+    }
+
+    $edit = array('name' => $mail);
+
+    $this->drupalPost('user/password', $edit, t('E-mail new password'));
+    // Confirm the password reset.
+    $this->assertText(t('Further instructions have been sent to your e-mail address.'), 'Password reset instructions mailed message displayed.');
+    $account = user_load_by_mail($mail);
+    user_delete($account->uid);
+  }
+
+  /**
+   * Tests password reset functionality.
+   */
+  private function testUserPasswordDrupalUser() {
+    $mail = 'existing_user@dbc.dk';
+    // Create a user.
+    $this->drupalPost('user', array('name' => $mail, 'pass' => 'pass'), t('Log in'));
+    $this->drupalLogout();
+
+    $account = user_load_by_mail($mail);
+
+    // Attempt to reset password.
+    $this->assertTrue($account->mail = $mail, 'account is created in drupal');
+    $edit = array('name' => $mail);
+
+    $this->drupalPost('user/password', $edit, t('E-mail new password'));
+    // Confirm the password reset.
+    $this->assertText(t('Further instructions have been sent to your e-mail address.'), 'Password reset instructions mailed message displayed.');
+
+    // Clean up
+    user_delete($account->uid);
+  }
+
+  /**
+   * Attempts login using an expired password reset link.
+   */
+  private function testUserPasswordResetExpired() {
+    // Set password reset timeout variable to 43200 seconds = 12 hours.
+    $timeout = 43200;
+    variable_set('user_password_reset_timeout', $timeout);
+
+    // Create a user.
+    $account = $this->drupalCreateUser();
+    $this->drupalLogin($account);
+
+
+    // Load real user object.
+    $account = user_load($account->uid, TRUE);
+    $this->drupalLogout();
+
+    // To attempt an expired password reset, create a password reset link as if
+    // its request time was 60 seconds older than the allowed limit of timeout.
+    $bogus_timestamp = REQUEST_TIME - variable_get('user_password_reset_timeout', 86400) - 60;
+    $this->drupalGet("user/reset/$account->uid/$bogus_timestamp/" . user_pass_rehash($account->pass, $bogus_timestamp, $account->login));
+    $this->assertText(t('You have tried to use a one-time login link that has expired. Please request a new one using the form below.'), 'Expired password reset request rejected.');
+  }
+
+}

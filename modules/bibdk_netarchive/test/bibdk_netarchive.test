@@ -1,0 +1,56 @@
+<?php
+/**
+ * @file
+ * bibdk_netarchive.test
+ */
+
+class bibdkNetarchiveUnitTest extends DrupalWebTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => t('NetArchive test'),
+      'description' => t('Test NetArchive functionality'),
+      'group' => t('Bibliotek.dk - NetArchive'),
+    );
+  }
+
+  public function setUp() {
+    parent::setUp('bibdk_netarchive');
+    $this->profile = 'minimal';
+
+    //search service
+    variable_set('ting_search_url',     'http://opensearch.addi.dk/3.1/');
+    variable_set('ting_search_profile', 'default');
+    variable_set('ting_agency',         '190101');
+
+    //NetArchive service
+    $var = array(
+      'url' => 'http://moreinfo.addi.dk/2.1/moreinfo.wsdl',
+      'username' => 'foo',
+      'group'    => '000001',
+      'password' => 'bar'
+    );
+
+    //All variables have been reset to set these again!
+    foreach ($var as $k => $v) {
+      variable_set('open_moreinfo_'.$k, $v);
+    }
+
+  }
+
+  public function testRunner() {
+    $this->_testNetArchivePath();
+    $this->_testNetArchivePathValid();
+  }
+
+  private function _testNetArchivePathValid() {
+    $this->drupalGet('moreinfo/netarchive/870971-foo:34959889');
+    $this->assertResponse('200');
+  }
+
+  private function _testNetArchivePath() {
+    $this->drupalGet('moreinfo/netarchive/870971-foo:1234567890');
+    $this->assertText('netarchive_cover_error');
+  }
+
+}

@@ -1,0 +1,1 @@
+{"renewLoanResponse":{"renewLoanStatus":[{"loanId":"test_loan_id","renewLoanError":"User ineligible to renew this item"}]},"@namespaces":{"ous":"http:\/\/oss.dbc.dk\/ns\/openuserstatus"}}

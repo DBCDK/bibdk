@@ -1,0 +1,19 @@
+<?php
+
+
+function bibdk_linkme_update_7001() {
+  $fields = bibdk_linkme_ding_entity_fields();
+  foreach ($fields as $field_name => $field) {
+        field_delete_field($field_name);
+      }
+  ding_entity_modules_enabled(array('bibdk_linkme'));
+}
+
+
+/**
+ * implements hook_update_
+ * remove linkme field.
+ */
+function bibdk_linkme_update_7002() {
+  field_delete_field('bibdk_linkme_permalink');
+}

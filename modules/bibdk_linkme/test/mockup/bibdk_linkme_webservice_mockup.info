@@ -1,0 +1,6 @@
+name = "bibdk_linkme OCN2PID webservice mockup"
+description = "Support module for bibdk_link test."
+package = bibliotek.dk
+version = VERSION
+core = 7.x
+hidden = TRUE;

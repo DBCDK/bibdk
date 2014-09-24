@@ -1,0 +1,16 @@
+<p>This module creates a 'newsroom' content type with two viewmodes, a panel page,
+   and a block with a 'user-help-help' menu, where links open in a popup window.</p>
+
+<p>The 'user-help-help' menu is by default populated with a link to a page that lists the 'userhelp' nodes </p>
+
+<p>The 'user-help-help' menu can have link to additional userhelp nodes (like: 'contact' and 'about').</p>
+
+<p>The help panel page also has a search block, and the search is delimited to 'userhelp' nodes.</p>
+
+<p>When adding userhelp content, you define language by providing a menu link to the item, and selecting 'Bibliotek.dk user help menu' for items in danish, and 'Bibliotek.dk user help menu (eng)' for items in english.</p>
+
+<p>After installing, copy the files node--userhelp.tpl.php and page--userhelp.tpl.php
+   to the active theme's '/templates' folder<br/>
+   We use $content['help_url'] instead of $node_url, in order to make
+   the links in the bibdk_help_list viewmode point to a '/overlay/help/' path instead of a '/node/' path.</p>
+

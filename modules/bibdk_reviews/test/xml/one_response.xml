@@ -1,0 +1,51 @@
+<searchResponse xmlns="http://oss.dbc.dk/ns/opensearch" xmlns:docbook="http://docbook.org/ns/docbook">
+    <result>
+        <hitCount>1</hitCount>
+        <collectionCount>1</collectionCount>
+        <more>false</more>
+        <searchResult>
+            <collection>
+                <resultPosition>1</resultPosition>
+                <numberOfObjects>1</numberOfObjects>
+                <object>
+                    <docbook:article>
+                        <docbook:title>Lektørudtalelse</docbook:title>
+                        <docbook:info>
+                            <docbook:author>
+                                <docbook:personname>
+                                    <docbook:firstname>Helle</docbook:firstname>
+                                    <docbook:surname>Winther Olsen</docbook:surname>
+                                </docbook:personname>
+                            </docbook:author>
+                        </docbook:info>
+                        <docbook:section>
+                            <docbook:title>Anvendelse/målgruppe/niveau</docbook:title>
+                            <docbook:para>Denne svenske skærgårds- og familieroman, tilsat troldsplinter vil give sin læser en både besættende, vanvittig og smuk oplevelse. På forsiden står "skrækroman", og hermed tunes man ind på romanens stil, hvor en families spøgelser og genfærd spiller en helt reel rolle</docbook:para>
+                        </docbook:section>
+                        <docbook:section>
+                            <docbook:title>Beskrivelse</docbook:title>
+                            <docbook:para>Barndomskæresteparret Anders og Cecilie tager en smuk vinterdag deres lille datter Maja med på en tur over isen. Men Maja forsvinder sporløst. Sorg og skilsmisse ødelægger resten af parrets liv, og 6 år senere vender Anders tilbage til skærgårdsøen for at lede efter Maja. Sammen med sine bedsteforældre dykker han længere og længere ned dels i sine egne erindringer dels i øens samlede erindringsvolumen, og der viser sig dramatiske historier om folks sporløse forsvinden og havet som en krævende og magisk modspiller. Romanen inddrager elementer fra et overnaturligt univers, hvor spøgelser og genfærd dukker op og kræver deres ret. Det fungerer fantastisk medrivende og udgør et uhyggeligt modspil til de kærlighedshistorier, der også er i romanen: bedsteforældrenes og Anders' skyldtyngede kærlighed til sin datter</docbook:para>
+                        </docbook:section>
+                        <docbook:section>
+                            <docbook:title>Sammenligning</docbook:title>
+                            <docbook:para>Det er oplagt at prøve kræfter med forfatterens tidligere Håndteringen af udøde, og dertil nogle af Stephen Kings bedste, selv om Ajvide er i en højere litterær klasse</docbook:para>
+                        </docbook:section>
+                        <docbook:section>
+                            <docbook:title>Samlet konklusion</docbook:title>
+                            <docbook:para>Svensk roman, der både er bevægende og fuld af gru, om en skærgårdsø, en familie og en fars sorg over sit barn - med denne sære inddragelse af det overnaturlige element, som øger fornemmelsen for menneskets kampe mod de indre dæmoner</docbook:para>
+                        </docbook:section>
+                    </docbook:article>
+                    <identifier>870976-anmeld:30885732</identifier>
+                    <creationDate/>
+                    <formatsAvailable>
+                        <format>dkabm</format>
+                        <format>marcxchange</format>
+                        <format>docbook</format>
+                    </formatsAvailable>
+                </object>
+            </collection>
+        </searchResult>
+        <facetResult/>
+        <time>0.057038</time>
+    </result>
+</searchResponse>

@@ -1,0 +1,153 @@
+<?php
+
+class BibdkCaptchaAudioTestCase extends DrupalUnitTestCase {
+  public static function getInfo() {
+    return array(
+      'name' => 'Bibdkcaptcha audio test',
+      'description' => 'Test bibdkcaptcha audio.',
+      'group' => 'Bibliotek.dk - captcha',
+    );
+  }
+
+  public function setUp() {
+    module_load_include('inc', 'bibdkcaptcha', 'bibdkcaptcha.audio');
+    parent::setUp();
+  }
+
+  public function testMpegFrameLength() {
+    $header = array(
+      'Layer' => 3,
+      'Bitrate' => 64,
+      'Frequency' => 44100,
+      'Padding' => 0,
+    );
+
+    $length = bibdkcaptcha_mpeg_frame_length($header);
+    $this->assertEqual($length, 208, 'MPEG layer 3 frame length.');
+
+    $header['Layer'] = 2;
+    $length = bibdkcaptcha_mpeg_frame_length($header);
+    $this->assertEqual($length, 208, 'MPEG layer 2 frame length.');
+
+    $header['Layer'] = 1;
+    $length = bibdkcaptcha_mpeg_frame_length($header);
+    $this->assertEqual($length, 69, 'MPEG layer 1 frame length.');
+
+    $header['Padding'] = 1;
+    $length = bibdkcaptcha_mpeg_frame_length($header);
+    $this->assertEqual($length, 73, 'MPEG layer 1 frame length with padding.');
+  }
+
+  public function testMpegFrameSize() {
+    $size1 = bibdkcaptcha_mpeg_frame_size(1);
+    $size2 = bibdkcaptcha_mpeg_frame_size(2);
+    $size3 = bibdkcaptcha_mpeg_frame_size(3);
+
+    $this->assertEqual($size1, 384, 'Frame size is 384 for MPEG layer I.');
+    $this->assertEqual($size2, 1152, 'Frame size is 1152 for MPEG layer II.');
+    $this->assertEqual($size3, 1152, 'Frame size is 1152 for MPEG layer III.');
+  }
+
+  public function testMpegHeaderRaw() {
+    $raw_header = "\xff\xfb\x50\xc4";
+    $header = bibdkcaptcha_mpeg_header_raw($raw_header);
+    $expected_header = array(
+      'Sync' => 0x7ff,
+      'Version' => 3,
+      'Layer' => 1,
+      'CRC' => 1,
+      'Bitrate' => 5,
+      'Frequency' => 0,
+      'Padding' => 0,
+      'PrivateBit' => 0,
+      'Mode' => 3,
+      'ModeExtension' => 0,
+      'Copy' => 0,
+      'Home' => 1,
+      'Emphasis' => 0,
+    );
+
+    $this->assertEqual($header, $expected_header, 'Raw header');
+  }
+
+  public function testMpegHeaderDecode() {
+    $raw_header = array(
+      'Sync' => 0x7ff,
+      'Version' => 3,
+      'Layer' => 1,
+      'CRC' => 1,
+      'Bitrate' => 5,
+      'Frequency' => 0,
+      'Padding' => 0,
+      'PrivateBit' => 0,
+      'Mode' => 3,
+      'ModeExtension' => 0,
+      'Copy' => 0,
+      'Home' => 1,
+      'Emphasis' => 0,
+    );
+    $header = bibdkcaptcha_mpeg_header_decode($raw_header);
+    $expected_header = array(
+      'Sync' => 'Sync',
+      'Version' => 1,
+      'Layer' => 3,
+      'CRC' => 1,
+      'Bitrate' => 64,
+      'Frequency' => 44100,
+      'Padding' => 0,
+      'PrivateBit' => 0,
+      'Mode' => 'Mono',
+      'ModeExtension' => 0,
+      'Copy' => 0,
+      'Home' => 1,
+      'Emphasis' => 0,
+    );
+
+    $this->assertEqual($header, $expected_header, 'Decode header');
+  }
+
+  public function testMpegHeaderEncode() {
+    $header = array(
+      'Sync' => 'Sync',
+      'Version' => 1,
+      'Layer' => 3,
+      'CRC' => 1,
+      'Bitrate' => 64,
+      'Frequency' => 44100,
+      'Padding' => 0,
+      'PrivateBit' => 0,
+      'Mode' => 'Mono',
+      'ModeExtension' => 0,
+      'Copy' => 0,
+      'Home' => 1,
+      'Emphasis' => 0,
+    );
+    $raw_header = bibdkcaptcha_mpeg_header_encode($header);
+
+    $this->assertEqual($raw_header, 0xfffb50c4, 'Decode header');
+  }
+
+  public function testMpegCreateSilence() {
+    $header = array(
+      'Sync' => 'Sync',
+      'Version' => 1,
+      'Layer' => 3,
+      'CRC' => 1,
+      'Bitrate' => 64,
+      'Frequency' => 44100,
+      'Padding' => 0,
+      'PrivateBit' => 0,
+      'Mode' => 'Mono',
+      'ModeExtension' => 0,
+      'Copy' => 0,
+      'Home' => 1,
+      'Emphasis' => 0,
+    );
+    $milliseconds = ceil(1000 * 1152 / 44100);
+    $frame = bibdkcaptcha_mpeg_create_silence($header, $milliseconds);
+    $frame_header = unpack('NHeader', $frame);
+
+    $this->assertEqual($frame_header['Header'], 0xfffb50c4, 'Header match.');
+    $this->assertEqual(strlen($frame), 208, 'Frame length');
+  }
+}

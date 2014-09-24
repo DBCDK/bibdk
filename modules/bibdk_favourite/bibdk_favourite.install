@@ -1,0 +1,22 @@
+<?php
+/**
+ * @file
+ * Install, update and uninstall functions for the bibdk_favourite module
+ */
+
+/**
+ * Implements hook_disable;
+ * delete the profile type defined in this module
+ **/
+function bibdk_favourite_disable() {
+  if( function_exists( 'bibdk_favourite_user_profile2_tabs' ) ) {
+    $function = 'bibdk_favourite_user_profile2_tabs';
+    $profile = call_user_func($function);
+
+    $profile_type = profile2_get_types($profile->type);
+    if( !empty($profile_type) ) {
+      profile2_type_delete($profile_type);
+    }
+  }
+}
+

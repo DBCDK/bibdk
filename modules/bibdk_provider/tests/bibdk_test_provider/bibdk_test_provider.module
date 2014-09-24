@@ -1,0 +1,177 @@
+<?php
+ $path = drupal_get_path('module', 'bibdk_provider');
+ require_once $path.'/bibdk_provider.wayf.inc';
+
+function bibdk_test_provider_ding_provider() {
+  return array(
+    'title' => 'Bibliotek.dk test provider',
+    'settings' => 'bibdk_test_provider_settings_form',
+    'provides' => array(
+      'user' => array(
+        'prefix' => 'user',
+      ),
+         'wayf' => array(
+        'prefix' => 'wayf',
+        'file' => drupal_get_path('module', 'bibdk_provider') . '/bibdk_provider.wayf.inc',
+      ),
+    ),
+  );
+}
+
+
+
+
+
+function bibdk_test_provider_settings_form() {
+  return array();
+}
+
+// @TODO this function should do something
+function bibdk_test_provider_user_is_authenticated() {
+  return TRUE;
+}
+
+
+function bibdk_test_provider_ding_wayf_attributes() {
+  return array(
+    'eduPersonTargetedID' => array(),
+    'mail' => array('authname' => TRUE),
+  );
+}
+
+function bibdk_test_provider_wayf_login_creds($authentication_attributes, $notify_by_mail) {
+  // set authentication provider for ding_user (@see ding_user_user_login_validate)
+  $form_state['values']['authentication_provider'] = 'wayf';
+
+// set name and password for login
+  $form_state['values']['name'] = 'dummy@dbc.dk';
+  $form_state['values']['mail'] = $form_state['values']['name'];
+  $form_state['values']['pass'] = 'WAYF-test-ID';
+  if (isset($notify_by_mail)) {
+    $form_state['mail_me'] = $notify_by_mail;
+  }
+  return $form_state;
+}
+
+/**
+ * fake a successful login
+ * */
+function bibdk_test_provider_user_authenticate($name, $pass) {
+  $return['creds'] =
+      array(
+        'name' => $name,
+        'pass' => $pass,
+  );
+  $return['user'] =
+      array(
+        'data' => array('display_name' => 'HEST'),
+        'mail' => $name,
+  );
+  $return['success'] = TRUE;
+  $return['messages'] = array('HEJ', 'status');
+
+  return $return;
+}
+
+function bibdk_test_provider_wayf_authenticate($name, $wayfid){
+  $return['creds'] =
+      array(
+        'name' => $name,
+        'pass' => $wayfid,
+  );
+  $return['user'] =
+      array(
+        'data' => array('display_name' => 'HEST'),
+        'mail' => $name,
+  );
+  $return['success'] = TRUE;
+  $return['messages'] = array('HEJ', 'status');
+
+  return $return;
+}
+
+function bibdk_test_provider_user_verify($name) {
+  //return BibdkUser::instance()->verify($name);
+  // static $response;
+  $response = NULL;
+  if (!isset($response)) {
+    $response = BibdkUser::instance()->verify($name);
+  }
+  return $response;
+}
+
+function bibdk_test_provider_user_create_account($name, $pass) {
+  return BibdkUser::instance()->create($name, $pass);
+}
+
+function bibdk_test_provider_user_update_password($name, $pass) {
+  return BibdkUser::instance()->update_password($name, $pass);
+}
+
+function bibdk_test_provider_user_delete_account($name) {
+  return BibdkUser::instance()->delete($name);
+}
+
+function bibdk_test_provider_user_get_favourites($name) {
+  if($name=='testuser@test.dk'){
+    return array();
+  }
+  $path = drupal_get_path('module', 'bibdk_test_provider');
+
+  $ret = file_get_contents($path . '/responses/getFavourites.xml');
+  return $ret;
+}
+
+/** Fake user_get_setting 
+ *  this one return settings for bibdk_actions_sb_selfpickup type
+ * 
+ * * */
+function bibdk_test_provider_user_get_setting($username, $settingtype) {
+  $ret = '<?xml version="1.0" encoding="UTF-8"?>
+    <oui:getSettingResponse xmlns:oui="http://oss.dbc.dk/ns/openuserinfo">
+    <oui:userId>pjo@dbc.dk</oui:userId>
+    <oui:settingString>
+    <oui:settingId>55</oui:settingId>
+    <oui:settingType>bibdk_actions_sb_selfpickup</oui:settingType>
+    <oui:settingString>
+    </oui:settingString>
+    <oui:settingTime>2013-07-26 14:06:36.336017</oui:settingTime>
+    </oui:settingString>
+    </oui:getSettingResponse>';
+
+  return $ret;
+}
+
+function bibdk_test_provider_user_add_favourite($name, $agencyId) {
+  return true;
+}
+
+function bibdk_test_provider_user_set_favourite($name, $agencyId) {
+  return true;
+}
+
+function bibdk_test_provider_user_mail_me($mail_me, $account) {
+  $params['account'] = $account;
+  //drupal_mail('bibdk_test_provider', $key, $account->mail, user_preferred_language($account), $params, $from);
+  drupal_mail('bibdk_test_provider', $mail_me->key, 'pjo@dbc.dk', user_preferred_language($account), $params, 'no_reply@dbc.dk');
+}
+
+/** \brief Implements hook_mail
+
+ * @param type $key
+ * @param type $message
+ * @param type $params 
+ */
+function bibdk_test_provider_mail($key, &$message, $params) {
+  switch ($key) {
+    case 'wayf_new_user' :
+      $langcode = $message['language']->language;
+      $message['subject'] = t('Notification from !site', array('!site' => 'bibliotek.dk'), array('langcode' => $langcode));
+      $message['body'][] = _bibdk_test_provider_wayf_new_user_message($params['account'], $langcode);
+      break;
+  }
+}
+
+function _bibdk_test_provider_wayf_new_user_message($account, $langcode) {
+  return t("Dear !username\n\n wayf_account_created.", array('!username' => $account->mail), array('langcode' => $langcode, 'context' => 'ding_wayf'));
+}

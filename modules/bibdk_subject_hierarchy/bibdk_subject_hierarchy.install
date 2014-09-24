@@ -1,0 +1,77 @@
+<?php
+
+/**
+ * @file
+ * Install, update, and uninstall functions for the subject hierarchy module.
+ */
+
+/**
+ * Implements hook_enable().
+ */
+function bibdk_subject_hierarchy_enable() {
+  _get_bibdk_subject_hierarchy();
+}
+
+/**
+ * Implements hook_install().
+ */
+function bibdk_subject_hierarchy_install() {
+  _add_bibdk_subject_hierarchy_block();
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function bibdk_subject_hierarchy_uninstall() {
+  variable_set('subject_hierarchy', NULL);
+}
+
+/**
+ * Insert subject hierarchy block in region.
+ */
+function _add_bibdk_subject_hierarchy_block() {
+  $values = array(
+    array(
+      'module' => 'bibdk_subject_hierarchy',
+      'delta' => 'bibdk-subject-hierarchy',
+      'theme' => 'bibdk_theme',
+      'status' => 1,
+      'weight' => 0,
+      'region' => 'subjects',
+      'pages' => '',
+      'cache' => -1,
+      'title' => '<none>',
+    ),
+  );
+  $query = db_insert('block')->fields(array(
+    'module',
+    'delta',
+    'theme',
+    'status',
+    'weight',
+    'region',
+    'pages',
+    'cache',
+    'title'
+  ));
+  foreach ($values as $record) {
+    $query->values($record);
+  }
+  $query->execute();
+}
+
+/**
+ * Implements hook_update_N
+ * set region and blocks
+ */
+function bibdk_subject_hierarchy_update_7001(&$sandbox) {
+  _add_bibdk_subject_hierarchy_block();
+}
+
+/**
+ * update hierarchy
+ */
+function bibdk_subject_hierarchy_update_7009(&$sandbox) {
+  _update_bibdk_subject_hierarchy();
+}
+

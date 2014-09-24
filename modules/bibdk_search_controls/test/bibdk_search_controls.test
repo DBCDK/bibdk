@@ -1,0 +1,293 @@
+<?php
+
+/**
+ * @file
+ * Test case for Bibliotek.dk search controls.
+ */
+
+class SearchControlsRequestTestCase extends DrupalUnitTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => t('Bibliotek.dk search controls : Unit tests'),
+      'description' => t('Check if parsing search controls return a valid result'),
+      'group' => t('bibliotek.dk'),
+    );
+  }
+
+  public function setUp() {
+    module_load_include('module', 'bibdk_search_controls', 'bibdk_search_controls');
+    $this->profile = 'bibdk';
+    parent::setUp(array('bibdk_search_controls'));
+  }
+
+  function test_bibdk_search_controls_search_form_alter() {
+    module_load_include('module', 'bibdk_search_controls', 'bibdk_search_controls');
+    global $_bibdk_search_controls_unit_test_case;
+
+    $_bibdk_search_controls_unit_test_case = TRUE;
+
+    $form_out = array(
+        'select_name' => array(
+            '#type' => 'hidden',
+            '#default_value' => 'select_option_value_0',
+            '#attributes' => array(
+                'id' => 'controls_search_select_name',
+            ),
+        ),
+        'radios_name' => array(
+            '#type' => 'hidden',
+            '#default_value' => 'radios_option_value_0',
+            '#attributes' => array(
+                'id' => 'controls_search_radios_name',
+            ),
+        ),
+        'checkboxes_name' => array(
+            '#type' => 'hidden',
+            '#default_value' => 'checkboxes_option_value_0||',
+            '#attributes' => array(
+                'id' => 'controls_search_checkboxes_name',
+            ),
+        ),
+    );
+
+    $form = $form_state = array();
+    $form_id = NULL;
+    bibdk_search_controls_form_search_block_form_alter($form, $form_state, $form_id);
+
+    $result = ( $form == $form_out );
+    $message = 'search_block_form is altered correctly.';
+    $this->assertTrue($result, $message);
+  }
+
+
+  function test_bibdk_search_controls_block_info() {
+    global $_bibdk_search_controls_unit_test_case;
+
+    $_bibdk_search_controls_unit_test_case = TRUE;
+
+    $form_out = array(
+        'search-control-select_name' => array(
+                'title' => '<none>',
+                'info' => 'Bibliotek.dk search control block : select_title',
+                'cache' => '8',
+            ),
+        'search-control-radios_name' => array(
+                'title' => '<none>',
+                'info' => 'Bibliotek.dk search control block : radios_title',
+                'cache' => '8',
+            ),
+        'search-control-checkboxes_name' => array(
+                'title' => '<none>',
+                'info' => 'Bibliotek.dk search control block : checkboxes_title',
+                'cache' => '8',
+            ),
+    );
+
+    $blocks = bibdk_search_controls_block_info();
+
+    $result = ( $blocks == $form_out );
+    $message = 'bibdk_search_controls_block_info is formatted correctly.';
+    $this->assertTrue($result, $message);
+  }
+
+
+  function test_bibdk_search_controls_form() {
+    global $_bibdk_search_controls_unit_test_case;
+
+    $_bibdk_search_controls_unit_test_case = TRUE;
+
+    $form_out_select = array (
+      'select_name' =>
+      array (
+        '#type' => 'select',
+        '#options' =>
+        array (
+          'select_option_value_0' => 'select_option_label_0',
+          'select_option_value_1' => 'select_option_label_1',
+          'select_option_value_2' => 'select_option_label_2',
+        ),
+        '#default_value' => 'select_option_value_0',
+        '#title' => 'select_label',
+        '#description' => 'select_description',
+        '#attributes' =>
+        array (
+          'accesskey' =>
+          array (
+            0 => 's',
+          ),
+          'tabindex' =>
+          array (
+            0 => '10',
+          ),
+        ),
+      ),
+      '#attached' =>
+      array (
+        'js' =>
+        array (
+          0 => 'sites/default/modules/bibdk_search_controls/js/bibdk_search_controls.js',
+        ),
+      ),
+      '#attributes' =>
+      array (
+        'class' =>
+        array (
+          0 => 'bibdk-search-controls-form',
+        ),
+        'data-control-name' =>
+        array (
+          0 => 'controls_search_select_name',
+        ),
+      ),
+      '#theme' => 'bibdk_search_controls-select',
+    );
+
+    $form = $form_state = array();
+    $form = bibdk_search_controls_form($form, $form_state, 'select_name');
+
+
+
+    $result = ( $form == $form_out_select );
+    $message = 'bibdk_search_controls_form for select is formatted correctly.';
+    $this->assertTrue($result, $message);
+
+
+    $form_out_select = array (
+      'radios_name' =>
+      array (
+        '#type' => 'radios',
+        '#options' =>
+        array (
+          'radios_option_value_0' => 'radios_option_label_0',
+          'radios_option_value_1' => 'radios_option_label_1',
+          'radios_option_value_2' => 'radios_option_label_2',
+        ),
+        '#default_value' => 'radios_option_value_0',
+        '#title' => 'radios_label',
+        '#description' => 'radios_description',
+        '#attributes' =>
+        array (
+          'accesskey' =>
+          array (
+            0 => 'r',
+          ),
+          'tabindex' =>
+          array (
+            0 => '20',
+          ),
+        ),
+      ),
+      '#attached' =>
+      array (
+        'js' =>
+        array (
+          0 => 'sites/default/modules/bibdk_search_controls/js/bibdk_search_controls.js',
+        ),
+      ),
+      '#attributes' =>
+      array (
+        'class' =>
+        array (
+          0 => 'bibdk-search-controls-form',
+        ),
+        'data-control-name' =>
+        array (
+          0 => 'controls_search_radios_name',
+        ),
+      ),
+      '#theme' => 'bibdk_search_controls-radios',
+    );
+
+    $form = $form_state = array();
+    $form = bibdk_search_controls_form($form, $form_state, 'radios_name');
+
+    $result = ( $form == $form_out_select );
+    $message = 'bibdk_search_controls_form for radios is formatted correctly.';
+    $this->assertTrue($result, $message);
+
+
+    $form_out_select = array (
+      'checkboxes_name' =>
+      array (
+        '#type' => 'checkboxes',
+        '#options' =>
+        array (
+          'checkboxes_option_value_0' => 'checkboxes_option_label_0',
+          'checkboxes_option_value_1' => 'checkboxes_option_label_1',
+          'checkboxes_option_value_2' => 'checkboxes_option_label_2',
+        ),
+        '#default_value' =>
+        array (
+          5 => 'checkboxes_option_value_0',
+        ),
+        '#title' => 'checkboxes_label',
+        '#description' => 'checkboxes_description',
+        '#attributes' =>
+        array (
+          'accesskey' =>
+          array (
+            0 => 'c',
+          ),
+          'tabindex' =>
+          array (
+            0 => '30',
+          ),
+        ),
+      ),
+      '#attached' =>
+      array (
+        'js' =>
+        array (
+          0 => 'sites/default/modules/bibdk_search_controls/js/bibdk_search_controls.js',
+        ),
+      ),
+      '#attributes' =>
+      array (
+        'class' =>
+        array (
+          0 => 'bibdk-search-controls-form',
+        ),
+        'data-control-name' =>
+        array (
+          0 => 'controls_search_checkboxes_name',
+        ),
+      ),
+      '#theme' => 'bibdk_search_controls-checkboxes',
+    );
+
+    $form = $form_state = array();
+    $form = bibdk_search_controls_form($form, $form_state, 'checkboxes_name');
+    $result = ( $form == $form_out_select );
+    $message = 'bibdk_search_controls_form for checkboxes is formatted correctly.';
+    $this->assertTrue($result, $message);
+  }
+
+
+  function test_bibdk_search_controls_ting_search_get_controls() {
+    global $_bibdk_search_controls_unit_test_case;
+
+    $_bibdk_search_controls_unit_test_case = TRUE;
+
+    $controls_out = array(
+        'select_name' => 'select_option_value_0',
+        'radios_name' => 'radios_option_value_0',
+        'checkboxes_name' => array(
+                '0' => 'checkboxes_option_value_0',
+                '1' => '',
+                '2' => '',
+            ),
+    );
+
+    $values['select_name'] = 'select_option_value_0';
+    $values['radios_name'] = 'radios_option_value_0';
+    $values['checkboxes_name'] = 'checkboxes_option_value_0||';
+
+    $controls = bibdk_search_controls_ting_search_get_controls($values);
+
+    $result = ( $controls == $controls_out );
+    $message = 'bibdk_search_controls_ting_search_get_controls is formatted correctly.';
+    $this->assertTrue($result, $message);
+  }
+
+}

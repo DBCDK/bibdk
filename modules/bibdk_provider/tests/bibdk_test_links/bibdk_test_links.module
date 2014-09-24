@@ -1,0 +1,51 @@
+<?php
+
+/**
+ * Implements hook menu
+ */
+function bibdk_test_links_menu() {
+  $item['generate/link/reset/%'] = array(
+    'page callback' => 'bibdk_test_links_reset',
+    'page arguments' => array(3),
+    'access callback' => true
+  );
+  $item['generate/link/confirm_wayf/%'] = array(
+    'page callback' => 'bibdk_test_links_wayf_confirm',
+    'page arguments' => array(3),
+    'access callback' => true
+  );
+  return $item;
+}
+
+
+function bibdk_test_links_reset ($user_mail) {
+  $account = user_load_by_mail($user_mail);
+  $timestamp = REQUEST_TIME;
+  $path = "user/reset/$account->uid/$timestamp/" . user_pass_rehash($account->pass, $timestamp, $account->login);
+  return array(
+    '#theme' => 'link',
+    '#text' => 'reset link',
+    '#path' => $path,
+    '#options' => array(
+      'attributes' => array(
+        'id' => 'reset_link'
+      ),
+      'html' => false,
+    ),
+  );
+}
+
+function bibdk_test_links_wayf_confirm ($user_mail) {
+  $user = user_load_by_mail($user_mail);
+  return array(
+    '#theme' => 'link',
+    '#text' => 'confirm wayf',
+    '#path' => bibdk_provider_wayf_confirm_url($user),
+    '#options' => array(
+      'attributes' => array(
+        'id' => 'confirm_link'
+      ),
+      'html' => false,
+    ),
+  );
+}

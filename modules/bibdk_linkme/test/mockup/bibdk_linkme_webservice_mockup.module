@@ -1,0 +1,33 @@
+<?php
+
+
+/**
+ * @file
+ * Webservice mockup of OCN2PID
+ */
+function bibdk_linkme_webservice_mockup_menu() {
+  $items['bibdk_linkme_webservice'] = array(
+    'page callback' => 'bibdk_linkme_webservice_mockup_request',
+    'access callback' => TRUE,
+  );
+  $items['bibdk_linkme_webservice/%'] = array(
+    'page callback' => 'bibdk_linkme_webservice_mockup_request',
+    'page arguments' => array(1),
+    'access callback' => TRUE,
+  );
+  return $items;
+}
+
+
+/**
+ * Faking the request and returns result.
+ * @return String XML
+ */
+function bibdk_linkme_webservice_mockup_request($ocn='12345678') {
+
+  $path = drupal_get_path('module', 'bibdk_linkme');
+  $resp = file_get_contents($path . '/test/mockup/ocn2pid_data.xml');
+  drupal_add_http_header('Content-Type', 'text/xml; utf-8');
+  print $resp;
+  exit();
+}

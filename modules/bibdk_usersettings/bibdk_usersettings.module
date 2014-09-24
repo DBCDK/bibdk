@@ -1,0 +1,330 @@
+<?php
+
+/**
+ * @file
+ * Module file. Gives the the users ability to setup personal settings through the Openuser webservice
+ *
+ * The following methods can be used for CRUD actions:
+ *  ding_provider_invoke('user', 'set_setting', $user_name, $settings_name, $settings_value );
+ *  ding_provider_invoke('user', 'get_setting', $user_name, $settings_name);
+ *  ding_provider_invoke('user', 'delete_setting', $user_name, $settings_name);
+
+ */
+
+/**
+ * Implements hook_menu().
+ * Sets up menu items.
+ *
+ */
+function bibdk_usersettings_menu() {
+  $items['user/%user/settings'] =  array(
+    'title' => 'Settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bibdk_usersettings_user_settings_form'),
+    'access callback' => 'user_edit_access',
+    'access arguments'=> array(1),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 30,
+  );
+  return $items;
+
+}
+
+function bibdk_usersettings_theme() {
+  return array('bibdk_usersettings_form' => array(
+      'variables' => array('tabs' => array(), 'settings' => array()),
+      'template' => 'theme/bibdk-usersettings-form',
+      'render_element' => 'form',
+      ));
+}
+
+/**
+ * Form for user settings
+ */
+function bibdk_usersettings_user_settings_form($form, $form_state) {
+
+  $tabs = module_invoke_all('bibdk_usersettings_user_tabs');
+
+  uasort($tabs, 'drupal_sort_weight');
+
+  if (isset($form_state['clicked_button']['#name'])) {
+    $firstelement = $form_state['clicked_button']['#name'];
+    $tabs[$firstelement]['attributes']['class'] = array('active');
+  }
+
+  $form['wrapper'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+      'class' => array(
+        'bibdk-tabs',
+        'bibdk-tabs-light'
+      ),
+    ),
+  );
+
+  if (empty($tabs)){
+    $form['wrapper']['empty_default']['#markup'] = t('No settings can be set');
+    return $form;
+  }
+
+  foreach ($tabs as $key => $tab) {
+    if (!isset($firstelement)) {
+      $tabs[$key]['attributes']['class'] = array('active');
+      $firstelement = $key;
+    }
+    else {
+      if ($key != $firstelement)
+        $tabs[$key]['attributes'] = array();
+    }
+  }
+  $elements = module_invoke_all('bibdk_usersettings_user_settings');
+
+  uasort($elements, 'drupal_sort_weight');
+
+  foreach ($elements as $element) {
+    // Create new tabs
+    if (!isset($tab_elements[$element['#tab']])) {
+      $tab_elements[$element['#tab']] = array(
+        '#type' => 'container',
+        '#attributes' => array(
+          'id' => $element['#tab'],
+          'class' => array('visuallyhidden'),
+        ),
+      );
+    }
+    // Add elements to tab
+    $tab_elements[$element['#tab']] += $element;
+
+    $tab_elements[$element['#tab']]['actions'] = array(
+      '#type' => 'container',
+      '#weight' => 100,
+      'submit' => array(
+        '#type' => 'submit',
+        '#value' => t('save_settings'),
+        '#action' => 'bibdk_usersettings_user_settings_form_submit',
+        '#name' => $element['#tab'],
+      ),
+    );
+
+  }
+  $tab_elements[$firstelement]['#attributes']['class'] = array();
+
+  $form['wrapper']['tabs'] = array(
+    '#theme' => 'bibdk_usersettings_form',
+    '#tabs' => $tabs,
+      //'#settings' => $tab_elements
+  );
+
+  $form['wrapper']['elements'] = $tab_elements;
+  $form['wrapper']['elements'] += array(
+    '#type' => 'container',
+    '#tree' => true,
+    '#attributes' => array(
+      'class' => array(
+        'tabs-sections',
+        'bibdk-usersettings',
+        'clearfix',
+      ),
+    ),
+  );
+
+  return $form;
+}
+
+/** submit add/update all user settings
+ * @param $form
+ * @param $form_state
+ */
+function bibdk_usersettings_user_settings_form_submit($form, &$form_state) {
+
+  form_state_values_clean($form_state);
+
+  $groups = $form_state['values']['elements'];
+
+  foreach($groups as $group) {
+    foreach($group as $key => $value) {
+      if (is_array($value) && isset($form_state['values']['array_filter'])) {
+        $value = array_keys(array_filter($value));
+      }
+      bibdk_usersettings_user_settings_set($key, $value);
+    }
+  }
+
+  $form_state['rebuild'] = TRUE;
+
+  drupal_set_message(t('bibdk_usersetting_has_been_updated'));
+}
+
+/** Wrapper to get user settings
+ * @param $name
+ * @param $default
+ * @return mixed
+ */
+function bibdk_usersettings_user_settings_get($name, $default) {
+  global $user;
+
+  if (!ding_user_is_provider_user($user)) {
+    return $default;
+  }
+  try {
+    $creds = ding_user_get_creds($user);
+  } catch (Exception $e) {
+    return $default;
+  }
+
+  $data = bibdk_usersettings_get_cache($user->uid);
+  if (isset($data[$name])) {
+    return $data[$name];
+  }
+
+  $provider_data = _bibdk_user_setting_get_from_provider($name, $creds);
+  if ($provider_data !== FALSE) {
+    $value = unserialize(_bibdk_usersettings_parse_response($provider_data));
+    bibdk_usersettings_set_cache($user->uid, $name, $value);
+    return $value;
+  }
+
+  return $default;
+}
+
+function _bibdk_user_setting_get_from_provider($name, $creds) {
+  if ($provider_data = ding_provider_invoke('user', 'get_setting', $creds['name'], $name)) {
+    return $provider_data;
+  }
+  return FALSE;
+}
+
+function _bibdk_usersettings_parse_response($response) {
+  $dom = new DomDocument();
+  if (!@$dom->loadXML($response)) {
+    if (variable_get('bibdk_provider_enable_logging')) {
+      watchdog('bibdk_cart', t('bibdk_usersettings could not load response: %xml', array('%xml' => var_export($response, TRUE))), array(), WATCHDOG_ERROR);
+    }
+    return null;
+  }
+  $xpath = new DomXPATH($dom);
+  $xpath->registerNamespace('oui', 'http://oss.dbc.dk/ns/openuserinfo');
+  if (!isset($xpath)) {
+    return null;
+  }
+  // grap value
+  $query = '//oui:settingString';
+  $nodelist = $xpath->query($query);
+  foreach ($nodelist as $delta => $node) {
+    $return = $node->nodeValue;
+  }
+
+  return $return;
+}
+
+/** Wrapper to set user settings
+ * @param $name
+ * @param $value
+ * @return null
+ */
+function bibdk_usersettings_user_settings_set($name, $value) {
+  global $user;
+
+  if (!ding_user_is_provider_user($user)) {
+    return false;
+  }
+  try {
+    $creds = ding_user_get_creds($user);
+  } catch (Exception $e) {
+    return false;
+  }
+
+  if (ding_provider_invoke('user', 'set_setting', $creds['name'], $name, serialize($value))) {
+    // update cache
+    bibdk_usersettings_set_cache($user->uid, $name, $value);
+  }
+}
+
+/** Implements hook_user_logout
+ * clear cached data
+ */
+function bibdk_usersettings_user_logout($account) {
+  bibdk_user_settings_invalidate_cache($account->uid);
+}
+
+/** clear all caches in bin:cache_bibdk_usersettings for given key
+ *
+ * @param type $key
+ */
+function bibdk_user_settings_invalidate_cache($key) {
+  cache_clear_all($key, 'cache_bibdk_usersettings');
+}
+
+function bibdk_usersettings_get_cache($key) {
+  $cache = cache_get($key, 'cache_bibdk_usersettings');
+
+  if ($cache) {
+    return $cache->data;
+  }
+  return FALSE;
+}
+
+/** Set cache ($key,$data) in bin:cache_bibkd_usersettings
+ *
+ * @param type $key
+ * @param type $data
+ */
+function bibdk_usersettings_set_cache($key, $name, $value) {
+  $data = bibdk_usersettings_get_cache($key);
+  if ($data === FALSE) {
+    $data = array();
+  }
+  $data[$name] = $value;
+
+  cache_set($key, $data, 'cache_bibdk_usersettings');
+}
+
+/**
+ * @file
+ * Implements hook_bibdk_mypage_tabs().
+ */
+
+function bibdk_usersettings_bibdk_mypage_tabs() {
+  global $user;
+
+  $ret = array();
+  $ret['bibdk_usersettings']['header'] = t('Settings');
+  
+  $ret['bibdk_usersettings']['rows']['values'] = bibdk_usersettings_bibdk_mypage_tabs_rows(variable_get('bibdk_mypage_max_items', 3));
+  $ret['bibdk_usersettings']['link'] = array(
+    'title' => t('Go to settings'),
+    'href' => 'user/' . $user->uid . '/settings',
+  );
+  
+  $ret['bibdk_usersettings']['weight'] = 40;
+  $ret['bibdk_usersettings']['help_text_key'] = 'usersettings_mypage_help_key';
+  
+  return $ret;
+}
+
+/**
+ * return usersetting tabtext 
+ */
+function bibdk_usersettings_bibdk_mypage_tabs_rows($max_rows) {
+  $liste = array();
+  $liste = module_invoke_all('bibdk_usersettings_user_tabs', $liste);
+  uasort($liste, 'drupal_sort_weight');
+
+  foreach ( $liste as $tabtext ) {
+    if (isset($tabtext['title'])) {
+      $ret[] = array('item_row' => t($tabtext['title']));
+      if (count($ret) == $max_rows) {
+        return $ret;
+      }
+    }
+  };
+
+  return $ret;
+}
+
+/**
+ * Implements hook to user_help_list
+ * */
+function bibdk_usersettings_user_help_list() {
+  return array('usersettings_mypage_help_key'=>'usersettings_mypage_help_label');
+}

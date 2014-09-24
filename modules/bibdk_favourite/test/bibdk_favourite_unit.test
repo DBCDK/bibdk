@@ -1,0 +1,50 @@
+<?php
+
+class BibdkFavouriteUnittest extends DrupalUnitTestCase {
+
+  public function getInfo() {
+    return array(
+      'name' => 'Bibdk favourite unit tests',
+      'description' => 'Testing simple module functions having no sideeffects.',
+      'group' => 'Bibliotek.dk - Favourites',
+    );
+  }
+
+  public function setUp() {
+    module_load_include('module', 'bibdk_favourite');
+    parent::setUp();
+  }
+
+  public function test_bibdk_favourite_set_favourite_first() {
+    $empty = array();
+    $fav1 = new FavouriteMock();
+    $fav2 = new FavouriteMock();
+    $fav_order = new FavouriteMock();
+    $fav_order->orderAgency = TRUE;
+    $one = array($fav1);
+    $two = array($fav1, $fav2);
+    $order_one = array($fav_order);
+    $order_first = array($fav_order, $fav1, $fav2);
+    $order_last = array($fav1, $fav2, $fav_order);
+
+    $this->assertTrue(_bibdk_favourite_set_favourite_first($empty) == array(), 'Setting first on empty list gives an empty list.');
+    $this->assertTrue(_bibdk_favourite_set_favourite_first($one) == array($fav1), 'No change with only one element in list.');
+    $this->assertTrue(_bibdk_favourite_set_favourite_first($two) == array($fav1, $fav2), 'No change in list because no order library is set.');
+    $this->assertTrue(_bibdk_favourite_set_favourite_first($order_one) == array($fav_order), 'No change with only one element in list even though orderAgency is set to TRUE.');
+    $this->assertTrue(_bibdk_favourite_set_favourite_first($order_first) == array($fav_order, $fav1, $fav2), 'No change in list because order library is already first.');
+    $this->assertTrue(_bibdk_favourite_set_favourite_first($order_last) == array(2 => $fav_order, 0 => $fav1, 1 => $fav2), 'Order library is first in returned list.');
+  }
+
+  /*
+  public function test_bibdk_favourite_get_favourites() {
+    $ret = bibdk_favourite_get_favourites();
+    $this->assertTrue(is_array($ret), 'Array was returned');
+    $this->assertEqual(count($ret), 2, 'Array count equals 2');
+    $this->assertTrue(array_key_exists($this->agencyId, $ret), 'Testlibrary with id 737600 was found in $_SESSION');
+  }
+  */
+}
+
+class FavouriteMock {
+  public $orderAgency;
+}

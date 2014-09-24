@@ -1,0 +1,141 @@
+<?php
+
+/**
+ * @file
+ * Testfile for the bibdk_vejviser module
+ * Testing: Ting settings
+ */
+class BibdkVejviserAutocompleteTestCase extends DrupalWebTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => 'Test autocomplete functionality',
+      'description' => t('Test if autocomplete returns relevant array'),
+      'group' => 'Bibliotek.dk Vejviser',
+    );
+  }
+
+  public function setUp() {
+    parent::setup(array('bibdk_vejviser', 'openagency_webservice_mockup'));
+    variable_set('agency_search_url', $this->getAbsoluteUrl('/openagency_webservice/'));
+    variable_set('agency_search_xsd_url',$this->getAbsoluteUrl('/openagency_webservice/openagency.xsd'));
+  }
+
+  public function testRunner() {
+    $this->_testAutocompleteCallback();
+    $this->_testAutocompleteCron();
+  }
+
+  private function _testAutocompleteCallback() {
+    $result = $this->drupalGetAJAX('vejviser/autocomplete/ring');
+    $this->assertTrue(count($result) == 23, 'array has 5 elements');
+    foreach($result as $key => $element) {
+        $this->assertTrue(preg_match('/ring/i', $element) || preg_match('/ring/i', $key), '"ring" is part of result');
+    }
+    $result = $this->drupalGetAJAX('vejviser/autocomplete/no_elements');
+    $this->assertTrue(count($result) == 0, 'array has no elements');
+
+    // Test variable not set
+    variable_set('bibdk_vejviser_agency_autocomplete_names', false);
+    $result = $this->drupalGetAJAX('vejviser/autocomplete/ring');
+    $this->assertTrue(count($result) == 23, 'array has 5 elements');
+    $agencies = variable_get('bibdk_vejviser_agency_autocomplete_names');
+    $this->assertTrue(is_array($agencies) && count($agencies) == 1137);
+
+  }
+
+  private function _testAutocompleteCron() {
+    variable_set('bibdk_vejviser_agency_autocomplete_names', false);
+    $this->cronRun();
+    $agencies = variable_get('bibdk_vejviser_agency_autocomplete_names');
+    $this->assertTrue(is_array($agencies) && count($agencies) == 1137);
+  }
+}
+
+/**
+ * @file
+ * Testfile for the bibdk_vejviser module
+ * Testing: Ting settings
+ */
+class BibdkVejviserAutocompleteUnitTestCase extends DrupalWebTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => 'Test autocomplete methods',
+      'description' => t('Test if autocomplete returns relevant array'),
+      'group' => 'Bibliotek.dk Vejviser',
+    );
+  }
+
+  public function setUp() {
+    module_load_include('module', 'bibdk_vejviser', 'bibdk_vejviser');
+    parent::setUp();
+  }
+
+  public function test_bibdk_vejviser_agency_name_match() {
+    $names = array(
+      'abcd' => 'abcd',
+      'Abcd' => 'Abcd',
+      'Abdd' => 'Abdd',
+      'ddab' => 'ddab',
+      'invalid' => null,
+    );
+    // Test empty string
+    $string = '';
+    $expected_result = array();
+    $result = bibdk_vejviser_autocomplete_agency_name_match($string, $names);
+    $this->assertEqual($result, $expected_result, 'empty string returns empty array');
+
+    // result different cases
+    $string = 'ab';
+    $expected_result = array(
+      'abcd' => '<b>ab</b>cd',
+      'Abcd' => '<b>Ab</b>cd',
+      'Abdd' => '<b>Ab</b>dd',
+      'ddab' => 'dd<b>ab</b>',
+    );
+    $result = bibdk_vejviser_autocomplete_agency_name_match($string, $names);
+    $this->assertEqual($result, $expected_result, 'ab returns 4 results');
+
+    // test no matches
+    $string = 'cx';
+    $expected_result = array(
+    );
+    $result = bibdk_vejviser_autocomplete_agency_name_match($string, $names);
+    $this->assertEqual($result, $expected_result, 'no match returns empty array');
+  }
+
+  public function test_bibdk_vejviser_autocomplete_agency_list() {
+    $branches = array();
+    $result = bibdk_vejviser_autocomplete_agency_list($branches);
+
+    $expected_result = array();
+    $this->assertEqual($result, $expected_result, 'empty array returns empty array');
+
+    $branches[] = new BranchMock('branchName1', 'shortname1');
+    $branches[] = new BranchMock('branchName2', 'shortname2');
+    $branches[] = new BranchMock('branchName3');
+    $result = bibdk_vejviser_autocomplete_agency_list($branches);
+
+    $this->assertEqual(count($result), 3, '3 elements in result');
+    $this->assertEqual($result['branchName1'], 'shortname1', 'Branchname is key Shortname is value');
+    $this->assertEqual($result['branchName3'], 'branchName3', 'Branchname is is value when shortname is not set');
+
+  }
+}
+
+class BranchMock {
+  private $branchName, $branchShortName;
+
+  public function __construct($branchname, $branchShortName = 'ting_agency_no_shortbranch_name'){
+    $this->branchName = $branchname;
+    $this->branchShortName = $branchShortName;
+  }
+
+  public function getBranchName(){
+    return $this->branchName;
+  }
+  public function getBranchShortName(){
+    return $this->branchShortName;
+  }
+}

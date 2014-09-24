@@ -1,0 +1,26 @@
+<?php
+class BibdkBorchkWebserviceTestCast extends DrupalWebTestCase {
+
+  public static function getInfo() {
+    return array (
+      'name' => t('Borchk test'),
+      'description' => t('check if borchk webservice is alive'),
+      'group' => t('bibliotek.dk'),
+    );
+  }
+
+  public function setUp() {
+    parent::setUp(array('ting_client', 'bibdk_borchk'));
+    variable_set('bibdk_borchk_url','https://borchk.addi.dk/2.4/');
+    variable_set('bibdk_borchk_servicerequester','bibliotek.dk');
+  }
+
+  public function testWebservice() {
+    $this->assertTrue(TRUE);
+    $response = bibdk_borchk_request('0019','0019','DK-716500','xml','bibliotek.dk');
+    $matches = array();
+    $pattern = '/borrowerCheckResponse/';
+    preg_match($pattern,$response,$matches);
+    $this->assertTrue(!empty($matches));
+  }
+}

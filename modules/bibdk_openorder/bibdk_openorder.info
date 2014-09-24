@@ -1,0 +1,9 @@
+name = Bibliotek.dk - Openorder
+description = handle request to openorder webservice.
+core = 7.x
+version = 7.x-0.19
+package = Bibliotek.dk
+files[] = bibdk_openorder.request.inc
+files[] = BibdkOpenorderPolicyResponse.php
+files[] = test/bibdk_openorder.test
+dependencies[] = ting_client

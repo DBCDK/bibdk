@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * Implements hook_schema().
+ */
+function bibdk_sbkopi_schema() {
+  $schema['cache_bibdk_sbkopi_webservice'] = drupal_get_schema_unprocessed('system', 'cache');
+  return $schema;
+}
+
+/**
+ * Implements hook_update_N;
+ * Install cache_borchk_webservice table
+ * */
+function bibdk_sbkopi_update_7001() {
+  $name = 'cache_bibdk_sbkopi_webservice';
+  $schema = drupal_get_schema_unprocessed('system', 'cache');
+  try {
+    db_create_table($name, $schema);
+  } catch (Exception $e) {
+    // do nothing table probably already exists
+  }
+}
+
+
+
+

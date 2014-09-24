@@ -1,0 +1,261 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ */
+function bibdk_search_controls_menu() {
+  $items['admin/config/search/bibdk_search_controls'] = array(
+    'title' => 'Bibliotek.dk search controls',
+    'description' => 'Edit search controls (sort, size, format, etc.).',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bibdk_search_controls_admin'),
+    'access arguments' => array('administer search'),
+    'file' => 'bibdk_search_controls.admin.inc',
+  );
+  $items['admin/config/search/bibdk_search_controls/%/edit'] = array(
+    'title' => 'Edit search control',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bibdk_search_controls_edit', 4),
+    'access arguments' => array('administer search'),
+    'file' => 'bibdk_search_controls.admin.inc',
+  );
+  $items['admin/config/search/bibdk_search_controls/%/delete'] = array(
+    'title' => 'Edit search control',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bibdk_search_controls_delete', 4),
+    'access arguments' => array('administer search'),
+    'file' => 'bibdk_search_controls.admin.inc',
+  );
+  $items['admin/config/search/bibdk_search_controls/%/delete_value/%'] = array(
+    'title' => 'Edit search control',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bibdk_search_controls_delete_value', 4, 6),
+    'access arguments' => array('administer search'),
+    'file' => 'bibdk_search_controls.admin.inc',
+  );
+  return $items;
+}
+
+
+/**
+ * Implements hook_form_search_block_form_alter().
+ */
+function bibdk_search_controls_form_search_block_form_alter(&$form, &$form_state, $form_id) {
+  $controls = _bibdk_search_controls_variable_get();
+  foreach ($controls as $key => $control) {
+    $name = $control['name'];
+    $default_values = array();
+    foreach ($controls[$key]['values'] as $n => $value) {
+      $default_values[] = ($value['default']) ? $value['value'] : NULL;
+    }
+    if ($controls[$key]['type'] == 'checkboxes') {
+      $default_value = check_plain(implode('|', $default_values));
+      if (isset($_GET[$name])) {
+        foreach ($_GET[$name] as $key => $val) {
+          $get_values[] = check_plain($val);
+        }
+        $default_value = implode('|', $get_values);
+      }
+    }
+    else {
+      $default_value = check_plain(implode('', $default_values));
+      $default_value = (isset($_GET[$name])) ? check_plain($_GET[$name]) : $default_value;
+    }
+    $form[$control['name']] = array(
+      '#type' => 'hidden',
+      '#default_value' => $default_value,
+      '#attributes' => array('id' => 'controls_search_' . $control['name']),
+    );
+  }
+  return $form;
+}
+
+
+/**
+ * Implements hook_block_info().
+ */
+function bibdk_search_controls_block_info() {
+  // configure default menu for user help content.
+  $controls = _bibdk_search_controls_variable_get();
+  $blocks = array();
+
+  foreach ($controls as $key => $control) {
+    $title = $control['title'];
+    $blocks['search-control-' . $key] = array(
+      'title' => '<none>',
+      'info' => t('Bibliotek.dk search control block : ' . $title),
+      'cache' => DRUPAL_CACHE_GLOBAL,
+    );
+  }
+  return $blocks;
+}
+
+
+/**
+ * Implements hook_block_view().
+ */
+function  bibdk_search_controls_block_view($delta = '') {
+  $block = array();
+  $controls = _bibdk_search_controls_variable_get();
+  foreach ($controls as $key => $control) {
+    if ($delta == 'search-control-' . $key) {
+      $block['subject'] = t('Bibliotek.dk search control : ' . $control['title']);
+      $block['content'] = drupal_get_form('bibdk_search_controls_form', $key);
+      $block['title'] = '<none>';
+      return $block;
+    }
+  }
+  return $block;
+}
+
+
+/**
+ * Edit search control form
+ */
+function bibdk_search_controls_form($form, &$form_state, $key) {
+
+  $form = array();
+  $controls = _bibdk_search_controls_variable_get();
+  $default_value = NULL;
+
+  if (isset($controls[$key])) {
+    $name = $controls[$key]['name'];
+    if (!empty($controls[$key]['values'])) {
+      foreach ($controls[$key]['values'] as $n => $value) {
+        $values[$value['value']] = t($value['label'], array(), array('context' => 'bibdk_search_controls'));
+        if ($value['default'] == TRUE) {
+          switch ($controls[$key]['type']) {
+            case 'checkboxes':
+              $default_value[$n] = $value['value'];
+              break;
+            default:
+              $default_value = $value['value'];
+          }
+        }
+      }
+      if (isset($_GET[$name])) {
+        switch ($controls[$key]['type']) {
+          case 'checkboxes':
+            if (is_array($_GET[$name])) {
+              $default_value = array();
+              foreach ($_GET[$name] as $i => $val) {
+                foreach ($controls[$key]['values'] as $n => $val_set) {
+                  if ($val_set['value'] == $val) {
+                    $default_value[$n] = check_plain($val);
+                  }
+                }
+              }
+            }
+            break;
+          default:
+            $default_value = check_plain($_GET[$name]);
+        }
+      }
+
+      $form[$name] = array(
+        '#type' => $controls[$key]['type'],
+        '#options' => $values,
+        '#default_value' => $default_value,
+        '#title' => t($controls[$key]['label'], array(), array('context' => 'bibdk_search_controls')),
+        '#description' => t($controls[$key]['description'], array(), array('context' => 'bibdk_search_controls')),
+        '#attributes' => array(
+          'accesskey' => array($controls[$key]['access_key']),
+          'tabindex' => array($controls[$key]['tab_index']),
+        )
+      );
+      $form['#attached']['js'] = array(
+        drupal_get_path('module', 'bibdk_search_controls') . '/js/bibdk_search_controls.js',
+      );
+      $form['#attributes'] = array(
+        'class' => array('bibdk-search-controls-form'),
+        'data-control-name' => array('controls_search_' . $name),
+      );
+      $form['#theme'] = 'bibdk_search_controls-' . $controls[$key]['type'];
+    }
+  }
+  return $form;
+}
+
+
+/**
+ * Implements hook_ting_search_get_controls().
+ */
+function bibdk_search_controls_ting_search_get_controls($values) {
+
+  $controls = array();
+
+  $bibdk_search_controls = _bibdk_search_controls_variable_get();
+
+  foreach ($bibdk_search_controls as $key => $control) {
+    $s = (isset($values[$control['name']])) ? $values[$control['name']] : '';
+    if ($control['type'] == 'checkboxes') {
+      $s = explode('|', $s);
+      foreach ($s as $key => $val) {
+        $controls[$control['name']][] = $val;
+      }
+    }
+    elseif ($s != "") {
+      $controls[$control['name']] = $s;
+    }
+  }
+
+  return $controls;
+}
+
+
+/**
+ * Implements hook_theme().
+ */
+function bibdk_search_controls_theme() {
+  $path = drupal_get_path('module', 'bibdk_search_controls') . '/theme';
+  $bibdk_search_controls_theme_array = array(
+    'bibdk_search_controls-admin-form' => array(
+      'render element' => 'form',
+      'path' => $path,
+      'template' => 'bibdk_search_controls-admin-form',
+    ),
+    'bibdk_search_controls-edit-form' => array(
+      'render element' => 'form',
+      'path' => $path,
+      'template' => 'bibdk_search_controls-edit-form',
+    ),
+    'bibdk_search_controls-values-form' => array(
+      'render element' => 'form',
+      'path' => $path,
+      'template' => 'bibdk_search_controls-values-form',
+    ),
+    'bibdk_search_controls-select' => array(
+      'render element' => 'form',
+      'path' => $path,
+      'template' => 'bibdk_search_controls-select',
+    ),
+    'bibdk_search_controls-radios' => array(
+      'render element' => 'form',
+      'path' => $path,
+      'template' => 'bibdk_search_controls-radios',
+    ),
+    'bibdk_search_controls-checkboxes' => array(
+      'render element' => 'form',
+      'path' => $path,
+      'template' => 'bibdk_search_controls-checkboxes',
+    ),
+  );
+  return $bibdk_search_controls_theme_array;
+}
+
+/**
+ * Get controls variable from file if unit testing. Otherwise from database.
+ * @param bolean
+ * @return array $controls
+ */
+function _bibdk_search_controls_variable_get() {
+  global $_bibdk_search_controls_unit_test_case;
+
+  if (isset($_bibdk_search_controls_unit_test_case) && $_bibdk_search_controls_unit_test_case) {
+    include_once('test/bibdk_search_controls_test.array_in.php');
+    return _bibdk_search_controls_variable_create();
+  }
+
+  return variable_get('bibdk_search_controls', array());
+
+}

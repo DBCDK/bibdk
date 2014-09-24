@@ -1,0 +1,47 @@
+<?php
+
+class BibdkHelpdeskWebserviceTestCast extends DrupalUnitTestCase {
+
+  public static function getInfo() {
+    return array (
+      'name' => t('OpenQuestion webservice test'),
+      'description' => t('Test the methods used to make openQuestion webservice requests'),
+      'group' => t('Bibliotek.dk - Helpdesk'),
+    );
+  }
+
+
+  public function setUp() {
+    parent::setUp();
+  }
+
+  public function test_request() {
+    module_load_include('inc', 'bibdk_helpdesk', 'test/mockup/ting_client_class');
+    module_load_include('module', 'bibdk_helpdesk');
+
+    $result = bibdk_helpdesk_request(null);
+    $this->assertNull($result, 'result is null');
+
+    $values = array();
+    $result = bibdk_helpdesk_request($values);
+    $expected = array(
+      'agencyId' => FALSE,
+      'qandaServiceName' => FALSE,
+      'outputType' => 'json',
+    );
+    $this->assertEqual($result, $expected);
+
+    $values = array(
+      'agencyId' => 'MI-6',
+      'qandaServiceName' => 'Panda',
+      'outputType' => 'xml',
+    );
+    $result = bibdk_helpdesk_request($values);
+    $expected = array(
+      'agencyId' => 'MI-6',
+      'qandaServiceName' => 'Panda',
+      'outputType' => 'xml',
+    );
+    $this->assertEqual($result, $expected);
+  }
+}

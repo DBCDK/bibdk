@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="http://emnehierarki.dbc.dk/emnehierarki.xsl"?>
+<emnehierarki version="1.1"
+              xmlns="http://www.bs.dk/standards/emnehierarki"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.bs.dk/standards/emnehierarki
+                                  http://emnehierarki.dbc.dk/emnehierarkiFull_2007-10-25.xsd">
+  <term>
+    <ord>ord level0</ord>
+    <ccl>ccl level0</ccl>
+    <kommentar>kommentar level0</kommentar>
+    <hjaelpetekst></hjaelpetekst>
+    <infotekst></infotekst>
+    <visundermenu>1</visundermenu>
+    <term>
+      <ord>Ord level1</ord>
+      <ccl>ccl level1</ccl>
+      <kommentar></kommentar>
+      <hjaelpetekst></hjaelpetekst>
+      <infotekst></infotekst>
+      <visundermenu>1</visundermenu>
+      <term>
+        <ord>Ord level2</ord>
+        <ccl>ccl level2</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <infotekst></infotekst>
+        <visundermenu>1</visundermenu>
+        <term>
+          <ord>Ord level3.0</ord>
+          <ccl>ccl level3.0</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <infotekst></infotekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Ord level3.1</ord>
+          <ccl>ccl level3.1</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <infotekst></infotekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Ord level3.2</ord>
+          <ccl>ccl level3.2</ccl>
+          <kommentar> poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <infotekst></infotekst>
+          <visundermenu>1</visundermenu>
+        </term>
+      </term>
+    </term>
+  </term>
+</emnehierarki>

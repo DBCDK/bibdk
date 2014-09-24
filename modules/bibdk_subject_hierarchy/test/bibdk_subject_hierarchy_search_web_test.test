@@ -1,0 +1,105 @@
+<?php
+
+class BibdkSubjectHierarchySearchWebTestCase extends DrupalWebTestCase {
+
+  protected $privileged_user;
+
+
+
+  public static function getInfo() {
+    return array(
+      'name' => 'Bibdk Subject Hierarchy search Web Test',
+      'description' => 'Bibdk Subject Hierarchy search Web test.',
+      'group' => 'Bibliotek.dk  - Subject Hierarchy',
+    );
+  }
+
+  public function setUp() {
+    parent::setUp('bibdk_subject_hierarchy', 'bibdk_subject_hierarchy_mockup', 'ting_client');
+    variable_set('ting_search_url', $this->getAbsoluteUrl('bibdk_subject_hierarchy_mockup'));
+  }
+
+  public function testRunner() {
+    $this->_testSearchForm();
+    $this->_testSearchFormAjax();
+  }
+
+  private function _testSearchForm() {
+    $this->drupalGet('');
+    $this->assertNoField('search-hierarchy-input');
+    $this->assertNoFieldById('edit-search-hierarchy-submit');
+
+    $this->setupBlock('bibdk_subject_hierarchy_bibdk-subject-hierarchy');
+
+    $this->drupalGet('');
+    $this->assertField('search-hierarchy-input');
+    $this->assertFieldById('edit-search-hierarchy-submit');
+}
+
+  private function _testSearchFormAjax() {
+    // results returned
+    $value = $this->ajaxSearch('at bo');
+    $this->assertString($value, 'You got 2 results in 1 group');
+    $this->assertString($value, 'Subject hierarchy searchresult on at bo');
+    $this->assertString($value, 'Menneske &amp; samfund', 'first part of breadcrumb exists');
+    $this->assertString($value, 'Mennesket i byen og på landet', 'last part of breadcrumb exists');
+    $this->assertString($value, 'At bo i storbyen');
+    $this->assertString($value, t('A search on %term gives %results results', array('%term' => 'at bo', '%results' => 7515)), 'Results from search are displayed');
+
+    // no results returned
+    $value = $this->ajaxSearch('no_results');
+    $this->assertString($value, 'You got 0 results in 0 groups');
+    $this->assertString($value, 'Subject hierarchy searchresult on no_results');
+
+    // empty search
+    $value = $this->ajaxSearch('');
+    $this->assertString($value, 'You got 0 results in 0 groups');
+    $this->assertString($value, 'Subject hierarchy searchresult on');
+
+
+
+
+  }
+
+  /** Helper function: Search in subject hierarchy
+   * @param $string
+   * @return string
+   */
+  private function ajaxSearch($string) {
+    $edit = array(
+      'search-hierarchy-input' => $string,
+    );
+    $result = $this->drupalPostAJAX(null, $edit, array('op' => t('search')));
+    $value = isset($result[1]['value']) ? $result[1]['value'] : '';
+
+    return $value;
+  }
+
+  /** Helper function: Test if string is in content
+   * @param $content
+   * @param $string
+   * @param string $message
+   * @param string $group
+   */
+  private function assertString($content, $string, $message='', $group = 'Other') {
+    if (!$message) {
+      $message = t('String "@string" found', array('@string' => $string));
+    }
+    $this->assert(strpos($content, $string) !== FALSE, $message, $group);
+  }
+
+  /** Login and setup block in region
+   * @param $name
+   * @param string $region
+   */
+  private function setupBlock($name, $region = 'content') {
+
+    $this->admin_user = $this->drupalCreateUser(array(
+      'administer blocks'
+    ));
+    $this->drupalLogin($this->admin_user);
+    $edit["blocks[$name][region]"] = $region;
+    $this->drupalPost('admin/structure/block', $edit, t('Save blocks'));
+    $this->drupalLogout();
+  }
+}

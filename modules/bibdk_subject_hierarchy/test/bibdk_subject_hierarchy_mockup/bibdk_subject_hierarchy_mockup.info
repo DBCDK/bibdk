@@ -1,0 +1,6 @@
+name = "bibdk_subject_hierarchy mockup"
+description = "Support module for subject_heriarchy test."
+package = bibliotek.dk
+version = VERSION
+core = 7.x
+hidden = TRUE;

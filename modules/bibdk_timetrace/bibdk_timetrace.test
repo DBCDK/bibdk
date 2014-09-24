@@ -1,0 +1,56 @@
+<?php
+
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+class BibdkTimeTraceTestCase extends DrupalWebTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => t('time trace test'),
+      'description' => t('Test time trace functionality'),
+      'group' => t('Bibliotek.dk - time_trace'),
+    );
+  }
+
+  public function setUp() {
+    parent::setUp('ting_openformat','bibdk_timetrace');
+    variable_set('ting_search_url', 'http://bibdk-prod-ws.dbc.dk/opensearch/3.1/');
+    variable_set('search_active_modules', array('ting_openformat' => 'ting_openformat'));
+    variable_set('search_default_module', 'ting_openformat');
+    user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array('access content', 'search content'));
+    menu_rebuild();
+  }
+
+  /**
+   * Test that trace is logged in watchdog, and that last entry is
+   * bigger than the previous
+   */
+  public function testSearch() {
+    // do a search
+    $this->drupalGet('search/work/hest');
+    
+    // get last log entries from watchdog
+    $result = db_query("SELECT message FROM {watchdog} WHERE type='TRACKING' order by timestamp desc limit 4");
+    $data = $result->fetchAll();
+        
+    // assert that results were found (there must be at least 2)
+    $this->assertTrue(count($data)>=2,'found two or more TRACKING log-entries in watchdog');
+    // get the last 2 results
+    $no1 = $data[0]->message;
+    $no2 = $data[1]->message;
+    
+    // get the clock - it is from char -15 to char -7 in message
+    $time1 = substr($no1, -15, 8);
+    $time2 = substr($no2, -15, 8);
+
+    // make a date from the two
+    $date1 = strtotime($time1);
+    $date2 = strtotime($time2);
+
+    // assert that 2 is smaller than 1
+    $this->assertTrue(($date2 < $date1), 'Date 2 is smaller than date 1');
+  }
+}

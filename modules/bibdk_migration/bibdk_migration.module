@@ -1,0 +1,23 @@
+<?php
+/**
+ * Created by JetBrains PhpStorm.
+ * User: vibjerg
+ * Date: 13/12/12
+ * Time: 09.34
+ * To change this template use File | Settings | File Templates.
+ */
+
+/**
+ * Implements hook_node_export_node_import_alter
+ * If menu item already exists. remove it.
+ * @param $node
+ * @param $original_node
+ * @param $save
+ */
+function bibdk_migration_node_export_node_import_alter(&$node, $original_node, $save) {
+  if ($node->revision == 1){
+    node_invoke($node, 'delete');
+    module_invoke_all('node_delete', $node);
+    module_invoke_all('entity_delete', $node, 'node');
+  }
+}

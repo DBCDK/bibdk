@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * Implements hook_update.
+ * Note: furthersearch is no longer implemented as a field.
+ */
+function bibdk_furthersearch_update_7001(&$sandbox) {
+  if ( function_exists('bibdk_furthersearch_ding_entity_fields') ) {
+    $fields = bibdk_furthersearch_ding_entity_fields();
+    foreach ($fields as $field_name => $field) {
+      field_delete_instance($field_name);
+      field_delete_field($field_name);
+    }
+  }
+}

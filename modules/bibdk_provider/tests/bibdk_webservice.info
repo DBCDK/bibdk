@@ -1,0 +1,5 @@
+name = Bibliotek.dk webservice mockup
+description = A mockup webservice to test functionallity of the Bibdk provider
+core = 7.x
+package = DBCDK
+hidden = TRUE

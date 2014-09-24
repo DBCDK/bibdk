@@ -53,6 +53,7 @@ function _bibdk_enable_modules() {
     'bibdk_subject_hierarchy',
     'bibdk_about_author',
     'bibdk_newsroom',
+    'bibdk_autocomplete',
     'cql_strict_parser',
     'ting_openuserstatus',
     'open_holdingstatus',
@@ -373,5 +374,14 @@ function bibdk_update_7017(&$sandbox) {
 function bibdk_update_7018(&$sandbox) {
   module_enable(array(
     'shortcode',
+  ));
+}
+
+/**
+ * Enable autocomplete
+ */
+function bibdk_update_7019(&$sandbox) {
+  module_enable(array(
+    'bibdk_autocomplete',
   ));
 }

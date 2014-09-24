@@ -1,0 +1,75 @@
+<?php
+
+class BibdkLinkmeTestCase extends DrupalWebTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => t('Linkme test'),
+      'description' => t('Test Linkme functionality'),
+      'group' => t('Bibliotek.dk - Linkme'),
+    );
+  }
+
+  public function setUp() {
+    parent::setUp(
+      array(
+        'ting_openformat',
+        'bibdk_linkme_webservice_mockup',
+        'microcurl',
+      )
+    );
+    variable_set('ting_search_url', 'http://bibdk-prod-ws.dbc.dk/opensearch/3.1/');
+    variable_set('bibdk_provider_webservice_url', $this->getAbsoluteUrl('bibdk_webservice'));
+    variable_set('bibdk_provider_security_code', 'securityCode');
+    variable_set('search_active_modules', array('ting_openformat' => 'ting_openformat'));
+    variable_set('search_default_module', 'ting_openformat');
+    variable_set('linkme_url_ocn2pid', $this->getAbsoluteUrl('/bibdk_linkme_webservice/'));
+    user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array('access content', 'search content'));
+    menu_rebuild();
+
+  }
+
+  public function testRunner(){
+    $this->_testActionHook();
+    $this->_testUrlRedirect();
+  }
+
+  /**
+   * Test that hook_ting_openformat_actions is correctly implemented
+   */
+  private function _testActionHook() {
+    // confim reservation button is not present
+    $this->drupalGet('work/870970-basis:25294424');
+    $this->assertNoLink(t('Get permalink'));
+
+    // activate reservation module
+    module_enable(array('bibdk_linkme'));
+    menu_rebuild();
+
+    // confim reservation link is present
+    $this->drupalGet('work/870970-basis:25294424');
+    $this->assertLink(t('Get permalink'));
+  }
+
+  private function _testUrlRedirect() {
+    variable_set('linkme_url_ccl', 'old_linkme_url');
+
+    // Test non ccl query
+    $this->drupalGet('linkme.php', array('query' => array('rec.id' => '870970-basis:25294424')));
+    $this->assertUrl('work/870970-basis:25294424', array(), 'page is redirected to current linkme url');
+
+    // Test ccl query
+    $this->drupalGet('linkme.php', array('query' => array('ccl' => 'test_ccl')));
+    $this->assertEqual($this->getAbsoluteUrl('old_linkme_url%3Fccl%3Dtest_ccl'), $this->getUrl());
+
+    // Test invalid query
+    $this->drupalGet('linkme.php');
+    $this->assertText('Query does not have the right format');
+
+    // Test OCLC linkme
+    $this->drupalGet('linkme.php', array('query' => array('ref' => 'worldcat', 'ccl' => 'wcx%3D60996742')));
+    $this->assertText('LINKME_WORLDCAT_NOTICE');
+    $link = 'search/work?search_block_form=%28rec.id%3D810010-katalog%3A003162004%29&ref=worldcat#content';
+    $this->assertEqual($this->getAbsoluteUrl($link), $this->getUrl());
+  }
+}

@@ -1,0 +1,333 @@
+<?php
+/**
+* Tests the functionality of bibdk custom search.
+*/
+class BibdkCustomSearchPreprocessTestCase extends DrupalWebTestCase {
+  protected $privileged_user;
+
+  public static function getInfo() {
+    return array(
+      'name' => 'Bibdk Custom Search Preprocess',
+      'description' => 'Bibdk Custom Search Preprocess webtest.',
+      'group' => 'Bibliotek.dk  - Custom Search',
+    );
+  }
+
+  public function setUp() {
+
+    // Enable any modules required for the test
+    parent::setUp('bibdk_custom_search_preprocess', 'bibdk_custom_search', 'search');
+
+    menu_rebuild();
+
+    // Create and log in our privileged user.
+    $this->privileged_user = $this->drupalCreateUser(array(
+      'administer bibdk custom search pages',
+      'administer search',
+      'administer blocks',
+      'search content',
+      ));
+    $this->drupalLogin($this->privileged_user);
+
+    variable_set('search_active_modules', array('node' => 'node'));
+    variable_set('search_default_module', 'node');
+
+  }
+
+
+  public function testBibdkCustomSearchPreprocessCreatePage() {
+
+    // Test creation of a custom search page.
+    $edit = array();
+    $page_title = $edit['bibdk_custom_search[0][page_title]'] = $this->randomName(8);
+    $this->drupalPost('admin/config/search/bibdk_custom_search', $edit, t('Save'));
+    /* US1083-test
+    $this->assertText(
+      t('The page "@page" have been created.', array('@page' => $edit['bibdk_custom_search[0][page_title]']))
+    ); */
+
+    // Test creation of a custom search element.
+    $edit = array();
+    $element_title = $edit['bibdk_custom_search_page_elements[0][element_title]'] = $this->randomName(8);
+    $this->drupalPost('admin/config/search/bibdk_custom_search/elements', $edit, t('Save'));
+    /* US1083-test
+    $this->assertText(
+      t('The element "@element" have been created.', array('@element' => $edit['bibdk_custom_search_page_elements[0][element_title]']))
+    ); */
+
+    // Test creation of a custom search value.
+    $edit = array();
+    $value_test_1 = $edit['bibdk_custom_search[0][value_title]'] = $this->randomName(8);
+    $this->drupalPost('admin/config/search/bibdk_custom_search/values', $edit, t('Save'));
+    /* US1083-test
+    $this->assertText(
+      t('The value "@value" have been created.', array('@value' => $edit['bibdk_custom_search[0][value_title]']))
+    ); */
+    $edit = array();
+    $value_test_2 = $edit['bibdk_custom_search[1][value_title]'] = $this->randomName(8);
+    $this->drupalPost('admin/config/search/bibdk_custom_search/values', $edit, t('Save'));
+    /* US1083-test
+    $this->assertText(
+      t('The value "@value" have been created.', array('@value' => $edit['bibdk_custom_search[1][value_title]']))
+    ); */
+
+    // Test editing a custom search value.
+    $v_uuid_1 = 'webtest-value-1';
+    $v_uuid_2 = 'webtest-value-2';
+    db_update('bibdk_custom_search_values')->fields(array(
+        'v_uuid' => $v_uuid_1
+      )
+    )->condition('vid', 1, '=')->execute();
+    db_update('bibdk_custom_search_values')->fields(array(
+        'v_uuid' => $v_uuid_2
+      )
+    )->condition('vid', 2, '=')->execute();
+
+    $edit = array();
+    $edit['element_value[value_type]'] = 'textfield';
+    $search_code_1 = $edit['element_value[search_code]'] = 'search_code_test_1';
+    $default_value_1 = $edit['element_value[default_value]'] = 'default_value_test_1';
+    $this->drupalPost('admin/config/search/bibdk_custom_search/values/' . $v_uuid_1 . '/edit', $edit, t('Save'));
+    $this->assertFieldByName(
+      'element_value[value_type]',
+      $edit['element_value[value_type]'],
+      t('The value "@value_title" have been set to a type "@type".', array('@value_title' => $value_test_1, '@type'=>$edit['element_value[value_type]']))
+    );
+    $this->assertFieldByName(
+      'element_value[search_code]',
+      $edit['element_value[search_code]'],
+      t('The value "@value_title" have been assigned a search code "@code".', array('@value_title' => $value_test_1, '@code'=>$edit['element_value[search_code]']))
+    );
+    $this->assertFieldByName(
+      'element_value[default_value]',
+      $edit['element_value[default_value]'],
+      t('The value "@value_title" have been assigned a search code "@code".', array('@value_title' => $value_test_1, '@code'=>$edit['element_value[default_value]']))
+    );
+    $edit = array();
+    $edit['element_value[value_type]'] = 'textfield';
+    $search_code_2 = $edit['element_value[search_code]'] = 'search_code_test_2';
+    $default_value_2 = $edit['element_value[default_value]'] = 'default_value_test_2';
+    $this->drupalPost('admin/config/search/bibdk_custom_search/values/' . $v_uuid_2 . '/edit', $edit, t('Save'));
+    $this->assertFieldByName(
+      'element_value[value_type]',
+      $edit['element_value[value_type]'],
+      t('The value "@value_title" have been set to a type "@type".', array('@value_title' => $value_test_2, '@type'=>$edit['element_value[value_type]']))
+    );
+    $this->assertFieldByName(
+      'element_value[search_code]',
+      $edit['element_value[search_code]'],
+      t('The value "@value_title" have been assigned a search code "@code".', array('@value_title' => $value_test_2, '@code'=>$edit['element_value[search_code]']))
+    );
+    $this->assertFieldByName(
+      'element_value[default_value]',
+      $edit['element_value[default_value]'],
+      t('The value "@value_title" have been assigned a search code "@code".', array('@value_title' => $value_test_2, '@code'=>$edit['element_value[default_value]']))
+    );
+
+    // Test editing a custom search element.
+    $e_uuid_1 = 'webtest-element-1';
+    $e_uuid_2 = 'webtest-element-2';
+    db_update('bibdk_custom_search_elements')->fields(array(
+        'e_uuid' => $e_uuid_1
+      )
+    )->condition('eid', 1, '=')->execute();
+    db_update('bibdk_custom_search_elements')->fields(array(
+        'e_uuid' => $e_uuid_2
+      )
+    )->condition('eid', 2, '=')->execute();
+
+    $edit = array();
+    $element_label = $edit['bibdk_custom_search_page_element[element_label]'] = $this->randomName(8);
+    $this->drupalPost('admin/config/search/bibdk_custom_search/elements/' . $e_uuid_1 . '/edit', $edit, t('Save'));
+    $this->assertFieldByName(
+      'bibdk_custom_search_page_element[element_label]',
+      $edit['bibdk_custom_search_page_element[element_label]'],
+      t('The element "@element_title" have been assigned a label "@val".', array('@element_title' => $element_title, '@val'=>$edit['bibdk_custom_search_page_element[element_label]']))
+    );
+
+    // Test adding a value to a custom search element.
+    $edit = array();
+    $edit['bibdk_custom_search_page_element_values[0][v_uuid]'] = $v_uuid_1;
+    $this->drupalPost('admin/config/search/bibdk_custom_search/elements/' . $e_uuid_1 . '/edit', $edit, t('Save'));
+    $this->assertText($value_test_1);
+    $this->assertLinkByHref(
+      'admin/config/search/bibdk_custom_search/values/' . $v_uuid_1 . '/edit'
+    );
+    $edit = array();
+    $edit['bibdk_custom_search_page_element_values[1][v_uuid]'] = $v_uuid_2;
+    $this->drupalPost('admin/config/search/bibdk_custom_search/elements/' . $e_uuid_1 . '/edit', $edit, t('Save'));
+    $this->assertText($value_test_2);
+    $this->assertLinkByHref(
+      'admin/config/search/bibdk_custom_search/values/' . $v_uuid_2 . '/edit'
+    );
+
+    // Test editing a custom search page.
+    $value = db_select('bibdk_custom_search', 't')->fields('t', array('p_uuid'))->condition('pid', 1, '=')->execute()->fetchAssoc();
+    $p_uuid = $value['p_uuid'];
+    $edit = array();
+    $frontpage = variable_get('site_frontpage', 'node');
+    $edit['page[menu_title]'] = $this->randomName(8);
+    $page_path = $edit['page[page_path]'] = $frontpage;
+    $this->drupalPost('admin/config/search/bibdk_custom_search/' . $p_uuid . '/edit', $edit, t('Save'));
+    $this->assertFieldByName(
+      'page[menu_title]',
+      $edit['page[menu_title]'],
+      t('The page "@page_title" have been assigned a menu title "@val".', array('@page_title' => $page_title, '@val'=>$edit['page[menu_title]']))
+    );
+    $this->assertFieldByName(
+      'page[page_path]',
+      $edit['page[page_path]'],
+      t('The page "@page_title" have been assigned a path "@val".', array('@page_title' => $page_title, '@val'=>$edit['page[page_path]']))
+    );
+
+    // Test adding an element to a custom search page.
+    $edit = array();
+    $edit['elements[0][e_uuid]'] = $e_uuid_1;
+    $edit['elements[0][region]'] = 'main';
+    $this->drupalPost('admin/config/search/bibdk_custom_search/' . $p_uuid . '/edit', $edit, t('Save'));
+    $this->assertText($element_title);
+    $this->assertLinkByHref(
+      'admin/config/search/bibdk_custom_search/elements/' . $e_uuid_1 . '/edit'
+    );
+
+    // Test a custom search page form.
+    $this->drupalGet($page_path);
+    $this->assertFieldByName(
+      'search_block_form'
+    );
+    $this->assertText($element_label,t('The element label "@element_label" was found',array('@element_label'=>$element_label)));
+    /* US1083-test
+    $this->assertFieldByName(
+      'term'.$v_uuid_1
+    );
+    $this->assertFieldByName(
+      'term'.$v_uuid_2
+    );
+    */
+
+    $edit = array();
+    $edit['search_block_form'] = $this->randomName(8);
+    $this->drupalPost($page_path, $edit, t('Search'));
+
+    $keys_value = $edit['search_block_form'] . ' and (webtest=default_value_test_1_2 and search_code_test_1=default_value_test_1 and search_code_test_2=default_value_test_2)';
+    /* US1083-test
+    $this->assertFieldByName(
+      'keys',
+      $keys_value,
+      t('The search included the preprocessed search expression "webtest=default_value_test_1_2".', array())
+    );
+    */
+
+  }
+
+}
+
+class BibdkCustomSearchPreprocessUnitTestCase extends DrupalUnitTestCase {
+  public static function getInfo() {
+    return array(
+      'name' => 'Bibdk Custom Search Preprocess',
+      'description' => 'Bibdk Custom Search Preprocess unittest.',
+      'group' => 'Bibliotek.dk  - Custom Search',
+    );
+  }
+
+  public function setUp() {
+    parent::setUp();
+    module_load_include('module', 'bibdk_custom_search_preprocess');
+    module_load_include('inc', 'ting_openformat', 'ting_openformat.search');
+  }
+
+  public function testFoo() {
+    $no_match = array(
+      'dkcclterm.lo' => array('test', 'test2'),
+    );
+    $op = ' and ';
+    $result_no_match = _bibdk_custom_search_preprocess_foo($no_match, $op);
+    $this->assertTrue($no_match == $result_no_match, 'No preproccessing of dkcclterm.fo has happened.');
+
+    $match1 = array(
+      'dkcclterm.fo' => array('foo1'),
+    );
+    $result1 = _bibdk_custom_search_preprocess_foo($match1, $op);
+    $this->assertTrue(isset($result1['#preprocessed']) && is_array($result1['#preprocessed']), 'Preprocessing has happened of dkcclterm.fo.');
+    $this->assertTrue($result1['#preprocessed'][0] == '(dkcclterm.fo=(foo1))', 'Single dkcclterm.fo process.');
+    $this->assertFalse(isset($result1['dkcclterm.fo']), 'dkcclterm.fo removed when preproccessing is done.');
+
+    $match2 = array(
+      'dkcclterm.fo' => array('foo1', 'foo2'),
+    );
+    $result2 = _bibdk_custom_search_preprocess_foo($match2, $op);
+    $this->assertTrue(isset($result2['#preprocessed']) && is_array($result2['#preprocessed']), 'Preprocessing has happened of dkcclterm.fo.');
+    $this->assertTrue($result2['#preprocessed'][0] == "(dkcclterm.fo=(foo1)${op}dkcclterm.fo=(foo2))", 'Two dkcclterm.fo process.');
+    $this->assertFalse(isset($result2['dkcclterm.fo']), 'dkcclterm.fo removed when preproccessing is done.');
+
+    $non_array = array(
+      'dkcclterm.fo' => 'test',
+    );
+    $result_non = _bibdk_custom_search_preprocess_foo($non_array, $op);
+    $this->assertTrue($result_non == $non_array, 'dkcclterm.fo not preprocessed if not array.');
+  }
+
+  public function testYear() {
+    $no_year = array();
+    $no_result = _bibdk_custom_search_preprocess_year($no_year);
+    $this->assertTrue($no_result == $no_year, 'No preproccessing of year comparison.');
+
+    $year_value_only = array(
+      'year.value' => array('2000'),
+    );
+    $value_only_result = _bibdk_custom_search_preprocess_year($year_value_only);
+    $this->assertTrue(isset($value_only_result['year.value']), 'No preprocessing with out year.op.');
+
+    $year_op_empty = array(
+      'year.value' => array('2000'),
+      'year.op' => '',
+    );
+    $remove_op = _bibdk_custom_search_preprocess_year($year_op_empty);
+    $this->assertFalse(isset($remove_op['year.op']), 'Removed year.op');
+    $this->assertFalse(isset($remove_op['year.value']), 'Removed year.value');
+
+    $year_op_after = array(
+      'year.value' => array('2000'),
+      'year.op' => array('year_gt'),
+    );
+    $after = _bibdk_custom_search_preprocess_year($year_op_after);
+    $this->assertTrue($after['#preprocessed'][0] == 'dkcclterm.år>2000', 'After 2000.');
+
+    $year_op_before = array(
+      'year.value' => array('2000'),
+      'year.op' => array('year_lt'),
+    );
+    $before = _bibdk_custom_search_preprocess_year($year_op_before);
+    $this->assertTrue($before['#preprocessed'][0] == 'dkcclterm.år<2000', 'Before 2000.');
+
+    $year_op_equal = array(
+      'year.value' => array('2000'),
+      'year.op' => array('year_eq'),
+    );
+    $equal = _bibdk_custom_search_preprocess_year($year_op_equal);
+    $this->assertTrue($equal['#preprocessed'][0] == 'dkcclterm.år=2000', 'In 2000.');
+
+  }
+
+  public function test_bibdk_custom_search_preprocess_query() {
+    $no_query = array();
+    $no_result = _bibdk_custom_search_preprocess_query($no_query);
+    $this->assertTrue($no_result == array(), 'No preprocessing query');
+
+    $query = array('query' => 'foo');
+    $query_processed = _bibdk_custom_search_preprocess_query($query);
+    $this->assertTrue($query_processed['#preprocessed'][0] == '(foo)', 'Query has been preprocessed');
+
+    $query = array('query' => '"foo bar"');
+    $query_processed = _bibdk_custom_search_preprocess_query($query);
+    $this->assertTrue($query_processed['#preprocessed'][0] == '("foo bar")', 'Query has been preprocessed');
+
+    $query = array('query' => 'foo bar');
+    $query_processed = _bibdk_custom_search_preprocess_query($query);
+    $this->assertTrue($query_processed['#preprocessed'][0] == '(foo and bar)', 'Query has been preprocessed');
+
+
+  }
+
+}

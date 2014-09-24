@@ -1,0 +1,175 @@
+<?php
+
+/**
+ * Implements hook_worktabs_items().
+ *
+ * @param bibdkWork $entity
+ */
+function bibdk_furthersearch_worktabs_items($entity) {
+  $tabs = array();
+  $content = bibdk_furthersearch_get_tab_content($entity);
+  $empty = count($content['table']['#rows']) == 0;
+
+  if ($empty) {
+    $content = array(
+      '#theme' => 'worktabs_no_content',
+      '#no_content' => $content['table']['#empty'],
+    );
+  }
+
+  $tabs['more-about']['further-search'] = array(
+    '#title' => t('further_search', array(), array('context' => 'bibdk_furthersearch')),
+    '#btn_txt_closed' => t('view_more', array(), array('context' => 'bibdk_furthersearch')),
+    '#content' => $content,
+    'weight' => 10,
+  );
+  return $tabs;
+}
+
+
+/**
+ * @param bibdkWork $entity
+ * @return array
+ */
+function bibdk_furthersearch_get_tab_content($entity) {
+  $furtherSearchArray = _bibdk_furthersearch_get_further_search($entity->getFurtherSearches());
+  $table = bibdk_furthersearch_get_table($furtherSearchArray, $entity->getId());
+  return $table;
+}
+
+/**
+ * @param array $furtherSearches
+ * @internal param \bibdkWork $entity
+ * @return array
+ */
+function _bibdk_furthersearch_get_further_search($furtherSearches) {
+  $furtherSearchArray = array();
+  $furtherSearchArray['types'] = isset($furtherSearches['furtherSearchType']) ? $furtherSearches['furtherSearchType'] : array();
+  $furtherSearchArray['elements'] = isset($furtherSearches['furtherSearchElement']) ? $furtherSearches['furtherSearchElement'] : array();
+  $furtherSearchArray['fictions'] = isset($furtherSearches['furtherSearchFiction']) ? $furtherSearches['furtherSearchFiction'] : array();
+  return $furtherSearchArray;
+}
+
+/**
+ * Returns table with checkboxes for further searches
+ *
+ * @param array $furtherSearchArray
+ * @param string $id
+ * @return array
+ */
+function bibdk_furthersearch_get_table($furtherSearchArray, $id) {
+  $header = array(
+    t('further_search_elements', array(), array('context' => 'bibdk_furthersearch')),
+    t('further_search_types', array(), array('context' => 'bibdk_furthersearch')),
+    t('further_search_fictions', array(), array('context' => 'bibdk_furthersearch')),
+  );
+
+  $rows = _bibdk_furthersearch_get_rows($furtherSearchArray);
+  $uid = _bibdk_furthersearch_trim_string($id);
+
+  $table['first_para'] = array(
+    '#type' => 'markup',
+    '#markup' => '<p class="further-search-helptext-top">' . t('further_search_helptext_top', array(), array('context' => 'bibdk_furthersearch') ) . '</p>',
+  );
+
+  $table['table'] = array(
+    '#theme' => 'table',
+    '#header' => $header,
+    '#rows' => $rows,
+    '#empty' => t('no_further_search_found', array(), array('context' => 'bibdk_furthersearch')),
+    '#attributes' => array(
+      'class' => array(
+        'further-search-table-' . $uid,
+      ),
+    ),
+  );
+
+  $table['last_para'] = array(
+    '#type' => 'markup',
+    '#markup' => '<p class="further-search-helptext-bottom">' . t('further_search_helptext_bottom', array(), array('context' => 'bibdk_furthersearch') ) . '</p>',
+  );
+
+  $table['submit'] = array(
+    '#theme' => 'button',
+    '#button_type' => 'submit',
+    '#value' => t('do_search', array(), array('context' => 'bibdk_furthersearch')),
+    '#attributes' => array(
+      'class' => array(
+        'further-search-btn',
+      ),
+      'data-id' => array(
+        $uid,
+      ),
+    ),
+    '#attached' => array(
+      'js' => array(
+        drupal_get_path('module', 'bibdk_furthersearch') . '/js/bibdk_furthersearch.js'
+      ),
+    ),
+  );
+
+  return $table;
+}
+
+/**
+ * Produces rows for the further search table displayed on manifestation level
+ *
+ * @param $furtherSearchArray
+ * @return array
+ */
+function _bibdk_furthersearch_get_rows($furtherSearchArray) {
+  $rows = array();
+
+  $types = array_values($furtherSearchArray['types']);
+  $elements = array_values($furtherSearchArray['elements']);
+  $fictions = array_values($furtherSearchArray['fictions']);
+
+  $length = max(count($types), count($elements), count($fictions));
+
+  for ($i = 0; $i < $length; $i++) {
+    $element = isset($elements[$i]) ? _bibdk_furthersearch_create_checkbox($elements[$i], 'element') : '';
+    $type = isset($types[$i]) ? _bibdk_furthersearch_create_checkbox($types[$i], 'type') : '';
+    $fiction = isset($fictions[$i]) ? _bibdk_furthersearch_create_checkbox($fictions[$i], 'fiction') : '';
+    $rows[] = array($element, $type, $fiction);
+  }
+  return $rows;
+}
+
+/**
+ * Returns one single checkbox representing a further search parameter
+ *
+ * @param array $element The element
+ * @param string $type
+ * @return string HTML for a checkbox
+ */
+function _bibdk_furthersearch_create_checkbox($element, $type) {
+  $checkbox = array(
+    '#theme' => 'checkbox',
+    '#attributes' => array(
+      'class' => array(
+        'further-search-checkbox',
+      ),
+      'data-code' => array(
+        ($type == 'type') ? str_replace(array('=', '"'), array(':', ''), $element['searchCode']) : $element['searchCode'],
+      ),
+      'data-type' => array(
+        $type
+      ),
+    ),
+  );
+
+  $output = drupal_render($checkbox);
+  $output .= $element['display'];
+
+  return $output;
+}
+
+/**
+ * Strips a string (pid) for :, -, __
+ *
+ * @param string $string
+ * @return string
+ */
+function _bibdk_furthersearch_trim_string($string) {
+  return strtolower(strtr($string, array(':' => '', '-' => '', '__' => '')));
+}

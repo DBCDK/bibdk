@@ -1,0 +1,228 @@
+<?php
+
+/**
+ * @file
+ * Code for bibdk_help search.
+ */
+include_once('bibdk_help.search.inc');
+
+
+/**
+ * Implements hook_help().
+ */
+function bibdk_help_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#bibdk_help';
+      $file = drupal_get_path('module', 'bibdk_help') . "/help/bibdk_help.html";
+      return $output = file_get_contents($file);
+    break;
+  }
+}
+
+
+/**
+ * Implements hook_block_info().
+ */
+function bibdk_help_block_info() {
+  // configure default menu for user help content.
+  $blocks['bibdk-help-topbar-menu'] = array(
+      'info' => t('Bibdk user help topbar block'),
+      'cache' => DRUPAL_CACHE_PER_PAGE,
+    );
+  $blocks['bibdk-help-topbar-menu-eng'] = array(
+      'info' => t('Bibdk user help topbar block (eng)'),
+      'cache' => DRUPAL_CACHE_PER_PAGE,
+    );
+  $blocks['bibdk-help-popup-menu'] = array(
+      'info' => t('Bibdk user help popup menu block'),
+      'cache' => DRUPAL_CACHE_PER_PAGE,
+    );
+  $blocks['bibdk-help-popup-menu-eng'] = array(
+      'info' => t('Bibdk user help popup menu block (eng)'),
+      'cache' => DRUPAL_CACHE_PER_PAGE,
+    );
+  $blocks['bibdk-help-form'] = array(
+      'info' => t('Bibdk user help search block'),
+      'cache' => DRUPAL_CACHE_PER_PAGE,
+    );
+  return $blocks;
+}
+
+
+/**
+ * Implements hook_block_view().
+ */
+function bibdk_help_block_view($delta = '') {
+  $block = array();
+  $language = '';
+  switch ($delta) {
+    case 'bibdk-help-topbar-menu-eng':
+      $language = 'eng';
+    case 'bibdk-help-topbar-menu':
+      drupal_add_css(
+        drupal_get_path('module', 'bibdk_help') . '/css/bibdk_help.css',
+        array('group' => CSS_DEFAULT,
+              'every_page' => TRUE)
+      );
+      $block['subject'] = t('Bibliotek.dk user help topbar links %lang', array('%lang' => ($language) ? '(' . $language . ')' : ''));
+      $menuname = 'user-help-topbar-menu' . (($language) ? '-' . $language : '');
+      $list = array('links' => menu_navigation_links($menuname),
+                    'attributes' => array('class' => array('menu', 'user-help-topbar-menu'))
+                   );
+      // first item in list ('Help') is defined in bibdk_help.install
+      foreach ($list['links'] as $key => $menu_item) {
+        // set class to make use of popup javascript
+        $list['links'][$key]['attributes']['class'][] = 'bibdk-popup-link';
+        $list['links'][$key]['attributes']['data-rel'][] = 'userhelp';
+        $list['links'][$key]['attributes']['id'][] = "selid-userhelp-$key";
+      }
+      $block['content'] = theme('theme-bibdk-help-topbar-menu', $list);
+      break;
+
+    case 'bibdk-help-popup-menu-eng':
+      $language = 'eng';
+    case 'bibdk-help-popup-menu':
+      drupal_add_css(
+        drupal_get_path('module', 'bibdk_help') . '/css/bibdk_help.css',
+        array('group' => CSS_DEFAULT,
+        'every_page' => TRUE)
+      );
+
+      $block['subject'] = t('Bibliotek.dk user help links %lang', array('%lang' => ($language) ? '(' . $language . ')' : ''));
+
+      $block['content']['help_menu_header']['#type'] = 'container';
+      $block['content']['help_menu_header']['#attributes'] = array('class' => array('help-menu-subheader'));
+      $block['content']['help_menu_header']['header_text']['#type'] = 'markup';
+      $block['content']['help_menu_header']['header_text']['#markup'] = t('help_menu_header', array(), array('context' => 'bibdk_help'));
+
+      $menu = menu_tree('user-help-menu' . (($language) ? '-' . $language : ''));
+      foreach ($menu as $key => $menu_item) {
+        // set path to overlay/help/%nodeid
+        $menu[$key] =  _replace_link($menu_item);
+      }
+      $menu['#attributes'] = array('class' => array('menu', 'user-help-menu'));
+      $block['content']['menu'] = $menu;
+
+      break;
+
+    case 'bibdk-help-form':
+      $block['subject'] = t('Bibliotek.dk user help search');
+      $block['content'] = drupal_get_form('bibdk_help_search_form');
+      break;
+  }
+  return $block;
+}
+
+function _replace_link($menu_item) {
+  if ( isset($menu_item['#href']) ) {
+    $menu_item['#href'] = str_replace('node/', 'overlay/help/', $menu_item['#href']);
+  }
+  if ( !empty($menu_item['#below']) ) {
+    foreach ($menu_item['#below'] as $key => $menu_item_below) {
+      $menu_item['#below'][$key] =  _replace_link($menu_item_below);
+    }
+  }
+  return $menu_item;
+}
+
+/**
+ * Implements hook_entity_info_alter().
+ *
+ * We need to modify the default node entity info by adding a new view mode to
+ * be used in functions like node_view() or node_build_content().
+ */
+function bibdk_help_entity_info_alter(&$entity_info) {
+  $entity_info['node']['view modes']['bibdk_help_list'] = array(
+    'label' => t('User helptext list'),
+    'custom settings' => TRUE,
+  );
+}
+
+
+/**
+ * Implements hook_theme().
+ */
+function bibdk_help_theme($existing, $type, $theme, $path) {
+  $path = drupal_get_path('module', 'bibdk_help') . '/theme';
+  return array(
+   'theme-bibdk-help-topbar-menu' => array(
+     'template'    => 'bibdk-help-topbar-menu',
+     'path'        => $path,
+   ),
+  );
+}
+
+
+/**
+ * Implement hook_ctools_plugin_api().
+ *
+ * CTools will pick up default panels pages in <modulename>.pages_default.inc
+ */
+function bibdk_help_ctools_plugin_api($module, $api) {
+  if ($module == 'panels_mini' && $api == 'panels_default') {
+    return array('version' => 1);
+  }
+  if ($module == 'page_manager' && $api == 'pages_default') {
+    return array('version' => 1);
+  }
+}
+
+
+/*
+* Implements hook_ctools_plugin_directory()
+*/
+function bibdk_help_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'ctools' && !empty($plugin)) {
+    return "plugins/$plugin";
+  }
+}
+
+/**
+ * userhelp  Implements hook_form_
+ * form_userhelp_ID_alter() for form userhelp_form.
+ */
+function bibdk_help_form_userhelp_node_form_alter(&$form, &$form_state, $form_id) {
+  // Invoke all hooks for user_help_list
+  $liste = module_invoke_all('user_help_list');
+  // set help combobox
+  $liste = array_merge(array(''=>t('choose_userhelp_type')), $liste);
+  $form['field_user_help_list']['und']['#options'] = $liste;
+  
+  // Set defaultvalue for combobox
+  if ( isset($form['#node']->field_user_help_list['und']['0']['value']) ) {
+    $form['field_user_help_list']['und']['#default_value'] = $form['#node']->field_user_help_list['und']['0']['value'];
+  }
+}
+
+/**
+ * Get helptext from from userhelp db
+ *
+ * @param $helpvalue (label for helpvalue)
+ * @return helptext
+ */
+function bibdk_help_get_help_text_from_db($helpvalue) {
+  global $language;
+
+  // default type is userhelp
+  $type = 'userhelp';
+
+  $query = new EntityFieldQuery();
+  $entities = $query->entityCondition('entity_type', 'node')
+    ->propertyCondition('type', $type)
+    ->propertyCondition('language', $language->language)
+    ->execute();
+
+  if(!isset($entities['node']))
+    return '';
+
+  foreach ($entities['node'] as $record) {
+    $node = node_load($record->nid);
+    if (isset($node->field_user_help_list['und'][0]['value'])) {
+      if ($helpvalue == $node->field_user_help_list['und'][0]['value']) {
+        return $node->body['und'][0]['value'];
+      }
+    }  
+  }
+  return '';
+}
+

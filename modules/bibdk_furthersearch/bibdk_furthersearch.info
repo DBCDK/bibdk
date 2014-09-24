@@ -1,0 +1,9 @@
+name = Bibliotek.dk - Further Search
+description = Adds a link on manifestations for further search
+core = 7.x
+version = 7.x-0.8
+package = Bibliotek.dk
+
+dependencies[] = ting_openformat
+
+files[] = test/bibdk_furthersearch.test

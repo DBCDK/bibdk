@@ -1,0 +1,263 @@
+<?php
+
+/**
+ * @file
+ * Install file for the bibdk_newsroom module.
+ *
+ * The definition of the fields for the module is here,
+ * @see http://drupal.org/node/707832
+ * @see http://drupal.org/node/443536
+ * @see field
+ * @see http://drupalcontrib.org/api/drupal/contributions!every_field!every_field.install/7
+ */
+
+/**
+ * Implements hook_install().
+ *
+ * - Add the body field.
+ * - Configure the body field.
+ *
+ * @see node_type_set_defaults()
+ * @see field_info_instance()
+ * @see field_update_instance()
+ * @see field_create_field()
+ * @see field_create_instance()
+ */
+function bibdk_newsroom_install() {
+  $t = get_t();
+
+  // Custom menu for newsroom content.
+  $newsroom_menu = array(
+    'menu_name'   => 'bibdk-newsroom-menu',
+    'title'       => 'Bibliotek.dk newsroom menu',
+    'description' => 'User newsroom menu',
+  );
+  menu_save($newsroom_menu);
+
+  // Custom menu for newsroom content.
+  $newsroom_menu = array(
+    'menu_name'   => 'bibdk-newsroom-menu-eng',
+    'title'       => 'Bibliotek.dk newsroom menu (eng)',
+    'description' => 'User newsroom menu (english)',
+  );
+  menu_save($newsroom_menu);
+
+  // add menu item for topbar user help menu.
+  $item = array(
+    'menu_name'   => 'user-help-topbar-menu',
+    'link_path'   => drupal_get_normal_path('overlay/newsroom'),
+    'link_title'  => $t('Presserum'),
+    'router_path' => 'overlay/newsroom',
+    'depth'       => '1',
+    'customized'  => '1',
+    'language'    => 'da',
+  );
+  menu_link_save($item);
+
+  // add menu item for topbar user help menu.
+  $item = array(
+    'menu_name'   => 'user-help-topbar-menu-eng',
+    'link_path'   => drupal_get_normal_path('overlay/newsroom'),
+    'link_title'  => $t('Newsroom'),
+    'router_path' => 'overlay/newsroom',
+    'depth'       => '1',
+    'customized'  => '1',
+    'language'    => 'en-gb',
+  );
+  menu_link_save($item);
+
+  menu_cache_clear_all();
+
+  // configure default menu for newsroom content.
+  $menu_options_newsroom['0'] = 'bibdk-newsroom-menu';
+  $menu_options_newsroom['1'] = 'bibdk-newsroom-menu-eng';
+  variable_set('menu_options_bibdk_newsroom', $menu_options_newsroom);
+  $menu_parent_newsroom = 'bibdk-newsroom-menu:0';
+  variable_set('menu_parent_bibdk_newsroom', $menu_parent_newsroom);
+
+  $newsroom = array(
+    'type' => 'bibdk_newsroom',
+    'name' => $t('Newsroom'),
+    'base' => 'node_content',
+    'description' => $t('Bibliotek.dk newsroom node type.'),
+    'title_label' => $t('Bibliotek.dk newsroom title'),
+    'custom' => TRUE,
+    'language_content_type' => 2,
+  );
+
+  // Complete the node type definition by setting any defaults not explicitly declared above.
+  // http://api.drupal.org/api/function/node_type_set_defaults/7
+  $content_type = node_type_set_defaults($newsroom);
+
+  //We add a body field and set the body label immediately.
+  node_add_body_field($content_type, $t('User newsroom body'));
+
+  // Save the content type
+  node_type_save($content_type);
+
+  // Load the instance definition for our content type's body
+  // http://api.drupal.org/api/function/field_info_instance/7
+  $body_instance = field_info_instance('node', 'body', 'bibdk_newsroom');
+
+  // Add our bibdk_newsroom_list view mode to the body instance display by
+  // instructing the body to display as a summary
+  $body_instance['display']['bibdk_newsroom_list'] = array(
+    'label' => 'hidden',
+    'type' => 'text_summary_or_trimmed',
+  );
+
+  // Save our changes to the body field instance.
+  // http://api.drupal.org/api/function/field_update_instance/7
+  field_update_instance($body_instance);
+
+  // Create all the fields we are adding to our content type.
+  // http://api.drupal.org/api/function/field_create_field/7
+  foreach (_bibdk_newsroom_installed_fields() as $field) {
+    field_create_field($field);
+  }
+
+  // Create all the instances for our fields.
+  // http://api.drupal.org/api/function/field_create_instance/7
+  foreach (_bibdk_newsroom_installed_instances() as $instance) {
+    $instance['entity_type'] = 'node';
+    $instance['bundle'] = $newsroom['type'];
+    field_create_instance($instance);
+  }
+
+}
+
+
+/**
+ * Implements hook_enable().
+ */
+function bibdk_newsroom_enable() {
+
+  $search_active_modules = variable_get('search_active_modules');
+  $search_active_modules['bibdk_newsroom'] = 'bibdk_newsroom';
+  variable_set('search_active_modules', $search_active_modules);
+
+}
+
+
+/**
+ * Implements hook_uninstall().
+ */
+function bibdk_newsroom_uninstall() {
+
+  // Custom menu for newsroom content.
+  $newsroom_menu = array(
+    'menu_name'   => 'bibdk-newsroom-menu',
+    'title'       => 'Bibliotek.dk newsroom menu',
+    'description' => 'User newsroom menu',
+  );
+  menu_delete($newsroom_menu);
+
+  // Custom menu for newsroom content.
+  $newsroom_menu = array(
+    'menu_name'   => 'bibdk-newsroom-menu-eng',
+    'title'       => 'Bibliotek.dk newsroom menu (eng)',
+    'description' => 'User newsroom menu (english)',
+  );
+  menu_delete($newsroom_menu);
+
+  menu_link_delete(NULL, drupal_get_normal_path('overlay/newsroom'));
+
+  $sql = 'SELECT nid FROM {node} n WHERE n.type = :type';
+  $result = db_query($sql, array(':type' => 'bibdk_newsroom'));
+  $nids = array();
+  foreach ($result as $row) {
+    $nids[] = $row->nid;
+  }
+
+  // Delete all the nodes at once
+  // http://api.drupal.org/api/function/node_delete_multiple/7
+  node_delete_multiple($nids);
+
+  // Loop over each of the fields defined by this module and delete
+  // all instances of the field, their data, and the field itself.
+  // http://api.drupal.org/api/function/field_delete_field/7
+  foreach (array_keys(_bibdk_newsroom_installed_fields()) as $field) {
+    field_delete_field($field);
+  }
+
+  // Loop over any remaining field instances attached to the node_example
+  // content type (such as the body field) and delete them individually.
+  // http://api.drupal.org/api/function/field_delete_field/7
+  $instances = field_info_instances('node', 'bibdk_newsroom');
+  foreach ($instances as $instance_name => $instance) {
+    field_delete_instance($instance);
+  }
+
+  // Delete our content type
+  // http://api.drupal.org/api/function/node_type_delete/7
+  node_type_delete('bibdk_newsroom');
+
+  // Purge all field information
+  // http://api.drupal.org/api/function/field_purge_batch/7
+  field_purge_batch(1000);
+
+}
+
+
+
+/**
+ * Returns a structured array defining the fields created by this content type.
+ *
+ * @return
+ *  An associative array specifying the fields we wish to add to our new node type.
+ */
+function _bibdk_newsroom_installed_fields() {
+
+  $t = get_t();
+  
+  return array(
+  
+    // File and Image.
+    'newsroom_field_file' => array(
+      'field_name' => 'newsroom_field_file', 
+      'type' => 'file', 
+      'cardinality' => 1,
+    ), 
+    'newsroom_field_image' => array(
+      'field_name' => 'newsroom_field_image', 
+      'type' => 'image', 
+      'cardinality' => 1,
+    ),
+
+  );
+}
+
+/**
+ * Returns a structured array defining the instances for this content type.
+ *
+ * @return
+ *  An associative array specifying the instances we wish to add to our node type.
+ */
+function _bibdk_newsroom_installed_instances() {
+
+  $t = get_t();
+
+  return array(
+
+    // File and Image.
+    'newsroom_field_file' => array(
+      'field_name' => 'newsroom_field_file', 
+      'label' => $t('Upload a file'), 
+      'widget' => array(
+        'type' => 'file_file',
+      ),
+    ), 
+    'newsroom_field_image' => array(
+      'field_name' => 'newsroom_field_image', 
+      'label' => $t('Upload an image'), 
+      'required' => FALSE, 
+      'widget' => array(
+        'type' => 'image_image',
+      ),
+    ),
+
+  );
+
+}
+
+

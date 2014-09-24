@@ -1,0 +1,8 @@
+name = ajax error handler
+description = Handles ajax errors; adds ability to log from javascript to watchdog
+core = 7.x
+version = 7.x-0.3
+package = Bibdk Frontend
+project = bibliotekdk
+files[] = bibdk_jslog.test
+scripts[] = js/ajaxErrors.js
