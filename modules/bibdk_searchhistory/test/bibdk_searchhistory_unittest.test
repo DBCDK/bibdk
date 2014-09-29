@@ -14,25 +14,6 @@ class BibdkSearchHistoryUnitTest extends DrupalUnitTestCase {
     parent::setUp();
   }
 
-  public function testFormatCombineString() {
-    module_load_include('inc', 'bibdk_searchhistory', 'bibdk_searchhistory.form');
-    $pairs = array(
-      'one' => 'one',
-      'one ' => 'one ',
-      'one two' => '(one two)',
-      '(one two)' => '(one two)',
-      '(one) two' => '((one) two)',
-      'one (two)' => '(one (two))',
-      '(one) (two)' => '((one) (two))',
-      '(one)two' => '((one)two)',
-      'one(two)' => '(one(two))',
-    );
-
-    foreach ($pairs as $input => $expected) {
-      $this->assertEqual(_bibdk_searchhistory_format_combine_string($input), $expected, 'String combination succeeded');
-    }
-  }
-
   public function testBibdk_searchhistory_accecpted_param() {
     module_load_include('form.inc', 'bibdk_searchhistory');
     $arr = array();
