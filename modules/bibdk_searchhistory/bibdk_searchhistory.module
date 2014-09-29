@@ -114,7 +114,6 @@ function bibdk_searchhistory_ting_openformat_search_results($keys, $searchsresul
     'count' => isset($searchsresult->numTotalObjects) ? $searchsresult->numTotalObjects : 0,
     'timestamp' => time(),
   );
-  dpm($element);
   BibdkSearchHistory::addElementToSession($element);
 }
 
