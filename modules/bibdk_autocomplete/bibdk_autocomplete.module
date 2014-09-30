@@ -4,7 +4,6 @@
  * Code for Bibliotek.dk Autocomplete
  */
 
-
 /**
  * Implements hook_menu().
  */
@@ -32,28 +31,27 @@ function bibdk_autocomplete_menu() {
 
 }
 
-
 function bibdk_autocomplete($p_uuid, $v_uuid, $string) {
 
   $items = array();
   $settings = variable_get('bibdk_autocomplete_settings', array());
-  $url  = variable_get('bibdk_autocomplete_rest_url', NULL);
+  $url = variable_get('bibdk_autocomplete_rest_url', NULL);
   $vars = variable_get('bibdk_autocomplete_var', array());
 
   $value_vars = $vars[$p_uuid]['vars'][$v_uuid];
   unset($value_vars['autocomplete']);
 
-  if ( empty($value_vars['index']) ) {
+  if (empty($value_vars['index'])) {
     watchdog('bibdk_autocomplete', 'Autocomplete index not defined for value uuid ' . $v_uuid, array(), $severity = WATCHDOG_WARNING);
     return drupal_json_output(array());
   }
-  
-  $url = ( $value_vars['facetIndex'] ) ? $url . '/facets' : $url . '/terms';
-  
-  $settings['highlight'] = ( $settings['highlight'] ) ? 'true' : NULL;
+
+  $url = ($value_vars['facetIndex']) ? $url . '/facets' : $url . '/terms';
+
+  $settings['highlight'] = ($settings['highlight']) ? 'true' : NULL;
 
   $options['query'] = array('query' => check_plain($string)) + $value_vars + $settings;
-  
+
   $url = url($url, $options);
   watchdog('bibdk_autocomplete', 'Autocomplete URL sent: ' . $url, array(), $severity = WATCHDOG_DEBUG);
 
@@ -61,9 +59,9 @@ function bibdk_autocomplete($p_uuid, $v_uuid, $string) {
   $result = json_decode($curl->get(array($url)));
   $curl->close();
 
-  if ( !empty($result->suggestions) ) {
-    foreach ( $result->suggestions as $suggestion ) {
-      $items[ bibdk_autocomplete_truncate(html_entity_decode(strip_tags($suggestion->suggestion)), 64) ] = $suggestion->suggestion ;
+  if (!empty($result->suggestions)) {
+    foreach ($result->suggestions as $suggestion) {
+      $items[bibdk_autocomplete_truncate(html_entity_decode(strip_tags($suggestion->suggestion)), 64)] = $suggestion->suggestion;
     }
   }
   else {
@@ -73,7 +71,6 @@ function bibdk_autocomplete($p_uuid, $v_uuid, $string) {
   // Return the result to the form in json
   drupal_json_output($items);
 }
-
 
 /**
  * helper function for bibdk_autocomplete()
@@ -86,7 +83,9 @@ function bibdk_autocomplete_truncate($string, $width) {
   $last_part = 0;
   for (; $last_part < $parts_count; ++$last_part) {
     $length += strlen($parts[$last_part]);
-    if ($length > $width) { break; }
+    if ($length > $width) {
+      break;
+    }
   }
 
   return implode(array_slice($parts, 0, $last_part));
@@ -97,29 +96,29 @@ function bibdk_autocomplete_truncate($string, $width) {
  */
 function bibdk_autocomplete_form_search_block_form_alter(&$form, &$form_state, $form_id) {
 
-  $page_path = ( !empty($form['page_id']['#default_value']) ) ? $form['page_id']['#default_value'] : ((isset($_GET['q'])) ? $_GET['q'] : NULL);
+  $page_path = (!empty($form['page_id']['#default_value'])) ? $form['page_id']['#default_value'] : ((isset($_GET['q'])) ? $_GET['q'] : NULL);
 
   $autocomplete_elements = variable_get('bibdk_autocomplete_var', array());
 
-  foreach ( $autocomplete_elements as $key => $page ) {
-    if ( $page['page_path'] == $page_path ) {
+  foreach ($autocomplete_elements as $key => $page) {
+    if ($page['page_path'] == $page_path) {
       $vars = $page['vars'];
       $p_uuid = $key;
     }
   }
 
-  if ( !empty($vars) ) {
-    foreach ( $vars as $v_uuid => $values ) {
-      if ( !empty($form['advanced']) && !empty($form['advanced']['main']) ) {
-        foreach ( $form['advanced']['main'] as $element_label => $elements ) {
+  if (!empty($vars)) {
+    foreach ($vars as $v_uuid => $values) {
+      if (!empty($form['advanced']) && !empty($form['advanced']['main'])) {
+        foreach ($form['advanced']['main'] as $element_label => $elements) {
           bibdk_autocomplete_set_path($form, $elements, $element_label, $values, $p_uuid, $v_uuid, 'main');
         }
-      } 
+      }
       else {
         watchdog('bibdk_autocomplete', 'Custom search elements not set. Check module weight', array(), $severity = WATCHDOG_NOTICE);
       }
-      if ( !empty($form['advanced']) && !empty($form['advanced']['expand']) ) {
-        foreach ( $form['advanced']['expand'] as $element_label => $elements ) {
+      if (!empty($form['advanced']) && !empty($form['advanced']['expand'])) {
+        foreach ($form['advanced']['expand'] as $element_label => $elements) {
           bibdk_autocomplete_set_path($form, $elements, $element_label, $values, $p_uuid, $v_uuid, 'expand');
         }
       }
@@ -129,19 +128,14 @@ function bibdk_autocomplete_form_search_block_form_alter(&$form, &$form_state, $
   return $form;
 }
 
-
 /**
  * helper function for hook_form_FORM_ID_alter()
  */
 function bibdk_autocomplete_set_path(&$form, $elements, $element_label, $values, $p_uuid, $v_uuid, $region = 'main') {
-  if ( is_array($elements) ) {
-    foreach ( $elements as $element_uuid => $element_val ) {
-      foreach ( $element_val as $element_key => $element_var ) {
-        if (
-          is_array($element_var) &&
-          isset($element_var['#id']) &&
-          $element_var['#id'] == $values['id'] &&
-          $values['autocomplete']
+  if (is_array($elements)) {
+    foreach ($elements as $element_uuid => $element_val) {
+      foreach ($element_val as $element_key => $element_var) {
+        if (is_array($element_var) && isset($element_var['#id']) && $element_var['#id'] == $values['id'] && $values['autocomplete']
         ) {
           $form['advanced'][$region][$element_label][$element_uuid][$element_key]['#autocomplete_path'] = 'bibdk/autocomplete/' . $p_uuid . '/' . $v_uuid;
         }
@@ -149,7 +143,6 @@ function bibdk_autocomplete_set_path(&$form, $elements, $element_label, $values,
     }
   }
 }
-
 
 /**
  * Implements hook_help().
@@ -159,7 +152,7 @@ function bibdk_autocomplete_help($path, $arg) {
     case 'admin/help#bibdk_autocomplete';
       $file = drupal_get_path('module', 'bibdk_autocomplete') . "/help/bibdk_autocomplete.html";
       return $output = file_get_contents($file);
-    break;
+      break;
   }
 }
 
