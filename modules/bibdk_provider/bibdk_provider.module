@@ -6,7 +6,7 @@ require_once('bibdk_provider.wayf.inc');
 /**
  * implements hook_menu()
  */
-function bibdk_provider_menu(){
+function bibdk_provider_menu() {
   $items['user/wayf/%/confirm/%/%'] = array(
     'title' => 'Verify WAYF/NEMID',
     'page callback' => 'drupal_get_form',
@@ -73,7 +73,7 @@ function bibdk_provider_user_register_form_validate(&$form, &$form_state) {
  */
 function bibdk_provider_form_user_register_form_submit($form, &$form_state) {
   $email = $form_state['values']['mail'];
-  if (bibdk_provider_register_new_user($email)){
+  if (bibdk_provider_register_new_user($email)) {
     $form_state['redirect'] = '';
   }
 }
@@ -84,7 +84,7 @@ function bibdk_provider_form_user_register_form_submit($form, &$form_state) {
  *
  * @param $email
  */
-function bibdk_provider_register_new_user($email){
+function bibdk_provider_register_new_user($email) {
   $account = _ding_user_create_account($email, array());
   bibdk_provider_user_create_account($email, $account->pass);
 
@@ -104,7 +104,7 @@ function bibdk_provider_register_new_user($email){
  */
 function bibdk_provider_user_login(&$edit, $account) {
   if ($account) {
-    if (arg(0) == 'user' && arg(1) == 'reset'){
+    if (arg(0) == 'user' && arg(1) == 'reset') {
       $creds = array(
         'creds' => array(
           'name' => $account->mail,
@@ -152,12 +152,13 @@ function bibdk_provider_form_user_profile_form_alter(&$form, &$form_state) {
  * impletements hook_form_validate()
  *
  * Check if password has minimum length
+ *
  * @param $form
  * @param $form_state
  */
 function _bibdk_provider_user_profile_form_validate($form, &$form_state) {
   // check if password i min. 6 characters
-  if(!empty($form_state['values']['pass'])){
+  if (!empty($form_state['values']['pass'])) {
     if (strlen($form_state['values']['pass']) < $form['account']['pass']['#minlength']) {
       form_set_error('pass', t('Password must be !length characters or more', array('!length' => $form['account']['pass']['#minlength']), array('context' => 'bibdk_provider')));
     }
@@ -166,6 +167,7 @@ function _bibdk_provider_user_profile_form_validate($form, &$form_state) {
 
 /**
  * submits user_profile_form
+ *
  * @see user_profile_form
  *
  * Updates password on provider user
@@ -181,6 +183,7 @@ function _bibdk_provider_user_profile_form_submit($form, &$form_state) {
 }
 
 /** Implements hook_form_FORM_ID_alter()
+ *
  * @param $form
  * @param $form_state
  * @param $form_id
@@ -217,10 +220,11 @@ function bibdk_provider_user_cancel_form_submit($form, &$form_state) {
 }
 
 /** implements hook_user_id_from_voxb_id (@see bibdk_voxb.node.inc)
+ *
  * @param $voxbid
  */
-function bibdk_provider_user_id_from_voxb_id($voxbid){
-  $ret =bibdk_provider_user_verify_voxb($voxbid);
+function bibdk_provider_user_id_from_voxb_id($voxbid) {
+  $ret = bibdk_provider_user_verify_voxb($voxbid);
   return $ret;
 }
 
@@ -354,7 +358,7 @@ function bibdk_provider_settings_form() {
 }
 
 /** \brief Implements hook_mail
-
+ *
  * @param type $key
  * @param type $message
  * @param type $params
@@ -363,12 +367,13 @@ function bibdk_provider_mail($key, &$message, $params) {
   $language = $message['language'];
   $variables = array('user' => $params['account']);
   $message['subject'] = _bibdk_provider_wayf_mail_text($key . '_subject', $language, $variables);
-  $message['body'][] = _bibdk_provider_wayf_mail_text($key .  '_body', $language, $variables);
+  $message['body'][] = _bibdk_provider_wayf_mail_text($key . '_body', $language, $variables);
 }
 
 
 /** Implements hook_form_formID_alter
  * Skip the confirmation page when resetting your password
+ *
  * @param $form
  * @param $form_state
  */
