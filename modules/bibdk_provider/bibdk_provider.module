@@ -146,6 +146,10 @@ function bibdk_provider_form_user_profile_form_alter(&$form, &$form_state) {
   // add a handler for updating bibdk_provider password
   $form['#validate'][] = '_bibdk_provider_user_profile_form_validate';
   $form['#submit'][] = '_bibdk_provider_user_profile_form_submit';
+
+  if (isset($form['account']['pass']['#process']) && (($position = array_search('user_form_process_password_confirm', $form['account']['pass']['#process'])) !== FALSE)) {
+    unset($form['account']['pass']['#process'][$position]);
+  }
 }
 
 /**
@@ -179,16 +183,6 @@ function _bibdk_provider_user_profile_form_submit($form, &$form_state) {
     if (variable_get('bibdk_provider_enable_logging')) {
       watchdog('BIBDK', 'password updated for user : %name', array('%name' => $form_state['values']['mail']), WATCHDOG_NOTICE);
     }
-  }
-}
-
-/**
- * Implements hook_element_info_alter().
- * Disables password strenght indicator because it is inaccesible
- */
-function bibdk_provider_element_info_alter(&$types) {
-  if (isset($types['password_confirm']['#process']) && (($position = array_search('user_form_process_password_confirm', $types['password_confirm']['#process'])) !== FALSE)) {
-    unset($types['password_confirm']['#process'][$position]);
   }
 }
 
