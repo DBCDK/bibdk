@@ -63,7 +63,8 @@ function _bibdk_sb_kopi_get_link($pid, $label, $type) {
     '#path' => 'reservation',
     '#options' => array(
       'attributes' => array(
-        'class' => array('link-sbkopi'),
+        'class' => array('link-sbkopi', 'bibdk-popup-link'),
+        'data-rel' => array('reservation'),
       ),
       'html' => true,
       'query' => array('ids'=>$pid,'bestil_kopi'=>$type)
