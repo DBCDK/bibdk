@@ -19,10 +19,10 @@ function bibdk_mypage_menu() {
 
 
 /**
-* Implements hook_menu_alter().
-*/
+ * Implements hook_menu_alter().
+ */
 function bibdk_mypage_menu_alter(&$items) {
-  if ( module_exists('bibdk_modal') ) {
+  if (module_exists('bibdk_modal')) {
     $items['user']['page callback'] = 'bibdk_mypage_page';
     $items['user']['module'] = 'bibdk_mypage';
     $items['user']['file'] = FALSE;
@@ -37,18 +37,18 @@ function bibdk_mypage_menu_alter(&$items) {
  */
 function bibdk_mypage_page() {
   global $user;
-  if ( $user->uid ) {
+  if ($user->uid) {
     menu_set_active_item('user/' . $user->uid);
     return menu_execute_active_handler(NULL, FALSE);
   }
   else {
-    drupal_set_title( t('mypage_front_title', array(), array('context' => 'bibdk_mypage')) );
+    drupal_set_title(t('mypage_front_title', array(), array('context' => 'bibdk_mypage')));
     $element['mypage_front'] = array(
       '#markup' => theme(
         'bibdk_mypage_front',
         array(
           'title' => t('mypage_front_body_header', array(), array('context' => 'bibdk_mypage')),
-          'main'  => t('mypage_front_body', array(), array('context' => 'bibdk_mypage'))
+          'main' => t('mypage_front_body', array(), array('context' => 'bibdk_mypage'))
         )
       ),
       '#weight' => 1
@@ -56,7 +56,6 @@ function bibdk_mypage_page() {
     return $element;
   }
 }
-
 
 
 /**
@@ -124,10 +123,10 @@ function bibdk_my_page_customize_form_elements($my_page) {
   }
 
   if (isset($my_page['link'])) {
-    $form['link']= array(
-      '#prefix'  => '<span class="bibdk-mypage-link" >',
+    $form['link'] = array(
+      '#prefix' => '<span class="bibdk-mypage-link" >',
       '#suffix' => '</span>');
-        
+
     $form['link']['link_profile2_tab'] = array(
       '#type' => 'link',
       '#title' => $my_page['link']['title'],
@@ -143,12 +142,12 @@ function bibdk_my_page_customize_form_elements($my_page) {
       ),
     );
   }
-  
-  // helptext elements 
-  if ( isset($my_page['help_text_key']) ) {
+
+  // helptext elements
+  if (isset($my_page['help_text_key'])) {
     $helptext = bibdk_help_get_help_text_from_db($my_page['help_text_key']);
     if (isset($helptext)) {
-     
+
       $form['help_link_wrapper']['help_link'] = array(
         '#prefix' => '<p class="helptext popover-button" title=$helptext>',
         '#type' => 'link',
@@ -162,7 +161,7 @@ function bibdk_my_page_customize_form_elements($my_page) {
         ),
         '#suffix' => '</p>',
       );
-      
+
       $form['help_text_wrapper'] = array(
         '#type' => 'container',
         '#attributes' => array(
@@ -174,7 +173,7 @@ function bibdk_my_page_customize_form_elements($my_page) {
 
       $form['help_text_wrapper']['help_text_msg'] = array(
         '#prefix' => '<p class="user-msg">',
-        '#markup' => $helptext, 
+        '#markup' => $helptext,
         '#suffix' => '</p>',
       );
 
@@ -262,5 +261,5 @@ function bibdk_mypage_my_page_get_rows($max_rows) {
  * Implements hook to user_help_list
  * */
 function bibdk_mypage_user_help_list() {
-  return array('account_mypage_help_key'=>'account_mypage_help_label');
+  return array('account_mypage_help_key' => 'account_mypage_help_label');
 }
