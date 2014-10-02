@@ -1,44 +1,38 @@
 #bibdk-autocomplete-admin .form-type-radios {
-  padding: 0px;
-  float: left;
+    padding: 0px;
+    float: left;
 }
-
 
 #bibdk-autocomplete-admin .form-type-radio {
-  padding: 4px 5px;
-  float: left;
+    padding: 4px 5px;
+    float: left;
 }
-
 
 #bibdk-autocomplete-admin .form-type-textfield {
-  padding: 0 9px 0;
-  float: left;
-  width: 16em;
+    padding: 0 9px 0;
+    float: left;
+    width: 16em;
 }
-
 
 #bibdk-autocomplete-admin .form-item-bibdk-autocomplete-settings-agency,
 #bibdk-autocomplete-admin .form-item-bibdk-autocomplete-settings-maxSuggestions,
 #bibdk-autocomplete-admin .form-item-bibdk-autocomplete-settings-maxTime,
 #bibdk-autocomplete-admin .form-item-bibdk-autocomplete-settings-profile {
-  width: 18em;
+    width: 18em;
 }
-
 
 #bibdk-autocomplete-admin .form-item-bibdk-autocomplete-settings-highlight\.pre,
 #bibdk-autocomplete-admin .form-item-bibdk-autocomplete-settings-highlight\.post {
-  width: 16em;
+    width: 16em;
 }
-
 
 #bibdk-autocomplete-admin .form-item-bibdk-autocomplete-rest-url {
-  width: 46em;
+    width: 46em;
 }
 
-
 #bibdk-autocomplete-admin .form-type-checkbox {
-  padding: 18px 9px 0;
-  float: left;
-  clear: left;
+    padding: 18px 9px 0;
+    float: left;
+    clear: left;
 }
 
