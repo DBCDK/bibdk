@@ -182,6 +182,16 @@ function _bibdk_provider_user_profile_form_submit($form, &$form_state) {
   }
 }
 
+/**
+ * Implements hook_element_info_alter().
+ * Disables password strenght indicator because it is inaccesible
+ */
+function bibdk_provider_element_info_alter(&$types) {
+  if (isset($types['password_confirm']['#process']) && (($position = array_search('user_form_process_password_confirm', $types['password_confirm']['#process'])) !== FALSE)) {
+    unset($types['password_confirm']['#process'][$position]);
+  }
+}
+
 /** Implements hook_form_FORM_ID_alter()
  *
  * @param $form
