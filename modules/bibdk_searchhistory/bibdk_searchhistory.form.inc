@@ -42,6 +42,7 @@ function bibdk_searchhistory_form($form, $form_state) {
         'search-history-table',
       ),
     ),
+
   );
 
   $radios = array(CQL_AND => t('Combine "And"'), CQL_OR => t('Combine "Or"'));
@@ -165,22 +166,16 @@ function bibdk_searchhistory_form_combine($form, $form_state) {
   $searches = $form_state['values']['bibdk_search_history_table'];
   $combined = array();
   $combinator = $form_state['values']['and_or_radios'];
-  $params_combinator = ' ' . t('params_combinator_placeholder', array(), array('context' => 'bibdk_searchhistory')) . ' ';
-  foreach ($searches as $search => $string) {
+  foreach ($searches as $string) {
     if ($string) {
       $element = BibdkSearchHistory::getElement($string);
-      $keys = _bibdk_searchhistory_get_search_string($element, TRUE);
-
-      $params = (!empty($element['params'])) ? str_replace('<br />', $params_combinator, bibdk_searchhistory_parse_params($element['params'])) : array();
-
-      if (!empty($keys) && !empty($params)) {
-        $string = $keys . $params_combinator . $params;
+      if (isset($element['params']['cql'])){
+        $cql  = $element['params']['cql'];
       }
       else {
-        $string = (!empty($keys)) ? $keys : $params;
+        $cql = bibdk_searchhistory_recreate_searchstring($element);
       }
-
-      $combined[] = "($string)";
+      $combined[] = "($cql)";
     }
   }
 
@@ -189,34 +184,24 @@ function bibdk_searchhistory_form_combine($form, $form_state) {
   drupal_goto('search/work/' . $new_string);
 }
 
-/**
- * Helper function to add enclosing parentheses to strings with spaces and/or parentheses
+/** Method for recreating old cql searchstrings
  *
- * Parentheses in input string are already balanced.
- *
- * @param $string
- * @return string
+ * @param $element
+ * @return array|mixed|string
  */
-function _bibdk_searchhistory_format_combine_string($string) {
-  $stack = array();
-  $tokens = preg_split('/([() ])/', trim($string), 0, PREG_SPLIT_DELIM_CAPTURE);
+function bibdk_searchhistory_recreate_searchstring($element) {
+  $params_combinator = ' and ';
+  $keys = _bibdk_searchhistory_get_search_string($element, TRUE);
 
-  foreach ($tokens as $token) {
-    if ($token == ')') {
-      while (array_pop($stack) != '(') {
-      }
-    }
-    else {
-      array_push($stack, $token);
-    }
-  }
+  $params = (!empty($element['params'])) ? str_replace('<br />', $params_combinator, bibdk_searchhistory_parse_params($element['params'])) : array();
 
-  if (count($stack) == 1 || count($stack) == 2 && $stack[0] == '' && $stack[1] == '') {
-    return $string;
+  if (!empty($keys) && !empty($params)) {
+    $string = $keys . $params_combinator . $params;
   }
   else {
-    return '(' . $string . ')';
+    $string = (!empty($keys)) ? $keys : $params;
   }
+  return $string;
 }
 
 /** Generates a view for each element in the search history
@@ -236,6 +221,9 @@ function _bibdk_searchhistory_element_view($element) {
   return array(
     'search_string' => l($display, $link, array(
       'query' => (!empty($element['params'])) ? $element['params'] : array(),
+      'attributes' => array(
+        'class' => 'searchhistory-searchstring',
+      ),
       'html' => TRUE
     )),
     'result_count' => $count,
@@ -366,7 +354,7 @@ function _bibdk_searchhistory_get_markup_for_search($element) {
     if (!empty($string)) {
       $string .= '<br />';
     }
-    $string .= $params_markup;
+    $string .= "<span class='searchhistory-cql'>$params_markup</span>";
   }
 
   return $string;
@@ -380,6 +368,9 @@ function _bibdk_searchhistory_get_markup_for_search($element) {
  * @return string $string
  */
 function bibdk_searchhistory_parse_params($params) {
+  if (isset($params['cql'])) {
+    return $params['cql'];
+  }
   $string = '';
 
   $accepted_params = explode(',', variable_get('search_history_accepted_params', 'dkcclterm,term'));
