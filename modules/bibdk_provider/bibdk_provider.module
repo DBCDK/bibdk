@@ -147,6 +147,8 @@ function bibdk_provider_form_user_profile_form_alter(&$form, &$form_state) {
   $form['#validate'][] = '_bibdk_provider_user_profile_form_validate';
   $form['#submit'][] = '_bibdk_provider_user_profile_form_submit';
 
+  // The password strengh indicator is inaccesible and not really useful
+  // therefore it is deactivated
   if (isset($form['account']['pass']['#process']) && (($position = array_search('user_form_process_password_confirm', $form['account']['pass']['#process'])) !== FALSE)) {
     unset($form['account']['pass']['#process'][$position]);
   }
