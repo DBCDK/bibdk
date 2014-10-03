@@ -86,7 +86,7 @@ function bibdk_searchhistory_ctools_plugin_api($module, $api) {
  * @param int $searchsresult - result count
  * @param String $params
  */
-function bibdk_searchhistory_ting_openformat_search_results($keys, $searchsresult, $params) {
+function bibdk_searchhistory_ting_openformat_search_results($keys, $searchsresult, $params, $cql) {
   // An array of unwanted values from the params array
   $illegal_params = array('trackingId');
 
@@ -107,13 +107,13 @@ function bibdk_searchhistory_ting_openformat_search_results($keys, $searchsresul
     'external' => TRUE
   ));
 
+  $params['cql'] = $cql;
   $element = array(
     'string' => str_replace(array('[', ']'), '', $string),
     'params' => $params,
     'count' => isset($searchsresult->numTotalObjects) ? $searchsresult->numTotalObjects : 0,
     'timestamp' => time(),
   );
-
   BibdkSearchHistory::addElementToSession($element);
 }
 
