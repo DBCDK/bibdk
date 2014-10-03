@@ -25,62 +25,57 @@ projects[bibdk_theme][download][tag] = 7.x-0.65
 
 ; --- Bibliotek.dk versions of Ding2 modules ---
 
+projects[open_voxb][type] = module
+projects[open_voxb][download][type] = git
+projects[open_voxb][download][url] = git@github.com:DBCDK/open_voxb.git
+projects[open_voxb][download][tag] = 7.x-0.1.5
+
 projects[ding_base][type] = module
-projects[ding_base][subdir] = ding
 projects[ding_base][download][type] = git
 projects[ding_base][download][url] = git@github.com:DBCDK/ding_base.git
 projects[ding_base][download][tag] = 7.x-0.4
 
 projects[ding_entity][type] = module
-projects[ding_entity][subdir] = ding
 projects[ding_entity][download][type] = git
 projects[ding_entity][download][url] = git@github.com:DBCDK/ding_entity.git
 projects[ding_entity][download][tag] = 7.x-0.7+dbc.3
 
 projects[ding_facetbrowser][type] = module
-projects[ding_facetbrowser][subdir] = ding
 projects[ding_facetbrowser][download][type] = git
 projects[ding_facetbrowser][download][url] = git@github.com:DBCDK/ding_facetbrowser.git
 projects[ding_facetbrowser][download][tag] = 7.x-0.13+dbc.19
 
 projects[ding_persistent_login][type] = module
-projects[ding_persistent_login][subdir] = ding
 projects[ding_persistent_login][download][type] = git
 projects[ding_persistent_login][download][url] = git@github.com:DBCDK/ding_persistent_login.git
 projects[ding_persistent_login][download][tag] = 7.x-0.1
 
 projects[ding_popup][type] = module
-projects[ding_popup][subdir] = ding
 projects[ding_popup][download][type] = git
 projects[ding_popup][download][url] = git@github.com:DBCDK/ding_popup.git
 projects[ding_popup][download][tag] = 7.x-0.4+dbc.3
 
 projects[ding_provider][type] = module
-projects[ding_provider][subdir] = ding
 projects[ding_provider][download][type] = git
 projects[ding_provider][download][url] = git@github.com:DBCDK/ding_provider.git
 projects[ding_provider][download][tag] = 7.x-0.13+dbc.9
 
 projects[ding_user][type] = module
-projects[ding_user][subdir] = ding
 projects[ding_user][download][type] = git
 projects[ding_user][download][url] = git@github.com:DBCDK/ding_user.git
 projects[ding_user][download][tag] = 7.x-0.19+dbc.14.2
 
 projects[ding_wayf][type] = module
-projects[ding_wayf][subdir] = ding
 projects[ding_wayf][download][type] = git
 projects[ding_wayf][download][url] = git@github.com:DBCDK/ding_wayf.git
 projects[ding_wayf][download][tag] = 7.x-0.6+dbc.9
 
 projects[ding_webtrends][type] = module
-projects[ding_webtrends][subdir] = ding
 projects[ding_webtrends][download][type] = git
 projects[ding_webtrends][download][url] = git@github.com:DBCDK/ding_webtrends.git
 projects[ding_webtrends][download][tag] = 7.x-0.2+dbc.2
 
 projects[ding_webtrends_2014][type] = module
-projects[ding_webtrends_2014][subdir] = ding
 projects[ding_webtrends_2014][download][type] = git
 projects[ding_webtrends_2014][download][url] = git@github.com:DBCDK/ding_webtrends_2014.git
 projects[ding_webtrends_2014][download][tag] = 7.x-0.3
@@ -91,37 +86,31 @@ projects[ting-client][download][url] = git@github.com:DBCDK/ting-client.git
 projects[ting-client][download][tag] = 7.x-2.25
 
 projects[ting_agency][type] = module
-projects[ting_agency][subdir] = ting
 projects[ting_agency][download][type] = git
 projects[ting_agency][download][url] = git@github.com:DBCDK/ting_agency.git
 projects[ting_agency][download][tag] = 7.x-0.34
 
 projects[ting_covers][type] = module
-projects[ting_covers][subdir] = ting
 projects[ting_covers][download][type] = git
 projects[ting_covers][download][url] = git@github.com:DBCDK/ting_covers.git
 projects[ting_covers][download][tag] = 7.x-0.22+dbc.13
 
 projects[ting_infomedia][type] = module
-projects[ting_infomedia][subdir] = ting
 projects[ting_infomedia][download][type] = git
 projects[ting_infomedia][download][url] = git@github.com:DBCDK/ting_infomedia.git
 projects[ting_infomedia][download][tag] = 7.x-1.28
 
 projects[ting_openformat][type] = module
-projects[ting_openformat][subdir] = ting
 projects[ting_openformat][download][type] = git
 projects[ting_openformat][download][url] = git@github.com:DBCDK/ting_openformat.git
 projects[ting_openformat][download][tag] = 7.x-0.57
 
 projects[ting_openuserstatus][type] = module
-projects[ting_openuserstatus][subdir] = ting
 projects[ting_openuserstatus][download][type] = git
 projects[ting_openuserstatus][download][url] = git@github.com:DBCDK/ting_openuserstatus.git
 projects[ting_openuserstatus][download][tag] = 7.x-0.2
 
 projects[ting_search_carousel][type] = module
-projects[ting_search_carousel][subdir] = ting
 projects[ting_search_carousel][download][type] = git
 projects[ting_search_carousel][download][url] = git@github.com:DBCDK/ting_search_carousel.git
 projects[ting_search_carousel][download][tag] = 7.x-0.5+dbc.5
@@ -129,49 +118,41 @@ projects[ting_search_carousel][download][tag] = 7.x-0.5+dbc.5
 ; --- Bibliotek.dk ---
 
 projects[bibdk_actions][type] = module
-projects[bibdk_actions][subdir] = bibdk
 projects[bibdk_actions][download][type] = git
 projects[bibdk_actions][download][url] = git@github.com:DBCDK/bibdk_actions.git
 projects[bibdk_actions][download][tag] = 7.x-0.14
 
 projects[bibdk_behaviour][type] = module
-projects[bibdk_behaviour][subdir] = bibdk
 projects[bibdk_behaviour][download][type] = git
 projects[bibdk_behaviour][download][url] = git@github.com:DBCDK/bibdk_behaviour.git
 projects[bibdk_behaviour][download][tag] = 7.x-0.7
 
 projects[bibdk_cart][type] = module
-projects[bibdk_cart][subdir] = bibdk
 projects[bibdk_cart][download][type] = git
 projects[bibdk_cart][download][url] = git@github.com:DBCDK/bibdk_cart.git
 projects[bibdk_cart][download][tag] = 7.x-1.23
 
 projects[bibdk_custom_search][type] = module
-projects[bibdk_custom_search][subdir] = bibdk
 projects[bibdk_custom_search][download][type] = git
 projects[bibdk_custom_search][download][url] = git@github.com:DBCDK/bibdk_custom_search.git
 projects[bibdk_custom_search][download][tag] = 7.x-0.34
 
 projects[bibdk_frontend][type] = module
-projects[bibdk_frontend][subdir] = bibdk
 projects[bibdk_frontend][download][type] = git
 projects[bibdk_frontend][download][url] = git@github.com:DBCDK/bibdk_frontend.git
 projects[bibdk_frontend][download][tag] = 7.x-0.62
 
 projects[bibdk_holdingstatus][type] = module
-projects[bibdk_holdingstatus][subdir] = bibdk
 projects[bibdk_holdingstatus][download][type] = git
 projects[bibdk_holdingstatus][download][url] = git@github.com:DBCDK/bibdk_holdingstatus.git
 projects[bibdk_holdingstatus][download][tag] = 7.x-0.24
 
 projects[bibdk_reservation][type] = module
-projects[bibdk_reservation][subdir] = bibdk
 projects[bibdk_reservation][download][type] = git
 projects[bibdk_reservation][download][url] = git@github.com:DBCDK/bibdk_reservation.git
 projects[bibdk_reservation][download][tag] = 7.x-0.47
 
 projects[bibdk_voxb][type] = module
-projects[bibdk_voxb][subdir] = bibdk
 projects[bibdk_voxb][download][type] = git
 projects[bibdk_voxb][download][url] = git@github.com:DBCDK/bibdk_voxb.git
 projects[bibdk_voxb][download][tag] = 7.x-0.2
@@ -182,28 +163,19 @@ projects[microcurl][download][url] = git@github.com:DBCDK/microcurl.git
 projects[microcurl][download][tag] = 7.x-0.1
 
 projects[open_adhl][type] = module
-projects[open_adhl][subdir] = open
 projects[open_adhl][download][type] = git
 projects[open_adhl][download][url] = git@github.com:DBCDK/open_adhl.git
 projects[open_adhl][download][tag] = 7.x-0.2
 
 projects[open_holdingstatus][type] = module
-projects[open_holdingstatus][subdir] = open
 projects[open_holdingstatus][download][type] = git
 projects[open_holdingstatus][download][url] = git@github.com:DBCDK/open_holdingstatus.git
 projects[open_holdingstatus][download][tag] = 7.x-0.11
 
 projects[open_moreinfo][type] = module
-projects[open_moreinfo][subdir] = open
 projects[open_moreinfo][download][type] = git
 projects[open_moreinfo][download][url] = git@github.com:DBCDK/open_moreinfo.git
 projects[open_moreinfo][download][tag] = 7.x-0.3
-
-projects[open_voxb][type] = module
-projects[open_voxb][subdir] = open
-projects[open_voxb][download][type] = git
-projects[open_voxb][download][url] = git@github.com:DBCDK/open_voxb.git
-projects[open_voxb][download][tag] = 7.x-0.1.5
 
 projects[cql_strict_parser][type] = module
 projects[cql_strict_parser][download][type] = git
@@ -214,7 +186,6 @@ projects[cql_strict_parser][download][tag] = 7.x-0.4
 ; THIS MODULE IS ONLY AVAILABLE WITHIN THE DBC A/S ORGANISATION
 ; PLEASE UNCOMMENT AS THE MODULE WONT BE DOWNLOADABLE OUTSIDE DBC A/S
 projects[bibdk_config][type] = module
-projects[bibdk_config][subdir] = bibdk
 projects[bibdk_config][download][type] = git
 projects[bibdk_config][download][url] = git.dbc.dk:/repos/bibliotek.dk/bibdk_config.git
 projects[bibdk_config][download][tag] = 7.x-0.23
