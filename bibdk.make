@@ -86,6 +86,7 @@ projects[ding_webtrends_2014][download][url] = git@github.com:DBCDK/ding_webtren
 projects[ding_webtrends_2014][download][tag] = 7.x-0.3
 
 projects[ting-client][type] = module
+projects[ting-client][subdir] = ting
 projects[ting-client][download][type] = git
 projects[ting-client][download][url] = git@github.com:DBCDK/ting-client.git
 projects[ting-client][download][tag] = 7.x-2.25
