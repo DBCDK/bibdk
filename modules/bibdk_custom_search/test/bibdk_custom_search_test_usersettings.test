@@ -1,0 +1,75 @@
+<?php
+
+
+class BibdkCustomSearchUsersettingsTestCase extends DrupalWebTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => 'Custom Search Usersettings Test',
+      'description' => 'Tests usersettings functionality',
+      'group' => 'Bibliotek.dk  - Custom Search',
+    );
+  }
+
+  public function setUp() {
+
+    parent::setUp('bibdk_usersettings', 'bibdk_custom_search', 'bibdk_test_provider', 'ding_provider');
+    variable_set('bibdk_provider_webservice_url', 'http://guesstimate.dbc.dk/~mmj/OpenUserinfo/tags/1.4/server.php');
+    variable_set('bibdk_provider_security_code', 'testhest');
+
+    $this->privileged_user = $this->drupalCreateUser(array(
+      'administer bibdk custom search pages',
+      'administer search',
+      'administer blocks',
+      'search content',
+    ));
+  }
+
+  public function tearDown(){
+    parent::tearDown();
+  }
+
+
+  public function testRunner() {
+    $this->testAdminCreateUsersettings();
+    $this->testUsersettingsView();
+
+  }
+
+  private function testAdminCreateUsersettings() {
+    $this->drupalLogin($this->privileged_user);
+    $edit = array();
+    $edit['rows[new][description]'] = 'description_test';
+    $edit['rows[new][value]'] = 'value_test';
+    $edit['rows[new][id]'] = 'description_test';
+    $this->drupalPost('admin/config/search/bibdk_settings', $edit, 'Save');
+
+    $edit['rows[new][description]'] = 'description_test_1';
+    $edit['rows[new][value]'] = 'value_test_1';
+    $edit['rows[new][id]'] = 'description_test';
+    $this->drupalPost('admin/config/search/bibdk_settings', $edit, 'Save');
+
+    $this->assertFieldByName('rows[description_test][description]', 'description_test');
+    $this->assertFieldByName('rows[description_test_1][description]', 'description_test_1');
+    $this->assertFieldByName('rows[description_test][value]', 'value_test');
+    $this->assertFieldByName('rows[description_test_1][value]', 'value_test_1');
+
+    $edit['rows[new][description]'] = 'description_test_2';
+    $edit['rows[new][value]'] = 'value_test_2';
+    $edit['rows[new][id]'] = 'description_test';
+    $edit['rows[new][pid]'] = 'description_test';
+
+    $this->drupalPost('admin/config/search/bibdk_settings', $edit, 'Save');
+  }
+
+  private function testUsersettingsView() {
+    $this->drupalGet('user/2/settings');
+    $this->assertText('description_test');
+    $this->assertText('description_test_1');
+    $this->assertText('description_test_2');
+
+
+  }
+
+
+}

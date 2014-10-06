@@ -1,0 +1,61 @@
+<?php
+
+/**
+ * @file
+ * Webservice mockup of Open Agency
+ */
+function bibdk_custom_search_ting_openformat_mockup_menu() {
+  $items['ting_openformat_webservice'] = array(
+    'page callback' => 'bibdk_custom_search_ting_openformat_mockup_request',
+    'access callback' => TRUE,
+  );
+  $items['ting_openformat_webservice/test'] = array(
+    'page callback' => 'bibdk_custom_search_ting_openformat_mockup_test',
+    'access callback' => TRUE
+  );
+
+  return $items;
+}
+
+function bibdk_custom_search_ting_openformat_mockup_test() {
+  return '<form name="test" action="ting_openformat_webservice" method="POST" target="_blank"><textarea name="xml"></textarea><input type="submit" name="sub" value="submit"/></form>';
+}
+
+
+/**
+ * Faking the request and returns result.
+ * @return String json
+ */
+function bibdk_custom_search_ting_openformat_mockup_request() {
+   if (isset($_POST['xml'])) {
+    $data = rawurldecode($_POST['xml']);
+  }
+  else {
+    $data = file_get_contents('php://input');
+  }
+
+$request = '<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+<SOAP-ENV:Body>
+<searchRequest><query>*</query><objectFormat>DKABM</objectFormat><facets><facetName>facet.type</facetName><numberOfTerms>1000</numberOfTerms></facets><outputType>json</outputType></searchRequest></SOAP-ENV:Body>
+</SOAP-ENV:Envelope>';
+
+  // Remove linebreaks
+  $data = preg_replace( "/\r|\n/", "", $data );
+  $request = preg_replace( "/\r|\n/", "", $request );
+
+  $path = drupal_get_path('module', 'bibdk_custom_search_ting_openformat_mockup');
+  if( !$data) {
+    echo 'welcome to bibdk_custom_search_ting_openformat_mockup mockup';
+    return;
+  }
+
+  drupal_add_http_header('Content-Type', 'application/json');
+  if( $data == $request ) {
+    $resp = file_get_contents($path.'/facets.json');
+  }
+  else{
+    $resp = file_get_contents($path.'/nofacets.json');
+  }
+  print $resp;
+}

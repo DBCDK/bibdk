@@ -1,0 +1,304 @@
+<?php
+
+class BibdkCustomSearchUnitTestCase extends DrupalUnitTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => 'Custom Search Unit Test',
+      'description' => 'Bibdk Custom Unit test.',
+      'group' => 'Bibliotek.dk  - Custom Search',
+    );
+  }
+
+  public function setUp() {
+    module_load_include('module', 'bibdk_custom_search', 'bibdk_custom_search');
+    module_load_include('inc', 'bibdk_custom_search', 'bibdk_custom_search.list');
+    parent::setUp();
+  }
+
+  public function test_bibdk_custom_search_is_advanced_search_expanded() {
+    // Test default query
+    $get = array(
+      'qe' => array(
+        'year.op' => array('year_eq'),
+      ),
+      'q' => 'bibdk_frontpage',
+    );
+
+    $result = _bibdk_custom_search_is_advanced_search_expanded($get);
+    $this->assertFalse($result, 'Do not expand when on frontpage and default search');
+
+    // Test advanced query
+    $get = array(
+      'qe' => array(
+        'year.op' => array('year_eq'),
+        'work' => 'test',
+      ),
+      'q' => 'bibdk_frontpage',
+    );
+    $result = _bibdk_custom_search_is_advanced_search_expanded($get);
+    $this->assertTrue($result, 'Expand if advanced elements have been set');
+  }
+
+  public function test_bibdk_custom_search_get_advanced_values() {
+    $extended_fields = array (
+      'term.genre' =>
+        array (
+          'value_title' => 'film, genre',
+          'value_type' => 'checkboxes',
+          'search_code' => 'term.genre',
+          'default_value' => '',
+        ),
+      'dkcclterm.ti' =>
+        array (
+          'value_title' => 'musik, alle titler',
+          'value_type' => 'textfield',
+          'search_code' => 'dkcclterm.ti',
+          'default_value' => '',
+        ),
+    );
+
+    // No advanced fields
+    $get_values = array (
+    );
+    $result = _bibdk_custom_search_get_advanced_values($get_values, $extended_fields);
+    $expected_result = array();
+    $this->assertEqual($expected_result, $result, 'No advanced fields returns empty array');
+
+    // 1 advanced field
+    $get_values = array ('dkcclterm_ti' =>
+      array (
+        'titel' => 'foo',
+      ),
+    );
+    $result = _bibdk_custom_search_get_advanced_values($get_values, $extended_fields);
+    $expected_result = array(
+      'qe' => array('dkcclterm.ti' => array('foo'))
+    );
+    $this->assertEqual($expected_result, $result, '1 advanced field returned');
+
+    // 2 advanced field
+    $get_values = array (
+      'dkcclterm_ti' =>
+      array (
+        'titel' => 'foo',
+      ),
+      'term_genre' =>
+        array (
+          'genre' => 'bar',
+        ),
+    );
+    $result = _bibdk_custom_search_get_advanced_values($get_values, $extended_fields);
+    $expected_result = array(
+      'qe' => array(
+        'dkcclterm.ti' => array('foo'),
+        'term.genre' => array('bar')
+      )
+    );
+    $this->assertEqual($expected_result, $result, '2 advanced fields returned');
+
+    // 2 fields of same type
+    $get_values = array (
+      'dkcclterm_ti' =>
+      array (
+        'titel' => 'foo',
+        'titel2' => 'bar',
+      ),
+    );
+    $result = _bibdk_custom_search_get_advanced_values($get_values, $extended_fields);
+    $expected_result = array(
+      'qe' => array(
+        'dkcclterm.ti' => array('foo', 'bar'),
+      )
+    );
+    $this->assertEqual($expected_result, $result, '2 fields of same type returned');
+
+
+    // field with no searchcode
+    $get_values = array (
+      'n/amaterialetype' =>
+        array (
+          'term.type=(avis or tidsskrift)' => 'term.type=(avis or tidsskrift)',
+        ),
+    );
+    $result = _bibdk_custom_search_get_advanced_values($get_values, $extended_fields);
+    $expected_result = array (
+      'qe' =>
+        array (
+          'n/a' =>
+            array (
+              'n/amaterialetype' => array ('term.type=(avis or tidsskrift)'),
+            ),
+        ),
+    );
+    $this->assertEqual($expected_result, $result, 'field without searchcode correctly returned');
+
+
+
+    // invalid value
+    $get_values = array (
+      'invalid' => 'foo',
+    );
+    $result = _bibdk_custom_search_get_advanced_values($get_values, $extended_fields);
+    $expected_result = array();
+    $this->assertEqual($expected_result, $result, 'invalid field returns empty array');
+
+    // basic query
+    $get_values = array (
+      'search_block_form' => 'foo',
+    );
+    $result = _bibdk_custom_search_get_advanced_values($get_values, $extended_fields);
+    $expected_result = array (
+      'qe' =>
+        array (
+          'query' => 'foo',
+        ),
+    );
+    $this->assertEqual($expected_result, $result, 'invalid field returns empty array');
+
+
+    // delimiter
+    $get_values = array (
+      'delimiter' => 'foo',
+    );
+    $result = _bibdk_custom_search_get_advanced_values($get_values, $extended_fields);
+    $expected_result = array(
+      'qe' => array('delimiter' => 'foo')
+    );
+    $this->assertEqual($expected_result, $result, 'delimiter is returned');
+
+
+    // page_id
+    $get_values = array (
+      'page_id' => 'foo',
+    );
+    $result = _bibdk_custom_search_get_advanced_values($get_values, $extended_fields);
+    $expected_result = array('page_id' => 'foo');
+    $this->assertEqual($expected_result, $result, 'page_id is returned');
+  }
+
+  public function test_bibdk_custom_search_list_options() {
+    $term_type = 'term.type';
+    $ignore_values = array();
+    $result = array();
+
+    // Test empty array
+    $options = bibdk_custom_search_list_options($result, $term_type, $ignore_values);
+    $this->assertEqual($options, array(), 'Empty array returns empty array');
+
+    $result = array(
+      'cd' => 12,
+      'bog' => 11,
+      'film' => 10,
+    );
+
+    // Test results array + sorting
+    $expected_results = array(
+      'term.type=bog' => 'bog',
+      'term.type=cd' => 'cd',
+      'term.type=film' => 'film',
+    );
+    $options = bibdk_custom_search_list_options($result, $term_type, $ignore_values);
+    $this->assertEqual($options, $expected_results, 'Result is given as searchcode -> label, and is sorted alfabetically');
+
+    // Test ignore values
+    $ignore_values = array('film');
+    $expected_results = array(
+      'term.type=bog' => 'bog',
+      'term.type=cd' => 'cd',
+    );
+    $options = bibdk_custom_search_list_options($result, $term_type, $ignore_values);
+    $this->assertEqual($options, $expected_results, 'Ignore values are removed');
+  }
+
+  public function test_bibdk_custom_search_usersettings_set_default_values() {
+
+    // Test empty default
+    $elements = array();
+    $default_values = array();
+    bibdk_custom_search_usersettings_set_default_values($elements, $default_values);
+    $this->assertEqual($elements, array());
+
+    // Test array of elements
+    $elements = $this->_bibdk_custom_search_usersettings_get_elements();
+    $default_values = array(
+      '1' => 1,
+      '2' => 0,
+      '3' => 0,
+      'test' => 1,
+    );
+
+    bibdk_custom_search_usersettings_set_default_values($elements, $default_values);
+
+    $this->assertTrue($elements[1]->default_value, 'default value set to true');
+    $this->assertTrue($elements['test']->default_value, 'default value set to true');
+    $this->assertFalse($elements[2]->default_value, 'default value set to false');
+    $this->assertFalse($elements[3]->default_value, 'default value set to false');
+
+  }
+
+  public function test_bibdk_custom_search_usersettings_set_subelements() {
+
+    // Test empty default
+    $elements = array();
+    bibdk_custom_search_usersettings_set_subelements($elements);
+    $this->assertEqual($elements, array());
+
+    // Test elements with subgroups
+    $elements = $this->_bibdk_custom_search_usersettings_get_elements();
+
+    bibdk_custom_search_usersettings_set_subelements($elements);
+
+    $this->assertTrue(isset($elements['1']->subelements[3]), 'subelement is set');
+    $this->assertEqual($elements['1']->subelements[3]->pid, $elements['1']->id, 'subelement pid is equal parent id');
+    $this->assertFalse(isset($elements['3']), 'subelement is removed from parent tree');
+
+    $this->assertFalse(isset($elements->subelements), 'subelement is not set');
+
+  }
+
+  public function test_bibdk_custom_search_usersettings_machinename_exists() {
+    $existing_names = array(
+      'hest' => 'hest',
+      'fisk' => 'fisk',
+      '0' => '0'
+    );
+
+    $name = 'hest';
+    $new_name = bibdk_custom_search_usersettings_create_machinename($name, $existing_names);
+    $this->assertIdentical($new_name, 'hest_1');
+
+    $name = '0';
+    $new_name = bibdk_custom_search_usersettings_create_machinename($name, $existing_names);
+    $this->assertIdentical($new_name, '0_1');
+
+    $name = 'unique';
+    $new_name = bibdk_custom_search_usersettings_create_machinename($name, $existing_names);
+    $this->assertIdentical($new_name, $name);
+
+
+  }
+
+  private function _bibdk_custom_search_usersettings_get_elements () {
+    $elements = array();
+    $element = new stdClass();
+    $element->id = '1';
+    $element->pid = 0;
+    $elements[1] = $element;
+    $element = new stdClass();
+    $element->id = '2';
+    $element->pid = 0;
+    $elements[2] = $element;
+    $element = new stdClass();
+    $element->id = '3';
+    $element->pid = 1;
+    $elements[3] = $element;
+    $element = new stdClass();
+    $element->id = 'test';
+    $elements['test'] = $element;
+    $element->pid = 0;
+
+    return $elements;
+  }
+
+}
