@@ -5,7 +5,7 @@
  */
 function bibdk_favourite_bibdk_mypage_tabs($max_rows = 3) {
   global $user;
-  require_once (DRUPAL_ROOT . '/profiles/bibdk/modules/ting_agency/TingAgency.php');
+  require_once(DRUPAL_ROOT . '/profiles/bibdk/modules/ting_agency/TingAgency.php');
 
   global $user;
 
@@ -19,7 +19,7 @@ function bibdk_favourite_bibdk_mypage_tabs($max_rows = 3) {
 
   $ret['bibdk_favourite']['weight'] = 20;
   $ret['bibdk_favourite']['help_text_key'] = 'favourite_mypage_help_key';
-  
+
   return $ret;
 }
 
@@ -37,7 +37,7 @@ function bibdk_favourite_my_page_get_rows($max_rows) {
       global $language;
       $ret[] = array(
         'label_row' => $branch->getBranchShortName($language->language),
-        'value_row' => ( $favourite->orderAgency ) ? t('(Order agency)') : NULL,
+        'value_row' => ($favourite->orderAgency) ? t('(Order agency)') : NULL,
       );
     }
   }
@@ -51,7 +51,8 @@ function bibdk_favourite_my_page_get_rows($max_rows) {
 }
 
 function _favorite_sort($a, $b) {
-  if ($a->orderAgency == $b->orderAgency)
+  if ($a->orderAgency == $b->orderAgency) {
     return 0;
-  return ( $a->orderAgency < $b->orderAgency ) ? 1 : -1;
+  }
+  return ($a->orderAgency < $b->orderAgency) ? 1 : -1;
 }

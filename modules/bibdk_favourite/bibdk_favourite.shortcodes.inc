@@ -43,7 +43,6 @@ function bibdk_favourite_shortcode_favourite_library_tip() {
   return 'Add favourite library contact information by writting: [favourite_library]This text is default text if no favourite exists[/favourite_library]';
 }
 
-
 /** implements hook_filter_info_alter
  * Cache is turned of for this filter. Content needs to be user-specific
  * @param $info

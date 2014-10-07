@@ -16,7 +16,7 @@ function bibdk_favourite_load_agency($xml) {
 
 /**
  * @param $xml xml from request to openuserinfo (getFavourites)
- * @return array 
+ * @return array
  */
 function bibdk_favourite_parse_agencies($xml) {
   $xpath = bibdk_favourite_load_agency($xml);
@@ -28,10 +28,10 @@ function bibdk_favourite_parse_agencies($xml) {
   $query = '//oui:agency'; //OpenUserInfo v1.7
   $nodelist = $xpath->query($query);
   // check if empty
-  if ( empty($nodelist) || $nodelist->length == 0 ) {
+  if (empty($nodelist) || $nodelist->length == 0) {
     $query = '//agency'; // fallback to OpenUserInfo v1.6
     $nodelist = $xpath->query($query);
-    if ( empty($nodelist) || $nodelist->length == 0 ) {
+    if (empty($nodelist) || $nodelist->length == 0) {
       return array();
     }
   }

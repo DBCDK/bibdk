@@ -15,10 +15,10 @@
   </hgroup>
   <div class="toggle-next-section">
     <a href="#" class="show-more">
-    <strong><?php print t('bibdk_favourite_more_info'); ?></strong>
+      <strong><?php print t('bibdk_favourite_more_info'); ?></strong>
     </a>
     <a href="#" class="show-less visuallyhidden">
-    <strong><?php print t('bibdk_favourite_less_info'); ?></strong>
+      <strong><?php print t('bibdk_favourite_less_info'); ?></strong>
     </a>
   </div>
 </div>
