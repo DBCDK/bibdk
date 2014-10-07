@@ -407,7 +407,11 @@ function _bibdk_favourite_set_user_data_page_title($branchid) {
 /**
  * Render user fields;
  */
-function bibdk_favourite_user_form_fields($form, &$form_state, $branchid) {
+function bibdk_favourite_user_form_fields($form, &$form_state, $branchid = NULL) {
+
+  if(!$branchid && !empty($form_state['branchid'])){
+    $branchid = $form_state['branchid'];
+  }
 
   bibdk_favourite_add_js();
 
