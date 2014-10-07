@@ -432,8 +432,6 @@ function bibdk_favourite_user_form_fields($form, &$form_state, $branchid) {
       '#value' => t('Save as favourite agency'),
       '#submit' => array('bibdk_favourite_save_favourite'),
     );
-    // user has no favourites
-    //  return array();
   }
 
   $fields = bibdk_favourite_get_agency_fields($branchid);
