@@ -94,7 +94,7 @@ function bibdk_my_page_customize_form_elements($my_page) {
 
   $form['header'] = array(
     '#type' => 'markup',
-    '#markup' => $my_page['header'],
+    '#markup' => t($my_page['header']),
     '#prefix' => '<h2>',
     '#suffix' => '</h2>',
   );
