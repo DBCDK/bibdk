@@ -10,7 +10,7 @@ function bibdk_favourite_bibdk_mypage_tabs($max_rows = 3) {
   global $user;
 
   $ret = array();
-  $ret['bibdk_favourite']['header'] = t('Favourites');
+  $ret['bibdk_favourite']['header'] = 'Favourites';
   $ret['bibdk_favourite']['rows']['values'] = bibdk_favourite_my_page_get_rows($max_rows);
   $ret['bibdk_favourite']['link'] = array(
     'title' => t('Edit favorites'),
