@@ -80,6 +80,7 @@ function bibdk_vejviser_block_view($delta = '') {
 
 /**
  * Helper function: Creates render arrays for blocks
+ * @param $delta
  * @return array
  */
 function _bibdk_vejviser_create_render_array($delta) {
@@ -112,6 +113,8 @@ function _bibdk_vejviser_create_render_array($delta) {
 
 /**
  * Creates the form array
+ * @param array $form
+ * @param array $form_state
  * @return array
  */
 function bibdk_vejviser_form($form, &$form_state) {
@@ -157,6 +160,9 @@ function bibdk_vejviser_form($form, &$form_state) {
 function bibdk_vejviser_vejviser_page_content_alter(&$data) {
   if (drupal_static('bibdk_vejviser_empty_result')) {
     $data['#prefix'] = '<div class="element-wrapper-fake">';
+    $data['#suffix'] ='</div>';
+  } else {
+    $data['#prefix'] = '<div class="vejviser-search-result">';
     $data['#suffix'] ='</div>';
   }
 }
@@ -265,7 +271,6 @@ function bibdk_vejviser_agency_search() {
   );
 
   $render['branches'] = $branches;
-
 
   return $render;
 }
