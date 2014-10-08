@@ -5,7 +5,7 @@
  * Module file. Gives the the users ability to search for libraries through the OpenAgency webservice
  */
 
-include_once('bibdk_vejviser.autocomplete.inc');
+module_load_include('autocomplete.inc', 'bibdk_vejviser');
 
 /**
  * Implements hook_menu();
@@ -151,7 +151,6 @@ function bibdk_vejviser_form($form, &$form_state) {
 
   );
 
-
   drupal_add_js(drupal_get_path('module', 'bibdk_vejviser') . '/js/bibdk_vejviser.js');
 
   return $form;
@@ -160,9 +159,6 @@ function bibdk_vejviser_form($form, &$form_state) {
 function bibdk_vejviser_vejviser_page_content_alter(&$data) {
   if (drupal_static('bibdk_vejviser_empty_result')) {
     $data['#prefix'] = '<div class="element-wrapper-fake">';
-    $data['#suffix'] ='</div>';
-  } else {
-    $data['#prefix'] = '<div class="vejviser-search-result">';
     $data['#suffix'] ='</div>';
   }
 }
@@ -270,7 +266,13 @@ function bibdk_vejviser_agency_search() {
     '#ting_info_holder' => 'ting_info_holder',
   );
 
-  $render['branches'] = $branches;
+  if(!empty($branches)){
+    $render['branches'] = array(
+      '#markup' => drupal_render($branches),
+      '#prefix' => '<div class="element-wrapper"><div class="element">',
+      '#suffix' => '</div></div>',
+    );
+  }
 
   return $render;
 }

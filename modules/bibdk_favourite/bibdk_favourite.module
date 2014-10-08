@@ -1,9 +1,9 @@
 <?php
 
 module_load_include('php', 'ting_agency', 'TingAgency');
-require_once('bibdk_favourite.mypage.inc');
-require_once('bibdk_favourite.shortcodes.inc');
-require_once('FavouriteAgency.php');
+module_load_include('mypage.inc', 'bibdk_favourite');
+module_load_include('shortcodes.inc', 'bibdk_favourite');
+require_once(drupal_get_path('module', 'bibdk_favourite') . '/lib/FavouriteAgency.php');
 module_load_include('inc', 'bibdk_favourite', 'bibdk_favourite.no_favourites');
 
 /** Get favourites. If order-agency is set it will be first elements
@@ -249,7 +249,7 @@ function bibdk_favourite_get_favourites_form($form, $form_state) {
   $form = array(
     '#type' => 'container',
     '#attributes' => array(
-      'class' => array('element-wrapper'),
+      # 'class' => array('element-wrapper'),
     )
   );
 
