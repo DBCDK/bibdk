@@ -857,6 +857,7 @@ function bibdk_favourite_ajax_link_set_favourite($branchId) {
   $commands[] = bibdk_favourite_ajax_command($branchId);
   // if $response is not set something went wrong
   if (!$response) {
+    $selector = '.favourite_' . $branchId;
     drupal_set_message($text, $type);
     $commands[] = ajax_command_append($selector, theme('status_messages'));
   }
