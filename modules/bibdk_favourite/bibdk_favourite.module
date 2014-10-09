@@ -268,12 +268,23 @@ function bibdk_favourite_get_favourites_form($form, $form_state) {
   // Get all user agencies
   $agencies = bibdk_favourite_get_favourites();
 
+  $form['favorites'] = array(
+    '#type' => 'container',
+    '#prefix' => '<div class="element">',
+    '#suffix' => '</div>',
+    '#attributes' => array(
+      'class' => array(
+        'element-wrapper'
+      ),
+    ),
+  );
+
   // Build agency elements
   if (!empty($agencies)) {
     $count = 0;
     foreach ($agencies as $id => $branch) {
 
-      $form['bibdk_favourite_' . $id] = bibdk_favourite_form_view_items_from_session($branch, $count++);
+      $form['favorites']['bibdk_favourite_' . $id] = bibdk_favourite_form_view_items_from_session($branch, $count++);
     }
   }
   else {
