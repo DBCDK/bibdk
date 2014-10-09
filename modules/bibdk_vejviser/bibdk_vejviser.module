@@ -294,7 +294,8 @@ function bibdk_vejviser_get_agency_link($branch) {
 /**
  * Callback function for the /vejviser menu item. Called when user hits http://domain.dk/vejviser. Takes the above encoded json string as input
  * There might be a better way for passing the search criterias
- * @param String $json
+ *
+ * @param $query
  * @return array
  */
 function bibdk_vejviser_execute_agency_search($query) {
