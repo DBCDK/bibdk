@@ -10,6 +10,8 @@ dependencies[] = shortcode
 
 files[] = includes/bibdk_favourite.agencies.inc
 files[] = includes/bibdk_favourite.mypage.inc
+files[] = includes/bibdk_favourite.no_favourites.inc
+files[] = includesbibdk_favourite.shortcodes.inc
 
 files[] = test/bibdk_favourite.test
 files[] = test/bibdk_favourite_unit.test

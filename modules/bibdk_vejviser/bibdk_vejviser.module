@@ -165,8 +165,8 @@ function bibdk_vejviser_vejviser_page_content_alter(&$data) {
 
 /**
  * Called when form is submitted. Validating the input, json_encoding the input array and passes it to /vejviser
- * @param type $form
- * @param type $form_state
+ * @param array $form
+ * @param array $form_state
  */
 function bibdk_vejviser_form_submit(&$form, &$form_state) {
   $query = check_plain($form_state['values']['openagency_query']);
