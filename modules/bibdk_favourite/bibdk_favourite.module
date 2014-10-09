@@ -127,6 +127,7 @@ function bibdk_favourite_ajax_add_favourite($form, $form_state) {
 
 function bibdk_favourite_save_favourite_on_webservice($branchId) {
   $response = _bibdk_favourite_save_on_webservice($branchId);
+  $message = '';
 
   if ($response['status'] != 'error') {
     module_load_include('inc', 'bibdk_favourite', 'bibdk_favourite.agencies');
@@ -186,10 +187,11 @@ function _bibdk_favourite_delete_on_webservice($branchId) {
   return $response;
 }
 
-/** \brief save user on webservice
+/**
+ * Save user on webservice
  *
+ * @param string $agencyId
  * @global $user
- * @param  $branch
  * @return array['status','response']; status: error or success, response: string (on error) or xml (on success)
  */
 function _bibdk_favourite_save_on_webservice($agencyId) {
@@ -243,16 +245,7 @@ function _bibdk_favourite_set_agencies() {
  * @param $form_state
  * @return array
  */
-
 function bibdk_favourite_get_favourites_form($form, $form_state) {
-  // Create a container for agencies
-  $form = array(
-    '#type' => 'container',
-    '#attributes' => array(
-      # 'class' => array('element-wrapper'),
-    )
-  );
-
   // Link to vejviser
   $form['vejviser_link_wrapper'] = array(
     '#type' => 'container',
@@ -609,7 +602,8 @@ function bibdk_favourite_save_favourite($form, &$form_state) {
 /**
  * Get fields required by Agency
  *
- * @return \bibdkReservationUserInput
+ * @param $agencyId
+ * @return array bibdkReservationUserInput
  */
 function bibdk_favourite_get_agency_fields($agencyId) {
   $agency = new TingAgency($agencyId);
@@ -620,7 +614,7 @@ function bibdk_favourite_get_agency_fields($agencyId) {
 /**
  * \brief Get favourite agencies for the user
  *
- * @global type $user
+ * @global object $user
  * @return TingClientAgencyBranch
  */
 function _bibdk_favourite_get_from_webservice() {
@@ -789,8 +783,7 @@ function bibdk_favourite_get_action_links($favourite) {
 }
 
 /**
- * Implements hook_menu
- * BIG @TODO access check
+ * Implements hook_menu().
  */
 function bibdk_favourite_menu() {
   global $user;
@@ -809,7 +802,6 @@ function bibdk_favourite_menu() {
     'title' => 'ajax_delete_favourite',
     'page callback' => 'bibdk_favourite_ajax_link_delete_favourite',
     'page arguments' => array(2),
-    // @TODO set access
     'access callback' => 'ding_user_is_provider_user',
     'type' => MENU_CALLBACK,
   );
