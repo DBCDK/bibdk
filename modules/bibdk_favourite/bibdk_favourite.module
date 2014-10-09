@@ -1,10 +1,10 @@
 <?php
 
+module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.mypage');
+module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.shortcodes');
+module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.no_favourites');
 module_load_include('php', 'ting_agency', 'TingAgency');
-module_load_include('mypage.inc', 'bibdk_favourite');
-module_load_include('shortcodes.inc', 'bibdk_favourite');
 require_once(drupal_get_path('module', 'bibdk_favourite') . '/lib/FavouriteAgency.php');
-module_load_include('inc', 'bibdk_favourite', 'bibdk_favourite.no_favourites');
 
 /** Get favourites. If order-agency is set it will be first elements
  *
@@ -287,7 +287,14 @@ function bibdk_favourite_get_favourites_form($form, $form_state) {
   return $form;
 }
 
-function bibdk_favourite_check_for_new_agency() {
+/**
+ * Checks through the GET paramter if new agencies are added.
+ *
+ * @param bool $by_modal If this method is invoked by a modal callback this
+ * param will be set to TRUE to prevent redundant information is being shown to
+ * the user.
+ */
+function bibdk_favourite_check_for_new_agency($by_modal = FALSE) {
   if (isset($_GET['agency'])) {
     if (!isset($_SESSION['bibdk_favourites'][$_GET['agency']])) {
       if (_bibdk_favourite_save_on_webservice($_GET['agency'])) {
@@ -301,12 +308,14 @@ function bibdk_favourite_check_for_new_agency() {
         $name = $agency->getBranch()->getBranchName($language->language);
 
         // set a message
-        $editpath = 'overlay/favourite/userdata/' . $_GET['agency'];
-        $options = array('attributes' => array('class' => array(' bibdk-popup-link')));
-        $linktext = t('add_user_data', array(), array('context' => 'bibdk_favorite'));
-        $link = l($linktext, $editpath, $options);
-        $text = t('%bibname has been added. Remember to ', array('%bibname' => $name), array('context' => 'bibdk_favourite'));
-        drupal_set_message($text . $link, 'warning');
+        if(!$by_modal){
+          $editpath = 'overlay/favourite/userdata/' . $_GET['agency'];
+          $options = array('attributes' => array('class' => array(' bibdk-popup-link')));
+          $linktext = t('add_user_data', array(), array('context' => 'bibdk_favorite'));
+          $link = l($linktext, $editpath, $options);
+          $text = t('%bibname has been added. Remember to ', array('%bibname' => $name), array('context' => 'bibdk_favourite'));
+          drupal_set_message($text . $link, 'warning');
+        }
       }
     }
   }
@@ -633,7 +642,7 @@ function _bibdk_favourite_get_from_webservice() {
 
     // call openuserinfo webservice
     $xml = ding_provider_invoke('user', 'get_favourites', $creds['name']);
-    module_load_include('inc', 'bibdk_favourite', 'bibdk_favourite.agencies');
+    module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.agencies');
     $saved_agencies = bibdk_favourite_parse_agencies($xml);
 
     if (!$saved_agencies) {
