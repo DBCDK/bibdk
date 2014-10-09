@@ -299,7 +299,6 @@ function bibdk_vejviser_get_agency_link($branch) {
  * @return array
  */
 function bibdk_vejviser_execute_agency_search($query) {
-  $result = array();
   $sort[] = variable_get('agency_sort_librarytype', 'libraryType');
   $sort[] = variable_get('agency_sort_agencyid', 'agencyId');
   if (empty($query)) return;
