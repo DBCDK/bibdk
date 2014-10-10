@@ -22,7 +22,10 @@ function bibdk_favourite_get_favourites_form($form, $form_state) {
   $form['vejviser_link_wrapper']['vejviser_link'] = _bibdk_favourite_get_vejviser_link();
 
   // Make sure new agencies are pulled from webservice
-  bibdk_favourite_check_for_new_agency();
+  $name = bibdk_favourite_check_for_new_agency();
+  if ($name) {
+    bibdk_favourite_forms_set_message($name);
+  }
 
   // Get all user agencies
   $agencies = bibdk_favourite_get_favourites();
@@ -69,11 +72,10 @@ function bibdk_favourite_empty_favourite_form_element() {
 /**
  * Checks through the GET paramter if new agencies are added.
  *
- * @param bool $by_modal If this method is invoked by a modal callback this
- * param will be set to TRUE to prevent redundant information is being shown to
- * the user.
+ * @return array|bool|null|string
  */
-function bibdk_favourite_check_for_new_agency($by_modal = FALSE) {
+function bibdk_favourite_check_for_new_agency() {
+  $return = FALSE;
   if (isset($_GET['agency'])) {
     if (!isset($_SESSION['bibdk_favourites'][$_GET['agency']])) {
       if (_bibdk_favourite_save_on_webservice($_GET['agency'])) {
@@ -86,18 +88,20 @@ function bibdk_favourite_check_for_new_agency($by_modal = FALSE) {
         global $language;
         $name = $agency->getBranch()->getBranchName($language->language);
 
-        // set a message
-        if(!$by_modal){
-          $editpath = 'overlay/favourite/userdata/' . $_GET['agency'];
-          $options = array('attributes' => array('class' => array(' bibdk-popup-link')));
-          $linktext = t('add_user_data', array(), array('context' => 'bibdk_favorite'));
-          $link = l($linktext, $editpath, $options);
-          $text = t('%bibname has been added. Remember to ', array('%bibname' => $name), array('context' => 'bibdk_favourite'));
-          drupal_set_message($text . $link, 'warning');
-        }
+        $return = $name;
       }
     }
   }
+  return $return;
+}
+
+function bibdk_favourite_forms_set_message($name) {
+  $editpath = 'overlay/favourite/userdata/' . $_GET['agency'];
+  $options = array('attributes' => array('class' => array(' bibdk-popup-link')));
+  $linktext = t('add_user_data', array(), array('context' => 'bibdk_favorite'));
+  $link = l($linktext, $editpath, $options);
+  $text = t('%bibname has been added. Remember to ', array('%bibname' => $name), array('context' => 'bibdk_favourite'));
+  drupal_set_message($text . $link, 'warning');
 }
 
 /**
@@ -207,7 +211,7 @@ function bibdk_favourite_get_action_links($favourite) {
  */
 function bibdk_favourite_user_form_fields($form, &$form_state, $branchid = NULL) {
 
-  if(!$branchid && !empty($form_state['branchid'])){
+  if (!$branchid && !empty($form_state['branchid'])) {
     $branchid = $form_state['branchid'];
   }
 
