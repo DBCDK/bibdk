@@ -575,10 +575,6 @@ function bibdk_favourite_set_userdata($form, &$form_state) {
   $form_state['rebuild'] = true;
 }
 
-function _bibdk_favourite_error_no_agency_user_data() {
-  return t('no_agency_data_from_agency');
-}
-
 function bibdk_favourite_save_userdata($agencyid, array $userdata) {
   global $user;
   if (!ding_user_is_provider_user($user)) {
