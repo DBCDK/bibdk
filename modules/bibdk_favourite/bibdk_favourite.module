@@ -1,12 +1,78 @@
 <?php
 
+module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.agencies');
+module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.ajax');
+module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.borchk');
+module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.forms');
 module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.mypage');
-module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.shortcodes');
 module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.no_favourites');
+module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.shortcodes');
+module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.webservice');
 module_load_include('php', 'ting_agency', 'TingAgency');
 require_once(drupal_get_path('module', 'bibdk_favourite') . '/lib/FavouriteAgency.php');
 
-/** Get favourites. If order-agency is set it will be first elements
+/**
+ * Implements hook_menu().
+ */
+function bibdk_favourite_menu() {
+  // form to edit favourite data
+  $items['overlay/favourite/userdata/%'] = array(
+    'title' => 'Edit data',
+    'description' => 'Library helpdesk form.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bibdk_favourite_user_form_fields', 3),
+    'file' => 'includes/bibdk_favourite.forms.inc',
+    'access callback' => 'ding_user_is_provider_user',
+    'type' => MENU_CALLBACK,
+  );
+
+  // ajax call for deleting a favourite
+  $items['favourite_delete/ajax/%'] = array(
+    'title' => 'ajax_delete_favourite',
+    'page callback' => 'bibdk_favourite_ajax_link_delete_favourite',
+    'file' => 'includes/bibdk_favourite.ajax.inc',
+    'page arguments' => array(2),
+    'access callback' => 'ding_user_is_provider_user',
+    'type' => MENU_CALLBACK,
+  );
+
+  // ajax call for setting a favourite
+  $items['favourite_set/ajax/%'] = array(
+    'title' => 'ajax_set_favourite',
+    'page callback' => 'bibdk_favourite_ajax_link_set_favourite',
+    'file' => 'includes/bibdk_favourite.ajax.inc',
+    'page arguments' => array(2),
+    'access callback' => 'ding_user_is_provider_user',
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['user/%user/bibdk_favourite_list'] = array(
+    'title' => 'Favourites',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bibdk_favourite_get_favourites_form'),
+    'file' => 'includes/bibdk_favourite.forms.inc',
+    'access callback' => 'user_edit_access',
+    'access arguments' => array(1),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 20,
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function bibdk_favourite_theme() {
+  return array(
+    'bibdk_favourite_action_links' => array(
+      'variables' => array('links' => array()),
+    ),
+  );
+}
+
+/**
+ * Get favourites. If order-agency is set it will be first elements
  *
  * @return array; an array with agencyId as key, favourite-object as value
  */
@@ -25,10 +91,11 @@ function bibdk_favourite_get_favourites() {
   return _bibdk_favourite_set_favourite_first($favourites);
 }
 
-/** Arrange favourite array with order-agency as first element
+/**
+ * Arrange favourite array with order-agency as first element
  *
  * @param array $favourites
- * @return type
+ * @return array
  */
 function _bibdk_favourite_set_favourite_first(array $favourites) {
   foreach ($favourites as $key => $fav) {
@@ -55,6 +122,12 @@ function bibdk_favourite_add_to_vejviser($branchId) {
   return bibdk_favourite_list_link($branchId);
 }
 
+/**
+ * Returns a link for user/UID/bibdk_favourite_list
+ *
+ * @param $branchId
+ * @return array
+ */
 function bibdk_favourite_list_link($branchId) {
   global $user;
   $path = 'user/' . $user->uid . '/bibdk_favourite_list';
@@ -73,11 +146,13 @@ function bibdk_favourite_list_link($branchId) {
   );
 }
 
-/** \brief button to add a library to favourites
+/**
+ * Button to add a library to favourites
  *
- * @param type $form
- * @param type $form_state
+ * @param array $form
+ * @param array $form_state
  * @return string
+ * @deprecated might be completely unused mmj
  */
 function bibdk_favourite_select_form($form, $form_state) {
   $form['favourite_button'] = array(
@@ -93,6 +168,11 @@ function bibdk_favourite_select_form($form, $form_state) {
   return $form;
 }
 
+/**
+ * Returns a link for the bibdk vejviser
+ *
+ * @return array
+ */
 function _bibdk_favourite_get_vejviser_link() {
   $render = array(
     'link' => array(
@@ -109,291 +189,12 @@ function _bibdk_favourite_get_vejviser_link() {
 }
 
 /**
- * Ajax callback function
- * add favourite to session
- * set a message
- * */
-function bibdk_favourite_ajax_add_favourite($form, $form_state) {
-  $branchId = $form_state['build_info']['args'][0];
-
-  $commands = array();
-  $text = bibdk_favourite_save_favourite_on_webservice($branchId);
-  $selector = '.messages_' . $branchId;
-  drupal_set_message($text);
-  $commands[] = ajax_command_replace($selector, theme('status_messages'));
-
-  return array('#type' => 'ajax', '#commands' => $commands);
-}
-
-function bibdk_favourite_save_favourite_on_webservice($branchId) {
-  $response = _bibdk_favourite_save_on_webservice($branchId);
-  $message = '';
-
-  if ($response['status'] != 'error') {
-    module_load_include('inc', 'bibdk_favourite', 'bibdk_favourite.agencies');
-    $new_agency = bibdk_favourite_parse_agencies($response['response']);
-
-    $check = bibdk_favourite_check_agencies($new_agency, TRUE);
-    if ($check) {
-      global $language;
-      bibdk_favourite_add_favourite_to_session($check[$branchId]);
-      $bibname = $check[$branchId]->getBranch()->getBranchName($language->language);
-      $message = t('@bibname has been added to your favourite libraries', array('@bibname' => $bibname));
-    }
-  }
-  else {
-    $message = t($response['response']);
-  }
-
-  return $message;
-}
-
-/**
- * Add favourite library to sesssion
- * */
-function bibdk_favourite_add_favourite_to_session($favourite) {
-  if (!isset($_SESSION)) {
-    drupal_session_initialize();
-  }
-
-  // special case. user logs in and selects a favourite BEFORE
-  // going to favourite_list
-  if (!isset($_SESSION['bibdk_favourites'])) {
-    $_SESSION['bibdk_favourites'] = array();
-    _bibdk_favourite_set_agencies();
-  }
-
-  if (!isset($_SESSION['bibdk_favourites'][$favourite->getAgencyId()])) {
-    $_SESSION['bibdk_favourites'][$favourite->getAgencyId()] = serialize($favourite);
-  }
-}
-
-/** \brief delete user on webservice
- *
- * @global $user
- * @param  $branchId
- * @return FALSE if user is not logged in or is not ding_provider_user
- * or something goes wrong. TRUE if all went well
+ * @param array $variables
+ * @return string
  */
-function _bibdk_favourite_delete_on_webservice($branchId) {
-  global $user;
-  try {
-    $creds = ding_user_get_creds($user);
-  }
-  catch (Exception $e) {
-    return FALSE;
-  }
-  $response = ding_provider_invoke('user', 'delete_favourite', $creds['name'], $branchId);
-  return $response;
-}
-
-/**
- * Save user on webservice
- *
- * @param string $agencyId
- * @global $user
- * @return array['status','response']; status: error or success, response: string (on error) or xml (on success)
- */
-function _bibdk_favourite_save_on_webservice($agencyId) {
-  // check if user is logged in and if so if user is provider user
-  global $user;
-  try {
-    $creds = ding_user_get_creds($user);
-  }
-  catch (Exception $e) {
-    return FALSE;
-  }
-  $response = ding_provider_invoke('user', 'add_favourite', $creds['name'], $agencyId);
-  return $response;
-}
-
-/** \ Delete favourite from SESSION and on webservice
- *
- * @param type $branchId
- * @return boolean
- */
-function bibdk_favourite_delete_favourite_from_session($branchId) {
-
-  unset($_SESSION['bibdk_favourites']);
-
-  $ret = TRUE;
-  $ret = _bibdk_favourite_delete_on_webservice($branchId);
-  if ($ret && isset($_SESSION['bibdk_favourites'][$branchId])) {
-    unset($_SESSION['bibdk_favourites'][$branchId]);
-  }
-  return $ret;
-}
-
-/** \brief get favourites from webservice and add them to session
- *
- */
-function _bibdk_favourite_set_agencies() {
-  // try to get from webservice
-  $agencies = _bibdk_favourite_get_from_webservice();
-  if (!empty($agencies)) {
-    // add agencies to session
-    foreach ($agencies as $favourite) {
-      bibdk_favourite_add_favourite_to_session($favourite);
-    }
-  }
-}
-
-/**
- * Returns the users favourite libraries as a form render array
- *
- * @param $form
- * @param $form_state
- * @return array
- */
-function bibdk_favourite_get_favourites_form($form, $form_state) {
-  // Link to vejviser
-  $form['vejviser_link_wrapper'] = array(
-    '#type' => 'container',
-    '#attributes' => array(
-      'class' => array('bibdk-favourite-vejviser-link'),
-    ),
-  );
-  $form['vejviser_link_wrapper']['vejviser_link'] = _bibdk_favourite_get_vejviser_link();
-
-  // Make sure new agencies are pulled from webservice
-  bibdk_favourite_check_for_new_agency();
-
-  // Get all user agencies
-  $agencies = bibdk_favourite_get_favourites();
-
-  $form['favorites'] = array(
-    '#type' => 'container',
-    '#prefix' => '<div class="element">',
-    '#suffix' => '</div>',
-    '#attributes' => array(
-      'class' => array(
-        'element-wrapper'
-      ),
-    ),
-  );
-
-  // Build agency elements
-  if (!empty($agencies)) {
-    $count = 0;
-    foreach ($agencies as $id => $branch) {
-
-      $form['favorites']['bibdk_favourite_' . $id] = bibdk_favourite_form_view_items_from_session($branch, $count++);
-    }
-  }
-  else {
-    $form['empty'] = bibdk_favourite_empty_favourite_form_element();
-  }
-
-  return $form;
-}
-
-/**
- * Checks through the GET paramter if new agencies are added.
- *
- * @param bool $by_modal If this method is invoked by a modal callback this
- * param will be set to TRUE to prevent redundant information is being shown to
- * the user.
- */
-function bibdk_favourite_check_for_new_agency($by_modal = FALSE) {
-  if (isset($_GET['agency'])) {
-    if (!isset($_SESSION['bibdk_favourites'][$_GET['agency']])) {
-      if (_bibdk_favourite_save_on_webservice($_GET['agency'])) {
-        if (isset($_SESSION['bibdk_favourites'])) {
-          // unset favourites to reload from webservice
-          unset($_SESSION['bibdk_favourites']);
-        }
-        // get the agency
-        $agency = new TingAgency($_GET['agency']);
-        global $language;
-        $name = $agency->getBranch()->getBranchName($language->language);
-
-        // set a message
-        if(!$by_modal){
-          $editpath = 'overlay/favourite/userdata/' . $_GET['agency'];
-          $options = array('attributes' => array('class' => array(' bibdk-popup-link')));
-          $linktext = t('add_user_data', array(), array('context' => 'bibdk_favorite'));
-          $link = l($linktext, $editpath, $options);
-          $text = t('%bibname has been added. Remember to ', array('%bibname' => $name), array('context' => 'bibdk_favourite'));
-          drupal_set_message($text . $link, 'warning');
-        }
-      }
-    }
-  }
-}
-
-function bibdk_favourite_empty_favourite_form_element() {
-  $form['container'] = array(
-    '#type' => 'container',
-    '#attributes' => array(
-      'class' => array('element-section'),
-    ),
-  );
-  $form['container']['no_agencies'] = array(
-    '#markup' => t('no_favourites_saved'),
-  );
-  return $form;
-}
-
-/**
- * the form to be displayed on profile tab
- * */
-function bibdk_favourite_form_view_items_from_session($favourite, $weight, $toggle_enabled = true, $action_enabled = true) {
-  global $language;
-
-  $form = array();
-  $branch = $favourite->getBranch();
-
-  if (empty($branch)) {
-    return;
-  }
-  // check if given branch is set as order-agency
-  $order_class = ($favourite->getOrderAgency()) ? 'order-agency' : '';
-  $links = bibdk_favourite_get_action_links($favourite);
-  $actions = ($action_enabled) ? theme('bibdk_favourite_action_links', array('links' => $links)) : null;
-
-  $moreinfo = theme('ting_agency_more_info', array(
-      'branch' => $branch,
-      'openingHours' => theme('ting_agency_opening_hours', array('branch' => $branch,)),
-      'tools' => theme('ting_agency_tools', array('branch' => $branch)),
-      'address' => theme('ting_agency_address', array('branch' => $branch)),
-      'contact' => theme('ting_agency_contact', array('branch' => $branch)),
-      'toggle_enabled' => $toggle_enabled,
-    ));
-  $classes = array();
-  $classes[] = 'favourite_' . $favourite->getAgencyId();
-  $classes[] = ($favourite->getOrderAgency()) ? 'order-agency' : NULL;
-
-  $form[$favourite->getAgencyId()]['library']['#markup'] = theme('ting_agency_library', array(
-    'branchName' => $branch->getBranchShortName($language->language),
-    'agencyName' => $branch->agencyName,
-    'actions' => $actions,
-    'add_classes' => $classes,
-    'moreinfo' => $moreinfo,
-    'branchid' => $branch->branchId,
-    'toggle_enabled' => $toggle_enabled
-  ));
-
-  // place branch on top if set as order-agency
-  $form[$favourite->getAgencyId()]['#weight'] = ($favourite->getOrderAgency()) ? -1 : $weight;
-
-  return $form;
-}
-
-/** Implements hook_theme
- *
- */
-function bibdk_favourite_theme() {
-  return array(
-    'bibdk_favourite_action_links' => array(
-      'variables' => array('links' => array()),
-    ),
-  );
-}
-
 function theme_bibdk_favourite_action_links($variables) {
   $links = $variables['links'];
   foreach ($links as $link) {
-    // $item['data'] = $link;
     $item['data'] = _bibdk_favourite_render_link($link);
     $items[] = $item;
   }
@@ -405,146 +206,26 @@ function _bibdk_favourite_render_link($link) {
   return l($link['text'], $link['path'], array('attributes' => $link['attributes']));
 }
 
-function _bibdk_favourite_set_user_data_page_title($branchid) {
-  $branchName = '';
-  $favourites = bibdk_favourite_get_favourites();
-  if (isset($favourites[$branchid])) {
-    $branch = $favourites[$branchid]->getBranch();
-    global $language;
-    $name = $branch->getBranchName($language->language);
-    $branchName = isset($name) ? $name : '';
-  }
-  return t('Edit data for @library', array('@library' => $branchName));
-}
-
 /**
- * Render user fields;
+ * Save the favorite on the webservice.
+ *
+ * @param array $form
+ * @param array $form_state
+ * @return mixed
+ * @deprecated might be completely unused mmj
  */
-function bibdk_favourite_user_form_fields($form, &$form_state, $branchid = NULL) {
-
-  if(!$branchid && !empty($form_state['branchid'])){
-    $branchid = $form_state['branchid'];
-  }
-
-  bibdk_favourite_add_js();
-
-  // set title of page
-  $page_title = _bibdk_favourite_set_user_data_page_title($branchid);
-  drupal_set_title($page_title);
-
-  $favourites = bibdk_favourite_get_favourites();
-  if (isset($favourites[$branchid])) {
-    $agency = $favourites[$branchid];
-    $userData = $agency->getUserData();
-    $action = array(
-      '#type' => 'submit',
-      '#value' => t('Save'),
-      '#submit' => array('bibdk_favourite_set_userdata'),
-    );
-  }
-  else {
-    $userData = array();
-    $action = array(
-      '#type' => 'submit',
-      '#value' => t('Save as favourite agency'),
-      '#submit' => array('bibdk_favourite_save_favourite'),
-    );
-  }
-
-  $fields = bibdk_favourite_get_agency_fields($branchid);
-
-  $form = ting_agency_userdata_form($form, $form_state, $fields, $userData, $branchid);
-
-  $form['branchid'] = array(
-    '#type' => 'hidden',
-    '#value' => $branchid,
-  );
-
-  $form['#validate'][] = 'bibdk_favourite_borchk';
-  $form['#validate'][] = 'bibdk_favourite_validate_email';
-
-  $form['wrapper']['submit'] = $action;
-
+function bibdk_favourite_save_favourite($form, &$form_state) {
+  $branchid = $form_state['values']['branchid'];
+  $message = bibdk_favourite_save_favourite_on_webservice($branchid);
+  drupal_set_message($message);
+  bibdk_favourite_set_userdata($form, $form_state);
   return $form;
 }
 
-function bibdk_favourite_validate_email($form, $form_state) {
-  if (!empty($form_state['values']['userMail']) && !valid_email_address($form_state['values']['userMail'])) {
-    form_set_error('userEmail', t('Email needs to be a valid email', array(), array('context' => 'bibdk_favourite:userdata')));
-  }
-}
-
-function bibdk_favourite_borchk($form, $form_state) {
-  // check for form errors
-  $errors = form_get_errors();
-  if (empty($errors)) {
-    // validate via borchk
-    // we know that userid, pincode and library code is set (required values on form)
-    $libraryCode = $form_state['values']['branchid'];
-    $userId = _bibdk_favourite_get_userid_from_array($form_state['values']);
-    // get userOrderParameter
-    $fields = bibdk_favourite_get_agency_fields($libraryCode);
-
-    // Check for - isBorrowerCheckRequired
-    if ($fields->isBorrowerCheckRequired() == true) {
-      // Do validate userdata
-      $userPincode = $form_state['values']['pincode'];
-      $response = bibdk_borchk_request($userId, $userPincode, $libraryCode, 'xml', 'bibliotek.dk');
-      $result = bibdk_favourite_parse_borchk($response);
-      if ($result['status'] == 'error') {
-        form_set_error('userid', t($result['message'], array(), array('context' => 'bibdk_favourite_borchk')));
-      }
-    }
-    else {
-      // Dcd ,,o not validate userdata
-    }
-  }
-}
-
 /**
- * Helper function to get the userId out of a form_state
- *
- * @param $values
- * @return string|null
+ * @param $form
+ * @param $form_state
  */
-function _bibdk_favourite_get_userid_from_array($values) {
-  $possible_userId_keys = array('cpr', 'userId', 'cardno', 'customId');
-  $userId_key = array_intersect($possible_userId_keys, array_keys($values));
-  if (isset($userId_key) && is_array($userId_key)) {
-    $userId_key = reset($userId_key);
-    return $values[$userId_key];
-  }
-
-  return null;
-}
-
-/**
- *
- * @param string $response (xml from borchk)
- */
-function bibdk_favourite_parse_borchk($response) {
-  $dom = new DOMDocument();
-  if (!@$dom->loadXML($response)) {
-    $result['status'] = 'error';
-    $result['message'] = t('invalid response from borchk', array(), array('context' => 'bibdk_favourite_borchk'));
-    watchdog('borchk', 'invalid response from borchk %response', array('%response' => $response), WATCHDOG_ERROR);
-    return $result;
-  }
-  $xpath = new DOMXPath($dom);
-  $xpath->registerNamespace('ns', 'http://oss.dbc.dk/ns/borchk');
-  $query = '//ns:requestStatus';
-  $nodelist = $xpath->query($query);
-  $status = $nodelist->item(0)->nodeValue;
-  if ($status != 'ok') {
-    $result['status'] = 'error';
-    $result['message'] = t($status, array(), array('context' => 'bibdk_favourite_borchk'));
-  }
-  else {
-    $result['status'] = 'ok';
-  }
-  return $result;
-}
-
 function bibdk_favourite_set_userdata($form, &$form_state) {
   $userdata = array();
   $valid_fields = array(
@@ -576,6 +257,12 @@ function bibdk_favourite_set_userdata($form, &$form_state) {
   $form_state['rebuild'] = true;
 }
 
+/**
+ * Save the userdata on the provider
+ *
+ * @param $agencyid
+ * @param array $userdata
+ */
 function bibdk_favourite_save_userdata($agencyid, array $userdata) {
   global $user;
   if (!ding_user_is_provider_user($user)) {
@@ -592,17 +279,6 @@ function bibdk_favourite_save_userdata($agencyid, array $userdata) {
   if ($response !== FALSE) {
     drupal_set_message(t('user_changes_saved', array(), array('context' => 'bibdk_favourite')));
   }
-  else {
-    // @TODO ... do something
-  }
-}
-
-function bibdk_favourite_save_favourite($form, &$form_state) {
-  $branchid = $form_state['values']['branchid'];
-  $message = bibdk_favourite_save_favourite_on_webservice($branchid);
-  drupal_set_message($message);
-  bibdk_favourite_set_userdata($form, $form_state);
-  return $form;
 }
 
 /**
@@ -618,97 +294,7 @@ function bibdk_favourite_get_agency_fields($agencyId) {
 }
 
 /**
- * \brief Get favourite agencies for the user
- *
- * @global object $user
- * @return TingClientAgencyBranch
- */
-function _bibdk_favourite_get_from_webservice() {
-  global $user;
-
-  if (ding_user_is_provider_user($user)) {
-    try {
-      $creds = ding_user_get_creds($user);
-    }
-    catch (Exception $e) {
-      // do nothing
-    }
-    if (empty($creds)) {
-      return array();
-    }
-
-    // call openuserinfo webservice
-    $xml = ding_provider_invoke('user', 'get_favourites', $creds['name']);
-    module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.agencies');
-    $saved_agencies = bibdk_favourite_parse_agencies($xml);
-
-    if (!$saved_agencies) {
-      return array();
-    }
-    $agencies = array();
-    foreach ($saved_agencies as $key => $agency) {
-      $fav = new TingAgency($agency['oui:agencyId']);
-      $branch = $fav->getBranch();
-      if (isset($branch)) {
-        $branch->userdata = unserialize($saved_agencies[$key]['oui:userData']);
-        $branch->orderLibrary = $saved_agencies[$key]['oui:orderAgency'];
-        $agencies[$agency['oui:agencyId']] = $branch;
-        $saved_agencies[$key]['agencyBranch'] = $branch;
-      }
-    }
-    return bibdk_favourite_check_agencies($saved_agencies);
-  }
-  // user is not ding_provider_user
-  return array();
-}
-
-function bibdk_favourite_check_agencies($saved_agencies, $add = FALSE) {
-  if (!$saved_agencies) {
-    $message = _bibdk_favourite_set_error_text(0);
-    drupal_set_message($message, 'error');
-    return array();
-  }
-  // get the real agency(branch)
-  //  $client = new ting_client_class();
-  $agencies = array();
-  $order_agency = FALSE;
-  foreach ($saved_agencies as $key => $agency) {
-    if ($agency['oui:orderAgency'] == 'TRUE') {
-      $order_agency = TRUE;
-    }
-    $agencies[$agency['oui:agencyId']] = new FavouriteAgency($agency);
-    if (isset($agency['agencyBranch'])) {
-      $agencies[$agency['oui:agencyId']]->setBranch($agency['agencyBranch']);
-    }
-  }
-  if (!$order_agency && !empty($agencies) && !$add) {
-    // no orderagency is set pick a new favourite as orderagency
-    $fav = current($agencies);
-    if (bibdk_favourite_set_favourite($fav->getAgencyId())) {
-      $fav->orderAgency = 'TRUE';
-    }
-  }
-
-  return $agencies;
-}
-
-/**
- * Helper function to add required javascript and CSS to the page.
- */
-function bibdk_favourite_add_js() {
-  // Initialize a flag; we only need to do this one per page request.
-  static $done = FALSE;
-  if ($done) {
-    return;
-  }
-  // Add the requisite libraries and our custom js file.
-  $js_path = drupal_get_path('module', 'bibdk_favourite') . '/js/';
-  drupal_add_js($js_path . 'setFavourite.js');
-  // Set flag to true.
-  $done = TRUE;
-}
-
-/** \brief invoke bibdk_providers user_set_favourite method
+ * Invoke bibdk_providers user_set_favourite method
  *
  * @global $user $user
  * @param mixed $branchId
@@ -732,187 +318,6 @@ function bibdk_favourite_set_favourite($branchId) {
   }
 }
 
-/** \brief get links for editing favourite agency (delete, set as order-agency, edit user data)
- *
- * @param FavouriteAgency $favourite
- * @return String $links HTML (unordered list)
- *
- * NOTICE text and classes are also set in javascript. @see js/setFavourite.js
- */
-function bibdk_favourite_get_action_links($favourite) {
-  bibdk_favourite_add_js();
-
-  // add ajax library to intrepret the use-ajax class
-  drupal_add_library('system', 'drupal.ajax');
-  $order_agency = ($favourite->getOrderAgency()) ? TRUE : FALSE;
-  if ($order_agency) {
-    $order_txt = t('Order agency');
-    $link_class = 'selected-agency';
-  }
-  else {
-    $order_txt = t('set_as_favourite');
-    $link_class = 'not-selected-agency';
-  }
-  $edit_text = ($favourite->getUserData()) ? t('edit_user_data', array(), array('context' => 'bibdk_favorite')) : t('add_user_data', array(), array('context' => 'bibdk_favorite'));
-
-  $links = array();
-  $links['set_favourite'] = array();
-  $links['set_favourite']['text'] = $order_txt;
-  $links['set_favourite']['path'] = 'favourite_set/ajax/' . $favourite->getAgencyId();
-  $links['set_favourite']['attributes'] = array(
-    'class' => array(
-      'use-ajax',
-      'set-default-order-agency',
-      $link_class
-    )
-  );
-
-  $links['edit_data'] = array();
-  $links['edit_data']['text'] = $edit_text;
-  $links['edit_data']['path'] = 'overlay/favourite/userdata/' . $favourite->getAgencyId();
-  $links['edit_data']['attributes'] = array(
-    'data-rel' => array('bibdkFavorite'),
-    'class' => array('edit-personal-info', 'bibdk-popup-link')
-  );
-
-  $links['delete_favourite'] = array();
-  $links['delete_favourite']['text'] = t('delete_favourite');
-  $links['delete_favourite']['path'] = 'favourite_delete/ajax/' . $favourite->getAgencyId();
-  $links['delete_favourite']['attributes'] = array(
-    'class' => array(
-      'use-ajax',
-      'delete-favourite'
-    )
-  );
-
-  return $links;
-}
-
-/**
- * Implements hook_menu().
- */
-function bibdk_favourite_menu() {
-  global $user;
-  // form to edit favourite data
-  $items['overlay/favourite/userdata/%'] = array(
-    'title' => 'Edit data',
-    'description' => 'Library helpdesk form.',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('bibdk_favourite_user_form_fields', 3),
-    'access callback' => 'ding_user_is_provider_user',
-    'type' => MENU_CALLBACK,
-  );
-
-  // ajax call for deleting a favourite
-  $items['favourite_delete/ajax/%'] = array(
-    'title' => 'ajax_delete_favourite',
-    'page callback' => 'bibdk_favourite_ajax_link_delete_favourite',
-    'page arguments' => array(2),
-    'access callback' => 'ding_user_is_provider_user',
-    'type' => MENU_CALLBACK,
-  );
-
-  // ajax call for setting a favourite
-  $items['favourite_set/ajax/%'] = array(
-    'title' => 'ajax_set_favourite',
-    'page callback' => 'bibdk_favourite_ajax_link_set_favourite',
-    'page arguments' => array(2),
-    'access callback' => 'ding_user_is_provider_user',
-    'type' => MENU_CALLBACK,
-  );
-
-  $items['user/%user/bibdk_favourite_list'] = array(
-    'title' => 'Favourites',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('bibdk_favourite_get_favourites_form'),
-    'access callback' => 'user_edit_access',
-    'access arguments' => array(1),
-    'type' => MENU_LOCAL_TASK,
-    'weight' => 20,
-  );
-
-  return $items;
-}
-
-function bibdk_favourite_ajax_command($branchId) {
-  return array(
-    'command' => 'favourite_set',
-    'selector' => 'favourite_' . $branchId,
-  );
-}
-
-/**
- * ajax callback for setting order agency
- */
-function bibdk_favourite_ajax_link_set_favourite($branchId) {
-  // add javascript for handling favourite_set
-  bibdk_favourite_add_js();
-
-  unset($_SESSION['bibdk_favourites']);
-
-  $response = bibdk_favourite_set_favourite($branchId);
-  if (!$response) {
-    $text = _bibdk_favourite_set_error_text($branchId);
-    $type = 'error';
-  }
-  else {
-    $text = _bibdk_favourite_set_favourite_text($branchId);
-    $type = 'status';
-  }
-
-  $commands = array();
-  //clear message stack
-  drupal_get_messages();
-  $commands[] = bibdk_favourite_ajax_command($branchId);
-  // if $response is not set something went wrong
-  if (!$response) {
-    $selector = '.favourite_' . $branchId;
-    drupal_set_message($text, $type);
-    $commands[] = ajax_command_append($selector, theme('status_messages'));
-  }
-  $page = array('#type' => 'ajax', '#commands' => $commands);
-  ajax_deliver($page);
-}
-
-/**
- * ajax callback for deleting a favourite library
- * */
-function bibdk_favourite_ajax_link_delete_favourite($branchId) {
-  $deleted_agency = unserialize($_SESSION['bibdk_favourites'][$branchId]);
-  $response = bibdk_favourite_delete_favourite_from_session($branchId);
-  if (!$response) {
-    $text = _bibdk_favourite_set_error_text($branchId);
-    $type = 'error';
-  }
-  else {
-    $text = _bibdk_favourite_set_delete_text($branchId);
-    $type = 'status';
-  }
-
-  $commands = array();
-  if ($deleted_agency && $deleted_agency->getOrderAgency()) {
-    _bibdk_favourite_set_agencies();
-    $agencies = isset($_SESSION['bibdk_favourites']) ? $_SESSION['bibdk_favourites'] : NULL;
-    if ($agencies) {
-      $agency = unserialize(current($agencies));
-      $commands[] = bibdk_favourite_ajax_command($agency->getAgencyId());
-    }
-  }
-  $selector = '.favourite_' . $branchId;
-
-  drupal_set_message($text, $type);
-
-  if ($response) {
-    $commands[] = ajax_command_replace($selector, theme('status_messages'));
-  }
-  else {
-    $commands[] = ajax_command_append($selector, theme('status_messages'));
-  }
-
-  $page = array('#type' => 'ajax', '#commands' => $commands);
-  ajax_deliver($page);
-}
-
 function _bibdk_favourite_set_error_text($branchId) {
   return t('bibdk_favourite_something_went_wrong', array(), array('context' => 'bibdk_favourite'));
 }
@@ -923,5 +328,21 @@ function _bibdk_favourite_set_favourite_text($branchId) {
 
 function _bibdk_favourite_set_delete_text($branchId) {
   return t('Favourite library has been deleted', array(), array('context' => 'bibdk_favourite'));
+}
+
+/**
+ * Helper function to add required javascript and CSS to the page.
+ */
+function bibdk_favourite_add_js() {
+  // Initialize a flag; we only need to do this one per page request.
+  static $done = FALSE;
+  if ($done) {
+    return;
+  }
+  // Add the requisite libraries and our custom js file.
+  $js_path = drupal_get_path('module', 'bibdk_favourite') . '/js/';
+  drupal_add_js($js_path . 'setFavourite.js');
+  // Set flag to true.
+  $done = TRUE;
 }
 
