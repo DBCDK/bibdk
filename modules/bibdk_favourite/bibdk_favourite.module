@@ -501,7 +501,8 @@ function bibdk_favourite_borchk($form, $form_state) {
   }
 }
 
-/** Helper function to get the userId out of a form_state
+/**
+ * Helper function to get the userId out of a form_state
  *
  * @param $values
  * @return string|null
@@ -899,9 +900,6 @@ function bibdk_favourite_ajax_link_delete_favourite($branchId) {
   }
   $selector = '.favourite_' . $branchId;
 
-  // clear message stack
-  //  drupal_get_messages();
-  // set message
   drupal_set_message($text, $type);
 
   if ($response) {
