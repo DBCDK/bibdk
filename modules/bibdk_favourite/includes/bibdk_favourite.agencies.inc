@@ -47,5 +47,3 @@ function bibdk_favourite_parse_agencies($xml) {
   }
   return $agencies;
 }
-
-?>
