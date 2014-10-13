@@ -254,7 +254,7 @@ function bibdk_favourite_user_form_fields($form, &$form_state, $branchid = NULL)
   $form['#validate'][] = 'bibdk_favourite_borchk';
   $form['#validate'][] = 'bibdk_favourite_validate_email';
   $form['#attributes'] = array(
-    'id' => array('bibdk-favourite-user-form', 'bibdk_favourite_user_form_fields'),
+    'id' => array('bibdk-favourite-user-form'),
   );
 
   $form['wrapper']['submit'] = $action;
