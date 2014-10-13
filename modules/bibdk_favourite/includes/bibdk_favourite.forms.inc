@@ -75,7 +75,7 @@ function bibdk_favourite_empty_favourite_form_element() {
  * @return array|bool|null|string
  */
 function bibdk_favourite_check_for_new_agency() {
-  $return = FALSE;
+  $name = FALSE;
   if (isset($_GET['agency'])) {
     if (!isset($_SESSION['bibdk_favourites'][$_GET['agency']])) {
       if (_bibdk_favourite_save_on_webservice($_GET['agency'])) {
@@ -87,12 +87,14 @@ function bibdk_favourite_check_for_new_agency() {
         $agency = new TingAgency($_GET['agency']);
         global $language;
         $name = $agency->getBranch()->getBranchName($language->language);
-
-        $return = $name;
       }
+    } else {
+      $agency = unserialize($_SESSION['bibdk_favourites'][$_GET['agency']]);
+      global $language;
+      $name = $agency->getBranch()->getBranchName($language->language);
     }
   }
-  return $return;
+  return $name;
 }
 
 function bibdk_favourite_forms_set_message($name) {
