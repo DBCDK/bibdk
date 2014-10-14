@@ -37,8 +37,10 @@ function bibdk_autocomplete_menu() {
  * @param $p_uuid
  * @param $v_uuid
  * @param $string
+ * @param bool $retry -- the server tends to respond with a error 500 however
+ *                       retrying once seems to fix it most of the times.
  */
-function bibdk_autocomplete($p_uuid, $v_uuid, $string) {
+function bibdk_autocomplete($p_uuid, $v_uuid, $string, $retry = FALSE) {
 
   $items = array();
   $settings = variable_get('bibdk_autocomplete_settings', array());
@@ -65,6 +67,7 @@ function bibdk_autocomplete($p_uuid, $v_uuid, $string) {
   $settings['highlight'] = ($settings['highlight']) ? 'true' : NULL;
 
   $options['query'] = array('query' => check_plain($string)) + $value_vars + $settings;
+  $options['maxTime'] = 300;
 
   $url = url($url, $options);
   watchdog('bibdk_autocomplete', 'Autocomplete URL sent: ' . $url, array(), $severity = WATCHDOG_DEBUG);
@@ -78,13 +81,19 @@ function bibdk_autocomplete($p_uuid, $v_uuid, $string) {
       $items[bibdk_autocomplete_truncate(html_entity_decode(strip_tags($suggestion->suggestion)), 64)] = $suggestion->suggestion;
     }
   }
+  else if (empty($result->suggestions) && !$retry) {
+    bibdk_autocomplete($p_uuid, $v_uuid, $string, TRUE);
+  }
   else {
     watchdog('bibdk_autocomplete', 'Autocomplete return empty set for ' . $url, array(), $severity = WATCHDOG_NOTICE);
+    $items = array();
   }
 
-  // Return the result to the form in json
-  drupal_json_output($items);
-  drupal_exit();
+  if ($items) {
+    // Return the result to the form in json
+    drupal_json_output($items);
+    drupal_exit();
+  }
 }
 
 /**
