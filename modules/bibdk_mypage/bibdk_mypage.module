@@ -246,14 +246,13 @@ function bibdk_mypage_user_view($account, $view_mode, $langcode) {
   $account->content = drupal_get_form('bibdk_mypage_form');
 }
 
-
+/**
+ * Helper function to get rows for mypage block
+ * @param $max_rows
+ * @return array
+ */
 function bibdk_mypage_my_page_get_rows($max_rows) {
-  global $user;
-  $languages = language_list('enabled');
-  $ret[] = array(
-    'label_row' => t('Language'),
-    'value_row' => (isset($languages) && isset($languages[1][$user->language]->native)) ? $languages[1][$user->language]->native : t('undefined'),
-  );
+  $ret[] = array();
   return $ret;
 }
 
