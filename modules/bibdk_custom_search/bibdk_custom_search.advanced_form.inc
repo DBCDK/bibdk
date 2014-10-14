@@ -7,7 +7,7 @@
  * @param $default_values
  * @param $extended_fields
  */
-function _bibdk_custom_search_create_advanced_form($elements, $current_page, $default_values) {
+function _bibdk_custom_search_create_advanced_form($elements, $default_values) {
   $fields = array();
 
   // We loop through all search elements
@@ -25,15 +25,6 @@ function _bibdk_custom_search_create_advanced_form($elements, $current_page, $de
 
     /* REGIONS */
     $region = $element->region;
-    if (!isset($fields[$region]) && $region != 'main') {
-      $fields[$region] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Advanced search'),
-        '#collapsible' => TRUE,
-        '#collapsed' => ($current_page['expand']) ? $current_page['expand'] : FALSE,
-        '#weight' => 102,
-      );
-    }
 
     // we add a subgroup because elements can have matching searchcodes
     $subgroup = $element->e_uuid;
