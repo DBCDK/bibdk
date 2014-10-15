@@ -24,6 +24,13 @@ function _bibdk_custom_search_create_advanced_form($elements, $default_values) {
 
     /* REGIONS */
     $region = $element->region;
+    if (!isset($fields[$region]) && $region != 'main') {
+      $fields[$region] = array(
+        '#type' => 'fieldset',
+        '#collapsible' => FALSE,
+        '#weight' => 102,
+      );
+    }
 
     // we add a subgroup because elements can have matching searchcodes
     $subgroup = $element->e_uuid;
