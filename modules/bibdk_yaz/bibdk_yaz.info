@@ -4,4 +4,4 @@ core = 7.x
 package = bibliotek.dk
 
 files[] = lib/PhpYazConverter.inc
-files[] = bibdk_yaz.test
+files[] = test/bibdk_yaz.test
