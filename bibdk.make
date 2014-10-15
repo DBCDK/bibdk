@@ -22,7 +22,7 @@ projects[bibdk_theme][type] = theme
 projects[bibdk_theme][download][type] = git
 projects[bibdk_theme][download][url] = git@github.com:DBCDK/bibdk_theme.git
 ;projects[bibdk_theme][download][tag] = 7.x-0.65
-projects[bibdk_theme][download][branch] = feature/1429_help-icon
+projects[bibdk_theme][download][branch] = feature/bug_16369-apply_check_plain_on_openformat_elements
 
 ; --- Bibliotek.dk versions of Ding2 modules ---
 
@@ -104,7 +104,8 @@ projects[ting_infomedia][download][tag] = 7.x-1.28
 projects[ting_openformat][type] = module
 projects[ting_openformat][download][type] = git
 projects[ting_openformat][download][url] = git@github.com:DBCDK/ting_openformat.git
-projects[ting_openformat][download][tag] = 7.x-0.57
+; projects[ting_openformat][download][tag] = 7.x-0.57
+projects[ting_openformat][download][branch] = feature/bug_16369-apply_check_plain_on_openformat_elements
 
 projects[ting_openuserstatus][type] = module
 projects[ting_openuserstatus][download][type] = git
