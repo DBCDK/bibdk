@@ -1,0 +1,8 @@
+name = Bibdk YAZ converter
+description = Converts ccl to cql
+core = 7.x
+package = bibliotek.dk
+
+; class definitions
+
+files[] = lib/PhpYazConverter.inc

@@ -1,0 +1,10 @@
+<?php
+/**
+ * @file bibdk_yaz.module
+ * ccl to cql conversion functions
+ */
+
+function bibdk_yaz_convert_ccl_to_cql($ccl) {
+  $yaz = new PhpYazConverter();
+  return $yaz->CclToCql($ccl);
+}
