@@ -336,28 +336,43 @@ function _get_bibdk_subject_hierarchy_level($emnehierarki, $key) {
   return $emnehierarki;
 }
 
-function _get_bibdk_subject_hierarchy_breadcrumbs($emnehierarki, $key, $path = 'work', $breadcrumbs = array()) {
+/**
+ * Generate a clickable breadcrumb displayed in the top of the box when a
+ * subject is clicked.
+ *
+ * @param $emnehierarki
+ * @param $keys
+ * @param string $path
+ * @internal param array $breadcrumbs
+ * @return array
+ */
+function _get_bibdk_subject_hierarchy_breadcrumbs($emnehierarki, $keys, $path = 'work') {
+  $breadcrumbs = array();
+  $parent_string = '';
 
-  $level = array_shift($key);
+  foreach($keys as $key){
+    $current_level = (empty($current_level)) ? $emnehierarki[$key] : $current_level['term'][$key];
 
-  $breadcrumbs[] = array(
-    '#theme' => 'link',
-    '#text' => $emnehierarki[$level]['ord'],
-    '#path' => (!empty($emnehierarki[$level]['cql'])) ? 'search/' . $path . '/' . $emnehierarki[$level]['cql'] : 'bibdk_subject_hierarchy/nojs/' . implode(',', $key),
-    '#options' => array(
-      'attributes' => (!empty($emnehierarki[$level]['cql'])) ? array('class' => array('last')) : array('class' => array('use-ajax')),
-      'html' => FALSE,
-    ),
-    '#key' => $level,
-    '#keys_path' => implode(',', $key),
-  );
 
-  if (sizeof($key) > 0 && isset($emnehierarki[$level]['term']) && isset($emnehierarki[$level]['term'])) {
-    $breadcrumbs = _get_bibdk_subject_hierarchy_breadcrumbs($emnehierarki[$level]['term'], $key, $path, $breadcrumbs);
+    if(empty($parent_string)){
+      $parent_string = $key;
+    } else {
+      $parent_string .= ',' . $key;
+    }
+
+    $breadcrumbs[] = array(
+      '#theme' => 'link',
+      '#text' => $current_level['ord'],
+      '#path' => (!empty($current_level['cql'])) ? 'search/' . $path . '/' . $current_level['cql'] : 'bibdk_subject_hierarchy/nojs/' . $parent_string,
+      '#options' => array(
+        'attributes' => (!empty($current_level['cql'])) ? array('class' => array('last')) : array('class' => array('use-ajax')),
+        'html' => FALSE,
+      ),
+    );
+
   }
 
   return $breadcrumbs;
-
 }
 
 /**
