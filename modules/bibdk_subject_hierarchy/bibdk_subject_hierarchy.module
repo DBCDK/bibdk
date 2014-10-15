@@ -41,7 +41,7 @@ function bibdk_subject_hierarchy_menu() {
     'access arguments' => array('administer search'),
     'type' => MENU_NORMAL_ITEM,
     'file' => 'bibdk_subject_hierarchy.admin.inc',
-   );
+  );
 
   return $items;
 }
@@ -350,15 +350,9 @@ function _get_bibdk_subject_hierarchy_breadcrumbs($emnehierarki, $keys, $path = 
   $breadcrumbs = array();
   $parent_string = '';
 
-  foreach($keys as $key){
+  foreach ($keys as $key) {
     $current_level = (empty($current_level)) ? $emnehierarki[$key] : $current_level['term'][$key];
-
-
-    if(empty($parent_string)){
-      $parent_string = $key;
-    } else {
-      $parent_string .= ',' . $key;
-    }
+    $parent_string .= (empty($parent_string)) ? $key : ',' . $key;
 
     $breadcrumbs[] = array(
       '#theme' => 'link',
@@ -369,7 +363,6 @@ function _get_bibdk_subject_hierarchy_breadcrumbs($emnehierarki, $keys, $path = 
         'html' => FALSE,
       ),
     );
-
   }
 
   return $breadcrumbs;
@@ -501,7 +494,7 @@ function _bibdk_subject_hierarchy_parse_term($term) {
         $cql = str_ireplace($replaceFromLongterm, $replaceToLongterm, $cql);
         $cql = str_ireplace($replaceFromBoolean, $replaceToBoolean, $cql);
         $record['cql'] = $cql;
-        if ( class_exists('CQLStrictParser') ) {
+        if (class_exists('CQLStrictParser')) {
           $cql_strict_parser = new CQLStrictParser;
           $record['cql'] = $cql_strict_parser->parse($cql);
         }
