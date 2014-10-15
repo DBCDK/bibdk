@@ -149,14 +149,18 @@ function bibdk_my_page_customize_form_elements($my_page) {
     if (isset($helptext)) {
 
       $form['help_link_wrapper']['help_link'] = array(
-        '#prefix' => '<p class="helptext popover-button" title=$helptext>',
+        '#prefix' => '<p class="helptext popover-button hide-text" title=$helptext >',
         '#type' => 'link',
         '#title' => '?',
         '#title_display' => 'invisible',
+        '#role' => '?',
+        '#aria-label' => '?',
         '#href' => '#',
         '#options' => array(
           'attributes' => array(
             'title' => $helptext,
+            'role' => 'button',
+            'aria-label' => t('Help', array(), array('context' => 'bibdk_theme')),
           ),
         ),
         '#suffix' => '</p>',
@@ -166,7 +170,7 @@ function bibdk_my_page_customize_form_elements($my_page) {
         '#type' => 'container',
         '#attributes' => array(
           'class' => array(
-            'popover', 'element-wrapper', 'visuallyhidden', 'linkme-wrapper',
+            'popover', 'element-wrapper', 'visuallyhidden', 'linkme-wrapper', 'hide-text',
           ),
         ),
       );
@@ -182,12 +186,16 @@ function bibdk_my_page_customize_form_elements($my_page) {
         '#title' => '',
         '#title_display' => 'invisible',
         '#href' => '#',
+        '#role' => '?',
+        '#aria-label' => '?',
         '#options' => array(
           'attributes' => array(
             'tabindex' => '0',
             'class' => array(
               'close', 'icon', 'icon-left', 'icon-red-x',
             ),
+            'role' => 'button',
+            'aria-label' => t('Close help', array(), array('context' => 'bibdk_theme')),
           ),
         ),
       );

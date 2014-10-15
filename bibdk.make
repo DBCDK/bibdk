@@ -21,7 +21,8 @@ libraries[ckeditor][download][url] = http://download.cksource.com/CKEditor/CKEdi
 projects[bibdk_theme][type] = theme
 projects[bibdk_theme][download][type] = git
 projects[bibdk_theme][download][url] = git@github.com:DBCDK/bibdk_theme.git
-projects[bibdk_theme][download][tag] = 7.x-0.65
+;projects[bibdk_theme][download][tag] = 7.x-0.65
+projects[bibdk_theme][download][branch] = feature/1429_help-icon
 
 ; --- Bibliotek.dk versions of Ding2 modules ---
 
