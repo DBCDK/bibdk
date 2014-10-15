@@ -288,7 +288,7 @@ function bibdk_usersettings_bibdk_mypage_tabs() {
   global $user;
 
   $ret = array();
-  $ret['bibdk_usersettings']['header'] = t('Settings');
+  $ret['bibdk_usersettings']['header'] = 'Settings';
   
   $ret['bibdk_usersettings']['rows']['values'] = bibdk_usersettings_bibdk_mypage_tabs_rows(variable_get('bibdk_mypage_max_items', 3));
   $ret['bibdk_usersettings']['link'] = array(

@@ -8,7 +8,7 @@ function bibdk_openuserstatus_bibdk_mypage_tabs($max_rows) {
   global $user;
 
   $ret = array();
-  $ret['bibdk_openuserstatus']['header'] = t('Userstatus');
+  $ret['bibdk_openuserstatus']['header'] = 'Userstatus';
   $ret['bibdk_openuserstatus']['attached'] = array(
     'js' => array(drupal_get_path('module', 'bibdk_openuserstatus') . '/js/getOpenUserStatus.js'),
   );

@@ -9,7 +9,7 @@ function bibdk_searchhistory_bibdk_mypage_tabs($max_rows = 3) {
   global $user;
 
   $ret = array();
-  $ret['bibdk_searchhistory']['header'] = t('Search history');
+  $ret['bibdk_searchhistory']['header'] = 'Search history';
   $ret['bibdk_searchhistory']['rows']['values'] = bibdk_searchhistory_my_page_get_rows($max_rows);
   $ret['bibdk_searchhistory']['link'] = array(
     'title' => t('Go to search history'),
