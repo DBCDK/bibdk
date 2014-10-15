@@ -357,9 +357,9 @@ function _get_bibdk_subject_hierarchy_breadcrumbs($emnehierarki, $keys, $path = 
     $breadcrumbs[] = array(
       '#theme' => 'link',
       '#text' => $current_level['ord'],
-      '#path' => (!empty($current_level['cql'])) ? 'search/' . $path . '/' . $current_level['cql'] : 'bibdk_subject_hierarchy/nojs/' . $parent_string,
+      '#path' => 'bibdk_subject_hierarchy/nojs/' . $parent_string,
       '#options' => array(
-        'attributes' => (!empty($current_level['cql'])) ? array('class' => array('last')) : array('class' => array('use-ajax')),
+        'attributes' => array('class' => array('use-ajax')),
         'html' => FALSE,
       ),
     );
