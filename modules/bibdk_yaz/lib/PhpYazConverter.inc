@@ -1,6 +1,7 @@
 <?php
 /**
- * @file PhpYazConverter.inc
+ * @file
+ * Contains PhpYazConverter
  */
 
 /**
@@ -8,11 +9,13 @@
  *
  * Converts ccl strings to cql
  */
-
 class PhpYazConverter {
 
   private $cclmap, $cqlmap;
 
+  /**
+   * Create new PhpYazConverter
+   */
   public function __construct() {
     $this->loadMaps();
   }
