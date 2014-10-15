@@ -3,6 +3,5 @@ description = Converts ccl to cql
 core = 7.x
 package = bibliotek.dk
 
-; class definitions
-
 files[] = lib/PhpYazConverter.inc
+files[] = bibdk_yaz.test

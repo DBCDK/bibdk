@@ -1,12 +1,12 @@
 <?php
 /**
  *
- * @file bibdk_yaz.install
+ * @file
  * Requirements check for bibdk Yaz module
  */
 
 /**
- * Implements hook_requirements
+ * Implements hook_requirements().
  *
  * php extension yaz is a requirement for bibdk_yaz
  *

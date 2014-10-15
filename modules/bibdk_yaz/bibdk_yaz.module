@@ -1,6 +1,6 @@
 <?php
 /**
- * @file bibdk_yaz.module
+ * @file
  * ccl to cql conversion functions
  */
 

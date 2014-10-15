@@ -1,7 +1,7 @@
 <?php
 /**
- * @file cqlmap.inc
- * ccl and cql index > rpn mapping
+ * @file
+ * contains ccl and cql index > rpn mapping
  */
 
 $cclmap = array(
