@@ -4,6 +4,15 @@
  * ccl to cql conversion functions
  */
 
+/**
+ * Method for converting ccl to cql
+ *
+ * Will return an array that contains the key 'cql' if request went well,
+ * or the key 'error' if not
+ *
+ * @param $ccl
+ * @return array
+ */
 function bibdk_yaz_convert_ccl_to_cql($ccl) {
   $yaz = new PhpYazConverter();
   return $yaz->CclToCql($ccl);

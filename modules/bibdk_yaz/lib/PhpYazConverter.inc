@@ -1,4 +1,7 @@
 <?php
+/**
+ * @file PhpYazConverter.inc
+ */
 
 /**
  * Class PHPYazConverter
@@ -18,7 +21,7 @@ class PhpYazConverter {
    * Convert ccl string to cql
    *
    * @param $ccl
-   * @return string
+   * @return array
    */
   public function CclToCql($ccl) {
     $connection = $this->getConnection();

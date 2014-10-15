@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file cqlmap.inc
+ * ccl and cql index > rpn mapping
+ */
+
 $cclmap = array(
   "@mask" => "#",
   "ti" => "BIB1,u=4     r=3   p=3   s=pw   t=l,r   c=1",
