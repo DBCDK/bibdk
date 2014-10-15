@@ -3,7 +3,6 @@
 /** Generates the form for advanced search pages.
  *
  * @param $elements
- * @param $current_page
  * @param $default_values
  * @param $extended_fields
  */
