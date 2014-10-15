@@ -51,7 +51,6 @@ class PhpYazConverter {
     if (!yaz_ccl_parse($connection, $ccl, $response)) {
       throw new Exception(yaz_error($connection));
     }
-    debug($response['rpn']);
     return $response['rpn'];
   }
 
