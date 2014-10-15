@@ -23,6 +23,7 @@ projects[bibdk_theme][download][type] = git
 projects[bibdk_theme][download][url] = git@github.com:DBCDK/bibdk_theme.git
 projects[bibdk_theme][download][tag] = 7.x-0.65
 
+
 ; --- Bibliotek.dk versions of Ding2 modules ---
 
 projects[open_voxb][type] = module
@@ -131,11 +132,6 @@ projects[bibdk_cart][type] = module
 projects[bibdk_cart][download][type] = git
 projects[bibdk_cart][download][url] = git@github.com:DBCDK/bibdk_cart.git
 projects[bibdk_cart][download][tag] = 7.x-1.23
-
-projects[bibdk_custom_search][type] = module
-projects[bibdk_custom_search][download][type] = git
-projects[bibdk_custom_search][download][url] = git@github.com:DBCDK/bibdk_custom_search.git
-projects[bibdk_custom_search][download][tag] = 7.x-0.34
 
 projects[bibdk_frontend][type] = module
 projects[bibdk_frontend][download][type] = git
