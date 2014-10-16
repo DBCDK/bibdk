@@ -23,11 +23,11 @@ class FavouriteAgency extends TingAgency {
   }
 
   /** Get userid for favourite
-   * 
+   *
    * There are a number of possible userids. Run through userdata and return
    * the first found
-   * 
-   * @return boolean 
+   *
+   * @return boolean
    */
   public function getUserId() {
     $possibilities = array('cpr', 'userId', 'barcode', 'cardno', 'customId',);
@@ -128,7 +128,7 @@ class FavouriteAgency extends TingAgency {
    */
   private function parseFields($object) {
     if (is_object($object)) {
-      $object = (array)$object;
+      $object = (array) $object;
     }
     if (is_array($object)) {
       $arr = array();

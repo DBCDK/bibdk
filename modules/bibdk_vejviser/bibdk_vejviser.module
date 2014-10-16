@@ -5,7 +5,7 @@
  * Module file. Gives the the users ability to search for libraries through the OpenAgency webservice
  */
 
-include_once('bibdk_vejviser.autocomplete.inc');
+module_load_include('autocomplete.inc', 'bibdk_vejviser');
 
 /**
  * Implements hook_menu();
@@ -80,6 +80,7 @@ function bibdk_vejviser_block_view($delta = '') {
 
 /**
  * Helper function: Creates render arrays for blocks
+ * @param $delta
  * @return array
  */
 function _bibdk_vejviser_create_render_array($delta) {
@@ -112,6 +113,8 @@ function _bibdk_vejviser_create_render_array($delta) {
 
 /**
  * Creates the form array
+ * @param array $form
+ * @param array $form_state
  * @return array
  */
 function bibdk_vejviser_form($form, &$form_state) {
@@ -148,8 +151,12 @@ function bibdk_vejviser_form($form, &$form_state) {
 
   );
 
-
   drupal_add_js(drupal_get_path('module', 'bibdk_vejviser') . '/js/bibdk_vejviser.js');
+
+  global $user;
+  if($user->uid){
+    drupal_add_js(array('uid' => $user->uid), 'setting');
+  }
 
   return $form;
 }
@@ -163,8 +170,8 @@ function bibdk_vejviser_vejviser_page_content_alter(&$data) {
 
 /**
  * Called when form is submitted. Validating the input, json_encoding the input array and passes it to /vejviser
- * @param type $form
- * @param type $form_state
+ * @param array $form
+ * @param array $form_state
  */
 function bibdk_vejviser_form_submit(&$form, &$form_state) {
   $query = check_plain($form_state['values']['openagency_query']);
@@ -264,8 +271,13 @@ function bibdk_vejviser_agency_search() {
     '#ting_info_holder' => 'ting_info_holder',
   );
 
-  $render['branches'] = $branches;
-
+  if(!empty($branches)){
+    $render['branches'] = array(
+      '#markup' => drupal_render($branches),
+      '#prefix' => '<div class="element-wrapper"><div class="element">',
+      '#suffix' => '</div></div>',
+    );
+  }
 
   return $render;
 }
@@ -287,11 +299,11 @@ function bibdk_vejviser_get_agency_link($branch) {
 /**
  * Callback function for the /vejviser menu item. Called when user hits http://domain.dk/vejviser. Takes the above encoded json string as input
  * There might be a better way for passing the search criterias
- * @param String $json
+ *
+ * @param $query
  * @return array
  */
 function bibdk_vejviser_execute_agency_search($query) {
-  $result = array();
   $sort[] = variable_get('agency_sort_librarytype', 'libraryType');
   $sort[] = variable_get('agency_sort_agencyid', 'agencyId');
   if (empty($query)) return;
