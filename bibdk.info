@@ -12,6 +12,7 @@ dependencies[] = shortcut
 dependencies[] = toolbar
 dependencies[] = overlay
 dependencies[] = color
+dependencies[] = panels
 dependencies[] = translation
 
 files[] = bibdk.profile
