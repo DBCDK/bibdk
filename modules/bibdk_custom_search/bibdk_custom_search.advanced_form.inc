@@ -3,11 +3,10 @@
 /** Generates the form for advanced search pages.
  *
  * @param $elements
- * @param $current_page
  * @param $default_values
  * @param $extended_fields
  */
-function _bibdk_custom_search_create_advanced_form($elements, $current_page, $default_values) {
+function _bibdk_custom_search_create_advanced_form($elements, $default_values) {
   $fields = array();
 
   // We loop through all search elements
@@ -28,9 +27,7 @@ function _bibdk_custom_search_create_advanced_form($elements, $current_page, $de
     if (!isset($fields[$region]) && $region != 'main') {
       $fields[$region] = array(
         '#type' => 'fieldset',
-        '#title' => t('Advanced search'),
-        '#collapsible' => TRUE,
-        '#collapsed' => ($current_page['expand']) ? $current_page['expand'] : FALSE,
+        '#collapsible' => FALSE,
         '#weight' => 102,
       );
     }

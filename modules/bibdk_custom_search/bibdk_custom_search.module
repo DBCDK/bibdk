@@ -267,7 +267,7 @@ function _bibdk_custom_search_get_advanced_fields_form($destination = FALSE) {
     $form['#attributes']['class'][] = 'is-visible';
   }
 
-  $form += _bibdk_custom_search_create_advanced_form($result, $page, $default_values);
+  $form += _bibdk_custom_search_create_advanced_form($result, $default_values);
 
   // Page specific elements
   if ($page['delimiter']) {
