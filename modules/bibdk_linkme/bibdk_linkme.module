@@ -144,7 +144,7 @@ function bibdk_linkme_page() {
   if (isset($query['ccl'])) {
     // cql requests
     if (function_exists('bibdk_yaz_convert_ccl_to_cql')) {
-      $result = bibdk_yaz_convert_ccl_to_cql($query['ccl']);
+      $result = bibdk_yaz_convert_ccl_to_cql(urldecode($query['ccl']));
       if ($result['cql']) {
         bibdk_linkme_search_query($result['cql']);
       }
