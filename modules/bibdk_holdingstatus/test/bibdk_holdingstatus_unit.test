@@ -1,0 +1,108 @@
+<?php
+
+class BibdkHoldingstatusBibdkHoldingsUnitTestCase extends DrupalUnitTestCase {
+
+  protected $path;
+
+  public static function getInfo() {
+    return array(
+      'name' => t('Test BibdkHoldings Class'),
+      'description' => t('Test BibdkHoldings Class'),
+      'group' => t('Bibliotek.dk - Holdingstatus'),
+    );
+  }
+
+  public function setUp() {
+    $this->path = drupal_get_path('module', 'bibdk_holdingstatus');
+    parent::setUp(array('bibdk_holdingstatus'));
+  }
+
+  public function testBibdkHoldingsClass() {
+    module_load_include('php', 'bibdk_holdingstatus', 'BibdkHoldings');
+    module_load_include('php', 'bibdk_holdingstatus', 'bibdk_holdingstatus');
+    module_load_include('module', 'open_holdingstatus', 'open_holdingstatus');
+
+    // No result
+    $holding = new BibdkHoldings(NULL);
+    $message = $holding->rawMessage();
+    $expected_message = array(
+      'message' => 'bibdk_holding_someting_went_wrong',
+      'options' => array(),
+    );
+
+    $this->assertEqual($message, $expected_message, 'Someting went wrong message returned');
+
+    $this->assertEqual('red', $holding->status(), 'Status is red light');
+    $this->assertFalse($holding->isItHome(), 'no holdings; error', 'error returned');
+
+    // Red light
+    $response = json_decode(file_get_contents($this->path . '/test/json/holdings_service_not_supported.json'));
+    $holdingsResponse = open_holdingstatus_parse_request_response($response);
+    $holdingData = current($holdingsResponse);
+    $holding = new BibdkHoldings($holdingData);
+    $message = $holding->rawMessage();
+    $expected_message = array(
+      'message' => 'service_not_supported_by_library',
+      'options' => array(),
+    );
+    $this->assertEqual($message, $expected_message, 'service_not_supported_by_library returned');
+    $this->assertEqual('red', $holding->status(), 'Status is red light');
+    $this->assertFalse($holding->isItHome(), 'no holdings; red', 'no holdings returned');
+
+    // Yellow light
+    $response = json_decode(file_get_contents($this->path . '/test/json/holdings_service_yellow_lamp.json'));
+    $holdingsResponse = open_holdingstatus_parse_request_response($response);
+    $holdingData = current($holdingsResponse);
+    $futureDate = time() + 10 * 24 * 3600;
+    $holdingData->expectedDelivery->{'$'} = date('Y-m-d', $futureDate);
+    $holding = new BibdkHoldings($holdingData);
+    $message = $holding->rawMessage();
+    $expected_message = array(
+      'message' => 'bibdk_holding_material_will_be_home @date',
+      'options' => array(
+        '@date' => date('d.m.Y', $futureDate),
+      ),
+    );
+    $this->assertEqual($message, $expected_message, 'Holding message is returned');
+    $this->assertEqual('yellow', $holding->status(), 'Status is yellow');
+    $this->assertFalse($holding->isItHome(), 'no holdings; yellow', 'isItHome is yellow');
+
+    // Change date to past
+    $pastDate = time() - 10 * 24 * 3600;
+    $holdingData->expectedDelivery->{'$'} = date('Y-m-d', $pastDate);
+    $holding = new BibdkHoldings($holdingData);
+    $this->assertEqual('green', $holding->status(), 'Status is Green');
+    $this->assertTrue($holding->isItHome(), 'holdings are found');
+
+    // green light
+    $response = json_decode(file_get_contents($this->path . '/test/json/holdings_is_home.json'));
+    $holdingsResponse = open_holdingstatus_parse_request_response($response);
+    $holdingData = current($holdingsResponse);
+    $holding = new BibdkHoldings($holdingData);
+    $message = $holding->rawMessage();
+    $expected_message = array(
+      'message' => 'bibdk_holding_material_is_home',
+      'options' => array(),
+    );
+    $this->assertEqual($message, $expected_message, 'material is home');
+    $this->assertEqual('green', $holding->status(), 'status is green');
+    $this->assertTrue($holding->isItHome(), 'found holdings', 'holdings are found');
+
+    // Note
+    $response = json_decode(file_get_contents($this->path . '/test/json/holdings_check_local.json'));
+    $holdingsResponse = open_holdingstatus_parse_request_response($response);
+    $holdingData = current($holdingsResponse);
+    $holding = new BibdkHoldings($holdingData);
+    $message = $holding->rawMessage();
+    $expected_message = array(
+      'message' => 'check_local_library',
+      'options' => array(),
+    );
+    $this->assertEqual($message, $expected_message, 'Message is check_local_library');
+    $this->assertEqual('yellow', $holding->status(), 'status is yellow');
+    $this->assertFalse($holding->isItHome(), 'no holdings; note', 'note is no holdings');
+
+  }
+
+}
+

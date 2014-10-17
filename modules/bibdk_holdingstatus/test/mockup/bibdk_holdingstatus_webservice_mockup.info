@@ -1,0 +1,6 @@
+name = "bibdk_holdingstatus mockup"
+description = "Support module for bibdk_holdingstatus test."
+package = bibliotek.dk
+version = VERSION
+core = 7.x
+hidden = TRUE;

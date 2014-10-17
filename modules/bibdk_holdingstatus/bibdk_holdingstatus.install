@@ -1,0 +1,9 @@
+<?php
+
+
+/**
+ * remove favourite link field from manifestation entity
+ */
+function bibdk_holdingstatus_update_7002() {
+  field_delete_field('bibdk_holdingstatus_favourite');
+}

@@ -1,0 +1,120 @@
+<?php
+
+/**
+ * @file
+ * Webservice mockup of openHoldingstatus
+ */
+function bibdk_holdingstatus_webservice_mockup_menu() {
+  $items['bibdk_holdingstatus_webservice'] = array(
+    'page callback' => 'bibdk_holdingstatus_webservice_mockup_request',
+    'access callback' => 'bibdk_holdingstatus_webservice_mockup_access',
+  );
+  $items['bibdk_holdingstatus_webservice/test'] = array(
+    'page callback' => 'bibdk_holdingstatus_webservice_test',
+    'access callback' => TRUE
+  );
+
+  $items['bibdk_holdingstatus_webservice/disable'] = array(
+    'page callback' => 'bibdk_holdingstatus_webservice_disable',
+    'access callback' => TRUE
+  );
+  return $items;
+}
+
+function bibdk_holdingstatus_webservice_test() {
+  return '
+    <form name="test" action="bibdk_holdingstatus_webservice" method="POST" target="_blank">
+      <textarea name="xml"></textarea>
+      <input type="submit" name="sub" value="submit"/>
+    </form>';
+}
+
+/** Disable this module
+ *
+ */
+function bibdk_holdingstatus_webservice_disable() {
+  module_disable(array('bibdk_holdingstatus_webservice_mockup'));
+  exit;
+}
+
+/**
+ * Faking the request and returns result.
+ * If other requests are made than on pid[0] = 870970-basis:28542941 &&  pid[0] = 870970-basis:28794932 no holdings will be returned.
+ * @return String json
+ */
+function bibdk_holdingstatus_webservice_mockup_request() {
+
+  if (isset($_POST['xml'])) {
+    $data = rawurldecode($_POST['xml']);
+  }
+  else {
+    $data = file_get_contents('php://input');
+  }
+
+  if ($data) {
+    $envelope = new SimpleXMLElement($data);
+    $envelope = $envelope->children('SOAP-ENV', TRUE);
+    $request = $envelope->Body->children('', TRUE);
+  }
+  else {
+    echo 'welcome to bibdk_holdingstatus_webservice mockup';
+    return;
+  }
+  if ( isset($request->localisationsRequest) ) {
+    $resp = bibdk_holdingstatus_webservice_mockup_localisations_request($request->localisationsRequest);
+  }
+  else if ( isset($request->holdingsRequest) ) {
+    $resp = bibdk_holdingstatus_webservice_mockup_holdings_request($request->holdingsRequest);
+  }
+  else if ( isset($request->findLibraryRequest) ) {
+    $resp = bibdk_holdingstatus_webservice_mockup_agency_request($request->findLibraryRequest);
+  }
+
+  drupal_add_http_header('Content-Type', 'application/json');
+  print $resp;
+}
+
+function bibdk_holdingstatus_webservice_mockup_holdings_request($request) {
+    $path = drupal_get_path('module', 'bibdk_holdingstatus');
+    $resp = file_get_contents($path . '/test/json/holdings_favourite.json');
+  return $resp;
+}
+
+function bibdk_holdingstatus_webservice_mockup_localisations_request($request) {
+  $path = drupal_get_path('module', 'bibdk_holdingstatus');
+
+  $holdings_ok = ( $request->agencyId == 'DK-870970' &&
+      $request->pid[0] == '870970-basis:28542941' &&
+      $request->pid[1] == '870970-basis:28794932' );
+
+  $favourite_holdings = ( $request->agencyId == '710101' &&
+      $request->pid[0] == '870970-basis:28542941' &&
+      $request->pid[1] == '870970-basis:28794932' );
+
+
+  if ($holdings_ok || $favourite_holdings) {
+    $resp = file_get_contents($path . '/test/json/localizations.json');
+  }
+  else {
+    $resp = file_get_contents($path . '/test/json/holdings_none.json');
+  }
+
+  return $resp;
+}
+
+function bibdk_holdingstatus_webservice_mockup_agency_request($request){
+
+  $path = drupal_get_path('module', 'bibdk_holdingstatus');
+  if ( $request->agencyId == '820010' ) {
+    $resp = file_get_contents($path . '/test/json/agency_getBranch_820030.json');
+  } else {
+    $resp = file_get_contents($path . '/test/json/agency_getBranch_710100.json');
+  }
+
+  return $resp;
+
+}
+
+function bibdk_holdingstatus_webservice_mockup_access() {
+  return TRUE;
+}

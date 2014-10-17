@@ -1,0 +1,1 @@
+{"holdingsResponse":{"error":[{"pid":{"$":"870970-basis:28542941"},"responderId":{"$":"DK-870970"},"errorMessage":{"$":"service_not_supported_by_library"}}]},"@namespaces":{"$":"http:\/\/oss.dbc.dk\/ns\/openholdingstatus"}}
