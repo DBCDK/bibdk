@@ -3,6 +3,7 @@
 /**
  * @file
  * Theme implementation for bibdk_mypage.
+ * Template is (maybe) not in use / ana
  */
 ?>
 

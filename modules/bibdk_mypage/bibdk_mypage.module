@@ -153,8 +153,6 @@ function bibdk_my_page_customize_form_elements($my_page) {
         '#type' => 'link',
         '#title' => '?',
         '#title_display' => 'invisible',
-        '#role' => '?',
-        '#aria-label' => '?',
         '#href' => '#',
         '#options' => array(
           'attributes' => array(
@@ -186,8 +184,6 @@ function bibdk_my_page_customize_form_elements($my_page) {
         '#title' => '',
         '#title_display' => 'invisible',
         '#href' => '#',
-        '#role' => '?',
-        '#aria-label' => '?',
         '#options' => array(
           'attributes' => array(
             'tabindex' => '0',
