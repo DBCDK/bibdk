@@ -1,0 +1,18 @@
+/* Dette er blot en test */
+body.page-print {
+    background: #FFF;
+}
+
+th {
+    text-align: left;
+    padding-right: 10px;;
+}
+.manifestation-data th {
+    color: red;
+    font-size: 50px;
+}
+
+.print-wrapper {
+    border-bottom: 1px solid #ccc;
+    padding: 20px;
+}

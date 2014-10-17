@@ -1,0 +1,263 @@
+ <?php
+/**
+ * Class BibdkActionsWebTestCase
+ */
+class BibdkActionsWebTestCase extends DrupalWebTestCase {
+
+  protected $privileged_user;
+
+  public static function getInfo() {
+    return array(
+      'name' => 'Bibdk Action',
+      'description' => 'test bibdk_actions functionality',
+      'group' => 'Bibliotek.dk - Actions',
+    );
+  }
+
+  public function setUp() {
+    parent::setUp('bibdk_cart', 'bibdk_actions', 'ting_openformat', 'field_ui', 'bibdk_provider', 'bibdk_webservice');
+    variable_set('ting_search_url', 'lakiseks.dbc.dk/openbibdk/0.5/');
+    variable_set('bibdk_provider_webservice_url', $this->getAbsoluteUrl('bibdk_webservice'));
+    variable_set('bibdk_provider_security_code', 'securityCode');
+  }
+
+  public function testRunner() {
+    // $this->_testBibdkCartHook();
+    // $this->_testPrintview();
+    // $this->_testPrintFunctions();
+    // $this->_testActionFunctions();
+    // $this->_testEmailFunctions();
+    // $this->_testEmailview();
+    $this->_testExportFunctions();
+    // $this->_testExportView();
+  }
+
+  private function _login_as_admin() {
+    $admin_user = $this->drupalCreateUser(array('access content', 'administer content types'));
+    $this->drupalLogin($admin_user);
+  }
+
+  /**
+   * @return mixed
+   */
+  private function _addElementToCart() {
+    $pid = '870970-basis:29225605';
+    $url = $this->getAbsoluteUrl('cart/ajax');
+    $options = array(
+      'query' => array(
+        'pid' => $pid,
+      ),
+    );
+    return $this->drupalGetAJAX($url, $options);
+  }
+
+
+  private function _testExportView(){
+    $expected_result = 'TY  - MUSIC
+A1  - Bojesen,Michael
+A1  - Rasmussen,Halfdan
+T1  - Halfdan på ny
+SP  - Partitur, (20 sider)
+PB  - DanMus
+CY  - København
+Y1  - 1989
+T3  - Musik i skolen. Ny serie A, Lige stemmer, 3
+ER  -
+
+TY  - SOUND
+A1  - Syberg,Karen
+A1  - Andersen,Gerda, f. 1933
+T1  - Tove Ditlevsen
+SP  - 12 kassettebånd (16 t., 18 min.), i 2 bokse
+PB  - Danmarks Blindebibliotek
+CY  - Kbh.
+Y1  - 1997
+SN  - 11878
+N1  - Om forfatteren Tove Ditlevsens (1917-1976) fattige opvækst på Vesterbro, hendes angstfyldte forhold til virkeligheden og de dramatiske og til tider tragiske begivenheder i hendes liv, hvoraf hendes digtning udsprang
+KW  - Tove Ditlevsen
+KW  - dansk litteratur
+KW  - litteratur
+KW  - 1900-1999
+KW  - forfattere
+KW  - Danmark
+ER  -';
+    $this->drupalGet('export/cart/852350-katalog:000006180;830080-katalog:000145418;820030-katalog:179554;870970-basis:21905208');
+    $this->assertText($expected_result);
+
+  }
+
+  private function _testExportFunctions(){
+    $path = drupal_get_path('module', 'bibdk_actions');
+    $xml = file_get_contents($path . '/test/xml/openbibdk_ris_result.xml');
+    $expected_result = 'TY  - BOOKA1  - Welle-Strand,EdvardT1  - Hvor fisk vaker og fugl flyrSP  - 157 s.CY  - TrondheimY1  - T3  - Bruns jeger og fiskerbibliotekER  -
+
+TY  - BOOKA1  - Hvass,HansA1  - Eigener,WilhelmT1  - Fische der WeltSP  - 158 S., Zahlr. illustreret (farb.)PB  - Gebrüder WeissCY  - Berlin-SchönebergY1  - ER  -';
+
+    $ref_nodes = _bibdk_actions_refexport_convert_result_to_ref_format($xml, 'ris');
+
+    $this->assertEqual($expected_result, $ref_nodes, t('xml from webservice correctly converted into textfile'));
+    try{
+      $result = _bibdk_actions_refexport_convert_result_to_ref_format('', 'ris');
+    }catch(Exception $e){
+      $result = $e;
+    }
+    $this->assertEqual(get_class($result), 'Exception', t('empty xml throws an Exception'));
+  }
+
+  private function _testBibdkCartHook() {
+    // Empty cart
+    $this->drupalGet('user/cart');
+    $this->assertNoLink('print_manifestation', 0, 'print link is not present when cart is empty');
+
+    // Test link exists
+    $this->_addElementToCart();
+    $this->drupalGet('user/cart');
+    $this->assertLink('print_manifestation', 0, 'print link is present');
+    $this->assertLink('email_manifestation', 0, 'email link is present');
+    $this->assertLink('export_manifestation', 0, 'email link is present');
+  }
+
+  private function _testActionFunctions() {
+    /* bibdk_actions_get_manifestations */
+
+    // Test if manifestations are loaded
+    $result = bibdk_actions_get_manifestations(array('852350-katalog:000006180', '830080-katalog:000145418', '820030-katalog:179554', '870970-basis:21905208'));
+    $this->assertTrue(count($result) == 4, 'right number of results');
+    $this->assertTrue(get_class($result['852350-katalog:000006180']) == 'manifestation', 'first element is a manifestation object');
+
+    // Test if function kan handle empty array
+    $result = bibdk_actions_get_manifestations(array());
+    $this->assertTrue(count($result) == 0, 'No results generated');
+
+    /* bibdk_actions_entity_info_alter */
+
+    // Test if display modes have been created
+    $this->_login_as_admin();
+    $this->drupalGet('admin/structure/manifestations/display');
+    $this->assertText('Cart print', 'Display mode print has been created');
+    $this->assertText('Cart Email', 'Display mode email has been created');
+  }
+
+  private function _testPrintFunctions() {
+    /* bibdk_actions_print_page */
+    // more than one id
+    $ids = '852350-katalog:000006180,830080-katalog:000145418,820030-katalog:179554,870970-basis:21905208';
+    $result = bibdk_actions_print_page($ids);
+    $this->assertTrue(preg_match('@<h4> Bare rolig - der er stress nok til alle</h4>@', $result), 'Results are generated, when more than 1 pid is given');
+
+    // one id
+    $ids = '870970-basis:21905208';
+    $result = bibdk_actions_print_page($ids);
+    $this->assertTrue(preg_match('@<h4> Tove Ditlevsen</h4>@', $result), 'Results are generated, when 1 pid is given');
+
+    // no ids
+    $ids = '';
+    $result = bibdk_actions_print_page($ids);
+    $this->assertTrue(preg_match('@no_elements_to_be_printed@', $result), 'No Results are generated if no pids are send');
+
+    // invalid id
+    $ids = 'not_a_manifestation';
+    $result = bibdk_actions_print_page($ids);
+    $this->assertTrue(preg_match('@no_elements_to_be_printed@', $result), 'No Results are generated if pid is invalid');
+
+    /* _bibdk_actions_manifestation_view_strip_links */
+    $view = array(
+      '#fields' => array(
+        'bibdk_mani_creators' => array(array('#markup' => '<a href="/bibdk/da/search/work/phrase.creator%3D%22Sikker%20Hansen%22">Test Link Text</a>')),
+        'bibdk_mani_format' => array(array('#markup' => 'just text')),
+      ),
+    );
+    _bibdk_actions_manifestation_view_strip_links($view);
+
+    // Link has been stripped
+    $this->assertEqual($view['#fields']['bibdk_mani_creators'][0]['#markup'], 'Test Link Text', 'links have been stripped from html');
+    // Text remain unchanced
+    $this->assertEqual($view['#fields']['bibdk_mani_format'][0]['#markup'], 'just text', 'Textstring preserved');
+
+    // function handles empty array
+    $view = array();
+    _bibdk_actions_manifestation_view_strip_links($view);
+    $this->assertEqual(array(), array(), 'empty array is accepted');
+  }
+
+  public function _testPrintview() {
+    //No manifestations
+    $this->drupalGet('/print/cart/empty');
+    $this->assertText(t('no_elements_to_be_printed'));
+
+    //print view generated
+    $this->drupalGet('print/cart/852350-katalog:000006180,830080-katalog:000145418,820030-katalog:179554,870970-basis:21905208');
+    $this->assertText('Bare rolig - der er stress nok til alle');
+    $this->assertText('Tove Ditlevsen');
+    $this->assertRaw('bibdk_actions.print.js', 'js seems to have been loaded');
+
+  }
+
+  private function _testEmailFunctions() {
+    /* bibdk_actions_email_page */
+    // no ids
+    $ids = '';
+    $result = bibdk_actions_email_page($ids);
+    $this->assertFalse($result, 'If no pids are sent, nothing but false should be returned');
+
+    // one id
+    $ids = '870970-basis:21905208';
+    $form = bibdk_actions_email_page($ids);
+
+    $this->assertTrue(array_key_exists('recipient', $form), 'recipient field is present in returned formarray');
+    $this->assertTrue($form['recipient']['#type'] == 'textfield', 'recipient field is of type textfield');
+
+    $this->assertTrue(array_key_exists('subject', $form), 'subject field is present in returned formarray');
+    $this->assertTrue($form['subject']['#type'] == 'textfield', 'subject field is of type textfield');
+
+    $this->assertTrue(array_key_exists('note', $form), 'note field is present in returned formarray');
+    $this->assertTrue($form['note']['#type'] == 'textfield', 'note field is of type textfield');
+
+    // more than one id
+    $ids = '852350-katalog:000006180,830080-katalog:000145418,820030-katalog:179554,870970-basis:21905208';
+    $form = bibdk_actions_email_page($ids);
+    $this->assertTrue(array_key_exists('recipient', $form), 'recipient field is present in returned formarray');
+    $this->assertTrue($form['recipient']['#type'] == 'textfield', 'recipient field is of type textfield');
+
+    $this->assertTrue(array_key_exists('subject', $form), 'subject field is present in returned formarray');
+    $this->assertTrue($form['subject']['#type'] == 'textfield', 'subject field is of type textfield');
+
+    $this->assertTrue(array_key_exists('note', $form), 'note field is present in returned formarray');
+    $this->assertTrue($form['note']['#type'] == 'textfield', 'note field is of type textfield');
+
+    //false pid
+    $result = bibdk_actions_email_page('hest');
+    $this->assertEqual($result, t('no_elements_to_be_emailed'), 'No PID provided by request');
+  }
+
+  private function _testEmailview() {
+    //No manifestations
+    $this->drupalGet('email/cart/nopid');
+    $this->assertText(t('no_elements_to_be_emailed'));
+
+    //email view generated - one pid
+    $this->drupalGet('email/cart/852350-katalog:000006180');
+    $this->assertRaw('Bare rolig - der er stress nok til alle');
+
+    //email view generated - several pids
+    $this->drupalGet('email/cart/852350-katalog:000006180,830080-katalog:000145418,820030-katalog:179554,870970-basis:21905208');
+    $this->assertRaw('Bare rolig - der er stress nok til alle');
+    $this->assertRaw(t('and_other_titles'));
+
+    //test sending emails
+    $path = 'email/cart/852350-katalog:000006180,830080-katalog:000145418,820030-katalog:179554,870970-basis:21905208';
+    $edit = array(
+      'recipient' => 'test@hest.zoo',
+      'note' => 'Test Hest',
+    );
+    $submit = t('send_email');
+
+    $this->drupalPost($path, $edit, $submit);
+
+    //sending emails
+    $this->drupalGetMails();
+    $this->assertRaw(t('manifestations_from email_site_name'));
+    $this->assertRaw(t('Bare rolig - der er stress nok til alle'));
+    $this->assertRaw(t('and_other_titles'));
+  }
+}
