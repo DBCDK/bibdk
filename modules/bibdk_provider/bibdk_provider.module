@@ -88,6 +88,19 @@ function bibdk_provider_register_new_user($email) {
   $account = _ding_user_create_account($email, array());
   bibdk_provider_user_create_account($email, $account->pass);
 
+  // set defaults
+  $user_default_settings = module_invoke_all('bibdk_provider_default_settings');
+watchdog('bibdk_provider', 'user_default_settings<pre>' . print_r($user_default_settings,1) . '</pre>', array(), WATCHDOG_WARNING);
+  foreach ($user_default_settings as $key => $value) {
+    try {
+      // ding_provider_invoke('user', 'set_setting', $account['name'], $key, serialize($value));
+      bibdk_provider_user_set_setting($email, $key, serialize($value));
+    }
+    catch (Exception $e) {
+      watchdog('bibdk_provider', 'Your setting "%key" was not set to "%value"', array('%key' => check_plain($key), '%value' => check_plain($value)), WATCHDOG_WARNING);
+    }
+  }
+
   // User_email_verification is required
   if ($account->status) {
     // Send registration mail to user as in a normal drupal registration
