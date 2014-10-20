@@ -12,6 +12,7 @@ files[] = bibdk_actions.email.inc
 files[] = bibdk_actions.print.inc
 files[] = bibdk_actions.admin.inc
 files[] = bibdk_actions.refexport.inc
+files[] = bibdk_actions.default_settings.inc
 files[] = test/bibdk_actions.test
 
 files[] = theme/page--print.tpl.php
