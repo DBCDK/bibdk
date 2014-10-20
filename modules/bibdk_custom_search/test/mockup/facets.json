@@ -1,0 +1,81 @@
+{"searchResponse": {
+    "result": {
+        "hitCount": {
+            "$": "12926848"
+        },
+        "collectionCount": {
+            "$": "0"
+        },
+        "more": {
+            "$": "true"
+        },
+        "facetResult": {
+            "facet": [
+                {
+                    "facetName": {
+                        "$": "facet.type"
+                    },
+                    "facetTerm": [
+                        {
+                            "frequence": {
+                                "$": "1"
+                            },
+                            "term": {
+                                "$": "test-value-3"
+                            }
+                        },
+                         {
+                            "frequence": {
+                                "$": "1"
+                            },
+                            "term": {
+                                "$": "test-value-1"
+                            }
+                        },
+                         {
+                            "frequence": {
+                                "$": "1"
+                            },
+                            "term": {
+                                "$": "test-value-2"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "queryDebugResult": null,
+        "statInfo": {
+            "fedoraRecordsCached": {
+                "$": "0"
+            },
+            "fedoraRecordsRead": {
+                "$": "0"
+            },
+            "time": {
+                "$": "0.35231"
+            },
+            "trackingId": {
+                "$": "os:2013-12-08T14:28:31:527359:23332"
+            }
+        }
+    }
+}, "@namespaces": {
+    "ac": "http:\/\/biblstandard.dk\/ac\/namespace\/",
+    "dbcaddi": "http:\/\/oss.dbc.dk\/rdf\/dbcaddi#",
+    "dbcbib": "http:\/\/oss.dbc.dk\/rdf\/dbcbib#",
+    "dc": "http:\/\/purl.org\/dc\/elements\/1.1\/",
+    "dcmitype": "http:\/\/purl.org\/dc\/dcmitype\/",
+    "dcterms": "http:\/\/purl.org\/dc\/terms\/",
+    "dkabm": "http:\/\/biblstandard.dk\/abm\/namespace\/dkabm\/",
+    "dkdcplus": "http:\/\/biblstandard.dk\/abm\/namespace\/dkdcplus\/",
+    "docbook": "http:\/\/docbook.org\/ns\/docbook",
+    "kml": "http:\/\/www.opengis.net\/kml\/2.2",
+    "marcx": "info:lc\/xmlns\/marcxchange-v1",
+    "of": "http:\/\/oss.dbc.dk\/ns\/openformat",
+    "ofo": "http:\/\/oss.dbc.dk\/ns\/openformatoutput",
+    "oso": "http:\/\/oss.dbc.dk\/ns\/opensearchobjects",
+    "oss": "http:\/\/oss.dbc.dk\/ns\/osstypes",
+    "xs": "http:\/\/www.w3.org\/2001\/XMLSchema",
+    "xsi": "http:\/\/www.w3.org\/2001\/XMLSchema-instance"
+}}

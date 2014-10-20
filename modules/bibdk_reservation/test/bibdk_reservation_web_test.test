@@ -1,0 +1,148 @@
+<?php
+/**
+ * @file
+ * web tests for bibdk_reservation
+ */
+
+class BibdkReservationWebTestCase extends DrupalWebTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => t('Bibdk Reservation Web Tests'),
+      'description' => t('Test Reservation functionality'),
+      'group' => t('Bibliotek.dk - Reservation'),
+    );
+  }
+
+  public function setUp() {
+    parent::setUp('ting_openformat', 'ting_agency');
+    variable_set('ting_search_url', 'http://bibdk-prod-ws.dbc.dk/opensearch/3.1/');
+    variable_set('bibdk_provider_webservice_url', $this->getAbsoluteUrl('bibdk_webservice'));
+    variable_set('bibdk_provider_security_code', 'securityCode');
+    variable_set('search_active_modules', array('ting_openformat' => 'ting_openformat'));
+    variable_set('search_default_module', 'ting_openformat');
+
+    variable_set('bibdk_openorder_url', $this->getAbsoluteUrl('/bibdk_openorder_webservice/'));
+
+    user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array('access content', 'search content'));
+    menu_rebuild();
+
+  }
+
+  public function testRunner() {
+    $this->_testActionHook();
+    $this->_test_bibdk_reservation_catalog_callback();
+    $this->_test_ting_openformat_render_direct_link();
+    $this->_test_bibdk_reservation_get_access_links();
+  }
+
+  private function _test_bibdk_reservation_catalog_callback() {
+
+    // Test url not set
+    $options = array('query' => array('url' => 'test_url'));
+    $this->drupalGet('reservations/catalogue_url', $options);
+    $this->assertText(t('invalid url or agency_id'));
+    $this->assertUrl('reservations/catalogue_url', $options);
+
+    //Test agency_id not set
+    $options = array('query' => array('agency_id' => 'test_id'));
+    $this->drupalGet('reservations/catalogue_url', $options);
+    $this->assertText(t('invalid url or agency_id'));
+    $this->assertUrl('reservations/catalogue_url', $options);
+
+    // both elements are set
+    $options = array('query' => array('agency_id' => 'test_id', 'url' => $this->getAbsoluteUrl('test_url')));
+    $this->drupalGet('reservations/catalogue_url', $options);
+    $this->assertNoText(t('invalid url or agency_id'));
+    $this->assertUrl('test_url');
+
+  }
+
+  /**
+   * Test that hook_ting_openformat_actions is correctly implemented
+   */
+  private function _testActionHook() {
+
+    // confim reservation button is not present
+    $this->drupalGet('work/870970-basis:25294424');
+    $this->assertNoLink(t('Order this Cd (musik)'));
+
+    // confim reservation link is not present //870970-basis%3A29908966
+    $this->drupalGet('work/874310-katalog:DBB0038373');
+    $this->assertNoLink(t('accessUrl'));
+
+    // activate reservation module
+    module_enable(array('bibdk_reservation'));
+    menu_rebuild();
+
+    // confim reservation button is present
+    $this->drupalGet('work/870970-basis:25294424');
+    $this->assertLink(t('Order this Cd (musik)'));
+
+    //assert that reservation button has an id
+    $this->assertFieldByXPath("//a[contains(@id,'this_edition_')]", TRUE, 'reservation button has an id');
+
+    // confim reservation link is present
+    $this->drupalGet('work/874310-katalog:DBB0038373');
+    $this->assertLink(t('accessUrl'));
+  }
+
+  private function _test_ting_openformat_render_direct_link() {
+    debug('Testing single URL');
+    $singleUrlManifestation = new Manifestation(unserialize(file_get_contents(drupal_get_path('module', 'bibdk_reservation') . '/test/mockup/serialized/singleUrl.serialized')));
+    $infocode = $singleUrlManifestation->getInfoText();
+    $message = _ting_openformat_render_direct_link($infocode, $singleUrlManifestation);
+    $links = _bibdk_reservation_get_access_links($singleUrlManifestation);
+
+    $this->assertTrue((strpos($message, $links) !== FALSE), 'Found expected links in string');
+
+    debug('Testing multiple URLs');
+    $multipleUrlManifestation = new Manifestation(unserialize(file_get_contents(drupal_get_path('module', 'bibdk_reservation') . '/test/mockup/serialized/multipleUrl.serialized')));
+    $infocode = $multipleUrlManifestation->getInfoText();
+
+    $message = _ting_openformat_render_direct_link($infocode, $multipleUrlManifestation);
+    $links = _bibdk_reservation_get_access_links($multipleUrlManifestation);
+
+    $this->assertTrue((strpos($message, $links) !== FALSE), 'Found expected links in string');
+
+  }
+
+  private function _test_bibdk_reservation_get_access_links() {
+    debug('Testing no URL');
+    $noUrlManifestation = unserialize(file_get_contents(drupal_get_path('module', 'bibdk_reservation') . '/test/mockup/serialized/noUrl.serialized'));
+
+    $string = _bibdk_reservation_get_access_links($noUrlManifestation);
+    $this->assertEqual($string, '', 'Got empty string');
+
+    debug('Testing single URL');
+    $singleUrlManifestation = new Manifestation(unserialize(file_get_contents(drupal_get_path('module', 'bibdk_reservation') . '/test/mockup/serialized/singleUrl.serialized')));
+
+    $info = $singleUrlManifestation->getAccessInformation();
+    $linksToCheckFor = $info['accessInformation'];
+
+    $links = _bibdk_reservation_get_access_links($singleUrlManifestation);
+
+    $this->assertTrue($this->_checkStringForElements($linksToCheckFor, $links), 'Found expected links in string');
+
+    debug('Testing multiple URLs');
+    $multipleUrlManifestation = new Manifestation(unserialize(file_get_contents(drupal_get_path('module', 'bibdk_reservation') . '/test/mockup/serialized/multipleUrl.serialized')));
+
+    $info = $multipleUrlManifestation->getAccessInformation();
+    $linksToCheckFor = $info['accessInformation'][0];
+
+    $links = _bibdk_reservation_get_access_links($multipleUrlManifestation);
+
+    $this->assertTrue($this->_checkStringForElements($linksToCheckFor, $links), 'Found expected links in string');
+  }
+
+  private function _checkStringForElements($expected, $res) {
+    debug('Testiing for ' . count($expected) . ' links:');
+    foreach ($expected as $value) {
+      $string = 'href="' . $value['accessUrl'] . '"';
+      if (strpos($res, $string) === FALSE) {
+        return FALSE;
+      }
+    }
+    return TRUE;
+  }
+}

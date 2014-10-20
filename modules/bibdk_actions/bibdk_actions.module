@@ -1,0 +1,140 @@
+<?php
+
+module_load_include('inc', 'bibdk_actions', 'bibdk_actions.print');
+module_load_include('inc', 'bibdk_actions', 'bibdk_actions.email');
+module_load_include('inc', 'bibdk_actions', 'bibdk_actions.refexport');
+
+/**
+ * Implements hook_menu().
+ */
+function bibdk_actions_menu(){
+  $items['print/cart/%'] = array(
+    'title' => '',
+    'page callback' => 'bibdk_actions_print_page',
+    'page arguments' => array(2),
+    'access arguments' => array('access content'),
+    'file' => 'bibdk_actions.print.inc',
+  );
+  $items['export/cart/%/%'] = array(
+    'title' => '',
+    'page callback' => 'bibdk_actions_refexport_page',
+    'page arguments' => array(2, 3),
+    'access arguments' => array('access content'),
+    'file' => 'bibdk_actions.refexport.inc',
+  );
+  $items['email/cart/%'] = array(
+    'title' => '',
+    'page callback' => 'bibdk_actions_email_page',
+    'page arguments' => array(2, 3),
+    'access arguments' => array('access content'),
+    'file' => 'bibdk_actions.email.inc',
+  );
+
+  //Admin
+  $items['admin/config/system/site-information/actions'] = array(
+    'title' => t('Bibliotek.dk', array(), array('context' => 'bibdk_actions')),
+    'description' => t('Settings for the send mail functionality in cart view', array(), array('context' => 'bibdk_actions')),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bibdk_actions_admin_settings_form'),
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'bibdk_actions.admin.inc',
+  );
+
+  return $items;
+}
+
+/**
+ * @param $items
+ */
+function bibdk_actions_menu_alter(&$items){
+  $items['admin/config/system/site-information/default'] = $items['admin/config/system/site-information'];
+  $items['admin/config/system/site-information/default']['type'] = MENU_DEFAULT_LOCAL_TASK;
+}
+
+/**
+ * Implements hook_cart_actions().
+ *
+ * @internal param array $actions
+ * @param $actions
+ * @return array
+ */
+function bibdk_actions_cart_actions($actions){
+  $actions = bibdk_actions_get_print_actions($actions);
+  $actions = bibdk_actions_get_email_actions($actions);
+  $actions = bibdk_actions_get_refexport_actions($actions);
+  drupal_add_js(drupal_get_path('module', 'bibdk_actions') . '/js/bibdk_actions.js');
+  return $actions;
+}
+
+
+/**
+ * @param $pids
+ * @return array | null
+ */
+function bibdk_actions_get_manifestations($pids) {
+  /**
+   * ting_openformat_get_manifestations returns a bibdkWork as an array and all
+   * the manifestations are saved in the manifestations variable.
+   * TODO :ting_openformat should have a method to return an array of manifestations
+   */
+  $works = ting_openformat_get_manifestations($pids);
+  $work = reset($works);
+  return (isset($work->manifestations)) ? $work->manifestations : NULL;
+}
+
+/**
+ * Implements hook_entity_info_alter().
+ */
+function bibdk_actions_entity_info_alter(&$entity_info) {
+  $entity_info['bibdkManifestation']['view modes']['print'] = array(
+    'label' => t('Cart print', array(), array('context' => 'bibdk_actions admin')),
+    'custom settings' => TRUE,
+  );
+
+  $entity_info['bibdkManifestation']['view modes']['email'] = array(
+    'label' => t('Cart Email', array(), array('context' => 'bibdk_actions admin')),
+    'custom settings' => TRUE,
+    );
+}
+
+/**
+* Implements hook_theme().
+ */
+function bibdk_actions_theme($existing, $type, $theme, $path) {
+  $path = drupal_get_path('module', 'bibdk_actions') . '/theme';
+  return array(
+    'page__print' => array(
+      'template'    => 'page--print',
+      'path'        => $path,
+    ),
+    'bibdk_actions_print' => array(
+      'template' => 'bibdk-actions-print',
+      'path' => $path,
+      'variables' => array(
+        'fields' => array(),
+        'title' => '',
+        'abstract' => '',
+        'author' => '',
+        'pid' => '',
+        'subjects' => '',
+      ),
+    ),
+    'bibdk_actions_email' => array(
+      'template' => 'bibdk-actions-email',
+      'path' => $path,
+      'variables' => array(
+        'strings' => array(),
+      ),
+    ),
+    'bibdk_actions_refexport' => array(
+      'template' => 'bibdk-actions-refexport',
+      'path' => $path,
+      'variables' => array(
+        'linktext' => array(),
+      ),
+    )
+    
+    
+  );
+}

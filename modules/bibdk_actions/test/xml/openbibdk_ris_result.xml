@@ -1,0 +1,43 @@
+<searchResponse xmlns="http://oss.dbc.dk/ns/opensearch" xmlns:of="http://oss.dbc.dk/ns/openformat">
+    <result>
+        <hitCount>2</hitCount>
+        <collectionCount>1</collectionCount>
+        <more>false</more>
+        <searchResult>
+            <collection>
+                <resultPosition>1</resultPosition>
+                <numberOfObjects>1</numberOfObjects>
+                <object>
+                    <identifier>820030-katalog:804671</identifier>
+                    <creationDate>2011-12-22</creationDate>
+                    <formatsAvailable>
+                        <format>dkabm</format>
+                        <format>marcxchange</format>
+                    </formatsAvailable>
+                </object>
+            </collection>
+            <formattedCollection>
+                <of:ris>TY  - BOOKA1  - Welle-Strand,EdvardT1  - Hvor fisk vaker og fugl flyrSP  - 157 s.CY  - TrondheimY1  - T3  - Bruns jeger og fiskerbibliotekER  -</of:ris>
+            </formattedCollection>
+        </searchResult>
+        <searchResult>
+            <collection>
+                <resultPosition>2</resultPosition>
+                <numberOfObjects>1</numberOfObjects>
+                <object>
+                    <identifier>874830-katalog:000225252</identifier>
+                    <creationDate>2011-11-16</creationDate>
+                    <formatsAvailable>
+                        <format>dkabm</format>
+                        <format>marcxchange</format>
+                    </formatsAvailable>
+                </object>
+            </collection>
+            <formattedCollection>
+                <of:ris>TY  - BOOKA1  - Hvass,HansA1  - Eigener,WilhelmT1  - Fische der WeltSP  - 158 S., Zahlr. illustreret (farb.)PB  - Gebrüder WeissCY  - Berlin-SchönebergY1  - ER  -</of:ris>
+            </formattedCollection>
+        </searchResult>
+        <facetResult/>
+        <time>0.123278</time>
+    </result>
+</searchResponse>

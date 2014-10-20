@@ -7,8 +7,15 @@ dependencies[] = ding_provider
 dependencies[] = ting_agency
 dependencies[] = bibdk_borchk
 dependencies[] = shortcode
-; tests (needs review - testing against live (dead) webservices)
-files[] = bibdk_favourite.agencies.inc
-files[] = bibdk_favourite.mypage.inc
+
+files[] = includes/bibdk_favourite.agencies.inc
+files[] = includes/bibdk_favourite.ajax.inc
+files[] = includes/bibdk_favourite.borchk.inc
+files[] = includes/bibdk_favourite.forms.inc
+files[] = includes/bibdk_favourite.mypage.inc
+files[] = includes/bibdk_favourite.no_favourites.inc
+files[] = includesbibdk_favourite.shortcodes.inc
+files[] = includesbibdk_favourite.webservice.inc
+
 files[] = test/bibdk_favourite.test
 files[] = test/bibdk_favourite_unit.test

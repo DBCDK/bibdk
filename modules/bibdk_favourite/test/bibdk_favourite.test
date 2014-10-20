@@ -14,10 +14,17 @@ class bibdkFavouriteTest extends DrupalWebTestCase {
 
   public function setUp() {
     module_enable(array('openagency_webservice_mockup'));
-    parent::setUp(array('ding_user', 'bibdk_test_provider', 'ting_agency', 'openagency_webservice_mockup','bibdk_favourite', 'shortcode'));
+    parent::setUp(array(
+      'ding_user',
+      'bibdk_test_provider',
+      'ting_agency',
+      'openagency_webservice_mockup',
+      'bibdk_favourite',
+      'shortcode'
+    ));
     //$this->standard_user = $this->drupalCreateUser();
-    variable_set('agency_search_xsd_url',$this->getAbsoluteUrl('/openagency_webservice/openagency.xsd'));
-    variable_set('agency_search_url',  $this->getAbsoluteUrl('/openagency_webservice/'));
+    variable_set('agency_search_xsd_url', $this->getAbsoluteUrl('/openagency_webservice/openagency.xsd'));
+    variable_set('agency_search_url', $this->getAbsoluteUrl('/openagency_webservice/'));
   }
 
   /**
@@ -31,8 +38,8 @@ class bibdkFavouriteTest extends DrupalWebTestCase {
     );
   }
 
-// check if profiletype is created after module has been enabled
-// and user logs in.
+  // check if profiletype is created after module has been enabled
+  // and user logs in.
   function testCheckProfileType() {
     $edit['name'] = 'testuser@test.dk';
     $edit['pass'] = 'password';
@@ -47,8 +54,8 @@ class bibdkFavouriteTest extends DrupalWebTestCase {
     // change password to assert that no_favourites message is displayed
     $edit['pass[pass1]'] = 'hest';
     $edit['pass[pass2]'] = 'hest';
-    $this->drupalPost(NULL,$edit, t('Save'));
-    $this->assertText(t('remember_to_add_favourite_libraries'),'add favourite message is set when no favourites are set');
+    $this->drupalPost(NULL, $edit, t('Save'));
+    $this->assertText(t('remember_to_add_favourite_libraries'), 'add favourite message is set when no favourites are set');
     //first disable module
     module_disable(array('bibdk_favourite'));
     menu_rebuild();
@@ -65,7 +72,7 @@ class bibdkFavouriteTest extends DrupalWebTestCase {
     module_enable(array('bibdk_favourite'));
     menu_rebuild();
     global $base_url;
-  //  variable_set('agency_search_url', $base_url . '/openagency_webservice/');
+    //  variable_set('agency_search_url', $base_url . '/openagency_webservice/');
     //variable_set('agency_search_url', 'http://openagency.addi.dk/2.8/');
     $this->drupalGet('user/3');
     $this->assertLink('Favourites');
@@ -130,12 +137,12 @@ class bibdkFavouriteTest extends DrupalWebTestCase {
   function test_bibdk_favourite_borchk_bad_user() {
     $path = drupal_get_path('module', 'bibdk_favourite');
 
-    $filename = $path.'/test/borchck_not_ok.xml';
+    $filename = $path . '/test/borchck_not_ok.xml';
     $ret_not_ok = file_get_contents($filename);
     //Can be used for testprint to test.log
     //error_log(print_r(bibdk_favourite_parse_borchk($ret_not_ok),1));
     $res_not_ok = bibdk_favourite_parse_borchk($ret_not_ok);
-    $this->assertTrue($res_not_ok['status'] == 'error' ,'Parse file borchck_not_ok is OK');
+    $this->assertTrue($res_not_ok['status'] == 'error', 'Parse file borchck_not_ok is OK');
 
   }
 
@@ -144,12 +151,12 @@ class bibdkFavouriteTest extends DrupalWebTestCase {
   function test_bibdk_favourite_borchk_good_user() {
     $path = drupal_get_path('module', 'bibdk_favourite');
 
-    $filename = $path.'/test/borchck_ok.xml';
+    $filename = $path . '/test/borchck_ok.xml';
     $ret_ok = file_get_contents($filename);
     //Can be used for testprint to test.log
     //error_log(print_r(bibdk_favourite_parse_borchk($ret_ok),1));
-    $res_ok= bibdk_favourite_parse_borchk($ret_ok);
-    $this->assertTrue($res_ok['status'] == 'ok' ,'Parse file borchck_ok is OK');
+    $res_ok = bibdk_favourite_parse_borchk($ret_ok);
+    $this->assertTrue($res_ok['status'] == 'ok', 'Parse file borchck_ok is OK');
 
   }
 }

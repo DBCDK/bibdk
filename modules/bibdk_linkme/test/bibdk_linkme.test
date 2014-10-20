@@ -60,7 +60,7 @@ class BibdkLinkmeTestCase extends DrupalWebTestCase {
 
     // Test ccl query
     $this->drupalGet('linkme.php', array('query' => array('ccl' => 'test_ccl')));
-    $this->assertEqual($this->getAbsoluteUrl('old_linkme_url%3Fccl%3Dtest_ccl'), $this->getUrl());
+    $this->assertEqual($this->getAbsoluteUrl('linkme.php?ccl=test_ccl'), $this->getUrl());
 
     // Test invalid query
     $this->drupalGet('linkme.php');

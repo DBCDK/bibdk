@@ -1,0 +1,281 @@
+<?php
+/**
+ * @file
+ * unit tests for bibdk_reservation
+ */
+
+class BibdkReservationUnitTestCase extends DrupalUnitTestCase {
+
+  /**
+   * @return array
+   */
+  public static function getInfo() {
+    return array(
+      'name' => t('Bibdk Reservation Unit Tests'),
+      'description' => t('Tests methods in bibdk_reservation module that doesn\'t require any db'),
+      'group' => t('Bibliotek.dk - Reservation'),
+    );
+  }
+
+  public function setUp() {
+    module_load_include('inc', 'bibdk_reservation', 'includes/bibdk_reservation_button');
+    module_load_include('inc', 'bibdk_reservation', 'includes/bibdk_reservation.messages');
+    parent::setUp();
+  }
+
+  public function test_bibdk_reservation_mail_get_title() {
+    module_load_include('inc', 'ting_openformat', 'lib/ManifestationMaster');
+    module_load_include('inc', 'ting_openformat', 'lib/Manifestation');
+    module_load_include('php', 'bibdk_reservation', 'test/mockup/Objects/Manifestation_mockup');
+    module_load_include('inc', 'bibdk_reservation', 'includes/bibdk_reservation.mail');
+
+    $manifestation = new Manifestation_mockup();
+
+    $manifestation->bibdk_order = 'titleSpecfic';
+    $return = _bibdk_reservation_mail_get_title($manifestation);
+    $this->assertEqual($return, ' - TITLESPECIFIC_RETURN', 'Got string as expected');
+
+    $manifestation->bibdk_order = 'title';
+    $return = _bibdk_reservation_mail_get_title($manifestation);
+    $this->assertEqual($return, ' - TITLE_RETURN', 'Got string as expected');
+
+    $manifestation->bibdk_order = 'no_title';
+    $return = _bibdk_reservation_mail_get_title($manifestation);
+    $this->assertEqual($return, '', 'Got empty string as expected');
+  }
+
+  public function test__bibdk_reservation_generate_policy_messages() {
+    module_load_include('inc', 'bibdk_reservation', 'test/mockup/bibdk_reservation_helpers_muckup');
+    module_load_include('php', 'bibdk_reservation', 'test/mockup/Objects/policyResponseMuckup');
+    module_load_include('inc', 'bibdk_reservation', 'includes/bibdk_reservation_form_step_2');
+
+    /** test no policy message **/
+    $policy_response = new PolicyResponseMockup();
+    $result = _bibdk_reservation_generate_policy_messages($policy_response);
+    $this->assertEqual($result, array(), 'returns empty array');
+
+    /** test lookupUrl message **/
+    // Setup mockup
+    $policy_response = new PolicyResponseMockup();
+    $policy_response->lookUpUrl[] = array(
+      'url' => 'lookup_url',
+      'agencyId' => 'agency_id',
+    );
+    $policy_response->agencyId = 'agency_id';
+    // get result
+    $result = _bibdk_reservation_generate_policy_messages($policy_response);
+    // assert result
+    $this->assertTrue($result['#text'] == 'link_to_local_library_lookup_url', 'lookup text returned');
+    $this->assertTrue($result['#path'] == 'reservations/catalogue_url', 'lookup url returned');
+    $this->assertTrue($result['#options']['query'] == array(
+        'url' => 'lookup_url',
+        'agency_id' => 'agency_id'
+      ), 'query options are added');
+
+    /** test catalogUrl message **/
+    // Setup mockup
+    $policy_response = new PolicyResponseMockup();
+    $policy_response->agencyCatalogueUrl = 'catalog_url';
+    // get result
+    $result = _bibdk_reservation_generate_policy_messages($policy_response);
+    // assert result
+    $this->assertTrue($result['#text'] == 'link_to_local_library_catalogue_url', 'catalog url returned');
+    $this->assertTrue($result['#path'] == 'catalog_url', 'catalog url returned');
+
+    /** test consortia message **/
+    // Setup mockup
+    $policy_response = new PolicyResponseMockup();
+    $policy_response->lookUpUrl[] = array(
+      'url' => 'lookup_url',
+      'agencyId' => 'consortia_id',
+    );
+    $policy_response->agencyId = 'agency_id';
+    $policy_response->orderPossibleReason = 'not_owned_accepted_by_consortia';
+    // get result
+    $result = _bibdk_reservation_generate_policy_messages($policy_response);
+    $expected_result = array(
+      '#theme' => 'bibdk_reservation_consortia_message',
+      '#agency_name' => 'agency_id_name',
+      '#consortia_name' => 'consortia_id_name',
+      '#url' => 'lookup_url',
+    );
+    // assert result
+    $this->assertEqual($result, $expected_result, 'consortia theme array returned');
+  }
+
+  public function test__bibdk_reservation_get_userstatus_link() {
+    module_load_include('inc', 'bibdk_reservation', 'test/mockup/bibdk_reservation_helpers_muckup');
+    module_load_include('inc', 'bibdk_reservation', 'includes/bibdk_reservation_form_step_4');
+    module_load_include('php', 'bibdk_reservation', 'test/mockup/Objects/pickUpAgencyMockup');
+
+    //no ncipLookUpUser
+    $ncipLookUpUser = '';
+    $getUserStatusUrl = 'userstatus_url';
+
+    $PickUpAgency = new PickUpAgencyMockup();
+    $PickUpAgency->setNcipLookUpUser($ncipLookUpUser);
+    $PickUpAgency->setUserStatusUrl($getUserStatusUrl);
+
+    $msg = _bibdk_reservation_get_userstatus_link($PickUpAgency);
+    $this->assertEqual('you_can_watch_order_status_here: userstatus_url', $msg, 'Message returned');
+
+    //no ncipLookUpUser + nu url
+    $ncipLookUpUser = '';
+    $getUserStatusUrl = '';
+
+    $PickUpAgency->setNcipLookUpUser($ncipLookUpUser);
+    $PickUpAgency->setUserStatusUrl($getUserStatusUrl);
+
+    $msg = _bibdk_reservation_get_userstatus_link($PickUpAgency);
+    $this->assertTrue(empty($msg), 'Got empty message as expected');
+
+    //ncipLookUpUser is set & user is not logged in
+    $GLOBALS['bibdk_reservation_user_test'] = 0;
+    $ncipLookUpUser = 'not empty';
+
+    $PickUpAgency->setNcipLookUpUser($ncipLookUpUser);
+
+    $msg = _bibdk_reservation_get_userstatus_link($PickUpAgency);
+    $this->assertTrue(empty($msg), 'Got empty message as expected');
+
+    //ncipLookUpUser is set & user is logged in
+    $GLOBALS['bibdk_reservation_user_test'] = 1;
+    $ncipLookUpUser = 'not empty';
+
+    $PickUpAgency->setNcipLookUpUser($ncipLookUpUser);
+    $msg = _bibdk_reservation_get_userstatus_link($PickUpAgency);
+    global $user;
+    $this->assertEqual('you_can_watch_order_status_here: user/' . $user->uid . '/bibdk_openuserstatus', $msg, 'Message returned');
+  }
+
+  public function test__bibdk_reservation_render_commands() {
+    drupal_get_messages();
+    $infotext = array(
+      'error' => array(
+        'error_message',
+      ),
+    );
+    _bibdk_reservation_render_messages($infotext);
+    $messages = drupal_get_messages();
+    $expected  = array (
+      'error' =>
+        array (
+          0 => 'error_message',
+        ),
+    );
+    $this->assertEqual($messages, $expected, 'message is generated');
+
+    $result = _bibdk_reservation_render_messages(array());
+    $this->assertTrue(empty($result), 'Got empty array');
+  }
+
+  public function test__bibdk_reservation_get_infotext(){
+    module_load_include('inc', 'ting_openformat', 'ting_openformat.entities');
+    module_load_include('inc', 'ting_openformat', 'lib/ManifestationMaster');
+    module_load_include('inc', 'ting_openformat', 'lib/Manifestation');
+    module_load_include('inc', 'bibdk_reservation', 'test/mockup/bibdk_reservation_helpers_muckup');
+    module_load_include('php', 'bibdk_reservation', 'test/mockup/Objects/Manifestation_mockup');
+    module_load_include('inc', 'bibdk_reservation', 'includes/bibdk_reservation_button');
+    return;
+    //Ensure that only one of the same kind of message is displayed
+    $manifestation = new Manifestation_mockup();
+    $manifestation->messageCategory = NULL;
+    $manifestation->infoText = 'linkE17';
+
+    $manifestations = array(
+      $manifestation,
+      $manifestation
+    );
+
+    $result = _bibdk_reservation_get_infotext($manifestations);
+    $this->assertTrue(array_key_exists('warning', $result));
+    $this->assertEqual(1, count($result['warning']));
+
+    //Ensure we get a not free ebook message when all conditions are present
+    $manifestation = new Manifestation_mockup();
+    $manifestation->messageCategory = NULL;
+    $manifestation->infoText = 'restrictedAccess';
+    $manifestation->type = array('literature', 'online');
+    $manifestation->isLink = TRUE;
+
+    $manifestations = array(
+      $manifestation
+    );
+
+    $result = _bibdk_reservation_get_infotext($manifestations);
+
+    $this->assertTrue(array_key_exists('warning', $result));
+    $this->assertEqual(1, count($result['warning']));
+    $this->assertEqual('this_is_not_a_free_ebook', $result['warning'][0]);
+
+    //Ensure the we get the correct message when multiple are present -- 1
+    $manifestations = array();
+    $manifestation = new Manifestation_mockup();
+    $manifestation->messageCategory = 2;
+    $manifestation->infoText = 'infotext_2';
+    $manifestations[] = $manifestation;
+
+    $manifestation = new Manifestation_mockup();
+    $manifestation->messageCategory = 1;
+    $manifestation->infoText = 'infotext_1';
+    $manifestations[] = $manifestation;
+
+    $manifestation = new Manifestation_mockup();
+    $manifestation->messageCategory = 4;
+    $manifestation->infoText = 'infotext_4';
+    $manifestations[] = $manifestation;
+
+
+    $result = _bibdk_reservation_get_infotext($manifestations);
+
+    $this->assertTrue(array_key_exists('status', $result));
+    $this->assertEqual(1, count($result['status']));
+    $this->assertEqual('drupal_text_infotext_1', $result['status'][0]);
+
+    //Ensure the we get the correct messages when multiple are present -- 2
+    $manifestations = array();
+    $manifestation = new Manifestation_mockup();
+    $manifestation->messageCategory = 3;
+    $manifestation->infoText = 'infotext_1';
+    $manifestations[] = $manifestation;
+
+    $manifestation = new Manifestation_mockup();
+    $manifestation->messageCategory = 3;
+    $manifestation->infoText = 'infotext_2';
+    $manifestations[] = $manifestation;
+
+    $manifestation = new Manifestation_mockup();
+    $manifestation->messageCategory = 4;
+    $manifestation->infoText = 'infotext_3';
+    $manifestations[] = $manifestation;
+
+
+    $result = _bibdk_reservation_get_infotext($manifestations);
+
+    $this->assertTrue(array_key_exists('error', $result));
+    $this->assertEqual(2, count($result['error']));
+    $this->assertTrue(in_array('drupal_text_infotext_2', $result['error']));
+  }
+
+  public function test__bibdk_reservation_get_message_type(){
+    module_load_include('inc', 'bibdk_reservation', 'includes/bibdk_reservation_button');
+
+    $this->assertEqual('status', _bibdk_reservation_get_message_type(1));
+    $this->assertEqual('warning', _bibdk_reservation_get_message_type(2));
+    $this->assertEqual('error', _bibdk_reservation_get_message_type(3));
+    $this->assertEqual('error', _bibdk_reservation_get_message_type(4));
+    $this->assertEqual('status', _bibdk_reservation_get_message_type(NULL));
+  }
+
+  public function test__bibdk_reservation_infotext_order_any_edition_create_link() {
+    module_load_include('inc', 'bibdk_reservation', 'includes/bibdk_reservation_button');
+    
+    $testvalue = 'a:2:{s:9:"lead_text";a:3:{s:5:"#type";s:12:"translatable";s:10:"#translate";s:45:"placeholder_infotext_on_order_any_edition_btn";s:8:"#options";a:1:{s:7:"context";s:17:"bibdk_reservation";}}s:4:"link";a:5:{s:6:"#theme";s:4:"link";s:5:"#text";a:3:{s:5:"#type";s:12:"translatable";s:10:"#translate";s:9:"More info";s:8:"#options";a:1:{s:7:"context";s:17:"bibdk_reservation";}}s:5:"#path";s:0:"";s:7:"#weight";i:10;s:8:"#options";a:4:{s:8:"fragment";s:19:"870970basis51174151";s:8:"external";b:1;s:10:"attributes";a:2:{s:5:"class";a:1:{i:0;s:31:"infotext-order-any-edition-link";}s:2:"id";s:51:"infotext-order-any-edition-link-870970basis51174151";}s:4:"html";b:0;}}}';
+    $input = '870970basis51174151';
+
+    $output = _bibdk_reservation_infotext_order_any_edition_create_link($input);
+    $this->assertEqual(serialize($output), $testvalue, '_bibdk_reservation_infotext_order_any_edition_create_link() return correct render array');
+
+  }
+
+}

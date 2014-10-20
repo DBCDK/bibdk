@@ -1,0 +1,36 @@
+name = Bibliotek.dk  - Reservation
+description = Implementation of reservation functionality on bibdk entities
+package = Bibliotek.dk
+core = 7.x
+version = 7.x-0.47
+php = 5.2.4
+
+dependencies[] = bibdk_favourite
+dependencies[] = bibdk_borchk
+dependencies[] = bibdk_openorder
+dependencies[] = ting_client
+dependencies[] = ting_openformat
+dependencies[] = date_api
+dependencies[] = translatable
+
+files[] = includes/bibdk_reservation.action.inc
+files[] = includes/bibdk_reservation.button.inc
+files[] = includes/bibdk_reservation.field.inc
+files[] = includes/bibdk_reservation_form_step_1.inc
+files[] = includes/bibdk_reservation_form_step_2.inc
+files[] = includes/bibdk_reservation_form_step_3.inc
+files[] = includes/bibdk_reservation_form_step_4.inc
+files[] = includes/bibdk_reservation_sb_kopi.inc
+files[] = includes/bibdk_reservation_helpers.inc
+files[] = includes/bibdk_reservation.admin.inc
+files[] = includes/bibdk_reservation.mail.inc
+
+files[] = BibdkReservationOrderObject.php
+
+files[] = test/bibdk_reservation_web_test.test
+files[] = test/bibdk_reservation_unit_test.test
+files[] = test/mockup/objects/Manifestation_mockup.php
+files[] = test/mockup/bibdk_reservation_helpers_muckup.inc
+
+scripts[] = js/sbCopySwitchMe.js
+scripts[] = js/bibdk_reservation.js

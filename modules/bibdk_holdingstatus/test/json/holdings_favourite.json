@@ -1,0 +1,1 @@
+{"holdingsResponse":{"responder":[{"localHoldingsId":{"$":"28542941"},"willLend":{"$":"true"},"expectedDelivery":{"$":"2013-10-22"},"pid":{"$":"870970-basis:28542941"},"responderId":{"$":"710100"}}]},"@namespaces":{"$":"http:\/\/oss.dbc.dk\/ns\/openholdingstatus"}}

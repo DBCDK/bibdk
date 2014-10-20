@@ -1,0 +1,748 @@
+<?php
+
+/**
+ * @file
+ * Install, update, and uninstall functions for the custom search module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function bibdk_custom_search_install() {
+  db_update('system')
+    ->fields(array('weight' => 10))
+    ->condition('name', 'bibdk_custom_search', '=')
+    ->execute();
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function bibdk_custom_search_uninstall() {
+
+
+}
+
+/**
+ * Implements hook_enable().
+ */
+function bibdk_custom_search_enable() {
+  // drupal_set_message(t('Custom Search enabled. Don\'t forget to <a href="@link">set permissions</a>.', array('@link' => url('admin/people/permissions', array('fragment' => 'module-bibdk_custom_search')))));
+}
+
+/**
+ * Implementation of hook_schema().
+ */
+function bibdk_custom_search_schema() {
+  $schema['bibdk_custom_search'] = array(
+    'description' => t('Stores bibdk search pages'),
+    'export' => array(
+      'bulk export' => TRUE,
+      'key' => 'p_uuid',
+      'key name' => 'UUID',
+      'primary_key' => 'pid',
+      'identifier' => 'search_page',
+      'default hook' => 'default_bibdk_custom_search_page',
+      'api' => array(
+        'owner' => 'bibdk_custom_search',
+        'minimum_version' => '1',
+        'current_version' => '1',
+        'api' => 'default_bibdk_custom_search_pages',
+      ),
+    ),
+    'fields' => array(
+      'pid' => array(
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'length' => 10,
+        'description' => t('Page ID.'),
+        'no export' => TRUE, // Do not export database-only keys.
+      ),
+      'p_uuid' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('UUID'),
+      ),
+      'page_title' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('Page title'),
+      ),
+      'page_path' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('Page path'),
+      ),
+      'menu_title' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('Menu title'),
+      ),
+      'delimiter' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => t('Search delimiter for the combined search expression'),
+      ),
+      'expand' => array(
+        'type' => 'int',
+        'length' => 1,
+        'size' => 'tiny',
+        'default' => 0,
+        'description' => t('0 = extra search options are NOT displayed by default, 1 =  extra search options are displayed by default'),
+      ),
+      'sort' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => t('Page sort value'),
+      ),
+      'is_disabled' => array(
+        'type' => 'int',
+        'size' => 'tiny',
+        'default' => 0,
+        'initial' => 0,
+        'description' => t('Toggle disabled status'),
+      )
+    ),
+    'indexes' => array(
+      'bibdk_custom_search_uuid' => array('p_uuid'),
+      'bibdk_custom_search_page_path' => array('page_path'),
+    ),
+    'primary key' => array('pid'),
+  );
+
+  $schema['bibdk_custom_search_map_elements'] = array(
+    'description' => t('Maps elements bibdk search pages'),
+    'export' => array(
+      'bulk export' => TRUE,
+      'key' => 'me_uuid',
+      'key name' => 'UUID',
+      'primary_key' => 'mid',
+      'identifier' => 'map_element',
+      'default hook' => 'default_bibdk_custom_search_map_element',
+      'api' => array(
+        'owner' => 'bibdk_custom_search',
+        'minimum_version' => '1',
+        'current_version' => '1',
+        'api' => 'default_bibdk_custom_search_map_elements',
+      ),
+    ),
+    'fields' => array(
+      'mid' => array(
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'length' => 10,
+        'description' => t('Element map ID.'),
+        'no export' => TRUE, // Do not export database-only keys.
+      ),
+      'p_uuid' => array(
+        'type' => 'varchar',
+        'not null' => TRUE,
+        'length' => 64,
+        'description' => t('Page ID.'),
+      ),
+      'e_uuid' => array(
+        'type' => 'varchar',
+        'not null' => TRUE,
+        'length' => 64,
+        'description' => t('Element ID.'),
+      ),
+      'me_uuid' => array(
+        'type' => 'varchar',
+        'not null' => TRUE,
+        'length' => 64,
+        'description' => t('UUID.'),
+      ),
+      'region' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('Page element region'),
+      ),
+      'sort' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => t('Page element sort value'),
+      ),
+
+    ),
+    'indexes' => array(
+     // 'bibdk_custom_search_map_elements_id' => array('mid'),
+     // 'bibdk_custom_search_map_elements_pid' => array('pid'),
+     'bcs_me_uuid' => array('me_uuid'),
+     'bcs_me_puuid' => array('p_uuid'),
+    ),
+    'primary key' => array('mid'),
+    'foreign keys' => array(
+        'page_id' => array(
+          'table' => 'bibdk_custom_search',
+          'columns' => array('p_uuid' => 'p_uuid'),
+         ),
+        'element_id' => array(
+          'table' => 'bibdk_custom_search_elements',
+          'columns' => array('e_uuid' => 'e_uuid'),
+         ),
+    ),
+  );
+
+
+  $schema['bibdk_custom_search_elements'] = array(
+    'description' => t('Stores the elements a bibdk search page is made of'),
+    'export' => array(
+      'bulk export' => TRUE,
+      'key' => 'e_uuid',
+      'key name' => 'UUID',
+      'primary_key' => 'pid',
+      'identifier' => 'element',
+      'default hook' => 'default_bibdk_custom_search_element',
+      'api' => array(
+        'owner' => 'bibdk_custom_search',
+        'minimum_version' => '1',
+        'current_version' => '1',
+        'api' => 'default_bibdk_custom_search_elements',
+      ),
+    ),
+    'fields' => array(
+      'eid' => array(
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'length' => 10,
+        'description' => t('Element ID.'),
+        'no export' => TRUE, // Do not export database-only keys.
+      ),
+      'e_uuid' => array(
+        'type' => 'varchar',
+        'not null' => TRUE,
+        'length' => 64,
+        'description' => t('Element UUID.'),
+      ),
+      'element_title' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('Element title'),
+      ),
+      'element_label' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('Element label'),
+      ),
+      'description' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('Short desription of the search element'),
+      ),
+      'help_text' => array(
+        'type' => 'blob',
+        'not null' => FALSE,
+        'size' => 'big',
+        'description' => t('Help text for the search element'),
+      ),
+      'sort' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => t('Page sort value'),
+      ),
+      'tab_index' => array(
+        'type' => 'int',
+        'length' => 10,
+        'default' => 0,
+        'description' => t('Tab index'),
+      ),
+      'access_key' => array(
+        'type' => 'varchar',
+        'length' => 5,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('Access key'),
+      ),
+      'is_disabled' => array(
+        'type' => 'int',
+        'size' => 'tiny',
+        'default' => 0,
+        'initial' => 0,
+        'description' => t('Toggle disabled status'),
+      )
+    ),
+    'indexes' => array(
+      'bibdk_custom_search_elements_uuid' => array('e_uuid'),
+    ),
+    'primary key' => array('eid'),
+  );
+
+
+  $schema['bibdk_custom_search_map_values'] = array(
+    'description' => t('Maps elements bibdk search pages'),
+    'export' => array(
+      'bulk export' => TRUE,
+      'key' => 'mv_uuid',
+      'key name' => 'UUID',
+      'primary_key' => 'mid',
+      'identifier' => 'map_values',
+      'default hook' => 'default_bibdk_custom_search_map_value',
+      'api' => array(
+        'owner' => 'bibdk_custom_search',
+        'minimum_version' => '1',
+        'current_version' => '1',
+        'api' => 'default_bibdk_custom_search_map_values',
+      ),
+    ),
+    'fields' => array(
+      'mid' => array(
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'length' => 10,
+        'description' => t('Value map ID.'),
+        'no export' => TRUE, // Do not export database-only keys.
+      ),
+      'mv_uuid' => array(
+        'type' => 'varchar',
+        'not null' => TRUE,
+        'length' => 64,
+        'description' => t('Value map UUID.'),
+      ),
+      'e_uuid' => array(
+        'type' => 'varchar',
+        'not null' => TRUE,
+        'length' => 64,
+        'description' => t('Element UUID.'),
+      ),
+      'v_uuid' => array(
+        'type' => 'varchar',
+        'not null' => TRUE,
+        'length' => 64,
+        'description' => t('Value UUID.'),
+      ),
+      'sort' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => t('Sort value'),
+      ),
+
+    ),
+    'indexes' => array(
+      'bcs_map_values_uuid' => array('mv_uuid'),
+      'bcs_map_values_euuid' => array('e_uuid'),
+      'bcs_map_values_vuuid' => array('v_uuid'),
+    ),
+    'primary key' => array('mid'),
+    'foreign keys' => array(
+      'element_id' => array(
+        'table' => 'bibdk_custom_search_elements',
+        'columns' => array('e_uuid' => 'e_uuid'),
+       ),
+      'value_id' => array(
+        'table' => 'bibdk_custom_search_values',
+        'columns' => array('v_uuid' => 'v_uuid'),
+       ),
+    ),
+  );
+
+
+  $schema['bibdk_custom_search_values'] = array(
+    'description' => t('Stores the values of a bibdk search page element'),
+    'export' => array(
+      'bulk export' => TRUE,
+      'key' => 'v_uuid',
+      'key name' => 'UUID',
+      'primary_key' => 'vid',
+      'identifier' => 'value',
+      'default hook' => 'default_bibdk_custom_search_value',
+      'api' => array(
+        'owner' => 'bibdk_custom_search',
+        'minimum_version' => '1',
+        'current_version' => '1',
+        'api' => 'default_bibdk_custom_search_values',
+      ),
+    ),
+    'fields' => array(
+      'vid' => array(
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'length' => 10,
+        'description' => t('Values ID'),
+        'no export' => TRUE, // Do not export database-only keys.
+      ),
+      'v_uuid' => array(
+        'type' => 'varchar',
+        'not null' => TRUE,
+        'length' => 64,
+        'description' => t('Values UUID'),
+      ),
+      'value_title' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('Value title'),
+      ),
+      'sort' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => t('Sort value'),
+      ),
+      'value_type' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('Value type: "textfield", "textarea", "select", "select multiple", "radio", "checkbox", "checkboxes", "hidden"'),
+      ),
+      'search_code' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('Search code'),
+      ),
+      'default_value' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('Default value'),
+      ),
+      'expand' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => t('Expand values. References bibdk_custom_search_values.vid'),
+      ),
+      'is_disabled' => array(
+        'type' => 'int',
+        'size' => 'tiny',
+        'default' => 0,
+        'initial' => 0,
+        'description' => t('Toggle disabled status'),
+      )
+    ),
+    'indexes' => array(
+      'bcs_values_uuid' => array('v_uuid'),
+    ),
+    'primary key' => array('vid'),
+  );
+
+
+  $schema['bibdk_custom_search_options'] = array(
+    'description' => t('Stores the options of a bibdk search page value'),
+    'export' => array(
+      'bulk export' => TRUE,
+      'key' => 'o_uuid',
+      'key name' => 'UUID',
+      'primary_key' => 'oid',
+      'identifier' => 'option',
+      'default hook' => 'default_bibdk_custom_search_option',
+      'api' => array(
+        'owner' => 'bibdk_custom_search',
+        'minimum_version' => '1',
+        'current_version' => '1',
+        'api' => 'default_bibdk_custom_search_options',
+      ),
+    ),
+    'fields' => array(
+      'oid' => array(
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'length' => 10,
+        'description' => t('Option ID'),
+        'no export' => TRUE, // Do not export database-only keys.
+      ),
+      'o_uuid' => array(
+        'type' => 'varchar',
+        'not null' => TRUE,
+        'length' => 64,
+        'description' => t('Option UUID'),
+      ),
+      'v_uuid' => array(
+        'type' => 'varchar',
+        'not null' => FALSE,
+        'length' => 64,
+        'description' => t('Value UUID'),
+      ),
+      'sort' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => t('Sort value'),
+      ),
+      'label' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('Option label'),
+      ),
+      'value' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => t('Option value'),
+      ),
+      'expand' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+        'default' => '0',
+        'description' => t('Expand values. References bibdk_custom_search_values.v_uuid'),
+      ),
+      'is_disabled' => array(
+        'type' => 'int',
+        'size' => 'tiny',
+        'default' => 0,
+        'initial' => 0,
+        'description' => t('Toggle disabled status'),
+      )
+    ),
+    'indexes' => array(
+      'bcs_options_uuid' => array('o_uuid'),
+      'bcs_options_vuuid' => array('v_uuid'),
+    ),
+    'primary key' => array('oid'),
+    'foreign keys' => array(
+      'value_id' => array(
+        'table' => 'bibdk_custom_search_values',
+        'columns' => array('v_uuid' => 'v_uuid'),
+       ),
+    ),
+  );
+
+  return $schema;
+}
+
+
+/**
+ * Alter help text column to blob
+ */
+function bibdk_custom_search_update_7001(&$sandbox) {
+
+  db_change_field('bibdk_custom_search_elements', 'help_text', 'help_text',
+    array(
+      'type' => 'blob',
+      'not null' => FALSE,
+      'size' => 'big',
+      'description' => t('Help text for the search element'),
+    )
+  );
+}
+
+/**
+ * Add export functionality
+ */
+function bibdk_custom_search_update_7006(&$sandbox) {
+  // Add UUID fields
+  $uuid_field = array(
+    'type' => 'varchar',
+    'length' => 64,
+    'not null' => TRUE,
+    'default' => '',
+    'description' => t('UUID'),
+  );
+  db_add_field('bibdk_custom_search', 'p_uuid', $uuid_field);
+  db_add_field('bibdk_custom_search_map_elements', 'me_uuid', $uuid_field);
+  db_add_field('bibdk_custom_search_elements', 'e_uuid', $uuid_field);
+  db_add_field('bibdk_custom_search_map_values', 'mv_uuid', $uuid_field);
+  db_add_field('bibdk_custom_search_options', 'o_uuid', $uuid_field);
+  db_add_field('bibdk_custom_search_values', 'v_uuid', $uuid_field);
+
+  $uuid_field['description'] = 'Page UUID';
+  db_add_field('bibdk_custom_search_map_elements', 'p_uuid', $uuid_field);
+  $uuid_field['description'] = 'Element UUID';
+  db_add_field('bibdk_custom_search_map_elements', 'e_uuid', $uuid_field);
+  db_add_field('bibdk_custom_search_map_values', 'e_uuid', $uuid_field);
+  $uuid_field['description'] = 'Value UUID';
+  db_add_field('bibdk_custom_search_map_values', 'v_uuid', $uuid_field);
+  db_add_field('bibdk_custom_search_options', 'v_uuid', $uuid_field);
+
+  // change field
+  db_change_field('bibdk_custom_search_options', 'expand', 'expand', array(
+    'type' => 'varchar',
+    'length' => 64,
+    'not null' => TRUE,
+    'default' => '0',
+    'description' => t('Expand values. References bibdk_custom_search_values.v_uuid'),
+  ));
+
+  // add indexes
+  db_add_index('bibdk_custom_search', 'bibdk_custom_search_uuid', array('p_uuid'));
+  db_add_index('bibdk_custom_search_map_elements', 'bcs_me_uuid', array('me_uuid'));
+  db_add_index('bibdk_custom_search_map_elements', 'bcs_me_puuid', array('p_uuid'));
+  db_add_index('bibdk_custom_search_elements', 'bibdk_custom_search_elements_uuid', array('e_uuid'));
+  db_add_index('bibdk_custom_search_map_values', 'bcs_map_values_uuid', array('mv_uuid'));
+  db_add_index('bibdk_custom_search_map_values', 'bcs_map_values_euuid', array('e_uuid'));
+  db_add_index('bibdk_custom_search_map_values', 'bcs_map_values_vuuid', array('v_uuid'));
+  db_add_index('bibdk_custom_search_values', 'bcs_values_uuid', array('v_uuid'));
+  db_add_index('bibdk_custom_search_options', 'bcs_options_uuid', array('o_uuid'));
+  db_add_index('bibdk_custom_search_options', 'bcs_options_vuuid', array('v_uuid'));
+
+  // Add uuid to all objects that are missing an uuid
+  bibdk_custom_search_uuid_sync_table('bibdk_custom_search', 'pid', 'p_uuid');
+  bibdk_custom_search_uuid_sync_table('bibdk_custom_search_map_elements', 'mid', 'me_uuid');
+  bibdk_custom_search_uuid_sync_table('bibdk_custom_search_elements', 'eid', 'e_uuid');
+  bibdk_custom_search_uuid_sync_table('bibdk_custom_search_map_values', 'mid', 'mv_uuid');
+  bibdk_custom_search_uuid_sync_table('bibdk_custom_search_options', 'oid', 'o_uuid');
+  bibdk_custom_search_uuid_sync_table('bibdk_custom_search_values', 'vid', 'v_uuid');
+  //update_bibdk_custom_search_map_elements_with_uuid();
+  //update_bibdk_custom_search_map_values_with_uuid();
+  //update_bibdk_custom_search_options_with_uuid();
+  //update_bibdk_custom_search_options_expand_with_v_uuid();
+
+  db_drop_field('bibdk_custom_search_map_elements', 'pid');
+  db_drop_field('bibdk_custom_search_map_elements', 'eid');
+  db_drop_field('bibdk_custom_search_map_values', 'eid');
+  db_drop_field('bibdk_custom_search_map_values', 'vid');
+  db_drop_field('bibdk_custom_search_options', 'vid');
+}
+
+/**
+ * rename bibdk_custom_search_values table field type to value_type
+ * This is needed to support ctools export
+ */
+function bibdk_custom_search_update_7007(&$sandbox) {
+ db_change_field('bibdk_custom_search_values', 'type', 'value_type', array(
+   'type' => 'varchar',
+   'length' => 255,
+   'not null' => TRUE,
+   'default' => '',
+   'description' => t('Value type: "textfield", "textarea", "select", "select multiple", "radio", "checkbox", "checkboxes", "hidden"'),
+ ));
+}
+
+/**
+ * change expand column in bibdk_custom_search_options to varchar so it is compatible with uuids
+ */
+function bibdk_custom_search_update_7008(&$sandbox) {
+  db_change_field('bibdk_custom_search_options', 'expand', 'expand', array(
+    'type' => 'varchar',
+    'length' => 64,
+    'not null' => TRUE,
+    'default' => '0',
+    'description' => t('Expand values. References bibdk_custom_search_values.v_uuid'),
+  ));
+}
+
+/**
+ * Update tables: Add 'is_disabled' column to pages, elements, values and options
+ */
+function bibdk_custom_search_update_7009(&$sandbox) {
+  $disabled_field = array(
+    'type' => 'int',
+    'size' => 'tiny',
+    'default' => 0,
+    'initial' => 0,
+    'description' => t('Toggle disabled status'),
+  );
+  db_add_field('bibdk_custom_search',          'is_disabled', $disabled_field);
+  db_add_field('bibdk_custom_search_elements', 'is_disabled', $disabled_field);
+  db_add_field('bibdk_custom_search_options',  'is_disabled', $disabled_field);
+  db_add_field('bibdk_custom_search_values',   'is_disabled', $disabled_field);
+}
+
+
+/**
+ * Add uuid from pages and elements to the map elements table
+ */
+function update_bibdk_custom_search_map_elements_with_uuid() {
+  $query = db_select('bibdk_custom_search', 'p');
+  $query  -> join('bibdk_custom_search_map_elements', 'm', 'p.pid = m.pid');
+  $query  -> join('bibdk_custom_search_elements', 'e', 'm.eid = e.eid');
+  $query  -> fields('p', array('p_uuid'));
+  $query  -> fields('e', array('e_uuid'));
+  $query  -> fields('m', array('mid'));
+  $result = $query->execute();
+  if ($result) {
+    foreach ($result as $record) {
+      db_update('bibdk_custom_search_map_elements')->fields(array(
+          'p_uuid' => $record->p_uuid,
+          'e_uuid' => $record->e_uuid,
+        )
+      )->condition('mid', $record->mid, '=')->execute();
+    }
+  }
+}
+
+/**
+ * Add uuid from elements (euuid) and values (vuuid) to the map values table
+ */
+function update_bibdk_custom_search_map_values_with_uuid() {
+  $query = db_select('bibdk_custom_search_elements', 'e');
+  $query->join('bibdk_custom_search_map_values', 'm', 'm.eid = e.eid');
+  $query->join('bibdk_custom_search_values', 'v', 'v.vid = m.vid');
+  $query->addField('e', 'e_uuid', 'e_uuid');
+  $query->addField('v', 'v_uuid', 'v_uuid');
+  $query->addField('m', 'mid');
+  $result = $query->execute();
+  if ($result) {
+    foreach ($result as $record) {
+      db_update('bibdk_custom_search_map_values')->fields(array(
+          'v_uuid' => $record->v_uuid,
+          'e_uuid' => $record->e_uuid,
+        )
+      )->condition('mid', $record->mid, '=')->execute();
+    }
+  }
+}
+
+/**
+ * Add uuid from values (vuuid) to the options table
+ */
+function update_bibdk_custom_search_options_with_uuid() {
+  $query = db_select('bibdk_custom_search_options', 'o');
+  $query->join('bibdk_custom_search_values', 'v', 'v.vid = o.vid');
+  $query->addField('v', 'v_uuid', 'v_uuid');
+  $query->addField('o', 'oid');
+  $result = $query->execute();
+  if ($result) {
+    foreach ($result as $record) {
+      db_update('bibdk_custom_search_options')->fields(array(
+          'v_uuid' => $record->v_uuid,
+        )
+      )->condition('oid', $record->oid, '=')->execute();
+    }
+  }
+}
+
+/**
+ * Add uuid from values (vuuid) to the expand column in the options table
+ */
+function update_bibdk_custom_search_options_expand_with_v_uuid() {
+  $query = db_select('bibdk_custom_search_options', 'o');
+  $query->join('bibdk_custom_search_values', 'v', 'v.vid = o.expand');
+  $query->addField('v', 'v_uuid', 'v_uuid');
+  $query->addField('o', 'oid');
+  $result = $query->execute();
+  if ($result) {
+    foreach ($result as $record) {
+      db_update('bibdk_custom_search_options')->fields(array(
+          'expand' => $record->v_uuid,
+        )
+      )->condition('oid', $record->oid, '=')->execute();
+    }
+  }
+}

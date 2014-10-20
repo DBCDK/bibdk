@@ -140,26 +140,29 @@ function bibdk_linkme_page() {
         return FALSE;
       }
     }
-
   }
+  if (isset($query['ccl'])) {
+    // cql requests
+    if (function_exists('bibdk_yaz_convert_ccl_to_cql')) {
+      $result = bibdk_yaz_convert_ccl_to_cql(urldecode($query['ccl']));
+      if ($result['cql']) {
+        bibdk_linkme_search_query($result['cql']);
+      }
+      else if ($result['error']) {
+        drupal_set_message(t('We could not convert !ccl to prober cql. Are you sure the syntax is correct', array('!ccl' => $query['ccl']), array('context' => 'bibdk_linkme')), 'error');
+      }
 
-  // Old format
-  if ( isset($query['ccl']) ) {
-    // make sure ccl is url-encoded
-    $ccl = urldecode($query['ccl']);
-    $ccl = urlencode($ccl);
-    $url = variable_get('linkme_url_ccl', 'http://old.bibliotek.dk/linkme.php') . '?ccl=' . $ccl;
-
-    drupal_goto($url);
-    // For now we redirect ccl queries t
-    extract(_parseCCLQuery($query['ccl']));
-    // Query format "dkcclphrase.lid=$lid AND dkcclterm.ln=$lok"
-    drupal_set_message(t('Get the Manifistation with lid : @lid and lok : @lok', array('@lid' => $lid, '@lok' => $lok), array('context' => 'bibdk_linkme')), 'status');
+    }
+    else {
+      // bibdk_yaz_convert_ccl_to_cql method does not exists, which means
+      // the bibdk_yaz module is not activated. maybe because the php extension
+      // for yaz is not installed
+      drupal_set_message(t('This site cannot convert ccl to cql', array(), array('context' => 'bibdk_linkme')), 'error');
+    }
   }
-  else if ( isset($query['cql'])) {
-    $options['query']['search_block_form'] = $query['cql'];
-    $options['fragment'] = 'content';
-    drupal_goto("search/work", $options);
+  else if (isset($query['cql'])) {
+    // cql requests
+    bibdk_linkme_search_query($query['cql']);
   }
   //single ID
   else if (isset($query['rec_id'])) {
@@ -170,6 +173,16 @@ function bibdk_linkme_page() {
     drupal_set_message(t('Query does not have the right format', array(), array('context' => 'bibdk_linkme')), "error");
   }
   return "";
+}
+
+/**
+ * Helper function goto search url with query
+ * @param $query
+ */
+function bibdk_linkme_search_query($query) {
+  $options['query']['search_block_form'] = $query;
+  $options['fragment'] = 'content';
+  drupal_goto("search/work", $options);
 }
 
 /** Implements hook_ting_openformat_actions

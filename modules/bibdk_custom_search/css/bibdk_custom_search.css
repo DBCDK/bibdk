@@ -1,0 +1,94 @@
+
+tr.region-populated {
+  display:none;
+}
+
+tr.region-title-expand, tr.region-title-add {
+  border-top: 1px solid #ccc;
+}
+
+#edit-search-page-value {
+  width: auto;
+}
+
+#edit-search-page .form-item {
+  float: left;
+  width: 33%;
+}
+
+#edit-search-page > .form-item {
+  padding: 9px 0 0 0;
+}
+
+#edit-search-page .form-item label {
+    display: inline;
+}
+
+form#search-block-form fieldset {
+  margin-bottom: 0.5em;
+  clear: both;
+}
+
+.bibdk-subgroup {
+  margin-left: 1em;
+}
+
+.toggle-subgroup {
+  border: 1px solid black;
+  cursor: pointer;
+  display: inline;
+  margin: 0 0.25em;
+  padding: 0;
+}
+
+fieldset#edit-expand {
+  margin-top: 0.5em;
+}
+
+fieldset#edit-expand > legend {
+  display: block;
+  background-color: #ddd;
+  border: 1px solid #ccc;
+  width: 380px;
+}
+
+fieldset#edit-expand fieldset > legend {
+  border-bottom: 1px solid #999;
+}
+
+div.fieldset-wrapper div.fieldset-description,
+div.fieldset-wrapper p.helptext {
+  display: inline;
+}
+
+div.fieldset-wrapper p.helptext {
+  border: 1px solid #aaa;
+  background-color: #178bac;
+  display: inline;
+  margin: 0 0.5em;
+  padding: 0 0.25em;
+}
+
+.bibdk-custom-search-element .helptext {
+  border: 1px solid #aaa;
+  background-color: #178bac;
+  display: inline;
+  margin: 0 0.5em;
+  padding: 0 0.25em;
+}
+
+#bibdk-custom-search-value-edit .helptext,
+#bibdk-custom-search-element-edit .helptext,
+#bibdk-custom-search-page-edit .helptext {
+  border: 1px solid #aaa;
+  background-color: #ddd;
+  display: inline;
+  margin: 0 0.5em;
+  padding: 0 0.25em;
+  font-weight: bold;
+}
+
+#edit-bibdk-custom-search-page-element .form-item {
+  margin: 0;
+  padding: 0;
+}

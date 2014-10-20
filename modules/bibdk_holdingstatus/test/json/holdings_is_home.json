@@ -1,0 +1,1 @@
+{"holdingsResponse":{"responder":[{"localHoldingsId":{"$":"06343570"},"willLend":{"$":"true"},"expectedDelivery":{"$":"2013-10-22"},"pid":{"$":"870970-basis:06343570"},"responderId":{"$":"DK-763000"}}]},"@namespaces":{"$":"http:\/\/oss.dbc.dk\/ns\/openholdingstatus"}}

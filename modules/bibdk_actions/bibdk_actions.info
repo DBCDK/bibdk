@@ -1,0 +1,20 @@
+name = Bibliotek.dk - Actions
+description = Module providing action for emailing & printing specific items on Bibliotek.dk
+core = 7.x
+version = 7.x-0.14
+package = Bibliotek.dk
+
+configure = admin/config/system/site-information/actions
+
+dependencies[] = bibdk_cart
+
+files[] = bibdk_actions.email.inc
+files[] = bibdk_actions.print.inc
+files[] = bibdk_actions.admin.inc
+files[] = bibdk_actions.refexport.inc
+files[] = test/bibdk_actions.test
+
+files[] = theme/page--print.tpl.php
+files[] = theme/bibdk-actions-email.tpl.php
+files[] = theme/bibdk-actions-print.tpl.php
+files[] = theme/bibdk-actions-refexport.tpl.php
