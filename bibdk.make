@@ -112,6 +112,15 @@ projects[ting_search_carousel][download][url] = git@github.com:DBCDK/ting_search
 projects[ting_search_carousel][download][tag] = 7.x-0.5+dbc.5
 
 ; --- Bibliotek.dk ---
+projects[bibdk_saou][type] = module
+projects[bibdk_saou][download][type] = git
+projects[bibdk_saou][download][url] = git@github.com:DBCDK/bibdk_saou.git
+projects[bibdk_saou][download][branch] = develop
+
+projects[open_saou][type] = module
+projects[open_saou][download][type] = git
+projects[open_saou][download][url] = git@github.com:DBCDK/open_saou.git
+projects[open_saou][download][branch] = develop
 
 projects[bibdk_behaviour][type] = module
 projects[bibdk_behaviour][download][type] = git
