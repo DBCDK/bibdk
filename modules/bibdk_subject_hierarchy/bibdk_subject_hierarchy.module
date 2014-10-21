@@ -370,9 +370,17 @@ function _get_bibdk_subject_hierarchy_breadcrumbs($emnehierarki, $keys, $path = 
 
 /**
  * Parse hierarchy xml into an array
+ *
+ * @return bool|array
  */
 function _bibdk_subject_hierarchy_read_data() {
-  $filename = drupal_get_path('module', 'bibdk_subject_hierarchy') . '/data/emnehierarki_test.xml';
+  // fallback if bibdk_yaz is not enabled
+  if (!module_exists('bibdk_yaz')) {
+    $filename = drupal_get_path('module', 'bibdk_subject_hierarchy') . '/data/emnehierarki_full.json';
+    return json_decode(file_get_contents($filename), true);
+  }
+
+  $filename = drupal_get_path('module', 'bibdk_subject_hierarchy') . '/data/emnehierarki_full.xml';
   $data = _bibdk_subject_hierarchy_parse_xml($filename);
   if (!empty($data) && isset($data['term'])) {
     return _bibdk_subject_hierarchy_parse($data['term']);
