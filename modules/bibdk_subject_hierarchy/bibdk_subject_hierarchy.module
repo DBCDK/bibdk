@@ -429,7 +429,7 @@ function _bibdk_subject_hierarchy_parse_term($term) {
       if ($key == 'term') {
         $record[$key] = _bibdk_subject_hierarchy_parse($item);
       }
-      elseif ($key == 'ccl') {
+      elseif ($key == 'ccl' && !empty($item)) {
         $record['cql'] = _bibdk_subject_hierarchy_ccl_to_cql($item);
         $record[$key] = $item;
       }
