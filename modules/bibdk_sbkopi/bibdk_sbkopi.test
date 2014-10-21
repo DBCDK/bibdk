@@ -38,8 +38,7 @@ class BibdkSbCopyUnitTestCase extends DrupalUnitTestCase {
   }
 
   public function setUp() {
-    // module_load_include('test','module', 'bibdk_sbkopi');
-    require_once 'bibdk_sbkopi.test';
+    module_load_include('inc', 'bibdk_sbkopi', 'includes/bibdk_reservation_sb_kopi');
     parent::setUp();
   }
 
@@ -116,12 +115,10 @@ class BibdkSbCopyUnitTestCase extends DrupalUnitTestCase {
   }
 
   private function getNewArray() {
-    module_load_include('inc', 'bibdk_reservation', 'includes/bibdk_reservation_sb_kopi');
     return bibdk_reservation_sb_kopi_new_user_fields();
   }
 
   private function getOldArray() {
-    module_load_include('inc', 'bibdk_reservation', 'includes/bibdk_reservation_sb_kopi');
     return bibdk_reservation_sb_kopi_old_user_fields();
   }
 
