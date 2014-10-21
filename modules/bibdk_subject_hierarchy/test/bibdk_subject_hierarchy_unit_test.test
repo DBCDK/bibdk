@@ -11,10 +11,10 @@ class BibdkSubjectHierarchyUnitTestCase extends DrupalUnitTestCase {
   }
 
   public function test_bibdk_subject_hierarchy_unit_test() {
-
-    module_load_include('inc', 'cql_strict_parser', 'lib/cql_strict_parser');
     module_load_include('module', 'bibdk_subject_hierarchy', 'bibdk_subject_hierarchy');
-    // include_once('emnehierarki_test_data.php');
+    module_load_include('module', 'bibdk_yaz', 'bibdk_yaz');
+    module_load_include('inc', 'bibdk_yaz', 'lib/PhpYazConverter');
+
     // test XML hierarchy is present
     $this->assertTrue(_bibdk_subject_hierarchy_read_data(), 'XML hierarchy file is present.');
 
