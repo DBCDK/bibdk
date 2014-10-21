@@ -44,7 +44,10 @@ class BibdkSubjectHierarchyUnitTestCase extends DrupalUnitTestCase {
     $parse_term_in = array(
       'ccl' => 'foo og bar',
     );
-    $parse_term_out = 'foo OG bar';
+    $parse_term_out = 'foo and bar';
+    $parsed = _bibdk_subject_hierarchy_parse_term($parse_term_in);
+    $this->assertTrue(($parsed['cql'] === $parse_term_out), 'Test term cql and search replaced correctly.');
+
 
     // test replace of search terms
     $parse_term_in = array(
@@ -69,14 +72,14 @@ class BibdkSubjectHierarchyUnitTestCase extends DrupalUnitTestCase {
 
     // get test data
     $filename = drupal_get_path('module', 'bibdk_subject_hierarchy') . '/data/emnehierarki_test.xml';
-    $file = file_get_contents($filename);
-    $this->assertTrue($file, 'Test XML file exist.');
+    $xml = _bibdk_subject_hierarchy_parse_xml($filename);
+
+    $this->assertTrue(!empty($xml), 'Test XML file exist.');
 
     // test _bibdk_subject_hierarchy_parse_xml($file)
     $emnehierarki_out = 'a:1:{i:0;a:9:{s:4:"note";s:16:"LABEL_ORD_LEVEL0";s:3:"ord";s:10:"ord level0";s:3:"cql";s:12:""ccl level0"";s:3:"ccl";s:10:"ccl level0";s:9:"kommentar";s:16:"kommentar level0";s:12:"hjaelpetekst";s:0:"";s:9:"infotekst";s:0:"";s:12:"visundermenu";s:1:"1";s:4:"term";a:1:{i:0;a:9:{s:4:"note";s:16:"LABEL_ORD_LEVEL1";s:3:"ord";s:10:"Ord level1";s:3:"cql";s:12:""ccl level1"";s:3:"ccl";s:10:"ccl level1";s:9:"kommentar";s:0:"";s:12:"hjaelpetekst";s:0:"";s:9:"infotekst";s:0:"";s:12:"visundermenu";s:1:"1";s:4:"term";a:1:{i:0;a:9:{s:4:"note";s:16:"LABEL_ORD_LEVEL2";s:3:"ord";s:10:"Ord level2";s:3:"cql";s:12:""ccl level2"";s:3:"ccl";s:10:"ccl level2";s:9:"kommentar";s:0:"";s:12:"hjaelpetekst";s:0:"";s:9:"infotekst";s:0:"";s:12:"visundermenu";s:1:"1";s:4:"term";a:3:{i:0;a:8:{s:4:"note";s:17:"LABEL_ORD_LEVEL30";s:3:"ord";s:12:"Ord level3.0";s:3:"cql";s:14:""ccl level3.0"";s:3:"ccl";s:12:"ccl level3.0";s:9:"kommentar";s:0:"";s:12:"hjaelpetekst";s:0:"";s:9:"infotekst";s:0:"";s:12:"visundermenu";s:1:"1";}i:1;a:8:{s:4:"note";s:17:"LABEL_ORD_LEVEL31";s:3:"ord";s:12:"Ord level3.1";s:3:"cql";s:14:""ccl level3.1"";s:3:"ccl";s:12:"ccl level3.1";s:9:"kommentar";s:0:"";s:12:"hjaelpetekst";s:0:"";s:9:"infotekst";s:0:"";s:12:"visundermenu";s:1:"1";}i:2;a:8:{s:4:"note";s:17:"LABEL_ORD_LEVEL32";s:3:"ord";s:12:"Ord level3.2";s:3:"cql";s:14:""ccl level3.2"";s:3:"ccl";s:12:"ccl level3.2";s:9:"kommentar";s:6:"poster";s:12:"hjaelpetekst";s:0:"";s:9:"infotekst";s:0:"";s:12:"visundermenu";s:1:"1";}}}}}}}}';
-    if ($file) {
-      $emnehierarki_test = _bibdk_subject_hierarchy_parse_xml($file);
-
+    if (!empty($xml)) {
+      $emnehierarki_test = _bibdk_subject_hierarchy_parse($xml);
       $this->assertTrue((serialize($emnehierarki_test) == $emnehierarki_out), 'Test XML file parsed correctly.');
     }
 
