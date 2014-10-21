@@ -382,8 +382,8 @@ function _bibdk_subject_hierarchy_read_data() {
 
   $filename = drupal_get_path('module', 'bibdk_subject_hierarchy') . '/data/emnehierarki_full.xml';
   $data = _bibdk_subject_hierarchy_parse_xml($filename);
-  if (!empty($data) && isset($data['term'])) {
-    return _bibdk_subject_hierarchy_parse($data['term']);
+  if (!empty($data)) {
+    return _bibdk_subject_hierarchy_parse($data);
   }
   else {
     watchdog('subject_hierarchy', 'No XML file found.', array(), WATCHDOG_ERROR);
@@ -394,11 +394,13 @@ function _bibdk_subject_hierarchy_read_data() {
 
 /**
  * Parse hierarchy xml into an array
+ *
  */
 function _bibdk_subject_hierarchy_parse_xml($filename) {
   $xml = simplexml_load_file($filename);
   // Simple trick to convert xml to php array
-  return drupal_json_decode(drupal_json_encode($xml));
+  $data = drupal_json_decode(drupal_json_encode($xml));
+  return (isset($data['term'])) ? $data['term'] : array();
 }
 
 /**
@@ -438,7 +440,7 @@ function _bibdk_subject_hierarchy_parse_term($term) {
         $record[$key] = $item;
       }
       else {
-        $record[$key] = $item;
+        $record[$key] = !empty($item) ? $item : '';
       }
     }
   }
