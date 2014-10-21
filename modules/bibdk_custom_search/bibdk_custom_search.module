@@ -278,18 +278,6 @@ function _bibdk_custom_search_get_advanced_fields_form($destination = FALSE) {
     );
   }
 
-  $form['#custom_submit'] = array(
-    '#type' => 'submit',
-    '#value' => t('custom_search', array(), array('context' => 'bibdk_custom_search')),
-    '#region' => 'main',
-    '#executes_submit_callback' => TRUE,
-    '#attributes' => array(
-      'class' => array(
-        'btn-submit'
-      ),
-    ),
-  );
-
   $form['#collapsed'] = ($page['expand']) ? $page['expand'] : FALSE;
   $form['#main_search_name'] = ($page['page_title']) ? $page['page_title'] : FALSE;
 
