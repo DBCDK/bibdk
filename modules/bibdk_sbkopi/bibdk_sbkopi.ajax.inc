@@ -67,7 +67,7 @@ function _bibdk_sb_kopi_get_link($pid, $label, $type) {
         'data-rel' => array('reservation'),
       ),
       'html' => true,
-      'query' => array('ids'=>$pid,'bestil_kopi'=>$type)
+      'query' => array('ids' => $pid, 'bestil_kopi' => $type)
     ),
   );
 }
