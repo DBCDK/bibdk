@@ -52,6 +52,18 @@ function bibdk_webservice_request($reset = false) {
       case 'verifyWayfRequest':
         return bibdk_webservice_verifyWayfRequest($request);
       break;
+      case 'addSettingRequest':
+        $return =  bibdk_webservice_add_setting($request);
+        return $return;
+        break;
+      case 'removeSettingRequest':
+        $return =  bibdk_webservice_remove_setting($request);
+        return $return;
+        break;
+      case 'getSettingRequest':
+        $return =  bibdk_webservice_get_setting($request);
+        return $return;
+        break;
       case 'getCartRequest':
         return bibdk_webservice_get_cart($request, $cart);
         break;
@@ -98,6 +110,64 @@ function bibdk_webservice_get_favourites($request) {
   $path = drupal_get_path('module', 'bibdk_webservice');
   return file_get_contents($path . '/xml/get_favourite_libraries.xml');
 }
+
+
+/**
+ * Emulating addSettingRequest
+ *
+ * @param (SimpleXMLElement) $request
+ *   Object containing addSettingResponse
+ *
+ * @return
+ *   string containing <addSettingResponse> xml
+ */
+function bibdk_webservice_add_setting($request) {
+  $user_id = (string) $request->addSettingRequest->userId;
+  return '<oui:addSettingResponse xmlns:oui="http://oss.dbc.dk/ns/openuserinfo"><oui:userId>' . $user_id. '</oui:userId><oui:settingId>123456</oui:settingId></oui:addSettingResponse>';
+}
+
+
+/**
+ * Emulating removeSettingRequest
+ *
+ * @param (SimpleXMLElement) $request
+ *   Object containing removeSettingRequest
+ *
+ * @return
+ *   string containing <removeSettingResponse> xml
+ */
+function bibdk_webservice_remove_setting($request) {
+  $user_id = (string) $request->removeSettingRequest->userId;
+  return '<oui:removeSettingResponse xmlns:oui="http://oss.dbc.dk/ns/openuserinfo"><oui:userId>' . $user_id . '</oui:userId><oui:settingType>foo</oui:settingType></oui:removeSettingResponse>';
+}
+
+
+/**
+ * Emulating getSettingRequest
+ *
+ * @param (SimpleXMLElement) $request
+ *   Object containing getSettingRequest
+ *
+ * @return
+ *   string containing <getSettingResponse> xml
+ */
+function bibdk_webservice_get_setting($request) {
+  $user_id = (string) $request->getSettingRequest->userId;
+  $setting_type = (string) $request->getSettingRequest->settingType;
+  switch ($setting_type) {
+     case 'foo':
+       return '<oui:getSettingResponse xmlns:oui="http://oss.dbc.dk/ns/openuserinfo"><oui:userId>' . $user_id . '</oui:userId><oui:settingString><oui:settingId>123456</oui:settingId><oui:settingType>foo</oui:settingType><oui:settingString>bar</oui:settingString><oui:settingTime>2014-10-23 13:57:20.31022</oui:settingTime></oui:settingString></oui:getSettingResponse>';
+       break;
+     case 'bar':
+       // unset setting
+       return '<oui:getSettingResponse xmlns:oui="http://oss.dbc.dk/ns/openuserinfo"><oui:userId>' . $user_id . '</oui:userId><oui:settingString><oui:settingId>123456</oui:settingId><oui:settingType>foo</oui:settingType><oui:settingString>foo</oui:settingString><oui:settingTime>2014-10-23 13:57:20.31022</oui:settingTime></oui:settingString><oui:settingString><oui:settingId>75800</oui:settingId><oui:settingType>bibdk_actions_direct</oui:settingType><oui:settingString>b:1;</oui:settingString><oui:settingTime>2014-10-20 15:53:22.532693</oui:settingTime></oui:settingString><oui:settingString><oui:settingId>75801</oui:settingId><oui:settingType>bibdk_actions_refworks</oui:settingType><oui:settingString>b:1;</oui:settingString><oui:settingTime>2014-10-20 15:53:22.565842</oui:settingTime></oui:settingString><oui:settingString><oui:settingId>75802</oui:settingId><oui:settingType>bibdk_actions_endnote</oui:settingType><oui:settingString>b:1;</oui:settingString><oui:settingTime>2014-10-20 15:53:22.593667</oui:settingTime></oui:settingString></oui:getSettingResponse>';
+       break;
+     default:
+       // all settings
+       return '<oui:getSettingResponse xmlns:oui="http://oss.dbc.dk/ns/openuserinfo"><oui:userId>' . $user_id . '</oui:userId><oui:settingString/></oui:getSettingResponse>';
+  }
+}
+
 
 function bibdk_webservice_get_cart($request, $cart = null){
   $path = drupal_get_path('module', 'bibdk_webservice');
