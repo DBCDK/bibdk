@@ -9,6 +9,12 @@
 function bibdk_openuserstatus_form($form) {
   $response = bibdk_openuserstatus_request();
   $form = bibdk_openuserstatus_get_tables($form, $response);
+  $favourites = bibdk_favourite_get_favourites();
+  if (empty($favourites)) {
+    $text =  t('label_userstatus_no_favourite', array(), array('context' => 'bibdk_openuserstatus'));
+    $type = 'warning';
+    drupal_set_message($text, $type);
+  }
   return $form;
 }
 
@@ -39,7 +45,7 @@ function bibdk_openuserstatus_get_tables($form, $response) {
   $form['#attached']['js'] = array(
     drupal_get_path('module', 'bibdk_openuserstatus') . '/js/bibdk_openuserstatus.js',
   );
-
+ 
   return $form;
 }
 
