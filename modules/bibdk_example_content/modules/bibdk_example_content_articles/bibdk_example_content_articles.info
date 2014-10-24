@@ -1,0 +1,12 @@
+name = bibdk example content articles
+description = example articles
+core = 7.x
+package = Bibliotek.dk
+version = 7.x-1.0
+project = bibdk_example_content_articles
+dependencies[] = bibdk_article
+dependencies[] = node_export_features
+features[features_api][] = api:1
+features[node_export_features][] = 656ffa2d-1972-4eb4-b406-4cdd37b72851
+features[node_export_features][] = 73d7e81f-d88f-4e60-9e47-cdc20af5d45c
+features[node_export_features][] = e5cdf097-8e6f-410b-892e-0619682eae51
