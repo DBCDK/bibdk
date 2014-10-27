@@ -27,7 +27,7 @@
  */
 function bibdk_provider_agency_get_favourite($args, $callback) {
   if (!ding_user_is_provider_user()) {
-    return ting_infomedia_article_no_user();
+    return false;
   }
   else if ($order_library = _ting_infomedia_get_user_order_library()) {
     if ($order_library->getUserData() == FALSE) {
@@ -39,4 +39,31 @@ function bibdk_provider_agency_get_favourite($args, $callback) {
   else {
     return ting_infomedia_no_library_form($args[0], $args[1]);
   }
+}
+
+/**
+ * implements hook_agency_get_user_form_fields().
+ *
+ * @param $form
+ * @param $form_state
+ * @param $branch
+ * @param null $submit_method
+ * @return mixed
+ */
+function bibdk_provider_agency_user_form_fields($form, $form_state, $branch, $submit_method = null) {
+  if (ding_user_is_provider_user()) {
+    $fields = bibdk_favourite_user_form_fields($form, $form_state, $branch->branchId);
+    $form['userParameters']['userfields'] = $fields;
+  }
+  else {
+    $fields = bibdk_reservation_get_agency_fields();
+    $fields = ting_agency_userdata_form($form, $form_state, $fields, NULL, $branch->branchId);
+    $form['userParameters']['userfields'] = $fields;
+  }
+  if (isset($submit_method)) {
+    $form['userParameters']['userfields']['wrapper']['submit']['#submit'][] = $submit_method;
+  }
+
+  $form['#validate'] = $form['userParameters']['userfields']['#validate'];
+  return $form;
 }

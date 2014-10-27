@@ -20,7 +20,10 @@
  * @return array
  */
 function bibdk_sbkopi_reservation_form($form, &$form_state, $pid) {
-  // Make sure the user is logged in and has an order library
+  // Make sure the user is logged in
+  if (!ding_user_is_provider_user()) {
+    return bibdk_sbkopi_user_not_logged_in();
+  }
   // calls hook_agency_get_favourite().
   return ding_provider_invoke('agency', 'get_favourite', func_get_args(), function($args) {
     // This callback is only called when the user has a favourite library
@@ -30,6 +33,39 @@ function bibdk_sbkopi_reservation_form($form, &$form_state, $pid) {
 
   return $form;
 }
+
+/**
+ * Render array with information for users who are not logged in.
+ *
+ * @return array
+ */
+function bibdk_sbkopi_user_not_logged_in() {
+
+  $render_array = array(
+    '#type' => 'container',
+    '#attributes' => array(
+      'class' => array('reservation-online-links'),
+    ),
+  );
+  $render_array['infotext'] = array(
+    '#type' => 'html_tag',
+    '#tag' => 'p',
+    '#value' => t('bibdk_sbkopi_user_needs_to_be_logged_in_information', array(), array('context' => 'bibdk_sbkopi')),
+  );
+  // Returner en login knap
+  $render_array['link'] = array(
+    '#theme' => 'link',
+    '#text' => t('Login to order at sb_kopi', array(), array('context' => 'bibdk_sbkopi')),
+    '#path' => 'user/login',
+    '#options' => array(
+      'attributes' => array(),
+      'html' => true,
+    ),
+  );
+
+  return $render_array;
+}
+
 
 /**
  * Form for adding the final information before making an order
