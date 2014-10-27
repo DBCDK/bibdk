@@ -321,6 +321,10 @@ function bibdk_provider_ding_provider() {
         'prefix' => 'wayf',
         'file' => drupal_get_path('module', 'bibdk_provider') . '/bibdk_provider.wayf.inc',
       ),
+      'agency' => array(
+        'prefix' => 'agency',
+        'file' => drupal_get_path('module', 'bibdk_provider') . '/bibdk_provider.agency.inc',
+      ),
     ),
   );
 }
