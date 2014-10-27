@@ -185,11 +185,7 @@ function bibdk_provider_user_delete_favourite($name, $agencyid) {
  * @return array (might be empty)
  */
 function bibdk_provider_user_get_favourites($name) {
-  static $response;
-  if (!isset($response)) {
-    $response = BibdkUser::instance()->getFavourites($name);
-  }
-  return $response;
+  return BibdkUser::instance()->getFavourites($name);
 }
 
 /**
