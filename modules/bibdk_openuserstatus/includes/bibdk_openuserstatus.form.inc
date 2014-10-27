@@ -45,7 +45,7 @@ function bibdk_openuserstatus_get_tables($form, $response) {
   $form['#attached']['js'] = array(
     drupal_get_path('module', 'bibdk_openuserstatus') . '/js/bibdk_openuserstatus.js',
   );
- 
+
   return $form;
 }
 
