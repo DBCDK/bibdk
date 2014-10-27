@@ -1,0 +1,93 @@
+<?php
+
+/**
+ * @file
+ * Contains form and methods for handling sbkopi order flow
+ *
+ * the form bibdk_sbkopi_reservation_form is the main container for the order flow
+ *
+ * The state is given by the url, and this defines which url logic
+ *
+ */
+
+
+/**
+ * Create form for ordering articles at sb kopi
+ *
+ * @param $form
+ * @param $form_state
+ * @param $state Information about the state fo the flow
+ * @return array
+ */
+function bibdk_sbkopi_reservation_form($form, &$form_state, $pid) {
+  // Make sure the user is logged in and has an order library
+  // calls hook_agency_get_favourite().
+  return ding_provider_invoke('agency', 'get_favourite', func_get_args(), function($args) {
+    // This callback is only called when the user has a favourite library
+    list($form, $form_state, $pid, $order_library) = $args;
+    return bibdk_sbkopi_order_form_fields($form, $form_state, $pid, $order_library);
+  });
+
+  return $form;
+}
+
+/**
+ * Form for adding the final information before making an order
+ *
+ * @param $form
+ * @param $form_state
+ * @param $pid
+ * @param FavouriteAgency $order_library
+ * @return mixed
+ */
+function bibdk_sbkopi_order_form_fields($form, $form_state, $pid, FavouriteAgency $order_library) {
+  $userdata = $order_library->getUserData();
+  dpm(func_get_args());
+  $form['user_loaner_id'] = array(
+    '#type' => 'value',
+    '#value' => $order_library->getUserId()
+  );
+  $form['pid'] = array(
+    '#type' => 'value',
+    '#value' => 'test');
+  $form['agencyId'] = array(
+    '#type' => 'value',
+    '#value' => $order_library->getAgencyId(),
+  );
+  $form['pickupAgencyId'] = array(
+    '#type' => 'value',
+    '#value' => $order_library->getBranch()->getBranchId(),
+  );
+
+  $form['userName'] = array(
+    '#type' => 'textfield',
+    '#title' => t('name', array(), array('context' => 'bibdk_sbkopi')),
+    '#required' => true,
+  );
+  $form['userMail'] = array(
+    '#type' => 'textfield',
+    '#title' => t('email', array(), array('context' => 'bibdk_sbkopi')),
+    '#default' => (isset($userdata['email'])) ? $userdata['email'] : null,
+    '#required' => true,
+
+  );
+  $form['user_interest_date'] = array();
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('sb_kopi_order', array(), array('context' => 'bibdk_sbkopi')),
+  );
+  $form['#submit'] = array('bibdk_sbkopi_order_form_submit');
+  return $form;
+}
+
+/**
+ * implements hook_form_submit().
+ *
+ * @todo: Call sbkopi webservice to make final order
+ *
+ * @param $form
+ * @param $form_state
+ */
+function bibdk_sbkopi_order_form_submit($form, $form_state) {
+  debug($form_state['values']);
+}

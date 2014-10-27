@@ -30,7 +30,11 @@ function bibdk_sbkopi_form_ting_client_admin_webservices_settings_alter(&$form, 
   );
 }
 
-/** Implements hook_menu * */
+/**
+ * Implements hook_menu().
+ *
+ * @return mixed
+ */
 function bibdk_sbkopi_menu() {
   $items['sbkopi/ajax'] = array(
     'page callback' => 'bibdk_sbkopi_ajax_get_options',
@@ -38,6 +42,14 @@ function bibdk_sbkopi_menu() {
     'type' => MENU_CALLBACK,
     'file' => 'bibdk_sbkopi.ajax.inc',
   );
+  $items['sbkopi/reservation/%'] = array(
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bibdk_sbkopi_reservation_form', 2),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+    'file' => 'inc/bibdk_sbkopi.reservation.inc',
+  );
+
   return $items;
 }
 
