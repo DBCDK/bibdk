@@ -24,14 +24,18 @@ function bibdk_sbkopi_reservation_form($form, &$form_state, $pid) {
   if (!ding_user_is_provider_user()) {
     return bibdk_sbkopi_user_not_logged_in();
   }
-  // calls hook_agency_get_favourite().
-  return ding_provider_invoke('agency', 'get_favourite', func_get_args(), function($args) {
-    // This callback is only called when the user has a favourite library
-    list($form, $form_state, $pid, $order_library) = $args;
-    return bibdk_sbkopi_order_form_fields($form, $form_state, $pid, $order_library);
-  });
 
-  return $form;
+  // Get user order library
+  $result = ding_provider_invoke('agency', 'get_order_library', $form, $form_state);
+  if(isset($result['order_library'])) {
+    $order_library = $result['order_library'];
+    return bibdk_sbkopi_order_form_fields($form, $form_state, $pid, $order_library);
+  }
+  else {
+    // if user does not have a valid order library hook_agency_get_order_library
+    // returns the relevant form
+    return $result;
+  }
 }
 
 /**
