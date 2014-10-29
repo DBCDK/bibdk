@@ -3,6 +3,7 @@
 module_load_include('inc', 'bibdk_actions', 'bibdk_actions.print');
 module_load_include('inc', 'bibdk_actions', 'bibdk_actions.email');
 module_load_include('inc', 'bibdk_actions', 'bibdk_actions.refexport');
+module_load_include('inc', 'bibdk_actions', 'bibdk_actions.default_settings');
 
 /**
  * Implements hook_menu().
