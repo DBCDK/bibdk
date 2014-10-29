@@ -99,12 +99,7 @@ projects[ting_infomedia][download][tag] = 7.x-1.28
 projects[ting_openformat][type] = module
 projects[ting_openformat][download][type] = git
 projects[ting_openformat][download][url] = git@github.com:DBCDK/ting_openformat.git
-<<<<<<< HEAD
 projects[ting_openformat][download][tag] = 7.x-0.58
-=======
-; projects[ting_openformat][download][tag] = 7.x-0.57
-projects[ting_openformat][download][branch] = feature/bug_16369-apply_check_plain_on_openformat_elements
->>>>>>> feature/bug_16369-apply_check_plain_on_openformat_elements
 
 projects[ting_openuserstatus][type] = module
 projects[ting_openuserstatus][download][type] = git
