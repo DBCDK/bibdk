@@ -75,3 +75,9 @@ function bibdk_subject_hierarchy_update_7009(&$sandbox) {
   _update_bibdk_subject_hierarchy();
 }
 
+/**
+ * update hierarchy sprint 43 2014
+ */
+function bibdk_subject_hierarchy_update_7010(&$sandbox) {
+  _update_bibdk_subject_hierarchy();
+}
