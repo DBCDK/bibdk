@@ -109,7 +109,7 @@ function bibdk_help_search_execute($keys = NULL, $conditions = NULL) {
 
   // Only continue if the first pass query matches.
   if (!$query->executeFirstPass()) {
-    drupal_set_message(t('Search returned no results.', array(), array('context' => 'bibdk_help')), 'status');
+    drupal_set_message(t('Search returned no results.', array(), array('context' => 'bibdk_help')), 'warning');
     return array();
   }
 

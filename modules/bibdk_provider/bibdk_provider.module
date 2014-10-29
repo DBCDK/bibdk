@@ -88,6 +88,20 @@ function bibdk_provider_register_new_user($email) {
   $account = _ding_user_create_account($email, array());
   bibdk_provider_user_create_account($email, $account->pass);
 
+  // set defaults
+  $user_default_settings = module_invoke_all('bibdk_provider_default_settings');
+  if ( !empty($user_default_settings) ) {
+    foreach ($user_default_settings as $key => $value) {
+      if ( !bibdk_provider_user_set_setting($email, $key, serialize($value)) ) {
+        drupal_set_message(t('Failed to set default settings.', array(), array('context' => 'bibdk_provider')));
+        watchdog('bibdk_provider', 'Failed to set setting "%key" to "%value" on new user', array('%key' => check_plain($key), '%value' => check_plain($value)), WATCHDOG_WARNING);
+      }
+    }
+  } else {
+    // there's at least one in bibdk_actions, or a test module
+    drupal_set_message(t('Failed to set default settings.', array(), array('context' => 'bibdk_provider')));
+  }
+
   // User_email_verification is required
   if ($account->status) {
     // Send registration mail to user as in a normal drupal registration
