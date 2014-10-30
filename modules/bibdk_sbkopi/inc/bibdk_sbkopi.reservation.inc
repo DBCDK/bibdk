@@ -82,14 +82,12 @@ function bibdk_sbkopi_user_not_logged_in() {
  */
 function bibdk_sbkopi_order_form_fields($form, $form_state, $pid, FavouriteAgency $order_library) {
   $userdata = $order_library->getUserData();
-  dpm(func_get_args());
-  $form['user_loaner_id'] = array(
-    '#type' => 'value',
-    '#value' => $order_library->getUserId()
-  );
+  bibdk_sbkopi_messages($pid, $order_library->getBranch());
+
   $form['pid'] = array(
     '#type' => 'value',
-    '#value' => 'test');
+    '#value' => $pid,
+  );
   $form['agencyId'] = array(
     '#type' => 'value',
     '#value' => $order_library->getAgencyId(),
@@ -98,25 +96,48 @@ function bibdk_sbkopi_order_form_fields($form, $form_state, $pid, FavouriteAgenc
     '#type' => 'value',
     '#value' => $order_library->getBranch()->getBranchId(),
   );
+  $form['user_loaner_id'] = array(
+    '#type' => 'value',
+    '#value' => $order_library->getUserId()
+  );
 
-  $form['userName'] = array(
+  $form['manifestation'] = bibdk_sbkopi_manifestation_view($pid);
+
+  $form['userinfo'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('sb_order_required_information', array(), array('context' => 'bibdk_sbkopi')),
+    '#description' => t('sb_order_required_information_description', array(), array('context' => 'bibdk_sbkopi')),
+  );
+  $form['userinfo']['userName'] = array(
     '#type' => 'textfield',
     '#title' => t('name', array(), array('context' => 'bibdk_sbkopi')),
     '#required' => true,
   );
-  $form['userMail'] = array(
+  $form['userinfo']['userMail'] = array(
     '#type' => 'textfield',
     '#title' => t('email', array(), array('context' => 'bibdk_sbkopi')),
     '#default' => (isset($userdata['email'])) ? $userdata['email'] : null,
     '#required' => true,
 
   );
-  $form['user_interest_date'] = array();
-  $form['submit'] = array(
+  $timestamp = strtotime(date('Y-m-d') . '+ 3 month');
+  $date = date('Y-m-d', $timestamp);
+  $form['userinfo']['user_interest_date'] = array(
+    '#type' => 'date_select',
+    '#title' => t('Is of no interest after', array(), array('context' => 'bibdk_reservation')),
+    '#required' => TRUE,
+    '#date_label_position' => 'within',
+    '#date_format' => 'd-m-Y',
+    '#default_value' => $date,
+    '#date_year_range' => '0:+3',
+  );
+  $form['userinfo']['submit'] = array(
     '#type' => 'submit',
     '#value' => t('sb_kopi_order', array(), array('context' => 'bibdk_sbkopi')),
   );
+
   $form['#submit'] = array('bibdk_sbkopi_order_form_submit');
+
   return $form;
 }
 
@@ -129,5 +150,37 @@ function bibdk_sbkopi_order_form_fields($form, $form_state, $pid, FavouriteAgenc
  * @param $form_state
  */
 function bibdk_sbkopi_order_form_submit($form, $form_state) {
-  debug($form_state['values']);
+  form_state_values_clean($form_state);
+}
+
+/**
+ * Create view of manifestation being ordered
+ *
+ * @param $pid
+ * @return array
+ */
+function bibdk_sbkopi_manifestation_view($pid) {
+  $manifestation = ting_openformat_get_single_manifestation($pid);
+  return bibdk_reservation_render_custom_manifestation_view($manifestation, 'You are about to order the following');
+}
+
+/**
+ * Return the relevant messages tu
+ *
+ * @param $pid
+ * @param TingClientAgencyBranch $branch
+ */
+function bibdk_sbkopi_messages($pid, TingClientAgencyBranch $branch) {
+  unset($_SESSION['bibdk_favourites']);
+  if (!$branch->getStateAndUniversityLibraryCopyService()) {
+    drupal_set_message(t('Your library does not have a subscription', array(), array('context' => 'bibdk_sbkopi')), 'warning');
+  }
+  if($delivery = bibdk_sbkopi_delivery_method($pid)) {
+    drupal_set_message(t('delivery_method is !method', array('!method' => $delivery), array('context' => 'bibdk_sbkopi')), 'warning');
+  }
+  else {
+    drupal_set_message(t('This article cannot be ordered', array(), array('context' => 'bibdk_sbkopi')), 'error');
+  }
+
+
 }
