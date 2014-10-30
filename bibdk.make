@@ -223,6 +223,10 @@ projects[i18n][subdir] = contrib
 projects[i18n][type] = module
 projects[i18n][version] = 1.7
 
+projects[ie6nomore][subdir] = contrib
+projects[ie6nomore][type] = module
+projects[ie6nomore][version] = 1.0-beta4
+
 projects[l10n_client][subdir] = contrib
 projects[l10n_client][type] = module
 projects[l10n_client][version] = 1.1
