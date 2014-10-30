@@ -1,20 +1,38 @@
 <?php
 
 function bibdk_sbkopi_ajax_get_options() {
-  $result = bibdk_sbkopi_ajax_openorder_request($_REQUEST['pid']);
+  $link = bibdk_sbkopi_ajax_openorder_request($_REQUEST['pid']);
   $data['pid'] = $_REQUEST['pid'];
-  if ($result != 'error') {
-    $result['#options']['attributes']['class'] += array('bibdk-popup-link');
-    $result = drupal_render($result);
+  if ($link) {
+    $link['#options']['attributes']['class'] += array('bibdk-popup-link');
+    $link = drupal_render($result);
   }
-  $data['link'] = $result;
+  else {
+    $link = 'error';
+  }
+  $data['link'] = $link;
   drupal_json_output($data);
 }
 
 function bibdk_sbkopi_ajax_openorder_request($pid) {
-  $xml = bibdk_openorder_do_checkArticleDeliveryRequest($pid);
-  return bibdk_sbkopi_ajax_parse_response($xml, $pid);
+  if($delivery_method = bibdk_sbkopi_delivery_method($pid)) {
+    return _bibdk_sbkopi_make_link($delivery_method, $pid);
+  }
+  else {
+    return false;
+  }
 }
+
+function bibdk_sbkopi_delivery_method($pid) {
+  $xml = bibdk_openorder_do_checkArticleDeliveryRequest($pid);
+  if($delivery_method = bibdk_sbkopi_ajax_parse_response($xml, $pid)) {
+    return $delivery_method;
+  }
+  else {
+    return false;
+  }
+}
+
 
 function bibdk_sbkopi_ajax_parse_response($xml, $pid) {
   $xpath = _bibdk_sbkopi_set_xpath($xml);
@@ -32,12 +50,11 @@ function bibdk_sbkopi_ajax_parse_response($xml, $pid) {
   $deliver = isset($nodelist->item(0)->nodeValue) ? $nodelist->item(0)->nodeValue : null;
 
   if ($possible) {
-    $result = _bibdk_sbkopi_make_link($deliver, $pid);
+    return $deliver;
   }
   else {
-    return 'error';
+    return false;
   }
-  return $result;
 }
 
 function _bibdk_sbkopi_make_link($method, $pid) {
