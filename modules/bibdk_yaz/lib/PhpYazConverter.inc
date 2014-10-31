@@ -12,6 +12,7 @@
 class PhpYazConverter {
 
   private $cclmap, $cqlmap;
+  private static $connection;
 
   /**
    * Create new PhpYazConverter
@@ -80,10 +81,14 @@ class PhpYazConverter {
    * @return mixed
    */
   private function getConnection() {
+    if (isset(self::$connection)) {
+      return self::$connection;
+    }
     $connection = yaz_connect("none:");
     yaz_ccl_conf($connection, $this->cclmap);
     yaz_cql_conf($connection, $this->cqlmap);
-    return $connection;
+
+    return self::$connection = $connection;
   }
 
   /**

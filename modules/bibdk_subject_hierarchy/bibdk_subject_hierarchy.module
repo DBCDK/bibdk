@@ -370,12 +370,20 @@ function _get_bibdk_subject_hierarchy_breadcrumbs($emnehierarki, $keys, $path = 
 
 /**
  * Parse hierarchy xml into an array
+ *
+ * @return bool|array
  */
 function _bibdk_subject_hierarchy_read_data() {
+  // fallback if bibdk_yaz is not enabled
+  if (!module_exists('bibdk_yaz')) {
+    $filename = drupal_get_path('module', 'bibdk_subject_hierarchy') . '/data/emnehierarki_full.json';
+    return json_decode(file_get_contents($filename), true);
+  }
+
   $filename = drupal_get_path('module', 'bibdk_subject_hierarchy') . '/data/emnehierarki_full.xml';
-  $file = file_get_contents($filename);
-  if ($file) {
-    return _bibdk_subject_hierarchy_parse_xml($file);
+  $data = _bibdk_subject_hierarchy_parse_xml($filename);
+  if (!empty($data)) {
+    return _bibdk_subject_hierarchy_parse($data);
   }
   else {
     watchdog('subject_hierarchy', 'No XML file found.', array(), WATCHDOG_ERROR);
@@ -386,16 +394,13 @@ function _bibdk_subject_hierarchy_read_data() {
 
 /**
  * Parse hierarchy xml into an array
+ *
  */
-function _bibdk_subject_hierarchy_parse_xml($file) {
-  require_once('lib/xml_func.php');
-
-  if ($file = utf8_encode($file)) {
-    $emnehierarki = xml2array($file);
-    return _bibdk_subject_hierarchy_parse($emnehierarki['term']);
-  }
-
-  return FALSE;
+function _bibdk_subject_hierarchy_parse_xml($filename) {
+  $xml = simplexml_load_file($filename);
+  // Simple trick to convert xml to php array
+  $data = drupal_json_decode(drupal_json_encode($xml));
+  return (isset($data['term'])) ? $data['term'] : array();
 }
 
 /**
@@ -403,7 +408,13 @@ function _bibdk_subject_hierarchy_parse_xml($file) {
  */
 function _bibdk_subject_hierarchy_parse($terms) {
 
-  while (list($n, $term) = each($terms)) {
+  // if the key ccl exists there is only one term and wee need to wrap it in
+  // an array for the foreach loop to work correctly
+  if(isset($terms['ccl'])){
+    $terms = array($terms);
+  }
+
+  foreach($terms as $n => $term) {
     $record[$n] = _bibdk_subject_hierarchy_parse_term($term);
   }
 
@@ -415,89 +426,13 @@ function _bibdk_subject_hierarchy_parse($terms) {
  */
 function _bibdk_subject_hierarchy_parse_term($term) {
   $record = array();
-
-  $replaceFromShortterm = array(
-    'cl=',
-    'ds=',
-    'db=',
-    'df=',
-    'dk=',
-    'em=',
-    'fl=',
-    'ke=',
-    'kk=',
-    'ma=',
-    'no=',
-    'ok=',
-    'sp=',
-    'ti=',
-    'fo='
-  );
-
-  $replaceFromLongterm = array(
-    'lds=',
-    'ldkcclterm.ds=', // clean up from replace 'ds='
-    'lem=',
-    'ldkcclterm.em=',
-    'lti=',
-    'ldkcclterm.ti='
-  );
-
-  $replaceFromBoolean = array(
-    ' og ',
-    ' eller ',
-    ' ikke',
-    '?'
-  );
-
-  $replaceToShortterm = array(
-    'dkcclterm.cl=',
-    'dkcclterm.ds=',
-    'dkcclterm.db=',
-    'dkcclterm.df=',
-    'dkcclterm.dk=',
-    'dkcclterm.em=',
-    'dkcclterm.fl=',
-    'dkcclterm.ke=',
-    'dkcclterm.kk=',
-    'dkcclterm.ma=',
-    'dkcclterm.no=',
-    'dkcclterm.ok=',
-    'dkcclterm.sp=',
-    'dkcclterm.ti=',
-    'dkcclterm.fo='
-  );
-
-  $replaceToLongterm = array(
-    'dkcclphrase.lds=',
-    'dkcclphrase.lds=',
-    'dkcclphrase.lem=',
-    'dkcclphrase.lem=',
-    'dkcclphrase.lti=',
-    'dkcclphrase.lti='
-  );
-
-  $replaceToBoolean = array(
-    ' OG ',
-    ' ELLER ',
-    ' IKKE',
-    '*'
-  );
-
-  while (list($key, $item) = each($term)) {
+  foreach($term as $key => $item) {
     if ((string) $key != (string) (int) $key) {
       if ($key == 'term') {
         $record[$key] = _bibdk_subject_hierarchy_parse($item);
       }
-      elseif ($key == 'ccl') {
-        $cql = str_ireplace($replaceFromShortterm, $replaceToShortterm, $item);
-        $cql = str_ireplace($replaceFromLongterm, $replaceToLongterm, $cql);
-        $cql = str_ireplace($replaceFromBoolean, $replaceToBoolean, $cql);
-        $record['cql'] = $cql;
-        if (class_exists('CQLStrictParser')) {
-          $cql_strict_parser = new CQLStrictParser;
-          $record['cql'] = $cql_strict_parser->parse($cql);
-        }
+      elseif ($key == 'ccl' && !empty($item)) {
+        $record['cql'] = _bibdk_subject_hierarchy_ccl_to_cql($item);
         $record[$key] = $item;
       }
       elseif ($key == 'ord') {
@@ -505,12 +440,24 @@ function _bibdk_subject_hierarchy_parse_term($term) {
         $record[$key] = $item;
       }
       else {
-        $record[$key] = $item;
+        $record[$key] = !empty($item) ? $item : '';
       }
     }
   }
-
   return $record;
+}
+
+/**
+ * Converts ccl to cql using the bibdk_yaz module
+ *
+ * @param $ccl
+ * @return string|null
+ */
+function _bibdk_subject_hierarchy_ccl_to_cql($ccl) {
+  if (function_exists('bibdk_yaz_convert_ccl_to_cql')){
+    return reset(bibdk_yaz_convert_ccl_to_cql($ccl));
+  }
+  return null;
 }
 
 /** Normalize a string so that it can be compared with others without being too fussy.

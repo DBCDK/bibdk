@@ -90,7 +90,8 @@ function _bibdk_enable_modules() {
     'advagg_css_compress',
     'advagg_js_compress',
     'advagg_mod',
-    'shortcode'
+    'shortcode',
+    'ie6nomore'
   );
 
   if (!module_enable($module_list)) {
@@ -384,5 +385,14 @@ function bibdk_update_7018(&$sandbox) {
 function bibdk_update_7019(&$sandbox) {
   module_enable(array(
     'bibdk_autocomplete',
+  ));
+}
+
+/**
+ * Enable ie6nomore
+ */
+function bibdk_update_7020(&$sandbox) {
+  module_enable(array(
+    'ie6nomore',
   ));
 }
