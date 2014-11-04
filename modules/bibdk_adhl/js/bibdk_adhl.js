@@ -1,19 +1,20 @@
 (function($) {
-  var Bibdk_adhl = {
-    behaviors: {
-      recommendation: {
-      }
-    }
-  };
+  var Bibdk_adhl = {};
+
   /** Insert adhl results */
   Bibdk_adhl.addRecommendation = function(adhl) {
+    console.log(adhl);
     if(adhl.error) {
-      $('.recommendation-load[data-pid=' + adhl.pid + ']').parent().parent().find('.toggle-text').html(adhl.toggle_text);
-      $('.recommendation-load[data-pid=' + adhl.pid + ']').replaceWith(adhl.error_msg);
+      $('.recommendation-load[data-pid="' + adhl.pid + '"]')
+        .parent()
+        .parent()
+        .find('.toggle-text')
+        .html(adhl.toggle_text);
+      $('.recommendation-load[data-pid="' + adhl.pid + '"]').replaceWith(adhl.error_msg);
     }
     if(adhl.list) {
-      $('.recommendation-load[data-pid=' + adhl.pid + ']').replaceWith(adhl.list);
-      $('.recommendation-more[data-pid=' + adhl.pid + ']').removeClass('visuallyhidden');
+      $('.recommendation-load[data-pid="' + adhl.pid + '"]').replaceWith(adhl.list);
+      $('.recommendation-more[data-pid="' + adhl.pid + '"]').removeClass('visuallyhidden');
     }
   },
     Bibdk_adhl.loadRecommendation = function(element) {
@@ -36,7 +37,7 @@
     };
 
   /** Get holdingstatus via ajax */
-  Bibdk_adhl.behaviors.recommendation = {
+  Drupal.behaviors.recommendation = {
     attach: function(context) {
       $('.field-type-worktabs .bibdk-tabs', context).one("click", function() {
         $('.recommendation-load', context).each(function(i, element) {
