@@ -396,3 +396,12 @@ function bibdk_update_7020(&$sandbox) {
     'ie6nomore',
   ));
 }
+
+/**
+ * Enable bibdk_saou
+ */
+function bibdk_update_7021(&$sandbox) {
+  module_enable(array(
+    'bibdk_saou',
+  ));
+}
