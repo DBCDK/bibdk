@@ -1,7 +1,12 @@
 (function ($) {
-
+  var Bibdk_adhl = {
+    behaviors: {
+      recommendation: {
+      }
+    }
+  };
     /** Insert adhl results */
-    Drupal.addRecommendation = function (adhl) {
+    Bibdk_adhl.addRecommendation = function (adhl) {
         if ( adhl.error ) {
             $('.recommendation-load[data-pid=' + adhl.pid + ']').parent().parent().find('.toggle-text').html(adhl.toggle_text);
             $('.recommendation-load[data-pid=' + adhl.pid + ']').replaceWith(adhl.error_msg);
@@ -11,7 +16,7 @@
             $('.recommendation-more[data-pid=' + adhl.pid + ']').removeClass('visuallyhidden');
         }
     },
-    Drupal.loadRecommendation = function (element) {
+      Bibdk_adhl.loadRecommendation = function (element) {
         var pid = $(element).attr('data-pid');
         var isbn = $(element).attr('data-isbn');
         /* Add throbber*/
@@ -26,22 +31,18 @@
                 pid:pid
             },
             dataType:'json',
-            success:Drupal.addRecommendation
+            success:Bibdk_adhl.addRecommendation
         });
     };
 
     /** Get holdingstatus via ajax */
-    Drupal.behaviors.recommendation = {
-
+    Bibdk_adhl.behaviors.recommendation = {
         attach:function (context) {
             $('.field-type-worktabs .bibdk-tabs', context).one( "click", function() {
                 $('.recommendation-load', context).each(function (i, element) {
-                    Drupal.loadRecommendation(element);
+                  Bibdk_adhl.loadRecommendation(element);
                 });
             });
-        },
-        detach:function (context) {
-
         }
     };
 
