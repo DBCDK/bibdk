@@ -1,0 +1,16 @@
+<?php
+/**
+ * @file
+ * Test code for hook_bibdk_provider_default_settings()
+ */
+
+/**
+ * Implements hook_bibdk_provider_default_settings().
+ */
+function bibdk_test_defaults_bibdk_provider_default_settings() {
+
+  $defaults['foo'] = 'bar';
+
+  return $defaults;
+}
+

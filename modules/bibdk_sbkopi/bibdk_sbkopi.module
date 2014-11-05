@@ -17,6 +17,7 @@ function bibdk_sbkopi_ting_client_webservice() {
 /**
  * Implements hook_form_FORM_ID_alter (ting_client_admin_webservices_settings)
  * add 2 fields to webservice client settings
+ *
  * @url to borchk
  * @servicerequester
  * */
@@ -58,7 +59,7 @@ function bibdk_sbkopi_ting_openformat_actions($type, $entity, $view_mode, $langc
         //'#markup' => '<span class="bibdk-sb_kopi-replaceme" data-rel="reservation"" pid="' . $entity->id . '"></a>',
         '#weight' => 0.1,
         '#attached' => array('js' => array(drupal_get_path('module', 'bibdk_sbkopi') . '/js/ajaxGetCopyOptions.js')),
-     );
+      );
 
       return $actions;
     }
@@ -66,6 +67,7 @@ function bibdk_sbkopi_ting_openformat_actions($type, $entity, $view_mode, $langc
 }
 
 /** Implements hook_bibdk_usersettings_user_tabs
+ *
  * @return array
  */
 function bibdk_sbkopi_bibdk_usersettings_user_tabs() {
@@ -79,6 +81,7 @@ function bibdk_sbkopi_bibdk_usersettings_user_tabs() {
 }
 
 /** Implements hook_bibdk_usersettings_user_settings
+ *
  * @return array
  */
 function bibdk_sbkopi_bibdk_usersettings_user_settings() {

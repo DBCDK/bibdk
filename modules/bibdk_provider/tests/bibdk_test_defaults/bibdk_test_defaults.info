@@ -1,0 +1,5 @@
+name = bibdk_test_defaults
+description = A mockup for creating settings defaults
+core = 7.x
+package = DBCDK
+hidden = TRUE
