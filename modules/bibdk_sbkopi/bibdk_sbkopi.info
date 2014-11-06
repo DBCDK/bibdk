@@ -4,10 +4,11 @@ core = 7.x
 version = 7.x-0.7
 package = Bibliotek.dk
 
-files[] = bibdk_sbkopi.ajax.inc
-files[] = bibdk_sbkopi.test
+files[] = test/bibdk_sbkopi.test
+files[] = test/bibdk_sbkopi.request.test
 files[] = bibdk_sbkopi.request.inc
 files[] = includes/bibdk_reservation_sb_kopi.inc
+files[] = inc/SbCurlRequest.inc
 
 scripts[] = js/sbCopySwitchMe.js
 

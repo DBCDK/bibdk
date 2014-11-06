@@ -1,0 +1,108 @@
+<?php
+
+class BibdkSbCopyUnitTestCase extends DrupalUnitTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => 'bibliotek.dk - sbkopi unit test',
+      'description' => 'Unit Test methods in bibdk_sbkopi',
+      'group' => 'Bibliotek.dk - SB Kopi',
+    );
+  }
+
+  public function setUp() {
+    parent::setUp();
+    module_load_include('inc', 'bibdk_sbkopi', 'includes/bibdk_reservation_sb_kopi');
+  }
+
+  // test bibdk_reservation_sbkopi_validate
+    public function testValidate() {
+
+      // test an empty form state
+      $form_state = $this->getFormState();
+
+      // validation method returns error array if errors are found; else NULL
+      $result = bibdk_reservation_sbkopi_validate(array(), $form_state);
+      $this->assertTrue(is_array($result), 'errors found for empty form_state');
+
+      // test both forms filled out - validate unsets new userfields
+      $form_state = $this->getFormState();
+      $this->setOldUser($form_state);
+      $this->setNewUser($form_state);
+      $result = bibdk_reservation_sbkopi_validate(array(), $form_state);
+      // check that new user values has been unset
+      $new = $this->getNewArray();
+      $check = TRUE;
+      foreach ($new as $key) {
+        if (isset($form_state['values'][$key])) {
+          $check = FALSE;
+          break;
+        }
+      }
+      $this->assertTrue($check, 'formstate was set correct for when both forms was filled out');
+
+      // test if old has been correctly filled out
+      $form_state = $this->getFormState();
+      $old = $this->getOldArray();
+      // both fields should be numeric (and pincode should be 4 digits)
+      foreach ($old as $key) {
+        $form_state['values'][$key] = 1111;
+      }
+      $result = bibdk_reservation_sbkopi_validate(array(), $form_state);
+      $this->assertTrue(is_null($result), 'no errors found for old user who filled out cpr and pincode');
+
+      // verify that wrong fields returns an error
+      $form_state = $this->getFormState();
+      $old = $this->getOldArray();
+      // both fields should be numeric (and pincode should be 4 digits)
+      foreach ($old as $key) {
+        $form_state['values'][$key] = 'HEST';
+      }
+      $result = bibdk_reservation_sbkopi_validate(array(), $form_state);
+      $this->assertTrue(is_array($result), 'errors found for old user who filled out cpr and pincode with invalid values');
+
+      // verify that new userfields does not validate with nor valid values
+      $form_state = $this->getFormState();
+      $new = $this->getNewArray();
+      // both fields should be numeric (and pincode should be 4 digits)
+      foreach ($new as $key) {
+        $form_state['values'][$key] = 'HEST';
+      }
+      $result = bibdk_reservation_sbkopi_validate(array(), $form_state);
+
+      $this->assertTrue(is_array($result), 'errors found for new user who filled out cpr with invalid values');
+    }
+
+    private function setOldUser(&$form_state) {
+      $array = $this->getOldArray();
+      foreach ($array as $key) {
+        $form_state['values'][$key] = 'testvalue';
+      }
+    }
+
+    private function setNewUser(&$form_state) {
+      $array = $this->getNewArray();
+      foreach ($array as $key) {
+        $form_state['values'][$key] = 'testvalue';
+      }
+    }
+
+    private function getNewArray() {
+      return bibdk_reservation_sb_kopi_new_user_fields();
+    }
+
+    private function getOldArray() {
+      return bibdk_reservation_sb_kopi_old_user_fields();
+    }
+
+    private function getFormState() {
+      $old = $this->getOldArray();
+      $new = $this->getNewArray();
+      $completeArray = array_merge($old, $new);
+      $form_state = array();
+      foreach ($completeArray as $key) {
+        $form_state['values'][$key] = NULL;
+      }
+      return $form_state;
+    }
+}
