@@ -5,7 +5,7 @@ function bibdk_sbkopi_ajax_get_options() {
   $data['pid'] = $_REQUEST['pid'];
   if ($link) {
     $link['#options']['attributes']['class'] += array('bibdk-popup-link');
-    $link = drupal_render($result);
+    $link = drupal_render($link);
   }
   else {
     $link = 'error';
