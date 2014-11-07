@@ -224,7 +224,6 @@ function bibdk_sbkopi_order_request($params, $url) {
   $return_message = $curl->call();
 
   $response_code = $curl->getReponse();
-  debug($curl->getPostXml());
 
   if ($response_code == '204') {
     return TRUE;
