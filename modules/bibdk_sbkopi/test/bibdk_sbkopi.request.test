@@ -17,7 +17,7 @@ class BibdkSbCopyRequestUnitTestCase extends DrupalUnitTestCase {
   public static function getInfo() {
     return array(
       'name' => 'bibliotek.dk - sb request unit test',
-      'description' => 'Unit Test methods in bibdk_sbkopi',
+      'description' => 'Unit Test request methods in bibdk_sbkopi',
       'group' => 'Bibliotek.dk - SB Kopi',
     );
   }
@@ -28,8 +28,8 @@ class BibdkSbCopyRequestUnitTestCase extends DrupalUnitTestCase {
   public function setUp() {
     parent::setUp();
     module_load_include('inc', 'microcurl', 'microcurl');
-    module_load_include('inc', 'bibdk_sbkopi', 'inc/SbCurlRequest');
-    module_load_include('inc', 'bibdk_sbkopi', 'inc/bibdk_sbkopi.reservation');
+    module_load_include('inc', 'bibdk_sbkopi', 'lib/SbCurlRequest');
+    module_load_include('inc', 'bibdk_sbkopi', 'includes/bibdk_sbkopi.reservation');
   }
 
   /**
