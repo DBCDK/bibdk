@@ -267,7 +267,12 @@ function bibdk_sbkopi_reservation_receipt($pid) {
  * @return array
  */
 function bibdk_sbkopi_reservation_receipt_text($pid) {
-  $render = array();
+  $render = array(
+    '#type' => 'container',
+    '#attributes' => array(
+      'class' => array('bibdk-sbkopy-receipt-wrapper'),
+    ),
+  );
   $render['manifestation'] = bibdk_sbkopi_manifestation_view($pid, 'You have ordered the following');
 
   return $render;
