@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @file
  * Contains form and methods for handling sbkopi order flow
@@ -19,9 +18,6 @@
  * @return array
  */
 function bibdk_sbkopi_reservation_form($form, &$form_state, $pid, $state = NULL) {
-  if ($state == 'receipt') {
-    dpm($form_state);
-  }
   // Make sure the user is logged in
   if (!ding_user_is_provider_user()) {
     return bibdk_sbkopi_user_not_logged_in();
@@ -29,14 +25,15 @@ function bibdk_sbkopi_reservation_form($form, &$form_state, $pid, $state = NULL)
 
   // Get user order library
   $result = ding_provider_invoke('agency', 'get_order_library', $form, $form_state);
-  if (isset($result['order_library'])) {
-    $order_library = $result['order_library'];
-    return bibdk_sbkopi_order_form_fields($form, $form_state, $pid, $order_library);
+
+  // if user does not have a valid order library hook_agency_get_order_library
+  // returns the relevant form
+  if (!isset($result['order_library'])) {
+    return $result;
   }
   else {
-    // if user does not have a valid order library hook_agency_get_order_library
-    // returns the relevant form
-    return $result;
+    $order_library = $result['order_library'];
+    return bibdk_sbkopi_order_form_fields($form, $form_state, $pid, $order_library);
   }
 }
 
@@ -142,7 +139,6 @@ function bibdk_sbkopi_order_form_fields($form, &$form_state, $pid, FavouriteAgen
 
   $form['#submit'] = array('bibdk_sbkopi_order_form_submit');
 
-  //$form['#action'] = url('reservation/sbkopi/receipt/' . $pid);
   return $form;
 }
 
@@ -155,25 +151,30 @@ function bibdk_sbkopi_order_form_fields($form, &$form_state, $pid, FavouriteAgen
 function bibdk_sbkopi_order_form_submit($form, &$form_state) {
   form_state_values_clean($form_state);
   $pid = $form_state['values']['pid'];
+  // Create an array of parameters
+  // user/pass is saved as variables
   $params = array(
       'ws_user' => variable_get('bibdk_sbkopi_request_user'),
       'ws_password' => variable_get('bibdk_sbkopi_request_pass'),
     ) + $form_state['values'];
+  // Get webservice URL
   $url = variable_get('bibdk_sbkopi_place_copy_request_url', FALSE);
+
+  // If request fails it throws an exception
   try {
     if (bibdk_sbkopi_order_request($params, $url)) {
       $form_state['redirect'] = 'reservation/sbkopi/receipt/' . $pid;
       $_SESSION['sbkopi']['order'][$pid] = $form_state['values'];
-      $_SESSION['sbkopi']['order'][$pid]['error'] = FALSE;
     }
-
   }
   catch (SbCurlRequestException $e) {
+    // The service do not provide usable feedback for the cause of error, so
+    // we log the error and writes out a generic error message to user
     watchdog('sb_kopi', "response code: !reponse_code, return message: !return_message, url: !url, xml: !xml", $e->getParams(), WATCHDOG_ERROR);
     drupal_set_message(t('sb_kopi error message'), 'error');
+
+    //
     $form_state['rebuild'] = TRUE;
-    $_SESSION['sbkopi']['order'][$pid] = $form_state['values'];
-    $_SESSION['sbkopi']['order'][$pid]['error'] = TRUE;
   }
 }
 
@@ -253,12 +254,9 @@ function bibdk_sbkopi_reservation_receipt($pid) {
   if (!isset($_SESSION['sbkopi']['order'][$pid])) {
     drupal_goto('reservation/sbkopi/' . $pid);
   }
-  $result = $_SESSION['sbkopi']['order'][$pid];
-  if ($result['error']) {
-    drupal_goto('reservation/sbkopi/' . $pid);
-  }
   else {
-    return bibdk_sbkopi_reservation_receipt_text($pid); //return receipt text
+    //return receipt text
+    return bibdk_sbkopi_reservation_receipt_text($pid);
   }
 }
 
@@ -270,7 +268,6 @@ function bibdk_sbkopi_reservation_receipt($pid) {
  */
 function bibdk_sbkopi_reservation_receipt_text($pid) {
   $render = array();
-
   $render['manifestation'] = bibdk_sbkopi_manifestation_view($pid, 'You have ordered the following');
 
   return $render;
