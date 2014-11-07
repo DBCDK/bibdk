@@ -6,7 +6,7 @@
 
 /** load field hooks * */
 include_once 'includes/bibdk_reservation_sb_kopi.inc';
-include_once 'bibdk_sbkopi.ajax.inc';
+include_once 'includes/bibdk_sbkopi.ajax.inc';
 
 /**
  * Implements hook_ting_client_webservice().
@@ -73,7 +73,7 @@ function bibdk_sbkopi_menu() {
     'page callback' => 'bibdk_sbkopi_ajax_get_options',
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
-    'file' => 'bibdk_sbkopi.ajax.inc',
+    'file' => 'includes/bibdk_sbkopi.ajax.inc',
   );
 
   $items['reservation/sbkopi/%'] = array(
@@ -81,14 +81,14 @@ function bibdk_sbkopi_menu() {
     'page arguments' => array('bibdk_sbkopi_reservation_form', 2),
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
-    'file' => 'inc/bibdk_sbkopi.reservation.inc',
+    'file' => 'includes/bibdk_sbkopi.reservation.inc',
   );
   $items['reservation/sbkopi/receipt/%'] = array(
     'page callback' => 'bibdk_sbkopi_reservation_receipt',
     'page arguments' => array(3),
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
-    'file' => 'inc/bibdk_sbkopi.reservation.inc',
+    'file' => 'includes/bibdk_sbkopi.reservation.inc',
   );
 
   return $items;
