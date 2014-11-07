@@ -85,7 +85,7 @@ function bibdk_sbkopi_user_not_logged_in() {
 function bibdk_sbkopi_order_form_fields($form, &$form_state, $pid, FavouriteAgency $order_library) {
   $userdata = $order_library->getUserData();
   $email = isset($userdata['email']) ? $userdata['email'] : NULL;
-  $userName = isset($userdata['userName']) ? $userdata['userName'] : NULL;
+  $username = isset($userdata['userName']) ? $userdata['userName'] : NULL;
   bibdk_sbkopi_messages($pid, $order_library->getBranch());
 
   $form['pid'] = array(
@@ -115,7 +115,7 @@ function bibdk_sbkopi_order_form_fields($form, &$form_state, $pid, FavouriteAgen
   $form['userinfo']['userName'] = array(
     '#type' => 'textfield',
     '#title' => t('name', array(), array('context' => 'bibdk_sbkopi')),
-    '#default' => (isset($form_state['values']['userName'])) ? $form_state['values']['userName'] : $userName,
+    '#default' => (isset($form_state['values']['userName'])) ? $form_state['values']['userName'] : $username,
     '#required' => TRUE,
   );
   $form['userinfo']['userMail'] = array(
