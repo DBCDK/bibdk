@@ -10,6 +10,16 @@ include_once('bibdk_subject_hierarchy.search.inc');
 // includes suggestion functionality
 include_once('bibdk_subject_hierarchy.suggestion.inc');
 
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function bibdk_subject_hierarchy_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'ctools' || $module == 'panels') {
+    return 'plugins/' . $plugin;
+  }
+}
+
 /**
  * Implements hook_menu().
  */
