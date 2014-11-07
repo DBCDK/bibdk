@@ -1,5 +1,15 @@
 <?php
+/**
+ * @file
+ * Test Sb order flow
+ *
+ * @todo
+ * This is the old flow. Remove when placeOrderRequest is in production
+ */
 
+/**
+ * Class BibdkSbCopyUnitTestCase
+ */
 class BibdkSbCopyUnitTestCase extends DrupalUnitTestCase {
 
   public static function getInfo() {

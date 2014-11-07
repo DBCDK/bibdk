@@ -18,7 +18,7 @@
  * @param $state Information about the state fo the flow
  * @return array
  */
-function bibdk_sbkopi_reservation_form($form, &$form_state, $pid, $state = null) {
+function bibdk_sbkopi_reservation_form($form, &$form_state, $pid, $state = NULL) {
   if ($state == 'receipt') {
     dpm($form_state);
   }
@@ -65,7 +65,7 @@ function bibdk_sbkopi_user_not_logged_in() {
     '#path' => 'user/login',
     '#options' => array(
       'attributes' => array(),
-      'html' => true,
+      'html' => TRUE,
     ),
   );
 
@@ -84,8 +84,8 @@ function bibdk_sbkopi_user_not_logged_in() {
  */
 function bibdk_sbkopi_order_form_fields($form, &$form_state, $pid, FavouriteAgency $order_library) {
   $userdata = $order_library->getUserData();
-  $email = isset($userdata['email']) ? $userdata['email'] : null;
-  $userName = isset($userdata['userName']) ? $userdata['userName'] : null;
+  $email = isset($userdata['email']) ? $userdata['email'] : NULL;
+  $userName = isset($userdata['userName']) ? $userdata['userName'] : NULL;
   bibdk_sbkopi_messages($pid, $order_library->getBranch());
 
   $form['pid'] = array(
@@ -116,13 +116,13 @@ function bibdk_sbkopi_order_form_fields($form, &$form_state, $pid, FavouriteAgen
     '#type' => 'textfield',
     '#title' => t('name', array(), array('context' => 'bibdk_sbkopi')),
     '#default' => (isset($form_state['values']['userName'])) ? $form_state['values']['userName'] : $userName,
-    '#required' => true,
+    '#required' => TRUE,
   );
   $form['userinfo']['userMail'] = array(
     '#type' => 'textfield',
     '#title' => t('email', array(), array('context' => 'bibdk_sbkopi')),
     '#default' => (isset($form_state['values']['userMail'])) ? $form_state['values']['userMail'] : $email,
-    '#required' => true,
+    '#required' => TRUE,
   );
   $timestamp = strtotime(date('Y-m-d') . '+ 3 month');
   $date = date('Y-m-d', $timestamp);
@@ -147,7 +147,7 @@ function bibdk_sbkopi_order_form_fields($form, &$form_state, $pid, FavouriteAgen
 }
 
 /**
- * implements hook_form_submit().
+ * Implements hook_form_submit().
  *
  * @param $form
  * @param $form_state
@@ -164,7 +164,7 @@ function bibdk_sbkopi_order_form_submit($form, &$form_state) {
     if (bibdk_sbkopi_order_request($params, $url)) {
       $form_state['redirect'] = 'reservation/sbkopi/receipt/' . $pid;
       $_SESSION['sbkopi']['order'][$pid] = $form_state['values'];
-      $_SESSION['sbkopi']['order'][$pid]['error'] = false;
+      $_SESSION['sbkopi']['order'][$pid]['error'] = FALSE;
     }
 
   }
@@ -173,7 +173,7 @@ function bibdk_sbkopi_order_form_submit($form, &$form_state) {
     drupal_set_message(t('sb_kopi error message'), 'error');
     $form_state['rebuild'] = TRUE;
     $_SESSION['sbkopi']['order'][$pid] = $form_state['values'];
-    $_SESSION['sbkopi']['order'][$pid]['error'] = true;
+    $_SESSION['sbkopi']['order'][$pid]['error'] = TRUE;
   }
 }
 
@@ -226,7 +226,7 @@ function bibdk_sbkopi_order_request($params, $url) {
   debug($curl->getPostXml());
 
   if ($response_code == '204') {
-    return true;
+    return TRUE;
   }
   else {
     $report = array(
@@ -241,19 +241,33 @@ function bibdk_sbkopi_order_request($params, $url) {
   }
 }
 
+/**
+ * Page callback. Logic for showing receipt
+ *
+ * If order has not been set or it has failed. Return to order page
+ *
+ * @param $pid
+ * @return array
+ */
 function bibdk_sbkopi_reservation_receipt($pid) {
   if (!isset($_SESSION['sbkopi']['order'][$pid])) {
     drupal_goto('reservation/sbkopi/' . $pid);
   }
   $result = $_SESSION['sbkopi']['order'][$pid];
   if ($result['error']) {
-
+    drupal_goto('reservation/sbkopi/' . $pid);
   }
   else {
     return bibdk_sbkopi_reservation_receipt_text($pid); //return receipt text
   }
 }
 
+/**
+ * Returns render array with order reciept
+ *
+ * @param $pid
+ * @return array
+ */
 function bibdk_sbkopi_reservation_receipt_text($pid) {
   $render = array();
 
