@@ -58,17 +58,17 @@ class BibdkSbCopyRequestUnitTestCase extends DrupalUnitTestCase {
    */
   public function testSbOrderRequest() {
     $parameters = array(
-      'ws_user' => 'ELBA_DBC',
-      'ws_password' => 'evkalsokit',
+      'ws_user' => 'TEST_USER',
+      'ws_password' => 'TEST_PASS',
       'pid' => '870971-tsart:36023422',
-      'user_loaner_id' => '0413392648',
+      'user_loaner_id' => '123412341234',
       'userName' => 'Test Testersen',
       'userMail' => 'test@dbc.dk',
-      //'user_interest_date' => '2015-02-03',
-      'pickupAgencyId' => '737600',
-      'agencyId' => '737600'
+      //'user_interest_date' => a missing date will cause bad request
+      'pickupAgencyId' => '790900',
+      'agencyId' => '790900'
     );
-    $url = 'https://developer.statsbiblioteket.dk/elba-webservices/services/placeCopyRequest';
+    $url = url(drupal_get_path('module', 'bibdk_sbkopi') . '/test/mockup/placeorderrequest.php', array('absolute' => TRUE));
 
     try {
       bibdk_sbkopi_order_request($parameters, $url);
@@ -79,17 +79,16 @@ class BibdkSbCopyRequestUnitTestCase extends DrupalUnitTestCase {
       $this->assertEqual($params['!reponse_code'], 400);
     }
     $parameters = array(
-      'ws_user' => 'ELBA_DBC',
-      'ws_password' => 'evkalsokit',
+      'ws_user' => 'TEST_USER',
+      'ws_password' => 'TEST_PASS',
       'pid' => '870971-tsart:36023422',
-      'user_loaner_id' => '0413392648',
+      'user_loaner_id' => '123412341234',
       'userName' => 'Test Testersen',
       'userMail' => 'test@dbc.dk',
-      'user_interest_date' => '2015-02-03',
+      'user_interest_date' => '2020-02-02',
       'pickupAgencyId' => '790900',
       'agencyId' => '790900'
     );
-    $url = 'https://developer.statsbiblioteket.dk/elba-webservices/services/placeCopyRequest';
 
     try {
       bibdk_sbkopi_order_request($parameters, $url);
