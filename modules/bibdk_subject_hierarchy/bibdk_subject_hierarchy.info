@@ -4,19 +4,10 @@ core = 7.x
 version = 7.x-0.13
 package = Bibliotek.dk
 
-files[] = lib/xml_func.php
-files[] = lib/ccl2cql.php
 files[] = test/bibdk_subject_hierarchy_web_test.test
 files[] = test/bibdk_subject_hierarchy_unit_test.test
 files[] = test/bibdk_subject_hierarchy_search_web_test.test
 files[] = test/bibdk_subject_hierarchy_search_unit_test.test
 files[] = test/bibdk_subject_hierarchy_suggestion_web_test.test
 
-files[] = bibdk_subject_hierarchy.admin.inc
-files[] = bibdk_subject_hierarchy.search.inc
-files[] = bibdk_subject_hierarchy.suggestion.inc
-
 configure = admin/config/search/bibdk_subject_hierarchy
-
-; optional:
-; dependencies[] = cql_strict_parser
