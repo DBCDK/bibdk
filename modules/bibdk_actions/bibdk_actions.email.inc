@@ -9,6 +9,7 @@
  */
 function bibdk_actions_get_email_actions($actions) {
   $actions['email'] = array(
+    '#action_type' => 'primary',
     '#theme' => 'link',
     '#text' => t('email_manifestation', array(), array('context' => 'bibdk_actions')),
     '#path' => 'email/cart',
