@@ -1,0 +1,51 @@
+<?php
+/**
+ * @file
+ *
+ * Module file for this module - generel methods used across various files
+ */
+include_once('bibdk_saou.field.inc');
+
+/**
+ * Implements hook_menu().
+ * landing page for saou ajax request
+ */
+function bibdk_saou_menu() {
+  $items['saou/ajax'] = array(
+    'page callback' => 'bibdk_saou_ajax',
+    'access callback' => TRUE,
+    'file' => 'bibdk_saou.ajax.inc',
+  );
+
+  return $items;
+}
+
+/** Get order agency from bibdk_favourites
+ * @return bool|mixed
+ */
+function bibdk_saou_get_order_agency() {
+  // pre: user is logged in or we wouldn't be here
+  $agencies = array();
+  if (module_exists('bibdk_favourite')) {
+    $agencies = bibdk_favourite_get_favourites();
+  }
+  if (empty($agencies)) {
+    return FALSE;
+  }
+  // first agency is order-agency
+  $agency = reset($agencies);
+
+  return $agency;
+}
+
+/** get a single manifestation via openformat
+ * @param $pid
+ * return manifestation
+ */
+function bibdk_saou_get_manifestation($pid) {
+  $result = ting_openformat_get_single($pid);
+  $work = reset($result)->getManifestations();
+  $manifestation = reset($work);
+
+  return $manifestation;
+}
