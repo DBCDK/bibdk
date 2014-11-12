@@ -172,7 +172,7 @@ function bibdk_provider_form_user_profile_form_alter(&$form, &$form_state) {
     '#weight' => 1,
   );
   $form['actions']['cancel'] += array(
-    '#weight' => 0,vesterhav
+    '#weight' => 0,
   );
   
 }
