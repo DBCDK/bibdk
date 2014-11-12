@@ -194,44 +194,38 @@
 
     $("#bibdk-facetbrowser-form").delegate("div[data-expand='more'] span", "click", function() {
       var facetGroup = $(this).parents('fieldset');
-      // var divExpand = $(this).parent();
-
       facetGroup.find('.form-type-checkbox:hidden').each(function(count, facetElement) {
         if ( count < Drupal.settings.bibdkFacetBrowser.showCountConsecutive ) {
           $(facetElement).slideDown('fast', function() {
           });
         }
       });
-
       // add 'less' element, if there isn't one already
       if ( facetGroup.find("div[data-expand='less']").is(':hidden') ) {
         facetGroup.find("div[data-expand='less']").show();
       }
-
       // remove 'more' element, if we're at the end
-      if ( ( facetGroup.find('.form-type-checkbox:visible').size() >= facetGroup.attr('data-count') ) && ( facetGroup.find("div[data-expand='more']").is(':visible') ) ) {
+      if ( 
+          ( facetGroup.find('.form-type-checkbox:visible').size() >= facetGroup.attr('data-count') ) && 
+          ( facetGroup.find("div[data-expand='more']").is(':visible') )
+        ) {
         facetGroup.find("div[data-expand='more']").hide();
       }
-
     });
 
     $("#bibdk-facetbrowser-form").delegate("div[data-expand='less'] span", "click", function() {
       var facetGroup = $(this).parents('fieldset');
-      // var divExpand = $(this).parent();
-
       facetGroup.find('.form-type-checkbox:visible').each(function(count, facetElement) {
         if(count >= Drupal.settings.bibdkFacetBrowser.showCount) {
           $(facetElement).slideUp('fast', function() {
           });
         }
       });
-
       // we're at the start, so add 'more' element, and remove 'less' element
       facetGroup.find("div[data-expand='less']").hide();
       if ( facetGroup.find("div[data-expand='more']").is(':hidden') ) {
         facetGroup.find("div[data-expand='more']").show();
       }
-
     });
 
     // Show/hide modal window
