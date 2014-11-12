@@ -49,6 +49,10 @@ function bibdk_favourite_menu() {
   return $items;
 }
 
+/**
+ * Implements HOOK__mypage_link().
+ * @return mixed
+ */
 function bibdk_favourite_mypage_link() {
   $items['user/%user/bibdk_favourite_list'] = array(
     'title' => 'Favourites',
