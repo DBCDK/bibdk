@@ -55,7 +55,7 @@ function bibdk_favourite_menu() {
  */
 function bibdk_favourite_mypage_link() {
   $items['user/%user/bibdk_favourite_list'] = array(
-    'title' => 'Favourites',
+    'title' => t('Favoritbiblioteker', array(), array('context' => 'bibdk_frontend')),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('bibdk_favourite_get_favourites_form'),
     'file' => 'includes/bibdk_favourite.forms.inc',
