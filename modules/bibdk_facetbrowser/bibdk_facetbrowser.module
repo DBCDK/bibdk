@@ -461,31 +461,6 @@ function _parseSelectionUri($uri, $facet) {
 
 
 /**
- * Parse the selected facets from the $form_state to a readable string for the ting_search
- *
- * @param array $form_state
- * @return string
- */
-/* unused code?
-function _facetString($form_state = NULL) {
-  $facets = array();
-  if ( !empty($form_state['values']) && is_array($form_state['values']) ) {
-    foreach ( $form_state['values'] as $name => $data ) {
-      if ( is_array($data) ) {
-        foreach ( $data as $key => $value ) {
-          if ( $key == $value && $value !== 0 ) {
-            $facets[] = 'facet.' . $name . ':' . $value;
-          }
-        }
-      }
-    }
-  }
-  return implode(';', $facets);
-}
-*/
-
-
-/**
  * facetbrowser theme function
  *
  * @param array $all_facets
@@ -630,12 +605,4 @@ function bibdk_facetbrowser_facets_by_ajax() {
   }
   drupal_exit();
 }
-
-
-function __log_to_file($text) {
-  $f = fopen('/home/jgn/jgn.ding/sites/default/files/log.txt', 'a');
-  fwrite($f, date('Ymd H:i:s - ') . $text . "\n");
-  fclose($f);
-}
-
 
