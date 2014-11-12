@@ -12,22 +12,21 @@
  */
 
 /**
- * Implements hook_menu().
- * Sets up menu items.
+ * Implements hook_mypage_link().
  *
+ * @return mixed
  */
-function bibdk_usersettings_menu() {
+function bibdk_usersettings_mypage_link() {
   $items['user/%user/settings'] =  array(
     'title' => 'Settings',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('bibdk_usersettings_user_settings_form'),
     'access callback' => 'user_edit_access',
     'access arguments'=> array(1),
-    'type' => MENU_LOCAL_TASK,
-    'weight' => 30,
+    'weight' => 35,
   );
-  return $items;
 
+  return $items;
 }
 
 function bibdk_usersettings_theme() {
