@@ -18,7 +18,7 @@
  */
 function bibdk_usersettings_mypage_link() {
   $items['user/%user/settings'] =  array(
-    'title' => 'Settings',
+    'title' => t('Settings', array(), array('context' => 'bibdk_frontend')),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('bibdk_usersettings_user_settings_form'),
     'access callback' => 'user_edit_access',
