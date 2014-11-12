@@ -21,7 +21,7 @@ class BibdkFacetbrowserWeb extends DrupalWebTestCase {
     variable_set('search_default_module', 'ting_openformat');
 
     // set ajax checkbox to FALSE
-    variable_set('bibdk_facetbrowser_by_ajax',FALSE);
+    variable_set('bibdk_facetbrowser_by_ajax', FALSE);
 
     // Set up some facets for testing.
     variable_set('bibdk_facetbrowser_facets', array(
@@ -121,11 +121,11 @@ class BibdkFacetbrowserWeb extends DrupalWebTestCase {
     $this->assertText('label_facet_show_more', 'Found the "label_facet_show_more" link in the facetbrowser');
 
     // Check if the modal window for selecting/deselecting facets  has any content
-    $this->assertRaw('header_refine_facet_select','header for modal window found');
-    $this->assertRaw('label_facet_select','label for "select facets" column found');
-    $this->assertRaw('label_facet_deselect','label for "deselect facets" column found');
-    $this->assertRaw('label_facet_close','link for "close facets select window" found');
-    $this->assertRaw('label_facet_save','link for "save selected facets" found');
+    $this->assertRaw('header_refine_facet_select', 'header for modal window found');
+    $this->assertRaw('label_facet_select', 'label for "select facets" column found');
+    $this->assertRaw('label_facet_deselect', 'label for "deselect facets" column found');
+    $this->assertRaw('label_facet_close', 'link for "close facets select window" found');
+    $this->assertRaw('label_facet_save', 'link for "save selected facets" found');
 
     // check that facets_by ajax is set to FALSE
     $by_ajax = variable_get('bibdk_facetbrowser_by_ajax');
@@ -138,7 +138,7 @@ class BibdkFacetbrowserWeb extends DrupalWebTestCase {
     // redo search to check if facets are also present via ajax
     $this->drupalGet('search/work/harry');
     // Check if the facetbrowser has any content
-    $this->assertRaw('bibdk_facetbrowser_facets_placeholder','placeholder for ajax found');
+    $this->assertRaw('bibdk_facetbrowser_facets_placeholder', 'placeholder for ajax found');
 
     // test that ajax call delivers expected result;
     $this->drupalGet('bibdk_facetbrowser/ajax/facets');
@@ -146,7 +146,7 @@ class BibdkFacetbrowserWeb extends DrupalWebTestCase {
 
     // assert that checkbox is present on admin page
     $this->drupalGet('admin/config/ting/facets');
-    $this->assertFieldByName('bibdk_facetbrowser_by_ajax',TRUE,'By ajax checkbox found on admin');
+    $this->assertFieldByName('bibdk_facetbrowser_by_ajax', TRUE, 'By ajax checkbox found on admin');
 
     // Check if bibdk_facetbrowser_number_shown can be set;
     $edit['bibdk_facetbrowser_number_shown'] = rand();

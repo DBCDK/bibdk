@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Main file for the bibdk_facetbrowser module.
+ */
 
 /**
  * Implements hook_block_info()
@@ -247,7 +251,14 @@ function bibdk_facetbrowser_form($form, &$form_state, $facets = FALSE, $search =
   if ( $selected = _isFacetSelected() ) {
     foreach ( $selected as $term_selected ) {
       $uri = _parseRequestUri();
-      $show_selected_options[ $term_selected['facet_string'] ] = l($term_selected['value'], $base_root . _parseSelectionUri($uri, $term_selected['facet_string']), array(
+      // only translate material type
+      if ( $term_selected['name'] == 'facet.type' ) {
+        $term_name_title = t($term_selected['value'], array(), array('context' => 'material_type'));
+      }
+      else {
+        $term_name_title = $term_selected['value'];
+      }
+      $show_selected_options[ $term_selected['facet_string'] ] = l($term_name_title, $base_root . _parseSelectionUri($uri, $term_selected['facet_string']), array(
         'html' => TRUE,
         'fragment' => $fragment,
         'attributes' => array(
@@ -270,7 +281,14 @@ function bibdk_facetbrowser_form($form, &$form_state, $facets = FALSE, $search =
   if ( $deselected = _isFacetDeselected() ) {
     foreach ( $deselected as $term_deselected ) {
       $uri = _parseRequestUri();
-      $show_deselected_options[ $term_deselected['facet_string'] ] = l($term_deselected['value'], $base_root . _parseSelectionUri($uri, $term_deselected['facet_string']), array(
+      // only translate material type
+      if ( $term_deselected['name'] == 'facet.type' ) {
+        $term_name_title = t($term_deselected['value'], array(), array('context' => 'material_type'));
+      }
+      else {
+        $term_name_title = $term_deselected['value'];
+      }
+      $show_deselected_options[ $term_deselected['facet_string'] ] = l($term_name_title, $base_root . _parseSelectionUri($uri, $term_deselected['facet_string']), array(
         'html' => TRUE,
         'fragment' => $fragment,
         'attributes' => array(
@@ -320,7 +338,7 @@ function _isFacetSelected() {
       if ( substr($facet_string_array[1], 0, 1) != '!' ) {
         $item_array = explode(':', $facet_string_array[1], 2);
         if ( !empty($item_array[1]) ) {
-          $deselected_item['name'] = substr($item_array[0], 1);
+          $deselected_item['name'] = $item_array[0];
           $deselected_item['value'] = $item_array[1];
           $deselected_item['facet_string'] = substr($facet_string_array[1], 1);
           $deselected[] = $deselected_item;
@@ -384,15 +402,15 @@ function _getFacets() {
  * @return String
  */
 function _parseRequestUri() {
-  if( isset($_SESSION['latest_search']['request_uri'])){
+  if ( isset($_SESSION['latest_search']['request_uri']) ) {
     $uri = $_SESSION['latest_search']['request_uri'];
   }
   else{
     $uri = request_uri();
   }
   $new_query_part = array();
-  if(stristr($uri, '?')){
-    $request_uri_parts = explode('?',$uri);
+  if ( stristr($uri, '?') ) {
+    $request_uri_parts = explode('?', $uri);
     $query = end($request_uri_parts);
     $query_parts = explode('&', $query);
     foreach ($query_parts as $key => $part) {
@@ -430,12 +448,12 @@ function _parseSelectionUri($uri, $facet) {
 
   $new_query_part = array();
   if ( stristr($uri, '?') ) {
-    $request_uri_parts = explode('?',$uri);
+    $request_uri_parts = explode('?', $uri);
     $query = end($request_uri_parts);
     $query_parts = explode('&', $query);
     foreach ( $query_parts as $key => $part ) {
       $pos = strpos(urldecode($part), urldecode($facet));
-      if ( $pos !== false ) {
+      if ( $pos !== FALSE ) {
         // ex: facets[]=facet.language%3Afransk
         unset($query_parts[$key]);
         continue;
@@ -509,8 +527,8 @@ function bibdk_facetbrowser_block_view($delta = FALSE) {
   $content_in_facet = FALSE;
   $executed_search_module = FALSE;
 
-  $showCount = variable_get('bibdk_facetbrowser_number_shown', 5);
-  $showCountConsecutive = variable_get('bibdk_facetbrowser_consecutive_number_shown', 10);
+  $show_count = variable_get('bibdk_facetbrowser_number_shown', 5);
+  $show_count_consecutive = variable_get('bibdk_facetbrowser_consecutive_number_shown', 10);
 
   drupal_add_js(drupal_get_path('module', 'bibdk_facetbrowser') . '/js/facetbrowser.js');
   drupal_add_css(drupal_get_path('module', 'bibdk_facetbrowser') . '/css/facetbrowser.css');
@@ -520,8 +538,8 @@ function bibdk_facetbrowser_block_view($delta = FALSE) {
     array(
       'bibdkFacetBrowser' => array(
         'mainElement' => '.pane-bibdk-facetbrowser',
-        'showCount' => $showCount,
-        'showCountConsecutive' => $showCountConsecutive
+        'showCount' => $show_count,
+        'showCountConsecutive' => $show_count_consecutive
       )
     ),
     'setting'
@@ -566,12 +584,13 @@ function bibdk_facetbrowser_block_view($delta = FALSE) {
   return $block;
 }
 
+
 /** Get a placeholder to get facets by ajax
  * @return array
  */
-function bibdk_facetbrowser_facetbrowser_placeholder(){
-  $path = drupal_get_path('module','bibdk_facetbrowser');
-  $jspath = $path.'/js/facetbrowser.js';
+function bibdk_facetbrowser_facetbrowser_placeholder() {
+  $path = drupal_get_path('module', 'bibdk_facetbrowser');
+  $jspath = $path . '/js/facetbrowser.js';
   $js[] = $jspath;
 
   $form = array(
@@ -588,6 +607,7 @@ function bibdk_facetbrowser_facetbrowser_placeholder(){
 
   return $form;
 }
+
 
 /**
  * function for hitcount label
@@ -618,7 +638,7 @@ function bibdk_facetbrowser_facets_by_ajax() {
 
     $markup = theme('facetbrowser', array($results->facets, (!empty($results->search_key) ? $results->search_key : NULL)));
 
-    drupal_json_output(array('markup'=>$markup));
+    drupal_json_output(array('markup' => $markup));
   }
   drupal_exit();
 }
