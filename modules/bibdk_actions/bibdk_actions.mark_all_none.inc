@@ -7,7 +7,7 @@
  * @return array
  */
 function bibdk_actions_get_mark_all_none_actions($actions) {
-  
+
   $actions['mark_all_none'] = array(
     '#action_type' => 'primary',
     '#theme' => 'link',
@@ -24,6 +24,6 @@ function bibdk_actions_get_mark_all_none_actions($actions) {
       'html' => FALSE,
       ),
   );
- 
+
   return $actions;
 }

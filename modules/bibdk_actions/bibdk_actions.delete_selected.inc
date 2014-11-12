@@ -7,7 +7,7 @@
  * @return array
  */
 function bibdk_actions_get_delete_selected_actions($actions) {
-  
+
   $actions['delete_selected'] = array(
     '#action_type' => 'primary',
     '#theme' => 'link',
