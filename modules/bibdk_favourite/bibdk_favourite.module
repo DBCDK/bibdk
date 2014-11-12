@@ -46,6 +46,10 @@ function bibdk_favourite_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  return $items;
+}
+
+function bibdk_favourite_mypage_link() {
   $items['user/%user/bibdk_favourite_list'] = array(
     'title' => 'Favourites',
     'page callback' => 'drupal_get_form',
@@ -53,7 +57,6 @@ function bibdk_favourite_menu() {
     'file' => 'includes/bibdk_favourite.forms.inc',
     'access callback' => 'user_edit_access',
     'access arguments' => array(1),
-    'type' => MENU_LOCAL_TASK,
     'weight' => 20,
   );
 
