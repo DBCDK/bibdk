@@ -39,7 +39,7 @@ function bibdk_openuserstatus_menu() {
  * @return array
  */
 function bibdk_openuserstatus_mypage_link() {
-  $items['user/%/bibdk_openuserstatus'] = array(
+  $items['user/%user/bibdk_openuserstatus'] = array(
     'title' => t('Userstatus'),
     'description' => 'Status for user\'s loans and reservations',
     'page callback' => 'drupal_get_form',
