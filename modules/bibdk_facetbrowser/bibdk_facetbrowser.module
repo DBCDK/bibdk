@@ -248,7 +248,9 @@ function bibdk_facetbrowser_form($form, &$form_state, $facets = FALSE, $search =
 
   }
 
-  if ( $selected = _isFacetSelected() ) {
+  $request_uri_facets = _getFacets();
+
+  if ( $selected = _isFacetSelected($request_uri_facets, TRUE) ) {
     foreach ( $selected as $term_selected ) {
       $uri = _parseRequestUri();
       // only translate material type
@@ -262,7 +264,7 @@ function bibdk_facetbrowser_form($form, &$form_state, $facets = FALSE, $search =
         'html' => TRUE,
         'fragment' => $fragment,
         'attributes' => array(
-          'title' => $term_selected['facet_string'],
+          'title' => $term_name_title,
         ),
       ));
       $show_selected_options_defaults[] = $term_selected['facet_string'];
@@ -278,7 +280,7 @@ function bibdk_facetbrowser_form($form, &$form_state, $facets = FALSE, $search =
     $form['selected']['#attributes']['data-count'] = count($selected);
   }
 
-  if ( $deselected = _isFacetDeselected() ) {
+  if ( $deselected = _isFacetSelected($request_uri_facets, FALSE) ) {
     foreach ( $deselected as $term_deselected ) {
       $uri = _parseRequestUri();
       // only translate material type
@@ -292,7 +294,7 @@ function bibdk_facetbrowser_form($form, &$form_state, $facets = FALSE, $search =
         'html' => TRUE,
         'fragment' => $fragment,
         'attributes' => array(
-          'title' => $term_deselected['facet_string'],
+          'title' => $term_name_title,
         ),
       ));
       $show_deselected_options_defaults[] = $term_deselected['facet_string'];
@@ -310,6 +312,7 @@ function bibdk_facetbrowser_form($form, &$form_state, $facets = FALSE, $search =
 
   return $form;
 }
+
 
 /**
  * Check if selected facet from url matches the one from params.
@@ -329,38 +332,17 @@ function _isFacetSet($term_cat, $term_name) {
   return FALSE;
 }
 
-function _isFacetSelected() {
-  $facets = _getFacets();
+
+function _isFacetSelected($facets, $is_selected = TRUE) {
+
+  $selected = array();
   $deselected = array();
+
   foreach ($facets as $facet) {
     $facet_string_array = explode('=', $facet, 2);
     if ( !empty($facet_string_array[1]) ) {
-      if ( substr($facet_string_array[1], 0, 1) != '!' ) {
-        $item_array = explode(':', $facet_string_array[1], 2);
-        if ( !empty($item_array[1]) ) {
-          $deselected_item['name'] = $item_array[0];
-          $deselected_item['value'] = $item_array[1];
-          $deselected_item['facet_string'] = substr($facet_string_array[1], 1);
-          $deselected[] = $deselected_item;
-        }
-      }
-    }
-  }
-  if ( sizeof($deselected) > 0 ) {
-    return $deselected;
-  }
-  return FALSE;
-}
-
-
-function _isFacetDeselected() {
-  $facets = _getFacets();
-  $deselected = array();
-  foreach ($facets as $facet) {
-    $facet_string_array = explode('=', $facet, 2);
-    if ( !empty($facet_string_array[1]) ) {
+      $item_array = explode(':', $facet_string_array[1], 2);
       if ( substr($facet_string_array[1], 0, 1) == '!' ) {
-        $item_array = explode(':', $facet_string_array[1], 2);
         if ( !empty($item_array[1]) ) {
           $deselected_item['name'] = substr($item_array[0], 1);
           $deselected_item['value'] = $item_array[1];
@@ -368,12 +350,29 @@ function _isFacetDeselected() {
           $deselected[] = $deselected_item;
         }
       }
+      else {
+        if ( !empty($item_array[1]) ) {
+          $selected_item['name'] = $item_array[0];
+          $selected_item['value'] = $item_array[1];
+          $selected_item['facet_string'] = $facet_string_array[1];
+          $selected[] = $selected_item;
+        }
+      }
     }
   }
-  if ( sizeof($deselected) > 0 ) {
-    return $deselected;
+
+  if ( $is_selected ) {
+    if ( sizeof($selected) > 0 ) {
+      return $selected;
+    }
+  } else {
+    if ( sizeof($deselected) > 0 ) {
+      return $deselected;
+    }
   }
+
   return FALSE;
+
 }
 
 
@@ -429,22 +428,12 @@ function _parseRequestUri() {
   }
 }
 
-  function __log_to_file($text) {
-    $f = fopen('/home/jgn/jgn.ding/sites/default/files/log.txt', 'a');
-    fwrite($f, date('Ymd H:i:s - ') . $text . "\n");
-    fclose($f);
-  }
-
-
 /**
  * Drop the selected (or deselected) facet from the URI.
  *
  * @return String
  */
 function _parseSelectionUri($uri, $facet) {
-
-// __log_to_file(print_r($uri,1));
-// __log_to_file(print_r($facet,1));
 
   $new_query_part = array();
   if ( stristr($uri, '?') ) {
@@ -462,8 +451,6 @@ function _parseSelectionUri($uri, $facet) {
     }
     $query = $new_query_part;
 
-// __log_to_file(print_r($request_uri_parts[0] . '?' . implode('&', $query),1));
-
     return $request_uri_parts[0] . '?' . implode('&', $query);
   }
   else {
@@ -479,6 +466,7 @@ function _parseSelectionUri($uri, $facet) {
  * @param array $form_state
  * @return string
  */
+/* unused code?
 function _facetString($form_state = NULL) {
   $facets = array();
   if ( !empty($form_state['values']) && is_array($form_state['values']) ) {
@@ -492,9 +480,9 @@ function _facetString($form_state = NULL) {
       }
     }
   }
-
   return implode(';', $facets);
 }
+*/
 
 
 /**
@@ -642,3 +630,12 @@ function bibdk_facetbrowser_facets_by_ajax() {
   }
   drupal_exit();
 }
+
+
+function __log_to_file($text) {
+  $f = fopen('/home/jgn/jgn.ding/sites/default/files/log.txt', 'a');
+  fwrite($f, date('Ymd H:i:s - ') . $text . "\n");
+  fclose($f);
+}
+
+
