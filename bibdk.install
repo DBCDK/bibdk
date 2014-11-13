@@ -92,7 +92,8 @@ function _bibdk_enable_modules() {
     'advagg_js_compress',
     'advagg_mod',
     'shortcode',
-    'ie6nomore'
+    'ie6nomore',
+    'uuid',
   );
 
   if (!module_enable($module_list)) {
