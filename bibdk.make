@@ -128,7 +128,8 @@ projects[bibdk_cart][download][tag] = 7.x-1.25
 projects[bibdk_frontend][type] = module
 projects[bibdk_frontend][download][type] = git
 projects[bibdk_frontend][download][url] = git@github.com:DBCDK/bibdk_frontend.git
-projects[bibdk_frontend][download][tag] = 7.x-0.64
+; projects[bibdk_frontend][download][tag] = 7.x-0.64
+projects[bibdk_frontend][download][branch] = feature/152_facetbrowser_multiple_choice
 
 projects[bibdk_voxb][type] = module
 projects[bibdk_voxb][download][type] = git
