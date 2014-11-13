@@ -23,6 +23,7 @@ function bibdk_install() {
 //TODO instead of enabling modules as part of the install hook modules should be moved to the .info file as dependecies
 function _bibdk_enable_modules() {
   $module_list = array (
+    'views',
     'bibdk_actions',
     'bibdk_cart',
     'bibdkcaptcha',
@@ -405,3 +406,4 @@ function bibdk_update_7021(&$sandbox) {
     'bibdk_saou',
   ));
 }
+
