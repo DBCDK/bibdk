@@ -196,13 +196,16 @@ function bibdk_sbkopi_manifestation_view($pid, $title = 'You are about to order 
  * @param TingClientAgencyBranch $branch
  */
 function bibdk_sbkopi_messages($pid, TingClientAgencyBranch $branch) {
-  //drupal_get_messages();
-  unset($_SESSION['bibdk_favourites']);
-  if (!$branch->getStateAndUniversityLibraryCopyService()) {
-    drupal_set_message(t('Your library does not have a subscription', array(), array('context' => 'bibdk_sbkopi')), 'warning');
-  }
   if ($delivery = bibdk_sbkopi_delivery_method($pid)) {
-    drupal_set_message(t('delivery_method is !method', array('!method' => $delivery), array('context' => 'bibdk_sbkopi')), 'warning');
+    if (!$branch->getStateAndUniversityLibraryCopyService()) {
+      drupal_set_message(t('sb_no_subscription', array(), array('context' => 'bibdk_sbkopi')), 'warning');
+    }
+    else if ($delivery == 'postal') {
+      drupal_set_message(t('sb_subscription_and_postal', array(), array('context' => 'bibdk_sbkopi')), 'status');
+    }
+    else {
+      drupal_set_message(t('sb_subscription_and_electronic', array(), array('context' => 'bibdk_sbkopi')), 'status');
+    }
   }
   else {
     drupal_set_message(t('This article cannot be ordered', array(), array('context' => 'bibdk_sbkopi')), 'error');
