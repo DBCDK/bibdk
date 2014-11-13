@@ -15,7 +15,7 @@ class BibdkSubjectHierarchySearchWebTestCase extends DrupalWebTestCase {
   }
 
   public function setUp() {
-    parent::setUp('bibdk_subject_hierarchy', 'bibdk_subject_hierarchy_mockup', 'ting_client');
+    parent::setUp('bibdk_subject_hierarchy', 'bibdk_subject_hierarchy_mockup', 'ting_client', 'bibdk_yaz');
     variable_set('ting_search_url', $this->getAbsoluteUrl('bibdk_subject_hierarchy_mockup'));
   }
 
@@ -41,7 +41,7 @@ class BibdkSubjectHierarchySearchWebTestCase extends DrupalWebTestCase {
     $value = $this->ajaxSearch('at bo');
     $this->assertString($value, 'You got 2 results in 1 group');
     $this->assertString($value, 'Subject hierarchy searchresult on at bo');
-    $this->assertString($value, 'Menneske &amp; samfund', 'first part of breadcrumb exists');
+    $this->assertString($value, 'Menneske og samfund', 'first part of breadcrumb exists');
     $this->assertString($value, 'Mennesket i byen og på landet', 'last part of breadcrumb exists');
     $this->assertString($value, 'At bo i storbyen');
     $this->assertString($value, t('A search on %term gives %results results', array('%term' => 'at bo', '%results' => 7515)), 'Results from search are displayed');

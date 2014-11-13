@@ -9,6 +9,21 @@
 function bibdk_openuserstatus_form($form) {
   $response = bibdk_openuserstatus_request();
   $form = bibdk_openuserstatus_get_tables($form, $response);
+  $favourites = bibdk_favourite_get_favourites();
+  $do_print_status = false;
+  
+  // check if user has one library with userdata added
+  foreach ($favourites as $favourite) {
+    $res = $favourite->getUserId();
+    if (!empty($res)) {
+      $do_print_status = True;
+    }
+  }
+  if (!$do_print_status) {
+    $text =  t('label_userstatus_no_favourite', array(), array('context' => 'bibdk_openuserstatus'));
+    $type = 'warning';
+    drupal_set_message($text, $type);
+  }
   return $form;
 }
 

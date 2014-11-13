@@ -1,0 +1,90 @@
+<?php
+/**
+ * @file
+ * Install, update and uninstall functions for the bibdk_saou module.
+ */
+
+/**
+ * Implements hook_ding_entity_fields().
+ */
+function bibdk_saou_ding_entity_fields() {
+  $display_full = array(
+    'default' => array(
+      'label' => 'inline',
+      'type' => 'default',
+    ),
+    'full' => array(
+      'label' => 'inline:',
+      'type' => 'default',
+    ),
+  );
+
+  return array(
+    'bibdk_saou_link' => array(
+      'field' => array(
+        'locked' => FALSE,
+        'storage' => array(
+          'type' => 'virtual_field',
+        ),
+      ),
+      'instance' => array(
+        'ding_entity_type' => 'bibdkManifestation',
+        'label' => t('Link to saou ressources', array(), array('context' => 'bibdk_saou')),
+        'bundle' => 'bibdkManifestation',
+        'entity_type' => 'bibdkManifestation',
+        'display' => $display_full,
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_requirements().
+ */
+function bibdk_saou_requirements($phase) {
+  $requirements = array();
+  if ($phase == 'runtime') {
+    $url = variable_get('open_saou_url');
+    if (!isset($url)) {
+      $requirements['open_saou_url'] = array(
+        'title' => t('SAOU settings'),
+        'value' => l(t('Url to soau webservice must be set in admin'), 'admin/config/serviceclient/settings'),
+        'severity' => REQUIREMENT_ERROR
+      );
+    }
+  }
+
+  return $requirements;
+}
+
+/** Cleanup
+ *
+ * Implements hook_disable().
+ */
+function bibdk_saou_disable() {
+  $fields = bibdk_saou_ding_entity_fields();
+  foreach ($fields as $field_name => $field) {
+    field_delete_instance($field_name);
+    field_delete_field($field_name);
+  }
+}
+
+/**
+* Enable bibdk_saou
+*/
+function bibdk_saou_update_7005() {
+  module_enable(array('bibdk_saou', 'open_saou'));
+}
+
+/**
+* Update fields
+*/
+function bibdk_saou_update_7006() {
+  ding_entity_modules_enabled(array('bibdk_saou'));
+}
+/**
+ * Remove field bibdk_saou_link. the link is implemented with a hook instead
+ */
+/* function bibdk_saou_update_7002() {
+  field_delete_field('bibdk_saou_link');
+}*/

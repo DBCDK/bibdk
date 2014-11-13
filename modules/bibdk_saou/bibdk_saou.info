@@ -1,0 +1,15 @@
+name = Bibliotek.dk - saou
+description = Handle user and object access to ressources
+core = 7.x
+version = 7.x-0.1
+package = Bibliotek.dk
+
+files[] = bibdk_saou.module
+files[] = bibdk_saou.field.inc
+files[] = lib/SaouResponse.inc
+files[] = bibdk_saou.ajax.inc
+
+dependencies[] = open_saou
+dependencies[] = bibdk_saou_field
+
+

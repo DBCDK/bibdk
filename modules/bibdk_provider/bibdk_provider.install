@@ -29,6 +29,13 @@ function _bibdk_provider_increase_module_weight() {
 }
 
 /**
+ * bootstrap string translations
+ */
+function _bibdk_provider_string_translations() {
+  t('Failed to set default settings.', array(), array('context' => 'bibdk_provider'));
+}
+
+/**
  * Implements hook_update_n()
  *
  * Do to the use of nanoSOAP module the URL pointing to the webservice must be
@@ -55,4 +62,9 @@ function bibdk_provider_update_7003(){
   db_query('DELETE FROM {users} u USING {authmap} a WHERE u.uid = a.uid AND a.module = :module', array(':module' => 'ding_user'));
   db_delete('authmap')->condition('module', 'ding_user')->execute();
 
+}
+
+
+function bibdk_provider_update_7004(){
+  _bibdk_provider_string_translations();
 }

@@ -1,0 +1,4 @@
+name = Bibliotek.dk SAOU field
+description = Field info for link to ressources with restricted access
+package = Bibliotek.dk
+core = 7.x
