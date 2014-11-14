@@ -73,7 +73,7 @@ function hook_bibdk_mypage_tabs($max_rows = 3) {
 
 /**
  * Define one or more items that should be accesible in the mypage sidebar menu.
- * Basically this hook should return an array of menu items knwon from
+ * Basically this hook should return an array of menu items known from
  * HOOK_menu() but during the processing of the hook all items will be set
  * with type = MENU_LOCAL_TASK, overriding any type that otherwise would have
  * been set.
