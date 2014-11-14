@@ -30,12 +30,20 @@ function bibdk_openuserstatus_menu() {
     'file' => 'includes/bibdk_openuserstatus.admin.inc',
   );
 
-  $items['user/%/bibdk_openuserstatus'] = array(
-    'title' => 'Userstatus',
+  return $items;
+}
+
+/**
+ * Implements HOOK_mypage_link().
+ *
+ * @return array
+ */
+function bibdk_openuserstatus_mypage_link() {
+  $items['user/%user/bibdk_openuserstatus'] = array(
+    'title' => t('Userstatus'),
     'description' => 'Status for user\'s loans and reservations',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('bibdk_openuserstatus_form'),
-    'type' => MENU_LOCAL_TASK,
     'access callback' => TRUE,
     'access arguments'=> 'user_edit_access',
     'weight' => 10,
