@@ -81,7 +81,7 @@ function hook_bibdk_mypage_tabs($max_rows = 3) {
  * Below is used an example of how the hook is implemented in the bibdk_cart
  * module.
  *
- * At a minimum 'title' shopuld be set as well as the array key should be the
+ * At a minimum 'title' should be set as well as the array key should be the
  * path for the given link item.
  *
  * @return array
