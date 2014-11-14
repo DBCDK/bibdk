@@ -35,61 +35,6 @@ class BibdkCartTestCase extends DrupalWebTestCase {
     $this->_removeProviderUser();
   }
 
-  public function test_view() {
-    $this->_removeProviderUser();
-    // No cart page present
-    module_disable(array('bibdk_cart'));
-    menu_rebuild();
-
-    $this->drupalGet('user');
-    $this->assertNoLink('Cart', 'Cart tab is not present');
-
-    // Test cart page for anonymous users
-    module_enable(array('bibdk_cart'));
-    menu_rebuild();
-
-    $this->drupalGet('user');
-    $this->assertText('Cart', 'Cart tab is present');
-    $this->clickLink('Cart');
-    $this->assertUrl('user/cart', array(), 'Cart page exists');
-    $this->assertText('no_items_in_cart_yet', t('empty cart text present'));
-    // Test link on manifestation
-    $this->drupalGet('work/870970-basis:25294424');
-    $pid = '870970-basis:25294424';
-    $url = $this->getAbsoluteUrl('cart/ajax');
-    $options = array(
-      'query' => array(
-        'pid' => $pid,
-      ),
-    );
-
-    $this->drupalGetAJAX($url, $options);
-    $this->drupalGet('user/cart');
-    $this->assertText('delete_selected');
-    $url = $this->getAbsoluteUrl('cart/ajax/deleteitems');
-
-    $pid_to_remove = '870970-basis:25294424';
-    $options = array(
-      'query' => array(
-        'pids' => $pid_to_remove,
-      ),
-    );
-    $this->drupalGetAJAX($url, $options);
-
-    $this->drupalGet('user/cart');
-
-    // Test logged in user
-    $this->_createProviderUser();
-
-    $edit['name'] = 'good_user';
-    $edit['pass'] = 'pass';
-    $this->drupalPost('user', $edit, 'Log in', array(), array(), 'user-login', NULL);
-
-    $this->assertText('Cart', 'Cart tab is present');
-    $this->clickLink('Cart');
-    $this->assertUrl('user/2/cart', array(), 'Cart page exists');
-  }
-
   /**
    * Test that hook_ting_openformat_actions is correctly implemented
    */
