@@ -58,7 +58,6 @@ function bibdk_favourite_mypage_link() {
     'title' => t('Favoritbiblioteker', array(), array('context' => 'bibdk_frontend')),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('bibdk_favourite_get_favourites_form'),
-    'file' => 'includes/bibdk_favourite.forms.inc',
     'access callback' => 'user_edit_access',
     'access arguments' => array(1),
     'weight' => 20,
