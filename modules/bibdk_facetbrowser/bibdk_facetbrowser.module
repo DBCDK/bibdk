@@ -333,6 +333,13 @@ function _isFacetSet($term_cat, $term_name) {
 }
 
 
+/**
+ * Get selected, or deselected, facets from params. Return arry, or FALSE if none found.
+ *
+ * @param array $facets
+ * @param boolean $is_selected
+ * @return array or FALSE
+ */
 function _isFacetSelected($facets, $is_selected = TRUE) {
 
   $selected = array();
@@ -376,6 +383,11 @@ function _isFacetSelected($facets, $is_selected = TRUE) {
 }
 
 
+/**
+ * Get params from query URI.
+ *
+ * @return array
+ */
 function _getFacets() {
   $facets = & drupal_static('bibdk_facetbrowser_facets');
   if ( !isset($facets) ) {
