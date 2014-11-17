@@ -4,7 +4,6 @@ package = Bibliotek.dk
 core = 7.x
 version = 7.x-0.7
 
-dependencies[] = profile2
 dependencies[] = bibdk_help
 
 files[] = test/bibdk_mypage.test
