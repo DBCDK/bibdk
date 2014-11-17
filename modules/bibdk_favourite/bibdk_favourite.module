@@ -173,6 +173,7 @@ function bibdk_favourite_already_order_library($branch_id) {
       '#value' => t('bibdk_favourite_already_favourite', array(), array('context' => 'bibdk_favourite')),
       '#attributes' => array(
         'class' => array('btn-add-library'),
+        'id' => drupal_clean_css_identifier('already_selected'.$branch_id),
       )
     );
   }
