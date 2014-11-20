@@ -29,8 +29,6 @@ class BibdkHelpdeskTeaserblockTestcase extends DrupalWebTestCase {
     );
     $this->drupalLogin($admin);
 
-    $this->drupalPost('admin/structure/block', array('blocks[bibdk_helpdesk_header_action][region]' => 'content'), t('Save blocks'));
-
     // Test creation of a custom search page.
     $edit = array();
     $helpdesk_submit_url  = $edit['helpdesk_submit_url']          = $this->randomName(8);
@@ -60,12 +58,6 @@ class BibdkHelpdeskTeaserblockTestcase extends DrupalWebTestCase {
       $block_description,
       t('Teaser block description have been updated.')
     );
-
-    $this->drupalLogout();
-    $this->drupalGet('');
-    $this->assertText('Ask Helpdesk', t('Block is present at frontpage'));
-    $this->clickLink(t('Ask Helpdesk'));
-    $this->assertUrl('overlay/helpdesk', array(), t('Teaserblock redirects to "overlay/helpdesk"'));
   }
 }
 

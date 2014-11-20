@@ -42,17 +42,20 @@ function bibdk_searchhistory_menu() {
     'weight' => 10,
   );
 
+  return $items;
+
+}
+
+function bibdk_searchhistory_mypage_link() {
   $items['user/%user/searchhistory'] =  array(
-    'title' => 'Search history',
+    'title' => t('searchhistory', array(), array('context' => 'bibdk_frontend')),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('bibdk_searchhistory_form'),
     'access callback' => 'user_edit_access',
     'access arguments'=> array(1),
-    'type' => MENU_LOCAL_TASK,
-    'weight' => 15,
+    'weight' => 30,
   );
   return $items;
-
 }
 
 /**

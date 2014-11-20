@@ -1,0 +1,33 @@
+<?php
+/**
+ * @file
+ * Field definition is moved to a seperate module in order to be able to disable
+ * modules that implements the field.
+ * see http://drupal.org/node/1285540
+ */
+
+/**
+ * Implements hook_field_info().
+ */
+function bibdk_saou_field_field_info() {
+  return array(
+    'bibdk_saou_link' => array(
+      'label' => t('SOAU link'),
+      'description' => t('Link to ressource with restricted access'),
+      'default_widget' => 'hidden',
+      'default_formatter' => 'bibdk_saou_link_default',
+      'no_ui' => TRUE,
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_load().
+ */
+function bibdk_saou_field_field_load($entity_type, $entities, $field, $instances, $langcode, &$items, $age) {
+  foreach ($entities as $id => $entity) {
+    $items[$id][] = array(
+      'id' => $id,
+    );
+  }
+}

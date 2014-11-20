@@ -1,14 +1,14 @@
 <?php
 
-module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.agencies');
-module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.ajax');
-module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.borchk');
-module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.forms');
-module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.mypage');
-module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.no_favourites');
-module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.shortcodes');
-module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.webservice');
-module_load_include('php', 'ting_agency', 'TingAgency');
+require_once(drupal_get_path('module', 'bibdk_favourite') . '/includes/bibdk_favourite.agencies.inc');
+require_once(drupal_get_path('module', 'bibdk_favourite') . '/includes/bibdk_favourite.ajax.inc');
+require_once(drupal_get_path('module', 'bibdk_favourite') . '/includes/bibdk_favourite.borchk.inc');
+require_once(drupal_get_path('module', 'bibdk_favourite') . '/includes/bibdk_favourite.forms.inc');
+require_once(drupal_get_path('module', 'bibdk_favourite') . '/includes/bibdk_favourite.mypage.inc');
+require_once(drupal_get_path('module', 'bibdk_favourite') . '/includes/bibdk_favourite.no_favourites.inc');
+require_once(drupal_get_path('module', 'bibdk_favourite') . '/includes/bibdk_favourite.webservice.inc');
+require_once(drupal_get_path('module', 'bibdk_favourite') . '/includes/bibdk_favourite.shortcodes.inc');
+require_once(drupal_get_path('module', 'ting_agency') . '/TingAgency.php');
 require_once(drupal_get_path('module', 'bibdk_favourite') . '/lib/FavouriteAgency.php');
 
 /**
@@ -46,14 +46,20 @@ function bibdk_favourite_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  return $items;
+}
+
+/**
+ * Implements HOOK__mypage_link().
+ * @return mixed
+ */
+function bibdk_favourite_mypage_link() {
   $items['user/%user/bibdk_favourite_list'] = array(
-    'title' => 'Favourites',
+    'title' => t('Favoritbiblioteker', array(), array('context' => 'bibdk_frontend')),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('bibdk_favourite_get_favourites_form'),
-    'file' => 'includes/bibdk_favourite.forms.inc',
     'access callback' => 'user_edit_access',
     'access arguments' => array(1),
-    'type' => MENU_LOCAL_TASK,
     'weight' => 20,
   );
 

@@ -1,0 +1,41 @@
+<?php
+
+
+/**
+ * Implements hook_install().
+ */
+function bibdk_cart_install() {
+  bibdk_cart_set_weight();
+}
+
+/**
+ * implements hook_update_
+ * remove linkme field.
+ */
+function bibdk_cart_update_7001() {
+  field_delete_field('bibdk_cart_manifestation_link');
+}
+
+/**
+ * implements hook_update_
+ * alter weight
+ */
+function bibdk_cart_update_7003() {
+  bibdk_cart_set_weight();
+}
+
+/**
+ * Change weight on module
+ * bibdk_cart needs to be called after bibdk_provider in the login process, to
+ * make sure the user is actually logged in when trying to get the cart
+ */
+function bibdk_cart_set_weight() {
+  db_update('system')
+    ->fields(array(
+      'weight' => -1,
+    ))
+    ->condition('type', 'module')
+    ->condition('name', 'bibdk_cart')
+    ->execute();
+
+}

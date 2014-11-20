@@ -7,6 +7,7 @@
  */
 function bibdk_actions_get_print_actions($actions) {
   $actions['print'] = array(
+    '#action_type' => 'primary',
     '#theme' => 'link',
     '#text' => t('print_manifestation', array(), array('context' => 'bibdk_actions')),
     '#path' => 'print/cart',
