@@ -17,7 +17,7 @@ class BibdkOpenuserstatusWebTest extends DrupalWebTestCase {
   }
 
   public function setUp() {
-    parent::setUp('bibdk_openuserstatus', 'openuserstatus_webservice_mockup', 'openagency_webservice_mockup', 'bibdk_provider', 'bibdk_webservice');
+    parent::setUp('bibdk_openuserstatus', 'openuserstatus_webservice_mockup', 'openagency_webservice_mockup', 'bibdk_provider', 'bibdk_webservice', 'bibdk_mypage');
     variable_set('bibdk_provider_webservice_url', $this->getAbsoluteUrl('bibdk_webservice'));
     variable_set('bibdk_provider_security_code', 'securityCode');
     variable_set('openuserstatus_url', $this->getAbsoluteUrl('openuserstatus_webservice_mockup'));

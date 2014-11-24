@@ -58,27 +58,6 @@ class BibdkOpenuserstatusTest extends DrupalWebTestCase {
     $this->test_bibdk_openuserstatus_get_favourites_array();
     $this->test_bibdk_openuserstatus_get_pickup_agencies();
     $this->test_bibdk_openuserstatus_renew_marked_submit();
-
-    $this->testUserMenu();
-  }
-
-
-  private function testUserMenu() {
-
-    $this->_createProviderUser();
-    // we have to submit the user_login_block form to log in as provider user
-    $edit['name'] = 'dummy@dbc.dk';
-    $edit['pass'] = 'secretPassword';
-    $this->drupalPost('user', $edit, 'Log in', array(), array(), 'user-login', NULL);
-
-    //Assert that search history is present
-    $this->drupalGet('user');
-    $this->assertLink('Userstatus');
-    $this->clickLink('Userstatus');
-    $this->assertUrl('user/2/bibdk_openuserstatus');
-    //clean up
-    $this->_removeProviderUser();
-
   }
 
   private function _createProviderUser() {

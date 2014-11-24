@@ -1,0 +1,171 @@
+<?php
+
+class BibdkCartUnitTestCase extends DrupalUnitTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => t('Bibdk Cart Unittests'),
+      'description' => t('Unit testing bibdk_cart'),
+      'group' => t('Bibliotek.dk - Cart'),
+    );
+  }
+
+  public function setUp() {
+    parent::setUp();
+  }
+
+  // Testing methods in bibdk_cart.webservice.inc
+
+  /**
+   * Testing method bibdk_cart_webservice_responce_xpath()
+   */
+  public function test_bibdk_cart_parse_cart_count_response() {
+    module_load_include('inc', 'bibdk_cart', 'includes/bibdk_cart.webservice');
+    $response = drupal_json_decode(file_get_contents(drupal_get_path('module', 'bibdk_cart') . '/test/responses/get_cart_count_response.json'));
+    $xpath = bibdk_cart_webservice_responce_xpath($response['response']);
+    $result = bibdk_cart_parse_cart_count_response($xpath);
+
+    $this->assertTrue(is_array($result), 'Got array');
+    $this->assertTrue(array_key_exists('cartCount', $result), 'Array contains a key named cartCount');
+    $this->assertTrue(is_array($result), 'Got array');
+  }
+
+  //  Testing methods in bibdk_cart.module
+
+  public function test_bibdk_cart_get_pager() {
+    module_load_include('module', 'bibdk_cart');
+
+    //one page in total - current page is first page
+    $result = _bibdk_cart_get_pager(1, 1);
+    $expected = array(
+      '#theme' => 'html_tag',
+      '#tag' => 'div',
+      '#value' => array(
+        'first_page' => 1,
+        'last_page' => 1,
+        'current_page' => 1,
+        'total_num_pages' => 1,
+      ),
+      '#attributes' => array(
+        'id' => array(
+          0 => 'bibdk-cart-pager',
+        ),
+      ),
+    );
+    $this->assertEqual($result, $expected, 'Arrays are itentical');
+
+    //20 pages in total - current page is first page
+    $result = _bibdk_cart_get_pager(20, 1);
+    $expected = array(
+      '#theme' => 'html_tag',
+      '#tag' => 'div',
+      '#value' => array(
+        'first_page' => 1,
+        'last_page' => 11,
+        'current_page' => 1,
+        'total_num_pages' => 20,
+      ),
+      '#attributes' => array(
+        'id' => array(
+          0 => 'bibdk-cart-pager',
+        ),
+      ),
+    );
+    $this->assertEqual($result, $expected, 'Arrays are itentical');
+
+    //20 pages in total - current page is 5th page
+    $result = _bibdk_cart_get_pager(20, 5);
+    $expected = array(
+      '#theme' => 'html_tag',
+      '#tag' => 'div',
+      '#value' => array(
+        'first_page' => 1,
+        'last_page' => 11,
+        'current_page' => 5,
+        'total_num_pages' => 20,
+      ),
+      '#attributes' => array(
+        'id' => array(
+          0 => 'bibdk-cart-pager',
+        ),
+      ),
+    );
+    $this->assertEqual($result, $expected, 'Arrays are itentical');
+
+    //20 pages in total - current page is 10th page
+    $result = _bibdk_cart_get_pager(20, 10);
+    $expected = array(
+      '#theme' => 'html_tag',
+      '#tag' => 'div',
+      '#value' => array(
+        'first_page' => 5,
+        'last_page' => 15,
+        'current_page' => 10,
+        'total_num_pages' => 20,
+      ),
+      '#attributes' => array(
+        'id' => array(
+          0 => 'bibdk-cart-pager',
+        ),
+      ),
+    );
+    $this->assertEqual($result, $expected, 'Arrays are itentical');
+
+    //20 pages in total - current page is 15th page
+    $result = _bibdk_cart_get_pager(20, 15);
+    $expected = array(
+      '#theme' => 'html_tag',
+      '#tag' => 'div',
+      '#value' => array(
+        'first_page' => 10,
+        'last_page' => 20,
+        'current_page' => 15,
+        'total_num_pages' => 20,
+      ),
+      '#attributes' => array(
+        'id' => array(
+          0 => 'bibdk-cart-pager',
+        ),
+      ),
+    );
+    $this->assertEqual($result, $expected, 'Arrays are itentical');
+
+    //20 pages in total - current page is 20th page
+    $result = _bibdk_cart_get_pager(20, 20);
+    $expected = array(
+      '#theme' => 'html_tag',
+      '#tag' => 'div',
+      '#value' => array(
+        'first_page' => 10,
+        'last_page' => 20,
+        'current_page' => 20,
+        'total_num_pages' => 20,
+      ),
+      '#attributes' => array(
+        'id' => array(
+          0 => 'bibdk-cart-pager',
+        ),
+      ),
+    );
+    $this->assertEqual($result, $expected, 'Arrays are itentical');
+
+    //Total count of pages is lover than current page
+    $result = _bibdk_cart_get_pager(1, 20);
+    $expected = array(
+      '#theme' => 'html_tag',
+      '#tag' => 'div',
+      '#value' => array(
+        'first_page' => 29,
+        'last_page' => 1,
+        'current_page' => 20,
+        'total_num_pages' => 1,
+      ),
+      '#attributes' => array(
+        'id' => array(
+          0 => 'bibdk-cart-pager',
+        ),
+      ),
+    );
+    $this->assertEqual($result, $expected, 'Arrays are itentical');
+  }
+}

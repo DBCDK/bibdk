@@ -14,6 +14,23 @@ function bibdk_mypage_menu() {
     'file' => 'bibdk_mypage.admin.inc',
   );
 
+  $items += bibdk_mypage_get_mypage_sidebar_links();
+
+  return $items;
+}
+
+/**
+ * Invoke HOOK_mypage_link() and process all links returned.
+ *
+ * @return array
+ */
+function bibdk_mypage_get_mypage_sidebar_links(){
+  $items = module_invoke_all('mypage_link');
+
+  foreach($items as &$item){
+    $item['type'] = MENU_LOCAL_TASK;
+  }
+
   return $items;
 }
 

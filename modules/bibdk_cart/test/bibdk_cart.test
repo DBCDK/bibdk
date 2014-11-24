@@ -1,0 +1,273 @@
+<?php
+
+class BibdkCartTestCase extends DrupalWebTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => t('Bibdk Cart test'),
+      'description' => t('Test Cart functionality'),
+      'group' => t('Bibliotek.dk - Cart'),
+    );
+  }
+
+  public function setUp() {
+    module_enable(array('bibdk_webservice'));
+    menu_rebuild();
+
+    parent::setUp(array(
+      'ting_openformat',
+      'bibdk_cart',
+      'ding_provider',
+      'bibdk_provider',
+      'bibdk_webservice'
+    ));
+    variable_set('ting_search_url', 'http://bibdk-prod-ws.dbc.dk/opensearch/3.1/');
+    variable_set('bibdk_provider_webservice_url', $this->getAbsoluteUrl('bibdk_webservice'));
+    variable_set('bibdk_provider_security_code', 'securityCode');
+    variable_set('search_active_modules', array('ting_openformat' => 'ting_openformat'));
+    variable_set('search_default_module', 'ting_openformat');
+    variable_set('search_history_accepted_params', 'dkcclterm,term');
+    user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array(
+      'access content',
+      'search content'
+    ));
+    menu_rebuild();
+    $this->_removeProviderUser();
+  }
+
+  /**
+   * Test that hook_ting_openformat_actions is correctly implemented
+   */
+  public function _testActionHook() {
+    // confim reservation button is not present
+    $this->drupalGet('work/870970-basis:25294424');
+    $this->assertText(t('add_item_to_cart'));
+
+    // activate reservation module
+    module_disable(array('bibdk_cart'));
+    menu_rebuild();
+
+    // confim reservation link is present
+    $this->drupalGet('work/870970-basis:25294424');
+    $this->assertNoText(t('add_item_to_cart'));
+  }
+
+  public function testWebserviceMethods() {
+    BibdkCart::emptyCart();
+    // Fake provider user
+    #$this->_createProviderUser();
+    //Reset cart count
+    bibdk_webservice_request(TRUE);
+    // Create dummy provider user
+    $user = $this->_createProviderUser();
+    // Create dummy anonymous user
+    $anonymous = new stdClass();
+    $anonymous->uid = 0;
+
+    //Get cart from ding_provider user
+    $result = _bibdk_cart_get_cart_on_webservice($user);
+    $expected = 6;
+    $this->assertTrue(count($result) == $expected, t('%returned number on elements in returned for webservice. %expected expected', array(
+      '%returned' => count($result),
+      '%expected' => $expected
+    )));
+
+    //Get cart from anonymous user (no results)
+    $result = _bibdk_cart_get_cart_on_webservice($anonymous);
+    $this->assertFalse($result, 'No results from webservice');
+
+    // add Content provider user
+    $result = _bibdk_cart_add_content_webservice('123456789', $user);
+    $this->assertEqual($result, 59, t('content added with id %id', array('%id' => $result)));
+
+    // add Content anonymous user
+    $result = _bibdk_cart_add_content_webservice('123456789', $anonymous);
+    $this->assertNotEqual($result['status'], 'success', 'no add content success');
+
+    // remove Content provider user
+    $result = _bibdk_cart_remove_content_webservice('123456789', $user);
+    $this->assertEqual($result['status'], 'success', 'remove content success');
+
+    // remove Content anonymous user
+    $result = _bibdk_cart_remove_content_webservice('123456789', $anonymous);
+    $this->assertNotEqual($result['status'], 'success', 'no remove content success');
+
+    $this->_removeProviderUser();
+  }
+
+  public function testBibdkCartObjectNoUser() {
+    module_load_include('php', 'bibdk_cart', 'lib/BibdkCartElement');
+    module_load_include('php', 'bibdk_cart', 'lib/BibdkCart');
+    // create objects
+    $object_1 = new BibdkCartElement();
+    $object_1->setElement('test1');
+    $object_2 = new BibdkCartElement();
+    $object_2->setElement('test2');
+    $object_3 = new BibdkCartElement();
+    $object_3->setElement('test3');
+
+    // empty cart
+    BibdkCart::emptyCart();
+    $result = BibdkCart::getAll();
+    $expected_result = array();
+    $this->assertEqual($result, $expected_result, 'No results');
+
+    // test add
+    BibdkCart::add($object_1);
+    BibdkCart::add($object_2);
+    BibdkCart::add($object_3);
+    $result = BibdkCart::getAll();
+    $this->assertEqual($result['test1']->getElement(), 'test1', 'object 1 added');
+    $this->assertEqual($result['test2']->getElement(), 'test2', 'object 2 added');
+    $this->assertEqual($result['test3']->getElement(), 'test3', 'object 3 added');
+
+    // test remove
+    BibdkCart::remove('test1');
+    BibdkCart::remove('test2');
+    $result = BibdkCart::getAll();
+    $this->assertEqual(count($result), 1, 'objects removed');
+
+    // test checkInCart
+    $this->assertTrue(BibdkCart::checkInCart('test3'), 'testObject 3 exists in card');
+    $this->assertFalse(BibdkCart::checkInCart('test1'), 'testObject 1 does not exists in card');
+
+    // test status update
+    $this->assertEqual($object_1->getStatus(), array(), 'No status');
+    $object_1->setStatus('reservation_complete');
+    $this->assertEqual($object_1->getStatus(), array('reservation_complete' => 'reservation_complete'), 'status updated');
+
+    // test empty cart
+    BibdkCart::emptyCart();
+    $result = BibdkCart::getAll();
+    $expected_result = array();
+    $this->assertEqual($result, $expected_result);
+
+  }
+
+  /**
+   * Tests the output data of bibdk_adhl.ajax.inc
+   */
+  public function testAjaxResponse() {
+    BibdkCart::emptyCart();
+    //add to cart
+    $pid = '870970-basis:29225605';
+    $url = $this->getAbsoluteUrl('cart/ajax');
+    $options = array(
+      'query' => array(
+        'pid' => $pid,
+      ),
+    );
+    $result = $this->drupalGetAJAX($url, $options);
+    $this->assertEqual($result['pid'], $pid, 'Received pid correctly');
+    $this->assertEqual($result['cartcount'], 1, 'Correct amount in cart: 1');
+    $this->assertEqual($result['saved'], 1, 'Correctly saved in cart');
+    $this->assertEqual($result['classid'], strtolower(strtr($pid, array(':' => '-'))), 'Correct classid specified');
+
+    //remove from cart
+    $pid = '870970-basis:29225605';
+    $url = $this->getAbsoluteUrl('cart/ajax');
+    $options = array(
+      'query' => array(
+        'pid' => $pid,
+      ),
+    );
+    $result = $this->drupalGetAJAX($url, $options);
+    $this->drupalGetAJAX($url, $options);
+    $this->assertEqual($result['pid'], $pid, 'Received pid correctly');
+    $this->assertEqual($result['cartcount'], 0, 'Correct amount in cart: 0');
+    $this->assertEqual($result['saved'], 0, 'Correctly removed from cart');
+    $this->assertEqual($result['classid'], strtolower(strtr($pid, array(':' => '-'))), 'Correct classid specified');
+  }
+
+  /**
+   * Tests the functionality for deleteing several items in the cart view
+   */
+  public function testPrimaryActionsAjaxResponse() {
+    //adding items to cart prior to actual test
+    $_SESSION['bibdk_cart'] = NULL;
+
+    $pids = array(
+      '820030-katalog:804671',
+      '870970-basis:06042457',
+      '870970-basis:07121377',
+      '870970-basis:06343570'
+    );
+
+    foreach ($pids as $pid) {
+      $url = $this->getAbsoluteUrl('cart/ajax');
+      $options = array(
+        'query' => array(
+          'pid' => $pid,
+        ),
+      );
+      $this->drupalGetAJAX($url, $options);
+    }
+
+    //deleting one single item
+    $url = $this->getAbsoluteUrl('cart/ajax/deleteitems');
+    $pid_to_remove = '870970-basis:06343570';
+    $options = array(
+      'query' => array(
+        'pids' => $pid_to_remove,
+      ),
+    );
+
+    $result = $this->drupalGetAJAX($url, $options);
+    $this->assertEqual($result['cartcount'], 3, t('Correct amount in cart found %result, should be %ideal', array(
+      '%result' => $result['cartcount'],
+      '%ideal' => '3'
+    )));
+
+    //deleting three items in a row
+    $url = $this->getAbsoluteUrl('cart/ajax/deleteitems');
+    $pids_to_remove = array(
+      '820030-katalog:804671',
+      '870970-basis:06042457',
+      '870970-basis:07121377'
+    );
+    $options = array(
+      'query' => array(
+        'pids' => $pids_to_remove,
+      ),
+    );
+
+    $result = $this->drupalGetAJAX($url, $options);
+    $this->assertEqual($result['cartcount'], 0, t('Correct amount in cart found %result, should be %ideal', array(
+      '%result' => $result['cartcount'],
+      '%ideal' => '0'
+    )));
+  }
+
+  private function _createProviderUser() {
+    $name = 'good_user';
+    $pass = 'pass';
+    $email = 'good_user';
+    bibdk_provider_user_create_account($name, $pass);
+    db_insert('authmap')->fields(array(
+      'uid' => 2,
+      'module' => 'ding_user',
+      'authname' => $name
+    ))->execute();
+
+    $user = new stdClass();
+    $user->uid = 2;
+    $user->name = $name;
+    $user->mail = $email;
+    $user->roles = array();
+    ding_user_save_creds(array(
+      'creds' => array(
+        'name' => $name,
+        'pass' => $pass,
+      )
+    ), $user);
+
+    return $user;
+  }
+
+  private function _removeProviderUser() {
+    $name = 'good_user';
+    db_delete('authmap')->condition('authname', $name)->execute();
+    bibdk_provider_user_delete_account($name);
+  }
+
+}

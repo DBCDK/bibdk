@@ -15,51 +15,51 @@ function bibdk_helpdesk_admin() {
   drupal_add_css(drupal_get_path('module', 'bibdk_helpdesk') . '/css/bibdk_helpdesk.css');
 
   $form['bibdk_helpdesk'] = array(
-    '#type'         => 'fieldset',
-    '#title'        => t('Bibliotek.dk helpdesk text'),
-    '#tree'         => TRUE,
-    '#theme'        => 'bibdk_helpdesk-admin-form',
+    '#type' => 'fieldset',
+    '#title' => t('Bibliotek.dk helpdesk text'),
+    '#tree' => TRUE,
+    '#theme' => 'bibdk_helpdesk-admin-form',
   );
 
   $form['bibdk_helpdesk']['title'] = array(
-    '#type'           => 'textfield',
-    '#title'          => t('Title'),
-    '#title_display'  => 'before',
-    '#default_value'  => check_plain($bibdk_helpdesk_settings['title']),
+    '#type' => 'textfield',
+    '#title' => t('Title'),
+    '#title_display' => 'before',
+    '#default_value' => check_plain($bibdk_helpdesk_settings['title']),
   );
 
   $form['bibdk_helpdesk']['link'] = array(
-    '#type'           => 'textfield',
-    '#title'          => t('Link'),
-    '#title_display'  => 'before',
-    '#default_value'  => check_plain($bibdk_helpdesk_settings['link']),
+    '#type' => 'textfield',
+    '#title' => t('Link'),
+    '#title_display' => 'before',
+    '#default_value' => check_plain($bibdk_helpdesk_settings['link']),
   );
 
   $form['bibdk_helpdesk']['description'] = array(
-    '#type'           => 'textfield',
-    '#title'          => t('Description'),
-    '#title_display'  => 'before',
-    '#default_value'  => check_plain($bibdk_helpdesk_settings['description']),
+    '#type' => 'textfield',
+    '#title' => t('Description'),
+    '#title_display' => 'before',
+    '#default_value' => check_plain($bibdk_helpdesk_settings['description']),
   );
 
   $form['bibdk_helpdesk_image']['image'] = array(
-    '#type'         => 'fieldset',
-    '#title'        => t('Bibliotek.dk helpdesk image'),
-    '#tree'         => TRUE,
+    '#type' => 'fieldset',
+    '#title' => t('Bibliotek.dk helpdesk image'),
+    '#tree' => TRUE,
   );
 
   $form['bibdk_helpdesk_image']['image']['normal']['height'] = array(
-    '#type'           => 'textfield',
-    '#title'          => t('height'),
-    '#title_display'  => 'before',
-    '#default_value'  => check_plain($bibdk_helpdesk_settings['image']['normal']['height']),
+    '#type' => 'textfield',
+    '#title' => t('height'),
+    '#title_display' => 'before',
+    '#default_value' => check_plain($bibdk_helpdesk_settings['image']['normal']['height']),
   );
 
   $form['bibdk_helpdesk_image']['image']['normal']['width'] = array(
-    '#type'           => 'textfield',
-    '#title'          => t('width'),
-    '#title_display'  => 'before',
-    '#default_value'  => check_plain($bibdk_helpdesk_settings['image']['normal']['width']),
+    '#type' => 'textfield',
+    '#title' => t('width'),
+    '#title_display' => 'before',
+    '#default_value' => check_plain($bibdk_helpdesk_settings['image']['normal']['width']),
   );
 
   $form['helpdesk_url'] = array(
@@ -90,8 +90,6 @@ function bibdk_helpdesk_admin() {
 
 }
 
-
-
 /**
  * Submit handler for bibdk_helpdesk_admin();
  */
@@ -103,8 +101,8 @@ function bibdk_helpdesk_admin_submit($form, &$form_state) {
     'link' => check_plain($form_state['values']['bibdk_helpdesk']['link']),
     'image' => array(
       'normal' => array(
-        'height' => (int)$form_state['values']['image']['normal']['height'],
-        'width' => (int)$form_state['values']['image']['normal']['width'],
+        'height' => (int) $form_state['values']['image']['normal']['height'],
+        'width' => (int) $form_state['values']['image']['normal']['width'],
       ),
     ),
   );
