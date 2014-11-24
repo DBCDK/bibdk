@@ -121,7 +121,7 @@ projects[bibdk_behaviour][download][tag] = 7.x-0.8
 projects[bibdk_frontend][type] = module
 projects[bibdk_frontend][download][type] = git
 projects[bibdk_frontend][download][url] = git@github.com:DBCDK/bibdk_frontend.git
-projects[bibdk_frontend][download][tag] = 7.x-0.66
+projects[bibdk_frontend][download][tag] = 7.x-0.67
 
 projects[bibdk_voxb][type] = module
 projects[bibdk_voxb][download][type] = git
