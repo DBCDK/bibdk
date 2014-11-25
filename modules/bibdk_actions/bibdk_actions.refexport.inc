@@ -110,6 +110,7 @@ function bibdk_actions_get_refexport_actions($actions) {
   );
 
   $actions['export'] = array(
+    '#action_type' => 'secondary',
     '#theme' => 'links',
     '#links' => bibdk_actions_refexport_links(NULL, $attributes),
     '#weight' => 0,

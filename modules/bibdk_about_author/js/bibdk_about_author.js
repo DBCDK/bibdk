@@ -3,12 +3,14 @@
     /** Insert about_author results */
     Drupal.addAboutAuthor = function (about_author) {
         if ( about_author.error ) {
-          $('.about-author-load[data-query=' + about_author.query + ']').parent().parent().find('.toggle-text').html(about_author.toggle_text);
-          $('.about-author-load[data-query=' + about_author.query + ']').replaceWith(about_author.error_msg);
+          var element = $('.about-author-load[data-query="' + about_author.query + '"]');
+          element.parent().parent().find('.toggle-text').html(about_author.toggle_text);
+          element.replaceWith(about_author.error_msg);
         }
         if ( about_author.list ) {
-          $('.about-author-load[data-query=' + about_author.query + ']').replaceWith(about_author.list);
-          $('.about-author-more[data-query=' + about_author.query + ']').removeClass('visuallyhidden');
+          var element = $('.about-author-load[data-query="' + about_author.query + '"]');
+          element.replaceWith(about_author.list);
+          element.removeClass('visuallyhidden');
         }
     },
 

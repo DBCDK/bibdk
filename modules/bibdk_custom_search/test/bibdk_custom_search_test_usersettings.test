@@ -13,7 +13,7 @@ class BibdkCustomSearchUsersettingsTestCase extends DrupalWebTestCase {
 
   public function setUp() {
 
-    parent::setUp('bibdk_usersettings', 'bibdk_custom_search', 'bibdk_test_provider', 'ding_provider');
+    parent::setUp('bibdk_usersettings', 'bibdk_custom_search', 'bibdk_test_provider', 'ding_provider', 'bibdk_mypage');
     variable_set('bibdk_provider_webservice_url', 'http://guesstimate.dbc.dk/~mmj/OpenUserinfo/tags/1.4/server.php');
     variable_set('bibdk_provider_security_code', 'testhest');
 
