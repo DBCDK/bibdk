@@ -123,11 +123,6 @@ projects[bibdk_frontend][download][type] = git
 projects[bibdk_frontend][download][url] = git@github.com:DBCDK/bibdk_frontend.git
 projects[bibdk_frontend][download][tag] = 7.x-0.67
 
-projects[bibdk_voxb][type] = module
-projects[bibdk_voxb][download][type] = git
-projects[bibdk_voxb][download][url] = git@github.com:DBCDK/bibdk_voxb.git
-projects[bibdk_voxb][download][tag] = 7.x-0.4
-
 projects[microcurl][type] = module
 projects[microcurl][download][type] = git
 projects[microcurl][download][url] = git@github.com:DBCDK/microcurl.git
