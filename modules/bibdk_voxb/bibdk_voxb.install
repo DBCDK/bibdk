@@ -1,0 +1,113 @@
+<?php
+/**
+ * Created by IntelliJ IDEA.
+ * User: pjo
+ * Date: 5/26/14
+ * Time: 12:24 PM
+ */
+
+/** Implements hook_install
+ *
+ */
+function bibdk_voxb_install() {
+  _bibdk_voxb_increase_module_weight();
+  _bibdk_voxb_enable_features();
+  _bibdk_voxb_translatables();
+  _bibdk_voxb_set_variable();
+  _bibdk_voxb_set_captcha();
+}
+
+function _bibdk_voxb_set_variable() {
+  variable_set('node_submitted_blog', 0);
+}
+
+/** Increase weight of voxb module. It alters the blog_node view, and thus
+ * must be called AFTER blog module
+ *
+ */
+function _bibdk_voxb_increase_module_weight() {
+  db_update('system')->fields(array(
+      'weight' => 10,
+    ))->condition('type', 'module')->condition('name', 'bibdk_voxb')->execute();
+}
+
+/** enable module(s) that define blog-features
+ *
+ */
+function _bibdk_voxb_enable_features() {
+  module_enable(array('bibdk_voxb_blog_fields'));
+}
+
+/** Implements hook_update_N
+ *
+ */
+function bibdk_voxb_update_7001() {
+  module_enable(array('bibdk_voxb_blog_fields'));
+}
+
+/**
+ * New translatable string placeholders
+ */
+function bibdk_voxb_update_7002(&$sandbox) {
+  _bibdk_voxb_translatables();
+}
+
+/** Implements hook_update_N
+ * hide author name and date from blog-entry
+ */
+function bibdk_voxb_update_7005(&$sandbox) {
+  _bibdk_voxb_set_variable();
+}
+
+/** Implements hook_update_N
+ * set captcha on bibdk_voxb_offensive form
+ */
+function bibdk_voxb_update_7009(&$sandbox) {
+  _bibdk_voxb_set_captcha();
+}
+
+/**
+* Implements hook_update_N
+* Enable blog module
+*/
+function bibdk_voxb_update_7011(&$sandbox) {
+  module_enable(array('blog','bibdk_voxb_blog_fields'));
+
+}
+
+/**
+ * set captcha on bibdk_voxb_offensive form
+ */
+function _bibdk_voxb_set_captcha() {
+  if (module_exists('captcha')) {
+    if(!function_exists('captcha_set_form_id_setting')) {
+      $path = drupal_get_path('module', 'captcha');
+      $path .= '/captcha.inc';
+      require_once($path);
+    }
+    captcha_set_form_id_setting('bibdk_voxb_offensive_form', 'default');
+  }
+}
+
+/**
+ * Translatable string placeholders
+ */
+function _bibdk_voxb_translatables() {
+  // context: bibdk_voxb
+  t('voxb_add_review_title', array(), array('context' => 'bibdk_voxb'));
+  t('voxb_edit_review_title', array(), array('context' => 'bibdk_voxb'));
+  t('accept_review_terms_message', array(), array('context' => 'bibdk_voxb'));
+  t('accept_review_terms_validation_message', array(), array('context' => 'bibdk_voxb'));
+  t('bibdk_voxb_review_delete_succes', array(), array('context' => 'bibdk_voxb'));
+
+  // context: bibdk_voxb:error
+  t('voxb_user_id_initialize_error', array(), array('context' => 'bibdk_voxb:error')); // user id not found, and create user failed
+  t('voxb_review_no_record_id_set', array(), array('context' => 'bibdk_voxb:error')); // Review validation: Record id is missing
+  t('voxb_review_voxb_id_error', array(), array('context' => 'bibdk_voxb:error')); // Review validation: voxb id is missing
+  t('voxb_review_useridentifiervalue_error', array(), array('context' => 'bibdk_voxb:error')); // Review validation: useridentifiervalue is missing
+  t('voxb_review_body_error', array(), array('context' => 'bibdk_voxb:error')); // Review validation: Body is empty
+  t('Title field is required.', array(), array('context' => 'bibdk_voxb:error')); // Review validation: Title is empty
+  t('bibdk_voxb_update_data_error', array(), array('context' => 'bibdk_voxb:error')); // Review wasn't saved at webservice
+  t('bibdk_voxb_review_delete_error', array(), array('context' => 'bibdk_voxb:error')); // Delete review failed
+}
+

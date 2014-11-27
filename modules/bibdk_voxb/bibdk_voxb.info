@@ -1,0 +1,17 @@
+name = VoxB module
+description = Implementation of VoxB for bibliotek.dk.
+core = 7.x
+package = bibliotek.dk
+version = 7.x-0.4
+project = bibdk_voxb
+
+; class definitions
+files[] = lib/bibdkVoxbUser.php
+files[] = test/bibdkVoxbWeb.test
+files[] = test/bibdkVoxbUnit.test
+files[] = lib/bibdkVoxbException.php
+
+dependencies[] = open_voxb
+dependencies[] = bibdk_provider
+dependencies[] = blog
+dependencies[] = bibdk_voxb_blog_fields

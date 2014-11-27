@@ -1,0 +1,13 @@
+name = bibdk_voxb_blog_fields
+description = additional fields on blog node
+core = 7.x
+package = Features
+php = 5.2.4
+version = 7.x-1.0
+project = bibdk_voxb_blog_fields
+dependencies[] = features
+features[features_api][] = api:1
+features[field][] = node-blog-body
+features[field][] = node-blog-field_voxb_alias
+features[field][] = node-blog-field_voxb_id
+features[field][] = node-blog-field_voxb_useridentifiervalue
