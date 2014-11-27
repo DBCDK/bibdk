@@ -7,7 +7,6 @@ project = bibdk_voxb
 
 ; class definitions
 files[] = lib/bibdkVoxbUser.php
-files[] = test/bibdkVoxbWeb.test
 files[] = test/bibdkVoxbUnit.test
 files[] = lib/bibdkVoxbException.php
 
