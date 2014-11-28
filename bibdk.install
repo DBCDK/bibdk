@@ -408,3 +408,13 @@ function bibdk_update_7021(&$sandbox) {
   ));
 }
 
+/**
+ * Enable bibdk_custom_header_block
+ */
+function bibdk_update_7022(&$sandbox) {
+  module_enable(array(
+    'bibdk_custom_header_block',
+  ));
+}
+
+
