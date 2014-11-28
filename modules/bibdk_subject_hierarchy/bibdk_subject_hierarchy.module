@@ -157,13 +157,22 @@ function bibdk_subject_hierarchy_get_block_content($row_to_show = array()) {
   $rendered = array(
     '#theme' => 'bibdk_subject_hierarchy',
     '#rows' => $rows,
-    '#header' => t('HEADER_BIBDK_SUBJECT_HIERARCHY', array(), array('context' => 'bibdk_subject_hierarchy')),
-    '#searchfield' => drupal_get_form('bibdk_subject_hierarchy_searchfield_form'),
+    //'#header' => t('HEADER_BIBDK_SUBJECT_HIERARCHY', array(), array('context' => 'bibdk_subject_hierarchy')),
+    //'#searchfield' => drupal_get_form('bibdk_subject_hierarchy_searchfield_form'),
     '#helptext' => t('SUBJECT_HIERARCHY_HELPTEXT', array(), array('context' => 'bibdk_subject_hierarchy')),
   );
 
   return $rendered;
+}
 
+/**
+ * callback method for bibdk_custom_header_block
+ *
+ * @see bibdk_custom_header_block/plugins/content_types/custom_header_block.inc
+ * @return array|mixed
+ */
+function bibdk_subject_hierarchy_get_searchfield(){
+  return drupal_get_form('bibdk_subject_hierarchy_searchfield_form');
 }
 
 /**
