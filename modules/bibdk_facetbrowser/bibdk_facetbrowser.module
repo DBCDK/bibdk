@@ -230,7 +230,7 @@ function bibdk_facetbrowser_form($form, &$form_state, $facets = FALSE, $search =
           $form[$facet->name][$element_name] = array(
             '#type' => 'checkboxes',
             '#theme' => 'facet_term_names',
-            '#options' => $selected + $not_selected,
+            '#options' => ( $selected ) ? $selected : $not_selected,
             '#default_value' => $default_values,
           );
 
