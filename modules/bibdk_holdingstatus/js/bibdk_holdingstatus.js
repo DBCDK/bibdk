@@ -2,8 +2,8 @@
 
     /** Insert holding status */
     Drupal.addHoldingStatus = function (holdingstatus) {
-        $('.holding-status-load[data-pid=' + holdingstatus.pid + '][data-lid=' + holdingstatus.lid + ']').parent('a').attr('href',holdingstatus.href);
-        $('.holding-status-load[data-pid=' + holdingstatus.pid + '][data-lid=' + holdingstatus.lid + ']').replaceWith(holdingstatus.data);
+        $('.holding-status-load[data-pid="' + holdingstatus.pid + '"][data-lid="' + holdingstatus.lid + '"]').parent('a').attr('href',holdingstatus.href);
+        $('.holding-status-load[data-pid="' + holdingstatus.pid + '"][data-lid="' + holdingstatus.lid + '"]').replaceWith(holdingstatus.data);
     },
     Drupal.loadHoldingStatus = function(element){
         var pid = $(element).attr('data-pid');
@@ -29,7 +29,7 @@
     }
     
     Drupal.setFavouriteHoldings = function(data){
-        var div = $('.bibdk-holdings-favourites[data-pid=' + data.pid + ']');
+        var div = $('.bibdk-holdings-favourites[data-pid="' + data.pid + '"]');
         if(data.html){
         var html = data.html.replace('<!--','');
         html = html.replace('-->',''); 
