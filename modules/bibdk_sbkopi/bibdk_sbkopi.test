@@ -17,7 +17,7 @@ class bibdkSbCopyWebTestCase extends DrupalWebTestCase {
   /**
    * Info for this test case
    */
-  public function getInfo() {
+  public static function getInfo() {
     return array(
       'name' => 'bibliotek.dk - webtest case',
       'description' => t('Test that sb_kopi form is show correctly'),

@@ -10,7 +10,7 @@ class BibdkSearchHistoryTestCase extends DrupalWebTestCase {
   /**
    *Info for this test case
    */
-  public function getInfo() {
+  public static function getInfo() {
     return array(
       'name' => 'Bibdk Search History functionality',
       'description' => t('Test the functionality of Bibdk Search History'),
