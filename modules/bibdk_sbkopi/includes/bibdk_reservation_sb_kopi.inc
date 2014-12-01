@@ -2,10 +2,13 @@
 /**
  * @file
  * Functions for ordering articles at StatsBiblioteket
+ *
+ * @todo
+ * Remove these function when placeOrderRequest service is in production
  */
 
-/** Implements form_FORM_ID_alter (bibdk_reservation_create_wizard_form($form, &$form_state)
- *
+/**
+ * Implements form_FORM_ID_alter (bibdk_reservation_create_wizard_form($form, &$form_state)
  */
 function bibdk_reservation_form_bibdk_reservation_create_wizard_form_alter(&$form, &$form_state) {
   // check if this is copy service
