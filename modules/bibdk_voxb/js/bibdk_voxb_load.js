@@ -6,6 +6,7 @@
   Bibdk_voxb.bibdkSetRating = function(voxb) {
     if(voxb.error) {
       $('.bibdk_voxb_tab[data-pid="' + voxb.pid + '"]').prepend(voxb.error);
+      throw new Error(voxb.error);
     }
     else {
       var element = $('.bibdk_voxb_tab[data-pid="' + voxb.pid + '"]');
