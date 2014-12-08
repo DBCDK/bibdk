@@ -185,18 +185,17 @@ function bibdk_favourite_already_order_library($branch_id) {
     return FALSE;
   }
 
+  // library is already in favourites
+  return array(
+    '#type' => 'html_tag',
+    '#tag' => 'div',
+    '#value' => t('bibdk_favourite_already_favourite', array(), array('context' => 'bibdk_favourite')),
+    '#attributes' => array(
+      'class' => array('btn-add-library'),
+      'id' => drupal_clean_css_identifier('already_selected' . $branch_id),
+    )
+  );
 
-  if ($favourites[$branch_id]->orderAgency == TRUE) {
-    return array(
-      '#type' => 'html_tag',
-      '#tag' => 'div',
-      '#value' => t('bibdk_favourite_already_favourite', array(), array('context' => 'bibdk_favourite')),
-      '#attributes' => array(
-        'class' => array('btn-add-library'),
-        'id' => drupal_clean_css_identifier('already_selected'.$branch_id),
-      )
-    );
-  }
   // fallback
   return FALSE;
 }
