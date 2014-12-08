@@ -1,0 +1,1 @@
+{"status": "success", "response": "\u003C?xml version=\u00221.0\u0022 encoding=\u0022UTF-8\u0022?\u003E\u003Coui:getCartCountResponse xmlns:oui=\u0022http:\/\/oss.dbc.dk\/ns\/openuserinfo\u0022\u003E\u003Coui:userId\u003Emmj+hest@dbc.dk\u003C\/oui:userId\u003E\u003Coui:cartCount\u003E75\u003C\/oui:cartCount\u003E\u003C\/oui:getCartCountResponse\u003E"}

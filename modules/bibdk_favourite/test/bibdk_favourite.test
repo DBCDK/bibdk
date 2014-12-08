@@ -30,57 +30,12 @@ class bibdkFavouriteTest extends DrupalWebTestCase {
   /**
    * Info for this test case
    */
-  public function getInfo() {
+  public static function getInfo() {
     return array(
       'name' => 'Bibdk favourite',
       'description' => t('Test favourites tab and no library message'),
       'group' => 'Bibliotek.dk - Favourites',
     );
-  }
-
-  // check if profiletype is created after module has been enabled
-  // and user logs in.
-  function testCheckProfileType() {
-    $edit['name'] = 'testuser@test.dk';
-    $edit['pass'] = 'password';
-    // we have to submit the user_login_block form to log in as provider user
-    $this->drupalPost('user/login', $edit, t('Log in'), array(), array(), 'user-login', NULL);
-    //$this->drupalGet('user/2');
-
-    // got to edit page
-    $this->drupalGet('user/2/edit');
-    $edit = array();
-    $edit['mail'] = 'testuser@test.dk';
-    // change password to assert that no_favourites message is displayed
-    $edit['pass[pass1]'] = 'hest';
-    $edit['pass[pass2]'] = 'hest';
-    $this->drupalPost(NULL, $edit, t('Save'));
-    $this->assertText(t('remember_to_add_favourite_libraries'), 'add favourite message is set when no favourites are set');
-    //first disable module
-    module_disable(array('bibdk_favourite'));
-    menu_rebuild();
-    $this->drupalGet('user/logout');
-    // reset edit array
-    $edit = array();
-    $edit['name'] = 'testuser';
-    $edit['pass'] = 'password';
-    // we have to submit the user_login_block form to log in as provider user
-    $this->drupalPost('user/login', $edit, t('Log in'), array(), array(), 'user-login', NULL);
-    $this->drupalGet('user/3');
-    $this->assertNoLink('Favourites');
-    // enable module
-    module_enable(array('bibdk_favourite'));
-    menu_rebuild();
-    global $base_url;
-    //  variable_set('agency_search_url', $base_url . '/openagency_webservice/');
-    //variable_set('agency_search_url', 'http://openagency.addi.dk/2.8/');
-    $this->drupalGet('user/3');
-    $this->assertLink('Favourites');
-    $this->clickLink('Favourites');
-    // assert that profile tab is shown
-    $this->assertLink('set_as_favourite');
-    $this->assertLink('Find library');
-    $this->assertText('Copenhagen Townhall', 'profile tab is set');
   }
 
   function test_favourite_shortcode() {

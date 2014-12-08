@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Install related functionality
+ */
 
 /**
  * Implements hook_schema().
@@ -9,7 +13,8 @@ function bibdk_sbkopi_schema() {
 }
 
 /**
- * Implements hook_update_N;
+ * Implements hook_update_N().
+ *
  * Install cache_borchk_webservice table
  * */
 function bibdk_sbkopi_update_7001() {

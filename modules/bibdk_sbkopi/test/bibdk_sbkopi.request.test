@@ -1,0 +1,101 @@
+<?php
+/**
+ * @file
+ * Unittest for placeOrderRequest flow
+ */
+
+/**
+ * Class BibdkSbCopyRequestUnitTestCase
+ */
+class BibdkSbCopyRequestUnitTestCase extends DrupalUnitTestCase {
+
+  /**
+   * Info for unit test
+   *
+   * @return array
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'bibliotek.dk - sb request unit test',
+      'description' => 'Unit Test request methods in bibdk_sbkopi',
+      'group' => 'Bibliotek.dk - SB Kopi',
+    );
+  }
+
+  /**
+   * setup unit test
+   */
+  public function setUp() {
+    parent::setUp();
+    module_load_include('inc', 'microcurl', 'microcurl');
+    module_load_include('inc', 'bibdk_sbkopi', 'lib/SbCurlRequest');
+    module_load_include('inc', 'bibdk_sbkopi', 'includes/bibdk_sbkopi.reservation');
+  }
+
+  /**
+   * Test xml is created correctly
+   */
+  public function testSbRequestXml() {
+    $parameters = array(
+      'key' => 'value',
+      'key2' => 'value2',
+      'key3' => 'value3',
+    );
+    $request = 'placeCopyRequest';
+    $ns = 'http://statsbiblioteket.dk/xws/elba-placecopyrequest-schema';
+    $curl = new SbCurlRequest($request, $parameters, $ns);
+
+    $expected_xml = '<?xml version="1.0"?>
+<placeCopyRequest xmlns="http://statsbiblioteket.dk/xws/elba-placecopyrequest-schema"><key>value</key><key2>value2</key2><key3>value3</key3></placeCopyRequest>
+';
+    $this->assertEqual($expected_xml, $curl->getPostXml(), 'correct xml is generated');
+  }
+
+  /**
+   * Test order request is send and parsed correctly
+   *
+   * @todo Mock up webservice
+   */
+  public function testSbOrderRequest() {
+    $parameters = array(
+      'ws_user' => 'TEST_USER',
+      'ws_password' => 'TEST_PASS',
+      'pid' => '870971-tsart:36023422',
+      'user_loaner_id' => '123412341234',
+      'userName' => 'Test Testersen',
+      'userMail' => 'test@dbc.dk',
+      //'user_interest_date' => a missing date will cause bad request
+      'pickupAgencyId' => '790900',
+      'agencyId' => '790900'
+    );
+    $url = url(drupal_get_path('module', 'bibdk_sbkopi') . '/test/mockup/placeorderrequest.php', array('absolute' => TRUE));
+
+    try {
+      bibdk_sbkopi_order_request($parameters, $url);
+      $this->assertFalse(true, 'Request went well but should have thrown exception');
+    }
+    catch (SbCurlRequestException $e) {
+      $params = $e->getParams();
+      $this->assertEqual($params['!reponse_code'], 400);
+    }
+    $parameters = array(
+      'ws_user' => 'TEST_USER',
+      'ws_password' => 'TEST_PASS',
+      'pid' => '870971-tsart:36023422',
+      'user_loaner_id' => '123412341234',
+      'userName' => 'Test Testersen',
+      'userMail' => 'test@dbc.dk',
+      'user_interest_date' => '2020-02-02',
+      'pickupAgencyId' => '790900',
+      'agencyId' => '790900'
+    );
+
+    try {
+      bibdk_sbkopi_order_request($parameters, $url);
+      $this->assertTrue(true, 'Request went well and returned 204');
+    }
+    catch (SbCurlRequestException $e) {
+      $this->assertFalse(true, 'Request went bad. It should not have');
+    }
+  }
+}
