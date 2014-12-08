@@ -2,7 +2,7 @@
 
 class BibdkSearchHistoryUnitTest extends DrupalUnitTestCase {
 
-  public function getInfo() {
+  public static function getInfo() {
     return array(
       'name' => 'Bibdk Search History unit testing',
       'description' => 'Test functions in Bibdk Search History',

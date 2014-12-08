@@ -2,7 +2,7 @@
 
 class BibdkFavouriteUnittest extends DrupalUnitTestCase {
 
-  public function getInfo() {
+  public static function getInfo() {
     return array(
       'name' => 'Bibdk favourite unit tests',
       'description' => 'Testing simple module functions having no sideeffects.',

@@ -4,9 +4,15 @@ core = 7.x
 version = 7.x-0.7
 package = Bibliotek.dk
 
-files[] = bibdk_sbkopi.ajax.inc
-files[] = bibdk_sbkopi.test
-files[] = bibdk_sbkopi.request.inc
+; tests
+files[] = test/bibdk_sbkopi.test
+files[] = test/bibdk_sbkopi.request.test
 
-; we need a call to openorder so ..
+; classes
+files[] = lib/SbCurlRequest.inc
+
+; scripts
+scripts[] = js/sbCopySwitchMe.js
+
+; dependencies
 dependencies[] = bibdk_openorder

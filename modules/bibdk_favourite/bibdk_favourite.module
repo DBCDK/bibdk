@@ -115,6 +115,20 @@ function _bibdk_favourite_set_favourite_first(array $favourites) {
 }
 
 /**
+ * If user has order library, return library else return false
+ *
+ * @return FavouriteAgency|null
+ */
+function bibdk_favourite_get_order_library() {
+  $favourites = bibdk_favourite_get_favourites();
+  $order = reset($favourites);
+  if (!empty($order) && $order->getOrderAgency()) {
+    return $order;
+  }
+  return null;
+}
+
+/**
  * Implements hook to user_help_list
  * */
 function bibdk_favourite_user_help_list() {
