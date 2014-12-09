@@ -80,10 +80,10 @@ function bibdk_reservation_order_any_edition_link($collection, $uid) {
 
   $table = array(
     '#theme' => 'table',
-    '#header' => array(
-      '',
-      t('Order', array(), array('context' => 'bibdk_reservation'))
-    ),
+//    '#header' => array(
+//      '',
+//      t('Order', array(), array('context' => 'bibdk_reservation'))
+//    ),
     '#rows' => array(),
   );
 
@@ -101,8 +101,13 @@ function bibdk_reservation_order_any_edition_link($collection, $uid) {
           'class' => array('not-for-order'),
         ),
         'content' => array(
-          '#type' => 'markup',
-          '#markup' => $mat_type,
+          '#theme' => 'span_with_svg',
+          '#content' => array(
+            '#type' => 'markup',
+            '#markup' => $mat_type,
+          ),
+          '#attributes' => array(),
+          '#svg' => 'svg-user',
         ),
       );
       $row['order_mat']['data'] = array(
@@ -115,11 +120,13 @@ function bibdk_reservation_order_any_edition_link($collection, $uid) {
     }
     else {
       $row['label_mat']['data'] = array(
-        '#type' => 'container',
-        'content' => array(
+        '#theme' => 'span_with_svg',
+        '#content' => array(
           '#type' => 'markup',
           '#markup' => ucfirst($mat_type),
         ),
+        '#attributes' => array('class'=>array('mat-type')),
+        '#svg' => 'svg-media-article',
       );
       $row['order_mat']['data'] = _bibdk_reservation_create_type_button($mat_type, $ids, $uid);
     }
@@ -127,38 +134,16 @@ function bibdk_reservation_order_any_edition_link($collection, $uid) {
 
     foreach ( $hook as $column => $element ) {
       $col_name = t($column, array(), array('context' => 'bibdk_reservation'));
-      if ( !in_array($col_name, $table['#header']) ) {
-        array_push($table['#header'], $col_name);
-      }
+//      if ( !in_array($col_name, $table['#header']) ) {
+//        array_push($table['#header'], $col_name);
+//      }
       $row[$column . '_mat']['data'] = $element;
     }
 
-    foreach ( $row as $key => $col ) {
-      $rendered_row[] = drupal_render($col);
-      // $row[$key] = drupal_render($col);
-    }
+    $table['#rows'][]['data'] = $row;
 
-    $table['#rows'][] = $rendered_row;
   }
-
-/*
-      $row[] = array(
-        '#theme' => 'link',
-        '#text' => $mat_type,
-        '#path' => 'bibdk_modal/register',
-        '#options' => array(
-        'attributes' => array(
-          'alt' => t('Create a new user account', array(), array('context' => 'bibdk_modal')),
-          'class' => array('use-ajax', 'forgot-pword-link')
-        ),
-        'html' => FALSE,
-        'svg' => 'svg-arrow-right',
-        ),
-      );
-*/
-
-dpm($table);
-
+ 
   $infotext = _bibdk_reservation_infotext_order_any_edition_create_link($uid);
 
   $button = theme('bibdk_reservation_order_any_btn', array(
