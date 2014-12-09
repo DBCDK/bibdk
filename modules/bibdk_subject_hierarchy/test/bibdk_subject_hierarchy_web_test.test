@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file
+ * DrupalWebTest for Bibliotek.dk Subject Hierarchy
+ */
+
 
 class BibdkSubjectHierarchyWebTestCase extends DrupalWebTestCase {
 
