@@ -171,6 +171,12 @@ function bibdk_favourite_list_link($branch_id) {
   );
 }
 
+/**
+ * check if favourite is already selected by user. If so
+ * return a render array that displays it
+ * @param $branch_id
+ * @return array|bool
+ */
 function bibdk_favourite_already_order_library($branch_id) {
   if (!ding_user_is_provider_user()) {
     return FALSE;
