@@ -287,15 +287,6 @@
       var url = $(this).parents('#bibdk-facetbrowser-form').attr('data-uri');
       // create anchor element, so we can access path from DOM
       var a = $('<a>', { href:url } )[0];
-      /*
-          console.log( elementLink[0].protocol );
-          console.log( elementLink[0].host );
-          console.log( elementLink[0].pathname );
-          console.log( elementLink[0].search );
-          console.log( elementLink[0].hash );
-      */
-
-      console.log( 'baseUri: ' + a.search );
       var myArray = decodeURIComponent(a.search).split('&');
 
       modalGroup.find("input[type='checkbox']").each(function(count, modalElement) {
@@ -303,7 +294,6 @@
         // delete facet values that are included in this group
         $.each( myArray, function( key, value ) {
           if ( value == 'facets[]=' + facetKey + ':' + $(modalElement).val() || value == 'facets[]=-' + facetKey + ':' + $(modalElement).val() ) {
-            console.log( 'delete : ' + facetKey + ':' + $(modalElement).val() );
             myArray.splice(key, 1);
           }
         });
@@ -326,13 +316,8 @@
         myArray.push('facets[]=!' + facetKey + ':' + facetsDeselect[i]);
       }
 
-      $.each( myArray, function( key, value ) {
-        console.log( key + " : " + value );
-      });
+      newUri = a.protocol + '//' + a.host + '/' + a.pathname + myArray.join('&');
       
-      newUri = a.protocol + '//' + a.host + a.pathname + myArray.join('&');
-      
-      // console.log( newUri );
       window.location.replace(newUri);
 
     });
