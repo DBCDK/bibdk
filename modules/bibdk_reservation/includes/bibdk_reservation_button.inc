@@ -74,25 +74,40 @@ function bibdk_reservation_check_past_reservations($entity_ids) {
  * @param $uid
  * @return string
  */
-function bibdk_reservation_order_any_edition_link($collection, $uid) {
+function bibdk_reservation_order_any_edition_link($collection, $work_types, $uid) {
 
   $uid = strtolower(preg_replace('/[^a-zA-Z0-9]+/', '', $uid));
 
   $table = array(
     '#theme' => 'table',
-//    '#header' => array(
-//      '',
-//      t('Order', array(), array('context' => 'bibdk_reservation'))
-//    ),
+    '#header' => array(),
     '#rows' => array(),
   );
 
   $rows = array();
 
+  $svg_icons = array(
+    "article",
+    "audiobook",
+    "book",
+    "emat",
+    "game",
+    "movie",
+    "music",
+    "sheetmusic",
+  );
+
   foreach ($collection as $type => $ids) {
-    $row = $rendered_row = array();
+    $row = array();
     $mat_type = t($type, array(), array('context' => 'material_type'));
 
+    foreach ( $work_types as $svg_key => $work_type ) {
+      if ( in_array($ids[0], $work_type) ) {
+        $svg = ( in_array($svg_key, $svg_icons) ) ? 'svg-media-' . $svg_key : NULL;
+        break;
+      }
+    }
+    
     if ( !_bibdk_reservation_is_mattype_order_ok(ucfirst($mat_type)) ) {
       // make "not for order" text
       $row['label_mat']['data'] = array(
@@ -107,7 +122,7 @@ function bibdk_reservation_order_any_edition_link($collection, $uid) {
             '#markup' => $mat_type,
           ),
           '#attributes' => array(),
-          '#svg' => 'svg-user',
+          '#svg' => $svg,
         ),
       );
       $row['order_mat']['data'] = array(
@@ -126,7 +141,7 @@ function bibdk_reservation_order_any_edition_link($collection, $uid) {
           '#markup' => ucfirst($mat_type),
         ),
         '#attributes' => array('class'=>array('mat-type')),
-        '#svg' => 'svg-media-article',
+        '#svg' => $svg,
       );
       $row['order_mat']['data'] = _bibdk_reservation_create_type_button($mat_type, $ids, $uid);
     }
@@ -134,9 +149,6 @@ function bibdk_reservation_order_any_edition_link($collection, $uid) {
 
     foreach ( $hook as $column => $element ) {
       $col_name = t($column, array(), array('context' => 'bibdk_reservation'));
-//      if ( !in_array($col_name, $table['#header']) ) {
-//        array_push($table['#header'], $col_name);
-//      }
       $row[$column . '_mat']['data'] = $element;
     }
 
@@ -203,21 +215,6 @@ function _bibdk_reservation_infotext_order_any_edition_create_link($uid=NULL) {
  * @param $uid
  * @return string
  */
-/*
-      $row[] = array(
-        '#theme' => 'link',
-        '#text' => $mat_type,
-        '#path' => 'bibdk_modal/register',
-        '#options' => array(
-        'attributes' => array(
-          'alt' => t('Create a new user account', array(), array('context' => 'bibdk_modal')),
-          'class' => array('use-ajax', 'forgot-pword-link')
-        ),
-        'html' => FALSE,
-        'svg' => 'svg-arrow-right',
-        ),
-      );
-*/
 function _bibdk_reservation_create_type_button($type, $ids, $uid) {
 
   $text = t('Order', array(), array('context' => 'bibdk_reservation'));
@@ -265,7 +262,6 @@ function _bibdk_reservation_create_type_button($type, $ids, $uid) {
         ),
       ),
       'html' => FALSE,
-      'svg' => 'svg-arrow-right',
     ),
   );
 
