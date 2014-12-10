@@ -610,7 +610,7 @@ function _bibdk_cart_manifestation_view_strip_links(&$view) {
  */
 function bibdk_cart_order_any_btn_lists($type, $ids) {
   $link = bibdk_cart_get_link($ids);
-  $in_cart_class = BibdkCart::checkInCart($ids) ? 'btn-grey' : 'btn-blue';
+  $in_cart_class = BibdkCart::checkInCart($ids) ? 'in-cart' : 'not-in-cart';
   $mat_type = t($type, array(), array('context' => 'material_type'));
   $text = t('cart', array(), array('context' => 'bibdk_reservation'));
 
@@ -624,6 +624,7 @@ function bibdk_cart_order_any_btn_lists($type, $ids) {
           'class' => array(
             'add-item-to-cart',
             'btn',
+            'btn-grey-light',
             $in_cart_class,
           ),
           'id' => array(
@@ -635,10 +636,10 @@ function bibdk_cart_order_any_btn_lists($type, $ids) {
           'aria-label' => $text . ' ' . $mat_type,
         ),
         'html' => FALSE,
+        'svg' => 'svg-star',
       ),
     )
   );
-
   return $item;
 }
 
