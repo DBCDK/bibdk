@@ -1,0 +1,117 @@
+<?php
+/**
+ * @file
+ * unit test file for the bibdk_facetbrowser module.
+ */
+
+/*
+function _log_to_file($text) {
+  $f = fopen('/home/jgn/jgn.ding/sites/default/files/log.txt', 'a');
+  fwrite($f, date('Ymd H:i:s - ') . $text . "\n");
+  fclose($f);
+}
+*/
+
+class BibdkFacetbrowserUnit extends DrupalUnitTestCase {
+
+  static function getInfo() {
+    return array(
+      'name' => t('Bibdk Facetbrowser Unit tests'),
+      'description' => t('Unit tests for the Bibdk Facetbrowser module'),
+      'group' => 'Bibdk! - Facetbrowser',
+    );
+  }
+
+
+  public function setUp() {
+    module_load_include('module', 'bibdk_facetbrowser', 'bibdk_facetbrowser');
+    parent::setUp();
+  }
+
+
+  function test_parseSelectionUri() {
+
+    $facet = 'facet.string:not_found';
+    $uri = '/da/search/work';
+    $result = _parseSelectionUri($uri, $facet);
+    $expected_result = $uri;
+    $this->assertEqual($expected_result, $result, 'URI with no query return unchanged URL');
+    
+    $uri = '/da/search/work?search_block_form=fubar&facets[]=facet.foo:bar&facets[]=facet.string:found';
+    $result = _parseSelectionUri($uri, $facet);
+    $expected_result = $uri;
+    $this->assertEqual($expected_result, $result, 'Facet not found in URI, return unchanged URL');
+
+    $facet = 'facet.string:found';
+    $result = _parseSelectionUri($uri, $facet);
+    $expected_result = '/da/search/work?search_block_form=fubar&facets[]=facet.foo:bar';
+    $this->assertEqual($expected_result, $result, 'Facet found in URI, return URL with facet removed from query');
+
+    $facet = 'facet.string:found';
+    $result = _parseSelectionUri($uri, $facet);
+    $expected_result = '/da/search/work?search_block_form=fubar&facets[]=facet.foo:bar';
+    $this->assertEqual($expected_result, $result, 'Facet found in URI, return URL with facet removed from query');
+
+    $facet = 'facet.type%3Acd%20%28musik%29';
+    $uri = '/da/search/work?search_block_form=fubar&facets[]=facet.foo:bar&facets[]=facet.type%3Acd%20%28musik%29';
+    $result = _parseSelectionUri($uri, $facet);
+    $expected_result = '/da/search/work?search_block_form=fubar&facets[]=facet.foo:bar';
+    $this->assertEqual($expected_result, $result, 'Urlencoded Facet found in URI, return URL with facet removed from query');
+
+    $facet = 'facet.creator:anders and';
+    $uri = '/da/search/work?search_block_form=fubar&facets[]=facet.foo:bar&facets[]=facet.creator:anders%20and';
+    $result = _parseSelectionUri($uri, $facet);
+    $expected_result = '/da/search/work?search_block_form=fubar&facets[]=facet.foo:bar';
+    $this->assertEqual($expected_result, $result, 'Urldecoded Facet found in URI, return URL with facet removed from query');
+
+  }
+
+
+  function test_isFacetSelected() {
+
+    $facets = array( 
+      'facets[]=facet.language:engelsk',
+      'facets[]=!facet.language:russisk',
+    );
+
+    $result = _isFacetSelected($facets, TRUE);
+    $expected_result = array(
+      '0' => array(
+              'name' => 'facet.language',
+              'value' => 'engelsk',
+              'facet_string' => 'facet.language:engelsk',
+            )
+    );
+    $this->assertEqual($expected_result, $result, 'Selected facet found in URI, return array with facet');
+
+    $result = _isFacetSelected($facets, FALSE);
+    $expected_result = array(
+      '0' => array(
+              'name' => 'facet.language',
+              'value' => 'russisk',
+              'facet_string' => 'facet.language:russisk',
+            ),
+    );
+    $this->assertEqual($expected_result, $result, 'Deselected facet found in URI, return array with facet');
+
+
+    $facets = array( 
+      'facets[]=!facet.language:russisk',
+    );
+
+    $result = _isFacetSelected($facets, TRUE);
+    $expected_result = FALSE;
+    $this->assertEqual($expected_result, $result, 'Return FALSE if no selected facet is found');
+
+
+    $facets = array( 
+      'facets[]=facet.language:engelsk',
+    );
+
+    $result = _isFacetSelected($facets, FALSE);
+    $expected_result = FALSE;
+    $this->assertEqual($expected_result, $result, 'Return FALSE if no deselected facet is found');
+
+  }
+
+}
