@@ -1,0 +1,189 @@
+<?php
+/**
+ * @file
+ * Webtest file for the bibdk_facetbrowser module.
+ */
+
+class BibdkFacetbrowserWeb extends DrupalWebTestCase {
+
+  static function getInfo() {
+    return array(
+      'name' => t('Bibdk Facetbrowser Web Tests'),
+      'description' => t('Webtests for the Bibdk Facetbrowser module'),
+      'group' => 'Bibdk! - Facetbrowser',
+    );
+  }
+
+  public function setUp() {
+    parent::setUp('bibdk_facetbrowser', 'ting_openformat');
+    variable_set('ting_search_url', 'http://bibdk-prod-ws.dbc.dk/opensearch/3.1/');
+    variable_set('search_active_modules', array('node' => 'node', 'ting_openformat' => 'ting_openformat'));
+    variable_set('search_default_module', 'ting_openformat');
+
+    // set ajax checkbox to FALSE
+    variable_set('bibdk_facetbrowser_by_ajax', FALSE);
+
+    // Set up some facets for testing.
+    variable_set('bibdk_facetbrowser_facets', array(
+        0 => array(
+          'name' => 'facet.subject',
+          'title' => '!!facet.subject!!',
+          'weight' => '-10',
+        ),
+        1 => array(
+          'name' => 'facet.creator',
+          'title' => '!!facet.creator!!',
+          'weight' => '-9',
+        ),
+        2 => array(
+          'name' => 'facet.type',
+          'title' => '!!facet.type!!',
+          'weight' => '-8',
+        ),
+        3 => array(
+          'name' => 'facet.category',
+          'title' => '!!facet.category!!',
+          'weight' => '-7',
+        ),
+        4 => array(
+          'name' => 'facet.language',
+          'title' => '!!facet.language!!',
+          'weight' => '-6',
+        ),
+        5 => array(
+          'name' => 'facet.date',
+          'title' => '!!facet.date!!',
+          'weight' => '-5',
+        ),
+        6 => array(
+          'name' => 'facet.acSource',
+          'title' => '!!facet.acSource!!',
+          'weight' => '-4',
+        ),
+      )
+    );
+
+    $this->nodetype = $this->drupalCreateContentType();
+    $this->web_user = $this->drupalCreateUser(array('administer search', 'administer blocks', 'administer site configuration', 'search content', 'create ' . $this->nodetype->name . ' content'));
+    $this->drupalLogin($this->web_user);
+  }
+
+  public function testFacetModules() {
+    // Check if search module is installed
+    $exists = module_exists('search');
+    $this->assertTrue($exists, 'Search is enabled');
+
+    // Check if bibdk_facetbrowser module is installed
+    $exists = module_exists('bibdk_facetbrowser');
+    $this->assertTrue($exists, 'Bibdk Facetbrowser is enabled');
+
+    // Check if the facetbrowser block is available
+    $this->drupalGet('admin/structure/block');
+    $this->assertRaw('Facet browser', 'The facetbrowser block is available');
+
+    $this->drupalPost('admin/structure/block', array('blocks[bibdk_facetbrowser_facetbrowser][region]' => 'content'), 'Save blocks');
+    $this->assertFieldByName('blocks[bibdk_facetbrowser_facetbrowser][region]', 'content', 'Configurable text block is enabled in first sidebar successfully verified.');
+
+    // Create a custom node containing the text 'harry'
+    $node_title = $this->randomName(10);
+    $node_info = array(
+      'title' => $node_title,
+      'body[und][0][value]' => 'Harry potter rocks',
+    );
+    $this->drupalPost('node/add/' . $this->nodetype->name, $node_info, t('Save'));
+
+    $node = $this->drupalGetNodeByTitle($node_title);
+    $this->assertTrue($node, t('Node ' . $node_title . ' found in database'));
+
+    // // Execute cron to update search index
+    $this->cronRun();
+
+    // // Search the site for harry
+    $this->drupalGet('search/node/harry');
+    $this->assertNoText('Harry rocks', 'Search for "Harry rocks" in drupal - failed');
+    $this->assertText('Harry potter rocks', 'Search for "Harry potter rocks" in drupal - complete');
+
+    $this->drupalGet('search/work/harry');
+    $this->assertNoText('Da pensionisten Harry Browns gamle', 'Search for title from external search service NOT found');
+    $this->assertNoText('Harry potter rocks', "We're not seeing the node.");
+    $this->assertText('harry warren', "'Harry warren' found.");
+
+    // Check if the facetbrowser has any content
+    $this->assertText('!!facet.subject!!', 'Found the facet.subject fieldset in the facetbrowser');
+    $this->assertFieldById('edit-subject-instrumental', 'instrumental', 'Found the \'instrumental\' facet in the facet.subject fieldset');
+
+    // Check if the facetbrowser has a 'selected' and a 'deselected' fieldset
+    $this->assertText('label_facets_selected', 'Found the "selected" fieldset in the facetbrowser');
+    $this->assertText('label_facets_deselected', 'Found the "deselected" fieldset in the facetbrowser');
+
+    // Check if the facetbrowser has a 'label_facet_select_unselect' and a 'label_facet_show_more' link
+    $this->assertText('label_facet_select_unselect', 'Found the "label_facet_select_unselect" link in the facetbrowser');
+    $this->assertText('label_facet_show_more', 'Found the "label_facet_show_more" link in the facetbrowser');
+
+    // Check if the modal window for selecting/deselecting facets  has any content
+    $this->assertRaw('header_refine_facet_select', 'header for modal window found');
+    $this->assertRaw('label_facet_select', 'label for "select facets" column found');
+    $this->assertRaw('label_facet_deselect', 'label for "deselect facets" column found');
+    $this->assertRaw('label_facet_close', 'link for "close facets select window" found');
+    $this->assertRaw('label_facet_save', 'link for "save selected facets" found');
+
+    // check that facets_by ajax is set to FALSE
+    $by_ajax = variable_get('bibdk_facetbrowser_by_ajax');
+    $this->assertTrue($by_ajax===FALSE, 'facets by ajax set to FALSE');
+    $edit['bibdk_facetbrowser_by_ajax'] = TRUE;
+    $this->drupalPost('admin/config/ting/facets', $edit, 'Save changes');
+    $by_ajax = variable_get('bibdk_facetbrowser_by_ajax');
+    $this->assertTrue($by_ajax==TRUE, 'facets by ajax set to TRUE');
+
+    // redo search to check if facets are also present via ajax
+    $this->drupalGet('search/work/harry');
+    // Check if the facetbrowser has any content
+    $this->assertRaw('bibdk_facetbrowser_facets_placeholder', 'placeholder for ajax found');
+
+    // test that ajax call delivers expected result;
+    $this->drupalGet('bibdk_facetbrowser/ajax/facets');
+    $this->assertRaw('bibdk-facetbrowser-form', 'Facetbrowser found with ajax');
+
+    // assert that checkbox is present on admin page
+    $this->drupalGet('admin/config/ting/facets');
+    $this->assertFieldByName('bibdk_facetbrowser_by_ajax', TRUE, 'By ajax checkbox found on admin');
+
+    // Check if bibdk_facetbrowser_number_shown can be set;
+    $edit['bibdk_facetbrowser_number_shown'] = rand();
+    $this->drupalPost('admin/config/ting/facets', $edit, 'Save changes');
+    $this->assertFieldByName(
+      'bibdk_facetbrowser_number_shown',
+      $edit['bibdk_facetbrowser_number_shown'],
+      format_string('Number of facets shown have been set to: "@number".', array(
+        '@number' => $edit['bibdk_facetbrowser_number_shown']
+      ))
+    );
+
+
+
+    // Check if bibdk_facetbrowser_consecutive_number_shown can be set;
+    $edit['bibdk_facetbrowser_consecutive_number_shown'] = rand();
+    $this->drupalPost('admin/config/ting/facets', $edit, 'Save changes');
+    $this->assertFieldByName(
+      'bibdk_facetbrowser_consecutive_number_shown',
+      $edit['bibdk_facetbrowser_consecutive_number_shown'],
+      format_string('Number of consecutive facets shown have been set to: "@number".', array(
+        '@number' => $edit['bibdk_facetbrowser_consecutive_number_shown']
+      ))
+    );
+
+    // Check if bibdk_facetbrowser_number_requested can be set;
+    $edit['bibdk_facetbrowser_number_requested'] = rand();
+    $this->drupalPost('admin/config/ting/facets', $edit, 'Save changes');
+    $this->assertFieldByName(
+      'bibdk_facetbrowser_number_requested',
+      $edit['bibdk_facetbrowser_number_requested'],
+      format_string('Number of facets requested from webservice have been set to: "@number".', array(
+        '@number' => $edit['bibdk_facetbrowser_number_requested']
+      ))
+    );
+
+  }
+}
+
+

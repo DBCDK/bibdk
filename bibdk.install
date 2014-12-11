@@ -55,6 +55,7 @@ function _bibdk_enable_modules() {
     'bibdk_about_author',
     'bibdk_newsroom',
     'bibdk_autocomplete',
+    'bibdk_facetbrowser',
     'cql_strict_parser',
     'ting_openuserstatus',
     'open_holdingstatus',
@@ -68,7 +69,6 @@ function _bibdk_enable_modules() {
     'ding_wayf',
     'ding_webtrends',
     'bibdk_netarchive',
-    'ding_facetbrowser',
     'admin_menu',
     'eu_cookie_compliance',
     'microcurl',
@@ -405,3 +405,16 @@ function bibdk_update_7021(&$sandbox) {
     'bibdk_saou',
   ));
 }
+
+/**
+ * Enable bibdk_saou
+ */
+function bibdk_update_7022(&$sandbox) {
+  module_enable(array(
+    'bibdk_facetbrowser',
+  ));
+  module_disble(array(
+    'ding_facetbrowser',
+  ));
+}
+
