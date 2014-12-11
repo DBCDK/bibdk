@@ -10,7 +10,7 @@ class BibdkSearchHistoryTestCase extends DrupalWebTestCase {
   /**
    *Info for this test case
    */
-  public function getInfo() {
+  public static function getInfo() {
     return array(
       'name' => 'Bibdk Search History functionality',
       'description' => t('Test the functionality of Bibdk Search History'),
@@ -37,7 +37,6 @@ class BibdkSearchHistoryTestCase extends DrupalWebTestCase {
 
   public function testRunner() {
     $this->_removeProviderUser();
-    $this->_testCheckProfileTypeDelete();
     $this->_testAddSearchHistoryToWebservice();
     $this->_testBibdkSearchHistoryClass();
     $this->_test_bibdk_searchhistory_get_search_string();
@@ -213,42 +212,4 @@ class BibdkSearchHistoryTestCase extends DrupalWebTestCase {
     db_delete('authmap')->condition('authname', $name)->execute();
     bibdk_provider_user_delete_account($name);
   }
-
-  // check if profiletype is deleted when module is disabled and created after module has been enabled
-  // and user logs in.
-  private function _testCheckProfileTypeDelete() {
-    $this->_createProviderUser();
-    //first disable module
-    module_disable(array('bibdk_searchhistory'));
-    menu_rebuild();
-
-    //Assert that search history is not present
-    $this->drupalGet('user');
-    $this->assertNoLink('Search history');
-
-    // enable module
-    module_enable(array('bibdk_searchhistory'));
-    menu_rebuild();
-
-    //Assert that search history is present
-    $this->drupalGet('user');
-    $this->assertLink('Search history');
-    $this->clickLink('Search history');
-    $this->assertUrl('user/searchhistory');
-
-    // we have to submit the user_login_block form to log in as provider user
-    $edit['name'] = 'dummy@dbc.dk';
-    $edit['pass'] = 'pass';
-    $this->drupalPost('user', $edit, 'Log in', array(), array(), 'user-login', NULL);
-
-    //Assert that search history is present
-    $this->drupalGet('user');
-    $this->assertLink('Search history');
-    $this->clickLink('Search history');
-    $this->assertUrl('user/2/searchhistory');
-
-    //clean up
-    $this->_removeProviderUser();
-  }
-
 }

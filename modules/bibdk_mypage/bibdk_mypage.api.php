@@ -6,11 +6,6 @@
  */
 
 /**
- * @addtogroup hooks
- * @{
- */
-
-/**
  * Get fieldsets from other modules.
  *
  * @param int $max_rows
@@ -74,12 +69,36 @@ function hook_bibdk_mypage_tabs($max_rows = 3) {
   );
 
   return $form;
-
 }
 
 /**
- * @} End of "addtogroup hooks".
+ * Define one or more items that should be accesible in the mypage sidebar menu.
+ * Basically this hook should return an array of menu items known from
+ * HOOK_menu() but during the processing of the hook all items will be set
+ * with type = MENU_LOCAL_TASK, overriding any type that otherwise would have
+ * been set.
+ *
+ * Below is used an example of how the hook is implemented in the bibdk_cart
+ * module.
+ *
+ * At a minimum 'title' should be set as well as the array key should be the
+ * path for the given link item.
+ *
+ * @return array
+ * @see bibdk_cart_mypage_link() in bibdk_cart.module
  */
+function HOOK_mypage_link(){
+  $items['user/%user/cart'] = array(
+    'title' => 'Cart',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bibdk_cart_view_form'),
+    'access callback' => 'user_edit_access',
+    'access arguments' => array(1),
+    'weight' => 25,
+  );
+
+  return $items;
+}
 
 
 

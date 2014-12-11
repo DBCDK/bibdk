@@ -4,6 +4,8 @@ module_load_include('inc', 'bibdk_actions', 'bibdk_actions.print');
 module_load_include('inc', 'bibdk_actions', 'bibdk_actions.email');
 module_load_include('inc', 'bibdk_actions', 'bibdk_actions.refexport');
 module_load_include('inc', 'bibdk_actions', 'bibdk_actions.default_settings');
+module_load_include('inc', 'bibdk_actions', 'bibdk_actions.mark_all_none');
+module_load_include('inc', 'bibdk_actions', 'bibdk_actions.delete_selected');
 
 /**
  * Implements hook_menu().
@@ -61,13 +63,14 @@ function bibdk_actions_menu_alter(&$items){
  * @return array
  */
 function bibdk_actions_cart_actions($actions){
+  $actions = bibdk_actions_get_mark_all_none_actions($actions);
+  $actions = bibdk_actions_get_delete_selected_actions($actions);
   $actions = bibdk_actions_get_print_actions($actions);
   $actions = bibdk_actions_get_email_actions($actions);
   $actions = bibdk_actions_get_refexport_actions($actions);
   drupal_add_js(drupal_get_path('module', 'bibdk_actions') . '/js/bibdk_actions.js');
   return $actions;
 }
-
 
 /**
  * @param $pids

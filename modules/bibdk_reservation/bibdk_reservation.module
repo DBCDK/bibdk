@@ -9,7 +9,6 @@ module_load_include('inc', 'bibdk_reservation', 'includes/bibdk_reservation_form
 module_load_include('inc', 'bibdk_reservation', 'includes/bibdk_reservation_form_step_2');
 module_load_include('inc', 'bibdk_reservation', 'includes/bibdk_reservation_form_step_3');
 module_load_include('inc', 'bibdk_reservation', 'includes/bibdk_reservation_form_step_4');
-module_load_include('inc', 'bibdk_reservation', 'includes/bibdk_reservation_sb_kopi');
 
 /**
  * Implements hook_menu();

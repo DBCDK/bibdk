@@ -1,12 +1,18 @@
 <?php
+/**
+ * @file
+ * Drupal functions for sbkopi
+ */
 
 /** load field hooks * */
-//module_load_include('inc', 'bibdk_sbkopi', 'bibdk_sbkopi.field');
-module_load_include('inc', 'bibdk_sbkopi', 'bibdk_sbkopi.ajax');
+include_once 'includes/bibdk_reservation_sb_kopi.inc';
+include_once 'includes/bibdk_sbkopi.ajax.inc';
 
 /**
- * Implements hook_ting_client_webservice (@see ting_client.module)
- * */
+ * Implements hook_ting_client_webservice().
+ *
+ * @see ting_client.module
+ */
 function bibdk_sbkopi_ting_client_webservice() {
   $ret = array();
   $ret['statsbib']['class'] = 'bibdk_statsbib';
@@ -22,28 +28,74 @@ function bibdk_sbkopi_ting_client_webservice() {
  * @servicerequester
  * */
 function bibdk_sbkopi_form_ting_client_admin_webservices_settings_alter(&$form, &$form_state) {
-  $form['ting']['bibdk_statsbib_url'] = array(
+  $form['sbkopi'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('SB Copy Settings'),
+    '#descriptions' => t('Settings for SB copy service'),
+  );
+  $form['sbkopi']['bibdk_statsbib_url'] = array(
     '#type' => 'textfield',
-    '#title' => t('URL to statsbiblioteket'),
-    '#description' => t('URL to statsbibliotekets user api e.g. https://webservice.statsbiblioteket.dk/ws-create-user1/CreateUser'),
+    '#title' => t('URL to create user service @ statsbiblioteket'),
+    '#description' => t('URL to statsbibliotekets user api e.g., https://webservice.statsbiblioteket.dk/ws-create-user1/CreateUser'),
     '#required' => TRUE,
     '#default_value' => variable_get('bibdk_statsbib_url', FALSE),
   );
+  $form['sbkopi']['bibdk_sbkopi_place_copy_request_url'] = array(
+    '#type' => 'textfield',
+    '#title' => t('URL to create user service @ statsbiblioteket'),
+    '#description' => t('URL to statsbibliotekets place copy service e.g., https://webservice.statsbiblioteket.dk/placeCopyRequest'),
+    '#required' => TRUE,
+    '#default_value' => variable_get('bibdk_sbkopi_place_copy_request_url', FALSE),
+  );
+  $form['sbkopi']['bibdk_sbkopi_request_user'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Service username'),
+    '#description' => t('User for authentication on service'),
+    '#required' => TRUE,
+    '#default_value' => variable_get('bibdk_sbkopi_request_user', FALSE),
+  );
+  $form['sbkopi']['bibdk_sbkopi_request_pass'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Service password'),
+    '#description' => t('Password for authentication on service'),
+    '#required' => TRUE,
+    '#default_value' => variable_get('bibdk_sbkopi_request_pass', FALSE),
+  );
 }
 
-/** Implements hook_menu * */
+/**
+ * Implements hook_menu().
+ *
+ * @return mixed
+ */
 function bibdk_sbkopi_menu() {
   $items['sbkopi/ajax'] = array(
     'page callback' => 'bibdk_sbkopi_ajax_get_options',
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
-    'file' => 'bibdk_sbkopi.ajax.inc',
+    'file' => 'includes/bibdk_sbkopi.ajax.inc',
   );
+
+  $items['reservation/sbkopi/%'] = array(
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bibdk_sbkopi_reservation_form', 2),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/bibdk_sbkopi.reservation.inc',
+  );
+  $items['reservation/sbkopi/receipt/%'] = array(
+    'page callback' => 'bibdk_sbkopi_reservation_receipt',
+    'page arguments' => array(3),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/bibdk_sbkopi.reservation.inc',
+  );
+
   return $items;
 }
 
 /**
- *  Implements hook_ting_openformat_actions
+ * Implements hook_ting_openformat_actions().
  */
 function bibdk_sbkopi_ting_openformat_actions($type, $entity, $view_mode, $langcode) {
   if ($type == 'bibdkManifestation') {
@@ -56,7 +108,6 @@ function bibdk_sbkopi_ting_openformat_actions($type, $entity, $view_mode, $langc
           'class' => 'bibdk-sb_kopi-replaceme',
           'pid' => $entity->id
         ),
-        //'#markup' => '<span class="bibdk-sb_kopi-replaceme" data-rel="reservation"" pid="' . $entity->id . '"></a>',
         '#weight' => 0.1,
         '#attached' => array('js' => array(drupal_get_path('module', 'bibdk_sbkopi') . '/js/ajaxGetCopyOptions.js')),
       );
@@ -66,7 +117,8 @@ function bibdk_sbkopi_ting_openformat_actions($type, $entity, $view_mode, $langc
   }
 }
 
-/** Implements hook_bibdk_usersettings_user_tabs
+/**
+ * Implements hook_bibdk_usersettings_user_tabs().
  *
  * @return array
  */
@@ -80,7 +132,8 @@ function bibdk_sbkopi_bibdk_usersettings_user_tabs() {
   return $tab;
 }
 
-/** Implements hook_bibdk_usersettings_user_settings
+/**
+ * Implements hook_bibdk_usersettings_user_settings().
  *
  * @return array
  */

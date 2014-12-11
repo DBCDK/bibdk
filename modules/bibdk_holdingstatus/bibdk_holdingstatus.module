@@ -125,7 +125,7 @@ function bibdk_holdingstatus_get_localisation($pids, $ref=NULL) {
 
       $agency = new TingAgency($agencyId);
       // $information = $agency->getInformation();
-      $information = $agency->getBranch();
+      $information = $agency->getBranch(TRUE);
 
       if ( !isset($information) ) {
         $error_messages[] = t('library_not_found');

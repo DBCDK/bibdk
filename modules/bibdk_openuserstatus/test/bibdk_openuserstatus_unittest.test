@@ -24,7 +24,7 @@ class BibdkOpenuserstatusUnitTest extends DrupalUnitTestCase {
   public function test_bibdk_openuserstatus_menu(){
     $items = bibdk_openuserstatus_menu();
     $count = count($items);
-    $this->assertEqual($count, 4, 'Got ' . $count . 'items. Should be 4');
+    $this->assertEqual($count, 3, 'Got ' . $count . 'items. Should be 3');
     $keys = array_keys($items);
     $this->assertEqual($keys[0], 'userstatus/pickuplib', '$items[0] points to \'userstatus/pickuplib\'');
     $this->assertEqual($keys[1], 'openuserstatus/getuserstatus', '$items[1] points to \'openuserstatus/getuserstatus\'');

@@ -1,17 +1,16 @@
 <?php
 
-/*
+/**
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 class BibdkUserSettingsWebTestCase extends DrupalWebTestCase {
 
   public static function getInfo() {
     return array(
       'name' => t('Bibdk Usersettings Test'),
       'description' => t('Webtest of bibdk usersettings functionality'),
-      'group' => t('bibliotek.dk'),
+      'group' => t('Bibliotek.dk - Usersettings'),
     );
   }
 
@@ -22,43 +21,21 @@ class BibdkUserSettingsWebTestCase extends DrupalWebTestCase {
   }
 
   public function testRunner() {
-    $this->_testMenuItemExists();
     $this->CacheTableTest();
     $this->CacheGetAndSetTest();
     $this->LogoutTest();
     $this->providerTest();
   }
 
-  private function _testMenuItemExists() {
-    $this->privileged_user = $this->drupalCreateUser(array(
-      'access user profiles',
-    ));
-    $this->drupalLogin($this->privileged_user);
-    $this->drupalGet('user');
-    $this->assertLink('Settings');
-    $this->clickLink('Settings');
-
-    $this->assertText('No settings can be set');
-    $this->assertNoText('Test element is present');
-
-    module_enable(array('bibdk_usersettings_test'));
-    $this->drupalGet('user');
-    $this->assertLink('Settings');
-    $this->clickLink('Settings');
-
-    $this->assertText('Test element is present');
-    $this->assertNoText('No settings can be set');
-  }
-
-  /** Verify that cache table exists
-   *
+  /**
+   * Verify that cache table exists
    */
   public function CacheTableTest() {
     $this->assertTrue(db_table_exists('cache_bibdk_usersettings'), 'cache_bibdk_usersettings has been created');
   }
 
-  /** Verify that get and set methods work as expected
-   *
+  /**
+   * Verify that get and set methods work as expected
    */
   public function CacheGetAndSetTest() {
     // key is userid
@@ -70,8 +47,8 @@ class BibdkUserSettingsWebTestCase extends DrupalWebTestCase {
     $this->assertTrue(is_array($data), 'Cache set and get successfully');
   }
 
-  /** verify that logout invalidates the cache
-   *
+  /**
+   * Verify that logout invalidates the cache
    */
   public function LogoutTest() {
     $key = 1;

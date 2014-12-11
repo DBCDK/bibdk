@@ -130,7 +130,7 @@ function bibdk_reservation_render_custom_branch_view($branch, $form_state) {
   return $form;
 }
 
-function bibdk_reservation_render_custom_manifestation_view(Manifestation $manifestation) {
+function bibdk_reservation_render_custom_manifestation_view(Manifestation $manifestation, $fieldset_title = 'Manifestation') {
   $title = $manifestation->getTitleSpecific();
   $creators = $manifestation->getCreator();
   $author = '';
@@ -151,7 +151,7 @@ function bibdk_reservation_render_custom_manifestation_view(Manifestation $manif
 
   $form = array(
     '#type' => 'fieldset',
-    '#title' => t('Manifestation', array(), array('context' => 'bibdk_reservation')),
+    '#title' => t($fieldset_title, array(), array('context' => 'bibdk_reservation')),
   );
 
   $form['markup'] = array(

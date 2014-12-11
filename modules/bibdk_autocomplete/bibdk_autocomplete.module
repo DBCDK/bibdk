@@ -49,11 +49,6 @@ function bibdk_autocomplete($p_uuid, $v_uuid, $string, $retry = FALSE) {
 
   $value_vars = $vars[$p_uuid]['vars'][$v_uuid];
 
-  // if $string contains " " (whitespaces) use 'phrase' index instead, as 'term' index currently can't handle whitespaces within a string
-  if (strpos(trim($string), ' ') !== FALSE) {
-    $value_vars['index'] = str_replace('scanterm', 'scanphrase', $value_vars['index']);
-  }
-
   unset($value_vars['autocomplete']);
 
   if (empty($value_vars['index'])) {

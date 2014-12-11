@@ -1,14 +1,14 @@
 <?php
 
-module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.agencies');
-module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.ajax');
-module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.borchk');
-module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.forms');
-module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.mypage');
-module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.no_favourites');
-module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.shortcodes');
-module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.webservice');
-module_load_include('php', 'ting_agency', 'TingAgency');
+require_once(drupal_get_path('module', 'bibdk_favourite') . '/includes/bibdk_favourite.agencies.inc');
+require_once(drupal_get_path('module', 'bibdk_favourite') . '/includes/bibdk_favourite.ajax.inc');
+require_once(drupal_get_path('module', 'bibdk_favourite') . '/includes/bibdk_favourite.borchk.inc');
+require_once(drupal_get_path('module', 'bibdk_favourite') . '/includes/bibdk_favourite.forms.inc');
+require_once(drupal_get_path('module', 'bibdk_favourite') . '/includes/bibdk_favourite.mypage.inc');
+require_once(drupal_get_path('module', 'bibdk_favourite') . '/includes/bibdk_favourite.no_favourites.inc');
+require_once(drupal_get_path('module', 'bibdk_favourite') . '/includes/bibdk_favourite.webservice.inc');
+require_once(drupal_get_path('module', 'bibdk_favourite') . '/includes/bibdk_favourite.shortcodes.inc');
+require_once(drupal_get_path('module', 'ting_agency') . '/TingAgency.php');
 require_once(drupal_get_path('module', 'bibdk_favourite') . '/lib/FavouriteAgency.php');
 
 /**
@@ -46,14 +46,20 @@ function bibdk_favourite_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  return $items;
+}
+
+/**
+ * Implements HOOK__mypage_link().
+ * @return mixed
+ */
+function bibdk_favourite_mypage_link() {
   $items['user/%user/bibdk_favourite_list'] = array(
-    'title' => 'Favourites',
+    'title' => t('Favoritbiblioteker', array(), array('context' => 'bibdk_frontend')),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('bibdk_favourite_get_favourites_form'),
-    'file' => 'includes/bibdk_favourite.forms.inc',
     'access callback' => 'user_edit_access',
     'access arguments' => array(1),
-    'type' => MENU_LOCAL_TASK,
     'weight' => 20,
   );
 
@@ -109,6 +115,20 @@ function _bibdk_favourite_set_favourite_first(array $favourites) {
 }
 
 /**
+ * If user has order library, return library else return false
+ *
+ * @return FavouriteAgency|null
+ */
+function bibdk_favourite_get_order_library() {
+  $favourites = bibdk_favourite_get_favourites();
+  $order = reset($favourites);
+  if (!empty($order) && $order->getOrderAgency()) {
+    return $order;
+  }
+  return null;
+}
+
+/**
  * Implements hook to user_help_list
  * */
 function bibdk_favourite_user_help_list() {
@@ -125,16 +145,21 @@ function bibdk_favourite_add_to_vejviser($branchId) {
 /**
  * Returns a link for user/UID/bibdk_favourite_list
  *
- * @param $branchId
+ * @param $branch_id
  * @return array
  */
-function bibdk_favourite_list_link($branchId) {
+function bibdk_favourite_list_link($branch_id) {
+  $already_fav = bibdk_favourite_already_order_library($branch_id);
+  if(!empty($already_fav)){
+    return $already_fav;
+  }
+
   global $user;
   $path = 'user/' . $user->uid . '/bibdk_favourite_list';
   $text = t('Add to favorite libraries');
   $options = array(
     'attributes' => array('class' => array('btn-add-library')),
-    'query' => array('agency' => $branchId),
+    'query' => array('agency' => $branch_id),
     'html' => 'true'
   );
 
@@ -144,6 +169,41 @@ function bibdk_favourite_list_link($branchId) {
     '#path' => $path,
     '#options' => $options,
   );
+}
+
+/**
+ * check if favourite is already selected by user. If so
+ * return a render array that displays it
+ * @param $branch_id
+ * @return array|bool
+ */
+function bibdk_favourite_already_order_library($branch_id) {
+  if (!ding_user_is_provider_user()) {
+    return FALSE;
+  }
+
+  $favourites = bibdk_favourite_get_favourites();
+  if (empty($favourites)) {
+    return FALSE;
+  }
+
+  if (!isset($favourites[$branch_id])) {
+    return FALSE;
+  }
+
+  // library is already in favourites
+  return array(
+    '#type' => 'html_tag',
+    '#tag' => 'div',
+    '#value' => t('bibdk_favourite_already_favourite', array(), array('context' => 'bibdk_favourite')),
+    '#attributes' => array(
+      'class' => array('btn-add-library', 'disabled'),
+      'id' => drupal_clean_css_identifier('already_selected' . $branch_id),
+    )
+  );
+
+  // fallback
+  return FALSE;
 }
 
 /**

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:voxb="http://oss.dbc.dk/ns/voxb" xmlns="http://oss.dbc.dk/ns/voxb">
+    <SOAP-ENV:Body>
+        <voxb:fetchMyDataResponse>
+            <voxb:userId>215507</voxb:userId>
+            <voxb:result>
+                <voxb:voxbIdentifier>6761487</voxb:voxbIdentifier>
+                <voxb:timestamp>2014-04-29T14:31:03+01:00</voxb:timestamp>
+                <voxb:timestampModified>2014-04-29T14:31:03+01:00</voxb:timestampModified>
+                <voxb:item>
+                    <voxb:rating>100</voxb:rating>
+                    <voxb:review>
+                        <voxb:reviewTitle>Nesser, Håkan : De ensomme</voxb:reviewTitle>
+                        <voxb:reviewData>dette er en test .. hest</voxb:reviewData>
+                        <voxb:reviewType>TXT</voxb:reviewType>
+                    </voxb:review>
+                </voxb:item>
+                <voxb:object>
+                    <voxb:objectContributors>Nesser, Håkan</voxb:objectContributors>
+                    <voxb:objectIdentifierValue>28670370</voxb:objectIdentifierValue>
+                    <voxb:objectIdentifierType>FAUST</voxb:objectIdentifierType>
+                    <voxb:objectTitle>De ensomme</voxb:objectTitle>
+                </voxb:object>
+            </voxb:result>
+            <voxb:result>
+                <voxb:voxbIdentifier>6767406</voxb:voxbIdentifier>
+                <voxb:timestamp>2014-05-06T10:52:15+01:00</voxb:timestamp>
+                <voxb:timestampModified>2014-05-06T10:52:15+01:00</voxb:timestampModified>
+                <voxb:item>
+                    <voxb:rating>20</voxb:rating>
+                </voxb:item>
+                <voxb:object>
+                    <voxb:objectContributors>Nesser, Håkan</voxb:objectContributors>
+                    <voxb:objectIdentifierValue>29399212</voxb:objectIdentifierValue>
+                    <voxb:objectIdentifierType>FAUST</voxb:objectIdentifierType>
+                    <voxb:objectTitle>De ensomme</voxb:objectTitle>
+                </voxb:object>
+            </voxb:result>
+            <voxb:result>
+                <voxb:voxbIdentifier>6755665</voxb:voxbIdentifier>
+                <voxb:timestamp>2014-04-23T16:21:11+01:00</voxb:timestamp>
+                <voxb:timestampModified>2014-04-23T16:21:11+01:00</voxb:timestampModified>
+                <voxb:item>
+                    <voxb:rating>20</voxb:rating>
+                </voxb:item>
+                <voxb:object>
+                    <voxb:objectContributors>Boe, Peter; Brostrup, Michael</voxb:objectContributors>
+                    <voxb:objectIdentifierValue>50917576</voxb:objectIdentifierValue>
+                    <voxb:objectIdentifierType>FAUST</voxb:objectIdentifierType>
+                    <voxb:objectMaterialType>LYDBOG</voxb:objectMaterialType>
+                    <voxb:objectPublicationYear>2014</voxb:objectPublicationYear>
+                    <voxb:objectTitle>Krimi</voxb:objectTitle>
+                </voxb:object>
+            </voxb:result>
+            <voxb:result>
+                <voxb:voxbIdentifier>6755649</voxb:voxbIdentifier>
+                <voxb:timestamp>2014-04-23T12:41:57+01:00</voxb:timestamp>
+                <voxb:timestampModified>2014-04-23T12:41:57+01:00</voxb:timestampModified>
+                <voxb:item>
+                    <voxb:rating>20</voxb:rating>
+                    <voxb:review>
+                        <voxb:reviewTitle>Clod, Bente : Body effex</voxb:reviewTitle>
+                        <voxb:reviewData>flot forside nu med en ekstra kommentar</voxb:reviewData>
+                        <voxb:reviewType>TXT</voxb:reviewType>
+                    </voxb:review>
+                </voxb:item>
+                <voxb:object>
+                    <voxb:objectContributors>Clod, Bente</voxb:objectContributors>
+                    <voxb:objectIdentifierValue>26494028</voxb:objectIdentifierValue>
+                    <voxb:objectIdentifierType>FAUST</voxb:objectIdentifierType>
+                    <voxb:objectMaterialType>BOG</voxb:objectMaterialType>
+                    <voxb:objectPublicationYear>2008</voxb:objectPublicationYear>
+                    <voxb:objectTitle>Body effex</voxb:objectTitle>
+                </voxb:object>
+            </voxb:result>
+            <voxb:result>
+                <voxb:voxbIdentifier>6755664</voxb:voxbIdentifier>
+                <voxb:timestamp>2014-04-23T15:51:57+01:00</voxb:timestamp>
+                <voxb:timestampModified>2014-04-23T15:51:57+01:00</voxb:timestampModified>
+                <voxb:item>
+                    <voxb:rating>100</voxb:rating>
+                </voxb:item>
+                <voxb:object>
+                    <voxb:objectContributors>Peake, Mervyn</voxb:objectContributors>
+                    <voxb:objectIdentifierValue>27262589</voxb:objectIdentifierValue>
+                    <voxb:objectIdentifierType>FAUST</voxb:objectIdentifierType>
+                    <voxb:objectMaterialType>BOG</voxb:objectMaterialType>
+                    <voxb:objectPublicationYear>2008</voxb:objectPublicationYear>
+                    <voxb:objectTitle>Titus alene</voxb:objectTitle>
+                </voxb:object>
+            </voxb:result>
+            <voxb:result>
+                <voxb:voxbIdentifier>6875540</voxb:voxbIdentifier>
+                <voxb:timestamp>2014-09-08T14:29:11+01:00</voxb:timestamp>
+                <voxb:timestampModified>2014-09-08T14:29:11+01:00</voxb:timestampModified>
+                <voxb:item>
+                    <voxb:review>
+                        <voxb:reviewTitle>Pigen i cementblanderen : mikr..</voxb:reviewTitle>
+                        <voxb:reviewData>svend åge er en af de HELT store. Så det er bare at gå i krig .. med ham</voxb:reviewData>
+                        <voxb:reviewType>TXT</voxb:reviewType>
+                    </voxb:review>
+                </voxb:item>
+                <voxb:object>
+                    <voxb:objectContributors>Madsen, Svend ¿¿ge, f. 1939; Thunbo, Morten</voxb:objectContributors>
+                    <voxb:objectIdentifierValue>50739708</voxb:objectIdentifierValue>
+                    <voxb:objectIdentifierType>FAUST</voxb:objectIdentifierType>
+                    <voxb:objectMaterialType>LYDBOG (CD)</voxb:objectMaterialType>
+                    <voxb:objectPublicationYear>2014</voxb:objectPublicationYear>
+                    <voxb:objectTitle>Pigen i cementblanderen</voxb:objectTitle>
+                </voxb:object>
+            </voxb:result>
+            <voxb:result>
+                <voxb:voxbIdentifier>6875585</voxb:voxbIdentifier>
+                <voxb:timestamp>2014-09-12T12:15:32+01:00</voxb:timestamp>
+                <voxb:timestampModified>2014-09-12T12:15:32+01:00</voxb:timestampModified>
+                <voxb:item>
+                    <voxb:review>
+                        <voxb:reviewTitle>Nesser, Håkan : De ensomme</voxb:reviewTitle>
+                        <voxb:reviewData>dette er en test som jeg nu opdaterer .. igen .. og igen igen og endnu en gang HEST</voxb:reviewData>
+                        <voxb:reviewType>TXT</voxb:reviewType>
+                    </voxb:review>
+                </voxb:item>
+                <voxb:object>
+                    <voxb:objectIdentifierValue>06761487</voxb:objectIdentifierValue>
+                    <voxb:objectIdentifierType>FAUST</voxb:objectIdentifierType>
+                </voxb:object>
+            </voxb:result>
+        </voxb:fetchMyDataResponse>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

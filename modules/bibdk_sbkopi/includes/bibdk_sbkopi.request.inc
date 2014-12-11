@@ -1,17 +1,25 @@
 <?php
+/**
+ * @file
+ * This file contains methods for creating/validation users at sb
+ *
+ * @TODO
+ * These methods are deprecated and should be removed when PlaceOrderRequest is
+ * in productiopn
+ */
 
 /**
  * SAMPLE REQUESST
- * <CU:CreateUserRequest xmlns:CU="http://statsbiblioteket.dk/xws/createuser_v1" 
- * xmlns:CPR="http://rep.oio.dk/cpr.dk/xml/schemas/core/2005/03/18/" 
+ * <CU:CreateUserRequest xmlns:CU="http://statsbiblioteket.dk/xws/createuser_v1"
+ * xmlns:CPR="http://rep.oio.dk/cpr.dk/xml/schemas/core/2005/03/18/"
  * xmlns:DKCC="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2003/02/13/">
       <CPR:PersonCivilRegistrationIdentifier>$1</CPR:PersonCivilRegistrationIdentifier>
       <DKCC:PersonGivenName>$2</DKCC:PersonGivenName>
       <DKCC:PersonSurnameName>$3</DKCC:PersonSurnameName>
       <CU:EmailAddress>$4</CU:EmailAddress>
     </CU:CreateUserRequest>
- * 
- *  
+ *
+ *
  */
 
 
@@ -51,7 +59,7 @@ Der opstod en fejl, fejlmeddelelse fra Statsbibliotekets server: $1]]></value>
   <content>
     <key>error_sb_screate_user_userexists</key>
     <value><![CDATA[Du er allerede oprettet som bruger!<A0><br />G<E5> tilbage,<A0>skriv CPR-nummer og PIN-kode under <strong>Er du allerede indmeldt p<E5> Statsbiblioteket?</strong>]]></value>
-   
+
  */
 
 
@@ -60,7 +68,7 @@ class bibdk_statsbib extends TingClientRequest Implements ITingClientRequestCach
   protected $personCivilRegistrationIdentifier;
   //<DKCC:PersonGivenName> ; DKCC="http://rep.oio.dk/ebxml/xml/schemas/dkcc/2003/02/13/"
   protected $personGivenName;
-  //<DKCC:PersonSurnameName> 
+  //<DKCC:PersonSurnameName>
   protected $personSurName;
   // <CU:EmailAddress> ; CU="http://statsbiblioteket.dk/xws/createuser_v1
   protected $emailAddress;
@@ -71,8 +79,8 @@ class bibdk_statsbib extends TingClientRequest Implements ITingClientRequestCach
   /** Implementation of ITingClientRequestCache */
 
   /** \brief ITingClientRequestCache::cacheKey; get a cachekey
-   * 
-   * @return string 
+   *
+   * @return string
    */
   public function cacheKey() {
     $params = $this->getParameters();
@@ -84,7 +92,7 @@ class bibdk_statsbib extends TingClientRequest Implements ITingClientRequestCach
   /** \brief make a cachekey based on request parameters
    *
    * @param array $params
-   * @param string $ret 
+   * @param string $ret
    */
   private function make_cache_key($params, &$ret) {
     foreach ($params as $key => $value) {
@@ -99,7 +107,7 @@ class bibdk_statsbib extends TingClientRequest Implements ITingClientRequestCach
     }
   }
   /** \brief ITingClientRequestCache::cacheEnable; Check if cache is enabled
-   *   
+   *
    * @return value of variable (drupal_get)
    */
   public function cacheEnable($value = NULL) {
@@ -107,15 +115,15 @@ class bibdk_statsbib extends TingClientRequest Implements ITingClientRequestCach
     return variable_get($class_name . TingClientRequest::cache_enable);
   }
   /*   * \brief set timeout of cache
-   * 
-   * @return mixed value of variable (variable_get)  
+   *
+   * @return mixed value of variable (variable_get)
    */
   public function cacheTimeout($value = NULL) {
     $class_name = get_class($this);
     return variable_get($class_name . TingClientRequest::cache_lifetime, '1');
   }
   /* \brief implements ITingClientRequestCache::cacheBin
-   * 
+   *
    * @return string; name of cachebin
    */
   public function cacheBin() {
@@ -131,7 +139,7 @@ class bibdk_statsbib extends TingClientRequest Implements ITingClientRequestCach
     return $this->PersonCivilRegistrationIdentifier;
   }
 
-  
+
   public function setPersonGivenName($value = NULL) {
     $this->personGivenName = $value;
   }

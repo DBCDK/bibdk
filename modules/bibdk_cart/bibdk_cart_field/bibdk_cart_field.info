@@ -1,0 +1,4 @@
+name = Bibliotek.dk - Cart field
+description = Provides the cart functionality for bibliotek.dk
+core = 7.x
+package = Bibliotek.dk
