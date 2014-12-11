@@ -161,13 +161,6 @@ function bibdk_vejviser_form($form, &$form_state) {
   return $form;
 }
 
-function bibdk_vejviser_vejviser_page_content_alter(&$data) {
-  if (drupal_static('bibdk_vejviser_empty_result')) {
-    $data['#prefix'] = '<div class="element-wrapper-fake">';
-    $data['#suffix'] ='</div>';
-  }
-}
-
 /**
  * Called when form is submitted. Validating the input, json_encoding the input array and passes it to /vejviser
  * @param array $form

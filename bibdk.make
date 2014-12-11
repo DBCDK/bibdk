@@ -36,11 +36,6 @@ projects[ding_entity][download][type] = git
 projects[ding_entity][download][url] = git@github.com:DBCDK/ding_entity.git
 projects[ding_entity][download][tag] = 7.x-0.7+dbc.3
 
-projects[ding_facetbrowser][type] = module
-projects[ding_facetbrowser][download][type] = git
-projects[ding_facetbrowser][download][url] = git@github.com:DBCDK/ding_facetbrowser.git
-projects[ding_facetbrowser][download][tag] = 7.x-0.13+dbc.20
-
 projects[ding_persistent_login][type] = module
 projects[ding_persistent_login][download][type] = git
 projects[ding_persistent_login][download][url] = git@github.com:DBCDK/ding_persistent_login.git
