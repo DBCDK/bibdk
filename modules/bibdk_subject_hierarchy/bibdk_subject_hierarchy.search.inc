@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @file
+ * Bibdk subject hierarchy search functions
+ */
+
+
 /** Get searchresult from subject hierarchy
  *
  * @param $hierarchy
@@ -66,7 +72,7 @@ function _get_bibdk_subject_hierarchy_searchresult_index($hierarchy, $searchterm
     $current_level_index[] = $key;
 
     // if item contains $searchterm
-    if (isset($item['ord']) && strripos($item['ord'], $searchterm) !== false) {
+    if ( isset($item['ord']) && strripos($item['ord'], $searchterm) !== FALSE ) {
       $hierarchy_level_index_string = implode(',', $hierarchy_level_index);
       $current_level_index_string = implode(',', $current_level_index);
       $results[$hierarchy_level_index_string][] = $current_level_index_string;
@@ -127,7 +133,7 @@ function _get_bibdk_subject_hierarchy_searchresult_item_link($item, $key, $path)
       'attributes' => array(
         'class' => $class,
       ),
-      'html' => false,
+      'html' => FALSE,
     ),
   );
   return $link;
@@ -196,7 +202,7 @@ function bibdk_subject_hierarchy_searchfield_form_submit($form, &$form_state) {
       'attributes' => array(
         'class' => array('themes__close-button close icon icon-blue-x'),
       ),
-      'html' => true,
+      'html' => TRUE,
     ),
   );
 
@@ -261,7 +267,7 @@ function bibdk_subject_hierarchy_searchfield_custom_search($term) {
     '#text' => t('Show result'),
     '#options' => array(
       'attributes' => array(),
-      'html' => false,
+      'html' => FALSE,
     ),
   );
 

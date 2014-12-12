@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * DrupalUnitTest for Bibliotek.dk Subject Hierarchy
+ */
+
 class BibdkSubjectHierarchyUnitTestCase extends DrupalUnitTestCase {
 
   public static function getInfo() {

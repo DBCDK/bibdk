@@ -332,7 +332,7 @@ function _get_bibdk_subject_hierarchy_level($emnehierarki, $key) {
     $emnehierarki = $emnehierarki['term'][$level];
   }
   else {
-    return null;
+    return NULL;
   }
   if (sizeof($key) > 0) {
     $emnehierarki = _get_bibdk_subject_hierarchy_level($emnehierarki, $key);
@@ -415,7 +415,8 @@ function _get_bibdk_subject_hierarchy_heading($emnehierarki, $keys, $path = 'wor
         'html' => FALSE,
       ),
     );
-  } else {
+  }
+  else {
     $heading = array(
       '#markup' => $current_level['ord'],
     );
@@ -432,7 +433,7 @@ function _bibdk_subject_hierarchy_read_data() {
   // fallback if bibdk_yaz is not enabled
   if (!module_exists('bibdk_yaz')) {
     $filename = drupal_get_path('module', 'bibdk_subject_hierarchy') . '/data/emnehierarki_full.json';
-    return json_decode(file_get_contents($filename), true);
+    return json_decode(file_get_contents($filename), TRUE);
   }
 
   $filename = drupal_get_path('module', 'bibdk_subject_hierarchy') . '/data/emnehierarki_full.xml';
@@ -465,11 +466,11 @@ function _bibdk_subject_hierarchy_parse($terms) {
 
   // if the key ccl exists there is only one term and wee need to wrap it in
   // an array for the foreach loop to work correctly
-  if(isset($terms['ccl'])){
+  if ( isset($terms['ccl']) ) {
     $terms = array($terms);
   }
 
-  foreach($terms as $n => $term) {
+  foreach ( $terms as $n => $term ) {
     $record[$n] = _bibdk_subject_hierarchy_parse_term($term);
   }
 
@@ -481,7 +482,7 @@ function _bibdk_subject_hierarchy_parse($terms) {
  */
 function _bibdk_subject_hierarchy_parse_term($term) {
   $record = array();
-  foreach($term as $key => $item) {
+  foreach ($term as $key => $item) {
     if ((string) $key != (string) (int) $key) {
       if ($key == 'term') {
         $record[$key] = _bibdk_subject_hierarchy_parse($item);
@@ -509,10 +510,10 @@ function _bibdk_subject_hierarchy_parse_term($term) {
  * @return string|null
  */
 function _bibdk_subject_hierarchy_ccl_to_cql($ccl) {
-  if (function_exists('bibdk_yaz_convert_ccl_to_cql')){
+  if (function_exists('bibdk_yaz_convert_ccl_to_cql')) {
     return reset(bibdk_yaz_convert_ccl_to_cql($ccl));
   }
-  return null;
+  return NULL;
 }
 
 /** Normalize a string so that it can be compared with others without being too fussy.
