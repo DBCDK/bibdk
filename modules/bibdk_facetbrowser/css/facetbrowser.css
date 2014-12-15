@@ -22,7 +22,7 @@
 .bibdk-facetbrowser-modal.reveal-modal {
     left: 3em;
     padding: 1em;
-    width: 400px;
+    max-width: 400px;
 }
 
 .bibdk-facetbrowser-modal.reveal-modal h3 {
