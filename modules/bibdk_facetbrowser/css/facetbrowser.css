@@ -19,75 +19,79 @@
 .pane-bibdk-facetbrowser a,.pane-bibdk-facetbrowser a:visited { color: #000; }
 .pane-bibdk-facetbrowser a:hover { color: #000; text-decoration: none; }
 
-#bibdk-facetbrowser-form .popover {
+.bibdk-facetbrowser-modal.reveal-modal {
     left: 3em;
     padding: 1em;
     width: 400px;
 }
 
-#bibdk-facetbrowser-form .popover.reveal-modal {
-    display: none;
-}
-
-#bibdk-facetbrowser-form .popover h3 {
+.bibdk-facetbrowser-modal.reveal-modal h3 {
     font-size: 1.25em;
     font-weight: bold;
 }
 
-#bibdk-facetbrowser-form .popover .form-item {
+.bibdk-facetbrowser-modal.reveal-modal .form-item {
     float: none;
     padding: 0;
     width: auto;
 }
 
-#bibdk-facetbrowser-form .popover .checkbox-elements-header,
-#bibdk-facetbrowser-form .popover .checkbox-elements {
+.bibdk-facetbrowser-modal.reveal-modal .checkbox-elements-header,
+.bibdk-facetbrowser-modal.reveal-modal .checkbox-elements {
     float: none;
     padding: 0;
     width: auto;
 }
 
-#bibdk-facetbrowser-form .popover .checkbox-elements-header p {
+.bibdk-facetbrowser-modal.reveal-modal .checkbox-elements-header p {
     overflow: hidden;
     padding-left: 2%;
 }
 
-#bibdk-facetbrowser-form .popover .checkbox-element {
+.bibdk-facetbrowser-modal.reveal-modal .checkbox-element {
     clear: both;
     width: 100%;
 }
 
-#bibdk-facetbrowser-form .popover .checkbox-element-label {
+.bibdk-facetbrowser-modal.reveal-modal .checkbox-element-label {
     float: left;
     width: 60%;
     overflow: hidden;
 }
 
-#bibdk-facetbrowser-form .popover .checkbox-element-select {
+.bibdk-facetbrowser-modal.reveal-modal .checkbox-element-select {
     float: left;
     width: 20%;
     text-align: center;
 }
 
-#bibdk-facetbrowser-form .popover .checkbox-element-deselect {
+.bibdk-facetbrowser-modal.reveal-modal .checkbox-element-deselect {
     float: left;
     width: 20%;
     text-align: center;
 }
 
-#bibdk-facetbrowser-form .popover .checkbox-buttons {
+.bibdk-facetbrowser-modal.reveal-modal .checkbox-buttons {
     margin-top: 10px;
     margin-bottom: 20px;
 }
 
-#bibdk-facetbrowser-form .popover .checkbox-element-submit {
+.bibdk-facetbrowser-modal.reveal-modal .close-reveal-modal,
+.bibdk-facetbrowser-modal.reveal-modal .save-facet-modal {
+    font-size: 0.875rem;
+    position: inherit;
     float: left;
     width: auto;
     margin-right: 10px;
 }
 
-#bibdk-facetbrowser-form .popover .facet-modal-close-icon  {
+.bibdk-facetbrowser-modal.reveal-modal .facet-modal-close-icon  {
     clear: both;
+}
+
+
+.bibdk-facetbrowser-modal.reveal-modal input[type="checkbox"], input[type="radio"] {
+    float: none;
 }
 
 .pane-bibdk-facetbrowser .checkbox-element-submit a,

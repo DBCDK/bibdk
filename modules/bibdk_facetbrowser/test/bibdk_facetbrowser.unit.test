@@ -18,7 +18,7 @@ class BibdkFacetbrowserUnit extends DrupalUnitTestCase {
     return array(
       'name' => t('Bibdk Facetbrowser Unit tests'),
       'description' => t('Unit tests for the Bibdk Facetbrowser module'),
-      'group' => 'Bibdk! - Facetbrowser',
+      'group' => 'Bibliotek.dk - Facetbrowser',
     );
   }
 
@@ -33,34 +33,34 @@ class BibdkFacetbrowserUnit extends DrupalUnitTestCase {
 
     $facet = 'facet.string:not_found';
     $uri = '/da/search/work';
-    $result = _parseSelectionUri($uri, $facet);
+    $result = _bibdk_facetbrowser_parseSelectionUri($uri, $facet);
     $expected_result = $uri;
     $this->assertEqual($expected_result, $result, 'URI with no query return unchanged URL');
     
     $uri = '/da/search/work?search_block_form=fubar&facets[]=facet.foo:bar&facets[]=facet.string:found';
-    $result = _parseSelectionUri($uri, $facet);
+    $result = _bibdk_facetbrowser_parseSelectionUri($uri, $facet);
     $expected_result = $uri;
     $this->assertEqual($expected_result, $result, 'Facet not found in URI, return unchanged URL');
 
     $facet = 'facet.string:found';
-    $result = _parseSelectionUri($uri, $facet);
+    $result = _bibdk_facetbrowser_parseSelectionUri($uri, $facet);
     $expected_result = '/da/search/work?search_block_form=fubar&facets[]=facet.foo:bar';
     $this->assertEqual($expected_result, $result, 'Facet found in URI, return URL with facet removed from query');
 
     $facet = 'facet.string:found';
-    $result = _parseSelectionUri($uri, $facet);
+    $result = _bibdk_facetbrowser_parseSelectionUri($uri, $facet);
     $expected_result = '/da/search/work?search_block_form=fubar&facets[]=facet.foo:bar';
     $this->assertEqual($expected_result, $result, 'Facet found in URI, return URL with facet removed from query');
 
     $facet = 'facet.type%3Acd%20%28musik%29';
     $uri = '/da/search/work?search_block_form=fubar&facets[]=facet.foo:bar&facets[]=facet.type%3Acd%20%28musik%29';
-    $result = _parseSelectionUri($uri, $facet);
+    $result = _bibdk_facetbrowser_parseSelectionUri($uri, $facet);
     $expected_result = '/da/search/work?search_block_form=fubar&facets[]=facet.foo:bar';
     $this->assertEqual($expected_result, $result, 'Urlencoded Facet found in URI, return URL with facet removed from query');
 
     $facet = 'facet.creator:anders and';
     $uri = '/da/search/work?search_block_form=fubar&facets[]=facet.foo:bar&facets[]=facet.creator:anders%20and';
-    $result = _parseSelectionUri($uri, $facet);
+    $result = _bibdk_facetbrowser_parseSelectionUri($uri, $facet);
     $expected_result = '/da/search/work?search_block_form=fubar&facets[]=facet.foo:bar';
     $this->assertEqual($expected_result, $result, 'Urldecoded Facet found in URI, return URL with facet removed from query');
 
@@ -74,7 +74,7 @@ class BibdkFacetbrowserUnit extends DrupalUnitTestCase {
       'facets[]=!facet.language:russisk',
     );
 
-    $result = _isFacetSelected($facets, TRUE);
+    $result = _bibdk_facetbrowser_isFacetSelected($facets, TRUE);
     $expected_result = array(
       '0' => array(
               'name' => 'facet.language',
@@ -84,7 +84,7 @@ class BibdkFacetbrowserUnit extends DrupalUnitTestCase {
     );
     $this->assertEqual($expected_result, $result, 'Selected facet found in URI, return array with facet');
 
-    $result = _isFacetSelected($facets, FALSE);
+    $result = _bibdk_facetbrowser_isFacetSelected($facets, FALSE);
     $expected_result = array(
       '0' => array(
               'name' => 'facet.language',
@@ -99,7 +99,7 @@ class BibdkFacetbrowserUnit extends DrupalUnitTestCase {
       'facets[]=!facet.language:russisk',
     );
 
-    $result = _isFacetSelected($facets, TRUE);
+    $result = _bibdk_facetbrowser_isFacetSelected($facets, TRUE);
     $expected_result = FALSE;
     $this->assertEqual($expected_result, $result, 'Return FALSE if no selected facet is found');
 
@@ -108,7 +108,7 @@ class BibdkFacetbrowserUnit extends DrupalUnitTestCase {
       'facets[]=facet.language:engelsk',
     );
 
-    $result = _isFacetSelected($facets, FALSE);
+    $result = _bibdk_facetbrowser_isFacetSelected($facets, FALSE);
     $expected_result = FALSE;
     $this->assertEqual($expected_result, $result, 'Return FALSE if no deselected facet is found');
 

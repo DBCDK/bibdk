@@ -1,10 +1,11 @@
-name = Bibdk Facet Browser
+name = Bibliotek.dk Facet Browser
 description = Implements a facetbrowser for search results. If a module implements hook_facetbrowser() we're trying to create a facetbrowser
-version = 7.x-0.13+dbc.19
+version = 7.x-1.0
 core = 7.x
 package = Bibliotek.dk
 
-files[] = bibdk_facetbrowser.module
+configure = admin/config/ting/facets
+
 files[] = test/bibdk_facetbrowser.unit.test
 files[] = test/bibdk_facetbrowser.web.test
 

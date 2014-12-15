@@ -230,6 +230,7 @@
 
     // Show/hide modal window
     // To do: Redo as Foundation Modal
+    /*
     $("#bibdk-facetbrowser-form").delegate("div[data-expand='select'] span", "click", function() {
       $("#bibdk-facetbrowser-form").find("div.reveal-modal").hide();
       var facetGroup = $(this).parents('fieldset');
@@ -237,10 +238,14 @@
       facetGroup.find(".reveal-modal").show();
       facetGroup.find(".reveal-modal .close").focus();
     });
+    */
 
     // Populate modal window
     $("#bibdk-facetbrowser-form").delegate("div[data-expand='select'] span", "click", function() {
+      // get url from form data-uri attribute
+      var url = $(this).parents('#bibdk-facetbrowser-form').attr('data-uri');
       var facetGroup = $(this).parents('fieldset');
+      facetGroup.find(".bibdk-facetbrowser-modal").attr('data-uri', url);
       var divTemplate = facetGroup.find(".reveal-modal .checkbox-element").clone();
       if ( !facetGroup.find(".reveal-modal .checkbox-elements").html().trim() ) {
         facetGroup.find('.form-type-checkbox').each(function(count, facetElement) {
@@ -260,7 +265,7 @@
     });
 
     // simulate radio buttons functionality
-    $("#bibdk-facetbrowser-form").delegate(".reveal-modal input[type='checkbox']", "change", function() {
+    $(".bibdk-facetbrowser-modal").delegate(".reveal-modal input[type='checkbox']", "change", function() {
       // ought to use .prop() instead of .attr(), but that requires jQuery 1.6 or greater
       if ( this.checked ) { 
         var elemName = $(this).attr('name');
@@ -275,16 +280,15 @@
     });
     
     // modal window submit button
-    $("#bibdk-facetbrowser-form").delegate(".save-facet-modal .btn", "click", function(event) {
+    $(".bibdk-facetbrowser-modal").delegate(".save-facet-modal .btn", "click", function(event) {
       event.preventDefault();
       var facetsSelect   = new Array();
       var facetsDeselect = new Array();
-      // $("#bibdk-facetbrowser-form").find("div.reveal-modal").hide();
-      var modalGroup = $(this).parents('.reveal-modal');
-      var facetKey   = $(this).parents('fieldset').attr('data-name');
+      var modalGroup = $(this).parents('.bibdk-facetbrowser-modal');
+      var facetKey = $(this).parents('.bibdk-facetbrowser-modal').attr('data-facet-key');
 
-      // get url from form data-uri attribute
-      var url = $(this).parents('#bibdk-facetbrowser-form').attr('data-uri');
+      // get url from modal div data-uri attribute
+      var url = $(this).parents('.bibdk-facetbrowser-modal').attr('data-uri');
       // create anchor element, so we can access path from DOM
       var a = $('<a>', { href:url } )[0];
       var myArray = decodeURIComponent(a.search).split('&');
@@ -302,18 +306,18 @@
           if ( $(modalElement).attr('data-deselect') ) {
             facetsDeselect.push( $(modalElement).val() );
           } else {
-            facetsSelect.push( $(modalElement).val() );
+            facetsSelect.push( $(modalElement).val() ); 
           }
         }
 
       });
 
       for ( var i = 0; i < facetsSelect.length; i = i + 1 ) {
-        myArray.push('facets[]=' + facetKey + ':' + facetsSelect[i]);
+        myArray.push('facets[]=' + 'facet.' + facetKey + ':' + facetsSelect[i]);
       }
 
       for ( var i = 0; i < facetsDeselect.length; i = i + 1 ) {
-        myArray.push('facets[]=!' + facetKey + ':' + facetsDeselect[i]);
+        myArray.push('facets[]=!' + 'facet.' + facetKey + ':' + facetsDeselect[i]);
       }
 
       newUri = a.protocol + '//' + a.host + '/' + a.pathname + myArray.join('&');
@@ -324,6 +328,7 @@
 
 
     // close button - close and set focus back to opening link
+    /*
     $("#bibdk-facetbrowser-form").delegate(".close-facet-modal .btn", "click", function(event) {
       event.preventDefault();
       var facetGroup = $(this).parents('fieldset');
@@ -333,6 +338,7 @@
       }
       facetGroup.find("div[data-expand='select']").focus();
     });
+    */
 
   };
 

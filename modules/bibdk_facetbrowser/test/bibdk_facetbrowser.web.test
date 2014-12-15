@@ -10,7 +10,7 @@ class BibdkFacetbrowserWeb extends DrupalWebTestCase {
     return array(
       'name' => t('Bibdk Facetbrowser Web Tests'),
       'description' => t('Webtests for the Bibdk Facetbrowser module'),
-      'group' => 'Bibdk! - Facetbrowser',
+      'group' => 'Bibliotek.dk - Facetbrowser',
     );
   }
 

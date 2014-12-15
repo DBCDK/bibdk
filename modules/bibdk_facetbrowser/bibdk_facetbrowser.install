@@ -32,6 +32,7 @@ function bibdk_facetbrowser_install() {
   variable_set('bibdk_facetbrowser_number_requested', 25);
   variable_set('bibdk_facetbrowser_consecutive_number_shown', 10);
 
+  // copy facets from ding_facetbrowser, if set. 
   if ( $facets = variable_get('ding_facetbrowser_facets', FALSE) ) {
     variable_set('bibdk_facetbrowser_facets', $facets);
   }
