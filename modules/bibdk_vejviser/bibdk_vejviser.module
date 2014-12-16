@@ -67,6 +67,9 @@ function bibdk_vejviser_block_info() {
 
 /**
  * Implements hook_block_view();
+ *
+ * @param string $delta
+ * @return array
  */
 function bibdk_vejviser_block_view($delta = '') {
 
@@ -140,22 +143,13 @@ function bibdk_vejviser_form($form, &$form_state) {
     '#autocomplete_path' => 'vejviser/autocomplete',
   );
 
-  $form['actions'] = array(
-    '#type' => 'actions',
-    '#attributes' => array(
-      'placeholder' => t('Library name, zip or city'),
-      'class' => array('search-actions'),
-    ),
-
-  );
-  $form['actions']['openagency_submit'] = array(
+  $form['openagency_submit'] = array(
     '#type' => 'submit',
     '#value' => t('Search'),
     '#executes_submit_callback' => TRUE,
     '#attributes' => array(
       'class' => array('search-submit-field'),
     ),
-
   );
 
   drupal_add_js(drupal_get_path('module', 'bibdk_vejviser') . '/js/bibdk_vejviser.js');
