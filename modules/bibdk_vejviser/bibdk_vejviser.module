@@ -191,7 +191,6 @@ function bibdk_vejviser_theme() {
       'path' => $path,
       'variables' => array(
         'form' => '',
-        'ting_info_holder' => 'ting_info_holder'
       ),
       'template' => 'bibdk_vejviser_header',
     ),
@@ -259,14 +258,11 @@ function bibdk_vejviser_agency_search() {
   $render['header'] = array(
     '#theme' => 'bibdk_vejviser_header',
     '#form' => $raw,
-    '#ting_info_holder' => 'ting_info_holder',
   );
 
   if (!empty($branches)) {
     $render['branches'] = array(
       '#markup' => drupal_render($branches),
-      '#prefix' => '<div class="element-wrapper"><div class="element">',
-      '#suffix' => '</div></div>',
     );
   }
 
