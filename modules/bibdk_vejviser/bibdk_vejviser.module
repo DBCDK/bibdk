@@ -3,10 +3,10 @@
 /**
  * @file
  * Module file. Gives the the users ability to search for libraries through the
- *   OpenAgency webservice
+ * OpenAgency webservice
  */
 
-module_load_include('autocomplete.inc', 'bibdk_vejviser');
+require_once drupal_get_path('module', 'bibdk_vejviser') . '/includes/bibdk_vejviser.autocomplete.inc';
 
 /**
  * Implements hook_menu();
