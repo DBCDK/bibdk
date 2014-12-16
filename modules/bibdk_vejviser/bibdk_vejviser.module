@@ -130,7 +130,6 @@ function _bibdk_vejviser_create_render_array($delta) {
 function bibdk_vejviser_form($form, &$form_state) {
   $value = isset($form_state['input']['openagency_query']) ? $form_state['input']['openagency_query'] : NULL;
   if (!empty($value)) {
-
     drupal_set_message(t('search results for %value', array('%value' => str_replace('*', '?', $value))), 'status');
   }
 
@@ -138,7 +137,7 @@ function bibdk_vejviser_form($form, &$form_state) {
     '#type' => 'textfield',
     '#attributes' => array(
       'placeholder' => t('Library name, zip or city'),
-      'class' => array('search-input-field'),
+      'class' => array('vejviser-search-input-field'),
     ),
     '#autocomplete_path' => 'vejviser/autocomplete',
   );
