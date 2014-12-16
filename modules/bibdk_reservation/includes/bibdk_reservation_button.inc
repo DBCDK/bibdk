@@ -118,7 +118,6 @@ function bibdk_reservation_order_any_edition_link($collection, $work_types, $uid
         'content' => array(
           '#theme' => 'span_with_svg',
           '#content' => array(
-            '#type' => 'markup',
             '#markup' => $mat_type,
           ),
           '#attributes' => array(),
@@ -128,7 +127,6 @@ function bibdk_reservation_order_any_edition_link($collection, $work_types, $uid
       $row['order_mat']['data'] = array(
         '#type' => 'container',
         'content' => array(
-          '#type' => 'markup',
           '#markup' => t('can not be ordered', array(), array('context' => 'bibdk_reservation')),
         ),
       );
@@ -137,7 +135,6 @@ function bibdk_reservation_order_any_edition_link($collection, $work_types, $uid
       $row['label_mat']['data'] = array(
         '#theme' => 'span_with_svg',
         '#content' => array(
-          '#type' => 'markup',
           '#markup' => ucfirst($mat_type),
         ),
         '#attributes' => array('class'=>array('mat-type')),
