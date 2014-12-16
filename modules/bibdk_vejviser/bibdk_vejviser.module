@@ -2,13 +2,15 @@
 
 /**
  * @file
- * Module file. Gives the the users ability to search for libraries through the OpenAgency webservice
+ * Module file. Gives the the users ability to search for libraries through the
+ *   OpenAgency webservice
  */
 
 module_load_include('autocomplete.inc', 'bibdk_vejviser');
 
 /**
  * Implements hook_menu();
+ *
  * @return boolean
  */
 function bibdk_vejviser_menu() {
@@ -41,9 +43,9 @@ function bibdk_vejviser_form_ting_admin_ting_settings_alter(&$form, &$form_state
   );
 }
 
-
 /**
  * Implements hook_how_r_u();
+ *
  * @return type
  */
 function bibdk_vejviser_how_r_u() {
@@ -80,6 +82,7 @@ function bibdk_vejviser_block_view($delta = '') {
 
 /**
  * Helper function: Creates render arrays for blocks
+ *
  * @param $delta
  * @return array
  */
@@ -113,6 +116,7 @@ function _bibdk_vejviser_create_render_array($delta) {
 
 /**
  * Creates the form array
+ *
  * @param array $form
  * @param array $form_state
  * @return array
@@ -136,9 +140,9 @@ function bibdk_vejviser_form($form, &$form_state) {
   $form['actions'] = array(
     '#type' => 'actions',
     '#attributes' => array(
-    'placeholder' => t('Library name, zip or city'),
-    'class' => array('search-actions'),
-  ),
+      'placeholder' => t('Library name, zip or city'),
+      'class' => array('search-actions'),
+    ),
 
   );
   $form['actions']['openagency_submit'] = array(
@@ -154,7 +158,7 @@ function bibdk_vejviser_form($form, &$form_state) {
   drupal_add_js(drupal_get_path('module', 'bibdk_vejviser') . '/js/bibdk_vejviser.js');
 
   global $user;
-  if($user->uid){
+  if ($user->uid) {
     drupal_add_js(array('uid' => $user->uid), 'setting');
   }
 
@@ -162,7 +166,9 @@ function bibdk_vejviser_form($form, &$form_state) {
 }
 
 /**
- * Called when form is submitted. Validating the input, json_encoding the input array and passes it to /vejviser
+ * Called when form is submitted. Validating the input, json_encoding the input
+ * array and passes it to /vejviser
+ *
  * @param array $form
  * @param array $form_state
  */
@@ -178,7 +184,6 @@ function bibdk_vejviser_form_submit(&$form, &$form_state) {
   }
 }
 
-
 /**
  * Implements hook_theme().
  */
@@ -186,23 +191,29 @@ function bibdk_vejviser_theme() {
   $path = drupal_get_path('module', 'bibdk_vejviser') . '/template';
   $bibdk_vejviser_theme_array = array(
     'bibdk_vejviser_header' => array(
-      'render element'  => 'form',
-      'path'            => $path,
-      'variables'       => array('count' => '', 'search_form' => '', 'ting_info_holder' => 'ting_info_holder'),
-      'template'        => 'bibdk_vejviser_header',
+      'render element' => 'form',
+      'path' => $path,
+      'variables' => array(
+        'count' => '',
+        'search_form' => '',
+        'ting_info_holder' => 'ting_info_holder'
+      ),
+      'template' => 'bibdk_vejviser_header',
     ),
   );
   return $bibdk_vejviser_theme_array;
 }
 
-
 function _bibdk_vejviser_vejviser_raw() {
-//  if (empty($_REQUEST['openagency_query'])) {
+  //  if (empty($_REQUEST['openagency_query'])) {
   $ret = drupal_get_form('bibdk_vejviser_form');
   // change id of input textfield to make javascript work
   $ret['openagency_query']['#id'] = $ret['openagency_query']['#id'] . '-23';
   // set classes to display correct
-  $ret['#attributes']['class'] = array('search-form-horizontal', 'vejviser-raw');
+  $ret['#attributes']['class'] = array(
+    'search-form-horizontal',
+    'vejviser-raw'
+  );
   return drupal_render($ret);
   // }
   // return FALSE;
@@ -211,7 +222,7 @@ function _bibdk_vejviser_vejviser_raw() {
 function bibdk_vejviser_agency_search() {
 
   $raw = _bibdk_vejviser_vejviser_raw();
-  if (isset($_REQUEST['agencyId']) && empty($_REQUEST['agencyId'])  ) {
+  if (isset($_REQUEST['agencyId']) && empty($_REQUEST['agencyId'])) {
     drupal_set_message(t('You haven\'t entered any search criteria.', array(), array('context' => 'bibdk_vejviser')), 'error');
     return $raw;
   }
@@ -226,7 +237,7 @@ function bibdk_vejviser_agency_search() {
     return $raw;
   }
 
-  if (isset($_REQUEST['openagency_query']) && empty($_REQUEST['openagency_query'])  ) {
+  if (isset($_REQUEST['openagency_query']) && empty($_REQUEST['openagency_query'])) {
     drupal_set_message(t('You haven\'t entered any search criteria.', array(), array('context' => 'bibdk_vejviser')), 'error');
     return $raw;
   }
@@ -264,7 +275,7 @@ function bibdk_vejviser_agency_search() {
     '#ting_info_holder' => 'ting_info_holder',
   );
 
-  if(!empty($branches)){
+  if (!empty($branches)) {
     $render['branches'] = array(
       '#markup' => drupal_render($branches),
       '#prefix' => '<div class="element-wrapper"><div class="element">',
@@ -276,7 +287,9 @@ function bibdk_vejviser_agency_search() {
 }
 
 /**
- * create agency_link and return. ex: http://dringo.dbc.dk/ana.ding/da/vejviser/?agencyId=830070
+ * create agency_link and return. ex:
+ * http://dringo.dbc.dk/ana.ding/da/vejviser/?agencyId=830070
+ *
  * @param String $branch
  * @return string
  */
@@ -285,12 +298,16 @@ function bibdk_vejviser_get_agency_link($branch) {
     return $branch->agencyName;
   }
   else {
-    return ( l($branch->agencyName, 'vejviser/', array('attributes' => array('class' => array('agencylist-link')), 'query' => array('agencyId' => $branch->agencyId))) . "    " . t('ting_show_all_libraries'));
+    return (l($branch->agencyName, 'vejviser/', array(
+        'attributes' => array('class' => array('agencylist-link')),
+        'query' => array('agencyId' => $branch->agencyId)
+      )) . "    " . t('ting_show_all_libraries'));
   }
 }
 
 /**
- * Callback function for the /vejviser menu item. Called when user hits http://domain.dk/vejviser. Takes the above encoded json string as input
+ * Callback function for the /vejviser menu item. Called when user hits
+ * http://domain.dk/vejviser. Takes the above encoded json string as input
  * There might be a better way for passing the search criterias
  *
  * @param $query
@@ -299,32 +316,47 @@ function bibdk_vejviser_get_agency_link($branch) {
 function bibdk_vejviser_execute_agency_search($query) {
   $sort[] = variable_get('agency_sort_librarytype', 'libraryType');
   $sort[] = variable_get('agency_sort_agencyid', 'agencyId');
-  if (empty($query)) return;
+  if (empty($query)) {
+    return;
+  }
 
   $client = new ting_client_class();
-  $resp = $client->do_request('agency', array('anyField' => $query, 'sort' => $sort, 'action' => 'findLibraryRequest'));
+  $resp = $client->do_request('agency', array(
+    'anyField' => $query,
+    'sort' => $sort,
+    'action' => 'findLibraryRequest'
+  ));
   //$resp = $client->do_request('agency', array('agencyName' => $query, 'sort' => $sort, 'action' => 'findLibraryRequest'));
   return bibdk_vejviser_handle_response($resp);
 }
 
 /**
- * Callback function for the /vejviser menu item: Find pickup_agencyId's for agencyId be showed.
+ * Callback function for the /vejviser menu item: Find pickup_agencyId's for
+ * agencyId be showed.
+ *
  * @param String $agencyId
  * @return array
  */
 function bibdk_vejviser_execute_pickup_agency_search($agencyId) {
   //Find pickup_agencyIds for agencyId
-  if (empty($agencyId)) return;
+  if (empty($agencyId)) {
+    return;
+  }
   $client = new ting_client_class();
   // Call pickupAgencyListRequest service parm: agencyId
-//  $resp = $client->do_agency(array('agencyId' => $agencyId, 'action' => 'pickupAgencyListRequest'));
-  $resp = $client->do_request('agency', array('agencyId' => $agencyId, 'action' => 'pickupAgencyListRequest'));
+  //  $resp = $client->do_agency(array('agencyId' => $agencyId, 'action' => 'pickupAgencyListRequest'));
+  $resp = $client->do_request('agency', array(
+    'agencyId' => $agencyId,
+    'action' => 'pickupAgencyListRequest'
+  ));
   return bibdk_vejviser_handle_agency_response($resp);
 }
 
 /**
  * Handling the response.
- * Received errors needs handling. The role of this function is quite limited. It might be worth handling errors elsewhere and deprecate this function
+ * Received errors needs handling. The role of this function is quite limited.
+ * It might be worth handling errors elsewhere and deprecate this function
+ *
  * @param array $response
  * @return array
  */
@@ -348,7 +380,9 @@ function bibdk_vejviser_handle_response($response) {
 }
 
 /**
- * Handling the response. pickupAgencyListResponse will be passed for all pickupAgencyListResponse->library[0]->pickupAgency for display
+ * Handling the response. pickupAgencyListResponse will be passed for all
+ * pickupAgencyListResponse->library[0]->pickupAgency for display
+ *
  * @param array $response
  * @return array
  */
