@@ -61,6 +61,7 @@ function bibdk_vejviser_block_info() {
     'info' => t('Bibdk: Find library header action'),
     'description' => t('Displays a single input field for finding libraries'),
   );
+
   return $blocks;
 }
 
@@ -77,6 +78,7 @@ function bibdk_vejviser_block_view($delta = '') {
       $block['content'] = _bibdk_vejviser_create_render_array($delta);
       break;
   }
+
   return $block;
 }
 
@@ -111,6 +113,7 @@ function _bibdk_vejviser_create_render_array($delta) {
       );
       break;
   }
+
   return $render;
 }
 
@@ -188,7 +191,7 @@ function bibdk_vejviser_form_submit(&$form, &$form_state) {
  * Implements hook_theme().
  */
 function bibdk_vejviser_theme() {
-  $path = drupal_get_path('module', 'bibdk_vejviser') . '/template';
+  $path = drupal_get_path('module', 'bibdk_vejviser') . '/theme';
   $bibdk_vejviser_theme_array = array(
     'bibdk_vejviser_header' => array(
       'render element' => 'form',
@@ -201,11 +204,11 @@ function bibdk_vejviser_theme() {
       'template' => 'bibdk_vejviser_header',
     ),
   );
+
   return $bibdk_vejviser_theme_array;
 }
 
 function _bibdk_vejviser_vejviser_raw() {
-  //  if (empty($_REQUEST['openagency_query'])) {
   $ret = drupal_get_form('bibdk_vejviser_form');
   // change id of input textfield to make javascript work
   $ret['openagency_query']['#id'] = $ret['openagency_query']['#id'] . '-23';
@@ -214,9 +217,8 @@ function _bibdk_vejviser_vejviser_raw() {
     'search-form-horizontal',
     'vejviser-raw'
   );
+
   return drupal_render($ret);
-  // }
-  // return FALSE;
 }
 
 function bibdk_vejviser_agency_search() {
@@ -326,7 +328,7 @@ function bibdk_vejviser_execute_agency_search($query) {
     'sort' => $sort,
     'action' => 'findLibraryRequest'
   ));
-  //$resp = $client->do_request('agency', array('agencyName' => $query, 'sort' => $sort, 'action' => 'findLibraryRequest'));
+
   return bibdk_vejviser_handle_response($resp);
 }
 
@@ -344,11 +346,12 @@ function bibdk_vejviser_execute_pickup_agency_search($agencyId) {
   }
   $client = new ting_client_class();
   // Call pickupAgencyListRequest service parm: agencyId
-  //  $resp = $client->do_agency(array('agencyId' => $agencyId, 'action' => 'pickupAgencyListRequest'));
+
   $resp = $client->do_request('agency', array(
     'agencyId' => $agencyId,
     'action' => 'pickupAgencyListRequest'
   ));
+
   return bibdk_vejviser_handle_agency_response($resp);
 }
 
@@ -374,8 +377,6 @@ function bibdk_vejviser_handle_response($response) {
   else if (!isset($response->error) && !isset($response->pickupAgency)) {
     $error = t('no_libraries_found_and_no_errors_reported');
     drupal_set_message(t($error, array(), array('context' => 'bibdk_vejviser')), 'error');
-    // quickfix - goto vejviser entrypoint
-    //drupal_goto('vejviser');
   }
 }
 
