@@ -185,20 +185,17 @@ function bibdk_vejviser_form_submit(&$form, &$form_state) {
  */
 function bibdk_vejviser_theme() {
   $path = drupal_get_path('module', 'bibdk_vejviser') . '/theme';
-  $bibdk_vejviser_theme_array = array(
+  return array(
     'bibdk_vejviser_header' => array(
       'render element' => 'form',
       'path' => $path,
       'variables' => array(
-        'count' => '',
-        'search_form' => '',
+        'form' => '',
         'ting_info_holder' => 'ting_info_holder'
       ),
       'template' => 'bibdk_vejviser_header',
     ),
   );
-
-  return $bibdk_vejviser_theme_array;
 }
 
 function _bibdk_vejviser_vejviser_raw() {
@@ -261,8 +258,7 @@ function bibdk_vejviser_agency_search() {
 
   $render['header'] = array(
     '#theme' => 'bibdk_vejviser_header',
-    '#search_form' => $raw,
-    '#count' => sizeof($result),
+    '#form' => $raw,
     '#ting_info_holder' => 'ting_info_holder',
   );
 
