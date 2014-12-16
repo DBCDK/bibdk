@@ -285,10 +285,10 @@ function bibdk_vejviser_get_agency_link($branch) {
     return $branch->agencyName;
   }
   else {
-    return (l($branch->agencyName, 'vejviser/', array(
-        'attributes' => array('class' => array('agencylist-link')),
-        'query' => array('agencyId' => $branch->agencyId)
-      )) . "    " . t('ting_show_all_libraries'));
+    return l($branch->agencyName, 'vejviser/', array(
+      'attributes' => array('class' => array('agencylist-link')),
+      'query' => array('agencyId' => $branch->agencyId)
+    ));
   }
 }
 
