@@ -137,7 +137,7 @@ function bibdk_vejviser_form($form, &$form_state) {
     '#type' => 'textfield',
     '#attributes' => array(
       'placeholder' => t('Library name, zip or city'),
-      'class' => array('vejviser-search-input-field'),
+      'class' => array('vejviser-search-input'),
     ),
     '#autocomplete_path' => 'vejviser/autocomplete',
   );
@@ -147,7 +147,7 @@ function bibdk_vejviser_form($form, &$form_state) {
     '#value' => t('Search'),
     '#executes_submit_callback' => TRUE,
     '#attributes' => array(
-      'class' => array('search-submit-field'),
+      'class' => array('vejviser-search-submit'),
     ),
   );
 
