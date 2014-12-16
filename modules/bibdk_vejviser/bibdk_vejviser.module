@@ -204,12 +204,8 @@ function bibdk_vejviser_theme() {
 function _bibdk_vejviser_vejviser_raw() {
   $ret = drupal_get_form('bibdk_vejviser_form');
   // change id of input textfield to make javascript work
-  $ret['openagency_query']['#id'] = $ret['openagency_query']['#id'] . '-23';
+  //$ret['openagency_query']['#id'] = $ret['openagency_query']['#id'] . '-23'; // TODO mmj possibly unnecessary
   // set classes to display correct
-  $ret['#attributes']['class'] = array(
-    'search-form-horizontal',
-    'vejviser-raw'
-  );
 
   return drupal_render($ret);
 }
