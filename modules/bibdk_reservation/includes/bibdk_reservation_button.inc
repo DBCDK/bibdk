@@ -96,6 +96,7 @@ function bibdk_reservation_order_any_edition_link($collection, $work_types, $uid
     "music",
     "sheetmusic",
   );
+  // nb: may also be 'other'
 
   foreach ($collection as $type => $ids) {
     $row = array();
@@ -216,28 +217,6 @@ function _bibdk_reservation_create_type_button($type, $ids, $uid) {
 
   $text = t('Order', array(), array('context' => 'bibdk_reservation'));
 
-/*
-  $path = 'reservation';
-  $query = array('ids' => implode(',', $ids));
-  $class = strtolower(preg_replace('/[^a-zA-Z0-9]+/', '', $ids[0]));
-
-  $attributes = array(
-    'data-rel' => array(
-      'reservation'
-    ),
-    'class' => array(
-      'bibdk-popup-order-work',
-      'bibdk-popup-link',
-      'btn',
-      'btn-blue',
-    ),
-    'id' => array(
-      'any_edtion_order_' . $class
-    ),
-    'aria-label' => $text . ' ' . $type,
-  );
-*/
-
   $link = array(
     '#theme' => 'link',
     '#text' => $text,
@@ -263,8 +242,6 @@ function _bibdk_reservation_create_type_button($type, $ids, $uid) {
   );
 
   return $link;
-  // return drupal_render($link);
-  // return l($text, $path, array('attributes' => $attributes, 'query' => $query));
 }
 
 
