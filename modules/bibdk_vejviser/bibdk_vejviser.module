@@ -30,6 +30,23 @@ function bibdk_vejviser_menu() {
 }
 
 /**
+ * Implements hook_theme().
+ */
+function bibdk_vejviser_theme() {
+  $path = drupal_get_path('module', 'bibdk_vejviser') . '/theme';
+  return array(
+    'bibdk_vejviser_header' => array(
+      'render element' => 'form',
+      'path' => $path,
+      'variables' => array(
+        'form' => '',
+      ),
+      'template' => 'bibdk_vejviser_header',
+    ),
+  );
+}
+
+/**
  * Implements hook_form_FORM_ID_alter (ting_admin_ting_settings)
  * Creates a field for adding a URL for the Ting Agency Serach webservice
  */
@@ -178,23 +195,6 @@ function bibdk_vejviser_form_submit(&$form, &$form_state) {
     $query = array('openagency_query' => str_replace('*', '?', $query));
     drupal_goto('vejviser', array('query' => $query));
   }
-}
-
-/**
- * Implements hook_theme().
- */
-function bibdk_vejviser_theme() {
-  $path = drupal_get_path('module', 'bibdk_vejviser') . '/theme';
-  return array(
-    'bibdk_vejviser_header' => array(
-      'render element' => 'form',
-      'path' => $path,
-      'variables' => array(
-        'form' => '',
-      ),
-      'template' => 'bibdk_vejviser_header',
-    ),
-  );
 }
 
 function _bibdk_vejviser_vejviser_raw() {
