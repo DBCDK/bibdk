@@ -9,7 +9,7 @@
   }
   // add this function to Drupal ajax commands
   Drupal.ajax.prototype.commands.favourite_set = function(ajax, response, status) {
-    var standard_txt = Drupal.t('set_as_favourite');
+    var standard_txt = Drupal.t('set_as_favourite', null, null);
     // remove order-agency class for all articles
     $('article').removeClass('order-agency');
     $('article').each(function(index) {
@@ -24,7 +24,7 @@
     $('.' + selector).addClass('order-agency');
     var orderagency = $('.' + selector).find('a').first();
     orderagency.addClass('selected-agency');
-    var text = Drupal.t('Order agency');
+    var text = Drupal.t('Order agency', null, null);
     orderagency.text(text);
   }
 })(jQuery);
