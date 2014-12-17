@@ -6,7 +6,7 @@
  * OpenAgency webservice
  */
 
-require_once drupal_get_path('module', 'bibdk_vejviser') . '/includes/bibdk_vejviser.autocomplete.inc';
+require_once(drupal_get_path('module', 'bibdk_vejviser') . '/includes/bibdk_vejviser.autocomplete.inc');
 
 /**
  * Implements hook_menu();
@@ -67,71 +67,6 @@ function bibdk_vejviser_form_ting_admin_ting_settings_alter(&$form, &$form_state
  */
 function bibdk_vejviser_how_r_u() {
   return array('Open Agency' => variable_get('agency_search_url', ''));
-}
-
-/**
- * Implements hook_block_info();
- */
-function bibdk_vejviser_block_info() {
-  $blocks['header_action'] = array(
-    'info' => t('Bibdk: Find library header action'),
-    'description' => t('Displays a single input field for finding libraries'),
-  );
-
-  return $blocks;
-}
-
-/**
- * Implements hook_block_view();
- *
- * @param string $delta
- * @return array
- */
-function bibdk_vejviser_block_view($delta = '') {
-  $block = array();
-
-  switch ($delta) {
-    case 'header_action':
-      $block['title'] = '<none>';
-      $block['content'] = _bibdk_vejviser_create_render_array($delta);
-      break;
-  }
-
-  return $block;
-}
-
-/**
- * Helper function: Creates render arrays for blocks
- *
- * @param $delta
- * @return array
- */
-function _bibdk_vejviser_create_render_array($delta) {
-  $render = array();
-
-  switch ($delta) {
-    case 'header_action':
-      $render = array(
-        'link' => array(
-          '#type' => 'link',
-          '#title' => t("Find library"),
-          '#href' => "vejviser",
-          '#options' => array(
-            'html' => TRUE,
-          ),
-          '#attributes' => array(
-            'class' => array('element-target'),
-            'id' => array('selid-agency-find-agency'),
-          ),
-        ),
-        'form' => array(
-          drupal_get_form('bibdk_vejviser_form')
-        ),
-      );
-      break;
-  }
-
-  return $render;
 }
 
 /**
