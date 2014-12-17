@@ -73,7 +73,6 @@ function bibdk_vejviser_how_r_u() {
  * Implements hook_block_info();
  */
 function bibdk_vejviser_block_info() {
-
   $blocks['header_action'] = array(
     'info' => t('Bibdk: Find library header action'),
     'description' => t('Displays a single input field for finding libraries'),
@@ -89,7 +88,6 @@ function bibdk_vejviser_block_info() {
  * @return array
  */
 function bibdk_vejviser_block_view($delta = '') {
-
   $block = array();
 
   switch ($delta) {
@@ -109,7 +107,6 @@ function bibdk_vejviser_block_view($delta = '') {
  * @return array
  */
 function _bibdk_vejviser_create_render_array($delta) {
-
   $render = array();
 
   switch ($delta) {
