@@ -63,12 +63,17 @@ function bibdk_favourite_ajax_link_set_favourite($branchId) {
   }
   $page = array('#type' => 'ajax', '#commands' => $commands);
   ajax_deliver($page);
+  drupal_exit();
 }
 
 /**
  * ajax callback for deleting a favourite library
  * */
 function bibdk_favourite_ajax_link_delete_favourite($branchId) {
+  if(empty($branchId) && !empty($_GET['agency'])){
+    $branchId = $_GET['agency'];
+  }
+
   $deleted_agency = unserialize($_SESSION['bibdk_favourites'][$branchId]);
   $response = bibdk_favourite_delete_favourite_from_session($branchId);
   if (!$response) {
@@ -102,5 +107,6 @@ function bibdk_favourite_ajax_link_delete_favourite($branchId) {
 
   $page = array('#type' => 'ajax', '#commands' => $commands);
   ajax_deliver($page);
+  drupal_exit();
 }
 
