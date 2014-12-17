@@ -46,6 +46,15 @@ function bibdk_favourite_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  $items['favourite/remove/ajax/%'] = array(
+    'title' => 'ajax_set_favourite',
+    'page callback' => 'bibdk_favourite_ajax_remove_favourite',
+    'file' => 'includes/bibdk_favourite.ajax.inc',
+    'page arguments' => array(2),
+    'access callback' => 'ding_user_is_provider_user',
+    'type' => MENU_CALLBACK,
+  );
+
   return $items;
 }
 
@@ -150,24 +159,25 @@ function bibdk_favourite_add_to_vejviser($branchId) {
  */
 function bibdk_favourite_list_link($branch_id) {
   $already_fav = bibdk_favourite_already_order_library($branch_id);
-  if(!empty($already_fav)){
-    return $already_fav;
-  }
 
   global $user;
-  $path = 'user/' . $user->uid . '/bibdk_favourite_list';
-  $text = t('Add to favorite libraries');
-  $options = array(
-    'attributes' => array('class' => array('btn-add-library')),
-    'query' => array('agency' => $branch_id),
-    'html' => 'true'
-  );
+  $text = $already_fav ? t('Remove favoritelibrary', array(), array('context' => 'bibdk_favourite')) : t('Add favoritelibrary', array(), array('context' => 'bibdk_favourite'));
+  $is_favourited_class = $already_fav ? 'bibdk-favourite-is-favourited': '';
+  $path = $already_fav ? 'favourite_delete/ajax/' . $branch_id : 'user/' . $user->uid . '/bibdk_favourite_list';
 
   return array(
     '#theme' => 'link',
     '#text' => $text,
     '#path' => $path,
-    '#options' => $options,
+    '#options' => array(
+      'attributes' => array(
+        'alt' => $text,
+        'class' => array('btn-add-library', 'use-ajax', $is_favourited_class),
+      ),
+      'query' => array('agency' => $branch_id),
+      'html' => TRUE,
+      'svg' => 'svg-star',
+    ),
   );
 }
 
@@ -183,27 +193,11 @@ function bibdk_favourite_already_order_library($branch_id) {
   }
 
   $favourites = bibdk_favourite_get_favourites();
-  if (empty($favourites)) {
+  if (empty($favourites) || !isset($favourites[$branch_id])) {
     return FALSE;
+  } else {
+    return TRUE;
   }
-
-  if (!isset($favourites[$branch_id])) {
-    return FALSE;
-  }
-
-  // library is already in favourites
-  return array(
-    '#type' => 'html_tag',
-    '#tag' => 'div',
-    '#value' => t('bibdk_favourite_already_favourite', array(), array('context' => 'bibdk_favourite')),
-    '#attributes' => array(
-      'class' => array('btn-add-library', 'disabled'),
-      'id' => drupal_clean_css_identifier('already_selected' . $branch_id),
-    )
-  );
-
-  // fallback
-  return FALSE;
 }
 
 /**
@@ -245,6 +239,7 @@ function _bibdk_favourite_get_vejviser_link() {
     ),
     '#weight' => -1000,
   );
+
   return $render;
 }
 
