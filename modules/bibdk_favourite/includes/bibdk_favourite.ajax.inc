@@ -110,3 +110,13 @@ function bibdk_favourite_ajax_link_delete_favourite($branchId) {
   drupal_exit();
 }
 
+/**
+ * @param $branchId
+ * @return bool
+ */
+function bibdk_favourite_ajax_remove_favourite($branchId){
+  if(!$branchId){
+    return FALSE; //TODO mmj return some useful command...
+  }
+}
+
