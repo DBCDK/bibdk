@@ -21,8 +21,9 @@
 
     // set given artice as selected
     var selector = response['selector'];
-    $('.' + selector).addClass('order-agency');
-    var orderagency = $('.' + selector).find('a').first();
+    var $element = $('.' + selector);
+    $element.addClass('order-agency');
+    var orderagency = $element.find('a').first();
     orderagency.addClass('selected-agency');
     var text = Drupal.t('Order agency', null, null);
     orderagency.text(text);
