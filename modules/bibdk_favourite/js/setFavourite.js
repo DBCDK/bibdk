@@ -11,12 +11,13 @@
   Drupal.ajax.prototype.commands.favourite_set = function(ajax, response, status) {
     var standard_txt = Drupal.t('set_as_favourite', null, null);
     // remove order-agency class for all articles
-    $('article').removeClass('order-agency');
-    $('article').each(function(index) {
-      var hest = $(this).find('a').first();
-      hest.removeClass('selected-agency');
-      hest.addClass('not-selected-agency');
-      hest.text(standard_txt);
+    var $article = $('article');
+    $article.removeClass('order-agency');
+    $article.each(function(index) {
+      var link = $(this).find('a').first();
+      link.removeClass('selected-agency');
+      link.addClass('not-selected-agency');
+      link.text(standard_txt);
     });
 
     // set given artice as selected
