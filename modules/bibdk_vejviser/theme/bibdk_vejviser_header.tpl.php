@@ -1,4 +1,4 @@
-<div id="bibdk-vejviser-header">
+<div id="bibdk-vejviser--search-form">
   <?php print $form; ?>
 </div>
 
