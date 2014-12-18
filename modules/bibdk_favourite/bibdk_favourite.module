@@ -37,7 +37,7 @@ function bibdk_favourite_menu() {
   );
 
   // ajax call for setting a favourite
-  $items['favourite_set/ajax/%'] = array(
+  $items['favourite/add/%'] = array(
     'title' => 'ajax_set_favourite',
     'page callback' => 'bibdk_favourite_ajax_link_set_favourite',
     'file' => 'includes/bibdk_favourite.ajax.inc',
@@ -46,7 +46,7 @@ function bibdk_favourite_menu() {
     'type' => MENU_CALLBACK,
   );
 
-  $items['favourite/remove/ajax/%'] = array(
+  $items['favourite/remove/%'] = array(
     'title' => 'ajax_set_favourite',
     'page callback' => 'bibdk_favourite_ajax_remove_favourite',
     'file' => 'includes/bibdk_favourite.ajax.inc',
