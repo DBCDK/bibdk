@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * DrupalUnitTest for Bibliotek.dk Subject Hierarchy
+ */
+
 class BibdkSubjectHierarchySearchUnitTestCase extends DrupalUnitTestCase {
 
   public static function getInfo() {
@@ -101,40 +106,40 @@ class BibdkSubjectHierarchySearchUnitTestCase extends DrupalUnitTestCase {
 
     // correct item is extracted with cql url
     $result = _get_bibdk_subject_hierarchy_searchresult_item($hierarchy, '2,0,0', 'testpath');
-    $expected_result = array (
+    $expected_result = array(
       '#theme' => 'link',
       '#text' => 'test_5 level_2',
       '#path' => 'search/testpath/cql_string',
       '#options' =>
-        array (
+        array(
           'attributes' =>
-            array (
+            array(
               'class' =>
-                array (
+                array(
                 ),
             ),
-          'html' => false,
+          'html' => FALSE,
         ),
     );
     $this->assertEqual($result, $expected_result, 'correct item is extracted with cql url');
 
     // correct item is extracted with index url
     $result = _get_bibdk_subject_hierarchy_searchresult_item($hierarchy, '2,0', 'testpath');
-    $expected_result = array (
+    $expected_result = array(
       '#theme' => 'link',
       '#text' => 'Test_4 level_1',
       '#path' => 'bibdk_subject_hierarchy/nojs/2,0',
       '#options' =>
-        array (
+        array(
           'attributes' =>
-            array (
+            array(
               'class' =>
-                array (
+                array(
                   0 => 'use-ajax',
                   1 => 'nesting',
                 ),
             ),
-          'html' => false,
+          'html' => FALSE,
         ),
     );
     $this->assertEqual($result, $expected_result, 'correct item is extracted with index url');

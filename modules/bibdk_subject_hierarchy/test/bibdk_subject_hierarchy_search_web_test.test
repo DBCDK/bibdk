@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * DrupalWebTest for Bibliotek.dk Subject Hierarchy
+ */
+
 class BibdkSubjectHierarchySearchWebTestCase extends DrupalWebTestCase {
 
   protected $privileged_user;

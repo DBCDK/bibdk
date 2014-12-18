@@ -10,6 +10,9 @@
   <div class="themes__breadcrumb">
     <?php echo drupal_render($breadcrumbs); ?>
   </div>
+  <div class="themes__sublists-heading">
+    <?php echo drupal_render($heading); ?>
+  </div>
   <div class="themes__sublist">
     <ul>
       <?php foreach ($variables['hierarchy']['term'] as $key => $item) {

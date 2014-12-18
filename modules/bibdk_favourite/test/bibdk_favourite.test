@@ -30,7 +30,7 @@ class bibdkFavouriteTest extends DrupalWebTestCase {
   /**
    * Info for this test case
    */
-  public function getInfo() {
+  public static function getInfo() {
     return array(
       'name' => 'Bibdk favourite',
       'description' => t('Test favourites tab and no library message'),

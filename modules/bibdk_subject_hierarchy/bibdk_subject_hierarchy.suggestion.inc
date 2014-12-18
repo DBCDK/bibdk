@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Bibdk subject hierarchy autocomplete functions
+ */
+
 /** Create subject hierarchy suggestion form
  *  * @return array
  */
@@ -127,7 +132,7 @@ function bibdk_subject_hierarchy_confirmed_suggestion_form($form, &$form_state) 
       'attributes' => array(
         'class' => array('themes__close-button close icon icon-blue-x'),
       ),
-      'html' => true,
+      'html' => TRUE,
     ),
   );
 

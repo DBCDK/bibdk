@@ -1,0 +1,612 @@
+<?php
+module_load_include('inc', 'bibdk_voxb', 'lib/bibdk_voxb.worktabs');
+module_load_include('inc', 'bibdk_voxb', 'lib/bibdk_voxb.parsers');
+module_load_include('inc', 'bibdk_voxb', 'bibdk_voxb.theme');
+module_load_include('inc', 'bibdk_voxb', 'lib/bibdk_voxb.node');
+module_load_include('inc', 'bibdk_voxb', 'lib/bibdk_voxb.review');
+module_load_include('inc', 'bibdk_voxb', 'lib/bibdk_voxb.offensive');
+/** Implements hook_menu
+ *
+ */
+function bibdk_voxb_menu() {
+  $items = array();
+
+  $items['voxb/ajax/review/edit'] = array(
+    'title' => t('Reviews', array(), array('context' => 'voxb')),
+    'type' => MENU_CALLBACK,
+    'description' => '',
+    'access callback' => 'bibdk_voxb_user_review_access',
+    'access arguments' => array('create blog content'),
+    'page callback' => 'bibdk_voxb_edit_review',
+    'file' => 'lib/bibdk_voxb.review.inc',
+  );
+
+  $items['voxb/ajax/review/create'] = array(
+    'title' => t('Write review', array(), array('context' => 'voxb')),
+    'type' => MENU_CALLBACK,
+    'description' => '',
+    'access callback' => 'bibdk_voxb_user_review_access',
+    'access arguments' => array('create blog content'),
+    'page callback' => 'bibdk_voxb_create_review',
+    'file' => 'lib/bibdk_voxb.review.inc',
+  );
+
+
+  $items['voxb/ajax/get_rating'] = array(
+    'title' => 'VoxB rating handler',
+    'description' => '',
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('search content'),
+    'page callback' => 'bibdk_voxb_rating',
+  );
+
+  $items['voxb/ajax/set_rating/%/%'] = array(
+    'title' => 'Voxb rating',
+    'description' => '',
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('search content'),
+    'page callback' => 'bibdk_voxb_rate_me',
+    'page arguments' => array(3, 4),
+  );
+
+  $items['voxb/offensive'] = array(
+    'title' => t('report_offensive_content', array(), array('context'=>'bibdk_voxb')),
+    'description' => 'testhest',
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('search content'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bibdk_voxb_offensive_form'),
+  );
+
+  return $items;
+}
+
+function bibdk_voxb_user_review_access($perm) {
+  global $user;
+  $ret = ding_user_is_provider_user($user);
+
+  return $ret;
+}
+
+/**
+ * refresh voxb
+ */
+function bibdk_voxb_offensive_posted ($voxb_id) {
+  $info = theme('status_messages');
+  $selector = '#bibdk-offensive-'.$voxb_id;
+  return array(
+    'command' => 'bibdk_voxb_offensive_posted',
+    'selector' => $selector,
+    'info' => $info,
+  );
+}
+
+/** set a general error */
+function bibdk_voxb_ajax_set_error($errors, $pid) {
+  $info = theme('status_messages');
+  return array(
+    'command' => 'bibdk_voxb_review_error',
+    'info' => $info,
+    'pid' => $pid,
+  );
+}
+
+/**
+ * update review
+ */
+function bibdk_voxb_ajax_review_saved($voxb_id) {
+  $info = theme('status_messages');
+  $selector = '#bibdk-voxb-review-message-' . $voxb_id;
+
+  return array(
+    'command' => 'bibdk_voxb_review_saved',
+    'selector' => $selector,
+    'info' => $info,
+  );
+}
+
+function bibdk_voxb_ajax_review_created($pid) {
+  $info = theme('status_messages');
+  return array(
+    'command' => 'bibdk_voxb_review_created',
+    'pid' => $pid,
+    'info' => $info,
+  );
+}
+
+/** Remove link to users blog.
+ * @param $build
+ */
+function bibdk_voxb_node_view_alter(&$build) {
+  if (isset($build['links']['blog']['#links']['blog_usernames_blog'])) {
+    unset($build['links']['blog']['#links']['blog_usernames_blog']);
+  }
+}
+
+/** Ajax call-back to get rating for PID given in $_POST
+ *
+ */
+function bibdk_voxb_rating() {
+  $pid = bibdk_voxb_review_check_pid();
+  $message = t('Rate me', array(), array('context' => 'voxb'));
+  $lid = bibdk_voxb_pid2faust($pid);
+  $response = open_voxb_fetchDataRequest($lid);
+  $status = bibdk_voxb_check_response($response);
+
+  // ting client return FALSE on error
+  if ($response === FALSE || $status === FALSE) {
+    // this is probably a configuration error
+    $ret->error = t('An error occurred. Please contact administrator if problem persists', array(), array('context' => 'voxb'));
+    watchdog('voxb', 'Ting client returned FALSE on open_voxb_fetchDataRequest() - check configuration', array(), WATCHDOG_ERROR);
+    drupal_json_output($ret);
+    drupal_exit();
+  }
+  // get ratings and reviews
+  $voxb_object = bibdk_voxb_get_rating($response);
+  if (isset($voxb_object->error)) {
+    $ret = array(
+      'pid' => $pid,
+      'error' => bibdk_voxb_set_error($response->error, 'error'),
+    );
+  }
+  else {
+    $reviews = empty($voxb_object->reviews) ? array() : $voxb_object->reviews;
+    $ret = array(
+      'pid' => $pid,
+      'rating' => $voxb_object,
+      'markup' => theme('voxb_rating', array(
+        'object' => $voxb_object,
+        'pid' => $pid,
+        'title' => $message,
+        'review_link' => bibdk_voxb_review_create_link($pid, $reviews),
+        'login_link' => bibdk_voxb_link_to_login(),
+        'teasers' => array(
+          '#theme' => 'voxb_teaser',
+          '#reviews' =>empty($voxb_object->reviews) ? array() : $voxb_object->reviews,
+          '#date_text' => bibdk_voxb_review_teaser_text_date(),
+          '#author_text' => bibdk_voxb_review_teaser_text_author(),
+        ),
+      )),
+    );
+  }
+
+  drupal_json_output($ret);
+  drupal_exit();
+}
+
+
+function bibdk_voxb_review_teaser_text_date() {
+  return t('Reviewed_date', array(), array('context' => 'voxb'));
+}
+
+function bibdk_voxb_review_teaser_text_author() {
+  return t('Reviewed_by', array(), array('context' => 'voxb'));
+}
+
+/** Get a link to review given pid
+ *
+ * @param $pid ; the pid to link to
+ * @param $reviews ; list of StdClass
+ */
+function  bibdk_voxb_review_create_link($pid, $reviews = array()) {
+  global $user;
+
+  // only a 'edit' link if the user is logged in
+  if (!ding_user_is_provider_user($user)) {
+    return array();
+  }
+
+  // no 'create' link if the user has already written a review
+  $voxb_userid = bibdk_voxb_user_check();
+  if (sizeof($reviews) > 0) {
+    foreach ($reviews as $review) {
+      if ($review->voxb_userid == $voxb_userid) {
+        return array();
+      }
+    }
+  }
+
+  $link = array(
+    '#theme' => 'link',
+    '#text' => t('voxb_write_review', array(), array('context' => 'voxb')),
+    '#path' => 'voxb/ajax/review/create',
+    '#weight' => 0,
+    '#options' => array(
+      'query' => array('pid' => $pid),
+      'attributes' => array(
+        'class' => array(
+          'bibdk-create-review-link',
+        ),
+        'id' => drupal_html_id('bibdk_voxb_create_review_' . $pid),
+      ),
+      'html' => FALSE,
+    ),
+  );
+
+  return $link;
+}
+
+/** Get a link to edit a review, given a pid
+ *
+ * @param $pid ; the pid to link to
+ */
+function bibdk_voxb_review_edit_link($pid, $voxb_userid) {
+  global $user;
+
+  // only a 'edit' link if the user has written the review
+  if ($voxb_userid != bibdk_voxb_user_check()) {
+    return array();
+  }
+
+  $link = array(
+    '#theme' => 'link',
+    '#text' => t('voxb_edit_review', array(), array('context' => 'voxb')),
+    '#path' => 'voxb/ajax/review/edit',
+    '#weight' => 0,
+    '#options' => array(
+      'query' => array('pid' => $pid),
+      'attributes' => array(
+        'class' => array(
+          'bibdk-edit-review-link',
+        ),
+        'id' => drupal_html_id('bibdk_voxb_edit_review_' . $pid),
+      ),
+      'html' => FALSE,
+    ),
+  );
+
+  return $link;
+}
+
+
+/** Wrapper for drupal_st message - return a themed message
+ * @param $message
+ * @param $type
+ * @return string
+ */
+function bibdk_voxb_set_error($message, $type) {
+  // unset all messages - this is an ajax thing, and we don't
+  // want a clear message for the user
+  drupal_get_messages();
+  drupal_set_message($message, $type);
+
+  return theme('status_messages');
+}
+
+/** VERY simple pid-parser.
+ * @param $pid . either pid or faust
+ * @param string $type
+ * @return string
+ */
+function bibdk_voxb_pid2faust($pid, $type = 'faust') {
+  // get pos of lok
+  $pos = strpos($pid, '-');
+  // if string does NOT contain '-' it is not a valid pid
+  if ($pos === FALSE) {
+    return $pid;
+  }
+
+  $lok = substr($pid, 0, $pos);
+  $pos = strpos($pid, ':');
+  $lid = substr($pid, $pos + 1, strlen($pid));
+
+  switch ($type) {
+    case 'faust':
+      return $lid;
+    default:
+      return $lok . ':' . $lid;
+  }
+}
+
+/**
+ * fetch VOXB rating for given pid
+ * @param $pid
+ * @return stdObject $ret; if  an error occurred $ret->error is set; else $ret->rating, $ret->ratingCount
+ */
+function bibdk_voxb_get_rating($response) {
+  $status = bibdk_voxb_check_response($response);
+  if ($status) {
+    try {
+      $ret = bibdk_voxb_parse_fetchdata_request($response);
+    }
+    catch (bibdkVoxbException $e) {
+      watchdog('voxb', $e->getMessage(), array(), WATCHDOG_ERROR);
+      $ret->error = $e->getMessage();
+    }
+  }
+  else {
+    $ret->error = theme('status_messages');
+  }
+
+  return $ret;
+}
+
+/** Ajax call to add or update a VOXB rating
+ * @param $id ; the id to rate
+ * @param $rating ; the rating to apply
+ */
+function bibdk_voxb_rate_me($pid, $rating) {
+  $pid = bibdk_voxb_pid2faust($pid);
+
+  // we have five stars, and rating is from 1-100
+  // multiply by 20
+  $rating = $rating * 20;
+
+  // check the user and get voxb_id
+  $voxb_id = bibdk_voxb_user_check();
+  if ($voxb_id === FALSE) {
+    $ret = array('error' => bibdk_voxb_set_error(t('Please log in to rate', array(), array('context' => 'voxb')), 'status'));
+    drupal_json_output($ret);
+    drupal_exit();
+  }
+
+  $user_data = bibdk_voxb_get_user_item($pid, $voxb_id);
+
+  if (empty($user_data['voxb_items'])) {
+    // this is a new rating
+    $response = open_voxb_createMyDataRequest($pid, $rating, $voxb_id);
+    // check response method logs errors if necessary
+    $valid = bibdk_voxb_check_response($response);
+    if(!$valid){
+      $ret = array('error' => bibdk_voxb_set_error(t('You may only rate once pr. minut', array(), array('context' => 'voxb')), 'status'));
+      drupal_json_output($ret);
+      drupal_exit();
+    }
+  }
+  else {
+    // this is an update of a rating
+    // get the voxbIdentifier for update request. It is in the user_data array
+    $identifier = $user_data['voxb_items']['voxb:voxbIdentifier']['#text'];
+    $response = open_voxb_updateRating($identifier, $rating);
+    // check_response method logs errors if necessary
+    $valid = bibdk_voxb_check_response($response);
+    if(!$valid){
+      $ret = array('error' => bibdk_voxb_set_error(t('Sorry could not complete your rating', array(), array('context' => 'voxb')), 'status'));
+      drupal_json_output($ret);
+      drupal_exit();
+    }
+  }
+}
+
+function bibdk_voxb_get_user_item($pid, $voxb_id = NULL) {
+  if (!$voxb_id) {
+    return array();
+  }
+
+  // init a userobject to handle user data
+  $voxbUser = new bibdkVoxbUser($voxb_id);
+  // data holds all activity from user (review, ratings, tags etc.)
+  $data = $voxbUser->userData();
+  $alias = $voxbUser->getAliasName();
+  $useridentifiervalue = $voxbUser->getUserIdentifierValue();
+
+  $user_data = array();
+  if (!empty($data)) {
+    // check if user has already rated or reviewed this material
+    $user_data['voxb_items'] = bibdk_voxb_in_multi_array($pid, $data);
+    $user_data['alias'] = $alias;
+    $user_data['useridentifiervalue'] = $useridentifiervalue;
+    // check if user has already reviewed (ie. accepted use of review terms)
+    $user_data['accepted_review_terms'] = bibdk_voxb_accepted_review_terms($data);
+  }
+
+  return $user_data;
+}
+
+function bibdk_voxb_check_response($response) {
+  $dom = new DOMDocument();
+  if (@$dom->loadXML($response) === FALSE) {
+    // invalid xml .. log
+    watchdog('voxb', 'Invalid xml in response : %xml', array('%xml' => $response), WATCHDOG_ERROR);
+
+    return FALSE;
+  }
+  $xpath = new DOMXPath($dom);
+  $xpath->registerNamespace('voxb', '"http://oss.dbc.dk/ns/voxb');
+  // check voxb:error
+  $query = '//voxb:error';
+  $nodes = $xpath->query($query);
+  if ($nodes->length > 0) {
+
+    // error returned from service .. there are many - set one for user.
+    // and watchdog the real error
+    $error = $nodes->item(0)->nodeValue;
+    if ($error == 'Could not find item') {
+      // this is actually no error .. simply no items
+      return TRUE;
+    }
+    watchdog('voxb', 'Service returned error : %error', array('%error' => $error), WATCHDOG_ERROR);
+    $message = t('service_error', array(), array('context' => 'voxb'));
+    drupal_set_message($message, 'error');
+
+    return FALSE;
+  }
+  // check for faultcode element
+  $query = '//faultstring';
+  $nodes = $xpath->query($query);
+  if ($nodes->length > 0) {
+    //this is probably a programming error . xml validation for request failed
+    $error = $nodes->item(0)->nodeValue;
+    $message = t('service_error : %error', array('%error' => $error), array('context' => 'voxb'));
+    drupal_set_message($message, 'error');
+
+    return FALSE;
+  }
+
+  // check is good
+  return TRUE;
+}
+
+/** Check user
+ * 1. is ding user logged in (provider_user)
+ * 2. Has user an voxb_id
+ *      a. if not - create user
+ * @return bool|string; FALSE if something is wrong, else voxb_id
+ */
+function bibdk_voxb_user_check($voxb_user_id = NULL) {
+  global $user;
+
+  // check if user is provider user
+  if (!(ding_user_is_provider_user($user))) {
+    return FALSE;
+  }
+
+  //get the voxb_id via openuserinfo webservice
+  $xml = ding_provider_invoke('user', 'get_voxb', $user->mail);
+  try {
+    $voxb_id = _bibdk_voxb_parse_get_voxb_response($xml);
+  }
+  catch (bibdkVoxbException $e) {
+    watchdog('voxb', $e->getMessage(), array(), WATCHDOG_ERROR);
+
+    return FALSE;
+  }
+
+  if ($voxb_id === '0') {
+    // invalid (not bound) id .. create user on voxb to get a valid id
+    $voxb_id = bibdk_voxb_create_voxb_user();
+    if (empty($voxb_id)) {
+      watchdog('voxb', 'Failed to create VoxB user.', array(), WATCHDOG_ERROR);
+
+      return FALSE;
+    }
+  }
+  else {
+    // Has the user been disabled in VoxB?
+    $voxbUser = new bibdkVoxbUser($voxb_id);
+    if ($voxb_id != $voxbUser->fetchUserId()) {
+      watchdog('voxb', 'VoxB ID is set on provider, but not on VoxB. User may be disabled.', array(), WATCHDOG_ERROR);
+
+      return FALSE;
+    }
+  }
+
+  return $voxb_id;
+}
+
+/** Fetch voxbuser by fingerprint
+ * @return bool|string
+ */
+function bibdk_voxb_get_user_by_fingerprint() {
+  global $user;
+  $userid = bibdk_voxb_encrypt($user->mail);
+  $xml = open_voxb_fetchUserByFingerPrint($userid);
+  try {
+    $voxb_id = bibdk_voxb_parse_create_user_response($xml, $msg);
+  }
+  catch (bibdkVoxbException $e) {
+    watchdog('voxb', $e->getMessage(), array(), WATCHDOG_ERROR);
+
+    return FALSE;
+  }
+
+  return $voxb_id;
+}
+
+/** Create voxb user from global drupal user
+ * @return bool|string; voxb_id, given from voxb-webservice on creation or FALSE on failure
+ */
+function bibdk_voxb_create_voxb_user() {
+  global $user;
+  $voxb_id = FALSE;
+
+  // User is not yet bound for voxb. Create the user on voxb
+  $userid = bibdk_voxb_encrypt($user->mail);
+  $xml = open_voxb_createUserRequest($userid);
+
+  // check_response method, and log errors if necessary
+  if (bibdk_voxb_check_response($xml)) {
+    try {
+      $voxb_id = bibdk_voxb_parse_create_user_response($xml);
+    }
+    catch (bibdkVoxbException $e) {
+      watchdog('voxb', $e->getMessage(), array(), WATCHDOG_ERROR);
+
+      return FALSE;
+    }
+  }
+
+  // if service didn't return expected result.
+  // Then maybe user already exists on voxb. Try to get user by fingerprint
+  if ($voxb_id === FALSE) {
+    $voxb_id = bibdk_voxb_get_user_by_fingerprint();
+  }
+
+  if ($voxb_id === FALSE) {
+    // give up
+    return FALSE;
+  }
+
+  // voxb_id has been retrieved. Bind on OUI
+  if (bibdk_voxb_bind_voxb_user($voxb_id) === FALSE) {
+    return FALSE;
+  }
+
+  return $voxb_id;
+}
+
+function bibdk_voxb_bind_voxb_user($voxb_user_id) {
+  global $user;
+  $xml = ding_provider_invoke('user', 'bind_voxb', $user->mail, $voxb_user_id);
+  try {
+    $valid = bibdk_voxb_parse_bind_voxb_response($xml);
+  }
+  catch (bibdkVoxbException $e) {
+    watchdog('voxb', $e->getMessage(), array(), WATCHDOG_ERROR);
+
+    return FALSE;
+  }
+}
+
+/**
+ * @param string $mail ; mailaddress of user
+ * @return string md5 encrypted $mail
+ */
+function bibdk_voxb_encrypt($mail) {
+  return md5($mail);
+}
+
+/** Get a link to login
+ * @return string; rendered array
+ */
+function bibdk_voxb_link_to_login() {
+  $link = '';
+  if (!ding_user_is_provider_user()) {
+    $message = t('bibdk_voxb_login_handle_reviews', array(), array('context' => 'bibdk_voxb'));
+    $path = 'user/login';
+    $link = array(
+      '#theme' => 'link',
+      '#text' => $message,
+      '#path' => $path,
+      '#options' => array(
+        'attributes' => array('class' => array('bibdk-voxb-login-to-handle')),
+        'html' => FALSE,
+      ),
+    );
+  }
+  return $link;
+}
+
+/** get a single manifestation via openformat
+ * @param $pid
+ * return manifestation
+ */
+function bibdk_voxb_get_manifestation($pid) {
+  $result = ting_openformat_get_single($pid);
+  $work = reset($result)->getManifestations();
+  $manifestation = reset($work);
+
+  return $manifestation;
+}
+
+function bibdk_voxb_title_from_pid() {
+  $pid = isset($_REQUEST['pid']) ? $_REQUEST['pid'] : NULL;
+
+  if (isset($pid)) {
+    $work = bibdk_voxb_get_manifestation($_REQUEST['pid']);
+    return bibdk_voxb_review_trim_title($work->getTitle());
+  }
+  return '';
+}
+
+

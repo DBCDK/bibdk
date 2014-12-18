@@ -55,6 +55,7 @@ function _bibdk_enable_modules() {
     'bibdk_about_author',
     'bibdk_newsroom',
     'bibdk_autocomplete',
+    'bibdk_facetbrowser',
     'cql_strict_parser',
     'ting_openuserstatus',
     'open_holdingstatus',
@@ -68,7 +69,6 @@ function _bibdk_enable_modules() {
     'ding_wayf',
     'ding_webtrends',
     'bibdk_netarchive',
-    'ding_facetbrowser',
     'admin_menu',
     'eu_cookie_compliance',
     'microcurl',
@@ -156,44 +156,6 @@ function _bibdk_set_permissions_and_roles() {
 function _bibdk_set_variables() {
   // Disable configurable timezones for users
   variable_set('configurable_timezones', 0);
-  $ding_facetbrowser_facets = array(
-    0 => Array(
-      'name' => 'facet.language',
-      'title' => 'Sprog',
-      'weight' => 10,
-    ),
-    1 => Array(
-      'name' => 'facet.acSource',
-      'title' => 'Kilde',
-      'weight' => 12,
-    ),
-    2 => Array(
-      'name' => 'facet.type',
-      'title' => 'Materialeype',
-      'weight' => 14,
-    ),
-    3 => Array(
-      'name' => 'facet.subject',
-      'title' => 'Emne',
-      'weight' => 16,
-    ),
-    4 => Array(
-      'name' => 'facet.date',
-      'title' => 'År',
-      'weight' => 18,
-    ),
-    5 => Array(
-      'name' => 'facet.creator',
-      'title' => 'Forfatter',
-      'weight' => 20,
-    ),
-    6 => Array(
-      'name' => 'facet.category',
-      'title' => 'Kategori',
-      'weight' => 22,
-    ),
-  );
-  variable_set('ding_facetbrowser_facets', $ding_facetbrowser_facets);
   variable_set('ding_user_creds_lifetime', 7200);
   variable_set('cron_safe_threshold', 3600);
 }
@@ -405,3 +367,16 @@ function bibdk_update_7021(&$sandbox) {
     'bibdk_saou',
   ));
 }
+
+/**
+ * Enable bibdk_facetbrowser
+ */
+function bibdk_update_7022(&$sandbox) {
+  module_disable(array(
+    'ding_facetbrowser',
+  ));
+  module_enable(array(
+    'bibdk_facetbrowser',
+  ));
+}
+

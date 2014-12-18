@@ -166,6 +166,15 @@ function bibdk_provider_form_user_profile_form_alter(&$form, &$form_state) {
   if (isset($form['account']['pass']['#process']) && (($position = array_search('user_form_process_password_confirm', $form['account']['pass']['#process'])) !== FALSE)) {
     unset($form['account']['pass']['#process'][$position]);
   }
+ 
+  // Move 'Cancel Account' button before 'Save'
+  $form['actions']['submit'] += array(
+    '#weight' => 1,
+  );
+  $form['actions']['cancel'] += array(
+    '#weight' => 0,
+  );
+  
 }
 
 /**
@@ -334,6 +343,10 @@ function bibdk_provider_ding_provider() {
       'wayf' => array(
         'prefix' => 'wayf',
         'file' => drupal_get_path('module', 'bibdk_provider') . '/bibdk_provider.wayf.inc',
+      ),
+      'agency' => array(
+        'prefix' => 'agency',
+        'file' => drupal_get_path('module', 'bibdk_provider') . '/bibdk_provider.agency.inc',
       ),
     ),
   );
