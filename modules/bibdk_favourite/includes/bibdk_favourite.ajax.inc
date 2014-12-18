@@ -25,7 +25,7 @@ function bibdk_favourite_ajax_add_favourite($form, $form_state) {
 
   $commands = array();
   $text = bibdk_favourite_save_favourite_on_webservice($branchId);
-  $selector = '.messages_' . $branchId;
+  $selector = '.messages-' . $branchId;
   drupal_set_message($text);
   $commands[] = ajax_command_replace($selector, theme('status_messages'));
 
@@ -57,7 +57,7 @@ function bibdk_favourite_ajax_link_set_favourite($branchId) {
   $commands[] = bibdk_favourite_ajax_command($branchId);
   // if $response is not set something went wrong
   if (!$response) {
-    $selector = '.favourite_' . $branchId;
+    $selector = '.favourite-' . $branchId;
     drupal_set_message($text, $type);
     $commands[] = ajax_command_append($selector, theme('status_messages'));
   }
