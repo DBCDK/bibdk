@@ -88,7 +88,8 @@ function bibdk_favourite_check_for_new_agency() {
         global $language;
         $name = $agency->getBranch()->getBranchName($language->language);
       }
-    } else {
+    }
+    else {
       $agency = unserialize($_SESSION['bibdk_favourites'][$_GET['agency']]);
       global $language;
       $name = $agency->getBranch()->getBranchName($language->language);
@@ -109,7 +110,7 @@ function bibdk_favourite_forms_set_message($name) {
 /**
  * the form to be displayed on profile tab
  * */
-function bibdk_favourite_form_view_items_from_session($favourite, $weight, $toggle_enabled = true, $action_enabled = true) {
+function bibdk_favourite_form_view_items_from_session($favourite, $weight, $toggle_enabled = TRUE, $action_enabled = TRUE) {
   global $language;
 
   $form = array();
@@ -121,7 +122,7 @@ function bibdk_favourite_form_view_items_from_session($favourite, $weight, $togg
   // check if given branch is set as order-agency
   $order_class = ($favourite->getOrderAgency()) ? 'order-agency' : '';
   $links = bibdk_favourite_get_action_links($favourite);
-  $actions = ($action_enabled) ? theme('bibdk_favourite_action_links', array('links' => $links)) : null;
+  $actions = ($action_enabled) ? theme('bibdk_favourite_action_links', array('links' => $links)) : NULL;
 
   $moreinfo = theme('ting_agency_more_info', array(
     'branch' => $branch,
@@ -133,7 +134,9 @@ function bibdk_favourite_form_view_items_from_session($favourite, $weight, $togg
   ));
   $classes = array();
   $classes[] = 'favourite_' . $favourite->getAgencyId();
-  $classes[] = ($favourite->getOrderAgency()) ? 'order-agency' : NULL;
+  if ($favourite->getOrderAgency()) {
+    $classes[] = 'order-agency';
+  }
 
   $form[$favourite->getAgencyId()]['library']['#markup'] = theme('ting_agency_library', array(
     'branchName' => $branch->getBranchShortName($language->language),
@@ -152,7 +155,8 @@ function bibdk_favourite_form_view_items_from_session($favourite, $weight, $togg
 }
 
 /**
- * Get links for editing favourite agency (delete, set as order-agency, edit user data)
+ * Get links for editing favourite agency (delete, set as order-agency, edit
+ * user data)
  *
  * @param FavouriteAgency $favourite
  * @return String $links HTML (unordered list)
@@ -178,7 +182,7 @@ function bibdk_favourite_get_action_links($favourite) {
   $links = array();
   $links['set_favourite'] = array();
   $links['set_favourite']['text'] = $order_txt;
-  $links['set_favourite']['path'] = 'favourite_set/ajax/' . $favourite->getAgencyId();
+  $links['set_favourite']['path'] = 'favourite/add/' . $favourite->getAgencyId();
   $links['set_favourite']['attributes'] = array(
     'class' => array(
       'use-ajax',
