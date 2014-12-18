@@ -144,14 +144,13 @@ function _bibdk_favourite_get_from_webservice() {
  * @return boolean
  */
 function bibdk_favourite_delete_favourite_from_session($branchId) {
-
   unset($_SESSION['bibdk_favourites']);
 
-  $ret = TRUE;
   $ret = _bibdk_favourite_delete_on_webservice($branchId);
   if ($ret && isset($_SESSION['bibdk_favourites'][$branchId])) {
     unset($_SESSION['bibdk_favourites'][$branchId]);
   }
+
   return $ret;
 }
 
