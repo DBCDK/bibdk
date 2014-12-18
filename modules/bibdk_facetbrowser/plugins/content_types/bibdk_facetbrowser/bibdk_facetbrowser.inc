@@ -46,7 +46,8 @@ function bibdk_facetbrowser_content_type_render($subtype, $conf, $panel_args, $c
   $by_ajax = variable_get('bibdk_facetbrowser_by_ajax', FALSE);
 
   if ($by_ajax) {
-    $placeholder = drupal_render(bibdk_facetbrowser_facetbrowser_placeholder());
+    $content = bibdk_facetbrowser_facetbrowser_placeholder();
+    $placeholder = drupal_render($content);
     $block->content = $placeholder;
   }
   else {
