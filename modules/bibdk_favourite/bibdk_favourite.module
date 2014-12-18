@@ -152,18 +152,19 @@ function bibdk_favourite_add_to_vejviser($branchId) {
 }
 
 /**
- * Returns a link for user/UID/bibdk_favourite_list
+ * Returns a link for user/UID/bibdk_favourite_list.
  *
  * @param $branch_id
  * @return array
  */
 function bibdk_favourite_list_link($branch_id) {
-  $already_fav = bibdk_favourite_already_order_library($branch_id);
+  $already_fav = bibdk_favourite_library_is_favourited($branch_id);
 
   global $user;
   $text = $already_fav ? t('Remove favoritelibrary', array(), array('context' => 'bibdk_favourite')) : t('Add favoritelibrary', array(), array('context' => 'bibdk_favourite'));
-  $is_favourited_class = $already_fav ? 'bibdk-favourite-is-favourited': '';
-  $path = $already_fav ? 'favourite_delete/ajax/' . $branch_id : 'user/' . $user->uid . '/bibdk_favourite_list';
+  $is_favourited_class = $already_fav ? 'bibdk-favourite--library-is-favourited': '';
+  $path = $already_fav ? 'favourite/remove/' . $branch_id : 'user/' . $user->uid . '/bibdk_favourite_list';
+  $query = $already_fav ? array() : array('agency' => $branch_id);
 
   return array(
     '#theme' => 'link',
@@ -172,9 +173,10 @@ function bibdk_favourite_list_link($branch_id) {
     '#options' => array(
       'attributes' => array(
         'alt' => $text,
-        'class' => array('btn-add-library', 'use-ajax', $is_favourited_class),
+        'class' => array('bibdk-favourite--add-remove-library', $is_favourited_class, 'use-ajax'),
+        'id' => array('add-remove-' . $branch_id),
       ),
-      'query' => array('agency' => $branch_id),
+      'query' => $query,
       'html' => TRUE,
       'svg' => 'svg-star',
     ),
@@ -182,12 +184,14 @@ function bibdk_favourite_list_link($branch_id) {
 }
 
 /**
- * check if favourite is already selected by user. If so
- * return a render array that displays it
+ * Check if favourite is already selected by user.
+ * Returns TRUE if library is already favourited by user. Otherwise FALSE is
+ * returned.
+ *
  * @param $branch_id
  * @return array|bool
  */
-function bibdk_favourite_already_order_library($branch_id) {
+function bibdk_favourite_library_is_favourited($branch_id) {
   if (!ding_user_is_provider_user()) {
     return FALSE;
   }
@@ -216,7 +220,7 @@ function bibdk_favourite_select_form($form, $form_state) {
       'callback' => 'bibdk_favourite_ajax_add_favourite',
     ),
     '#attributes' => array(
-      'class' => array('btn-add-library'),
+      'class' => array('bibdk-favourtie--add-library'),
     ),
   );
   return $form;
