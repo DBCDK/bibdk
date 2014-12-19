@@ -5,6 +5,6 @@ function bibdk_favourite_install() {
 }
 
 function _bibdk_favourite_set_translatables() {
-  t('No branchID provided. Please reload the page and try again', array(), array('context' => 'bibdk_favourite'));
+  t('No branchID provided. Please reload the page and try again.', array(), array('context' => 'bibdk_favourite'));
 }
 
