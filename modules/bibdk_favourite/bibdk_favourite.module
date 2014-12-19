@@ -60,6 +60,7 @@ function bibdk_favourite_menu() {
 
 /**
  * Implements HOOK__mypage_link().
+ *
  * @return mixed
  */
 function bibdk_favourite_mypage_link() {
@@ -120,6 +121,7 @@ function _bibdk_favourite_set_favourite_first(array $favourites) {
       break;
     }
   }
+
   return $favourites;
 }
 
@@ -134,7 +136,8 @@ function bibdk_favourite_get_order_library() {
   if (!empty($order) && $order->getOrderAgency()) {
     return $order;
   }
-  return null;
+
+  return NULL;
 }
 
 /**
@@ -162,9 +165,16 @@ function bibdk_favourite_list_link($branch_id) {
 
   global $user;
   $text = $already_fav ? t('Remove favoritelibrary', array(), array('context' => 'bibdk_favourite')) : t('Add favoritelibrary', array(), array('context' => 'bibdk_favourite'));
-  $is_favourited_class = $already_fav ? 'bibdk-favourite--library-is-favourited': '';
-  $path = $already_fav ? 'favourite/remove/' . $branch_id : 'user/' . $user->uid . '/bibdk_favourite_list';
+  $path = $already_fav ? 'favourite/remove/' . $branch_id : 'bibdk_modal/bibdk_favourite_list';
   $query = $already_fav ? array() : array('agency' => $branch_id);
+  $class = array(
+    'bibdk-favourite--add-remove-library',
+  );
+
+  if($already_fav){
+    $class[] = 'bibdk-favourite--library-is-favourited';
+    $class[] = 'use-ajax';
+  }
 
   return array(
     '#theme' => 'link',
@@ -173,8 +183,10 @@ function bibdk_favourite_list_link($branch_id) {
     '#options' => array(
       'attributes' => array(
         'alt' => $text,
-        'class' => array('bibdk-favourite--add-remove-library', $is_favourited_class, 'use-ajax'),
+        'class' => $class,
         'id' => array('add-remove-' . $branch_id),
+        'data-reveal-id' => 'bibdk-modal',
+        'data-reveal-ajax' => 'true'
       ),
       'query' => $query,
       'html' => TRUE,
@@ -199,7 +211,8 @@ function bibdk_favourite_library_is_favourited($branch_id) {
   $favourites = bibdk_favourite_get_favourites();
   if (empty($favourites) || !isset($favourites[$branch_id])) {
     return FALSE;
-  } else {
+  }
+  else {
     return TRUE;
   }
 }
@@ -223,6 +236,7 @@ function bibdk_favourite_select_form($form, $form_state) {
       'class' => array('bibdk-favourtie--add-library'),
     ),
   );
+
   return $form;
 }
 
@@ -278,6 +292,7 @@ function bibdk_favourite_save_favourite($form, &$form_state) {
   $message = bibdk_favourite_save_favourite_on_webservice($branchid);
   drupal_set_message($message);
   bibdk_favourite_set_userdata($form, $form_state);
+
   return $form;
 }
 
@@ -313,7 +328,7 @@ function bibdk_favourite_set_userdata($form, &$form_state) {
   if (isset($_SESSION['bibdk_favourites'])) {
     unset($_SESSION['bibdk_favourites']);
   }
-  $form_state['rebuild'] = true;
+  $form_state['rebuild'] = TRUE;
 }
 
 /**
@@ -349,13 +364,14 @@ function bibdk_favourite_save_userdata($agencyid, array $userdata) {
 function bibdk_favourite_get_agency_fields($agencyId) {
   $agency = new TingAgency($agencyId);
   $fields = $agency->getAgencyFields();
+
   return $fields;
 }
 
 /**
  * Invoke bibdk_providers user_set_favourite method
  *
- * @global $user $user
+ * @global stdClass $user
  * @param mixed $branchId
  * @return boolean
  */
@@ -377,14 +393,29 @@ function bibdk_favourite_set_favourite($branchId) {
   }
 }
 
+/**
+ * Translate and return a bibdk_favourite standard error message
+ *
+ * @return null|string
+ */
 function _bibdk_favourite_set_error_text() {
   return t('bibdk_favourite_something_went_wrong', array(), array('context' => 'bibdk_favourite'));
 }
 
+/**
+ * Translate and return a bibdk_favourite standard success message
+ *
+ * @return null|string
+ */
 function _bibdk_favourite_set_favourite_text() {
   return t('Favourite library has been set', array(), array('context' => 'bibdk_favourite'));
 }
 
+/**
+ * Translate and return a bibdk_favourite standard deleted message
+ *
+ * @return null|string
+ */
 function _bibdk_favourite_set_delete_text() {
   return t('Favourite library has been deleted', array(), array('context' => 'bibdk_favourite'));
 }
@@ -401,7 +432,10 @@ function bibdk_favourite_add_js() {
 
   // Add the requisite libraries and our custom js file.
   $js_path = drupal_get_path('module', 'bibdk_favourite') . '/js/';
-  drupal_add_js($js_path . 'setFavourite.js', array('cache' => TRUE, 'scope' => 'footer'));
+  drupal_add_js($js_path . 'setFavourite.js', array(
+    'cache' => TRUE,
+    'scope' => 'footer'
+  ));
   // Set flag to true.
   $done = TRUE;
 }
