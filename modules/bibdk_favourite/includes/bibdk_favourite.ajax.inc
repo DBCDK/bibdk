@@ -47,7 +47,7 @@ function bibdk_favourite_ajax_link_set_favourite($branchId) {
     $type = 'error';
   }
   else {
-    $text = _bibdk_favourite_set_favourite_text($branchId);
+    $text = _bibdk_favourite_set_favourite_text();
     $type = 'status';
   }
 
@@ -67,8 +67,11 @@ function bibdk_favourite_ajax_link_set_favourite($branchId) {
 }
 
 /**
- * ajax callback for deleting a favourite library
- * */
+ * Ajax callback for deleting a favourite library
+ *
+ * @param $branchId
+ * @throws Exception
+ */
 function bibdk_favourite_ajax_link_delete_favourite($branchId) {
   if (empty($branchId) && !empty($_GET['agency'])) {
     $branchId = $_GET['agency'];
@@ -101,19 +104,30 @@ function bibdk_favourite_ajax_link_delete_favourite($branchId) {
 }
 
 /**
- * @param $branchId
+ * Callback method for deleting a user's favourite library
+ *
+ * @param string $branchId
  * @return bool
  */
 function bibdk_favourite_ajax_remove_favourite($branchId) {
-  if (!$branchId) {
-    return FALSE; //TODO mmj return some useful command...
-  }
+  $commands = array();
 
-  $response = _bibdk_favourite_ajax_delete_from_session($branchId);
-  if ($response) {
-    $selector = '#add-remove-' . $branchId;
-    $link = render(bibdk_favourite_list_link($branchId));
-    $commands[] = ajax_command_replace($selector, $link);
+  if (empty($branchId)) {
+    $text = t('No branchID provided. Please reload the page and try again.', array(), array('context' => 'bibdk_favourite'));
+    drupal_set_message($text, 'error');
+    $commands[] = ajax_command_append('#bibdk-vejviser--search-form', theme('status_messages'));
+  }
+  else {
+    $response = _bibdk_favourite_ajax_delete_from_session($branchId);
+    if ($response) {
+      $selector = '#add-remove-' . $branchId;
+      $link = render(bibdk_favourite_list_link($branchId));
+      $commands[] = ajax_command_replace($selector, $link);
+    }
+    else {
+      _bibdk_favourite_ajax_set_status_message($response);
+      $commands[] = ajax_command_append('#bibdk-vejviser--search-form', theme('status_messages'));
+    }
   }
 
   $output = array('#type' => 'ajax', '#commands' => $commands);
@@ -124,25 +138,33 @@ function bibdk_favourite_ajax_remove_favourite($branchId) {
 
 /**
  * Delete the branch with the given $branchId from the user's list of favourite
- * libraries.
+ * libraries and set an appropriate status message.
  *
  * @param string $branchId
  * @return bool
  */
 function _bibdk_favourite_ajax_delete_from_session($branchId) {
   $response = bibdk_favourite_delete_favourite_from_session($branchId);
+  _bibdk_favourite_ajax_set_status_message($response);
 
+  return $response;
+}
+
+/**
+ * Queues an appropriate status message depending on the given parameter
+ *
+ * @param bool $response
+ */
+function _bibdk_favourite_ajax_set_status_message($response) {
   if (!$response) {
-    $text = _bibdk_favourite_set_error_text($branchId);
+    $text = _bibdk_favourite_set_error_text();
     $type = 'error';
   }
   else {
-    $text = _bibdk_favourite_set_delete_text($branchId);
+    $text = _bibdk_favourite_set_delete_text();
     $type = 'status';
   }
 
   drupal_set_message($text, $type);
-
-  return $response;
 }
 
