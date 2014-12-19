@@ -1,0 +1,10 @@
+<?php
+
+function bibdk_favourite_install() {
+  _bibdk_favourite_set_translatables();
+}
+
+function _bibdk_favourite_set_translatables() {
+  t('No branchID provided. Please reload the page and try again', array(), array('context' => 'bibdk_favourite'));
+}
+
