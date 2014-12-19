@@ -140,7 +140,7 @@ function _bibdk_favourite_get_from_webservice() {
 /**
  * Delete favourite from SESSION and on webservice
  *
- * @param type $branchId
+ * @param string $branchId
  * @return boolean
  */
 function bibdk_favourite_delete_favourite_from_session($branchId) {
@@ -170,7 +170,7 @@ function _bibdk_favourite_set_agencies() {
 
 function bibdk_favourite_check_agencies($saved_agencies, $add = FALSE) {
   if (!$saved_agencies) {
-    $message = _bibdk_favourite_set_error_text(0);
+    $message = _bibdk_favourite_set_error_text();
     drupal_set_message($message, 'error');
     return array();
   }
