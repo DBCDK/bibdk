@@ -1,10 +1,10 @@
 (function ($) {
     Drupal.behaviors.subject_hierarchy_action = {
         attach: function (context) {
-            $('.themes__close-button', context).click(function (e) {
+            $('.subjects-close-button a', context).click(function (e) {
                 e.preventDefault();
-                $('.themes__item').removeClass('themes__item--active');
-                $('.themes__sublists__wrapper').fadeOut('200');
+                $('.subject-item').removeClass('subject-item--active');
+                $('.subjects-sublist-wrapper').fadeOut('200');
             });
         }
     };
@@ -18,6 +18,7 @@
             $(response.selector).hide();
             $('#bibdk-subject-hierarchy-content').fadeIn('200');
         });
+        Foundation.libs.dropdown.close($('#searchfield-dropdown')); 
     }
 
     Drupal.behaviors.subject_hierarchy_suggestion_close = {
