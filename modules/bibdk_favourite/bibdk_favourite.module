@@ -377,15 +377,15 @@ function bibdk_favourite_set_favourite($branchId) {
   }
 }
 
-function _bibdk_favourite_set_error_text($branchId) {
+function _bibdk_favourite_set_error_text() {
   return t('bibdk_favourite_something_went_wrong', array(), array('context' => 'bibdk_favourite'));
 }
 
-function _bibdk_favourite_set_favourite_text($branchId) {
+function _bibdk_favourite_set_favourite_text() {
   return t('Favourite library has been set', array(), array('context' => 'bibdk_favourite'));
 }
 
-function _bibdk_favourite_set_delete_text($branchId) {
+function _bibdk_favourite_set_delete_text() {
   return t('Favourite library has been deleted', array(), array('context' => 'bibdk_favourite'));
 }
 
