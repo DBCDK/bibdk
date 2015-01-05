@@ -432,7 +432,7 @@ function bibdk_favourite_add_js() {
 
   // Add the requisite libraries and our custom js file.
   $js_path = drupal_get_path('module', 'bibdk_favourite') . '/js/';
-  drupal_add_js($js_path . 'setFavourite.js', array(
+  drupal_add_js($js_path . 'bibdk_favourite_commnds.js', array(
     'cache' => TRUE,
     'scope' => 'footer'
   ));

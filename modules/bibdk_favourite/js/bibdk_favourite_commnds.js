@@ -1,5 +1,5 @@
-/* 
- * add this function to Drupal.ajax.prototype commands 
+/*
+ * add this function to Drupal.ajax.prototype commands
  * to use it as standard drupal #ajax
  */
 
