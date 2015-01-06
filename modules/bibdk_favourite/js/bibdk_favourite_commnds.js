@@ -28,5 +28,6 @@
     orderagency.addClass('selected-agency');
     var text = Drupal.t('Order agency', null, null);
     orderagency.text(text);
-  }
+  };
+
 })(jQuery);
