@@ -281,6 +281,7 @@ function _bibdk_favourite_set_user_data_page_title($branchid) {
     $name = $branch->getBranchName($language->language);
     $branchName = isset($name) ? $name : '';
   }
+
   return t('Edit data for @library', array('@library' => $branchName));
 }
 
