@@ -11,7 +11,7 @@
 function bibdk_favourite_ajax_command($branchId) {
   return array(
     'command' => 'favourite_set',
-    'selector' => 'favourite_' . $branchId,
+    'selector' => 'favourite-' . $branchId,
   );
 }
 
@@ -37,7 +37,7 @@ function bibdk_favourite_ajax_add_favourite($form, $form_state) {
  */
 function bibdk_favourite_ajax_link_set_favourite($branchId) {
   // add javascript for handling favourite_set
-  bibdk_favourite_add_js();
+  //bibdk_favourite_add_js();
 
   unset($_SESSION['bibdk_favourites']);
 

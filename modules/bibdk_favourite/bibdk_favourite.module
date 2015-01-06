@@ -163,7 +163,6 @@ function bibdk_favourite_add_to_vejviser($branchId) {
 function bibdk_favourite_list_link($branch_id) {
   $already_fav = bibdk_favourite_library_is_favourited($branch_id);
 
-  global $user;
   $text = $already_fav ? t('Remove favoritelibrary', array(), array('context' => 'bibdk_favourite')) : t('Add favoritelibrary', array(), array('context' => 'bibdk_favourite'));
   $path = $already_fav ? 'favourite/remove/' . $branch_id : 'bibdk_modal/bibdk_favourite_list';
   $query = $already_fav ? array() : array('agency' => $branch_id);
@@ -267,6 +266,7 @@ function _bibdk_favourite_get_vejviser_link() {
  */
 function theme_bibdk_favourite_action_links($variables) {
   $links = $variables['links'];
+  $items = array();
   foreach ($links as $link) {
     $item['data'] = _bibdk_favourite_render_link($link);
     $items[] = $item;
@@ -276,7 +276,8 @@ function theme_bibdk_favourite_action_links($variables) {
 }
 
 function _bibdk_favourite_render_link($link) {
-  return l($link['text'], $link['path'], array('attributes' => $link['attributes']));
+  #return l($link['text'], $link['path'], array('attributes' => $link['attributes']));
+  return drupal_render($link);
 }
 
 /**
@@ -418,25 +419,5 @@ function _bibdk_favourite_set_favourite_text() {
  */
 function _bibdk_favourite_set_delete_text() {
   return t('Favourite library has been deleted', array(), array('context' => 'bibdk_favourite'));
-}
-
-/**
- * Helper function to add required javascript and CSS to the page.
- */
-function bibdk_favourite_add_js() {
-  // Initialize a flag; we only need to do this one per page request.
-  static $done = FALSE;
-  if ($done) {
-    return;
-  }
-
-  // Add the requisite libraries and our custom js file.
-  $js_path = drupal_get_path('module', 'bibdk_favourite') . '/js/';
-  drupal_add_js($js_path . 'bibdk_favourite_commnds.js', array(
-    'cache' => TRUE,
-    'scope' => 'footer'
-  ));
-  // Set flag to true.
-  $done = TRUE;
 }
 

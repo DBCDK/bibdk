@@ -132,7 +132,7 @@ function bibdk_favourite_form_view_items_from_session($favourite, $weight, $togg
     'toggle_enabled' => $toggle_enabled,
   ));
   $classes = array();
-  $classes[] = 'favourite_' . $favourite->getAgencyId();
+  $classes[] = 'favourite-' . $favourite->getAgencyId();
   if ($favourite->getOrderAgency()) {
     $classes[] = 'order-agency';
   }
@@ -163,7 +163,7 @@ function bibdk_favourite_form_view_items_from_session($favourite, $weight, $togg
  * NOTICE text and classes are also set in javascript. @see js/setFavourite.js
  */
 function bibdk_favourite_get_action_links($favourite) {
-  bibdk_favourite_add_js();
+  //bibdk_favourite_add_js();
 
   // add ajax library to intrepret the use-ajax class
   drupal_add_library('system', 'drupal.ajax');
@@ -179,33 +179,56 @@ function bibdk_favourite_get_action_links($favourite) {
   $edit_text = ($favourite->getUserData()) ? t('edit_user_data', array(), array('context' => 'bibdk_favorite')) : t('add_user_data', array(), array('context' => 'bibdk_favorite'));
 
   $links = array();
-  $links['set_favourite'] = array();
-  $links['set_favourite']['text'] = $order_txt;
-  $links['set_favourite']['path'] = 'favourite/add/' . $favourite->getAgencyId();
-  $links['set_favourite']['attributes'] = array(
-    'class' => array(
-      'use-ajax',
-      'set-default-order-agency',
-      $link_class
-    )
+  $links[] = array(
+    '#theme' => 'link',
+    '#text' => $order_txt,
+    '#path' => 'favourite/add/' . $favourite->getAgencyId(),
+    '#options' => array(
+      'attributes' => array(
+        'alt' => $order_txt,
+        'class' => array(
+          'use-ajax',
+          'set-default-order-agency',
+          $link_class
+        ),
+      ),
+      'html' => FALSE,
+    ),
   );
 
-  $links['edit_data'] = array();
-  $links['edit_data']['text'] = $edit_text;
-  $links['edit_data']['path'] = 'overlay/favourite/userdata/' . $favourite->getAgencyId();
-  $links['edit_data']['attributes'] = array(
-    'data-rel' => array('bibdkFavorite'),
-    'class' => array('edit-personal-info', 'bibdk-popup-link')
+  $links[] = array(
+    '#theme' => 'link',
+    '#text' => $edit_text,
+    '#path' => 'overlay/favourite/userdata/' . $favourite->getAgencyId(),
+    '#options' => array(
+      'attributes' => array(
+        'alt' => $order_txt,
+        'data-rel' => array('bibdkFavorite'),
+        'class' => array(
+          'edit-personal-info',
+          'bibdk-popup-link',
+        ),
+      ),
+      'html' => FALSE,
+    ),
   );
 
-  $links['delete_favourite'] = array();
-  $links['delete_favourite']['text'] = t('delete_favourite');
-  $links['delete_favourite']['path'] = 'favourite_delete/ajax/' . $favourite->getAgencyId();
-  $links['delete_favourite']['attributes'] = array(
-    'class' => array(
-      'use-ajax',
-      'delete-favourite'
-    )
+  $links[] = array(
+    '#theme' => 'link',
+    '#text' => t('Remove favoritelibrary', array(), array('context' => 'bibdk_favourite')),
+    '#path' => 'favourite_delete/ajax/' . $favourite->getAgencyId(),
+    '#options' => array(
+      'attributes' => array(
+        'alt' => $order_txt,
+        'class' => array(
+          'use-ajax',
+          'bibdk-favourite--add-remove-library',
+          'bibdk-favourite--library-is-favourited',
+        ),
+      ),
+      'html' => FALSE,
+      'svg' => 'svg-star',
+    ),
   );
 
   return $links;
@@ -220,7 +243,7 @@ function bibdk_favourite_user_form_fields($form, &$form_state, $branchid = NULL)
     $branchid = $form_state['branchid'];
   }
 
-  bibdk_favourite_add_js();
+  //bibdk_favourite_add_js();
 
   // set title of page
   $page_title = _bibdk_favourite_set_user_data_page_title($branchid);
