@@ -19,3 +19,5 @@ files[] = includesbibdk_favourite.webservice.inc
 
 files[] = test/bibdk_favourite.test
 files[] = test/bibdk_favourite_unit.test
+
+scripts[] = js/bibdk_favourite.js
