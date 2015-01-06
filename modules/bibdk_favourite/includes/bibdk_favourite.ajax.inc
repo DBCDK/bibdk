@@ -121,8 +121,9 @@ function bibdk_favourite_ajax_remove_favourite($branchId) {
     $response = _bibdk_favourite_ajax_delete_from_session($branchId);
     if ($response) {
       $selector = '#add-remove-' . $branchId;
-      $link = render(bibdk_favourite_list_link($branchId));
+      $link = drupal_render(bibdk_favourite_list_link($branchId));
       $commands[] = ajax_command_replace($selector, $link);
+      drupal_get_messages();
     }
     else {
       _bibdk_favourite_ajax_set_status_message($response);
