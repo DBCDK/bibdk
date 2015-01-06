@@ -1,3 +1,10 @@
+// <?php
+/**
+ * @file
+ * bibdk_subject_hierarchy javascript file
+ */
+// ?>
+
 (function ($) {
     Drupal.behaviors.subject_hierarchy_action = {
         attach: function (context) {

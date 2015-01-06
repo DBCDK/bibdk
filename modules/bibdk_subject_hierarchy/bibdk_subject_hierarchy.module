@@ -303,7 +303,7 @@ function _get_bibdk_subject_hierarchy_item($emnehierarki, $key) {
     $emnehierarki = _get_bibdk_subject_hierarchy_level($emnehierarki, $key_arr);
   }
 
-  drupal_set_title($breadcrumbs[count($breadcrumbs) - 1]['#text']);
+  drupal_set_title($breadcrumbs[count($breadcrumbs) - 1]['final-breadcrumb']['#markup']);
 
   $close_button = array(
     '#theme' => 'link_with_svg',
