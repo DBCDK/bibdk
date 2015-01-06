@@ -120,7 +120,6 @@ function bibdk_favourite_form_view_items_from_session($favourite, $weight, $togg
     return;
   }
   // check if given branch is set as order-agency
-  $order_class = ($favourite->getOrderAgency()) ? 'order-agency' : '';
   $links = bibdk_favourite_get_action_links($favourite);
   $actions = ($action_enabled) ? theme('bibdk_favourite_action_links', array('links' => $links)) : NULL;
 
