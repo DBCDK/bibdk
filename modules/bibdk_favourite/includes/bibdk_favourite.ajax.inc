@@ -36,9 +36,6 @@ function bibdk_favourite_ajax_add_favourite($form, $form_state) {
  * ajax callback for setting order agency
  */
 function bibdk_favourite_ajax_link_set_favourite($branchId) {
-  // add javascript for handling favourite_set
-  //bibdk_favourite_add_js();
-
   unset($_SESSION['bibdk_favourites']);
 
   $response = bibdk_favourite_set_favourite($branchId);

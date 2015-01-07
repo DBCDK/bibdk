@@ -163,8 +163,6 @@ function bibdk_favourite_form_view_items_from_session($favourite, $weight, $togg
  * NOTICE text and classes are also set in javascript. @see js/setFavourite.js
  */
 function bibdk_favourite_get_action_links($favourite) {
-  //bibdk_favourite_add_js();
-
   // add ajax library to intrepret the use-ajax class
   drupal_add_library('system', 'drupal.ajax');
   $order_agency = ($favourite->getOrderAgency()) ? TRUE : FALSE;
@@ -219,7 +217,7 @@ function bibdk_favourite_get_action_links($favourite) {
     '#path' => 'favourite_delete/ajax/' . $favourite->getAgencyId(),
     '#options' => array(
       'attributes' => array(
-        'alt' => $order_txt,
+        'alt' => t('Remove favoritelibrary', array(), array('context' => 'bibdk_favourite')),
         'class' => array(
           'use-ajax',
           'bibdk-favourite--add-remove-library',
@@ -242,8 +240,6 @@ function bibdk_favourite_user_form_fields($form, &$form_state, $branchid = NULL)
   if (!$branchid && !empty($form_state['branchid'])) {
     $branchid = $form_state['branchid'];
   }
-
-  //bibdk_favourite_add_js();
 
   // set title of page
   $page_title = _bibdk_favourite_set_user_data_page_title($branchid);
