@@ -8,8 +8,6 @@
 
   Drupal.behaviors.bibdk_favourite = {
     attach: function(context) {
-      console.clear();
-      console.log('attach');
       setClickListeners(context);
     }
   };
