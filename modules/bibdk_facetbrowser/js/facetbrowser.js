@@ -336,10 +336,11 @@
   Drupal.paramIsFacet = function(value, facetKey, facetGroup) {
     var result = false;
     facetGroup.each(function(count, modalElement) {
-      if ( decodeURI(value) == 'facets[]=facet.' + facetKey + ':' + $(modalElement).val() || 
-           decodeURI(value) == 'facets[]=-facet.' + facetKey + ':' + $(modalElement).val()
+      if ( 
+           decodeURI(decodeURI(value)) == 'facets[]=facet.' + facetKey + ':' + $(modalElement).val() || 
+           decodeURI(decodeURI(value)) == 'facets[]=-facet.' + facetKey + ':' + $(modalElement).val()
          ) {
-         result = true;
+           result = true;
       }
     });
     return result;
