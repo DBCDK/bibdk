@@ -380,9 +380,9 @@ function bibdk_update_7022(&$sandbox) {
 }
 
 
- * Enable bibdk_facetbrowser
+/* Enable bibdk_facetbrowser
  */
-function bibdk_update_7022(&$sandbox) {
+function bibdk_update_7023(&$sandbox) {
   module_disable(array(
     'ding_facetbrowser',
   ));
