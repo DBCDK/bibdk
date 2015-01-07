@@ -18,10 +18,7 @@
   };
 
   Bibdk_voxb.bibdkGetRating = function(div) {
-    div.find('.rating')
-      .one()
-      .last()
-      .append('<span class="ajax-progress" style="padding-left:2em; margin-top:-3px"><span class="throbber"></span></span>');
+    div.find('.rating').once().last().append('<span class="ajax-progress" style="padding-left:2em; margin-top:-3px"><span class="throbber"></span></span>');
     var pid = $(div).attr('data-pid');
     var request = $.ajax({
       url: Drupal.settings.basePath + 'voxb/ajax/get_rating',
@@ -66,7 +63,7 @@
       // add click
       $('.voxb-rating.rate-enabled .rating').click(function(e) {
         e.preventDefault();
-        Drupal.voxbUpdateRating($(this));
+        Bibdk_voxb.voxbUpdateRating($(this));
       });
       if(typeof(voxb_update_review_response) != 'undefined') {
         var response = voxb_update_review_response;

@@ -1,0 +1,101 @@
+.facetbrowser_overlay {
+    z-index: 10000;
+    filter: alpha(opacity=50); /*older IE*/
+    filter:progid:DXImageTransform.Microsoft.Alpha(opacity=50); /* IE */
+    -moz-opacity: .50; /*older Mozilla*/
+    -khtml-opacity: 0.5;   /*older Safari*/
+    opacity: 0.5;   /*supported by current Mozilla, Safari, and Opera*/
+    background-color:#000000;
+    position:fixed; top:0px; left:0px; width:100%; height:100%; color:#FFFFFF; text-align:center; vertical-align:middle;
+}
+
+.facetbrowser_overlay .spinner {
+    z-index:10001;
+    position:fixed; top:0px; left:0px; width:100%; height:100%; color:#FFFFFF; text-align:center; vertical-align:middle;
+    background: transparent url(../img/spinner.gif) no-repeat 50% 50%;
+}
+
+/* facet link color */
+.pane-bibdk-facetbrowser a,.pane-bibdk-facetbrowser a:visited { color: #000; }
+.pane-bibdk-facetbrowser a:hover { color: #000; text-decoration: none; }
+
+.bibdk-facetbrowser-modal.reveal-modal {
+    left: 3em;
+    padding: 1em;
+    max-width: 400px;
+}
+
+.bibdk-facetbrowser-modal.reveal-modal h3 {
+    font-size: 1.25em;
+    font-weight: bold;
+}
+
+.bibdk-facetbrowser-modal.reveal-modal .form-item {
+    float: none;
+    padding: 0;
+    width: auto;
+}
+
+.bibdk-facetbrowser-modal.reveal-modal .checkbox-elements-header,
+.bibdk-facetbrowser-modal.reveal-modal .checkbox-elements {
+    float: none;
+    padding: 0;
+    width: auto;
+}
+
+.bibdk-facetbrowser-modal.reveal-modal .checkbox-elements-header p {
+    overflow: hidden;
+    padding-left: 2%;
+}
+
+.bibdk-facetbrowser-modal.reveal-modal .checkbox-element {
+    clear: both;
+    width: 100%;
+}
+
+.bibdk-facetbrowser-modal.reveal-modal .checkbox-element-label {
+    float: left;
+    width: 60%;
+    overflow: hidden;
+}
+
+.bibdk-facetbrowser-modal.reveal-modal .checkbox-element-select {
+    float: left;
+    width: 20%;
+    text-align: center;
+}
+
+.bibdk-facetbrowser-modal.reveal-modal .checkbox-element-deselect {
+    float: left;
+    width: 20%;
+    text-align: center;
+}
+
+.bibdk-facetbrowser-modal.reveal-modal .checkbox-buttons {
+    margin-top: 10px;
+}
+
+.bibdk-facetbrowser-modal.reveal-modal .close-reveal-modal,
+.bibdk-facetbrowser-modal.reveal-modal .save-facet-modal {
+    font-size: 0.875rem;
+    position: inherit;
+    float: left;
+    width: auto;
+    margin-right: 10px;
+}
+
+.bibdk-facetbrowser-modal.reveal-modal .facet-modal-close-icon  {
+    clear: both;
+}
+
+
+.bibdk-facetbrowser-modal.reveal-modal input[type="checkbox"], input[type="radio"] {
+    float: none;
+}
+
+.pane-bibdk-facetbrowser .checkbox-element-submit a,
+.pane-bibdk-facetbrowser .checkbox-element-submit a:visited {
+    color: white;
+}
+
+

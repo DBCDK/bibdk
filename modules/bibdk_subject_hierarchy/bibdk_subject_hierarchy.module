@@ -123,6 +123,7 @@ function bibdk_subject_hierarchy_theme($existing, $type, $theme, $path) {
     ),
     'bibdk_subject_hierarchy_item' => array(
       'variables' => array(
+        'heading' => NULL,
         'hierarchy' => NULL,
         'breadcrumbs' => NULL,
         'current_key' => NULL,
@@ -279,6 +280,8 @@ function bibdk_subject_hierarchy_nojs_callback($key) {
 
 function _get_bibdk_subject_hierarchy_item($emnehierarki, $key) {
 
+  $heading = '';
+
   $key_arr = explode(',', $key);
 
   $search_path = _bibdk_subject_hierarchy_search_info();
@@ -287,6 +290,7 @@ function _get_bibdk_subject_hierarchy_item($emnehierarki, $key) {
 
   if (sizeof($key_arr) > 0) {
     $breadcrumbs = _get_bibdk_subject_hierarchy_breadcrumbs($emnehierarki, $key_arr, $path);
+    $heading = _get_bibdk_subject_hierarchy_heading($emnehierarki, $key_arr, $path);
   }
 
   $level = array_shift($key_arr);
@@ -304,6 +308,7 @@ function _get_bibdk_subject_hierarchy_item($emnehierarki, $key) {
   return array(
     '#theme' => 'bibdk_subject_hierarchy_item',
     '#breadcrumbs' => $breadcrumbs,
+    '#heading' => $heading,
     '#hierarchy' => $emnehierarki,
     '#current_key' => $key,
     '#search_path' => $search_path,
@@ -346,7 +351,7 @@ function _get_bibdk_subject_hierarchy_level($emnehierarki, $key) {
     $emnehierarki = $emnehierarki['term'][$level];
   }
   else {
-    return null;
+    return NULL;
   }
   if (sizeof($key) > 0) {
     $emnehierarki = _get_bibdk_subject_hierarchy_level($emnehierarki, $key);
@@ -365,15 +370,15 @@ function _get_bibdk_subject_hierarchy_level($emnehierarki, $key) {
  * @internal param array $breadcrumbs
  * @return array
  */
-function _get_bibdk_subject_hierarchy_breadcrumbs($emnehierarki, $keys, $path = 'work') {
+function _get_bibdk_subject_hierarchy_breadcrumbs($emnehierarki, $keys, $search_path = 'work') {
   $breadcrumbs = array();
   $parent_string = '';
 
   foreach ($keys as $key) {
-    $current_level = (empty($current_level)) ? $emnehierarki[$key] : $current_level['term'][$key];
-    $parent_string .= (empty($parent_string)) ? $key : ',' . $key;
+    $current_level = ( empty($current_level) ) ? $emnehierarki[$key] : $current_level['term'][$key];
+    $parent_string .= ( empty($parent_string) && $parent_string !== '0' ) ? $key : ',' . $key;
 
-    $breadcrumbs[] = array(
+    $breadcrumb = array(
       '#theme' => 'link',
       '#text' => $current_level['ord'],
       '#path' => 'bibdk_subject_hierarchy/nojs/' . $parent_string,
@@ -382,9 +387,60 @@ function _get_bibdk_subject_hierarchy_breadcrumbs($emnehierarki, $keys, $path = 
         'html' => FALSE,
       ),
     );
+    $breadcrumbs[] = $breadcrumb;
   }
+  
+  // replace content of last breadcrumb
+  $breadcrumbs[ sizeof($breadcrumbs)-1 ] = array(
+    '#type' => 'container',
+      '#attributes' => array(
+        'class' => array('container-last'),
+    ),
+    'final-breadcrumb' => array(
+      '#type' => 'markup',
+      '#markup' => $breadcrumb['#text'],
+    ),
+  );
+
+  $heading = $breadcrumb;
 
   return $breadcrumbs;
+}
+
+
+/**
+ * Generate a heading, with a link if cql is not empty
+ *
+ * @param $emnehierarki
+ * @param $keys
+ * @param string $path
+ * @internal param array $heading
+ * @return array
+ */
+function _get_bibdk_subject_hierarchy_heading($emnehierarki, $keys, $path = 'work') {
+  $heading = array();
+
+  foreach ($keys as $key) {
+    $current_level = ( empty($current_level) ) ? $emnehierarki[$key] : $current_level['term'][$key];
+  }
+
+  if ( !empty($current_level['cql']) ) {
+    $heading = array(
+      '#theme' => 'link',
+      '#text' => $current_level['ord'],
+      '#path' => 'search/' . $path . '/' . $current_level['cql'],
+      '#options' => array(
+        'attributes' => array(),
+        'html' => FALSE,
+      ),
+    );
+  }
+  else {
+    $heading = array(
+      '#markup' => $current_level['ord'],
+    );
+  }
+  return $heading;
 }
 
 /**
@@ -396,7 +452,7 @@ function _bibdk_subject_hierarchy_read_data() {
   // fallback if bibdk_yaz is not enabled
   if (!module_exists('bibdk_yaz')) {
     $filename = drupal_get_path('module', 'bibdk_subject_hierarchy') . '/data/emnehierarki_full.json';
-    return json_decode(file_get_contents($filename), true);
+    return json_decode(file_get_contents($filename), TRUE);
   }
 
   $filename = drupal_get_path('module', 'bibdk_subject_hierarchy') . '/data/emnehierarki_full.xml';
@@ -429,11 +485,11 @@ function _bibdk_subject_hierarchy_parse($terms) {
 
   // if the key ccl exists there is only one term and wee need to wrap it in
   // an array for the foreach loop to work correctly
-  if(isset($terms['ccl'])){
+  if ( isset($terms['ccl']) ) {
     $terms = array($terms);
   }
 
-  foreach($terms as $n => $term) {
+  foreach ( $terms as $n => $term ) {
     $record[$n] = _bibdk_subject_hierarchy_parse_term($term);
   }
 
@@ -445,7 +501,7 @@ function _bibdk_subject_hierarchy_parse($terms) {
  */
 function _bibdk_subject_hierarchy_parse_term($term) {
   $record = array();
-  foreach($term as $key => $item) {
+  foreach ($term as $key => $item) {
     if ((string) $key != (string) (int) $key) {
       if ($key == 'term') {
         $record[$key] = _bibdk_subject_hierarchy_parse($item);
@@ -473,10 +529,10 @@ function _bibdk_subject_hierarchy_parse_term($term) {
  * @return string|null
  */
 function _bibdk_subject_hierarchy_ccl_to_cql($ccl) {
-  if (function_exists('bibdk_yaz_convert_ccl_to_cql')){
+  if (function_exists('bibdk_yaz_convert_ccl_to_cql')) {
     return reset(bibdk_yaz_convert_ccl_to_cql($ccl));
   }
-  return null;
+  return NULL;
 }
 
 /** Normalize a string so that it can be compared with others without being too fussy.
