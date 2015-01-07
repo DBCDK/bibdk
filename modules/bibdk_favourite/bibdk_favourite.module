@@ -217,29 +217,6 @@ function bibdk_favourite_library_is_favourited($branch_id) {
 }
 
 /**
- * Button to add a library to favourites
- *
- * @param array $form
- * @param array $form_state
- * @return string
- * @deprecated might be completely unused mmj
- */
-function bibdk_favourite_select_form($form, $form_state) {
-  $form['favourite_button'] = array(
-    '#type' => 'submit',
-    '#value' => t('Add to favorite libraries'),
-    '#ajax' => array(
-      'callback' => 'bibdk_favourite_ajax_add_favourite',
-    ),
-    '#attributes' => array(
-      'class' => array('bibdk-favourtie--add-library'),
-    ),
-  );
-
-  return $form;
-}
-
-/**
  * Returns a link for the bibdk vejviser
  *
  * @return array
@@ -286,7 +263,6 @@ function _bibdk_favourite_render_link($link) {
  * @param array $form
  * @param array $form_state
  * @return mixed
- * @deprecated might be completely unused mmj
  */
 function bibdk_favourite_save_favourite($form, &$form_state) {
   $branchid = $form_state['values']['branchid'];
