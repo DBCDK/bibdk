@@ -71,6 +71,7 @@ function bibdk_reservation_check_past_reservations($entity_ids) {
  * Returns a link for 'reservation'Order any edition' button
  *
  * @param $collection
+ * @param array $work_types
  * @param $uid
  * @return string
  */
