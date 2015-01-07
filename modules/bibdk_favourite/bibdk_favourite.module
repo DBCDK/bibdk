@@ -253,7 +253,6 @@ function theme_bibdk_favourite_action_links($variables) {
 }
 
 function _bibdk_favourite_render_link($link) {
-  #return l($link['text'], $link['path'], array('attributes' => $link['attributes']));
   return drupal_render($link);
 }
 
