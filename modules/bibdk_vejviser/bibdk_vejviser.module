@@ -30,23 +30,6 @@ function bibdk_vejviser_menu() {
 }
 
 /**
- * Implements hook_theme().
- */
-function bibdk_vejviser_theme() {
-  $path = drupal_get_path('module', 'bibdk_vejviser') . '/theme';
-  return array(
-    'bibdk_vejviser_header' => array(
-      'render element' => 'form',
-      'path' => $path,
-      'variables' => array(
-        'form' => '',
-      ),
-      'template' => 'bibdk_vejviser_header',
-    ),
-  );
-}
-
-/**
  * Implements hook_form_FORM_ID_alter (ting_admin_ting_settings)
  * Creates a field for adding a URL for the Ting Agency Serach webservice
  */
@@ -172,7 +155,7 @@ function bibdk_vejviser_agency_search() {
     foreach ($result as $branch) {
       // check if any modules has anything to add to branch
       // but show only button if pickup is allowed for this branch
-      $action = null;
+      $action = NULL;
       if ($branch->pickupAllowed == '1' && $logged_in) {
         $action = module_invoke_all('add_to_vejviser', $branch->branchId);
       }
@@ -185,8 +168,14 @@ function bibdk_vejviser_agency_search() {
   }
 
   $render['header'] = array(
-    '#theme' => 'bibdk_vejviser_header',
-    '#form' => $raw,
+    '#theme' => 'html_tag',
+    '#tag' => 'div',
+    '#value' => $raw,
+    '#attributes' => array(
+      'id' => array(
+        'bibdk-vejviser--search-form',
+      ),
+    ),
   );
 
   if (!empty($branches)) {
