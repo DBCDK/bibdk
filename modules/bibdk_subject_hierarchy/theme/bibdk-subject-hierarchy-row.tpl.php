@@ -1,4 +1,6 @@
-<div class="themes_row clearfix">
+
+<div class="subjects-row clearfix">
+
   <?php foreach ($items as $index => $item): ?>
     <div class="<?php print $item['wrapper_classes']; ?>">
       <p>
@@ -17,5 +19,6 @@
     </div>
   <?php endforeach; ?>
 
-  <?php print "<div class='themes__sublists__wrapper row-$row' style='display: $display'>" . $visible_row . "</div>"; ?>
+  <?php print "<div class='subjects-sublist-wrapper row-$row' style='display: $display'>" . $visible_row . "</div>"; ?>
+
 </div>

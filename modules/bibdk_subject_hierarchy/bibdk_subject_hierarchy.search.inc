@@ -36,7 +36,7 @@ function _get_bibdk_subject_hierarchy_searchresult($term) {
       'breadcrumb' => array(
         '#type' => 'container',
         '#attributes' => array(
-          'class' => array('themes__breadcrumb'),
+          'class' => array('subjects-breadcrumb'),
         ),
         'items' => $breadcrumb,
       ),
@@ -44,7 +44,7 @@ function _get_bibdk_subject_hierarchy_searchresult($term) {
         '#theme' => 'item_list',
         '#items' => $items,
         '#attributes' => array(
-          'class' => 'themes__sublist',
+          'class' => 'subjects-sublist',
         ),
       )
     );
@@ -195,16 +195,17 @@ function bibdk_subject_hierarchy_searchfield_form_submit($form, &$form_state) {
   );
 
   $header['close'] = array(
-    '#theme' => 'link',
-    '#path' => '',
-    '#text' => '&nbsp;',
-    '#options' => array(
-      'attributes' => array(
-        'class' => array('themes__close-button close icon icon-blue-x'),
-      ),
-      'html' => TRUE,
+    '#theme' => 'link_with_svg',
+    '#title' => '',
+    '#path' => '#',
+    '#attributes' => array(
+      'alt' => t('close subject hierarchy submenu.', array(), array('context' => 'bibdk_subject_hierarchy')),
+      'class' => array('subjects-close-button close icon'),
     ),
+    '#svg' => 'svg-close',
+    '#href' => FALSE,
   );
+
 
   $header['headline'] = array(
     '#theme' => 'html_tag',
@@ -227,7 +228,7 @@ function bibdk_subject_hierarchy_searchfield_form_submit($form, &$form_state) {
     '#type' => 'container',
     '#attributes' => array(
       'id' => array('bibdk-subject-hierarchy-searchresult'),
-      'class' => array('bibdk-subject-hierarchy-searchresult', 'themes__sublists'),
+      'class' => array('bibdk-subject-hierarchy-searchresult', 'subjects-sublists'),
     ),
     'header' => $header,
     'result' => $searchresult['result'],
