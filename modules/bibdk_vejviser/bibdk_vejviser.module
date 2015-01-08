@@ -60,12 +60,7 @@ function bibdk_vejviser_how_r_u() {
  * @return array
  */
 function bibdk_vejviser_form($form, &$form_state) {
-  $value = isset($form_state['input']['openagency_query']) ? $form_state['input']['openagency_query'] : NULL;
-  if (!empty($value)) {
-    drupal_set_message(t('search results for %value', array('%value' => str_replace('*', '?', $value))), 'status');
-  }
-
-  $form['openagency_query'] = array(
+    $form['openagency_query'] = array(
     '#type' => 'textfield',
     '#attributes' => array(
       'placeholder' => t('Library name, zip or city'),
