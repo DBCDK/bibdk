@@ -5,12 +5,12 @@
  * Bring customizations to the default search box
  */
 
-module_load_include('inc', 'bibdk_custom_search', 'bibdk_custom_search.export');
-module_load_include('inc', 'bibdk_custom_search', 'bibdk_custom_search.list');
-module_load_include('inc', 'bibdk_custom_search', 'bibdk_custom_search.db_queries');
-module_load_include('inc', 'bibdk_custom_search', 'bibdk_custom_search.advanced_form');
-module_load_include('inc', 'bibdk_custom_search', 'bibdk_custom_search.conditions');
-module_load_include('inc', 'bibdk_custom_search', 'bibdk_custom_search.usersettings');
+require_once(drupal_get_path('module', 'bibdk_custom_search') . '/includes/bibdk_custom_search.export.inc');
+require_once(drupal_get_path('module', 'bibdk_custom_search') . '/includes/bibdk_custom_search.list.inc');
+require_once(drupal_get_path('module', 'bibdk_custom_search') . '/includes/bibdk_custom_search.db_queries.inc');
+require_once(drupal_get_path('module', 'bibdk_custom_search') . '/includes/bibdk_custom_search.advanced_form.inc');
+require_once(drupal_get_path('module', 'bibdk_custom_search') . '/includes/bibdk_custom_search.conditions.inc');
+require_once(drupal_get_path('module', 'bibdk_custom_search') . '/includes/bibdk_custom_search.usersettings.inc');
 
 
 /**
@@ -45,7 +45,7 @@ function bibdk_custom_search_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('bibdk_custom_search_usersettings_admin'),
     'access arguments' => array('administer bibdk custom search pages'),
-    'file' => 'bibdk_custom_search.usersettings.inc',
+    'file' => 'includes/bibdk_custom_search.usersettings.inc',
   );
   $items['admin/config/search/bibdk_custom_search/%/remove_element/%'] = array(
     'title' => 'Edit search page',
@@ -134,7 +134,7 @@ function bibdk_custom_search_menu() {
     'type' => MENU_CALLBACK,
     'page arguments' => array(3,4,5),
     'page callback' => "bibdk_custom_search_list_ajax_callback",
-    'file' => 'bibdk_custom_search.list.inc',
+    'file' => 'includes/bibdk_custom_search.list.inc',
     'access arguments' => array('access content'),
     'delivery callback' => 'ajax_deliver',
   );
@@ -520,7 +520,7 @@ function bibdk_custom_search_theme() {
     ),
     'bibdk_custom_search_usersettings_admin' => array(
       'render element' => 'form',
-      'file' => 'bibdk_custom_search.usersettings.inc',
+      'file' => 'includes/bibdk_custom_search.usersettings.inc',
     )
   );
 
