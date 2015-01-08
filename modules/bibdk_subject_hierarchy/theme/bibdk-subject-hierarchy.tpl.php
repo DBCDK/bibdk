@@ -6,12 +6,15 @@
  */
 ?>
 
-<div class="container clearfix">
-  <div class="clearfix bibdk-subject-hierarchy-panel-header">
-    <div class="bibdk-subject-hierarchy-header">
+<div id="bibdk-subject-hierarchy">
+
+  <div class="bibdk-subject-hierarchy-header">
+
+    <div class="bibdk-subject-hierarchy-header-title">
       <?php print $header; ?>
     </div>
-    <div class="bibdk-subject-hierarchy-helptext">
+
+    <div class="bibdk-subject-hierarchy-header-helptext">
       <p class="helptext popover-button" title="<?php print $helptext; ?>">
         <a href="#" tabindex="0" aria-label="<?php print t('Help', array(), array('context' => 'bibdk_theme')); ?>" role="button">?</a>
       </p>
@@ -24,17 +27,34 @@
         </a>
       </div>
     </div>
+
     <div class="subject-hierarchy-searchfield">
-      <?php print drupal_render($searchfield); ?>
+      <div class="show-for-large-up">
+        <?php print drupal_render($searchfield_link); ?>
+        <!-- a href="#" data-dropdown="drop1" data-options="align:right;" class="button">Has right  Dropdown</a -->
+      </div>
+      <div class="hide-for-large-up">
+        <?php
+          $searchfield_link['#printed'] = FALSE;
+          $searchfield_link['#attributes']['data-options'] = 'align:bottom';
+          print drupal_render($searchfield_link);
+        ?>
+        <!-- a href="#" data-dropdown="drop1" data-options="align:bottom;" class="button">Has bottom Dropdown</a -->
+      </div>
+
+      <div id="searchfield-dropdown" data-dropdown-content class="f-dropdown content medium" aria-hidden="true" tabindex="-1">
+        <?php print drupal_render($searchfield); ?>
+      </div>
     </div>
+
   </div>
-<div id="bibdk-subject-hierarchy" class="clearfix">
-    <div id="bibdk-subject-hierarchy-content">
-    <?php foreach ($rows as $row) : ?>
-      <?php print $row; ?>
-    <?php endforeach; ?>
-    </div>
-    <div id="bibdk-subject-hierarchy-searchresult">
-    </div>
-    </div>
+
+  <div id="bibdk-subject-hierarchy-content" class="bibdk-subject-hierarchy-inner clearfix">
+  <?php foreach ($rows as $row) : ?>
+    <?php print $row; ?>
+  <?php endforeach; ?>
+  </div>
+
+  <div id="bibdk-subject-hierarchy-searchresult"></div>
+
 </div>

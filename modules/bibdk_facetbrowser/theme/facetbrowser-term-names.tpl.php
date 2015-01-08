@@ -18,6 +18,19 @@
 
   <div class="bibdk-modal-content">
 
+    <div class="checkbox-buttons clearfix">
+      <div class="checkbox-element-submit save-facet-modal">
+        <a id="" class="btn btn-blue" href="#">
+          <?php echo t('label_facet_save', array(), array('context' => 'bibdk_facetbrowser')); ?>
+        </a>
+      </div>
+      <div class="checkbox-element-submit close-reveal-modal">
+        <a id="" class="btn btn-blue" href="#">
+          <?php echo t('label_facet_close', array(), array('context' => 'bibdk_facetbrowser')); ?>
+        </a>
+      </div>
+    </div>
+
     <div class="checkbox-elements-header">
       <p class="checkbox-element-label">&nbsp;</p>
       <p class="checkbox-element-select"><?php echo t('label_facet_select', array(), array('context' => 'bibdk_facetbrowser')); ?></p>
@@ -32,20 +45,17 @@
       <p class="checkbox-element-deselect"></p>
     </div>
 
-    <div class="checkbox-buttons">
-
-      <div class="checkbox-element-submit close-reveal-modal">
-        <a id="" class="btn btn-blue" href="#">
-          <?php echo t('label_facet_close', array(), array('context' => 'bibdk_facetbrowser')); ?>
-        </a>
-      </div>
-
+    <div class="checkbox-buttons clearfix">
       <div class="checkbox-element-submit save-facet-modal">
         <a id="" class="btn btn-blue" href="#">
           <?php echo t('label_facet_save', array(), array('context' => 'bibdk_facetbrowser')); ?>
         </a>
       </div>
-
+      <div class="checkbox-element-submit close-reveal-modal">
+        <a id="" class="btn btn-blue" href="#">
+          <?php echo t('label_facet_close', array(), array('context' => 'bibdk_facetbrowser')); ?>
+        </a>
+      </div>
     </div>
 
   </div>

@@ -96,7 +96,7 @@ function bibdk_reservation_field_formatter_view($entity_type, $entity, $field, $
         $element[$delta]['#markup'] = _bibdk_reservation_render_infotext($infotext);
         break;
       case "bibdk_reservation_collection_button" :
-        $element[$delta]['#markup'] = bibdk_reservation_order_any_edition_link($entity->getCollectionTypes(), $entity->getId());
+        $element[$delta]['#markup'] = bibdk_reservation_order_any_edition_link($entity->getCollectionTypes(), $entity->getCollectionWorkTypes(), $entity->getId());
         break;
     }
   }

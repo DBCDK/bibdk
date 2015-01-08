@@ -68,18 +68,18 @@
 .bibdk-facetbrowser-modal.reveal-modal .checkbox-element-deselect {
     float: left;
     width: 20%;
-    text-align: center;
 }
 
 .bibdk-facetbrowser-modal.reveal-modal .checkbox-buttons {
     margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .bibdk-facetbrowser-modal.reveal-modal .close-reveal-modal,
 .bibdk-facetbrowser-modal.reveal-modal .save-facet-modal {
     font-size: 0.875rem;
     position: inherit;
-    float: left;
+    float: right;
     width: auto;
     margin-right: 10px;
 }

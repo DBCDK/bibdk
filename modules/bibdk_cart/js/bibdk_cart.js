@@ -26,14 +26,26 @@
   Drupal.setCheckboxState = function(data) {
     if(button !== null) {
       if(data.saved === 1) {
+        $(button).toggleClass('in-cart', true);
+        $(button).toggleClass('not-in-cart', false);
+        $(button).toggleClass('disabled', false);
+/*
         $(button).toggleClass('btn-grey', true);
         $(button).toggleClass('btn-blue', false);
         $(button).toggleClass('disabled', false);
+        alert('foo');
+*/
       }
       else {
+        $(button).toggleClass('in-cart', false);
+        $(button).toggleClass('not-in-cart', true);
+        $(button).toggleClass('disabled', false);
+/*
         $(button).toggleClass('btn-grey', false);
         $(button).toggleClass('btn-blue', true);
         $(button).toggleClass('disabled', false);
+        alert('bar');
+*/
       }
       button = null;
     }
@@ -50,7 +62,8 @@
 
   Drupal.addRemoveItemButton = function(element) {
     button = element;
-    $(button).toggleClass('btn-grey', false);
+    // $(button).toggleClass('btn-grey', false);
+    $(button).toggleClass('in-cart', false);
     $(button).toggleClass('disabled', true);
     var pid = $(button).attr('data-pid');
 

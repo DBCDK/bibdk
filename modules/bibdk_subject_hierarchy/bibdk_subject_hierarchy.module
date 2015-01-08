@@ -116,6 +116,7 @@ function bibdk_subject_hierarchy_theme($existing, $type, $theme, $path) {
         'rows' => array(),
         'header' => '',
         'searchfield' => '',
+        'searchfield_link' => '',
         'helptext' => '',
       ),
       'path' => $path,
@@ -128,6 +129,7 @@ function bibdk_subject_hierarchy_theme($existing, $type, $theme, $path) {
         'breadcrumbs' => NULL,
         'current_key' => NULL,
         'search_path' => NULL,
+        'close_button' => NULL,
       ),
       'path' => $path,
       'template' => 'bibdk-subject-hierarchy-item',
@@ -154,12 +156,29 @@ function bibdk_subject_hierarchy_get_block_content($row_to_show = array()) {
   $hierarchy = _get_bibdk_subject_hierarchy();
 
   $rows = _bibdk_subject_hierarchy_get_rows($hierarchy, $row_to_show);
+  
+  $searchfield_link = array(
+    '#theme' => 'link_with_svg',
+    '#title' => t('search subject hierarchy', array(), array('context' => 'bibdk_subject_hierarchy')),
+    '#path' => '#',
+    '#attributes' => array(
+      'alt' => t('search subject hierarchy', array(), array('context' => 'bibdk_subject_hierarchy')),
+      'class' => array(),
+      'data-dropdown' => 'searchfield-dropdown',
+      'aria-controls' => 'searchfield-dropdown',
+      'aria-expanded' => 'false',
+      'data-options'  => 'align:left',
+    ),
+    '#svg' => 'svg-magnifier',
+    '#href' => FALSE,
+  );
 
   $rendered = array(
     '#theme' => 'bibdk_subject_hierarchy',
     '#rows' => $rows,
     '#header' => t('HEADER_BIBDK_SUBJECT_HIERARCHY', array(), array('context' => 'bibdk_subject_hierarchy')),
     '#searchfield' => drupal_get_form('bibdk_subject_hierarchy_searchfield_form'),
+    '#searchfield_link' => $searchfield_link,
     '#helptext' => t('SUBJECT_HIERARCHY_HELPTEXT', array(), array('context' => 'bibdk_subject_hierarchy')),
   );
 
@@ -232,9 +251,9 @@ function _bibdk_subject_hierarchy_get_arranged_items($hierarchy, $row_to_show) {
     $item['url'] = url('bibdk_subject_hierarchy/nojs/' . $index);
     $item['note'] = t($item['note'], array(), array('context' => 'bibdk_subject_hierarchy'));
 
-    $item['wrapper_classes'] = 'themes__item item-' . $index;
+    $item['wrapper_classes'] = 'subject-item item-' . $index;
     if (!empty($row_to_show['level']) && $row_to_show['level'] == $index) {
-      $item['wrapper_classes'] .= ' themes__item--active';
+      $item['wrapper_classes'] .= ' subject-item--active';
     }
 
     $rows[$row][$index] = $item;
@@ -253,12 +272,12 @@ function bibdk_subject_hierarchy_ajax_callback($key) {
   $row = $emnehierarki_item['row'];
   $level = $emnehierarki_item['level'];
 
-  // Create a new AJAX command that replaces the .themes__sublists__wrapper text.
-  $ajax_commands[] = ajax_command_replace('.themes__sublists__wrapper.row-' . $row, '<div class="themes__sublists__wrapper row-' . $row . '">' . drupal_render($emnehierarki_item) . '</div>');
-  $ajax_commands[] = ajax_command_invoke('.themes__sublists__wrapper', 'fadeOut', array('200'));
-  $ajax_commands[] = ajax_command_invoke('.themes__sublists__wrapper.row-' . $row, 'fadeIn', array('200'));
-  $ajax_commands[] = ajax_command_invoke('.themes__item', 'removeClass', array('themes__item--active'));
-  $ajax_commands[] = ajax_command_invoke('.themes__item.item-' . $level, 'addClass', array('themes__item--active'));
+  // Create a new AJAX command that replaces the .subjects-wrapper text.
+  $ajax_commands[] = ajax_command_replace('.subjects-sublist-wrapper.row-' . $row, '<div class="subjects-sublist-wrapper row-' . $row . '">' . drupal_render($emnehierarki_item) . '</div>');
+  $ajax_commands[] = ajax_command_invoke('.subjects-sublist-wrapper', 'fadeOut', array('200'));
+  $ajax_commands[] = ajax_command_invoke('.subjects-sublist-wrapper.row-' . $row, 'fadeIn', array('200'));
+  $ajax_commands[] = ajax_command_invoke('.subject-item', 'removeClass', array('subject-item--active'));
+  $ajax_commands[] = ajax_command_invoke('.subject-item.item-' . $level, 'addClass', array('subject-item--active'));
   $ajax_commands[] = ajax_command_invoke('#bibdk-subject-hierarchy-searchresult .close', 'click');
 
   return drupal_json_output($ajax_commands);
@@ -303,7 +322,19 @@ function _get_bibdk_subject_hierarchy_item($emnehierarki, $key) {
     $emnehierarki = _get_bibdk_subject_hierarchy_level($emnehierarki, $key_arr);
   }
 
-  drupal_set_title($breadcrumbs[count($breadcrumbs) - 1]['#text']);
+  drupal_set_title($breadcrumbs[count($breadcrumbs) - 1]['final-breadcrumb']['#markup']);
+
+  $close_button = array(
+    '#theme' => 'link_with_svg',
+    '#title' => '',
+    '#path' => '#',
+    '#attributes' => array(
+      'alt' => t('close subject hierarchy submenu.', array(), array('context' => 'bibdk_subject_hierarchy')),
+      'class' => array(),
+    ),
+    '#svg' => 'svg-close',
+    '#href' => FALSE,
+  );
 
   return array(
     '#theme' => 'bibdk_subject_hierarchy_item',
@@ -312,6 +343,7 @@ function _get_bibdk_subject_hierarchy_item($emnehierarki, $key) {
     '#hierarchy' => $emnehierarki,
     '#current_key' => $key,
     '#search_path' => $search_path,
+    '#close_button' => $close_button,
     'row' => $row,
     'level' => $level
   );
