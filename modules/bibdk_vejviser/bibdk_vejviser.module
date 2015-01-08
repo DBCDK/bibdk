@@ -60,7 +60,7 @@ function bibdk_vejviser_how_r_u() {
  * @return array
  */
 function bibdk_vejviser_form($form, &$form_state) {
-    $form['openagency_query'] = array(
+  $form['openagency_query'] = array(
     '#type' => 'textfield',
     '#attributes' => array(
       'placeholder' => t('Library name, zip or city'),
@@ -107,12 +107,22 @@ function bibdk_vejviser_form_submit(&$form, &$form_state) {
   }
 }
 
-function _bibdk_vejviser_vejviser_raw() {
+/**
+ * Requests and returns a vejviser search form.
+ *
+ * @param null $agency_name Optional name that if set will be displayed in the
+ * search form.
+ * @return string
+ */
+function _bibdk_vejviser_vejviser_raw($agency_name = NULL) {
   $ret = drupal_get_form('bibdk_vejviser_form');
 
-  if(!empty($_GET['openagency_query'])){
+  if (!empty($_GET['openagency_query'])) {
     unset($ret['openagency_query']['#attributes']['placeholder']);
     $ret['openagency_query']['#value'] = $_GET['openagency_query'];
+  }
+  else if (!empty($agency_name)) {
+    $ret['openagency_query']['#value'] = $agency_name;
   }
 
   return drupal_render($ret);
@@ -129,7 +139,9 @@ function bibdk_vejviser_agency_search() {
   if (isset($_REQUEST['agencyId'])) {
     // Agency pickup search
     $result = bibdk_vejviser_execute_pickup_agency_search($_REQUEST['agencyId']);
-
+    if (!empty($result[0]) && !empty($result[0]->agencyName)) {
+      $raw = _bibdk_vejviser_vejviser_raw($result[0]->agencyName);
+    }
   }
   elseif (!isset($_REQUEST['openagency_query'])) {
     drupal_static('bibdk_vejviser_empty_result', 1);
@@ -289,9 +301,6 @@ function bibdk_vejviser_handle_response($response) {
 function bibdk_vejviser_handle_agency_response($response) {
 
   if (isset($response->pickupAgencyListResponse->library[0]->pickupAgency)) {
-    // set search statustext
-    drupal_set_message(t('search results for %value', array('%value' => TingClientRequest::getValue($response->pickupAgencyListResponse->library[0]->agencyName))), 'status');
-
     // loop on picupAgencies
     foreach ($response->pickupAgencyListResponse->library[0]->pickupAgency as $value) {
       $agencies[] = new TingClientAgencyBranch($value, TingClientRequest::getValue($response->pickupAgencyListResponse->library[0]->agencyName));
