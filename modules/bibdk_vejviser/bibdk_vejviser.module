@@ -115,6 +115,11 @@ function bibdk_vejviser_form_submit(&$form, &$form_state) {
 function _bibdk_vejviser_vejviser_raw() {
   $ret = drupal_get_form('bibdk_vejviser_form');
 
+  if(!empty($_GET['openagency_query'])){
+    unset($ret['openagency_query']['#attributes']['placeholder']);
+    $ret['openagency_query']['#value'] = $_GET['openagency_query'];
+  }
+
   return drupal_render($ret);
 }
 
