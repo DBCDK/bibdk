@@ -337,8 +337,10 @@
     var result = false;
     facetGroup.each(function(count, modalElement) {
       if ( 
-           decodeURI(decodeURI(value)) == 'facets[]=facet.' + facetKey + ':' + $(modalElement).val() || 
-           decodeURI(decodeURI(value)) == 'facets[]=-facet.' + facetKey + ':' + $(modalElement).val()
+           decodeURI(value) == 'facets[]=facet.' + facetKey + ':' + $(modalElement).val() || 
+           decodeURI(value) == 'facets[]=-facet.' + facetKey + ':' + $(modalElement).val() ||
+           decodeURI(value) == 'facets[]=facet.' + facetKey + '%3A' + $(modalElement).val() || 
+           decodeURI(value) == 'facets[]=-facet.' + facetKey + '%3A' + $(modalElement).val()
          ) {
            result = true;
       }
