@@ -320,8 +320,8 @@
         myArray.push('facets[]=!' + 'facet.' + facetKey + ':' + facetsDeselect[i]);
       }
 
-      newUri = a.protocol + '//' + a.host + '/' + a.pathname + myArray.join('&');
-      
+      newUri = a.protocol + '//' + a.host + '/' + a.pathname + encodeURI(myArray.join('&'));
+
       window.location.replace(newUri);
 
     });
