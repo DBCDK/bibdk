@@ -328,10 +328,14 @@ function _bibdk_custom_search_get_advanced_fields_form($destination = FALSE) {
 
   $visuallyhidden = _bibdk_custom_search_is_advanced_search_expanded($default_values);
 
+  $toggled = ($visuallyhidden) ? '' : 'toggled';
+  $hidden= ($visuallyhidden) ? '' : 'hidden';
+
   $form = array(
     '#type' => 'fieldset',
     '#theme' => 'bibdk_custom_advanced_search_menu',
-    '#visuallyhidden' => $visuallyhidden,
+    '#toggled' => $toggled,
+    '#hidden' => $hidden,
     '#attributes' => array(
         'class' => array(_bibdk_custom_search_trim_string(($page['page_title']) ? $page['page_title'] : FALSE),
       ),
@@ -360,7 +364,8 @@ function _bibdk_custom_search_get_advanced_fields_form($destination = FALSE) {
   return $form;
 }
 
-/** Check if advanced searchsettings have been activated in previous search
+/**
+ * Check if advanced searchsettings have been activated in previous search
  *
  * @return bool
  */
