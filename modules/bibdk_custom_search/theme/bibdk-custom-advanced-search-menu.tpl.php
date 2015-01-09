@@ -5,7 +5,7 @@
     <span class="toggle-text <?php print $form['#collaps_hidden']; ?>"><?php print t('Collapse search options'); ?></span>
   </a>
 </div>
-<div id="search-advanced" class="clearfix <?php print $form['#expand_hidden']; ?>">
+<div id="search-advanced" class="clearfix <?php print $form['#collaps_hidden']; ?>">
   <div id="search-advanced-panel" class="clearfix">
     <!-- ADVANCED SEARCH-->
     <?php print drupal_render_children($form); ?>
