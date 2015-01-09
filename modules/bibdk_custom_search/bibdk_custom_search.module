@@ -285,7 +285,6 @@ function bibdk_custom_search_form_search_block_form_alter(&$form, &$form_state, 
 
   // Gets the advances search fields if they exists
   if ($advanced_fields = _bibdk_custom_search_get_advanced_fields_form($page_id)) {
-
     $form['advanced'] = $advanced_fields;
   }
 
@@ -297,7 +296,10 @@ function bibdk_custom_search_form_search_block_form_alter(&$form, &$form_state, 
 }
 
 /**
- * get form for advanced search fields
+ * Get form for advanced search fields
+ *
+ * @param bool $destination
+ * @return array|null
  */
 function _bibdk_custom_search_get_advanced_fields_form($destination = FALSE) {
 
@@ -328,13 +330,15 @@ function _bibdk_custom_search_get_advanced_fields_form($destination = FALSE) {
   $visuallyhidden = _bibdk_custom_search_is_advanced_search_expanded($default_values);
 
   $toggled = ($visuallyhidden) ? '' : 'toggled';
-  $hidden = ($visuallyhidden) ? '' : 'hidden';
+  $expand_hidden =  ($visuallyhidden) ? '' : 'hidden';
+  $collaps_hidden = ($visuallyhidden) ? 'hidden' : '';
 
   $form = array(
-    '#type' => 'fieldset',
     '#theme' => 'bibdk_custom_advanced_search_menu',
+    '#type' => 'fieldset',
     '#toggled' => $toggled,
-    '#hidden' => $hidden,
+    '#expand_hidden' => $expand_hidden,
+    '#collaps_hidden' => $collaps_hidden,
     '#attributes' => array(
       'class' => array(
         _bibdk_custom_search_trim_string(($page['page_title']) ? $page['page_title'] : FALSE),
