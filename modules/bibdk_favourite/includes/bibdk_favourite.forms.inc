@@ -88,7 +88,8 @@ function bibdk_favourite_check_for_new_agency() {
         global $language;
         $name = $agency->getBranch()->getBranchName($language->language);
       }
-    } else {
+    }
+    else {
       $agency = unserialize($_SESSION['bibdk_favourites'][$_GET['agency']]);
       global $language;
       $name = $agency->getBranch()->getBranchName($language->language);
@@ -109,7 +110,7 @@ function bibdk_favourite_forms_set_message($name) {
 /**
  * the form to be displayed on profile tab
  * */
-function bibdk_favourite_form_view_items_from_session($favourite, $weight, $toggle_enabled = true, $action_enabled = true) {
+function bibdk_favourite_form_view_items_from_session($favourite, $weight, $toggle_enabled = TRUE, $action_enabled = TRUE) {
   global $language;
 
   $form = array();
@@ -119,9 +120,8 @@ function bibdk_favourite_form_view_items_from_session($favourite, $weight, $togg
     return;
   }
   // check if given branch is set as order-agency
-  $order_class = ($favourite->getOrderAgency()) ? 'order-agency' : '';
   $links = bibdk_favourite_get_action_links($favourite);
-  $actions = ($action_enabled) ? theme('bibdk_favourite_action_links', array('links' => $links)) : null;
+  $actions = ($action_enabled) ? theme('bibdk_favourite_action_links', array('links' => $links)) : NULL;
 
   $moreinfo = theme('ting_agency_more_info', array(
     'branch' => $branch,
@@ -132,8 +132,10 @@ function bibdk_favourite_form_view_items_from_session($favourite, $weight, $togg
     'toggle_enabled' => $toggle_enabled,
   ));
   $classes = array();
-  $classes[] = 'favourite_' . $favourite->getAgencyId();
-  $classes[] = ($favourite->getOrderAgency()) ? 'order-agency' : NULL;
+  $classes[] = 'favourite-' . $favourite->getAgencyId();
+  if ($favourite->getOrderAgency()) {
+    $classes[] = 'order-agency';
+  }
 
   $form[$favourite->getAgencyId()]['library']['#markup'] = theme('ting_agency_library', array(
     'branchName' => $branch->getBranchShortName($language->language),
@@ -152,7 +154,8 @@ function bibdk_favourite_form_view_items_from_session($favourite, $weight, $togg
 }
 
 /**
- * Get links for editing favourite agency (delete, set as order-agency, edit user data)
+ * Get links for editing favourite agency (delete, set as order-agency, edit
+ * user data)
  *
  * @param FavouriteAgency $favourite
  * @return String $links HTML (unordered list)
@@ -160,8 +163,6 @@ function bibdk_favourite_form_view_items_from_session($favourite, $weight, $togg
  * NOTICE text and classes are also set in javascript. @see js/setFavourite.js
  */
 function bibdk_favourite_get_action_links($favourite) {
-  bibdk_favourite_add_js();
-
   // add ajax library to intrepret the use-ajax class
   drupal_add_library('system', 'drupal.ajax');
   $order_agency = ($favourite->getOrderAgency()) ? TRUE : FALSE;
@@ -176,33 +177,56 @@ function bibdk_favourite_get_action_links($favourite) {
   $edit_text = ($favourite->getUserData()) ? t('edit_user_data', array(), array('context' => 'bibdk_favorite')) : t('add_user_data', array(), array('context' => 'bibdk_favorite'));
 
   $links = array();
-  $links['set_favourite'] = array();
-  $links['set_favourite']['text'] = $order_txt;
-  $links['set_favourite']['path'] = 'favourite_set/ajax/' . $favourite->getAgencyId();
-  $links['set_favourite']['attributes'] = array(
-    'class' => array(
-      'use-ajax',
-      'set-default-order-agency',
-      $link_class
-    )
+  $links[] = array(
+    '#theme' => 'link',
+    '#text' => $order_txt,
+    '#path' => 'favourite/add/' . $favourite->getAgencyId(),
+    '#options' => array(
+      'attributes' => array(
+        'alt' => $order_txt,
+        'class' => array(
+          'use-ajax',
+          'set-default-order-agency',
+          $link_class
+        ),
+      ),
+      'html' => FALSE,
+    ),
   );
 
-  $links['edit_data'] = array();
-  $links['edit_data']['text'] = $edit_text;
-  $links['edit_data']['path'] = 'overlay/favourite/userdata/' . $favourite->getAgencyId();
-  $links['edit_data']['attributes'] = array(
-    'data-rel' => array('bibdkFavorite'),
-    'class' => array('edit-personal-info', 'bibdk-popup-link')
+  $links[] = array(
+    '#theme' => 'link',
+    '#text' => $edit_text,
+    '#path' => 'overlay/favourite/userdata/' . $favourite->getAgencyId(),
+    '#options' => array(
+      'attributes' => array(
+        'alt' => $order_txt,
+        'data-rel' => array('bibdkFavorite'),
+        'class' => array(
+          'edit-personal-info',
+          'bibdk-popup-link',
+        ),
+      ),
+      'html' => FALSE,
+    ),
   );
 
-  $links['delete_favourite'] = array();
-  $links['delete_favourite']['text'] = t('delete_favourite');
-  $links['delete_favourite']['path'] = 'favourite_delete/ajax/' . $favourite->getAgencyId();
-  $links['delete_favourite']['attributes'] = array(
-    'class' => array(
-      'use-ajax',
-      'delete-favourite'
-    )
+  $links[] = array(
+    '#theme' => 'link',
+    '#text' => t('Remove favoritelibrary', array(), array('context' => 'bibdk_favourite')),
+    '#path' => 'favourite_delete/ajax/' . $favourite->getAgencyId(),
+    '#options' => array(
+      'attributes' => array(
+        'alt' => t('Remove favoritelibrary', array(), array('context' => 'bibdk_favourite')),
+        'class' => array(
+          'use-ajax',
+          'bibdk-favourite--add-remove-library',
+          'bibdk-favourite--library-is-favourited',
+        ),
+      ),
+      'html' => FALSE,
+      'svg' => 'svg-star',
+    ),
   );
 
   return $links;
@@ -216,8 +240,6 @@ function bibdk_favourite_user_form_fields($form, &$form_state, $branchid = NULL)
   if (!$branchid && !empty($form_state['branchid'])) {
     $branchid = $form_state['branchid'];
   }
-
-  bibdk_favourite_add_js();
 
   // set title of page
   $page_title = _bibdk_favourite_set_user_data_page_title($branchid);
@@ -277,6 +299,7 @@ function _bibdk_favourite_set_user_data_page_title($branchid) {
     $name = $branch->getBranchName($language->language);
     $branchName = isset($name) ? $name : '';
   }
+
   return t('Edit data for @library', array('@library' => $branchName));
 }
 
