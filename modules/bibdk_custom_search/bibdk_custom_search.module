@@ -288,8 +288,7 @@ function bibdk_custom_search_form_search_block_form_alter(&$form, &$form_state, 
     $form['advanced'] = $advanced_fields;
   }
 
-  // add form dependent css and js
-  $form['#attached']['css'][] = drupal_get_path('module', 'bibdk_custom_search') . '/css/bibdk_custom_search.css';
+  // add form dependent js
   $form['#attached']['js'][] = drupal_get_path('module', 'bibdk_custom_search') . '/js/bibdk_custom_search_options_subgroup.js';
 
   return $form;
@@ -329,8 +328,8 @@ function _bibdk_custom_search_get_advanced_fields_form($destination = FALSE) {
 
   $visuallyhidden = _bibdk_custom_search_is_advanced_search_expanded($default_values);
   $toggled = ($visuallyhidden) ? '' : 'toggled';
-  $expand_hidden =  ($visuallyhidden) ? '' : 'hidden';
-  $collaps_hidden = ($visuallyhidden) ? 'hidden' : '';
+  $expand_hidden =  ($visuallyhidden) ? 'hidden' : '';
+  $collaps_hidden = ($visuallyhidden) ? '' : 'hidden';
 
   $form = array(
     '#theme' => 'bibdk_custom_advanced_search_menu',
