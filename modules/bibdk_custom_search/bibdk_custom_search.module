@@ -187,10 +187,6 @@ function bibdk_custom_search_form_search_block_form_alter(&$form, &$form_state, 
   $search_info = search_get_default_module_info();
   $form['#action'] = url('search/' . $search_info['path'], array('fragment' => 'content'));
 
-  //unset($form['form_id']);
-  //unset($form['form_build_id']);
-  //unset($form['form_token']);
-
   // Set default value of main search field
   $default_value = (isset($_REQUEST['search_block_form'])) ? $_REQUEST['search_block_form'] : $form['search_block_form']['#default_value'];
   $form['search_block_form']['#default_value'] = $default_value;
