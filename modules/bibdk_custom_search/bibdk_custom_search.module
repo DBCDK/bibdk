@@ -142,6 +142,86 @@ function bibdk_custom_search_menu() {
 }
 
 /**
+ * Implements hook_theme().
+ */
+function bibdk_custom_search_theme() {
+  $path = drupal_get_path('module', 'bibdk_custom_search') . '/theme';
+  $bibdk_custom_search_theme_array = array(
+    'bibdk_custom_search-sort-pages-form' => array(
+      'render element' => 'form',
+      'path' => $path,
+      'template' => 'bibdk_custom_search-sort-pages-form',
+    ),
+    'bibdk_custom_search-edit-page-form' => array(
+      'render element' => 'form',
+      'path' => $path,
+      'template' => 'bibdk_custom_search-edit-page-form',
+    ),
+    'bibdk_custom_search-edit-page-elements-form' => array(
+      'render element' => 'form',
+      'path' => $path,
+      'template' => 'bibdk_custom_search-sort-region-form',
+    ),
+    'bibdk_custom_search-list-elements-form' => array(
+      'render element' => 'form',
+      'path' => $path,
+      'template' => 'bibdk_custom_search-sort-elements-form',
+    ),
+    'bibdk_custom_search-edit-element-form' => array(
+      'render element' => 'form',
+      'path' => $path,
+      'template' => 'bibdk_custom_search-edit-element-form',
+    ),
+    'bibdk_custom_search-edit-element-values-form' => array(
+      'render element' => 'form',
+      'path' => $path,
+      'template' => 'bibdk_custom_search-edit-element-values-form',
+    ),
+    'bibdk_custom_search-list-values-form' => array(
+      'render element' => 'form',
+      'path' => $path,
+      'template' => 'bibdk_custom_search-sort-values-form',
+    ),
+    'bibdk_custom_search-edit-value-form' => array(
+      'render element' => 'form',
+      'path' => $path,
+      'template' => 'bibdk_custom_search-edit-value-form',
+    ),
+    'bibdk_custom_search-list-options-form' => array(
+      'render element' => 'form',
+      'path' => $path,
+      'template' => 'bibdk_custom_search-sort-options-form',
+    ),
+    'bibdk_search_element' => array(
+      'render element' => 'form',
+      'path' => $path,
+      'template' => 'bibdk_custom_search-search-element-form',
+    ),
+    'bibdk_custom_search_menu' => array(
+      'path' => $path,
+      'variables' => array('pages' => array()),
+      'template' => 'bibdk-custom-search-menu',
+    ),
+    'bibdk_custom_advanced_search_menu' => array(
+      'render element' => 'form',
+      'path' => $path,
+      'template' => 'bibdk-custom-advanced-search-menu',
+    ),
+    'bibdk_custom_search_radio_buttons' => array(
+      'render element' => 'form',
+      'path' => $path,
+      'template' => 'bibdk-custom-search-radio-buttons',
+    ),
+    'bibdk_custom_search_usersettings_admin' => array(
+      'render element' => 'form',
+      'file' => 'includes/bibdk_custom_search.usersettings.inc',
+    )
+  );
+
+  return $bibdk_custom_search_theme_array;
+}
+
+/**
  * Implements hook_help().
  */
 function bibdk_custom_search_help($path, $arg) {
@@ -440,87 +520,6 @@ function bibdk_custom_searchpage_ajax_callback() {
 function bibdk_custom_search_new_searchpage_picked($form, $form_state) {
   $dest = $form_state['clicked_button']['#dest'];
   drupal_goto($dest);
-}
-
-
-/**
- * Implements hook_theme().
- */
-function bibdk_custom_search_theme() {
-  $path = drupal_get_path('module', 'bibdk_custom_search') . '/theme';
-  $bibdk_custom_search_theme_array = array(
-    'bibdk_custom_search-sort-pages-form' => array(
-      'render element' => 'form',
-      'path' => $path,
-      'template' => 'bibdk_custom_search-sort-pages-form',
-    ),
-    'bibdk_custom_search-edit-page-form' => array(
-      'render element' => 'form',
-      'path' => $path,
-      'template' => 'bibdk_custom_search-edit-page-form',
-    ),
-    'bibdk_custom_search-edit-page-elements-form' => array(
-      'render element' => 'form',
-      'path' => $path,
-      'template' => 'bibdk_custom_search-sort-region-form',
-    ),
-    'bibdk_custom_search-list-elements-form' => array(
-      'render element' => 'form',
-      'path' => $path,
-      'template' => 'bibdk_custom_search-sort-elements-form',
-    ),
-    'bibdk_custom_search-edit-element-form' => array(
-      'render element' => 'form',
-      'path' => $path,
-      'template' => 'bibdk_custom_search-edit-element-form',
-    ),
-    'bibdk_custom_search-edit-element-values-form' => array(
-      'render element' => 'form',
-      'path' => $path,
-      'template' => 'bibdk_custom_search-edit-element-values-form',
-    ),
-    'bibdk_custom_search-list-values-form' => array(
-      'render element' => 'form',
-      'path' => $path,
-      'template' => 'bibdk_custom_search-sort-values-form',
-    ),
-    'bibdk_custom_search-edit-value-form' => array(
-      'render element' => 'form',
-      'path' => $path,
-      'template' => 'bibdk_custom_search-edit-value-form',
-    ),
-    'bibdk_custom_search-list-options-form' => array(
-      'render element' => 'form',
-      'path' => $path,
-      'template' => 'bibdk_custom_search-sort-options-form',
-    ),
-    'bibdk_search_element' => array(
-      'render element' => 'form',
-      'path' => $path,
-      'template' => 'bibdk_custom_search-search-element-form',
-    ),
-    'bibdk_custom_search_menu' => array(
-      'path' => $path,
-      'variables' => array('pages' => array()),
-      'template' => 'bibdk-custom-search-menu',
-    ),
-    'bibdk_custom_advanced_search_menu' => array(
-      'render element' => 'form',
-      'path' => $path,
-      'template' => 'bibdk-custom-advanced-search-menu',
-    ),
-    'bibdk_custom_search_radio_buttons' => array(
-      'render element' => 'form',
-      'path' => $path,
-      'template' => 'bibdk-custom-search-radio-buttons',
-    ),
-    'bibdk_custom_search_usersettings_admin' => array(
-      'render element' => 'form',
-      'file' => 'includes/bibdk_custom_search.usersettings.inc',
-    )
-  );
-
-  return $bibdk_custom_search_theme_array;
 }
 
 /**
