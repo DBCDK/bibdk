@@ -12,7 +12,6 @@ require_once(drupal_get_path('module', 'bibdk_custom_search') . '/includes/bibdk
 require_once(drupal_get_path('module', 'bibdk_custom_search') . '/includes/bibdk_custom_search.conditions.inc');
 require_once(drupal_get_path('module', 'bibdk_custom_search') . '/includes/bibdk_custom_search.usersettings.inc');
 
-
 /**
  * Implements hook_menu().
  */
@@ -129,10 +128,10 @@ function bibdk_custom_search_menu() {
     'file' => 'includes/bibdk_custom_search.values.admin.inc',
   );
 
-  $items['bibdk_custom_search/ajax/list/%/%/%'] =  array(
+  $items['bibdk_custom_search/ajax/list/%/%/%'] = array(
     'title' => 'AJAX MENU ITEM',
     'type' => MENU_CALLBACK,
-    'page arguments' => array(3,4,5),
+    'page arguments' => array(3, 4, 5),
     'page callback' => "bibdk_custom_search_list_ajax_callback",
     'file' => 'includes/bibdk_custom_search.list.inc',
     'access arguments' => array('access content'),
@@ -234,7 +233,6 @@ function bibdk_custom_search_help($path, $arg) {
   }
 }
 
-
 /**
  * Implements hook_permission().
  */
@@ -317,8 +315,9 @@ function _bibdk_custom_search_get_advanced_fields_form($destination = FALSE) {
 
   // Get default values
   $default_values = $_REQUEST;
-  if (isset($page['page_path']))
+  if (isset($page['page_path'])) {
     $default_values['q'] = $page['page_path'];
+  }
 
   // Move elements with no search code to top level of default values array
   if (isset($default_values['n/a'])) {
@@ -337,13 +336,14 @@ function _bibdk_custom_search_get_advanced_fields_form($destination = FALSE) {
     '#toggled' => $toggled,
     '#hidden' => $hidden,
     '#attributes' => array(
-        'class' => array(_bibdk_custom_search_trim_string(($page['page_title']) ? $page['page_title'] : FALSE),
+      'class' => array(
+        _bibdk_custom_search_trim_string(($page['page_title']) ? $page['page_title'] : FALSE),
       ),
       'data-type' => array($_GET['q']),
     ),
   );
 
-  if ( $visuallyhidden ) {
+  if ($visuallyhidden) {
     $form['#attributes']['class'][] = 'is-visible';
   }
 
@@ -374,28 +374,26 @@ function _bibdk_custom_search_is_advanced_search_expanded($get) {
   $query = isset($get['qe']) ? $get['qe'] : array();
 
   // one of the year.op options are always selected
-  if ( isset($query['year.op']) ) {
+  if (isset($query['year.op'])) {
     unset($query['year.op']);
   }
 
   // remove base query
-  if ( isset($query['query']) ) {
+  if (isset($query['query'])) {
     unset($query['query']);
   }
 
   // specialized search pages are only toggled visible if one of the elements are used
   // not including the delimiter
-  if ( isset($query['delimiter']) ) {
+  if (isset($query['delimiter'])) {
     unset($query['delimiter']);
   }
 
-  if ( count($query) > 0 ) {
+  if (count($query) > 0) {
     return TRUE;
   }
 
-  if (
-    ( isset($get['q']) && $get['q'] == 'bibdk_frontpage' ) ||
-    ( isset($get['page_id']) && $get['page_id'] == 'bibdk_frontpage' )
+  if ((isset($get['q']) && $get['q'] == 'bibdk_frontpage') || (isset($get['page_id']) && $get['page_id'] == 'bibdk_frontpage')
   ) {
     return FALSE;
   }
@@ -446,7 +444,7 @@ function _bibdk_custom_search_get_searchpage_buttons($req) {
   $pages = _bibdk_custom_search_get_pages_db();
 
   if (!$pages) {
-    return null;
+    return NULL;
   }
   $searchpages['#type'] = 'markup';
   $searchpages['#prefix'] = '<nav id="search-tabs" class="clearfix"><ul class="nav--horizontal">';
@@ -481,7 +479,7 @@ function bibdk_custom_search_searchpage_button_link($text, $path, $class = '') {
         'id' => 'custom-search-page-link-' . _bibdk_custom_search_trim_string($text),
 
       ),
-      'html' => false,
+      'html' => FALSE,
     ),
   );
 
@@ -553,7 +551,8 @@ function bibdk_custom_search_block_view($delta = '') {
 }
 
 /**
- * Extract title, description and helptext from render-array, and set them as individual variables to be set in the template
+ * Extract title, description and helptext from render-array, and set them as
+ * individual variables to be set in the template
  *
  * @param $vars
  */
@@ -578,7 +577,6 @@ function bibdk_custom_search_translate_update($string, $context) {
   return t($string, array(), array('context' => "bibdk_custom_search:$context"));
 }
 
-
 /**
  * Translates a string and appends the given context.
  *
@@ -591,16 +589,17 @@ function bibdk_custom_search_translate($string, $context) {
 }
 
 /** Implements hook_preprocess_page
+ *
  * @param $vars
  */
 function bibdk_custom_search_preprocess_page(&$vars) {
-  $front = bibdk_usersettings_user_settings_get('bibdk_custom_search_start_page', null);
+  $front = bibdk_usersettings_user_settings_get('bibdk_custom_search_start_page', NULL);
 
-  if(!$front) {
+  if (!$front) {
     $front = '<front>';
   }
 
-  if(drupal_is_front_page() && ($front !== '<front>' && $front !== 'bibdk_frontpage' ) && strpos($_SERVER['REQUEST_URI'], 'bibdk_frontpage') === false) {
+  if (drupal_is_front_page() && ($front !== '<front>' && $front !== 'bibdk_frontpage') && strpos($_SERVER['REQUEST_URI'], 'bibdk_frontpage') === FALSE) {
     drupal_goto($front);
   }
 }
