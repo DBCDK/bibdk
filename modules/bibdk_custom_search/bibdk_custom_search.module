@@ -328,7 +328,6 @@ function _bibdk_custom_search_get_advanced_fields_form($destination = FALSE) {
   }
 
   $visuallyhidden = _bibdk_custom_search_is_advanced_search_expanded($default_values);
-
   $toggled = ($visuallyhidden) ? '' : 'toggled';
   $expand_hidden =  ($visuallyhidden) ? '' : 'hidden';
   $collaps_hidden = ($visuallyhidden) ? 'hidden' : '';
