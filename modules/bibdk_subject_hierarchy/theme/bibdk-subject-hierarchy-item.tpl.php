@@ -5,15 +5,19 @@
  */
 ?>
 
-<div class="themes__sublists">
-  <div class="themes__close-button icon icon-blue-x">&nbsp;</div>
-  <div class="themes__breadcrumb">
+<div class="subjects-sublists">
+
+  <div class="subjects-close-button"><?php echo drupal_render($close_button); ?></div>
+
+  <div class="subjects-breadcrumb">
     <?php echo drupal_render($breadcrumbs); ?>
   </div>
-  <div class="themes__sublists-heading">
+
+  <div class="subjects-sublists-heading">
     <?php echo drupal_render($heading); ?>
   </div>
-  <div class="themes__sublist">
+
+  <div class="subjects-sublist">
     <ul>
       <?php foreach ($variables['hierarchy']['term'] as $key => $item) {
         if (!empty($item['cql']) && empty($item['term'])) {
@@ -28,4 +32,5 @@
       } ?>
     </ul>
   </div>
+
 </div>
