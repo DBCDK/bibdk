@@ -167,7 +167,6 @@ class BibdkCustomSearchWebTestCase extends DrupalWebTestCase {
     $_bibdk_custom_search_v_uuid_1 = $value['v_uuid'];
     $edit = array();
     $edit['bibdk_custom_search_page_element_values[0][v_uuid]'] = $_bibdk_custom_search_v_uuid_1;
-    //$this->drupalPost(null, $edit, 'Save');
     $this->drupalPost('admin/config/search/bibdk_custom_search/elements/' . $e_uuid . '/edit', $edit, 'Save');
     $this->assertText($_bibdk_custom_search_value_title_1, format_string('The value "@value_title" was found.', array('@value_title' => $_bibdk_custom_search_value_title_1)));
     $this->assertLinkByHref(
