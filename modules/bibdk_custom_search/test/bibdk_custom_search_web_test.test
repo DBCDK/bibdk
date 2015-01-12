@@ -158,18 +158,6 @@ class BibdkCustomSearchWebTestCase extends DrupalWebTestCase {
       ))
     );
 
-    /*
-    // Test fails. Find a way to set html5 filter permissions for the webTest user
-    $this->assertFieldByName(
-      'bibdk_custom_search_page_element[help_text]',
-      $edit['bibdk_custom_search_page_element[help_text]'],
-      format_string('The element "@element_title" have been assigned a helptext "@val".', array(
-        '@element_title' => $element_title,
-        '@val' => substr($edit['bibdk_custom_search_page_element[help_text]'], 0, 40) . '[...]'
-      ))
-    );
-    */
-
     /**
      * Test adding a value to a custom search element.
      */
