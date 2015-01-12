@@ -305,7 +305,7 @@ function bibdk_cart_get_items($cart, $items_per_page, $page) {
   return $items;
 }
 
-/** 
+/**
  * Add's all invoks of 'cart_actions' to primary an secondary action arrays
  * @param array $form
  * @return array $form
@@ -326,7 +326,7 @@ function bibdk_cart_get_actions($form) {
         $items_secondary[] = drupal_render($action);
       }
     }
-  
+
     $form['cart_table_priamry_actions'] = array(
       '#theme' => 'item_list',
       '#items' => $items_primary,
@@ -340,7 +340,7 @@ function bibdk_cart_get_actions($form) {
         ),
       ),
     );
-  
+
     $form['cart_table_secondary_actions'] = array(
       '#theme' => 'item_list',
       '#items' => $items_secondary,
@@ -349,9 +349,9 @@ function bibdk_cart_get_actions($form) {
         'class' => array('cart-view-secondary-actions', 'cart-actions')
       ),
     );
-  
+
   } // end empty actions
- 
+
  return $form;
 }
 
@@ -367,14 +367,7 @@ function bibdk_cart_get_actions($form) {
 function bibdk_cart_ting_openformat_actions($type, $entity, $view_mode, $langcode) {
   $element = array();
   if ($type == 'bibdkManifestation') {
-
-    $link = bibdk_cart_get_link($entity->id);
-    $link['#id'] = 'selid-cart-single-' . drupal_html_id($link['#data-pid']);
-    $element['cart'] = array(
-      '#markup' => theme('bibdk_cart_button', array('add_to_cart' => $link)),
-      '#weight' => 0.2
-    );
-
+    $element['cart'] = bibdk_cart_get_link($entity->id, 'add-item-to-cart', 'cart-single');
   }
   return $element;
 }
@@ -609,13 +602,15 @@ function _bibdk_cart_manifestation_view_strip_links(&$view) {
  * @return array
  */
 function bibdk_cart_order_any_btn_lists($type, $ids) {
-  $link = bibdk_cart_get_link($ids);
-  $in_cart_class = BibdkCart::checkInCart($ids) ? 'in-cart' : 'not-in-cart';
-  $mat_type = t($type, array(), array('context' => 'material_type'));
-  $text = t('cart', array(), array('context' => 'bibdk_reservation'));
+  $material_type = t($type, array(), array('context' => 'material_type'));
+
+  $link = bibdk_cart_get_link($ids, 'cart', 'cart-any');
+  $link['#options']['attributes']['aria-label'] = $material_type;
 
   $item = array(
-    'cart' => array(
+    'cart' => $link
+  );
+  /*    array(
       '#theme' => 'link',
       '#text' => t('cart', array(), array('context' => 'bibdk_reservation')),
       '#path' => $link['#href'],
@@ -625,7 +620,6 @@ function bibdk_cart_order_any_btn_lists($type, $ids) {
             'add-item-to-cart',
             'btn',
             'btn-grey-light',
-            $in_cart_class,
           ),
           'id' => array(
             'cart_btn_' . drupal_html_id($type) . '_' . $ids[0]
@@ -639,7 +633,7 @@ function bibdk_cart_order_any_btn_lists($type, $ids) {
         'svg' => 'svg-star',
       ),
     )
-  );
+  );*/
   return $item;
 }
 
