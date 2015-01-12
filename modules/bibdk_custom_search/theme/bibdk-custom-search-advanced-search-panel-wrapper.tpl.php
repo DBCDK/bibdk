@@ -7,6 +7,8 @@
 </div>
 <div id="search-advanced" class="clearfix <?php print $collaps_hidden; ?>">
   <div id="search-advanced-panel" class="clearfix">
+    <!-- ADVANCED SEARCH-->
     <?php print $advanced_search_panel; ?>
+    <!-- END ADVANCED SEARCH-->
   </div>
 </div>
