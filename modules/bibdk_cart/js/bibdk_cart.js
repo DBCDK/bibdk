@@ -1,107 +1,72 @@
-(function($) {
+/**
+ * @file
+ * controls behaviour for cart button
+ */
 
-  var button;
+(function cartButton($) {
 
-  Drupal.cartResponse = function(data) {
-    if(data.error) {
-      alert(Drupal.t('error_refresh_page_and_try_again', {}, {context: 'bibdk_cart:error'}));
-    }
-
-    if(data.saved === 1) {
-      $('.link-add-basket[data-pid=' + data.pid + ']').text(Drupal.t('remove_item_from_cart', {}, {context: 'bibdk_cart'}));
-    }
-    else {
-      $('.link-add-basket[data-pid=' + data.pid + ']').text(Drupal.t('add_item_to_cart', {}, {context: 'bibdk_cart'}));
-      Drupal.updateCartview(data.classid);
-    }
-    $('.link-add-basket[data-pid=' + data.pid + ']').removeClass('ajax-progress');
-
-    if(data.cartcount != 'undefined') {
-      Drupal.updateCartcount(data.cartcount);
-    }
-
-    Drupal.setCheckboxState(data);
-  };
-
-  Drupal.setCheckboxState = function(data) {
-    if(button !== null) {
-      if(data.saved === 1) {
-        $(button).toggleClass('in-cart', true);
-        $(button).toggleClass('not-in-cart', false);
-        $(button).toggleClass('disabled', false);
-/*
-        $(button).toggleClass('btn-grey', true);
-        $(button).toggleClass('btn-blue', false);
-        $(button).toggleClass('disabled', false);
-        alert('foo');
-*/
-      }
-      else {
-        $(button).toggleClass('in-cart', false);
-        $(button).toggleClass('not-in-cart', true);
-        $(button).toggleClass('disabled', false);
-/*
-        $(button).toggleClass('btn-grey', false);
-        $(button).toggleClass('btn-blue', true);
-        $(button).toggleClass('disabled', false);
-        alert('bar');
-*/
-      }
-      button = null;
+  /**
+   * Attach cart behaviour to dom elements
+   */
+  Drupal.behaviors.cart = {
+    attach: function(context) {
+      $('.add-item-to-cart', context).click(function(e) {
+        e.preventDefault();
+        toggleItemInCart($(this));
+      });
     }
   };
 
-  Drupal.addRemoveItem = function(element) {
-    var pid = $(element).attr('data-pid');
-    /* Add throbber*/
-    $(element).addClass('ajax-progress');
-    $(element).html('<span class="throbber">&nbsp;</span>');
+  /**
+   * Toggle item state in cart
+   */
+  function toggleItemInCart($button) {
+    addStateDisabled($button);
+    var pid = $button.attr('data-pid');
+    doUpdateCart(pid);
+  }
 
-    Drupal.doUpdateCart(pid);
-  };
-
-  Drupal.addRemoveItemButton = function(element) {
-    button = element;
-    // $(button).toggleClass('btn-grey', false);
-    $(button).toggleClass('in-cart', false);
-    $(button).toggleClass('disabled', true);
-    var pid = $(button).attr('data-pid');
-
-    Drupal.doUpdateCart(pid);
-  };
-
-  Drupal.doUpdateCart = function(pid) {
-    var request = $.ajax({
+  /**
+   * Update cart state on server via ajax
+   */
+  function doUpdateCart(pid) {
+    $.ajax({
       url: Drupal.settings.basePath + 'cart/ajax',
       type: 'POST',
       data: {
         pid: pid
       },
       dataType: 'json',
-      success: Drupal.cartResponse
+      success: cartResponse
     });
-  };
+  }
 
-  Drupal.updateCartcount = function(cartcount) {
-    var text = Drupal.formatPlural(cartcount, '1 item in cart', '@count items in cart');
-    $('.cartcount').text(text);
-  };
-
-  Drupal.updateCartview = function(id) {
-    var cid = '.cart-item-id-' + id;
-    $(cid).remove();
-  };
-
-  Drupal.behaviors.cart = {
-    attach: function(context) {
-      $('.link-add-basket', context).click(function() {
-        Drupal.addRemoveItem($(this));
-      });
-
-      $('.add-item-to-cart', context).click(function(e) {
-        e.preventDefault();
-        Drupal.addRemoveItemButton($(this));
-      });
+  /**
+   * Handle response from ajax call
+   */
+  function cartResponse(data) {
+    if(data.error) {
+      alert(Drupal.t('error_refresh_page_and_try_again', {}, {context: 'bibdk_cart:error'}));
     }
-  };
+    $button = $('[data-pid=' + data.pid + ']');
+    removeStateDisabled($button);
+    $button.toggleClass('in-cart');
+  }
+
+  /**
+   * Add throbber
+   */
+  function addStateDisabled($element) {
+    $element.addClass('ajax-progress');
+    $element.append('<span class="throbber">&nbsp;</span>');
+  }
+
+  /**
+   * remove throbber
+   */
+  function removeStateDisabled($element) {
+    $element.removeClass('ajax-progress');
+    $element.find('.throbber').remove();
+  }
+
 }(jQuery));
