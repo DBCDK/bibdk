@@ -203,19 +203,15 @@ function bibdk_custom_search_theme() {
     ),
     'bibdk_custom_search_advanced_search_panel_wrapper' => array(
       'path' => $path,
-      'variables' => array(
-        'toggled' => '',
-        'expand_hidden' => '',
-        'collaps_hidden' => '',
-        'advanced_search_panel' => '',
-      ),
+      'render element' => 'form',
       'template' => 'bibdk-custom-search-advanced-search-panel-wrapper',
     ),
-    'bibdk_custom_advanced_search_menu' => array(
+    /*'bibdk_custom_advanced_search_menu' => array(
+    TODO mmj this seems to be unused -- delete it!
       'render element' => 'form',
       'path' => $path,
       'template' => 'bibdk-custom-advanced-search-menu',
-    ),
+    ),*/
     'bibdk_custom_search_radio_buttons' => array(
       'render element' => 'form',
       'path' => $path,
@@ -350,10 +346,10 @@ function _bibdk_custom_search_get_advanced_fields_form($destination = FALSE) {
  * @return array
  */
 function _bibdk_custom_search_get_search_panel($page, $result, $default_values) {
-  $visuallyhidden = _bibdk_custom_search_is_advanced_search_expanded($default_values);
-  $toggled = ($visuallyhidden) ? '' : 'toggled';
-  $expand_hidden = ($visuallyhidden) ? 'hidden' : '';
-  $collaps_hidden = ($visuallyhidden) ? '' : 'hidden';
+  $is_visible = _bibdk_custom_search_is_advanced_search_expanded($default_values);
+  $toggled = ($is_visible) ? 'toggled' : '';
+  $expand_hidden = ($is_visible) ? 'hidden' : '';
+  $collaps_hidden = ($is_visible) ? '' : 'hidden';
 
   $advanced_search_panel = array(
     '#theme' => 'bibdk_custom_search_advanced_search_panel_wrapper',
@@ -369,13 +365,14 @@ function _bibdk_custom_search_get_search_panel($page, $result, $default_values) 
     ),
   );
 
-  if ($visuallyhidden) {
+  if ($is_visible) {
     $advanced_search_panel['#attributes']['class'][] = 'is-visible';
-  }
 
-  $panel = _bibdk_custom_search_create_advanced_form($result, $default_values);
-  //dpm($panel);
-  $advanced_search_panel['#advanced_search_panel'] = drupal_render($panel);
+    //only render advanced search panel if it's going to be shown as default.
+    //Otherwise we'll get it by AJAX.
+    $panel = _bibdk_custom_search_create_advanced_form($result, $default_values);
+    $advanced_search_panel += $panel;
+  }
 
   // Page specific elements
   if ($page['delimiter']) {
