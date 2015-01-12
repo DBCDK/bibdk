@@ -1,5 +1,7 @@
 <?php
-/** Ajax callback
+
+/**
+ * Ajax callback
  *
  * @param $term_type
  * @param $facet_term
@@ -12,14 +14,13 @@ function bibdk_custom_search_list_ajax_callback($term_type, $facet_term, $facet_
   return bibdk_custom_search_list_select_form($facet_type, $facet_term, $term_type);
 }
 
-
-/** Returns a link, a list of options and a list of form elements, for a defined
+/**
+ * Returns a link, a list of options and a list of form elements, for a defined
  * facet
  *
- * @param $facet_type type of facet e.g. facet.type
- * @param $term_type Sets the parent of the returned elements
+ * @param string $facet_type type of facet e.g. facet.type
+ * @param array $term_type Sets the parent of the returned elements
  * @param array $default_values elements that has a default value
- * @param array $ignore_values elements that should not be returned
  * @return array Render-array
  */
 function bibdk_custom_search_get_list_options($facet_type, $term_type, $default_values = array()) {
@@ -33,7 +34,7 @@ function bibdk_custom_search_get_list_options($facet_type, $term_type, $default_
     $facet_term = $term_type;
   }
   $form = array();
-  if (isset($default_values[$term_type])){
+  if (isset($default_values[$term_type])) {
     $form += bibdk_custom_list_create_default_checkboxes($default_values[$term_type]);
   }
   $form += bibdk_custom_search_list_link($facet_term, $facet_type, $term_type);
@@ -191,7 +192,7 @@ function bibdk_custom_search_get_list_popup_form($options, $facet_type, $term_ty
 
   $form['pop-over']['two-panel-multi-select']['from'] = array(
     '#type' => 'select',
-    '#multiple' => true,
+    '#multiple' => TRUE,
     '#options' => $options,
     '#size' => 20,
     '#attributes' => array(
@@ -209,7 +210,7 @@ function bibdk_custom_search_get_list_popup_form($options, $facet_type, $term_ty
   $form['pop-over']['two-panel-multi-select']['actions']['add_button'] = array(
     '#type' => 'button',
     '#value' => t('add >>', array(), array('context' => 'bibdk_custom_search')),
-    '#executes_submit_callback' => false,
+    '#executes_submit_callback' => FALSE,
     '#attributes' => array(
       'class' => array('custom-search-list-action'),
       'data-action-move-from' => array('select-from-list-' . $type_id),
@@ -220,7 +221,7 @@ function bibdk_custom_search_get_list_popup_form($options, $facet_type, $term_ty
   $form['pop-over']['two-panel-multi-select']['actions']['remove_button'] = array(
     '#type' => 'button',
     '#value' => t('<< remove', array(), array('context' => 'bibdk_custom_search')),
-    '#executes_submit_callback' => false,
+    '#executes_submit_callback' => FALSE,
     '#attributes' => array(
       'class' => array('custom-search-list-action'),
       'data-action-move-from' => array('select-to-list-' . $type_id),
@@ -230,7 +231,7 @@ function bibdk_custom_search_get_list_popup_form($options, $facet_type, $term_ty
 
   $form['pop-over']['two-panel-multi-select']['to'] = array(
     '#type' => 'select',
-    '#multiple' => true,
+    '#multiple' => TRUE,
     '#options' => array(),
     '#size' => 20,
     '#attributes' => array(
@@ -241,7 +242,7 @@ function bibdk_custom_search_get_list_popup_form($options, $facet_type, $term_ty
   $form['pop-over']['close_button'] = array(
     '#type' => 'button',
     '#value' => t('close', array(), array('context' => 'bibdk_custom_search')),
-    '#executes_submit_callback' => false,
+    '#executes_submit_callback' => FALSE,
     '#attributes' => array(
       'class' => array('custom-search-list-close'),
       'data-id' => $id,
@@ -251,7 +252,7 @@ function bibdk_custom_search_get_list_popup_form($options, $facet_type, $term_ty
   $form['pop-over']['save_button'] = array(
     '#type' => 'button',
     '#value' => t('save', array(), array('context' => 'bibdk_custom_search')),
-    '#executes_submit_callback' => false,
+    '#executes_submit_callback' => FALSE,
     '#attributes' => array(
       'class' => array('custom-search-list-save'),
       'data-action-selected' => array('select-to-list-' . $type_id),
