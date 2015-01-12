@@ -14,8 +14,8 @@ files[] = test/bibdk_custom_search_web_test.test
 files[] = test/bibdk_custom_search_test_list.test
 files[] = test/bibdk_custom_search_test_usersettings.test
 
-
-files[] = js/bibdk_custom_search_options_subgroup.js
+scripts[] = js/bibdk_custom_search_options_subgroup.js
+scripts[] = js/bibdk_custom_search.js
 
 configure = admin/config/search/bibdk_custom_search
 
