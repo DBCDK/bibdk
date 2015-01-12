@@ -201,6 +201,16 @@ function bibdk_custom_search_theme() {
       'variables' => array('pages' => array()),
       'template' => 'bibdk-custom-search-menu',
     ),
+    'bibdk_custom_search_advanced_search_panel_wrapper' => array(
+      'path' => $path,
+      'variables' => array(
+        'toggled' => '',
+        'expand_hidden' => '',
+        'collaps_hidden' => '',
+        'advanced_search_panel' => '',
+      ),
+      'template' => 'bibdk-custom-search-advanced-search-panel-wrapper',
+    ),
     'bibdk_custom_advanced_search_menu' => array(
       'render element' => 'form',
       'path' => $path,
@@ -326,13 +336,27 @@ function _bibdk_custom_search_get_advanced_fields_form($destination = FALSE) {
     unset($default_values['n/a']);
   }
 
+  $advanced_search_panel = _bibdk_custom_search_get_search_panel($page, $result, $default_values);
+
+  return $advanced_search_panel;
+}
+
+/**
+ * TODO mmj docs...
+ *
+ * @param array $page
+ * @param DatabaseStatementInterface $result
+ * @param array $default_values
+ * @return array
+ */
+function _bibdk_custom_search_get_search_panel($page, $result, $default_values) {
   $visuallyhidden = _bibdk_custom_search_is_advanced_search_expanded($default_values);
   $toggled = ($visuallyhidden) ? '' : 'toggled';
-  $expand_hidden =  ($visuallyhidden) ? 'hidden' : '';
+  $expand_hidden = ($visuallyhidden) ? 'hidden' : '';
   $collaps_hidden = ($visuallyhidden) ? '' : 'hidden';
 
-  $form = array(
-    '#theme' => 'bibdk_custom_advanced_search_menu',
+  $advanced_search_panel = array(
+    '#theme' => 'bibdk_custom_search_advanced_search_panel_wrapper',
     '#type' => 'fieldset',
     '#toggled' => $toggled,
     '#expand_hidden' => $expand_hidden,
@@ -346,29 +370,32 @@ function _bibdk_custom_search_get_advanced_fields_form($destination = FALSE) {
   );
 
   if ($visuallyhidden) {
-    $form['#attributes']['class'][] = 'is-visible';
+    $advanced_search_panel['#attributes']['class'][] = 'is-visible';
   }
 
-  $form += _bibdk_custom_search_create_advanced_form($result, $default_values);
+  $panel = _bibdk_custom_search_create_advanced_form($result, $default_values);
+  //dpm($panel);
+  $advanced_search_panel['#advanced_search_panel'] = drupal_render($panel);
 
   // Page specific elements
   if ($page['delimiter']) {
-    $form['delimiter'] = array(
+    $advanced_search_panel['delimiter'] = array(
       '#type' => 'hidden',
       '#region' => 'main',
       '#value' => $page['delimiter'],
     );
   }
 
-  $form['#collapsed'] = ($page['expand']) ? $page['expand'] : FALSE;
-  $form['#main_search_name'] = ($page['page_title']) ? $page['page_title'] : FALSE;
+  $advanced_search_panel['#collapsed'] = ($page['expand']) ? $page['expand'] : FALSE;
+  $advanced_search_panel['#main_search_name'] = ($page['page_title']) ? $page['page_title'] : FALSE;
 
-  return $form;
+  return $advanced_search_panel;
 }
 
 /**
  * Check if advanced searchsettings have been activated in previous search
  *
+ * @param array $get
  * @return bool
  */
 function _bibdk_custom_search_is_advanced_search_expanded($get) {
@@ -401,7 +428,6 @@ function _bibdk_custom_search_is_advanced_search_expanded($get) {
   }
 
   return TRUE;
-
 }
 
 /**
@@ -492,6 +518,9 @@ function bibdk_custom_search_searchpage_button_link($text, $path, $class = '') {
   return $link;
 }
 
+/**
+ * @deprecated seems like an old function that should be deleted /mmj
+ */
 function bibdk_custom_searchpage_ajax_callback() {
   $type = $_GET['type'];
   $_GET['q'] = $type;
@@ -521,7 +550,6 @@ function bibdk_custom_searchpage_ajax_callback() {
  * @param $form
  * @param $form_state
  */
-
 function bibdk_custom_search_new_searchpage_picked($form, $form_state) {
   $dest = $form_state['clicked_button']['#dest'];
   drupal_goto($dest);
