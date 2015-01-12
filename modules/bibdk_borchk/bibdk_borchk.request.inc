@@ -79,7 +79,6 @@ class bibdk_borchk extends TingClientRequest Implements ITingClientRequestCache 
         $xpath->registerNamespace('hest', "http://oss.dbc.dk/ns/borchk");
         $query = '//hest:requestStatus';
         $nodes = $xpath->query($query);
-        dpm($nodes->length);
         $status = $nodes->item(0)->nodeValue;
         if ($status == 'service_unavailable') {
           return FALSE;
