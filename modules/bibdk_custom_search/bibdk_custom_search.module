@@ -348,7 +348,7 @@ function _bibdk_custom_search_get_advanced_fields_form($destination = FALSE) {
 }
 
 /**
- * TODO mmj docs...
+ * Delivers the advanced search panel
  *
  * @param array $page
  * @param DatabaseStatementInterface $result
