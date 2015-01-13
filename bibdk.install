@@ -391,3 +391,10 @@ function bibdk_update_7023(&$sandbox) {
   ));
 }
 
+/**
+ * enable bibdk_article_view
+ */
+function bibdk_update_7024(&$sandbox){
+  module_enable(array('bibdk_article_view'));
+}
+
