@@ -1,10 +1,4 @@
 (function($) {
-
-  $(document).ready(function() {
-    //Drupal.bibdkCustomSearchOptionsSubgroup();
-    //Drupal.bibdkCustomSearchClearEmptyFields();
-  });
-
   Drupal.bibdkCustomSearchClearEmptyFields = function() {
     $('#search-block-form').submit(function(e) {
       $('input[name]').each(function() {
@@ -33,7 +27,6 @@
       }
     });
     $('.toggle-subgroup').click(function(e) {
-      console.log('toggle');
       e.preventDefault();
       $(this).toggleClass('toggled');
       var childKey = $(this).attr('data-child');
