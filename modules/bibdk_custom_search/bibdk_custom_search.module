@@ -566,51 +566,6 @@ function bibdk_custom_search_new_searchpage_picked($form, $form_state) {
 }
 
 /**
- * Implements hook_block_info().
- */
-function bibdk_custom_search_block_info() {
-  $blocks['bibdk-search-menu'] = array(
-    'info' => t('Bibliotek.dk search menu'),
-    'cache' => DRUPAL_CACHE_PER_PAGE,
-  );
-  return $blocks;
-}
-
-/**
- * Implements hook_block_view().
- */
-function bibdk_custom_search_block_view($delta = '') {
-  $block = array();
-  switch ($delta) {
-    case 'bibdk-search-menu':
-      $block['subject'] = t('Bibliotek.dk search menu');
-      $block['content'] = _bibdk_custom_search_menu(_bibdk_custom_search_get_pages_db());
-      break;
-  }
-  return $block;
-}
-
-/**
- * Renders and returns a list of links.
- *
- * @param array $pages
- * @return string
- */
-function _bibdk_custom_search_menu($pages = array()) {
-  $links = array(
-    '#theme' => 'links',
-    '#links' => $pages,
-    'attributes' => array(
-      'class' => array(
-        'nav--horizontal',
-      ),
-    ),
-  );
-
-  return drupal_render($links);
-}
-
-/**
  * Extract title, description and helptext from render-array, and set them as
  * individual variables to be set in the template
  *
