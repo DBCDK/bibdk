@@ -276,6 +276,7 @@ function bibdk_custom_search_form_search_block_form_alter(&$form, &$form_state, 
   $default_value = (isset($_REQUEST['search_block_form'])) ? $_REQUEST['search_block_form'] : $form['search_block_form']['#default_value'];
   $form['search_block_form']['#default_value'] = $default_value;
   $form['search_block_form']['#attributes']['placeholder'] = t('placeholder_text', array(), array('context' => 'bibdk_custom_search'));
+  $form['search_block_form']['#attributes']['class'][] = 'search-block-form';
 
   // Define page_id
   $page_id = (isset($_GET['page_id'])) ? $_GET['page_id'] : ((isset($_GET['q'])) ? $_GET['q'] : NULL);
