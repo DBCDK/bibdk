@@ -1,6 +1,6 @@
 <div id="search-advanced-toggle" data-toggle-state-hidden="<?php print $form['#toggled']; ?>" class="clearfix <?php print $form['#toggled']; ?>">
-  <a id="selid_custom_search_expand" class="text-darkgrey <?php print $form['#toggled']; ?>" href="#">
-    <span class="toggle-text">
+  <a id="selid_custom_search_expand" class="text-darkgrey" href="#">
+    <span class="toggle-text <?php print $form['#expand_hidden']; ?>">
       <svg class="custom-search--expand-toggle-icon">
         <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-plus-circle"></use>
       </svg>

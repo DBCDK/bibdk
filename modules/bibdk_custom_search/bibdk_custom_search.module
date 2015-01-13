@@ -491,6 +491,7 @@ function _bibdk_custom_search_get_searchpage_buttons($req) {
       '#suffix' => '</li>',
     );
   }
+
   return $searchpages;
 }
 
