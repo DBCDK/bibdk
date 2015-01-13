@@ -130,7 +130,7 @@ function bibdk_subject_hierarchy_confirmed_suggestion_form($form, &$form_state) 
     '#text' => '&nbsp;',
     '#options' => array(
       'attributes' => array(
-        'class' => array('themes__close-button close icon icon-blue-x'),
+        'class' => array('subjects-close-button close icon icon-blue-x'),
       ),
       'html' => TRUE,
     ),
@@ -228,7 +228,7 @@ function bibdk_subject_hierarchy_suggestion_form_submit($form, &$form_state) {
     '#type' => 'container',
     '#attributes' => array(
       'id' => array('bibdk-subject-hierarchy-searchresult'),
-      'class' => array('bibdk-subject-hierarchy-searchresult', 'themes__sublists'),
+      'class' => array('bibdk-subject-hierarchy-searchresult', 'subjects-sublists'),
     ),
     'suggestion_form' => $form,
   );

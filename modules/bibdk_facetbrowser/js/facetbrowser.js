@@ -182,7 +182,6 @@
   };
 
   Drupal.facetBrowserInit = function() {
-    Drupal.FoldFacetGroup();
 
     // Check for click in checkbox, and execute search
     $(Drupal.settings.bibdkFacetBrowser.mainElement + ' .form-type-checkbox input').change(function(e) {
@@ -190,11 +189,21 @@
       window.location = $(e.target).parent().find('a').attr('href');
     });
 
+    // disambiguate facets that are hidden because some facets are already selected, and facets that are not yet shown.
+    $("#bibdk-facetbrowser-form").find("a[data-hidden='0']").each(function(count, facetElement) {
+      $(this).parents('div.form-type-checkbox').addClass('facetShow');
+    });
+    $("#bibdk-facetbrowser-form").find("a[data-hidden='1']").each(function(count, facetElement) {
+      $(this).parents('div.form-type-checkbox').hide().addClass('facetNoShow');
+    });
+
+    Drupal.FoldFacetGroup();
+
     $("#bibdk-facetbrowser-form").find("div[data-expand='less']").hide();
 
     $("#bibdk-facetbrowser-form").delegate("div[data-expand='more'] span", "click", function() {
       var facetGroup = $(this).parents('fieldset');
-      facetGroup.find('.form-type-checkbox:hidden').each(function(count, facetElement) {
+      facetGroup.find('.form-type-checkbox.facetShow:hidden').each(function(count, facetElement) {
         if ( count < Drupal.settings.bibdkFacetBrowser.showCountConsecutive ) {
           $(facetElement).slideDown('fast', function() {
           });
@@ -227,18 +236,6 @@
         facetGroup.find("div[data-expand='more']").show();
       }
     });
-
-    // Show/hide modal window
-    // To do: Redo as Foundation Modal
-    /*
-    $("#bibdk-facetbrowser-form").delegate("div[data-expand='select'] span", "click", function() {
-      $("#bibdk-facetbrowser-form").find("div.reveal-modal").hide();
-      var facetGroup = $(this).parents('fieldset');
-      // show popover element. 
-      facetGroup.find(".reveal-modal").show();
-      facetGroup.find(".reveal-modal .close").focus();
-    });
-    */
 
     // Populate modal window
     $("#bibdk-facetbrowser-form").delegate("div[data-expand='select'] span", "click", function() {
@@ -282,6 +279,7 @@
     // modal window submit button
     $(".bibdk-facetbrowser-modal").delegate(".save-facet-modal .btn", "click", function(event) {
       event.preventDefault();
+      var myArray        = new Array();
       var facetsSelect   = new Array();
       var facetsDeselect = new Array();
       var modalGroup = $(this).parents('.bibdk-facetbrowser-modal');
@@ -291,17 +289,18 @@
       var url = $(this).parents('.bibdk-facetbrowser-modal').attr('data-uri');
       // create anchor element, so we can access path from DOM
       var a = $('<a>', { href:url } )[0];
-      var myArray = decodeURIComponent(a.search).split('&');
+      var uriArray = decodeURI(a.search).split('&');
+
+      $.each( uriArray, function( key, value ) {
+        // clear facet values in this group
+        if ( !Drupal.paramIsFacet(value, facetKey, modalGroup.find("input[type='checkbox']")) ) {
+          if ( jQuery.inArray( value, myArray ) == -1 ) {
+            myArray.push(value);
+          }
+        }
+      });
 
       modalGroup.find("input[type='checkbox']").each(function(count, modalElement) {
-
-        // delete facet values that are included in this group
-        $.each( myArray, function( key, value ) {
-          if ( value == 'facets[]=' + facetKey + ':' + $(modalElement).val() || value == 'facets[]=-' + facetKey + ':' + $(modalElement).val() ) {
-            myArray.splice(key, 1);
-          }
-        });
-
         if ( modalElement.checked ) {
           if ( $(modalElement).attr('data-deselect') ) {
             facetsDeselect.push( $(modalElement).val() );
@@ -309,7 +308,6 @@
             facetsSelect.push( $(modalElement).val() ); 
           }
         }
-
       });
 
       for ( var i = 0; i < facetsSelect.length; i = i + 1 ) {
@@ -326,21 +324,30 @@
 
     });
 
-
-    // close button - close and set focus back to opening link
-    /*
-    $("#bibdk-facetbrowser-form").delegate(".close-facet-modal .btn", "click", function(event) {
-      event.preventDefault();
-      var facetGroup = $(this).parents('fieldset');
-      // hide popover element. 
-      if ( facetGroup.find("div.reveal-modal").is(':visible') ) {
-        facetGroup.find("div.reveal-modal").hide();
-      }
-      facetGroup.find("div[data-expand='select']").focus();
-    });
-    */
-
   };
+
+
+  /**
+   * Check if param is a facet in group
+   *
+   * @param key string
+   * @return {boolean}
+   */
+  Drupal.paramIsFacet = function(value, facetKey, facetGroup) {
+    var result = false;
+    facetGroup.each(function(count, modalElement) {
+      if ( 
+           decodeURI(value) == 'facets[]=facet.' + facetKey + ':' + $(modalElement).val() || 
+           decodeURI(value) == 'facets[]=-facet.' + facetKey + ':' + $(modalElement).val() ||
+           decodeURI(value) == 'facets[]=facet.' + facetKey + '%3A' + $(modalElement).val() || 
+           decodeURI(value) == 'facets[]=-facet.' + facetKey + '%3A' + $(modalElement).val()
+         ) {
+           result = true;
+      }
+    });
+    return result;
+  };
+
 
   /**
    * Fold facet groups to show only n per group.
@@ -349,8 +356,8 @@
     $(Drupal.settings.bibdkFacetBrowser.mainElement + ' fieldset.form-wrapper').each(function() {
       // hide surplus facets, and show 'show more' element
       var facetGroup = $(this);
-      if ( facetGroup.find('.form-type-checkbox').size() > Drupal.settings.bibdkFacetBrowser.showCount ) {
-        facetGroup.find('.form-type-checkbox').each(function(counter, facetElement) {
+      if ( facetGroup.find('.form-type-checkbox.facetShow').size() > Drupal.settings.bibdkFacetBrowser.showCount ) {
+        facetGroup.find('.form-type-checkbox.facetShow').each(function(counter, facetElement) {
           if ( counter >= Drupal.settings.bibdkFacetBrowser.showCount ) {
             $(facetElement).hide();
           }
@@ -359,7 +366,7 @@
           facetGroup.find("div[data-expand='more']").show();
         }
       } else {
-          facetGroup.find("div[data-expand='more']").hide();
+        facetGroup.find("div[data-expand='more']").hide();
       }
     });
 

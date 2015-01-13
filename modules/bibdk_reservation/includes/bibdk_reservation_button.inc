@@ -71,51 +71,90 @@ function bibdk_reservation_check_past_reservations($entity_ids) {
  * Returns a link for 'reservation'Order any edition' button
  *
  * @param $collection
+ * @param array $work_types
  * @param $uid
  * @return string
  */
-function bibdk_reservation_order_any_edition_link($collection, $uid) {
+function bibdk_reservation_order_any_edition_link($collection, $work_types, $uid) {
+
   $uid = strtolower(preg_replace('/[^a-zA-Z0-9]+/', '', $uid));
 
-  $header = array(
-    '',
-    t('Order', array(), array('context' => 'bibdk_reservation'))
+  $table = array(
+    '#theme' => 'table',
+    '#header' => array(),
+    '#rows' => array(),
   );
+
   $rows = array();
+
+  $svg_icons = array(
+    "article",
+    "audiobook",
+    "book",
+    "emat",
+    "game",
+    "movie",
+    "music",
+    "sheetmusic",
+  );
+  // nb: may also be 'other'
 
   foreach ($collection as $type => $ids) {
     $row = array();
     $mat_type = t($type, array(), array('context' => 'material_type'));
 
-    if (!_bibdk_reservation_is_mattype_order_ok(ucfirst($mat_type))) {
-      // make not for order text
-      $note = array(
-        '#prefix' => '<div class="not-for-order">',
-        '#markup' => $mat_type,
-        '#suffix' => '</div>',
+    foreach ( $work_types as $svg_key => $work_type ) {
+      if ( in_array($ids[0], $work_type) ) {
+        $svg = ( in_array($svg_key, $svg_icons) ) ? 'svg-media-' . $svg_key : NULL;
+        break;
+      }
+    }
+    
+    if ( !_bibdk_reservation_is_mattype_order_ok(ucfirst($mat_type)) ) {
+      // make "not for order" text
+      $row['label_mat']['data'] = array(
+        '#type' => 'container',
+        '#attributes' => array(
+          'class' => array('not-for-order'),
+        ),
+        'content' => array(
+          '#theme' => 'span_with_svg',
+          '#content' => array(
+            '#markup' => $mat_type,
+          ),
+          '#attributes' => array(),
+          '#svg' => $svg,
+        ),
       );
-      $row[] = drupal_render($note);
-      $order_btn = t('can not be ordered', array(), array('context' => 'bibdk_reservation')); //$order_btn;
-      $row[] = $order_btn;
+      $row['order_mat']['data'] = array(
+        '#type' => 'container',
+        'content' => array(
+          '#markup' => t('can not be ordered', array(), array('context' => 'bibdk_reservation')),
+        ),
+      );
     }
     else {
-      $row[] = ucfirst($mat_type);
-      $order_btn = _bibdk_reservation_create_type_button($mat_type, $ids, $uid);
-      $row[] = $order_btn;
+      $row['label_mat']['data'] = array(
+        '#theme' => 'span_with_svg',
+        '#content' => array(
+          '#markup' => ucfirst($mat_type),
+        ),
+        '#attributes' => array('class'=>array('mat-type')),
+        '#svg' => $svg,
+      );
+      $row['order_mat']['data'] = _bibdk_reservation_create_type_button($mat_type, $ids, $uid);
     }
     $hook = module_invoke_all('order_any_btn_lists', $type, $ids);
 
-    foreach ($hook as $column => $element) {
+    foreach ( $hook as $column => $element ) {
       $col_name = t($column, array(), array('context' => 'bibdk_reservation'));
-      if (!in_array($col_name, $header)) {
-        array_push($header, $col_name);
-      }
-      $row[] = drupal_render($element);
+      $row[$column . '_mat']['data'] = $element;
     }
-    $rows[] = $row;
-  }
-  $table = theme('table', array('header' => $header, 'rows' => $rows));
 
+    $table['#rows'][]['data'] = $row;
+
+  }
+ 
   $infotext = _bibdk_reservation_infotext_order_any_edition_create_link($uid);
 
   $button = theme('bibdk_reservation_order_any_btn', array(
@@ -178,27 +217,32 @@ function _bibdk_reservation_infotext_order_any_edition_create_link($uid=NULL) {
 function _bibdk_reservation_create_type_button($type, $ids, $uid) {
 
   $text = t('Order', array(), array('context' => 'bibdk_reservation'));
-  $path = 'reservation';
-  $query = array('ids' => implode(',', $ids));
-  $class = strtolower(preg_replace('/[^a-zA-Z0-9]+/', '', $ids[0]));
 
-  $attributes = array(
-    'data-rel' => array(
-      'reservation'
+  $link = array(
+    '#theme' => 'link',
+    '#text' => $text,
+    '#path' => 'reservation',
+    '#options' => array(
+      'query' => array('ids' => implode(',', $ids)),
+      'attributes' => array(
+        'id' => 'any_edtion_order_' . strtolower(preg_replace('/[^a-zA-Z0-9]+/', '', $ids[0])),
+        'aria-label' => $text . ' ' . $type,
+        'alt' => $text . ' ' . $type,
+        'data-rel' => array(
+          'reservation'
+        ),
+        'class' => array(
+          'bibdk-popup-order-work',
+          'bibdk-popup-link',
+          'btn',
+          'btn-blue',
+        ),
+      ),
+      'html' => FALSE,
     ),
-    'class' => array(
-      'bibdk-popup-order-work',
-      'bibdk-popup-link',
-      'btn',
-      'btn-blue',
-    ),
-    'id' => array(
-      'any_edtion_order_' . $class
-    ),
-    'aria-label' => $text . ' ' . $type,
   );
 
-  return l($text, $path, array('attributes' => $attributes, 'query' => $query));
+  return $link;
 }
 
 

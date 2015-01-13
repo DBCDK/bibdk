@@ -171,6 +171,14 @@ projects[translatable][download][tag] = 7.x-1.1
 
 ; --- Contrib modules ---
 
+projects[uuid][subdir] = contrib
+projects[uuid][type] = module
+projects[uuid][version] = 1.0-alpha6
+
+projects[node_export][subdir] = contrib
+projects[node_export][type] = module
+projects[node_export][version] = 3.0
+
 projects[admin_menu][subdir] = contrib
 projects[admin_menu][type] = module
 projects[admin_menu][version] = 3.0-rc4
