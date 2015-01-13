@@ -212,12 +212,6 @@ function bibdk_custom_search_theme() {
       'render element' => 'form',
       'template' => 'bibdk-custom-search-advanced-search-panel-wrapper',
     ),
-    /*'bibdk_custom_advanced_search_menu' => array(
-    TODO mmj this seems to be unused -- delete it!
-      'render element' => 'form',
-      'path' => $path,
-      'template' => 'bibdk-custom-advanced-search-menu',
-    ),*/
     'bibdk_custom_search_radio_buttons' => array(
       'render element' => 'form',
       'path' => $path,
