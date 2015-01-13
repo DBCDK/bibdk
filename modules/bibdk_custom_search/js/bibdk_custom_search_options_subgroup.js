@@ -75,8 +75,10 @@
     }
     classesArr.push(currClass);
 
-    $('body').removeClass();
-    $('body').addClass(classesArr.join(' '));
+    var $body = $('body');
+
+    $body.removeClass();
+    $body.addClass(classesArr.join(' '));
   };
 
   Drupal.response = function(response) {

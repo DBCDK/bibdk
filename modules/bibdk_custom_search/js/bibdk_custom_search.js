@@ -5,10 +5,18 @@
    * search panel
    */
   function getAdvancedSearchPanel() {
-    console.clear();
-    console.log("getAdvancedSearchPanel");
-    if(window.matchMedia(window.Foundation.media_queries.large).matches){
-      console.log("get advanced search panel...");
+    if(window.matchMedia(window.Foundation.media_queries.large).matches && !Drupal.settings.bibdk_custom_search.advancedSearchIsLoaded) {
+      jQuery.get('bibdk_custom_search_ajax/get_search_panel', {page_id:'bibdk_frontpage'})
+        .done(function(data, response) {
+          Drupal.settings.bibdk_custom_search.advancedSearchIsLoaded = true;
+          var $new = $('#search-advanced-panel', data);
+          var $selector = $('#search-advanced-panel');
+          $selector.replaceWith($new);
+          Drupal.attachBehaviors($selector, Drupal.settings);
+        })
+        .fail(function() {
+          throw new Error('An error happend while loading search pages');
+        })
     }
   };
 

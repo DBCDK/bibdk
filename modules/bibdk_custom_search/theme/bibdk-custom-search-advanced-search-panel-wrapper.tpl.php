@@ -1,4 +1,4 @@
-<div id="search-advanced-toggle" data-toggle-state-hidden="<?php print $form['#toggled']; ?>" class="clearfix <?php print $form['#toggled'];; ?>">
+<div id="search-advanced-toggle" data-toggle-state-hidden="<?php print $form['#toggled']; ?>" class="clearfix <?php print $form['#toggled']; ?>">
   <a id="selid_custom_search_expand" class="text-darkgrey <?php print $form['#toggled']; ?>" href="#">
     <span class="icon icon-left icon-blue-minus">&nbsp;</span>
     <span class="toggle-text <?php print $form['#expand_hidden']; ?>"><?php print t('Expand search options'); ?></span>

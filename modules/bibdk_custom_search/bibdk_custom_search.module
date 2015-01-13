@@ -16,6 +16,26 @@ require_once(drupal_get_path('module', 'bibdk_custom_search') . '/includes/bibdk
  * Implements hook_menu().
  */
 function bibdk_custom_search_menu() {
+
+  $items['bibdk_custom_search/ajax/list/%/%/%'] = array(
+    'title' => 'AJAX MENU ITEM',
+    'type' => MENU_CALLBACK,
+    'page arguments' => array(3, 4, 5),
+    'page callback' => "bibdk_custom_search_list_ajax_callback",
+    'file' => 'includes/bibdk_custom_search.list.inc',
+    'access arguments' => array('access content'),
+    'delivery callback' => 'ajax_deliver',
+  );
+
+  $items['bibdk_custom_search_ajax/get_search_panel'] = array(
+    'title' => 'Get the search panel by AJAX',
+    'type' => MENU_CALLBACK,
+    'page callback' => 'bibdk_custom_search_get_advanced_search_panel',
+    'file' => 'includes/bibdk_custom_search.ajax.inc',
+    'delivery callback' => 'drupal_json_output',
+    'access arguments' => array('access content'),
+  );
+
   $items['admin/config/search/bibdk_custom_search'] = array(
     'title' => 'bibdk search pages',
     'description' => 'Customize the default search, add custom search pages, and change labels, values & ordering.',
@@ -128,15 +148,6 @@ function bibdk_custom_search_menu() {
     'file' => 'includes/bibdk_custom_search.values.admin.inc',
   );
 
-  $items['bibdk_custom_search/ajax/list/%/%/%'] = array(
-    'title' => 'AJAX MENU ITEM',
-    'type' => MENU_CALLBACK,
-    'page arguments' => array(3, 4, 5),
-    'page callback' => "bibdk_custom_search_list_ajax_callback",
-    'file' => 'includes/bibdk_custom_search.list.inc',
-    'access arguments' => array('access content'),
-    'delivery callback' => 'ajax_deliver',
-  );
   return $items;
 }
 
@@ -251,7 +262,8 @@ function bibdk_custom_search_permission() {
   );
 }
 
-/** Implements hook_form_FORM_ID_alter() for form search_block_form.
+/**
+ * Implements hook_form_FORM_ID_alter() for form search_block_form.
  *
  * Alters the search form to contain advanced search fields.
  * Converts the form to use get method to speed up form submission
@@ -290,12 +302,10 @@ function bibdk_custom_search_form_search_block_form_alter(&$form, &$form_state, 
   }
 
   // Gets the advances search fields if they exists
-  if ($advanced_fields = _bibdk_custom_search_get_advanced_fields_form($page_id)) {
+  $advanced_fields = _bibdk_custom_search_get_advanced_fields_form($page_id);
+  if ($advanced_fields) {
     $form['advanced'] = $advanced_fields;
   }
-
-  // add form dependent js
-  $form['#attached']['js'][] = drupal_get_path('module', 'bibdk_custom_search') . '/js/bibdk_custom_search_options_subgroup.js';
 
   return $form;
 }
@@ -350,6 +360,7 @@ function _bibdk_custom_search_get_search_panel($page, $result, $default_values) 
   $toggled = ($is_visible) ? 'toggled' : '';
   $expand_hidden = ($is_visible) ? 'hidden' : '';
   $collaps_hidden = ($is_visible) ? '' : 'hidden';
+  $advanced_search_is_loaded = FALSE;
 
   $advanced_search_panel = array(
     '#theme' => 'bibdk_custom_search_advanced_search_panel_wrapper',
@@ -367,12 +378,19 @@ function _bibdk_custom_search_get_search_panel($page, $result, $default_values) 
 
   if ($is_visible) {
     $advanced_search_panel['#attributes']['class'][] = 'is-visible';
+    $advanced_search_is_loaded = TRUE;
+  }
 
+  if ($is_visible || !empty($_GET['deliver_search_panel_by_ajax'])) {
     //only render advanced search panel if it's going to be shown as default.
     //Otherwise we'll get it by AJAX.
     $panel = _bibdk_custom_search_create_advanced_form($result, $default_values);
     $advanced_search_panel += $panel;
+    $advanced_search_is_loaded = TRUE;
   }
+
+  //tell our JS if the advanced search panel should be loaded by AJAX or not
+  drupal_add_js(array('bibdk_custom_search' => array('advancedSearchIsLoaded' => $advanced_search_is_loaded)), 'setting');
 
   // Page specific elements
   if ($page['delimiter']) {
