@@ -207,11 +207,6 @@ function bibdk_custom_search_theme() {
       'path' => $path,
       'template' => 'bibdk_custom_search-search-element-form',
     ),
-    'bibdk_custom_search_menu' => array(
-      'path' => $path,
-      'variables' => array('pages' => array()),
-      'template' => 'bibdk-custom-search-menu',
-    ),
     'bibdk_custom_search_advanced_search_panel_wrapper' => array(
       'path' => $path,
       'render element' => 'form',
@@ -589,10 +584,30 @@ function bibdk_custom_search_block_view($delta = '') {
   switch ($delta) {
     case 'bibdk-search-menu':
       $block['subject'] = t('Bibliotek.dk search menu');
-      $block['content'] = theme('bibdk_custom_search_menu', array('pages' => _bibdk_custom_search_get_pages_db()));
+      $block['content'] = _bibdk_custom_search_menu(_bibdk_custom_search_get_pages_db());
       break;
   }
   return $block;
+}
+
+/**
+ * Renders and returns a list of links.
+ *
+ * @param array $pages
+ * @return string
+ */
+function _bibdk_custom_search_menu($pages = array()) {
+  $links = array(
+    '#theme' => 'links',
+    '#links' => $pages,
+    'attributes' => array(
+      'class' => array(
+        'nav--horizontal',
+      ),
+    ),
+  );
+
+  return drupal_render($links);
 }
 
 /**
