@@ -61,6 +61,42 @@ class bibdk_borchk extends TingClientRequest Implements ITingClientRequestCache 
     return variable_get($class_name . TingClientRequest::cache_lifetime, '1');
   }
 
+  public function checkResponse($response) {
+    if ($this->isJson($response)) {
+      $ret = json_decode($response);
+      if (isset($ret->borrowerCheckResponse->requestStatus)) {
+        $status = $ret->borrowerCheckResponse->requestStatus->{'$'};
+        if ($status == 'service_unavailable') {
+          return FALSE;
+        }
+      }
+    }
+    else {
+      //response is assumed xml -- could be serialized php
+      $dom = new DomDocument();
+      if (@$dom->loadXML($response)) {
+        $xpath = new DomXPATH($dom);
+        $xpath->registerNamespace('hest', "http://oss.dbc.dk/ns/borchk");
+        $query = '//hest:requestStatus';
+        $nodes = $xpath->query($query);
+        $status = $nodes->item(0)->nodeValue;
+        if ($status == 'service_unavailable') {
+          return FALSE;
+        }
+      }
+    }
+    return TRUE;
+  }
+
+  private function isJson($response){
+    if(is_string($response)){
+      if(is_object(json_decode($response))){
+        return TRUE;
+      }
+    }
+    return FALSE;
+  }
+
   /* \brief implements ITingClientRequestCache::cacheBin
    * 
    * @return string; name of cachebin

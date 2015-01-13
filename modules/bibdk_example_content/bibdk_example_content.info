@@ -1,0 +1,4 @@
+name = Bibdk example content
+description = import nodes via features
+core = 7.x
+package = bibliotek.dk

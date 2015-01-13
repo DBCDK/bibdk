@@ -164,6 +164,8 @@ function bibdk_facetbrowser_form($form, &$form_state, $facets = FALSE, $search =
 
   foreach (variable_get('bibdk_facetbrowser_facets', array()) as $configured_facet) {
 
+    $selected_facets_present = FALSE; 
+
     if ( isset($facets[$configured_facet['name']]) ) {
 
       $facet = $facets[$configured_facet['name']];
@@ -179,6 +181,12 @@ function bibdk_facetbrowser_form($form, &$form_state, $facets = FALSE, $search =
             'data-count' => count($facet->terms)
           ),
         );
+
+        foreach ($facet->terms as $term_name => $term_count) {
+          if ( _bibdk_facetbrowser_isFacetSet($facet->name, $term_name) === TRUE ) {
+            $selected_facets_present = TRUE;
+          }
+        }
 
         foreach ($facet->terms as $term_name => $term_count) {
           $facet_name = explode('.', $facet->name);
@@ -201,6 +209,7 @@ function bibdk_facetbrowser_form($form, &$form_state, $facets = FALSE, $search =
           }
 
           if ( _bibdk_facetbrowser_isFacetSet($facet->name, $term_name) === TRUE ) {
+            $selected_facets_present = TRUE;
             $default_values[] = $term_name;
             $uri = _bibdk_facetbrowser_parseRequestUri();
 
@@ -209,6 +218,7 @@ function bibdk_facetbrowser_form($form, &$form_state, $facets = FALSE, $search =
                 'fragment' => $fragment,
                 'attributes' => array(
                   'title' => $term_name,
+                  'data-hidden' => '0',
                 ),
               )
             );
@@ -223,14 +233,15 @@ function bibdk_facetbrowser_form($form, &$form_state, $facets = FALSE, $search =
                 'fragment' => $fragment,
                 'attributes' => array(
                   'title' => $term_name,
+                  'data-hidden' => ( $selected_facets_present ) ? '1' : '0',
                 ),
               ));
           }
-
+          
           $form[$facet->name][$element_name] = array(
             '#type' => 'checkboxes',
             '#theme' => 'facet_term_names',
-            '#options' => ( $selected ) ? $selected : $not_selected,
+            '#options' => array_merge( $selected, $not_selected ),
             '#default_value' => $default_values,
           );
 
@@ -265,6 +276,7 @@ function bibdk_facetbrowser_form($form, &$form_state, $facets = FALSE, $search =
         'fragment' => $fragment,
         'attributes' => array(
           'title' => $term_name_title,
+          'data-hidden' => '0',
         ),
       ));
       $show_selected_options_defaults[] = $term_selected['facet_string'];
@@ -295,6 +307,7 @@ function bibdk_facetbrowser_form($form, &$form_state, $facets = FALSE, $search =
         'fragment' => $fragment,
         'attributes' => array(
           'title' => $term_name_title,
+          'data-hidden' => '0',
         ),
       ));
       $show_deselected_options_defaults[] = $term_deselected['facet_string'];
