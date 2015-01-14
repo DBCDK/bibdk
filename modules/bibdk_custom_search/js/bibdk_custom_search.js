@@ -5,7 +5,7 @@
    * search panel
    */
   function getAdvancedSearchPanel() {
-    if(window.matchMedia(window.Foundation.media_queries.large).matches && !Drupal.settings.bibdk_custom_search.advancedSearchIsLoaded) {
+    if(window.matchMedia(window.Foundation.media_queries.large).matches && Drupal.settings.bibdk_custom_search && !Drupal.settings.bibdk_custom_search.advancedSearchIsLoaded) {
       jQuery.get('bibdk_custom_search_ajax/get_search_panel', {page_id:'bibdk_frontpage'})
         .done(function(data, response) {
           Drupal.settings.bibdk_custom_search.advancedSearchIsLoaded = true;
