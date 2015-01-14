@@ -610,30 +610,6 @@ function bibdk_cart_order_any_btn_lists($type, $ids) {
   $item = array(
     'cart' => $link
   );
-  /*    array(
-      '#theme' => 'link',
-      '#text' => t('cart', array(), array('context' => 'bibdk_reservation')),
-      '#path' => $link['#href'],
-      '#options' => array(
-        'attributes' => array(
-          'class' => array(
-            'add-item-to-cart',
-            'btn',
-            'btn-grey-light',
-          ),
-          'id' => array(
-            'cart_btn_' . drupal_html_id($type) . '_' . $ids[0]
-          ),
-          'data-pid' => array(
-            $link['#data-pid'],
-          ),
-          'aria-label' => $text . ' ' . $mat_type,
-        ),
-        'html' => FALSE,
-        'svg' => 'svg-star',
-      ),
-    )
-  );*/
   return $item;
 }
 
