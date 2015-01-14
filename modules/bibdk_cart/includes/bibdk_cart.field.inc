@@ -32,7 +32,7 @@ function bibdk_cart_get_link($id, $linktext, $prefix) {
       'html' => FALSE,
       'svg' => 'svg-star',
     ),
-    '#weight' => 4,
+    '#weight' => -1,
   );
   drupal_add_js(drupal_get_path('module', 'bibdk_cart') . '/js/bibdk_cart.js');
   return $link;
