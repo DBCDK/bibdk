@@ -17,6 +17,6 @@
      role="button" class="close icon icon-left icon-red-x "> 
   </a>
 </div>
-<div class="bibdk-custom-search-element clearfix">
+<div class="bibdk-custom-search-element">
   <?php print drupal_render_children($form); ?>
 </div>
