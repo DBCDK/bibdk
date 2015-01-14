@@ -111,7 +111,7 @@ projects[ting_search_carousel][download][tag] = 7.x-0.5+dbc.7
 projects[bibdk_frontend][type] = module
 projects[bibdk_frontend][download][type] = git
 projects[bibdk_frontend][download][url] = git@github.com:DBCDK/bibdk_frontend.git
-projects[bibdk_frontend][download][tag] = 7.x-0.69
+projects[bibdk_frontend][download][tag] = 7.x-0.70
 
 projects[microcurl][type] = module
 projects[microcurl][download][type] = git
