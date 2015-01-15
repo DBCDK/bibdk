@@ -297,7 +297,11 @@ function bibdk_custom_search_form_search_block_form_alter(&$form, &$form_state, 
     $form['advanced'] = $advanced_fields;
   }
 
-  drupal_add_js('misc/autocomplete.js', array('cache' => TRUE, 'scope' => 'footer', 'every_page' => TRUE));
+  drupal_add_js('misc/autocomplete.js', array(
+    'cache' => TRUE,
+    'scope' => 'footer',
+    'every_page' => TRUE
+  ));
 
   return $form;
 }
