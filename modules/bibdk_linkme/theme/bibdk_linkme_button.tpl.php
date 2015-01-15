@@ -1,5 +1,5 @@
 <div class="linkme-wrapper">
-  <a href="#<?php print $path; ?>" class="linkme-button js-linkme-dropdown" data-dropdown="<?php print $selid ?>">
+  <a href="#<?php print $path; ?>" class="linkme-button js-linkme-dropdown bibdk-dropdown-link" data-dropdown="<?php print $selid ?>">
     <span class="icon icon-left icon-lightgrey-link">&nbsp;</span>
     <?php print $link_text; ?>
   </a>

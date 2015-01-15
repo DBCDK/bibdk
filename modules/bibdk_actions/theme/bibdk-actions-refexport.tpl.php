@@ -5,7 +5,7 @@
 
 ?>
 <div class="action_element_refexportlinks">
-  <a class='refexport-toggle-link' data-dropdown="<?php print $export_id; ?>" aria-controls="<?php print $export_id; ?>" aria-expanded="false">
+  <a class='refexport-toggle-link bibdk-dropdown-link' data-dropdown="<?php print $export_id; ?>" aria-controls="<?php print $export_id; ?>" aria-expanded="false">
     <?php print t('refexport_more', array(), array('context' => 'bibdk_actions')); ?>
   </a>
 
