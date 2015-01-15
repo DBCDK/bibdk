@@ -10,9 +10,8 @@
         .done(function(data, response) {
           Drupal.settings.bibdk_custom_search.advancedSearchIsLoaded = true;
           var $new = $('#search-advanced-panel', data);
-          var $selector = $('#search-advanced-panel');
-          $selector.replaceWith($new);
-          Drupal.attachBehaviors($selector, Drupal.settings);
+          $('#search-advanced-panel').replaceWith($new);
+          Drupal.attachBehaviors($new, Drupal.settings);
         })
         .fail(function() {
           throw new Error('An error happend while loading search pages');
