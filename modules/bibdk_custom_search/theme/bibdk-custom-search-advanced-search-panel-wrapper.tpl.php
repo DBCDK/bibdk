@@ -1,4 +1,4 @@
-<div id="custom-search--advanced-toggle" data-toggle-state-hidden="<?php print $form['#toggled']; ?>" class="clearfix <?php print $form['#toggled']; ?>">
+<div id="custom-search--advanced-toggle" data-toggle-state-hidden="<?php print $form['#toggled']; ?>" class="<?php print $form['#toggled']; ?>">
   <a id="selid_custom_search_expand" class="text-darkgrey" href="#">
     <span class="toggle-text <?php print $form['#expand_hidden']; ?>">
       <svg class="custom-search--advanced-toggle-icon">
@@ -16,8 +16,9 @@
 
   </a>
 </div>
-<div id="search-advanced" class="clearfix <?php print $form['#collaps_hidden']; ?>">
-  <div id="search-advanced-panel" class="clearfix">
+<!--TODO mmj remove below debug outcomment -->
+<div id="search-advanced" class="<?php #print $form['#collaps_hidden']; ?>">
+  <div id="search-advanced-panel">
     <!-- ADVANCED SEARCH-->
     <?php print drupal_render_children($form); ?>
     <!-- END ADVANCED SEARCH-->
