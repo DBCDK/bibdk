@@ -42,7 +42,8 @@ function bibdk_custom_search_get_list_options($facet_type, $term_type, $default_
 
 }
 
-/** Creates default value checkboxes
+/**
+ * Creates default value checkboxes
  *
  * @param $default_values
  * @return array
@@ -63,7 +64,8 @@ function bibdk_custom_list_create_default_checkboxes($default_values) {
   return $return;
 }
 
-/** Wrapper function: fetches options from webservice and adds them to a pop-up form
+/**
+ * Wrapper function: fetches options from webservice and adds them to a pop-up form
  *
  * @param $facet_type
  * @param $facet_term
@@ -87,7 +89,8 @@ function bibdk_custom_search_list_select_form($facet_type, $facet_term, $term_ty
   return bibdk_custom_search_get_list_popup_form($options, $facet_type, $term_type);
 }
 
-/** Get elements from webservice
+/**
+ * Get elements from webservice
  *
  * @param $type  type of facet e.g. facet.type
  * @param int $number_requested number of elements to request from service
@@ -121,11 +124,13 @@ function bibdk_custom_search_list_from_webservice($type, $number_requested = 100
 
 }
 
-/** Returns a list of custom search options as an a array where:
+/**
+ * Returns a list of custom search options as an a array where:
  * key = value & ignore values are omitted
  *
- *
- * @param $type
+ * @param $result
+ * @param $term_type
+ * @param $ignore_values
  * @return array
  */
 function bibdk_custom_search_list_options($result, $term_type, $ignore_values) {
@@ -150,6 +155,10 @@ function bibdk_custom_search_list_options($result, $term_type, $ignore_values) {
 
 }
 
+/**
+ * @param $options
+ * @return mixed
+ */
 function bibdk_custom_search_list_options_translate($options) {
   foreach ($options as $key => $option) {
     $options[$key] = t($option, array(), array('context' => 'material_type'));
@@ -158,7 +167,8 @@ function bibdk_custom_search_list_options_translate($options) {
   return $options;
 }
 
-/** Create form with more options as a pop-over box
+/**
+ * Create form with more options as a pop-over box
  *
  * @param $options
  * @param $facet_type
@@ -265,7 +275,8 @@ function bibdk_custom_search_get_list_popup_form($options, $facet_type, $term_ty
   return $form;
 }
 
-/** Adds link that fetches popupform via ajax
+/**
+ * Adds link that fetches popupform via ajax
  *
  * @param $facet_term
  * @param $facet_type
@@ -300,11 +311,6 @@ function bibdk_custom_search_list_link($facet_term, $facet_type, $term_type) {
       'wrapper' => $wrapper_id,
       'method' => 'replace',
       'event' => 'click',
-    ),
-    '#attached' => array(
-      'js' => array(
-        drupal_get_path('module', 'bibdk_custom_search') . '/js/bibdk_custom_search_list.js',
-      ),
     ),
   );
 
