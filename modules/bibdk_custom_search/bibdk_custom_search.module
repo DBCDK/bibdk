@@ -24,10 +24,9 @@ function bibdk_custom_search_menu() {
     'page callback' => "bibdk_custom_search_list_ajax_callback",
     'file' => 'includes/bibdk_custom_search.list.inc',
     'access arguments' => array('access content'),
-    'delivery callback' => 'ajax_deliver',
   );
 
-  $items['bibdk_custom_search_ajax/get_search_panel'] = array(
+  $items['bibdk_custom_search/ajax/get_search_panel'] = array(
     'title' => 'Get the search panel by AJAX',
     'type' => MENU_CALLBACK,
     'page callback' => 'bibdk_custom_search_get_advanced_search_panel',

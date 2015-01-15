@@ -11,7 +11,30 @@
 function bibdk_custom_search_list_ajax_callback($term_type, $facet_term, $facet_type) {
 
   $term_type = urldecode($term_type);
-  return bibdk_custom_search_list_select_form($facet_type, $facet_term, $term_type);
+  $form = bibdk_custom_search_list_select_form($facet_type, $facet_term, $term_type);
+  $delivery = _bibdk_custom_search_wrap_form_in_modal($form);
+
+  print $delivery;
+  drupal_exit();
+}
+
+/**
+ * Wrap extended list form in a bibdk_modal.
+ *
+ * @param array $form Form array
+ * @return string Rendered modal
+ */
+function _bibdk_custom_search_wrap_form_in_modal($form){
+  $title = $form['pop-over']['header']['#value'];
+  unset($form['pop-over']['header']);
+
+  $modal = array(
+    '#theme' => 'bibdk_modal_theme',
+    '#title' => $title,
+    '#content' => render($form),
+  );
+
+  return render($modal);
 }
 
 /**
@@ -38,8 +61,8 @@ function bibdk_custom_search_get_list_options($facet_type, $term_type, $default_
     $form += bibdk_custom_list_create_default_checkboxes($default_values[$term_type]);
   }
   $form += bibdk_custom_search_list_link($facet_term, $facet_type, $term_type);
-  return $form;
 
+  return $form;
 }
 
 /**
@@ -61,6 +84,7 @@ function bibdk_custom_list_create_default_checkboxes($default_values) {
       '#attributes' => array(),
     );
   }
+
   return $return;
 }
 
@@ -152,7 +176,6 @@ function bibdk_custom_search_list_options($result, $term_type, $ignore_values) {
   $options = array_diff($options, $ignore_values);
 
   return $options;
-
 }
 
 /**
@@ -293,27 +316,23 @@ function bibdk_custom_search_list_link($facet_term, $facet_type, $term_type) {
   $form['add_options_list-' . $term_type] = array(
     '#type' => 'container',
     '#attributes' => array(
-      'id' => $wrapper_id,
+      'id' => array($wrapper_id),
     ),
   );
 
   $form['container-link-' . $type_id] = array(
     '#type' => 'link',
     '#title' => t('see all options'),
-    '#href' => '',
+    '#href' => "bibdk_custom_search/ajax/list/" . urlencode($term_type) . "/$facet_term/$facet_type",
     '#name' => 'op-' . $type_id,
     '#attributes' => array(
       'class' => array('popover-button-list', 'button-as-link'),
-      'data-id' => $id,
+      'data-id' => array($id),
+      'data-reveal-id' => array('bibdk-modal'),
+      'data-reveal-ajax' => array('true'),
     ),
-    '#ajax' => array(
-      'path' => "bibdk_custom_search/ajax/list/" . urlencode($term_type) . "/$facet_term/$facet_type",
-      'wrapper' => $wrapper_id,
-      'method' => 'replace',
-      'event' => 'click',
-    ),
+    'html' => FALSE,
   );
 
   return $form;
 }
-
