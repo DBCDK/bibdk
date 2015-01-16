@@ -37,6 +37,22 @@ function bibdk_sbkopi_reservation_form($form, &$form_state, $pid, $state = NULL)
   }
 }
 
+function bibkdk_sbkopi_article_form_elements($elements, $form_state_values) {
+  return array_map(function ($element) {
+    $default = isset($form_state_values[$element['name']]) ? $form_state_values[$element['name']] : '';
+    return bibdk_sbkopi_single_element($element['name'], $element['required'], $default);
+  }, $elements);
+}
+
+function bibdk_sbkopi_single_element($element_name, $required, $default_value) {
+  return array(
+    '#type' => 'textfield',
+    '#title' => t($element_name, array(), array('context' => 'bibdk_sbkopi')),
+    '#default' => $default_value,
+    '#required' => $required,
+  );
+}
+
 /**
  * Render array with information for users who are not logged in.
  *
