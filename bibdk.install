@@ -30,6 +30,7 @@ function _bibdk_enable_modules() {
     'bibdk_borchk',
     'bibdk_behaviour',
     'bibdk_config',
+    'bibdk_covers',
     'bibdk_custom_search',
     'bibdk_custom_search_preprocess',
     'bibdk_favourite',
