@@ -326,7 +326,6 @@ function _bibdk_custom_search_get_mobile_material_selector($page_id, $pages) {
 
   $select = array(
     '#type' => 'select',
-    '#title' => t('Select materialtype', array(), array('context' => 'bibdk_custom_search')),
     '#options' => $options,
     '#default_value' => $page_id,
   );
