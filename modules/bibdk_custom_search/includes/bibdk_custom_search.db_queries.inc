@@ -77,10 +77,10 @@ function _bibdk_custom_search_get_page_db($page_path) {
     ->fetchAssoc();
 }
 
-
-
 /**
  * Get all searchpages from db
+ *
+ * @return array
  */
 function _bibdk_custom_search_get_pages_db() {
   global $language;
@@ -114,6 +114,7 @@ function _bibdk_custom_search_get_pages_db() {
 
     }
   }
+
   return $pages;
 }
 
