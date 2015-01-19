@@ -286,7 +286,8 @@ function bibdk_custom_search_form_search_block_form_alter(&$form, &$form_state, 
   );
 
   // Gets the searchpages navigationbar if pages exists
-  if ($searchpages = _bibdk_custom_search_get_searchpage_buttons($page_id)) {
+  $searchpages = _bibdk_custom_search_get_searchpage_buttons($page_id);
+  if ($searchpages) {
     $form['searchpages'] = $searchpages;
   }
 
