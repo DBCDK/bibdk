@@ -286,10 +286,10 @@ function bibdk_custom_search_form_search_block_form_alter(&$form, &$form_state, 
   );
 
   $pages = _bibdk_custom_search_get_pages_db();
-
   // Gets the searchpages navigationbar if pages exists
   if ($pages) {
     $form['searchpages'] = _bibdk_custom_search_get_searchpage_buttons($page_id, $pages);
+    $form['select_material_type'] = _bibdk_custom_search_get_mobile_material_selector($page_id, $pages);
   }
 
   // Gets the advances search fields if they exists
@@ -305,6 +305,33 @@ function bibdk_custom_search_form_search_block_form_alter(&$form, &$form_state, 
   ));
 
   return $form;
+}
+
+/**
+ * Generates a select dropdown form element to contain materials. To be shown
+ * on smaller devices only.
+ *
+ * @param $page_id
+ * @param $pages
+ * @return array
+ */
+function _bibdk_custom_search_get_mobile_material_selector($page_id, $pages) {
+  $options = array();
+
+  foreach ($pages as $page) {
+    $key = $page['href'];
+    $value = $page['title'];
+    $options[$key] = $value;
+  }
+
+  $select = array(
+    '#type' => 'select',
+    '#title' => t('Select materialtype', array(), array('context' => 'bibdk_custom_search')),
+    '#options' => $options,
+    '#default_value' => $page_id,
+  );
+
+  return $select;
 }
 
 /**
@@ -503,7 +530,7 @@ function _bibdk_custom_search_get_searchpage_buttons($req, $pages) {
  *
  * @param $text
  * @param $path
- * @param null $class
+ * @param string $class
  * @return array render array
  */
 function bibdk_custom_search_searchpage_button_link($text, $path, $class = '') {
