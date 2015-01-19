@@ -1,0 +1,6 @@
+<?php
+
+function bibdk_covers_install() {
+  variable_set('bibdk_covers_cache_lifetime', 86400);
+}
+

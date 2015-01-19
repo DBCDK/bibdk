@@ -1,0 +1,38 @@
+<?php
+/**
+ * @file
+ * Field hook implementations.
+ *
+ * Field definition is moved to a seperate module in order to be able to disable
+ * modules that implements the field.
+ * see http://drupal.org/node/1285540
+ */
+
+/**
+ * Implements hook_field_info().
+ */
+function bibdk_covers_field_field_info() {
+  return array(
+    'bibdk_cover_work' => array(
+      'label' => t('Bibliotek.dk cover'),
+      'description' => t('Cover image from the MoreInfo service, if any.'),
+      'default_widget' => 'default',
+      'default_formatter' => 'bibdk_cover_work',
+      'no_ui' => TRUE,
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_load().
+ */
+function bibdk_covers_field_field_load($entity_type, $entities, $field, $instances, $langcode, &$items, $age) {
+  foreach ($entities as $id => $entity) {
+    // bibdkWork object
+    $local_id = explode(':',$entity->ding_entity_id);
+    $items[$id][0] = array(
+      'local_id' => $local_id[1],
+    );
+  }
+}
+
