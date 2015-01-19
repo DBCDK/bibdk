@@ -81,10 +81,10 @@ projects[ting_agency][download][type] = git
 projects[ting_agency][download][url] = git@github.com:DBCDK/ting_agency.git
 projects[ting_agency][download][tag] = 7.x-0.37
 
-projects[ting_covers][type] = module
-projects[ting_covers][download][type] = git
-projects[ting_covers][download][url] = git@github.com:DBCDK/ting_covers.git
-projects[ting_covers][download][tag] = 7.x-0.22+dbc.13
+; projects[ting_covers][type] = module
+; projects[ting_covers][download][type] = git
+; projects[ting_covers][download][url] = git@github.com:DBCDK/ting_covers.git
+; projects[ting_covers][download][tag] = 7.x-0.22+dbc.13
 
 projects[ting_infomedia][type] = module
 projects[ting_infomedia][download][type] = git
