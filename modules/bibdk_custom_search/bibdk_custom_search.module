@@ -285,10 +285,11 @@ function bibdk_custom_search_form_search_block_form_alter(&$form, &$form_state, 
     '#value' => $page_id,
   );
 
+  $pages = _bibdk_custom_search_get_pages_db();
+
   // Gets the searchpages navigationbar if pages exists
-  $searchpages = _bibdk_custom_search_get_searchpage_buttons($page_id);
-  if ($searchpages) {
-    $form['searchpages'] = $searchpages;
+  if ($pages) {
+    $form['searchpages'] = _bibdk_custom_search_get_searchpage_buttons($page_id, $pages);
   }
 
   // Gets the advances search fields if they exists
@@ -477,14 +478,10 @@ function _bibdk_custom_search_machine_readable($string) {
  * Renders a form button for each page in pages array
  *
  * @param string $req
+ * @param array $pages
  * @return array
  */
-function _bibdk_custom_search_get_searchpage_buttons($req) {
-  $pages = _bibdk_custom_search_get_pages_db();
-
-  if (!$pages) {
-    return NULL;
-  }
+function _bibdk_custom_search_get_searchpage_buttons($req, $pages) {
   $searchpages['#type'] = 'markup';
   $searchpages['#prefix'] = '<nav id="search-tabs" class="clearfix"><ul class="nav--horizontal">';
   $searchpages['#suffix'] = '</ul></nav>';
