@@ -18,7 +18,7 @@ function bibdk_custom_search_ting_openformat_conditions($query) {
  *
  **/
 function bibdk_custom_search_get_submitted_searchcodes($get_values) {
-  if($get_values['select_material_type'] != $get_values['page_id']){
+  if(!empty($get_values['select_material_type']) && $get_values['select_material_type'] != $get_values['page_id']){
     $page = _bibdk_custom_search_get_page_db($get_values['select_material_type']);
     $get_values['page_id'] = $get_values['select_material_type'];
     $get_values['delimiter'] = $page['delimiter'];
