@@ -1,0 +1,302 @@
+<?php
+/**
+ * @file
+ * Unittest for placeOrderRequest flow
+ */
+
+/**
+ * Class BibdkSbCopyRequestUnitTestCase
+ */
+class BibdkSbCopyFieldsUnitTestCase extends DrupalUnitTestCase {
+
+  /**
+   * Info for unit test
+   *
+   * @return array
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'bibliotek.dk - sb fields unit test',
+      'description' => 'Unit Test fields generated for a sb request',
+      'group' => 'Bibliotek.dk - SB Kopi',
+    );
+  }
+
+  /**
+   * setup unit test
+   */
+  public function setUp() {
+    parent::setUp();
+    module_load_include('inc', 'bibdk_sbkopi', 'lib/SbCopyFields');
+  }
+
+  /**
+   * Test Default Fields are set and default values added
+   */
+  public function testDefaultFields() {
+    $default_values = array('customId' => 'testId', 'userAddress' => 'testAdress', 'userMail' => 'test@test.com', 'userTelephone' => '12345678', 'pid' => '870971-tsart:36023422', 'agencyId' => '790900', 'pickupAgencyId' => '790900', 'user_loaner_id' => 'test_id',);
+    $sb = new SbCopyFields();
+    $sb->setDefaultValues($default_values);
+
+    $sb->setDefaultFields();
+
+    $expected = array('pid' => array('name' => 'pid', 'title' => 'pid', 'required' => true, 'value' => '870971-tsart:36023422', 'type' => 'value',), 'agencyId' => array('name' => 'agencyId', 'title' => 'agencyId', 'required' => true, 'value' => '790900', 'type' => 'value',), 'pickupAgencyId' => array('name' => 'pickupAgencyId', 'title' => 'pickupAgencyId', 'required' => true, 'value' => '790900', 'type' => 'value',), 'user_loaner_id' => array('name' => 'user_loaner_id', 'title' => 'user_loaner_id', 'required' => true, 'value' => 'test_id', 'type' => 'value',), 'userName' => array('name' => 'userName', 'title' => 'userName', 'required' => true, 'value' => NULL, 'type' => 'textfield',), 'userMail' => array('name' => 'userMail', 'title' => 'userMail', 'required' => true, 'value' => 'test@test.com', 'type' => 'textfield',), 'user_interest_date' => array('name' => 'user_interest_date', 'title' => 'user_interest_date', 'required' => true, 'value' => NULL, 'type' => 'date',),);
+    $fields = $sb->getFields();
+
+    $this->assertEqual($expected, $fields, 'Fields are correctly set');
+  }
+
+  /**
+   * Test Article Fields are set and default values added
+   */
+  public function testArticleFields() {
+    $order_library_fields = array(0 => array('type' => 'volume', 'required' => '0',), 1 => array('type' => 'issue', 'required' => '0',), 2 => array('type' => 'publicationDateOfComponent', 'required' => '1',), 3 => array('type' => 'pagination', 'required' => '0',), 4 => array('type' => 'authorOfComponent', 'required' => '0',), 5 => array('type' => 'titleOfComponent', 'required' => '0',), 6 => array('type' => 'userReferenceSource', 'required' => '0',),);
+    $default_values = array(
+      'volumeOfComponent' => 'test',
+    );
+
+    $sb = new SbCopyFields();
+    $sb->setDefaultValues($default_values);
+    $sb->setArticleFields($order_library_fields);
+
+    $expected = array(
+      'volumeOfComponent' =>
+        array(
+          'name' => 'volumeOfComponent',
+          'title' => 'volumeOfComponent',
+          'required' => '0',
+          'value' => 'test',
+          'type' => 'textfield',
+        ),
+      'issueOfComponent' =>
+        array(
+          'name' => 'issueOfComponent',
+          'title' => 'issueOfComponent',
+          'required' => '0',
+          'value' => NULL,
+          'type' => 'textfield',
+        ),
+      'publicationYearOfComponent' =>
+        array(
+          'name' => 'publicationYearOfComponent',
+          'title' => 'publicationYearOfComponent',
+          'required' => '1',
+          'value' => NULL,
+          'type' => 'textfield',
+        ),
+      'pagesOfComponent' =>
+        array(
+          'name' => 'pagesOfComponent',
+          'title' => 'pagesOfComponent',
+          'required' => '0',
+          'value' => NULL,
+          'type' => 'textfield',
+        ),
+      'authorOfComponent' =>
+        array(
+          'name' => 'authorOfComponent',
+          'title' => 'authorOfComponent',
+          'required' => '0',
+          'value' => NULL,
+          'type' => 'textfield',
+        ),
+      'titleOfComponent' =>
+        array(
+          'name' => 'titleOfComponent',
+          'title' => 'titleOfComponent',
+          'required' => '0',
+          'value' => NULL,
+          'type' => 'textfield',
+        ),
+    );
+    $fields = $sb->getFields();
+
+    $this->assertEqual($expected, $fields, 'article Fields are correctly set');
+  }
+
+  /**
+   * Test fields are correctly converted to render array
+   */
+  public function testRender() {
+    $order_library_fields = array(0 => array('type' => 'volume', 'required' => '0',), 1 => array('type' => 'issue', 'required' => '0',), 2 => array('type' => 'publicationDateOfComponent', 'required' => '1',), 3 => array('type' => 'pagination', 'required' => '0',), 4 => array('type' => 'authorOfComponent', 'required' => '0',), 5 => array('type' => 'titleOfComponent', 'required' => '0',), 6 => array('type' => 'userReferenceSource', 'required' => '0',),);
+    $default_values = array('customId' => 'testId', 'userAddress' => 'testAdress', 'userMail' => 'test@test.com', 'userTelephone' => '12345678', 'pid' => '870971-tsart:36023422', 'agencyId' => '790900', 'pickupAgencyId' => '790900', 'user_loaner_id' => 'test_id',);
+    $sb = new SbCopyFields();
+    $sb->setDefaultValues($default_values);
+
+    $render = $sb->setDefaultFields()->setArticleFields($order_library_fields)->render();
+
+    debug(var_export($render, true));
+    $expected = array(
+      'pid' =>
+        array(
+          'pid' =>
+            array(
+              '#type' => 'value',
+              '#value' => '870971-tsart:36023422',
+            ),
+        ),
+      'agencyId' =>
+        array(
+          'agencyId' =>
+            array(
+              '#type' => 'value',
+              '#value' => '790900',
+            ),
+        ),
+      'pickupAgencyId' =>
+        array(
+          'pickupAgencyId' =>
+            array(
+              '#type' => 'value',
+              '#value' => '790900',
+            ),
+        ),
+      'user_loaner_id' =>
+        array(
+          'user_loaner_id' =>
+            array(
+              '#type' => 'value',
+              '#value' => 'test_id',
+            ),
+        ),
+      'userName' =>
+        array(
+          'userName' =>
+            array(
+              '#type' => 'textfield',
+              '#title' => 'userName',
+              '#default_value' => NULL,
+              '#required' => true,
+            ),
+        ),
+      'userMail' =>
+        array(
+          'userMail' =>
+            array(
+              '#type' => 'textfield',
+              '#title' => 'userMail',
+              '#default_value' => 'test@test.com',
+              '#required' => true,
+            ),
+        ),
+      'user_interest_date' =>
+        array(
+          'user_interest_date' =>
+            array(
+              '#type' => 'date_select',
+              '#title' => 'user_interest_date',
+              '#required' => true,
+              '#date_label_position' => 'within',
+              '#date_format' => 'd-m-Y',
+              '#default_value' => '2015-04-20',
+              '#date_year_range' => '0:+3',
+            ),
+        ),
+      'volumeOfComponent' =>
+        array(
+          'volumeOfComponent' =>
+            array(
+              '#type' => 'textfield',
+              '#title' => 'volumeOfComponent',
+              '#default_value' => NULL,
+              '#required' => '0',
+            ),
+        ),
+      'issueOfComponent' =>
+        array(
+          'issueOfComponent' =>
+            array(
+              '#type' => 'textfield',
+              '#title' => 'issueOfComponent',
+              '#default_value' => NULL,
+              '#required' => '0',
+            ),
+        ),
+      'publicationYearOfComponent' =>
+        array(
+          'publicationYearOfComponent' =>
+            array(
+              '#type' => 'textfield',
+              '#title' => 'publicationYearOfComponent',
+              '#default_value' => NULL,
+              '#required' => '1',
+            ),
+        ),
+      'pagesOfComponent' =>
+        array(
+          'pagesOfComponent' =>
+            array(
+              '#type' => 'textfield',
+              '#title' => 'pagesOfComponent',
+              '#default_value' => NULL,
+              '#required' => '0',
+            ),
+        ),
+      'authorOfComponent' =>
+        array(
+          'authorOfComponent' =>
+            array(
+              '#type' => 'textfield',
+              '#title' => 'authorOfComponent',
+              '#default_value' => NULL,
+              '#required' => '0',
+            ),
+        ),
+      'titleOfComponent' =>
+        array(
+          'titleOfComponent' =>
+            array(
+              '#type' => 'textfield',
+              '#title' => 'titleOfComponent',
+              '#default_value' => NULL,
+              '#required' => '0',
+            ),
+        ),
+    );
+    $this->assertEqual($expected, $render, 'Render array is created');
+  }
+
+  /**
+   * Test fields can be overridden
+   */
+  public function testAlterFields() {
+    $sb = new SbCopyFields();
+    $sb->setDefaultFields()->alterFields(function ($field) {
+      return array('overridden');
+    });
+
+    $expected = array(
+      'pid' =>
+        array(
+          0 => 'overridden',
+        ),
+      'agencyId' =>
+        array(
+          0 => 'overridden',
+        ),
+      'pickupAgencyId' =>
+        array(
+          0 => 'overridden',
+        ),
+      'user_loaner_id' =>
+        array(
+          0 => 'overridden',
+        ),
+      'userName' =>
+        array(
+          0 => 'overridden',
+        ),
+      'userMail' =>
+        array(
+          0 => 'overridden',
+        ),
+      'user_interest_date' =>
+        array(
+          0 => 'overridden',
+        ),
+    );
+    $fields = $sb->getFields();
+    $this->assertEqual($expected, $fields, 'Fields are overridden');
+  }
+
+}
