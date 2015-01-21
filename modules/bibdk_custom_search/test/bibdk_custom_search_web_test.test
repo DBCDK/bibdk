@@ -344,10 +344,7 @@ class BibdkCustomSearchWebTestCase extends DrupalWebTestCase {
 
   private function _testBibdkCustomSearchResult() {
     global $_bibdk_custom_search_value_title_1;
-    global $_bibdk_custom_search_page_path;
     global $_bibdk_custom_search_v_uuid_1;
-    global $_bibdk_custom_search_page_menu_title;
-    global $_bibdk_custom_search_page_title;
     global $_bibdk_custom_search_value_search_code_1;
 
     /**
