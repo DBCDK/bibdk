@@ -5,7 +5,7 @@
  * @param $query
  */
 function bibdk_custom_search_ting_openformat_conditions($query) {
-  return bibdk_custom_search_get_submitted_searchcodes($_REQUEST);
+  return bibdk_custom_search_get_submitted_searchcodes($_GET);
 }
 
 /**
@@ -21,7 +21,9 @@ function bibdk_custom_search_get_submitted_searchcodes($get_values) {
   if(!empty($get_values['select_material_type']) && $get_values['select_material_type'] != $get_values['page_id']){
     $page = _bibdk_custom_search_get_page_db($get_values['select_material_type']);
     $get_values['page_id'] = $get_values['select_material_type'];
+    $_GET['page_id'] = $get_values['select_material_type'];
     $get_values['delimiter'] = $page['delimiter'];
+    $_GET['delimiter'] = $page['delimiter'];
   }
 
   $extended_fields = _bibdk_custom_search_get_field_searchcodes();
