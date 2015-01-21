@@ -247,7 +247,6 @@ class BibdkCustomSearchWebTestCase extends DrupalWebTestCase {
     global $_bibdk_custom_search_page_path;
     global $_bibdk_custom_search_page_menu_title;
     global $_bibdk_custom_search_page_title;
-    global $_bibdk_custom_search_value_search_code_1;
 
     /**
      * Test setting a custom search value to 'disabled'.
