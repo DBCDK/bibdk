@@ -16,7 +16,7 @@ class BibdkCustomSearchListTestCase extends DrupalWebTestCase {
     module_enable(array('bibdk_custom_search_ting_openformat_mockup'));
     menu_rebuild();
 
-    parent::setUp('bibdk_custom_search','ting_openformat' ,'bibdk_custom_search_ting_openformat_mockup');
+    parent::setUp(array('bibdk_custom_search','ting_openformat' ,'bibdk_custom_search_ting_openformat_mockup'));
     variable_set('ting_search_url', $this->getAbsoluteUrl('ting_openformat_webservice'));
     variable_set('bibdk_provider_security_code', 'testhest');
     variable_set('search_active_modules', array('ting_openformat' => 'ting_openformat'));
