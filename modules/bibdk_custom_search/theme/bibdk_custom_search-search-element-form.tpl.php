@@ -6,7 +6,6 @@
 ?>
 <div class='fieldset-legend'>
   <label for="<?php print $element_id; ?>"><?php print $title; ?></label></div>
-<!--<div class="fieldset-description">--><?php //print $description;?><!--</div>-->
 <div class="custom-search--helptext-container">
   <p class="helptext popover-button" title="<?php print strip_tags($help); ?>">
     <a href="#" aria-label="<?php print t('Help', array(), array('context' => 'bibdk_theme')); ?>" role="button">?</a>
