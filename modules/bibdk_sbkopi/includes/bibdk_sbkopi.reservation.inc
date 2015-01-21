@@ -50,8 +50,12 @@ function bibdk_sbkopi_reservation_form($form, &$form_state, $pid, $state = NULL)
  * @return array
  */
 function bibdk_sbkopi_get_fields_for_manifestation($order_library, $manifestation, $default_values) {
-  $order_library_fields = $order_library->getAgencyFields()
-    ->getOrderParametersForType($manifestation->getOrsOrderMaterialType());
+  if($manifestation->getSpecifyArticleData()) {
+    $order_library_fields = $order_library->getAgencyFields()
+      ->getOrderParametersForType($manifestation->getOrsOrderMaterialType());
+  } else {
+    $order_library_fields = array();
+  }
 
   $sb = new SbCopyFields();
 
