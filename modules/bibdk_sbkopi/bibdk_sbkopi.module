@@ -118,21 +118,6 @@ function bibdk_sbkopi_ting_openformat_actions($type, $entity, $view_mode, $langc
 }
 
 /**
- * Implements hook_bibdk_usersettings_user_tabs().
- *
- * @return array
- */
-function bibdk_sbkopi_bibdk_usersettings_user_tabs() {
-  $tab['sb_kopi'] = array(
-    'title' => t('sb_selvhenter', array(), array('context' => 'bibdk_reservation')),
-    'description' => t('sb_selvhenter_description', array(), array('context' => 'bibdk_reservation')),
-    'weight' => 2,
-  );
-
-  return $tab;
-}
-
-/**
  * Implements hook_bibdk_usersettings_user_settings().
  *
  * @return array
