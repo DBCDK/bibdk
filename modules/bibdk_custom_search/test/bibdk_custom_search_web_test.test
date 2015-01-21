@@ -235,7 +235,6 @@ class BibdkCustomSearchWebTestCase extends DrupalWebTestCase {
       'search_block_form'
     );
     $this->assertText($element_label, format_string('The element label "@element_label" was found', array('@element_label' => $element_label)));
-    $this->assertText($element_description, format_string('The element description "@element_description" was found', array('@element_description' => substr($element_description, 0, 40) . '[...]')));
     $this->assertFieldByName($_bibdk_custom_search_value_search_code_1 . '[' . $_bibdk_custom_search_value_title_1 .']');
     $this->assertNoPattern('/<form .*<form .*<\/form/sm', format_string('No nested forms found.'));
 
