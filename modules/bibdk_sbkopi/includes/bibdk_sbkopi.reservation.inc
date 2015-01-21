@@ -35,7 +35,6 @@ function bibdk_sbkopi_reservation_form($form, &$form_state, $pid, $state = NULL)
     $order_library = $result['order_library'];
     $manifestation = ting_openformat_get_single_manifestation($pid);
     $default_values = bibdk_sbkopi_default_values($form_state, $manifestation, $order_library);
-    var_export($default_values);
     $fields = bibdk_sbkopi_get_fields_for_manifestation($order_library, $manifestation, $default_values);
     $form += bibdk_sbkopi_order_form_fields($manifestation, $fields);
     return $form;
@@ -53,8 +52,6 @@ function bibdk_sbkopi_reservation_form($form, &$form_state, $pid, $state = NULL)
 function bibdk_sbkopi_get_fields_for_manifestation($order_library, $manifestation, $default_values) {
   $order_library_fields = $order_library->getAgencyFields()
     ->getOrderParametersForType($manifestation->getOrsOrderMaterialType());
-
-  var_export($order_library_fields);
 
   $sb = new SbCopyFields();
 
@@ -149,6 +146,9 @@ function bibdk_sbkopi_order_form_fields($manifestation, $sb_fields) {
     '#type' => 'fieldset',
     '#title' => t('sb_order_required_information', array(), array('context' => 'bibdk_sbkopi')),
     '#description' => t('sb_order_required_information_description', array(), array('context' => 'bibdk_sbkopi')),
+    '#attributes' => array(
+      'class' => array('sbkopi-fields-container'),
+    ),
   );
 
   $form['userinfo'] += $sb_fields;
@@ -206,7 +206,9 @@ function bibdk_sbkopi_order_form_submit($form, &$form_state) {
  * @return array
  */
 function bibdk_sbkopi_manifestation_view($manifestation, $title = 'You are about to order the following') {
-  return bibdk_reservation_render_custom_manifestation_view($manifestation, $title);
+  $render = bibdk_reservation_render_custom_manifestation_view($manifestation, $title);
+  $render['#attributes']['class'] = array('sbkopi-manifestation-container');
+  return $render;
 }
 
 /**
