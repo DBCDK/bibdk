@@ -60,35 +60,11 @@ class BibdkSbCopyFieldsUnitTestCase extends DrupalUnitTestCase {
     $sb->setArticleFields($order_library_fields);
 
     $expected = array(
-      'volumeOfComponent' =>
+      'publicationTitle' =>
         array(
-          'name' => 'volumeOfComponent',
-          'title' => 'volumeOfComponent',
-          'required' => '0',
-          'value' => 'test',
-          'type' => 'textfield',
-        ),
-      'issueOfComponent' =>
-        array(
-          'name' => 'issueOfComponent',
-          'title' => 'issueOfComponent',
-          'required' => '0',
-          'value' => NULL,
-          'type' => 'textfield',
-        ),
-      'publicationYearOfComponent' =>
-        array(
-          'name' => 'publicationYearOfComponent',
-          'title' => 'publicationYearOfComponent',
-          'required' => '1',
-          'value' => NULL,
-          'type' => 'textfield',
-        ),
-      'pagesOfComponent' =>
-        array(
-          'name' => 'pagesOfComponent',
-          'title' => 'pagesOfComponent',
-          'required' => '0',
+          'name' => 'publicationTitle',
+          'title' => 'publicationTitle',
+          'required' => false,
           'value' => NULL,
           'type' => 'textfield',
         ),
@@ -96,7 +72,7 @@ class BibdkSbCopyFieldsUnitTestCase extends DrupalUnitTestCase {
         array(
           'name' => 'authorOfComponent',
           'title' => 'authorOfComponent',
-          'required' => '0',
+          'required' => true,
           'value' => NULL,
           'type' => 'textfield',
         ),
@@ -104,12 +80,54 @@ class BibdkSbCopyFieldsUnitTestCase extends DrupalUnitTestCase {
         array(
           'name' => 'titleOfComponent',
           'title' => 'titleOfComponent',
-          'required' => '0',
+          'required' => true,
+          'value' => NULL,
+          'type' => 'textfield',
+        ),
+      'publicationDateOfComponent' =>
+        array(
+          'name' => 'publicationDateOfComponent',
+          'title' => 'publicationDateOfComponent',
+          'required' => false,
+          'value' => NULL,
+          'type' => 'textfield',
+        ),
+      'publicationYearOfComponent' =>
+        array(
+          'name' => 'publicationYearOfComponent',
+          'title' => 'publicationYearOfComponent',
+          'required' => true,
+          'value' => NULL,
+          'type' => 'textfield',
+        ),
+      'issueOfComponent' =>
+        array(
+          'name' => 'issueOfComponent',
+          'title' => 'issueOfComponent',
+          'required' => false,
+          'value' => NULL,
+          'type' => 'textfield',
+        ),
+      'volumeOfComponent' =>
+        array(
+          'name' => 'volumeOfComponent',
+          'title' => 'volumeOfComponent',
+          'required' => false,
+          'value' => 'test',
+          'type' => 'textfield',
+        ),
+      'pagesOfComponent' =>
+        array(
+          'name' => 'pagesOfComponent',
+          'title' => 'pagesOfComponent',
+          'required' => true,
           'value' => NULL,
           'type' => 'textfield',
         ),
     );
+
     $fields = $sb->getFields();
+    debug(var_export($fields, true));
 
     $this->assertEqual($expected, $fields, 'article Fields are correctly set');
   }
@@ -188,48 +206,18 @@ class BibdkSbCopyFieldsUnitTestCase extends DrupalUnitTestCase {
               '#required' => true,
               '#date_label_position' => 'within',
               '#date_format' => 'd-m-Y',
-              '#default_value' => '2015-04-20',
+              '#default_value' => '2015-04-22',
               '#date_year_range' => '0:+3',
             ),
         ),
-      'volumeOfComponent' =>
+      'publicationTitle' =>
         array(
-          'volumeOfComponent' =>
+          'publicationTitle' =>
             array(
               '#type' => 'textfield',
-              '#title' => 'volumeOfComponent',
+              '#title' => 'publicationTitle',
               '#default_value' => NULL,
-              '#required' => '0',
-            ),
-        ),
-      'issueOfComponent' =>
-        array(
-          'issueOfComponent' =>
-            array(
-              '#type' => 'textfield',
-              '#title' => 'issueOfComponent',
-              '#default_value' => NULL,
-              '#required' => '0',
-            ),
-        ),
-      'publicationYearOfComponent' =>
-        array(
-          'publicationYearOfComponent' =>
-            array(
-              '#type' => 'textfield',
-              '#title' => 'publicationYearOfComponent',
-              '#default_value' => NULL,
-              '#required' => '1',
-            ),
-        ),
-      'pagesOfComponent' =>
-        array(
-          'pagesOfComponent' =>
-            array(
-              '#type' => 'textfield',
-              '#title' => 'pagesOfComponent',
-              '#default_value' => NULL,
-              '#required' => '0',
+              '#required' => false,
             ),
         ),
       'authorOfComponent' =>
@@ -239,7 +227,7 @@ class BibdkSbCopyFieldsUnitTestCase extends DrupalUnitTestCase {
               '#type' => 'textfield',
               '#title' => 'authorOfComponent',
               '#default_value' => NULL,
-              '#required' => '0',
+              '#required' => true,
             ),
         ),
       'titleOfComponent' =>
@@ -249,7 +237,57 @@ class BibdkSbCopyFieldsUnitTestCase extends DrupalUnitTestCase {
               '#type' => 'textfield',
               '#title' => 'titleOfComponent',
               '#default_value' => NULL,
-              '#required' => '0',
+              '#required' => true,
+            ),
+        ),
+      'publicationDateOfComponent' =>
+        array(
+          'publicationDateOfComponent' =>
+            array(
+              '#type' => 'textfield',
+              '#title' => 'publicationDateOfComponent',
+              '#default_value' => NULL,
+              '#required' => false,
+            ),
+        ),
+      'publicationYearOfComponent' =>
+        array(
+          'publicationYearOfComponent' =>
+            array(
+              '#type' => 'textfield',
+              '#title' => 'publicationYearOfComponent',
+              '#default_value' => NULL,
+              '#required' => true,
+            ),
+        ),
+      'issueOfComponent' =>
+        array(
+          'issueOfComponent' =>
+            array(
+              '#type' => 'textfield',
+              '#title' => 'issueOfComponent',
+              '#default_value' => NULL,
+              '#required' => false,
+            ),
+        ),
+      'volumeOfComponent' =>
+        array(
+          'volumeOfComponent' =>
+            array(
+              '#type' => 'textfield',
+              '#title' => 'volumeOfComponent',
+              '#default_value' => NULL,
+              '#required' => false,
+            ),
+        ),
+      'pagesOfComponent' =>
+        array(
+          'pagesOfComponent' =>
+            array(
+              '#type' => 'textfield',
+              '#title' => 'pagesOfComponent',
+              '#default_value' => NULL,
+              '#required' => true,
             ),
         ),
     );

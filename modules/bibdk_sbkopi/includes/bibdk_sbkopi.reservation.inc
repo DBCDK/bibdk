@@ -50,20 +50,15 @@ function bibdk_sbkopi_reservation_form($form, &$form_state, $pid, $state = NULL)
  * @return array
  */
 function bibdk_sbkopi_get_fields_for_manifestation($order_library, $manifestation, $default_values) {
-  if($manifestation->getSpecifyArticleData()) {
-    $order_library_fields = $order_library->getAgencyFields()
-      ->getOrderParametersForType($manifestation->getOrsOrderMaterialType());
-  } else {
-    $order_library_fields = array();
+  $sb = new SbCopyFields();
+  $sb->setDefaultValues($default_values)
+    ->setDefaultFields();
+
+  if ($manifestation->getSpecifyArticleData()) {
+    $sb->setArticleFields();
   }
 
-  $sb = new SbCopyFields();
-
-  return $sb->setDefaultValues($default_values)
-    ->setDefaultFields()
-    ->setArticleFields($order_library_fields)
-    ->alterFields('bibdk_sbkopi_translate_field_labels')
-    ->render();
+  return $sb->alterFields('bibdk_sbkopi_translate_field_labels')->render();
 }
 
 /**
@@ -83,6 +78,7 @@ function bibdk_sbkopi_default_values($form_state, Manifestation $manifestation, 
     'agencyId' => $order_library->getAgencyId(),
     'pickupAgencyId' => $order_library->getBranch()->getBranchId(),
     'user_loaner_id' => $order_library->getUserId(),
+    'publicationTitle' => $manifestation->getTitle(),
   );
 
   return $form_state_values + $user_values + $custom_values;

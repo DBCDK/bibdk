@@ -13,13 +13,13 @@ class SbCopyFields {
 
   private $articleFields = array(
     'publicationTitle' => array('required' => FALSE),
-    'authorOfComponent' => array('required' => FALSE),
-    'titleOfComponent' => array('required' => FALSE),
+    'authorOfComponent' => array('required' => TRUE),
+    'titleOfComponent' => array('required' => TRUE),
     'publicationDateOfComponent' => array('required' => FALSE),
-    'publicationYearOfComponent' => array('required' => FALSE),
+    'publicationYearOfComponent' => array('required' => TRUE),
     'issueOfComponent' => array('required' => FALSE),
     'volumeOfComponent' => array('required' => FALSE),
-    'pagesOfComponent' => array('required' => FALSE),
+    'pagesOfComponent' => array('required' => TRUE),
   );
   private $articleOpenOrderMapping = array(
     'authorOfComponent' => 'authorOfComponent',
@@ -94,8 +94,8 @@ class SbCopyFields {
    * @param array $agencyFields
    * @return SbCopyFields $this
    */
-  public function setArticleFields($agencyFields) {
-    $this->fields += $this->mapOpenOrderFields($this->mapDefaultValues($this->articleFields, $this->defaultValues), $agencyFields, $this->articleOpenOrderMapping);
+  public function setArticleFields() {
+    $this->fields += $this->mapDefaultValues($this->articleFields, $this->defaultValues);
     return $this;
   }
 
