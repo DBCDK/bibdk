@@ -10,17 +10,17 @@ function bibdk_openuserstatus_form($form) {
   $response = bibdk_openuserstatus_request();
   $form = bibdk_openuserstatus_get_tables($form, $response);
   $favourites = bibdk_favourite_get_favourites();
-  $do_print_status = false;
-  
+  $do_print_status = FALSE;
+
   // check if user has one library with userdata added
   foreach ($favourites as $favourite) {
     $res = $favourite->getUserId();
     if (!empty($res)) {
-      $do_print_status = True;
+      $do_print_status = TRUE;
     }
   }
   if (!$do_print_status) {
-    $text =  t('label_userstatus_no_favourite', array(), array('context' => 'bibdk_openuserstatus'));
+    $text = t('label_userstatus_no_favourite', array(), array('context' => 'bibdk_openuserstatus'));
     $type = 'warning';
     drupal_set_message($text, $type);
   }
@@ -80,7 +80,7 @@ function bibdk_openuserstatus_get_reservations($response) {
 function bibdk_openuserstatus_get_loans_table($form, $loans, $named_agencies) {
 
   $data = $disabled = array();
-  
+
   $favourites = bibdk_favourite_get_favourites();
 
   $data['header'] = array(
@@ -119,8 +119,8 @@ function bibdk_openuserstatus_get_loans_table($form, $loans, $named_agencies) {
 
       $status_html = bibdk_openuserstatus_check_returndate($material['dateDue']);
 
-      if ( !bibdk_openuserstatus_check_renewable($material, $favourites) ) {
-        $disabled[$id] = true;
+      if (!bibdk_openuserstatus_check_renewable($material, $favourites)) {
+        $disabled[$id] = TRUE;
         $status_html['data']['#renewable'] = t('renewable_false_msg', array(), array('context' => 'bibdk_openuserstatus'));
       }
 
@@ -157,9 +157,9 @@ function bibdk_openuserstatus_get_loans_table($form, $loans, $named_agencies) {
   );
 
   //disable checkboxes
-  foreach( $disabled as $id => $disable ) {
-    if ( $disable ) {
-      $form['loans']['loans_table'][$id]['#disabled'] = true;
+  foreach ($disabled as $id => $disable) {
+    if ($disable) {
+      $form['loans']['loans_table'][$id]['#disabled'] = TRUE;
     }
   }
 
@@ -177,7 +177,6 @@ function bibdk_openuserstatus_get_loans($response) {
   return bibdk_openuserstatus_get_group_elements($response, 'loanedItems', 'loan');
 }
 
-
 /**
  * Check if library allows renewal
  *
@@ -188,22 +187,21 @@ function bibdk_openuserstatus_check_renewable($material, $favourites) {
 
   $agencyId = isset($material['agencyId']) ? $material['agencyId'] : FALSE;
 
-  if ( !$agencyId ) {
+  if (!$agencyId) {
     return FALSE;
   }
 
-if(!isset($favourites[$agencyId])){
-return FALSE;
-}
+  if (!isset($favourites[$agencyId])) {
+    return FALSE;
+  }
 
-  if ( $favourites[$agencyId]->getRenewOrderAllowed() ) {
+  if ($favourites[$agencyId]->getRenewOrderAllowed()) {
     return TRUE;
   }
 
   return FALSE;
 
 }
-
 
 /**
  * Check if return date is valid (of format dd.mm.yyyy) and
@@ -234,7 +232,8 @@ function bibdk_openuserstatus_check_returndate($returnDate) {
 }
 
 /**
- * Creates the necessary items and header arrays for the ready_for_pickup table form
+ * Creates the necessary items and header arrays for the ready_for_pickup table
+ * form
  *
  * @param array $form Form structure
  * @param array $reservations List of reservations
@@ -258,12 +257,12 @@ function bibdk_openuserstatus_get_reservations_inprocess_table($form, $reservati
     '#theme' => 'bibdk_openuserstatus_help_icon',
     '#label' => t('bibdk_openuserstatus_change_library', array(), array('context' => 'bibdk_userstatus')),
   );
-  
+
   $help_icon_no_change_library = array(
     '#theme' => 'bibdk_openuserstatus_help_icon',
     '#label' => t('bibdk_openuserstatus_no_change_library', array(), array('context' => 'bibdk_userstatus')),
   );
-  
+
   if (!empty($reservations)) {
     $items = array();
     $in_process_states = array('In process', 'Requested via ill', 'Requested');
@@ -359,7 +358,8 @@ function bibdk_openuserstatus_select($pickUpAgencies, $reservation) {
 }
 
 /**
- * Creates the necessary items and header arrays for the reservations tableselect form
+ * Creates the necessary items and header arrays for the reservations
+ * tableselect form
  *
  * @param array $form Form structure
  * @param array $reservations List of reservations
@@ -389,7 +389,7 @@ function bibdk_openuserstatus_get_reservations_readyforpickup_table($form, $rese
       // ready for pickup.
       // See also bibdk_openuserstatus_get_reservations_inprocess_table().
       $integra_pickup_bug = isset($reservation['pickUpExpiryDate']) && $reservation['orderStatus'] == 'In process';
-      if ($available_pickup || $integra_pickup_bug ) {
+      if ($available_pickup || $integra_pickup_bug) {
         $item = array();
         $item['material'] = _bibdk_openuserstatus_material($reservation);
         $item['library'] = $named_agencies[$reservation['agencyId']];
@@ -414,7 +414,8 @@ function bibdk_openuserstatus_get_reservations_readyforpickup_table($form, $rese
     '#empty' => $data['msg'],
     '#attributes' => array(
       'class' => array(
-        'table', $data['class'],
+        'table',
+        $data['class'],
       ),
     ),
   );
@@ -478,7 +479,8 @@ function bibdk_openuserstatus_get_fiscal_account_table($form, $fiscals) {
         '#empty' => $agency['msg'],
         '#attributes' => array(
           'class' => array(
-            'table', $agency['class'],
+            'table',
+            $agency['class'],
           ),
         ),
       );
@@ -488,14 +490,12 @@ function bibdk_openuserstatus_get_fiscal_account_table($form, $fiscals) {
           '#type' => 'markup',
           '#prefix' => '<div class="payment-url-link">',
           '#suffix' => '</div>',
-          '#markup' => l(
-              t('fiscal_branch_link', array(), array('context' => 'bibdk_openuserstatus')), $agency['paymentUrl'], array(
-            'attributes' => array(
-              'class' => array('btn', 'btn-blue'),
-              'target' => array('_blank'),
-            ),
-              )
-          ),
+          '#markup' => l(t('fiscal_branch_link', array(), array('context' => 'bibdk_openuserstatus')), $agency['paymentUrl'], array(
+              'attributes' => array(
+                'class' => array('btn', 'btn-blue'),
+                'target' => array('_blank'),
+              ),
+            )),
         );
       }
     }
@@ -565,7 +565,7 @@ function _bibdk_openuserstatus_material($material) {
 function bibdk_openuserstatus_get_pickup_agencies_from_material_list($reservations) {
   $agencies = array();
 
-  foreach($reservations as $reservation) {
+  foreach ($reservations as $reservation) {
     if (isset($reservation['agencyId'])) {
       if (!in_array($reservation['agencyId'], $agencies)) {
         $agencies[] = $reservation['agencyId'];
