@@ -109,7 +109,7 @@ function bibdk_reservation_order_any_edition_link($collection, $work_types, $uid
         break;
       }
     }
-    
+
     if ( !_bibdk_reservation_is_mattype_order_ok(ucfirst($mat_type)) ) {
       // make "not for order" text
       $row['label_mat']['data'] = array(
@@ -131,6 +131,7 @@ function bibdk_reservation_order_any_edition_link($collection, $work_types, $uid
         'content' => array(
           '#markup' => t('can not be ordered', array(), array('context' => 'bibdk_reservation')),
         ),
+        '#attributes' => array(),
       );
     }
     else {
@@ -154,7 +155,7 @@ function bibdk_reservation_order_any_edition_link($collection, $work_types, $uid
     $table['#rows'][]['data'] = $row;
 
   }
- 
+
   $infotext = _bibdk_reservation_infotext_order_any_edition_create_link($uid);
 
   $button = theme('bibdk_reservation_order_any_btn', array(

@@ -5,7 +5,7 @@
  * @param $id
  * @return array
  */
-function bibdk_cart_get_link($id) {
+function bibdk_cart_get_link($id, $linktext, $prefix) {
   if (!is_array($id)) {
     $id = array($id);
   }
@@ -14,18 +14,25 @@ function bibdk_cart_get_link($id) {
     return array();
   }
 
-  if (BibdkCart::checkInCart($id)) {
-    $title = t('remove_item_from_cart');
-  }
-  else {
-    $title = t('add_item_to_cart');
-  }
+  $class = array('add-item-to-cart');
+  $class += BibdkCart::checkInCart($id) ? array('in-cart') : array();
+
   $id = implode(',', $id);
+
   $link = array(
-    '#href' => '#' . $id,
-    '#title' => $title,
-    '#data-pid' => $id,
-    '#weight' => 4,
+    '#theme' => 'link',
+    '#text' => t($linktext, array(), array('context' => 'bibdk_reservation')),
+    '#path' => '#' . $id,
+    '#options' => array(
+      'attributes' => array(
+        'id' => array($prefix . '-' . drupal_html_id($id)),
+        'data-cart-pid' => $id,
+        'class' => $class,
+      ),
+      'html' => FALSE,
+      'svg' => 'svg-star',
+    ),
+    '#weight' => -1,
   );
   drupal_add_js(drupal_get_path('module', 'bibdk_cart') . '/js/bibdk_cart.js');
   return $link;
