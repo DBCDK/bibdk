@@ -1,4 +1,4 @@
-<p class="helptext popover-button" title="<?php print $label; ?>">
+<p class="helptext popover-button show-for-large-up" title="<?php print $label; ?>">
   <a href="#" aria-label="<?php print t('Help', array(), array('context' => 'bibdk_theme')); ?>" role="button">?</a>
 </p>
 <div class="popover element-wrapper linkme-wrapper visuallyhidden hide-text">
