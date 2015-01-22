@@ -124,12 +124,8 @@ function bibdk_autocomplete_form_search_block_form_alter(&$form, &$form_state, $
   else {
     $page_path = $_GET['q'];
   }
-
-
+  
   $autocomplete_elements = variable_get('bibdk_autocomplete_var', array());
-
-  dpm($page_path);
-  dpm($autocomplete_elements,'AUTO COMPLETE');
   foreach ($autocomplete_elements as $key => $page) {
     if ($page['page_path'] == $page_path) {
       $vars = $page['vars'];
