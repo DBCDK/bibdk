@@ -13,6 +13,7 @@
           var $new = $('#search-advanced-panel', data);
           $('#search-advanced-panel').replaceWith($new);
           Drupal.attachBehaviors($new, Drupal.settings);
+          onLoad.setFocus();
         })
         .fail(function() {
           throw new Error('An error happend while loading search pages');
