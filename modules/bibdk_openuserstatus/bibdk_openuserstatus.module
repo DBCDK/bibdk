@@ -91,8 +91,6 @@ function bibdk_openuserstatus_theme() {
       'path' => $theme_path,
       'variables' => array(
         'table_title' => '',
-        'count' => '',
-        'heading_level' => '2'
       ),
     ),
     'bibdk_openuserstatus_return_date' => array(

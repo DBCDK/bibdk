@@ -138,9 +138,21 @@ function bibdk_openuserstatus_get_loans_table($form, $loans, $named_agencies) {
   }
 
   $form['loans']['loans_name'] = array(
+    '#type' => 'html_tag',
+    '#tag' => 'div',
+    '#attributes' => array(
+      'class' => array(
+        'element-title',
+      ),
+    ),
+    '#value' => $loans_text,
+    '#value_prefix' => '<h2>',
+    '#value_suffix' => '</h2>',
+
+    /* TODO mmj cleanup -- delete template if accepted as is
     '#theme' => 'bibdk_openuserstatus_table_name',
     '#table_title' => $loans_text,
-    '#count' => count($data['items']),
+    '#count' => count($data['items']),*/
   );
 
   $form['loans']['loans_table'] = array(
@@ -304,9 +316,22 @@ function bibdk_openuserstatus_get_reservations_inprocess_table($form, $reservati
   }
 
   $form['reservations']['reservations_name'] = array(
+    '#type' => 'html_tag',
+    '#tag' => 'div',
+    '#attributes' => array(
+      'class' => array(
+        'element-title',
+      ),
+    ),
+    '#value' => $reservations_in_process,
+    '#value_prefix' => '<h2>',
+    '#value_suffix' => '</h2>',
+
+    /* TODO mmj cleanup -- delete template if accepted as is
     '#theme' => 'bibdk_openuserstatus_table_name',
     '#table_title' => $reservations_in_process,
     '#count' => count($data['items']),
+    */
   );
   $form['reservations']['reservations_table'] = array(
     '#type' => 'tableselect',
@@ -402,9 +427,22 @@ function bibdk_openuserstatus_get_reservations_readyforpickup_table($form, $rese
   }
 
   $form['readyforpickup']['readyforpickup_name'] = array(
+    '#type' => 'html_tag',
+    '#tag' => 'div',
+    '#attributes' => array(
+      'class' => array(
+        'element-title',
+      ),
+    ),
+    '#value' => $readyforpcikTxt,
+    '#value_prefix' => '<h2>',
+    '#value_suffix' => '</h2>',
+
+    /* TODO mmj cleanup -- delete template if accepted as is
     '#theme' => 'bibdk_openuserstatus_table_name',
     '#table_title' => $readyforpcikTxt,
     '#count' => count($data['items']),
+    */
   );
 
   $form['readyforpickup']['readyforpickup_table'] = array(
@@ -431,8 +469,21 @@ function bibdk_openuserstatus_get_fiscal_account_table($form, $fiscals) {
   $data = array();
   $fiscalBaseTxt = t('fiscal_account', array(), array('context' => 'bibdk_userstatus'));
   $form['fiscal']['fiscal_name'] = array(
+    '#type' => 'html_tag',
+    '#tag' => 'div',
+    '#attributes' => array(
+      'class' => array(
+        'element-title',
+      ),
+    ),
+    '#value' => $fiscalBaseTxt,
+    '#value_prefix' => '<h2>',
+    '#value_suffix' => '</h2>',
+
+    /* TODO mmj cleanup -- delete template if accepted as is
     '#theme' => 'bibdk_openuserstatus_table_name',
     '#table_title' => $fiscalBaseTxt,
+    */
   );
   $header = array(
     'material' => t('author_title', array(), array('context' => 'bibdk_openuserstatus')),
@@ -467,10 +518,23 @@ function bibdk_openuserstatus_get_fiscal_account_table($form, $fiscals) {
       $agency['msg'] = t('we_have_no_registered_debt_associated_with_your_name', array(), array('context' => 'bibdk_openuserstatus'));
       $agency['header'] = $header;
       $form['fiscal'][$agencyId]['branchName'] = array(
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#attributes' => array(
+          'class' => array(
+            'element-title',
+          ),
+        ),
+        '#value' => $agency['branchName'],
+        '#value_prefix' => '<h3>',
+        '#value_suffix' => '</h3>',
+
+        /* TODO mmj cleanup -- delete template if accepted as is
         '#theme' => 'bibdk_openuserstatus_table_name',
         '#table_title' => $agency['branchName'],
         '#count' => count($agency['items']),
         '#heading_level' => '3',
+        */
       );
       $form['fiscal'][$agencyId]['fiscal_table'] = array(
         '#theme' => 'table',

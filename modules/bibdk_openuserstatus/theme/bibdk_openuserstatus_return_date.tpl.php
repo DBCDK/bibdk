@@ -10,13 +10,9 @@ else {
 }
 ?>
 
-<p>
-  <span class="alert <?php print $alert_class;?>" <?php print $title_attr;?>></span>
-  <span><?php print $date;?></span>
-</p>
-
-<?php
-if ( $renewable ) {
-  print '<p>' . $renewable . '</p>';
-}
-?>
+<span><?php print $date; ?></span>
+<span class="<?php print $alert_class; ?>" <?php print $title_attr; ?>>
+   <?php if ($renewable) : ?>
+     <?php print '<p>' . $renewable . '</p>'; ?>
+   <?php endif; ?>
+  </span>
