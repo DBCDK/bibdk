@@ -16,7 +16,7 @@ class BibdkCustomSearchListTestCase extends DrupalWebTestCase {
     module_enable(array('bibdk_custom_search_ting_openformat_mockup'));
     menu_rebuild();
 
-    parent::setUp('bibdk_custom_search','ting_openformat' ,'bibdk_custom_search_ting_openformat_mockup');
+    parent::setUp(array('bibdk_custom_search','ting_openformat' ,'bibdk_custom_search_ting_openformat_mockup'));
     variable_set('ting_search_url', $this->getAbsoluteUrl('ting_openformat_webservice'));
     variable_set('bibdk_provider_security_code', 'testhest');
     variable_set('search_active_modules', array('ting_openformat' => 'ting_openformat'));
@@ -43,44 +43,11 @@ class BibdkCustomSearchListTestCase extends DrupalWebTestCase {
   public function testRunner() {
     $page = $this->_addElements();
     $this->testLinkIsPresent($page);
-    //$this->testPopUpWindowIsPresent($page);
-    //$this->testNoDuplets($page);
-    //$this->testSelectOptionsPresent($page);
-    //$this->testInvalidFacet($page);
-    //$this->testEmptySearchCode($page);
-    // Create and log in our privileged user.
   }
 
   private function testLinkIsPresent($page){
     $this->drupalGet($page);
     $this->assertLink('see all options');
-  }
-
-  private function testNoDuplets($page){
-    $this->assertNoText('<option value="test-value-2">test-value-1</option>');
-    $this->assertNoText('<label class="option" for="edit-test-searchcode-test-value-1">test-value-1 </label>');
-  }
-
-  private function testSelectOptionsPresent($page){
-    // Test to see if options are present
-    $this->assertRaw('<option value="test-value-2">test-value-2</option>');
-    $this->assertRaw('<option value="test-value-3">test-value-3</option>');
-  }
-
-  private function testInvalidFacet($page){
-    db_update('bibdk_custom_search_options')->fields(array('value' => 'facet.invalid'))->condition('value', 'facet.type', '=')->execute();
-    db_truncate('cache')->execute();
-    $this->drupalGet($page);
-    $this->assertNoLink('see all options');
-  }
-
-  private function testEmptySearchCode($page){
-    db_update('bibdk_custom_search_options')->fields(array('value' => 'term.type=facet.type'))->condition('value', 'facet.invalid', '=')->execute();
-    db_truncate('cache')->execute();
-    $this->drupalGet($page);
-    $this->assertLink('see all options');
-    $this->assertRaw('<option value="test-value-2">test-value-2</option>');
-    $this->assertRaw('<option value="test-value-3">test-value-3</option>');
   }
 
 

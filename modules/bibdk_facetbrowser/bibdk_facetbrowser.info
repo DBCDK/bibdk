@@ -9,4 +9,4 @@ configure = admin/config/ting/facets
 files[] = test/bibdk_facetbrowser.unit.test
 files[] = test/bibdk_facetbrowser.web.test
 
-dependencies = ting_openformat
+dependencies[] = ting_openformat

@@ -292,8 +292,8 @@ function bibdk_holdingstatus_get_holdings($agencyIds, $pids) {
  * @param $subWork BibdkSubwork
  * @return array
  */
-function bibdk_holdingstatus_ting_openformat_subwork_materialtype_actions($ordered_subworks, $type_id, $subtype_id, $subWork) {
-
+function bibdk_holdingstatus_ting_openformat_subwork_materialtype_actions($manifestations, $type) {
+  $subWork = new BibdkSubwork($type, $manifestations);
   $referer = parse_url($_SERVER['HTTP_REFERER']);
   $query = ( isset($referer['query']) ) ? urldecode($referer['query']) : '';
   $query = explode('&', $query);
@@ -318,7 +318,7 @@ function bibdk_holdingstatus_ting_openformat_subwork_materialtype_actions($order
   $render = array(
     'localisations_link' => array(
       '#type' => 'link',
-      '#title' => '<span class="icon icon-left icon-lightgrey-list">&nbsp;</span>' . t("See localisations for this material", array(), array('context' => 'ting_holdingstatus')),
+      '#title' => t("See localisations for this material", array(), array('context' => 'ting_holdingstatus')),
       '#href' => $url,
       '#options' => array(
         'html' => TRUE,
@@ -326,9 +326,6 @@ function bibdk_holdingstatus_ting_openformat_subwork_materialtype_actions($order
       '#attributes' => array(
         'class' => array(
           'bibdk-popup-link',
-          'text-small',
-          'text-lightgrey',
-          'clearfix'
         ),
         'id' => array(
           drupal_html_id('selid-' . reset($lookup_pids)),

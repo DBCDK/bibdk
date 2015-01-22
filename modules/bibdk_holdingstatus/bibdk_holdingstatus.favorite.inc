@@ -87,6 +87,7 @@ function bibdk_holdingstatus_holdings_for_favourites_view($pid){
       'js' => array(drupal_get_path('module', 'bibdk_holdingstatus') . '/js/bibdk_holdingstatus.js'),
     ),
   );
+  $fav['data_id'] = drupal_html_id('bibdk_holdingstatus-' . $pid);
 
   return theme('bibdk_holdings_manifestation_field', $fav);
 }
@@ -101,9 +102,9 @@ function _bibdk_holdingsstatus_favourite_item_list($pid) {
 
   // get localizations
   $loks = bibdk_holdingstatus_ajax_get_localizations($pid);
-  
+
   $favourites = bibdk_favourite_get_favourites();
-  
+
   $item_list = array();
   foreach ($favourites as $key => $favourite) {
     $agency = new TingAgency($key);
@@ -114,7 +115,7 @@ function _bibdk_holdingsstatus_favourite_item_list($pid) {
       continue;
     }
 
-    $lookupUrl = $favourite->getInformation()->getLookupUrl();    
+    $lookupUrl = $favourite->getInformation()->getLookupUrl();
     $item_list[$agencyId] = theme('favourite_holdings', array(
       'library_name' => $agency->getInformation()->getAgencyName(),
       'lid' => $agencyId,

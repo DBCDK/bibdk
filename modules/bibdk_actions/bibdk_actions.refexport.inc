@@ -73,25 +73,24 @@ function bibdk_actions_refexport_page($format, $ids) {
 
 function bibdk_actions_ting_openformat_actions($type, $entity, $view_mode, $langcode) {
   if ($type == 'bibdkManifestation') {
-    
+
     $refexport_links = bibdk_actions_refexport_links($entity->id);
     if (count($refexport_links)== 0 ) {
       // Nothing to display
       return $refexport_links;
     }
-      
+
     $links = array(
       '#theme' => 'links',
       '#links' =>$refexport_links,
-      '#heading' => t('export links'),
     );
 
     $actions['export'] = array(
       '#theme' => 'bibdk_actions_refexport',
       '#linktext' => $links,
+      '#export_id' => drupal_clean_css_identifier('refexport-links-' . $entity->id),
       '#weight' => 0.5,
     );
-
     return $actions;
   }
 }

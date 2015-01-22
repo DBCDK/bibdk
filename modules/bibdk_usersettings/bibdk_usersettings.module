@@ -56,7 +56,7 @@ function bibdk_usersettings_user_settings_form($form, $form_state) {
     '#attributes' => array(
       'class' => array(
         'bibdk-tabs',
-        'bibdk-tabs-light'
+        'bibdk-tabs--usersettings',
       ),
     ),
   );
@@ -288,21 +288,21 @@ function bibdk_usersettings_bibdk_mypage_tabs() {
 
   $ret = array();
   $ret['bibdk_usersettings']['header'] = 'Settings';
-  
+
   $ret['bibdk_usersettings']['rows']['values'] = bibdk_usersettings_bibdk_mypage_tabs_rows(variable_get('bibdk_mypage_max_items', 3));
   $ret['bibdk_usersettings']['link'] = array(
     'title' => t('Go to settings'),
     'href' => 'user/' . $user->uid . '/settings',
   );
-  
+
   $ret['bibdk_usersettings']['weight'] = 40;
   $ret['bibdk_usersettings']['help_text_key'] = 'usersettings_mypage_help_key';
-  
+
   return $ret;
 }
 
 /**
- * return usersetting tabtext 
+ * return usersetting tabtext
  */
 function bibdk_usersettings_bibdk_mypage_tabs_rows($max_rows) {
   $liste = array();
