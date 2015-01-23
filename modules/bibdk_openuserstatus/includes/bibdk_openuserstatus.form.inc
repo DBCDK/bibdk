@@ -46,10 +46,12 @@ function bibdk_openuserstatus_get_tables($form, $response) {
   $reservation_agencies = bibdk_openuserstatus_get_pickup_agencies_from_material_list($reservations);
   $agencies = array_unique(array_merge($loan_agencies, $reservation_agencies));
   $named_agencies = bibdk_openuserstatus_agency_names($agencies);
+
   $form = bibdk_openuserstatus_get_loans_table($form, $loans, $named_agencies);
   $form = bibdk_openuserstatus_get_reservations_readyforpickup_table($form, $reservations, $named_agencies);
   $form = bibdk_openuserstatus_get_reservations_inprocess_table($form, $reservations, $named_agencies);
   $form = bibdk_openuserstatus_get_fiscal_account_table($form, $fiscals);
+
   $form['#attributes'] = array('class' => array('openuserstatus'));
   $form['#attached']['js'] = array(
     drupal_get_path('module', 'bibdk_openuserstatus') . '/js/bibdk_openuserstatus.js',
@@ -85,7 +87,7 @@ function bibdk_openuserstatus_get_loans_table($form, $loans, $named_agencies) {
 
   $data['header'] = array(
     'material' => t('author_title', array(), array('context' => 'bibdk_openuserstatus')),
-    'library' => t('library_header', array(), array('context' => 'bibdk_openuserstatus')),
+    //'library' => t('library_header', array(), array('context' => 'bibdk_openuserstatus')),
     'returndate' => t('returndate_header', array(), array('context' => 'bibdk_openuserstatus')),
   );
 
@@ -124,12 +126,10 @@ function bibdk_openuserstatus_get_loans_table($form, $loans, $named_agencies) {
         $status_html['data']['#renewable'] = t('renewable_false_msg', array(), array('context' => 'bibdk_openuserstatus'));
       }
 
-      $item['material'] = _bibdk_openuserstatus_material($material);
-      $item['library'] = $named_agencies[$material['agencyId']];
+      $item['material'] = _bibdk_openuserstatus_material($material, $named_agencies[$material['agencyId']]);
       $item['returndate'] = $status_html;
 
       $items[$id] = $item;
-
     }
 
     $data['items'] = $items;
@@ -406,13 +406,10 @@ function bibdk_openuserstatus_get_reservations_readyforpickup_table($form, $rese
   $data = array();
   $data['header'] = array(
     'material' => t('author_title', array(), array('context' => 'bibdk_openuserstatus')),
-    'library' => t('library_header', array(), array('context' => 'bibdk_openuserstatus')),
     'pickup_date' => t('pickup_date_header', array(), array('context' => 'bibdk_openuserstatus')),
     'pickup_id' => t('pickup_id_header', array(), array('context' => 'bibdk_openuserstatus')),
   );
-  $data['msg'] = t('no_loans_found', array(), array('context' => 'bibdk_openuserstatus'));
   $data['items'] = array();
-  $data['class'] = 'readyforpickup';
   $readyforpcikTxt = t('Reservations_readyforpickup', array(), array('context' => 'bibdk_userstatus'));
 
   if (!empty($reservations)) {
@@ -427,8 +424,7 @@ function bibdk_openuserstatus_get_reservations_readyforpickup_table($form, $rese
       $integra_pickup_bug = isset($reservation['pickUpExpiryDate']) && $reservation['orderStatus'] == 'In process';
       if ($available_pickup || $integra_pickup_bug) {
         $item = array();
-        $item['material'] = _bibdk_openuserstatus_material($reservation);
-        $item['library'] = $named_agencies[$reservation['agencyId']];
+        $item['material'] = _bibdk_openuserstatus_material($reservation, $named_agencies[$reservation['agencyId']]);
         $item['pickup_date'] = isset($reservation['pickUpExpiryDate']) ? date('d.m.Y', strtotime($reservation['pickUpExpiryDate'])) : '';
         $item['pickup_id'] = isset($reservation['pickUpId']) ? $reservation['pickUpId'] : '';
         $items[] = $item;
@@ -460,11 +456,11 @@ function bibdk_openuserstatus_get_reservations_readyforpickup_table($form, $rese
     '#theme' => 'table',
     '#header' => $data['header'],
     '#rows' => $data['items'],
-    '#empty' => $data['msg'],
+    '#empty' => t('no_loans_found', array(), array('context' => 'bibdk_openuserstatus')),
     '#attributes' => array(
       'class' => array(
         'table',
-        $data['class'],
+        'readyforpickup',
       ),
     ),
   );
@@ -477,7 +473,6 @@ function bibdk_openuserstatus_get_reservations_readyforpickup_table($form, $rese
  * @return mixed
  */
 function bibdk_openuserstatus_get_fiscal_account_table($form, $fiscals) {
-  $data = array();
   $fiscalBaseTxt = t('fiscal_account', array(), array('context' => 'bibdk_userstatus'));
   $form['fiscal']['fiscal_name'] = array(
     '#type' => 'html_tag',
@@ -619,14 +614,16 @@ function bibdk_openuserstatus_get_group_elements($user_status, $group, $element)
  * Formats a material with author and title if the elements are present.
  *
  * @param array $material
+ * @param string $library
  * @return array
  */
-function _bibdk_openuserstatus_material($material) {
+function _bibdk_openuserstatus_material($material, $library = '') {
   return array(
     'data' => array(
       '#theme' => 'bibdk_openuserstatus_row_item',
-      '#author' => (isset($material['author']) ? $material['author'] : ''),
-      '#title' => (isset($material['title']) ? $material['title'] : ''),
+      '#author' => (!empty($material['author']) ? $material['author'] : ''),
+      '#title' => (!empty($material['title']) ? $material['title'] : ''),
+      '#library' => $library,
     ),
   );
 }
