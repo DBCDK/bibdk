@@ -84,7 +84,11 @@ function bibdk_openuserstatus_theme() {
     'bibdk_openuserstatus_row_item' => array(
       'template' => 'bibdk_openuserstatus_row_item',
       'path' => $theme_path,
-      'variables' => array('author' => '', 'title' => ''),
+      'variables' => array(
+        'author' => '',
+        'title' => '',
+        'library' => '',
+      ),
     ),
     'bibdk_openuserstatus_table_name' => array(
       'template' => 'bibdk_openuserstatus_table_name',
