@@ -50,7 +50,6 @@ function _bibdk_custom_search_get_advanced_fields_db($page) {
   ));
   $query->addField('o', 'is_disabled', 'option_disabled');
   $query->condition('s.p_uuid', $page['p_uuid'], '=');
-  // $query -> condition('e.is_disabled', FALSE,'=');
   $query->orderBy('me.sort', 'ASC');
   $query->orderBy('e.element_label', 'ASC');
   $query->orderBy('region', 'ASC');
@@ -78,10 +77,10 @@ function _bibdk_custom_search_get_page_db($page_path) {
     ->fetchAssoc();
 }
 
-
-
 /**
  * Get all searchpages from db
+ *
+ * @return array
  */
 function _bibdk_custom_search_get_pages_db() {
   global $language;
@@ -103,7 +102,6 @@ function _bibdk_custom_search_get_pages_db() {
       $result = $query->execute();
 
       foreach ($result as $page) {
-        $p_uuid = $page->p_uuid;
         $attributes = ($page->is_disabled) ? array('disabled' => 'disabled') : array();
         $row = array(
           'title' => bibdk_custom_search_translate($page->menu_title, 'menu_title'),
@@ -116,6 +114,7 @@ function _bibdk_custom_search_get_pages_db() {
 
     }
   }
+
   return $pages;
 }
 

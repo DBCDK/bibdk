@@ -30,6 +30,7 @@
 
   Drupal.setFavouriteHoldings = function(data) {
     var div = $('.bibdk-holdings-favourites[data-pid="' + data.pid + '"]');
+    div.removeClass('ajax-progress');
     if(data.html) {
       var html = data.html.replace('<!--', '');
       html = html.replace('-->', '');
