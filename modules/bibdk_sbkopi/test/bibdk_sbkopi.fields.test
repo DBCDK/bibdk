@@ -127,8 +127,6 @@ class BibdkSbCopyFieldsUnitTestCase extends DrupalUnitTestCase {
     );
 
     $fields = $sb->getFields();
-    debug(var_export($fields, true));
-
     $this->assertEqual($expected, $fields, 'article Fields are correctly set');
   }
 
@@ -142,8 +140,6 @@ class BibdkSbCopyFieldsUnitTestCase extends DrupalUnitTestCase {
     $sb->setDefaultValues($default_values);
 
     $render = $sb->setDefaultFields()->setArticleFields($order_library_fields)->render();
-
-    debug(var_export($render, true));
     $expected = array(
       'pid' =>
         array(
@@ -206,7 +202,7 @@ class BibdkSbCopyFieldsUnitTestCase extends DrupalUnitTestCase {
               '#required' => true,
               '#date_label_position' => 'within',
               '#date_format' => 'd-m-Y',
-              '#default_value' => '2015-04-22',
+              '#default_value' => date('Y-m-d', strtotime(date('Y-m-d') . '+ 3 month')),
               '#date_year_range' => '0:+3',
             ),
         ),
