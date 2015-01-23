@@ -220,25 +220,36 @@ function bibdk_openuserstatus_check_renewable($material, $favourites) {
  * returns render array if valid and empty string otherwise.
  *
  * @param string $returnDate
+ * @return array|string
  */
 function bibdk_openuserstatus_check_returndate($returnDate) {
   // strtotime returns FALSE on failure
   $timestamp = strtotime($returnDate);
 
-  if ($timestamp === FALSE) {
+  if (!$timestamp) {
     return '';
   }
 
   $date = date('d.m.Y', $timestamp);
   $limit = new DateTime($date);
   $limit->setTime(23, 59, 59);  // user has all day
-  $overdue = $limit < new DateTime('now');
+  $now = new DateTime('now');
+
+  $alert_class = 'no-alert';
+  $title = '';
+
+  if($limit < $now){
+    $alert_class = 'red-alert';
+    $date_overdue = t('Delivery_date_overdue', array(), array('context' => 'bibdk_openuserstatus'));
+    $title = 'title="' . $date_overdue . '"';
+  }
 
   return array(
     'data' => array(
       '#theme' => 'bibdk_openuserstatus_return_date',
       '#date' => $date,
-      '#overdue' => $overdue,
+      '#alert_class' => $alert_class,
+      '#title' => $title,
     ),
   );
 }

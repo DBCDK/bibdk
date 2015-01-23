@@ -96,7 +96,12 @@ function bibdk_openuserstatus_theme() {
     'bibdk_openuserstatus_return_date' => array(
       'template' => 'bibdk_openuserstatus_return_date',
       'path' => $theme_path,
-      'variables' => array('overdue' => FALSE, 'date' => '', 'renewable' => ''),
+      'variables' => array(
+        'date' => '',
+        'renewable' => '',
+        'title' => '',
+        'alert_class' => '',
+      ),
     ),
     'bibdk_openuserstatus_help_icon' => array(
       'template' => 'bibdk_openuserstatus_help_icon',
