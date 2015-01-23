@@ -60,11 +60,6 @@ function bibdk_favourite_no_library_form($form, &$form_state) {
         'class' => array('infomedia-search-group', 'form-wrapper'),
       ),
     );
-    $form['description_tag'] = array(
-      '#theme' => 'html_tag',
-      '#tag' => 'p',
-      '#value' => t('no_favourite_library_description', array(), array('context' => 'ting_infomedia')),
-    );
     $form['elements'] = bibdk_vejviser_form(array(), $form_state);
 
     if (isset($form_state['input']['openagency_query'])) {

@@ -29,10 +29,12 @@ function bibdk_sbkopi_reservation_form($form, &$form_state, $pid, $state = NULL)
   // if user does not have a valid order library hook_agency_get_order_library
   // returns the relevant form
   if (!isset($result['order_library'])) {
+    $result['#attributes']['class'] = array('sbkopi-form');
     return $result;
   }
   else {
     $order_library = $result['order_library'];
+    bibdk_sbkopi_messages($pid, $order_library->getBranch());
     $manifestation = ting_openformat_get_single_manifestation($pid);
     $default_values = bibdk_sbkopi_default_values($form_state, $manifestation, $order_library);
     $fields = bibdk_sbkopi_get_fields_for_manifestation($order_library, $manifestation, $default_values);
