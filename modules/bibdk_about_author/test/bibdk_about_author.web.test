@@ -104,7 +104,6 @@ class BibdkAboutAuthorTest extends DrupalWebTestCase {
 
   private function _testAboutAuthorWorktabs() {
     $this->drupalGet('work/870970-basis:28934297');
-    $this->assertText(' bibdk_about_authors ', 'About authors title is present.');
     $this->assertRaw('about-author-load', 'About authors loader is present');
   }
 

@@ -302,7 +302,6 @@ class BibdkUser {
   }
 
   public function getCart($username) {
-    static $response;
     $params = array('oui:userId' => $username);
     $response = $this->makeRequest('getCartRequest', $params);
 

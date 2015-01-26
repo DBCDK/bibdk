@@ -136,9 +136,10 @@ function bibdk_actions_theme($existing, $type, $theme, $path) {
       'path' => $path,
       'variables' => array(
         'linktext' => array(),
+        'export_id' => '',
       ),
     )
-    
-    
+
+
   );
 }

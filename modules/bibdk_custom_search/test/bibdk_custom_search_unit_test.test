@@ -12,7 +12,7 @@ class BibdkCustomSearchUnitTestCase extends DrupalUnitTestCase {
 
   public function setUp() {
     module_load_include('module', 'bibdk_custom_search', 'bibdk_custom_search');
-    module_load_include('inc', 'bibdk_custom_search', 'bibdk_custom_search.list');
+    module_load_include('inc', 'bibdk_custom_search', 'includes/bibdk_custom_search.list');
     parent::setUp();
   }
 

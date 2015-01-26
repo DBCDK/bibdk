@@ -195,7 +195,11 @@ function bibdk_provider_user_get_favourites($name) {
  * @return array|bool
  */
 function bibdk_provider_user_get_cart($name) {
-  return BibdkUser::instance()->getCart($name);
+  static $response;
+  if(empty($response)) {
+    $response = BibdkUser::instance()->getCart($name);
+  }
+  return $response;
 }
 
 /**

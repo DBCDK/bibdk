@@ -29,12 +29,74 @@ function bibdk_sbkopi_reservation_form($form, &$form_state, $pid, $state = NULL)
   // if user does not have a valid order library hook_agency_get_order_library
   // returns the relevant form
   if (!isset($result['order_library'])) {
+    $result['#attributes']['class'] = array('sbkopi-form');
     return $result;
   }
   else {
     $order_library = $result['order_library'];
-    return bibdk_sbkopi_order_form_fields($form, $form_state, $pid, $order_library);
+    bibdk_sbkopi_messages($pid, $order_library->getBranch());
+    $manifestation = ting_openformat_get_single_manifestation($pid);
+    $default_values = bibdk_sbkopi_default_values($form_state, $manifestation, $order_library);
+    $fields = bibdk_sbkopi_get_fields_for_manifestation($order_library, $manifestation, $default_values);
+    $form += bibdk_sbkopi_order_form_fields($manifestation, $fields);
+    return $form;
   }
+}
+
+/**
+ * Get the fields for the sb request form
+ *
+ * @param TingAgency $order_library
+ * @param Manifestation $manifestation
+ * @param array $default_values
+ * @return array
+ */
+function bibdk_sbkopi_get_fields_for_manifestation($order_library, $manifestation, $default_values) {
+  $sb = new SbCopyFields();
+  $sb->setDefaultValues($default_values)
+    ->setDefaultFields();
+
+  if ($manifestation->getSpecifyArticleData()) {
+    $sb->setArticleFields();
+  }
+
+  return $sb->alterFields('bibdk_sbkopi_translate_field_labels')->render();
+}
+
+/**
+ * Generate default values for the sb request form
+ *
+ * @param $form_state
+ * @param Manifestation $manifestation
+ * @param FavouriteAgency $order_library
+ * @return array
+ */
+function bibdk_sbkopi_default_values($form_state, Manifestation $manifestation, FavouriteAgency $order_library) {
+  $form_state_values = isset($form_state['values']) ? $form_state['values'] : array();
+  $user_values = $order_library->getUserData();
+  $custom_values = array(
+    'userMail' => (!isset($form_state_values['userMail']) && isset($user_values['email'])) ? $user_values['email'] : NULL,
+    'pid' => $manifestation->id,
+    'agencyId' => $order_library->getAgencyId(),
+    'pickupAgencyId' => $order_library->getBranch()->getBranchId(),
+    'user_loaner_id' => $order_library->getUserId(),
+    'publicationTitle' => $manifestation->getTitle(),
+  );
+
+  return $form_state_values + $user_values + $custom_values;
+}
+
+/**
+ * Callback for SbCopyFields::alterField()
+ *
+ * Translates the title of a field
+ *
+ * @param array $field
+ * @return array
+ */
+function bibdk_sbkopi_translate_field_labels($field) {
+  $field['title'] = t($field['title'], array(), array('context' => 'bibdk_sbkopi'));
+  return $field;
 }
 
 /**
@@ -79,59 +141,20 @@ function bibdk_sbkopi_user_not_logged_in() {
  * @param FavouriteAgency $order_library
  * @return mixed
  */
-function bibdk_sbkopi_order_form_fields($form, &$form_state, $pid, FavouriteAgency $order_library) {
-  $userdata = $order_library->getUserData();
-  $email = isset($userdata['email']) ? $userdata['email'] : NULL;
-  $username = isset($userdata['userName']) ? $userdata['userName'] : NULL;
-  bibdk_sbkopi_messages($pid, $order_library->getBranch());
-
-  $form['pid'] = array(
-    '#type' => 'value',
-    '#value' => $pid,
-  );
-  $form['agencyId'] = array(
-    '#type' => 'value',
-    '#value' => $order_library->getAgencyId(),
-  );
-  $form['pickupAgencyId'] = array(
-    '#type' => 'value',
-    '#value' => $order_library->getBranch()->getBranchId(),
-  );
-  $form['user_loaner_id'] = array(
-    '#type' => 'value',
-    '#value' => $order_library->getUserId()
-  );
-
-  $form['manifestation'] = bibdk_sbkopi_manifestation_view($pid);
+function bibdk_sbkopi_order_form_fields($manifestation, $sb_fields) {
+  $form['manifestation'] = bibdk_sbkopi_manifestation_view($manifestation);
 
   $form['userinfo'] = array(
     '#type' => 'fieldset',
     '#title' => t('sb_order_required_information', array(), array('context' => 'bibdk_sbkopi')),
     '#description' => t('sb_order_required_information_description', array(), array('context' => 'bibdk_sbkopi')),
+    '#attributes' => array(
+      'class' => array('sbkopi-fields-container'),
+    ),
   );
-  $form['userinfo']['userName'] = array(
-    '#type' => 'textfield',
-    '#title' => t('name', array(), array('context' => 'bibdk_sbkopi')),
-    '#default' => (isset($form_state['values']['userName'])) ? $form_state['values']['userName'] : $username,
-    '#required' => TRUE,
-  );
-  $form['userinfo']['userMail'] = array(
-    '#type' => 'textfield',
-    '#title' => t('email', array(), array('context' => 'bibdk_sbkopi')),
-    '#default' => (isset($form_state['values']['userMail'])) ? $form_state['values']['userMail'] : $email,
-    '#required' => TRUE,
-  );
-  $timestamp = strtotime(date('Y-m-d') . '+ 3 month');
-  $date = date('Y-m-d', $timestamp);
-  $form['userinfo']['user_interest_date'] = array(
-    '#type' => 'date_select',
-    '#title' => t('Is of no interest after', array(), array('context' => 'bibdk_reservation')),
-    '#required' => TRUE,
-    '#date_label_position' => 'within',
-    '#date_format' => 'd-m-Y',
-    '#default_value' => $date,
-    '#date_year_range' => '0:+3',
-  );
+
+  $form['userinfo'] += $sb_fields;
+
   $form['userinfo']['submit'] = array(
     '#type' => 'submit',
     '#value' => t('sb_kopi_order', array(), array('context' => 'bibdk_sbkopi')),
@@ -170,7 +193,7 @@ function bibdk_sbkopi_order_form_submit($form, &$form_state) {
   catch (SbCurlRequestException $e) {
     // The service do not provide usable feedback for the cause of error, so
     // we log the error and writes out a generic error message to user
-    watchdog('sb_kopi', "response code: !reponse_code, return message: !return_message, url: !url, xml: !xml", $e->getParams(), WATCHDOG_ERROR);
+    watchdog('sb_kopi', "response code: !reponse_code, return message: !return_message, url: !url, xml: @xml", $e->getParams(), WATCHDOG_ERROR);
     drupal_set_message(t('sb_kopi error message'), 'error');
 
     //
@@ -184,9 +207,10 @@ function bibdk_sbkopi_order_form_submit($form, &$form_state) {
  * @param $pid
  * @return array
  */
-function bibdk_sbkopi_manifestation_view($pid, $title = 'You are about to order the following') {
-  $manifestation = ting_openformat_get_single_manifestation($pid);
-  return bibdk_reservation_render_custom_manifestation_view($manifestation, $title);
+function bibdk_sbkopi_manifestation_view($manifestation, $title = 'You are about to order the following') {
+  $render = bibdk_reservation_render_custom_manifestation_view($manifestation, $title);
+  $render['#attributes']['class'] = array('sbkopi-manifestation-container');
+  return $render;
 }
 
 /**
@@ -236,7 +260,7 @@ function bibdk_sbkopi_order_request($params, $url) {
       '!reponse_code' => $response_code,
       '!return_message' => $return_message,
       '!url' => $url,
-      '!xml' => $curl->getPostXml(),
+      '@xml' => $curl->getPostXml(),
     );
     $exception = new SbCurlRequestException();
     $exception->setParams($report);
@@ -275,7 +299,8 @@ function bibdk_sbkopi_reservation_receipt_text($pid) {
       'class' => array('bibdk-sbkopy-receipt-wrapper'),
     ),
   );
-  $render['manifestation'] = bibdk_sbkopi_manifestation_view($pid, 'You have ordered the following');
+  $manifestation = ting_openformat_get_single_manifestation($pid);
+  $render['manifestation'] = bibdk_sbkopi_manifestation_view($manifestation, 'You have ordered the following');
 
   return $render;
 }

@@ -5,10 +5,12 @@
 (function($) {
   Drupal.addCopyLink = function(data) {
     if(data.link != 'error') {
-      var tag = $('.bibdk-sb_kopi-replaceme[pid="' + data.pid + '"]');
-      tag.replaceWith(data.link);
-
-      Drupal.attachBehaviors($('.link-sbkopi.bibdk-popup-link').parent(), null);
+      var $tag = $('.bibdk-sb_kopi-replaceme[pid="' + data.pid + '"]');
+      //the link needs to wrapped for attachBehaviors to work
+      var $link = $('<div class="link-wrapper"></div>').html($(data.link));
+      $tag.replaceWith($link);
+      var settings = data.settings || Drupal.settings;
+      Drupal.attachBehaviors($link, settings);
     }
   };
 

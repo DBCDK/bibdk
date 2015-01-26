@@ -106,7 +106,6 @@ class BibdkAdhlUnitTest extends DrupalWebTestCase {
 
   private function _testAdhlWorktabs() {
     $this->drupalGet('work/870970-basis:22677780');
-    $this->assertText('adhls', 'title is present');
     $this->assertRaw('recommendation-load', 'loader is present');
   }
 
