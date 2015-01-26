@@ -23,20 +23,20 @@
     $('input[data-parent]').change(function() {
       if($(this).attr('checked') == true) {
         var childKey = $(this).attr('data-parent');
-        $('fieldset[data-child=' + childKey + '] input').attr('checked', false);
+        $('fieldset[data-child="' + childKey + '"] input').attr('checked', false);
       }
     });
     $('.toggle-subgroup').click(function(e) {
       e.preventDefault();
       $(this).toggleClass('toggled');
       var childKey = $(this).attr('data-child');
-      $('fieldset[data-child=' + childKey + ']').toggle();
+      $('fieldset[data-child="' + childKey + '"]').toggle();
     });
 
     /* Expand all subgroups with selected values*/
     $('fieldset[data-child] input:checked').each(function(i, element) {
       var childKey = $(element).closest('fieldset[data-child]').attr('data-child');
-      var trigger = $('[data-child=' + childKey + ']:not(.toggled).toggle-subgroup');
+      var trigger = $('[data-child="' + childKey + '"]:not(.toggled).toggle-subgroup');
       trigger.trigger('click');
     });
 
@@ -47,15 +47,15 @@
       var group = $(this).attr('data-group');
       if($(this).attr('checked')) {
         if($(this).hasClass('master')) {
-          $('[data-group=' + group + ']').attr('checked', false);
+          $('[data-group="' + group + '"]').attr('checked', false);
           $(this).attr('checked', true);
         }
         else {
-          $('[data-group=' + group + '].master').attr('checked', false)
+          $('[data-group="' + group + '"].master').attr('checked', false)
         }
       }
-      else if($('[data-group=' + group + ']:checked').length == 0) {
-        $('[data-group=' + group + '].master').attr('checked', true);
+      else if($('[data-group="' + group + '"]:checked').length == 0) {
+        $('[data-group="' + group + '"].master').attr('checked', true);
       }
     });
     $('input[type=checkbox]:checked:not(.default-value)').closest(".bibdk-custom-search-element").find("input").each(function(i) {
