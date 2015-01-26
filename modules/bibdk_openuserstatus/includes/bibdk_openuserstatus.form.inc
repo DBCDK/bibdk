@@ -403,8 +403,8 @@ function bibdk_openuserstatus_get_reservations_readyforpickup_table($form, $rese
   $data = array();
   $data['header'] = array(
     'material' => t('author_title', array(), array('context' => 'bibdk_openuserstatus')),
-    'pickup_date' => t('pickup_date_header', array(), array('context' => 'bibdk_openuserstatus')),
-    'pickup_id' => t('pickup_id_header', array(), array('context' => 'bibdk_openuserstatus')),
+    'pickup_date' => t('pickup_date_header', array(), array('context' => 'bibdk_openuserstatus')) . '<br/>' . t('pickup_id_header', array(), array('context' => 'bibdk_openuserstatus')),
+    //'pickup_id' => t('pickup_id_header', array(), array('context' => 'bibdk_openuserstatus')),
   );
   $data['items'] = array();
   $readyforpcikTxt = t('Reservations_readyforpickup', array(), array('context' => 'bibdk_userstatus'));
@@ -421,9 +421,12 @@ function bibdk_openuserstatus_get_reservations_readyforpickup_table($form, $rese
       $integra_pickup_bug = isset($reservation['pickUpExpiryDate']) && $reservation['orderStatus'] == 'In process';
       if ($available_pickup || $integra_pickup_bug) {
         $item = array();
+        $pickupDate = isset($reservation['pickUpExpiryDate']) ? date('d.m.Y', strtotime($reservation['pickUpExpiryDate'])) : '';
+        $pickupId = isset($reservation['pickUpId']) ? $reservation['pickUpId'] : '0123456789';
+
         $item['material'] = _bibdk_openuserstatus_material($reservation, $named_agencies[$reservation['agencyId']]);
-        $item['pickup_date'] = isset($reservation['pickUpExpiryDate']) ? date('d.m.Y', strtotime($reservation['pickUpExpiryDate'])) : '';
-        $item['pickup_id'] = isset($reservation['pickUpId']) ? $reservation['pickUpId'] : '';
+        $item['pickup_date'] = '<span class="userstatus--date">' . $pickupDate . '</span><br/>' . $pickupId;
+        //$item['pickup_id'] = isset($reservation['pickUpId']) ? $reservation['pickUpId'] : '';
         $items[] = $item;
       }
     }
