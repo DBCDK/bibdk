@@ -9,3 +9,4 @@ files[] = test/bibdk_covers.test
 dependencies[] = image
 dependencies[] = virtual_field
 dependencies[] = open_moreinfo
+dependencies[] = bibdk_covers_field
