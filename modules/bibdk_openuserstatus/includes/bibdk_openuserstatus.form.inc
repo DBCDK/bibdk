@@ -87,7 +87,6 @@ function bibdk_openuserstatus_get_loans_table($form, $loans, $named_agencies) {
 
   $data['header'] = array(
     'material' => t('author_title', array(), array('context' => 'bibdk_openuserstatus')),
-    //'library' => t('library_header', array(), array('context' => 'bibdk_openuserstatus')),
     'returndate' => t('returndate_header', array(), array('context' => 'bibdk_openuserstatus')),
   );
 
@@ -101,14 +100,14 @@ function bibdk_openuserstatus_get_loans_table($form, $loans, $named_agencies) {
     '#type' => 'submit',
     '#value' => t('renew_marked', array(), array('context' => 'bibdk_openuserstatus')),
     '#submit' => array('bibdk_openuserstatus_renew_marked_submit'),
-    '#weight' => 1,
+    '#weight' => 10,
   );
 
   $renew_all = array(
     '#type' => 'submit',
     '#value' => t('renew_all', array(), array('context' => 'bibdk_openuserstatus')),
     '#submit' => array('bibdk_openuserstatus_renew_all_submit'),
-    '#weight' => 1,
+    '#weight' => 15,
   );
 
   if (!empty($loans)) {
@@ -238,7 +237,7 @@ function bibdk_openuserstatus_check_returndate($returnDate) {
   $alert_class = 'no-alert';
   $title = '';
 
-  if($limit < $now){
+  if ($limit < $now) {
     $alert_class = 'red-alert';
     $date_overdue = t('Delivery_date_overdue', array(), array('context' => 'bibdk_openuserstatus'));
     $title = 'title="' . $date_overdue . '"';
@@ -264,16 +263,15 @@ function bibdk_openuserstatus_check_returndate($returnDate) {
  * @return array
  */
 function bibdk_openuserstatus_get_reservations_inprocess_table($form, $reservations, $named_agencies) {
-  $data = array();
-  $data['header'] = array(
+  $header = array(
     'material' => t('author_title', array(), array('context' => 'bibdk_openuserstatus')),
     'library' => t('library_header', array(), array('context' => 'bibdk_openuserstatus')),
     'help' => '',
-    'reservation_date' => t('reservation_date', array(), array('context' => 'bibdk_openuserstatus')),
+    'reservation_date' => array('data' => t('reservation_date', array(), array('context' => 'bibdk_openuserstatus')), 'class' => array('show-for-large-up')),
     'queue_position' => t('queue_position', array(), array('context' => 'bibdk_openuserstatus')),
   );
-  $data['msg'] = t('no_loans_found', array(), array('context' => 'bibdk_openuserstatus'));
-  $data['items'] = array();
+  $msg = t('no_loans_found', array(), array('context' => 'bibdk_openuserstatus'));
+  $options = array();
   $reservations_in_process = t('Reservations_in_process', array(), array('context' => 'bibdk_userstatus'));
 
   $help_icon_change_library = array(
@@ -287,7 +285,6 @@ function bibdk_openuserstatus_get_reservations_inprocess_table($form, $reservati
   );
 
   if (!empty($reservations)) {
-    $items = array();
     $in_process_states = array('In process', 'Requested via ill', 'Requested');
     foreach ($reservations as $reservation) {
       if (isset($reservation['orderStatus']) && (in_array($reservation['orderStatus'], $in_process_states))) {
@@ -308,15 +305,15 @@ function bibdk_openuserstatus_get_reservations_inprocess_table($form, $reservati
           $item['help']['data'] = $help_icon_change_library;
         }
         else {
-          $item['library'] = $named_agencies[$reservation['agencyId']];
+          $item['library']['data'] = $named_agencies[$reservation['agencyId']];
           $item['help']['data'] = $help_icon_no_change_library;
         }
-        $item['reservation_date'] = date('d.m.Y', strtotime($reservation['orderDate']));
-        $item['queue_position'] = (isset($reservation['holdQueuePosition']) ? $reservation['holdQueuePosition'] : '');
-        $items[$id] = $item;
+        $item['reservation_date']['data'] = date('d.m.Y', strtotime($reservation['orderDate']));
+        $item['queue_position']['data'] = (isset($reservation['holdQueuePosition']) ? $reservation['holdQueuePosition'] : '');
+        $item['reservation_date']['class'] = array('show-for-large-up');
+        $options[$id] = $item;
       }
     }
-    $data['items'] = $items;
 
     $form['reservations']['reservations_delete'] = array(
       '#type' => 'submit',
@@ -346,9 +343,9 @@ function bibdk_openuserstatus_get_reservations_inprocess_table($form, $reservati
   );
   $form['reservations']['reservations_table'] = array(
     '#type' => 'tableselect',
-    '#header' => $data['header'],
-    '#options' => $data['items'],
-    '#empty' => $data['msg'],
+    '#header' => $header,
+    '#options' => $options,
+    '#empty' => $msg,
     '#js_select' => FALSE,
     '#sticky' => FALSE,
     '#multiple' => TRUE,
@@ -561,11 +558,11 @@ function bibdk_openuserstatus_get_fiscal_account_table($form, $fiscals) {
           '#prefix' => '<div class="payment-url-link">',
           '#suffix' => '</div>',
           '#markup' => l(t('fiscal_branch_link', array(), array('context' => 'bibdk_openuserstatus')), $agency['paymentUrl'], array(
-              'attributes' => array(
-                'class' => array('btn', 'btn-blue'),
-                'target' => array('_blank'),
-              ),
-            )),
+            'attributes' => array(
+              'class' => array('btn', 'btn-blue'),
+              'target' => array('_blank'),
+            ),
+          )),
         );
       }
     }

@@ -4,7 +4,7 @@
   <?php endif; ?>
 </p>
 
-<div class="userstatus-menu">
+<div class="userstatus-menu show-for-large-up">
   <!--<p class="userstatus-menu-label">
     <?php print t('label_userstatus_go_to', array(), array('context' => 'bibdk_openuserstatus')) ?>
   </p>-->
