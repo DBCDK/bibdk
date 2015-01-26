@@ -16,7 +16,7 @@
     $('fieldset[data-child] input').change(function() {
       if($(this).attr('checked') == true) {
         var parentKey = $(this).closest('fieldset[data-child]').attr('data-child');
-        $('[data-parent=' + parentKey + ']').attr('checked', false);
+        $('[data-parent="' + parentKey + '"]').attr('checked', false);
       }
     });
     // If parent checkbox is checked remove checked from children

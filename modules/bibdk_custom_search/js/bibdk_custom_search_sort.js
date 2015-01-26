@@ -30,7 +30,7 @@ Drupal.behaviors.customSearchSort = {
       var regionName = regionRow.className.replace(/([^ ]+[ ]+)*region-([^ ]+)-message([ ]+[^ ]+)*/, '$2');
       var regionField = $('select.region-select', dragObject.rowObject.element);
       // Check whether the newly picked region is available for this block.
-      if ($('option[value=' + regionName + ']', regionField).length == 0) {
+      if ($('option[value="' + regionName + '"]', regionField).length == 0) {
         // If not, alert the user and keep the block in its old region setting.
         alert(Drupal.t('The block cannot be placed in this region.'));
         // Simulate that there was a selected element change, so the row is put
