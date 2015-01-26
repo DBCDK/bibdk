@@ -27,18 +27,18 @@
     $.each(coverData, function(coverInfo, url) {
       coverInfo = coverInfo.split(':');
       // thumbnail
-      if ( coverInfo[1] == 'thumbnailUrl' ) {
+      if (coverInfo[1] == 'thumbnailUrl') {
         var img = '<img src="' + url + '" alt=""/>';
         $('.bibdk-cover-processing' + '.bibdk-cover-work-object-id-' + coverInfo[0] + ' a').html(img);
         $('.bibdk-cover-processing' + '.bibdk-cover-work-object-id-' + coverInfo[0] + ' a').parents('.work-cover').show();
       }
       // large
-      if ( coverInfo[1] == 'detailUrl' ) {
+      if (coverInfo[1] == 'detailUrl') {
         var img = '<img src="' + url + '" alt=""/>';
         $('.bibdk-cover-processing' + '.bibdk-cover-work-object-id-' + coverInfo[0]).parents('.field-items').find('.reveal-cover-large-image').foundation('reflow').html(img);
       }
       // back cover
-      if ( coverInfo[1] == 'backpagePdfUrl' ) {
+      if (coverInfo[1] == 'backpagePdfUrl' && url != '') {
         var pdf = '<object data="' + url + '?page=1&amp;view=Fit" type="application/pdf" width="590" height="925"><p>It appears you dont have a PDF plugin for this browser. No biggie... you can <a href="' + url + '">click here to download the PDF file.</a></p></object>';
         $('.bibdk-cover-processing' + '.bibdk-cover-work-object-id-' + coverInfo[0]).parents('.work-cover').find('.work-cover-front').show().foundation('reflow');
         $('.bibdk-cover-processing' + '.bibdk-cover-work-object-id-' + coverInfo[0]).parents('.work-cover').find('.work-cover-back').show().foundation('reflow');

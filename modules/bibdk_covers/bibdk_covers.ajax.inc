@@ -39,11 +39,14 @@ function bibdk_covers_objects() {
         $covers[ $local_id . ':' . 'thumbnailUrl' ] = image_style_url('medium', _bibdk_covers_object_path($local_id, 'detailUrl'));
       }
 
-      if ( $backcover_path = open_moreinfo_object_path($local_id, 'backpagePdfUrl') ) {
-        if ( $wrapper = file_stream_wrapper_get_instance_by_uri($backcover_path) ) {
+      $backcover_path = open_moreinfo_object_path($local_id, 'backpagePdfUrl');
+      if ($backcover_path && file_exists($backcover_path)) {
+        if ($wrapper = file_stream_wrapper_get_instance_by_uri($backcover_path)) {
           $backcover_path = $wrapper->getExternalUrl();
         }
         $covers[ $local_id . ':' . 'backpagePdfUrl' ] = $backcover_path;
+      } else {
+        $covers[ $local_id . ':' . 'backpagePdfUrl' ] = '';
       }
 
     } else {
