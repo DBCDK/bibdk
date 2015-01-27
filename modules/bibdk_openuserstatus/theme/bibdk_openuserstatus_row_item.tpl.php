@@ -1,13 +1,13 @@
 <p class="userstatus-row-item">
-  <span class="userstatus-row-item--title"><?php print $title; ?></span>
-  <?php if(!empty($title)): ?>
-    <br/>
+  <?php if (!empty($title)): ?>
+    <span class="userstatus-row-item--title"><?php print $title; ?></span>
   <?php endif; ?>
 
-  <span class="userstatus-row-item--additional"><?php print $author; ?></span>
-  <?php if(!empty($author)): ?>
-    <br/>
+  <?php if (!empty($author)): ?>
+    <span class="userstatus-row-item--additional"><?php print $author; ?></span>
   <?php endif; ?>
 
-  <span class="userstatus-row-item--additional"><?php print $library;?></span>
+  <?php if (!empty($library)): ?>
+    <span class="userstatus-row-item--library-name"><?php print $library; ?></span>
+  <?php endif; ?>
 </p>

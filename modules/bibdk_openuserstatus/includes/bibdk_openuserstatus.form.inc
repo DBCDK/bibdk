@@ -299,7 +299,9 @@ function bibdk_openuserstatus_get_reservations_inprocess_table($form, $reservati
         $pickUpAgencies = bibdk_openuserstatus_get_pickup_agencies($reservation['agencyId']);
         $item = array();
         $id = $reservation['orderId'];
-        $item['material'] = _bibdk_openuserstatus_material($reservation);
+        $item['material']['data'] = _bibdk_openuserstatus_material($reservation);
+        $item['material']['class'] = array('userstatus--row-item--material-title');
+
         if (count($pickUpAgencies) > 1) {
           $item['library']['data'] = bibdk_openuserstatus_select($pickUpAgencies, $reservation);
           $item['help']['data'] = $help_icon_change_library;
@@ -308,6 +310,7 @@ function bibdk_openuserstatus_get_reservations_inprocess_table($form, $reservati
           $item['library']['data'] = $named_agencies[$reservation['agencyId']];
           $item['help']['data'] = $help_icon_no_change_library;
         }
+
         $item['reservation_date']['data'] = date('d.m.Y', strtotime($reservation['orderDate']));
         $item['queue_position']['data'] = (isset($reservation['holdQueuePosition']) ? $reservation['holdQueuePosition'] : '');
         $item['reservation_date']['class'] = array('show-for-large-up');
@@ -403,8 +406,7 @@ function bibdk_openuserstatus_get_reservations_readyforpickup_table($form, $rese
   $data = array();
   $data['header'] = array(
     'material' => t('author_title', array(), array('context' => 'bibdk_openuserstatus')),
-    'pickup_date' => t('pickup_date_header', array(), array('context' => 'bibdk_openuserstatus')) . '<br/>' . t('pickup_id_header', array(), array('context' => 'bibdk_openuserstatus')),
-    //'pickup_id' => t('pickup_id_header', array(), array('context' => 'bibdk_openuserstatus')),
+    'pickup_date' => t('pickup_date_header', array(), array('context' => 'bibdk_openuserstatus')) . ' /<br/>' . t('pickup_id_header', array(), array('context' => 'bibdk_openuserstatus')),
   );
   $data['items'] = array();
   $readyforpcikTxt = t('Reservations_readyforpickup', array(), array('context' => 'bibdk_userstatus'));
@@ -422,11 +424,10 @@ function bibdk_openuserstatus_get_reservations_readyforpickup_table($form, $rese
       if ($available_pickup || $integra_pickup_bug) {
         $item = array();
         $pickupDate = isset($reservation['pickUpExpiryDate']) ? date('d.m.Y', strtotime($reservation['pickUpExpiryDate'])) : '';
-        $pickupId = isset($reservation['pickUpId']) ? $reservation['pickUpId'] : '0123456789';
+        $pickupId = isset($reservation['pickUpId']) ? $reservation['pickUpId'] : '';
 
         $item['material'] = _bibdk_openuserstatus_material($reservation, $named_agencies[$reservation['agencyId']]);
         $item['pickup_date'] = '<span class="userstatus--date">' . $pickupDate . '</span><br/>' . $pickupId;
-        //$item['pickup_id'] = isset($reservation['pickUpId']) ? $reservation['pickUpId'] : '';
         $items[] = $item;
       }
     }
@@ -512,8 +513,6 @@ function bibdk_openuserstatus_get_fiscal_account_table($form, $fiscals) {
       $item['amount'] = $reservation['fiscalTransactionAmount'] . ' ' . $reservation['fiscalTransactionCurrency'];
       $items[$agencyId][] = $item;
     }
-
-    $agencies = array();
 
     foreach (array_keys($items) as $agencyId) {
       $agency = array();
