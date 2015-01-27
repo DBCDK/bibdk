@@ -30,4 +30,4 @@ projects[drupal][patch][] = http://drupal.org/files/issues/autocomplete-1232416-
 projects[bibdk][type] = profile
 projects[bibdk][download][type] = git
 projects[bibdk][download][url] = git@github.com:DBCDK/bibdk.git
-projects[bibdk][download][tag] = 7.x-0.66
+projects[bibdk][download][tag] = 7.x-0.66.1
