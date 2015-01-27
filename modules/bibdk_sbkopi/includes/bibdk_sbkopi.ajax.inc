@@ -91,16 +91,12 @@ function bibdk_sbkopi_ajax_parse_response($xml, $pid) {
  */
 function _bibdk_sbkopi_make_link($method, $pid) {
   // two methods postal (print), electronic (e-copy)
-  switch ($method) {
-    case 'postal' :
-      $label = '<span class="icon icon-left icon-lightgrey-link">&nbsp</span>' . t('order_printed_copy', array(), array('context' => 'bibdk_sbkopi'));
-      return _bibdk_sb_kopi_get_link($pid, $label, 'PAY');
-    case 'electronic' :
-      $label = '<span class="icon icon-left icon-lightgrey-link">&nbsp</span>' . t('order_electronic_copy', array(), array('context' => 'bibdk_sbkopi'));
-      return _bibdk_sb_kopi_get_link($pid, $label, 'FREE');
-    default :
-      return 'error';
+  if ($method) {
+    $label = t('sb_order_copy', array(), array('context' => 'bibdk_sbkopi'));
+    return _bibdk_sb_kopi_get_link($pid, $label);
+
   }
+  return 'error';
 }
 
 /**
@@ -111,18 +107,17 @@ function _bibdk_sbkopi_make_link($method, $pid) {
  * @param $type
  * @return array
  */
-function _bibdk_sb_kopi_get_link($pid, $label, $type) {
+function _bibdk_sb_kopi_get_link($pid, $label) {
   return array(
     '#theme' => 'link',
     '#text' => $label,
-    '#path' => 'reservation',
+    '#path' => 'reservation/sbkopi/' . $pid,
     '#options' => array(
       'attributes' => array(
         'class' => array('link-sbkopi', 'bibdk-popup-link'),
         'data-rel' => array('reservation'),
       ),
       'html' => TRUE,
-      'query' => array('ids' => $pid, 'bestil_kopi' => $type)
     ),
   );
 }
