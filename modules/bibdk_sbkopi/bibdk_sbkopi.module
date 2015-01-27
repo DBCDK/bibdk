@@ -5,7 +5,6 @@
  */
 
 /** load field hooks * */
-include_once 'includes/bibdk_reservation_sb_kopi.inc';
 include_once 'includes/bibdk_sbkopi.ajax.inc';
 
 /**
