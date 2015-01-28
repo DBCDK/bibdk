@@ -495,7 +495,7 @@ function bibdk_openuserstatus_get_fiscal_account_table($form, $fiscals) {
   $header = array(
     'material' => t('author_title', array(), array('context' => 'bibdk_openuserstatus')),
     'type' => array('data' => t('type_header', array(), array('context' => 'bibdk_openuserstatus')), 'class' => array('show-for-large-up')),
-    'date' => t('date_header', array(), array('context' => 'bibdk_openuserstatus')),
+    'date' => array('data' => t('date_header', array(), array('context' => 'bibdk_openuserstatus')), 'class' => array('show-for-large-up')),
     'amount' => t('amount_header', array(), array('context' => 'bibdk_openuserstatus')),
   );
 
