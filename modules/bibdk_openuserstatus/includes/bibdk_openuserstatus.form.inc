@@ -494,7 +494,7 @@ function bibdk_openuserstatus_get_fiscal_account_table($form, $fiscals) {
   );
   $header = array(
     'material' => t('author_title', array(), array('context' => 'bibdk_openuserstatus')),
-    'type' => array('data' => t('type_header', array(), array('context' => 'bibdk_openuserstatus')), 'class' => array('show-for-large-up')),
+    'type' => array('data' => t('type_header', array(), array('context' => 'bibdk_openuserstatus')), 'class' => array(/*'show-for-large-up'*/)),
     'date' => array('data' => t('date_header', array(), array('context' => 'bibdk_openuserstatus')), 'class' => array('show-for-large-up')),
     'amount' => t('amount_header', array(), array('context' => 'bibdk_openuserstatus')),
   );
@@ -509,7 +509,7 @@ function bibdk_openuserstatus_get_fiscal_account_table($form, $fiscals) {
       $agencyId = (isset($reservation['agencyId']) ? $reservation['agencyId'] : NULL);
       $item['material'] = _bibdk_openuserstatus_material($reservation);
       $item['type']['data'] = t($reservation['fiscalTransactionType'], array(), array('context' => 'bibdk_openuserstatus'));
-      $item['type']['class'] = array('show-for-large-up');
+      //$item['type']['class'] = array('show-for-large-up');
       $item['date']['data'] = date('d.m.Y', strtotime($reservation['fiscalTransactionDate']));
       $item['date']['class'] = array('show-for-large-up');
       $item['amount'] = $reservation['fiscalTransactionAmount'] . ' ' . $reservation['fiscalTransactionCurrency'];
