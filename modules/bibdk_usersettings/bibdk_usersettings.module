@@ -137,7 +137,11 @@ function bibdk_usersettings_user_settings_form($form, $form_state) {
 function bibdk_usersettings_user_settings_form_submit($form, &$form_state) {
 
   form_state_values_clean($form_state);
-
+  _bibdk_usersettings_clear_expand_settings(NULL);
+  if (user_is_logged_in()) {
+    bibdk_usersettings_user_settings_set('bibdk_custom_search_start_expand_moved', 'found_yes');
+  }
+  
   $groups = $form_state['values']['elements'];
 
   foreach($groups as $group) {
@@ -145,13 +149,40 @@ function bibdk_usersettings_user_settings_form_submit($form, &$form_state) {
       if (is_array($value) && isset($form_state['values']['array_filter'])) {
         $value = array_keys(array_filter($value));
       }
-      bibdk_usersettings_user_settings_set($key, $value);
+      if (is_array($value)) {
+        foreach($value as $val) {
+          $key_value = 'bibdk_custom_search_start_expand_';
+          $vars = explode("/",$val);
+          if (sizeof($vars) > 1) {
+            $key_value .= $vars[1];
+          }
+          if ($vars[0] == "bibdk_frontpage") {
+            bibdk_usersettings_user_settings_set($key_value, $val);
+          }
+        }
+      } else {
+        bibdk_usersettings_user_settings_set($key, $value);
+      }
     }
   }
 
   $form_state['rebuild'] = TRUE;
 
   drupal_set_message(t('bibdk_usersetting_has_been_updated'));
+}
+
+/** Clear all user expand settings
+ * @param $clear_option
+*/
+function _bibdk_usersettings_clear_expand_settings($clear_option) {
+  bibdk_usersettings_user_settings_set('bibdk_custom_search_start_expand_', $clear_option);
+  bibdk_usersettings_user_settings_set('bibdk_custom_search_start_expand_bog', $clear_option);
+  bibdk_usersettings_user_settings_set('bibdk_custom_search_start_expand_artikel', $clear_option);
+  bibdk_usersettings_user_settings_set('bibdk_custom_search_start_expand_film', $clear_option);
+  bibdk_usersettings_user_settings_set('bibdk_custom_search_start_expand_net', $clear_option);
+  bibdk_usersettings_user_settings_set('bibdk_custom_search_start_expand_spil', $clear_option);
+  bibdk_usersettings_user_settings_set('bibdk_custom_search_start_expand_musik', $clear_option);
+  bibdk_usersettings_user_settings_set('bibdk_custom_search_start_expand_noder', $clear_option);
 }
 
 /** Wrapper to get user settings
@@ -326,4 +357,22 @@ function bibdk_usersettings_bibdk_mypage_tabs_rows($max_rows) {
  * */
 function bibdk_usersettings_user_help_list() {
   return array('usersettings_mypage_help_key'=>'usersettings_mypage_help_label');
+}
+
+/**
+ * Implements hook_bibdk_provider_default_settings().
+ */
+function bibdk_usersettings_bibdk_provider_default_settings() {
+  $defaults['bibdk_custom_search_start_expand_'] = NULL;
+  $defaults['bibdk_custom_search_start_expand_bog'] = 'bibdk_frontpage/bog';
+  $defaults['bibdk_custom_search_start_expand_artikel'] = 'bibdk_frontpage/artikel';
+  $defaults['bibdk_custom_search_start_expand_film'] = 'bibdk_frontpage/film';
+  $defaults['bibdk_custom_search_start_expand_net'] = 'bibdk_frontpage/net';
+  $defaults['bibdk_custom_search_start_expand_spil'] = 'bibdk_frontpage/spil';
+  $defaults['bibdk_custom_search_start_expand_musik'] = 'bibdk_frontpage/musik';
+  $defaults['bibdk_custom_search_start_expand_noder'] = 'bibdk_frontpage/noder';
+  if (user_is_logged_in()) {
+    bibdk_usersettings_user_settings_set('bibdk_custom_search_start_expand_moved', 'found_yes');
+  }
+  return $defaults;
 }
