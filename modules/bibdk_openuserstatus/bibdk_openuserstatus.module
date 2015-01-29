@@ -45,7 +45,7 @@ function bibdk_openuserstatus_mypage_link() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('bibdk_openuserstatus_form'),
     'access callback' => TRUE,
-    'access arguments'=> 'user_edit_access',
+    'access arguments' => 'user_edit_access',
     'weight' => 10,
   );
 
@@ -56,7 +56,7 @@ function bibdk_openuserstatus_mypage_link() {
  * Implements hook to user_help_list
  * */
 function bibdk_openuserstatus_user_help_list() {
-  return array('openuserstatus_mypage_help_key'=>'openuserstatus_mypage_help_label');
+  return array('openuserstatus_mypage_help_key' => 'openuserstatus_mypage_help_label');
 }
 
 /**
@@ -70,6 +70,7 @@ function bibdk_openuserstatus_ctools_plugin_api($module, $api) {
 
 /**
  * Implements hook_theme().
+ *
  * @return array
  */
 function bibdk_openuserstatus_theme() {
@@ -83,29 +84,35 @@ function bibdk_openuserstatus_theme() {
     'bibdk_openuserstatus_row_item' => array(
       'template' => 'bibdk_openuserstatus_row_item',
       'path' => $theme_path,
-      'variables' => array('author' => '','title' => ''),
-    ),
-    'bibdk_openuserstatus_table_name' => array(
-      'template' => 'bibdk_openuserstatus_table_name',
-      'path' => $theme_path,
-      'variables' => array('table_title' => '', 'count' => '', 'heading_level' => '2'),
+      'variables' => array(
+        'author' => '',
+        'title' => '',
+        'library' => '',
+      ),
     ),
     'bibdk_openuserstatus_return_date' => array(
       'template' => 'bibdk_openuserstatus_return_date',
       'path' => $theme_path,
-      'variables' => array('overdue' => FALSE, 'date' => '', 'renewable' => ''),
+      'variables' => array(
+        'date' => '',
+        'renewable' => '',
+        'title' => '',
+        'alert_class' => '',
+      ),
     ),
     'bibdk_openuserstatus_help_icon' => array(
-      'template'    => 'bibdk_openuserstatus_help_icon',
+      'template' => 'bibdk_openuserstatus_help_icon',
       'path' => $theme_path,
-      'variables' => array('label' => NULL ),
+      'variables' => array('label' => NULL),
     ),
   );
 }
 
 /**
  * get favourite libraries; get userstatus for each favourite
- * @return array; empty array if no favourites; else [agencyId => UserStatusResponse]
+ *
+ * @return array; empty array if no favourites; else [agencyId =>
+ *   UserStatusResponse]
  */
 function bibdk_openuserstatus_request() {
   $favourites = bibdk_favourite_get_favourites();
@@ -157,7 +164,6 @@ function bibdk_openuserstatus_bibdk_reservation_complete($pids, $result) {
 }
 
 /**
-
  * Returns favourite libraries
  *
  * @internal TingAgency $fav
@@ -166,7 +172,6 @@ function bibdk_openuserstatus_bibdk_reservation_complete($pids, $result) {
 function bibdk_openuserstatus_get_favourites() {
   return bibdk_favourite_get_favourites();
 }
-
 
 /**
  * @param $agencyId
@@ -193,8 +198,7 @@ function bibdk_openuserstatus_get_favourites_array() {
   $favourites = bibdk_favourite_get_favourites();
   $arr = array();
   foreach ($favourites as $favourite) {
-    $arr[$favourite->getBranch()->branchId] = $favourite->getBranch()
-      ->getBranchShortName($language->language);
+    $arr[$favourite->getBranch()->branchId] = $favourite->getBranch()->getBranchShortName($language->language);
   }
   return $arr;
 }
@@ -331,7 +335,7 @@ function bibdk_openuserstatus_renew_request_complete_set_messages($error, $succe
     if ($reason == 'Item not renewable') {
       drupal_set_message(t('The following items are not renewable: %materials', array('%materials' => implode(', ', $err)), array('context' => 'bibdk_openuserstatus:error')), 'error');
     }
-    else{
+    else {
       drupal_set_message(t($reason . ' : %materials', array('%materials' => implode(', ', $err)), array('context' => 'bibdk_openuserstatus:error')), 'error');
     }
   }

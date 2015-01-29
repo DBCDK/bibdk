@@ -20,6 +20,4 @@ files[] = test/bibdk_openuserstatus_cancel_reservation.test
 files[] = test/bibdk_openuserstatus_unittest.test
 files[] = test/bibdk_openuserstatus_form.test
 
-stylesheets[all][] = css/bibdk_openuserstatus.css
-
 configure = admin/config/user-interface/bibdk_openuserstatus

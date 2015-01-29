@@ -447,8 +447,8 @@ function bibdk_reservation_form_step_2_validate(&$form, &$form_state) {
     form_set_error('cpr', t('CPR-number needs to be a valid CPR-number', array(), array('context' => 'bibdk_reservation:error')));
   }
 
-  if (!empty($form_state['values']['userMail']) && !valid_email_address($form_state['values']['userMail'])) {
-    form_set_error('userEmail', t('Email needs to be a valid email', array(), array('context' => 'bibdk_reservation:error')));
+  if (!empty($form_state['values']['userMail']) && !valid_email_address(trim($form_state['values']['userMail']))) {
+      form_set_error('userEmail', t('Email needs to be a valid email', array(), array('context' => 'bibdk_reservation:error')));
   }
 
   if ( !bibdk_reservation_validate_date($form_state['values']['needBeforeDate']) ) {
