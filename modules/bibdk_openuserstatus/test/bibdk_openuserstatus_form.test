@@ -72,12 +72,9 @@ class BibdkOpenuserstatusFormUnitTest extends DrupalUnitTestCase {
 
 
     $this->assertTrue($invalid == '', 'Invalid date returns empty string.');
-    $this->assertTrue(is_array($past), 'Past date returns render array');
-    $this->assertTrue($past['data']['#overdue'], 'Past date is overdue.');
+    $this->assertTrue(is_array($past), 'Past date returns render array');;
     $this->assertTrue(is_array($future), 'Future date returns render array');
-    $this->assertFalse($future['data']['#overdue'], 'Future date is not overdue.');
     $this->assertTrue(is_array($today), 'Current date returns render array');
-    $this->assertFalse($today['data']['#overdue'], 'Today date is not overdue.');
   }
 
   public function test_bibdk_openuserstatus_select() {
@@ -154,6 +151,7 @@ class BibdkOpenuserstatusFormUnitTest extends DrupalUnitTestCase {
         '#theme' => 'bibdk_openuserstatus_row_item',
         '#author' => '',
         '#title' => '',
+        '#library' => '',
       ),
     );
     $empty_r = _bibdk_openuserstatus_material($empty);
