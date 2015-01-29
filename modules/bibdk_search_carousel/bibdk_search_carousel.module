@@ -1,0 +1,168 @@
+<?php
+/**
+ * @file
+ * Bibliotek.dk search carousel module main file.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function bibdk_search_carousel_menu() {
+
+  $items = array();
+
+  $items['bibdk_search_carousel/results/ajax'] = array(
+    'title' => 'Show search carousel results',
+    'page callback' => 'bibdk_search_carousel_result',
+    'access arguments' => array('access content'),
+    'file' => 'bibdk_search_carousel.ajax.inc',
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['admin/config/user-interface/bibdk_search_carousel'] = array(
+    'title' => 'Bibliotek.dk search carousel',
+    'description' => 'Manage content for frontpage carousel.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bibdk_search_carousel_admin_form'),
+    'access arguments' => array('access administration pages'),
+    'file' => 'bibdk_search_carousel.admin.inc',
+  );
+
+  $items['admin/config/user-interface/bibdk_search_carousel/settings'] = array(
+    'title' => 'Content',
+    'description' => 'Manage content for frontpage carousel.',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
+
+  $items['admin/config/user-interface/bibdk_search_carousel/frontend_settings'] = array(
+    'title' => 'Frontend settings',
+    'description' => 'Manage settings for the display of frontpage carousel',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bibdk_search_carousel_settings_admin_form'),
+    'access arguments' => array('access administration pages'),
+    'file' => 'bibdk_search_carousel.admin.inc',
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 0,
+  );
+
+  $items['admin/config/user-interface/bibdk_search_carousel/search_settings'] = array(
+    'title' => 'Search settings',
+    'description' => 'Manage settings for the search webservice',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bibdk_search_carousel_search_admin_form'),
+    'access arguments' => array('access administration pages'),
+    'file' => 'bibdk_search_carousel.admin.inc',
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 0,
+  );
+
+  return $items;
+
+}
+
+
+
+/**
+ * Implements hook_help().
+ */
+function bibdk_search_carousel_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#bibdk_search_carousel';
+      $file = drupal_get_path('module', 'bibdk_search_carousel') . "/help/bibdk_search_carousel.php";
+      return $output = file_get_contents($file);
+    break;
+  }
+}
+
+
+
+/**
+ * Implements hook_theme().
+ */
+function bibdk_search_carousel_theme($existing, $type, $theme, $path) {
+  return array(
+    'bibdk_search_carousel' => array(
+      'variables' => array(
+        'searches' => NULL,
+        'tab_position' => NULL,
+      ),
+      'template' => 'templates/bibdk_search_carousel',
+      'file' => 'bibdk_search_carousel.theme.inc',
+    ),
+/*
+    'ting_search_carousel_collection' => array(
+      'variables' => array('collection' => NULL),
+      'template' => 'templates/ting_search_carousel_collection',
+    ),
+*/
+    'bibdk_search_carousel_admin_form' => array(
+      'render element' => 'form',
+    ),
+  );
+}
+
+
+
+/**
+ * Implements hook_block_info().
+ */
+function bibdk_search_carousel_block_info() {
+  return array(
+    'ting_search_carousel' => array(
+      'info' => 'Ting search carousel, block'
+  ));
+}
+
+
+
+/**
+ * Implements hook_block_view().
+ *
+ * We ignore delta in this block view, as we only have one block.
+ */
+function bibdk_search_carousel_block_view($delta) {
+  return array(
+    'content' => theme('ting_search_carousel', array(
+        'searches' => variable_get('ting_carousel_search_queries', array()),
+        'tab_position' => variable_get('ting_search_carousel_tabs_position'),
+    )),
+  );
+}
+
+
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function bibdk_search_carousel_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'ctools' || $module == 'panels') {
+    return 'plugins/' . $plugin;
+  }
+}
+
+
+
+/**
+ * Implements hook_bibdk_search_carousel_query().
+ */
+function bibdk_search_carousel_bibdk_search_carousel_query($query) {
+
+  $bibdk_query_prefix = CQL_AND . variable_get('bibdk_search_carousel_week_search_code', 'dkcclterm.kk') . '=(';
+  $bibdk_query_suffix = ')';
+  $bibdk_dateformat = variable_get('bibdk_search_carousel_dateformat', 'bk\mYW');
+  $today = time();
+  $week = 7 * 24 * 60 * 60; // 7 days; 24 hours; 60 mins; 60secs
+
+  $periods = array();
+  for ($n = 0; $n < $query['period']; $n++) {
+    $offset = $query['offset'];
+    $weeks = $week * ( $n + $offset );
+    $periods[] = date($bibdk_dateformat, $today - $weeks);
+  }
+  if ( !empty($periods)  ) {
+    $query['query'] = $query['query'] . $bibdk_query_prefix . implode(CQL_OR, $periods) . $bibdk_query_suffix;
+  }
+
+  return $query;
+}
