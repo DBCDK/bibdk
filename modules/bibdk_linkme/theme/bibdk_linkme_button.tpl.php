@@ -4,6 +4,6 @@
   </a>
 
   <div id="<?php print $selid ?>" class="linkme-content bibdk-dropdown" data-dropdown-content aria-hidden="true" tabindex="-1">
-    <div class=''><?php print drupal_render_children($link_form) ?><span
+    <div><?php print drupal_render_children($link_form) ?></div>
   </div>
 </div>
