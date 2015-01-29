@@ -13,7 +13,6 @@ function bibdk_sbkopi_ajax_get_options() {
   $link = bibdk_sbkopi_ajax_openorder_request($_REQUEST['pid']);
   $data['pid'] = $_REQUEST['pid'];
   if ($link) {
-    $link['#options']['attributes']['class'] += array('bibdk-popup-link');
     $link = drupal_render($link);
   }
   else {
@@ -21,6 +20,7 @@ function bibdk_sbkopi_ajax_get_options() {
   }
   $data['link'] = $link;
   drupal_json_output($data);
+  exit;
 }
 
 /**
@@ -30,7 +30,7 @@ function bibdk_sbkopi_ajax_get_options() {
  */
 function bibdk_sbkopi_ajax_openorder_request($pid) {
   if ($delivery_method = bibdk_sbkopi_delivery_method($pid)) {
-    return _bibdk_sbkopi_make_link($delivery_method, $pid);
+    return _bibdk_sb_kopi_get_link($pid);
   }
   else {
     return FALSE;
@@ -84,33 +84,17 @@ function bibdk_sbkopi_ajax_parse_response($xml, $pid) {
 }
 
 /**
- * Create link for sbkopi order flow
- * @param $method
- * @param $pid
- * @return array|string
- */
-function _bibdk_sbkopi_make_link($method, $pid) {
-  // two methods postal (print), electronic (e-copy)
-  if ($method) {
-    $label = t('sb_order_copy', array(), array('context' => 'bibdk_sbkopi'));
-    return _bibdk_sb_kopi_get_link($pid, $label);
-
-  }
-  return 'error';
-}
-
-/**
  * Create link render array for sbkopi order flow
  *
  * @param $pid
  * @param $label
- * @param $type
+ *
  * @return array
  */
-function _bibdk_sb_kopi_get_link($pid, $label) {
-  return array(
+function _bibdk_sb_kopi_get_link($pid) {
+  $link = array(
     '#theme' => 'link',
-    '#text' => $label,
+    '#text' => t('sb_order_copy', array(), array('context' => 'bibdk_sbkopi')),
     '#path' => 'reservation/sbkopi/' . $pid,
     '#options' => array(
       'attributes' => array(
@@ -119,6 +103,13 @@ function _bibdk_sb_kopi_get_link($pid, $label) {
       ),
       'html' => TRUE,
     ),
+  );
+
+  return array(
+    '#theme' => 'bibdk_sbkopi_button',
+    '#link' => $link,
+    '#helptext' => t('sbkopi_helptext', array(), array('context' => 'bibdk_sbkopi')),
+    '#pid' => "sb-" . drupal_html_id($pid),
   );
 }
 
