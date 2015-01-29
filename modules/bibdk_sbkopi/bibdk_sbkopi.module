@@ -5,7 +5,6 @@
  */
 
 /** load field hooks * */
-include_once 'includes/bibdk_reservation_sb_kopi.inc';
 include_once 'includes/bibdk_sbkopi.ajax.inc';
 
 /**
@@ -95,15 +94,33 @@ function bibdk_sbkopi_menu() {
 }
 
 /**
+ * implements hook_theme().
+ */
+function bibdk_sbkopi_theme(){
+  $items = array();
+  $items['bibdk_sbkopi_button'] = array(
+    'variables' => array(
+      'link' => array(),
+      'helptext' => '',
+      'pid' => '',
+    ),
+    'template' => 'theme/bibdk-sbkopi-button',
+  );
+
+  return $items;
+}
+
+/**
  * Implements hook_ting_openformat_actions().
  */
 function bibdk_sbkopi_ting_openformat_actions($type, $entity, $view_mode, $langcode) {
   if ($type == 'bibdkManifestation') {
     // only for type 'Tidsskriftsartikel
     if ($entity->getSubType() == 'Tidsskriftsartikel') {
-      $actions['sbkpopi'] = array(
+      $actions['sbkopi'] = array(
         '#theme' => 'html_tag',
         '#tag' => 'span',
+        '#value' => '',
         '#attributes' => array(
           'class' => 'bibdk-sb_kopi-replaceme',
           'pid' => $entity->id
