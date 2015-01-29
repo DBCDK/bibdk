@@ -185,11 +185,7 @@ function bibdk_reservation_get_favourites_for_selector() {
  *
  * else if there is an url to the catalog return that url
  *
-<<<<<<< HEAD
  * @param $policy_response
-=======
- * @param BibdkOpenorderPolicyResponse $policy_response
->>>>>>> feature/681_userstatus
  * @return array
  */
 function _bibdk_reservation_generate_policy_messages($policy_response) {
@@ -338,54 +334,6 @@ function bibdk_reservation_step_2_order_form_fields($form, $form_state) {
       '#default_value' => (isset($form_state['values'][$type])) ? $form_state['values'][$type] : "",
     );
   }
-
-  return $form;
-}
-
-/**
- * Render branch fields;
- *
- */
-
-/*
- * @TODO delete this if not used...
- */
-function bibdk_reservation_step_2_order_branch_fields($form, $form_state) {
-
-  $branch = BibdkReservationOrderObject::GetObject()->getBranch();
-
-  $form['branchParameters'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Selected Branch', array(), array('context' => 'bibdk_reservation')),
-  );
-
-  $form['branchParameters']['description'] = array(
-    '#type' => 'markup',
-    '#attributes' => array('class' => array('form-wrapper', 'form-item')),
-    '#markup' => t('Description for selected branch', array(), array('context' => 'bibdk_reservation')),
-  );
-
-  $moreinfo = theme('ting_agency_more_info', array(
-    'branch' => $branch,
-    'openingHours' => theme('ting_agency_opening_hours', array('branch' => $branch,)),
-    'address' => theme('ting_agency_address', array('branch' => $branch)),
-    'contact' => theme('ting_agency_contact', array('branch' => $branch)),
-  ));
-
-  //$classes[] = 'selected_branch';
-  $classes = array();
-  $classes[] = 'element-wrapper';
-  $classes[] = 'favourite_' . $branch->branchId;
-  $classes[] = (isset($branch->orderLibrary) && $branch->orderLibrary == 'TRUE') ? 'order-agency' : NULL;
-
-  global $language;
-  $form['branchParameters']['selectedBranch']['#markup'] = theme('ting_agency_library', array(
-    'branchName' => $branch->getBranchName($language->language),
-    'actions' => NULL,
-    'add_classes' => $classes,
-    'moreinfo' => $moreinfo,
-    'branchid' => $branch->branchId
-  ));
 
   return $form;
 }

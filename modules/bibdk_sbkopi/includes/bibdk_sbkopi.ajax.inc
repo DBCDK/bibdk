@@ -20,7 +20,7 @@ function bibdk_sbkopi_ajax_get_options() {
   }
   $data['link'] = $link;
   drupal_json_output($data);
-  exit;
+  drupal_exit();
 }
 
 /**
