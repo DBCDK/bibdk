@@ -7,9 +7,11 @@ package = Bibliotek.dk
 ; tests
 files[] = test/bibdk_sbkopi.test
 files[] = test/bibdk_sbkopi.request.test
+files[] = test/bibdk_sbkopi.fields.test
 
 ; classes
 files[] = lib/SbCurlRequest.inc
+files[] = lib/SbCopyFields.inc
 
 ; scripts
 scripts[] = js/sbCopySwitchMe.js

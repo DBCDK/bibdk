@@ -202,14 +202,16 @@ function _ting_openformat_render_direct_link($infocode, $manifestation) {
 }
 
 /**
- * Retrieves any accessUrl's from the given manifestation a string of links
+ * Retrieves any accessUrl's from the given manifestation (main or volume) a string of links
  * seprated by <br />
  *
  * @param Manifestation $manifestation
  * @return string
  */
 function _bibdk_reservation_get_access_links($manifestation) {
-  $info = $manifestation->getAccessInformation();
-
+  $info = $manifestation->getVolumeAccessInformation();
+  if (!isset($info)) {
+    $info = $manifestation->getAccessInformation();
+  }
   return _ting_openformat_parse_element($info, '<br/>');
 }
