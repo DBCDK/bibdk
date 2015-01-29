@@ -25,16 +25,15 @@ class BibdkOpenuserstatusTest extends DrupalWebTestCase {
     //Note that openuserstatus_webservice_mockup should be enabled in local installation when testing locally
     module_enable(array('openuserstatus_webservice_mockup'));
     menu_rebuild();
-    parent::setUp('bibdk_openuserstatus', 'ting_agency','openagency_webservice_mockup', 'openuserstatus_webservice_mockup', 'ting_openuserstatus', 'ding_provider', 'bibdk_provider', 'bibdk_webservice');
+    parent::setUp('bibdk_openuserstatus', 'ting_agency', 'openagency_webservice_mockup', 'openuserstatus_webservice_mockup', 'ting_openuserstatus', 'ding_provider', 'bibdk_provider', 'bibdk_webservice');
     variable_set('bibdk_provider_webservice_url', $this->getAbsoluteUrl('bibdk_webservice'));
     variable_set('bibdk_provider_security_code', 'securityCode');
-
 
     global $base_url;
     $this->baseurl = $base_url;
     variable_set('openuserstatus_url', $this->getAbsoluteUrl('openuserstatus_webservice_mockup/renew'));
     variable_set('agency_search_url', 'http://openagency.addi.dk/2.2/');
-    variable_set('agency_search_xsd_url',$this->getAbsoluteUrl('/openagency_webservice/openagency.xsd'));
+    variable_set('agency_search_xsd_url', $this->getAbsoluteUrl('/openagency_webservice/openagency.xsd'));
   }
 
   public function tearDown() {
@@ -60,41 +59,16 @@ class BibdkOpenuserstatusTest extends DrupalWebTestCase {
     $this->test_bibdk_openuserstatus_renew_marked_submit();
   }
 
-  private function _createProviderUser() {
-    $name = 'dummy@dbc.dk';
-    $pass = 'pass';
-    bibdk_provider_user_create_account($name, $pass);
-    db_insert('authmap')->fields(array(
-      'uid' => 2,
-      'module' => 'ding_user',
-      'authname' => $name
-    ))->execute();
-
-    $user = new stdClass();
-    $user->uid = 2;
-    $user->name = $name;
-    $user->roles = array();
-    ding_user_save_creds(array(
-      'creds' => array(
-        'name' => $name,
-        'pass' => $pass,
-      )
-    ), $user);
-    return $user;
-  }
-
-  private function _removeProviderUser() {
-    $name = 'dummy@dbc.dk';
-    db_delete('authmap')->condition('authname', $name)->execute();
-  }
-
   /** TESTING BIBDK_OPENUSERSTATUS.AJAX.INC **/
 
   private function test_bibdk_openuserstatus_get_loans() {
     $loans = bibdk_openuserstatus_get_loans($this->response);
     $this->assertTrue(is_array($loans), 'Array correctly returned');
     $count = count($loans);
-    $this->assertEqual($count, 4, t('Size of array seems right: should be: %right was %was', array('%right' => '4', '%was' => $count)));
+    $this->assertEqual($count, 4, t('Size of array seems right: should be: %right was %was', array(
+      '%right' => '4',
+      '%was' => $count
+    )));
   }
 
   private function test_bibdk_openuserstatus_get_loans_table() {
@@ -109,7 +83,6 @@ class BibdkOpenuserstatusTest extends DrupalWebTestCase {
     $loans = $form['loans'];
 
     $this->assertTrue((is_array($loans['loans_name']) && is_array($loans['loans_table']) && is_array($loans['loans_renew_all']) && is_array($loans['loans_renew_marked'])), 'The present keys seems to be alright');
-    $this->assertTrue($loans['loans_name']['#count'] == 4, 'Number of items seems to be correctly wrapped in a span element');
   }
 
   private function test_bibdk_openuserstatus_get_reservations() {
@@ -135,17 +108,6 @@ class BibdkOpenuserstatusTest extends DrupalWebTestCase {
     $this->assertEqual($readyForPickupCount, 3, 'Correct amount of materials ready for pickup found');
   }
 
-  private function test_bibdk_openuserstatus_materials_in_process() {
-    $reservations = bibdk_openuserstatus_get_reservations($this->response);
-    $items = bibdk_openuserstatus_materials_in_process($reservations);
-
-    $this->assertTrue(is_array($items), 'Got array in return');
-
-    $this->assertEqual(count($items), 2, 'Found 2 materials in array');
-    $keys = (array_key_exists('material', $items[0]) && array_key_exists('library', $items[0]) && array_key_exists('pickup_date', $items[0]) && array_key_exists('pickup_id', $items[0]));
-    $this->assertTrue($keys, 'Materials in items array seems to be correectly formatted');
-  }
-
   private function test_bibdk_openuserstatus_get_reservations_readyforpickup_table() {
     $form = array();
     $agencies = array('737600');
@@ -159,53 +121,10 @@ class BibdkOpenuserstatusTest extends DrupalWebTestCase {
     $readyForPickup = $form['readyforpickup'];
 
     $this->assertTrue(array_key_exists('readyforpickup_name', $readyForPickup), 'Array contains readyforpickup_name key');
-    $this->assertTrue(array_key_exists('#count', $readyForPickup['readyforpickup_name']), 'key \'#count\' exists');
-    $this->assertTrue($readyForPickup['readyforpickup_name']['#count'] == 3, '3 reservations are ready for pickup');
+    $this->assertTrue(array_key_exists('readyforpickup_name', $readyForPickup), 'Array contains readyforpickup_name key');
 
     $this->assertTrue(array_key_exists('readyforpickup_table', $readyForPickup), 'Array contains readyforpickup_table key');
     $this->assertTrue(!empty($readyForPickup['readyforpickup_table']), '\'readyforpickup_table\' is not empty');
-  }
-
-  private function test_bibdk_openuserstatus_get_fiscals() {
-    $items = bibdk_openuserstatus_get_fiscals($this->response);
-    $this->assertTrue(is_array($items), 'Got array in return');
-    $this->assertEqual(count($items), 2, 'Found 2 materials in array');
-  }
-
-  private function test_bibdk_openuserstatus_get_fiscal_materials() {
-    $fiscals = bibdk_openuserstatus_get_fiscals($this->response);
-
-    $items = bibdk_openuserstatus_get_fiscal_materials($fiscals);
-    debug($items);
-    $this->assertTrue(is_array($items), 'Got array in return');
-
-    $keys = (array_key_exists('737600', $items));
-    $this->assertTrue($keys, 'Array has branchId as key.');
-
-    $this->assertEqual(count($items['737600']['items']), 2, 'Found 2 materials in array');
-
-    $keys = (
-      array_key_exists('material', $items['737600']['items'][0]) &&
-      array_key_exists('type', $items['737600']['items'][0]) &&
-      array_key_exists('date', $items['737600']['items'][0]) &&
-      array_key_exists('amount', $items['737600']['items'][0])
-    );
-
-    $this->assertTrue($keys, 'Materials in items array seems to be correctly formatted');
-
-    $this->assertTrue(
-      array_key_exists('branchName', $items['737600']),
-      'Materials in items array has a "branchName" arraykey'
-    );
-
-    $this->assertEqual($items['737600']['branchName'], 'Hovedbiblioteket', 'branchName equals "Hovedbiblioteket"');
-
-    $this->assertTrue(
-      array_key_exists('paymentUrl', $items['737600']),
-      'Materials in items array has a "paymentUrl" arraykey'
-    );
-
-    $this->assertEqual($items['737600']['paymentUrl'], 'https://www.nyfac.bibnet.dk/sites/WCB/pub/patronstatus.html', 'paymentUrl equals "https://www.nyfac.bibnet.dk/sites/WCB/pub/patronstatus.html"');
   }
 
   /** TESTING BIBDK_OPENUSERSTATUS.MODULE **/
@@ -221,22 +140,12 @@ class BibdkOpenuserstatusTest extends DrupalWebTestCase {
     $this->assertEqual($userstatusResponse->userId, $this->userId, 'userId in UserStatusResponse matches the expected value');
   }
 
-  private function test_bibdk_openuserstatus_get_agencyname() {
-    $test = bibdk_openuserstatus_get_agencyname($this->agencyId);
-    $this->assertEqual($test, 'Hovedbiblioteket', 'Correct branch agencyname returned');
-    $test = bibdk_openuserstatus_get_agencyname(5); //Could be any number not matching a known agencyId
-    $this->assertNull($test, 'Method return NULL as expected');
-  }
-
   private function test_bibdk_openuserstatus_get_favourites_array() {
     $ret = bibdk_openuserstatus_get_favourites_array();
 
     $this->assertTrue(is_array($ret), 'Array was returned');
     $this->assertEqual(count($ret), 2, 'Array length equal 2');
     $this->assertTrue((array_key_exists('710119', $ret) && array_key_exists($this->agencyId, $ret)), 'Arraykeys found as expected');
-    // Failing tests omitted /svi
-    //$this->assertEqual($ret['710119'], 'Vesterbro Bibliotek', '\'Vesterbro Bibliotek\' found in array as expected');
-    //$this->assertEqual($ret[$this->agencyId], 'Hovedbiblioteket', '\'Hovedbiblioteket\' found in array as expected');
   }
 
   private function test_bibdk_openuserstatus_get_pickup_agencies() {
@@ -246,7 +155,15 @@ class BibdkOpenuserstatusTest extends DrupalWebTestCase {
     $count = count($ret);
     $this->assertEqual($count, 8, t('Array length equal 8, got %count', array('%count' => $count)));
 
-    $keys = array('737600', '737601', '737602', '737603', '737604', '737605', '737607');
+    $keys = array(
+      '737600',
+      '737601',
+      '737602',
+      '737603',
+      '737604',
+      '737605',
+      '737607'
+    );
     $this->assertTrue($this->_keysExists($ret, $keys), 'Keys is found as expected');
   }
 
@@ -254,14 +171,12 @@ class BibdkOpenuserstatusTest extends DrupalWebTestCase {
     $messages = drupal_get_messages();
 
     $form_state = drupal_json_decode($this->_loadFile('form_submit_renew_marked.json'));
-    // $this->verbose(print_r($form_state,1));
 
     bibdk_openuserstatus_renew_marked_submit(array(), $form_state);
 
     $messages = drupal_get_messages();
 
     $this->assertTrue(array_key_exists('error', $messages), 'Found arraykey error in messages array');
-
 
     $index = 0;
     if (strstr($messages['error'][0], 'security updates available for one or more of your modules or themes')) {
@@ -270,21 +185,6 @@ class BibdkOpenuserstatusTest extends DrupalWebTestCase {
 
     $this->assertTrue((strstr($messages['error'][$index], 'Adler-Olsen, Jussi: Alfabethuset. - 6. udgave') && strstr($messages['error'][$index], 'items are not renewable')), 'Adler-Olsen, Jussi: Alfabethuset found as not renewable');
   }
-
-
-  private function test_bibdk_openuserstatus_fiscal_form() {
-
-    $form = array();
-    $data = drupal_json_decode($this->_loadFile('form_fiscal_data.json'));
-
-    $form_expected = drupal_json_decode($this->_loadFile('form_fiscal_expected.json'));
-
-    $form = bibdk_openuserstatus_get_fiscal_account_table_form($form, $data);
-
-    $this->assertEqual($form, $form_expected, 'fiscal form formatted correctly');
-
-  }
-
 
   /**
    * Loads a file with the given filename ($filename) from
