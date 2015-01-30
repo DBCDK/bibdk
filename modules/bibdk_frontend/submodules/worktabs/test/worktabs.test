@@ -1,0 +1,60 @@
+<?php
+
+/**
+ * Class WorktabsUnitTestCase
+ */
+class WorktabsUnitTestCase extends DrupalUnitTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => t('Worktabs - Unittest'),
+      'description' => t('Testing the worktabs functionality'),
+      'group' => t('Bibliotek.dk - Frontend'),
+    );
+  }
+
+  public function setUp() {
+    module_load_include('module', 'worktabs');
+    parent::setUp();
+  }
+
+  /**
+   * Testing genration of parent worktabs in method worktabs_get_outer().
+   */
+  public function testOuterTabsGen() {
+    $tabs = worktabs_get_outer();
+    $this->assertFalse(array_key_exists('subjects', $tabs), 'Key \'subjects\' is not present');
+    $this->assertTrue(array_key_exists('more-about', $tabs), 'Key \'more-about\' is present');
+    $this->assertTrue(array_key_exists('reviews', $tabs), 'Key \'reviews\' is present');
+
+    $activeCounter = 0;
+    $hiddenCounter = 0;
+    foreach ($tabs as $tab) {
+      if ($tab['class'] == 'active') {
+        $activeCounter++;
+      }
+      if ($tab['active'] == 'visuallyhidden') {
+        $hiddenCounter++;
+
+      }
+    }
+    $this->assertEqual($activeCounter, 1, 'One item only active as default');
+    $this->assertEqual($hiddenCounter, (count($tabs) - 1), 'Correct number of items is having visuallyhidden');
+  }
+
+  /**
+   * Testing sorting of content in method worktabs_merge_content().
+   */
+  public function testContentMerge() {
+    $content = drupal_json_decode(file_get_contents(drupal_get_path('module', 'worktabs') . '/test/mockup/content_mockup.json'));
+    $tabs = worktabs_merge_content($content);
+    foreach ($tabs as $tab => $items) {
+      $keys = array_keys($items['content']);
+      if (count($keys) >= 2) {
+        for ($i = 1; $i < count($keys); $i++) {
+          $this->assertTrue(($items['content'][$keys[$i - 1]]['weight'] <= $items['content'][$keys[$i]]['weight']), 'Tabs seems to be correctly sorted');
+        }
+      }
+    }
+  }
+}

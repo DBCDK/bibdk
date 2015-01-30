@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Bibdk facets feature.
+ */
+
+include_once 'bibdk_facets.features.inc';

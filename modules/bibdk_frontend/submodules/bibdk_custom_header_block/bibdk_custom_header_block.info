@@ -1,0 +1,7 @@
+name = Bibliotek.dk - custom header block
+description = custom block meant for pane header
+core = 7.x
+version = 7.x-0.1
+package = Bibdk Frontend
+
+dependencies[] = ctools

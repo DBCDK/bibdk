@@ -1,0 +1,72 @@
+<?php
+
+
+/**
+ * Implements hook_form_alter().
+ * One hook_form_alter() to rule them all:
+ */
+function bibdk_usersettings_language_form_alter(&$form, &$form_state, $form_id) {
+  switch ($form_id) {
+    case 'user_profile_form':
+      // The language selector is only displayed if there is more than one language.
+      if ( drupal_multilingual() && $form['#user_category'] == 'account' ) {
+        if ( count(element_children($form['locale'])) > 1 ) {
+          $form['locale']['language']['#access'] = FALSE;
+        }
+        else {
+          $form['locale']['#access'] = FALSE;
+        }
+      }
+      break;
+  }
+}
+
+
+/** Implements hook_bibdk_usersettings_user_tabs
+ * @return array
+ */
+function bibdk_usersettings_language_bibdk_usersettings_user_tabs(){
+  $tab['bibdk_language'] = array(
+    'title'  => t('Language'),
+    'description' => t('tab_language_description'),
+    'weight' => 10,
+  );
+  return $tab;
+}
+
+
+/** Implements hook_bibdk_usersettings_user_settings
+ * @return array
+ */
+function bibdk_usersettings_language_bibdk_usersettings_user_settings(){
+  global $user;
+
+  $form['#user_category'] = 'account';
+  locale_language_selector_form($form, $form_state, $user);
+
+  $usersettings_form['bibdk_language'] = array(
+    '#type' => 'container',
+    '#weight' => 0,
+    '#tab' => 'bibdk_language',
+  );
+
+  $usersettings_form['bibdk_language']['locale'] = $form['locale'];
+  $usersettings_form['bibdk_language']['locale']['#type'] = 'container';
+  $usersettings_form['bibdk_language']['locale']['language']['#element_validate'] = array('_bibdk_usersettings_language_save');
+
+  return $usersettings_form;
+
+}
+
+
+/** Save language settings
+ * @return array
+ */
+function _bibdk_usersettings_language_save($element, &$form_state) {
+  global $user;
+  if ( !empty($element['#value']) ) {
+    user_save($user, array('language'=>$element['#value']));
+  }
+}
+
+

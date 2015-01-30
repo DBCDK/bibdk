@@ -1,0 +1,11 @@
+name = Bibliotek.dk - Search Region
+description = Feature defining the search region
+core = 7.x
+package = Bibliotek.dk
+php = 5.2.4
+version = 7.x-1.0
+project = bibliotek_dk_search_region
+dependencies[] = fe_block
+dependencies[] = search
+features[fe_block_settings][] = search-form
+features[features_api][] = api:1

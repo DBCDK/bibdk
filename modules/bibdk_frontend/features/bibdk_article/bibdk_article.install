@@ -1,0 +1,185 @@
+<?php
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ * Update existing bibdk_article nodes with new taxonomy term (column: left,right)
+ */
+function bibdk_article_update_7040() {
+  $articles = bibdk_article_get_articles();
+  if (empty($articles)) {
+    return;
+  }
+
+  // set half to left- and half to right column
+  $even = 0;
+  foreach ($articles as $nid => $article) {
+    $column = ($even % 2 == 0) ? 'left' : 'right';
+    $wrapper = entity_metadata_wrapper('node', $article);
+    $term = taxonomy_get_term_by_name($column, 'column');
+    $wrapper->field_column->set(current($term));
+    $wrapper->save();
+    $even++;
+  }
+}
+
+/**
+ * delete obsolete fields (field_link','field_page','field_columns','field_color',)
+ */
+function bibdk_article_update_7005() {
+  $field_names = array
+  (
+    'field_bibdk_article_link',
+    'field_page',
+    'field_color',
+  );
+
+  bibdk_article_do_delete_fields($field_names);
+}
+
+/**
+ * Update existing nodes with taxonomy terms(page_region and type)
+ */
+function bibdk_article_update_7039() {
+  $articles = bibdk_article_get_articles();
+  if (empty($articles)) {
+    return;
+  }
+
+  foreach ($articles as $nid => $article) {
+    $wrapper = entity_metadata_wrapper('node', $article);
+    $region = $wrapper->field_page_region->value();
+    if (empty($region)) {
+      $term = taxonomy_get_term_by_name('bottom', 'page_region');
+      $wrapper->field_page_region->set(current($term));
+      $wrapper->save();
+    }
+
+    $page_type = $wrapper->field_page_type->value();
+    if (empty($page_type)) {
+      // check if the old (deprecated) field (field_page) is set
+      $page = $wrapper->field_page->value();
+      if (!empty($page)) {
+        // get the corresponding taxonomy term
+        $term_name = _bibdk_article_get_term_from_page_type($page);
+        if ($term_name !== FALSE) {
+          $term = taxonomy_get_term_by_name($term_name, 'page_type');
+        }
+        else {
+          $term = taxonomy_get_term_by_name('alle_materialer', 'page_type');
+        }
+      }
+      else {
+        $term = taxonomy_get_term_by_name('alle_materialer', 'page_type');
+      }
+
+      $wrapper->field_page_type->set(current($term));
+      $wrapper->save();
+    }
+    $wrapper = NULL;
+  }
+}
+
+/** Implements hook_update_N
+ * Delete tables and fields for deprecated fields 
+ */
+function bibdk_article_update_7006() {
+  $field_names = array
+    (
+    'field_bibdk_article_image',
+    'field_bibdk_article_link_text',
+    'field_layout_columns',
+    'field_layout_placement',
+    'field_layout_rows',
+    'field_bibdk_article_image',
+  );
+
+  bibdk_article_do_delete_fields($field_names);
+
+}
+
+
+/**
+ * Delete row in tables defining given fields.
+ * Drop tables holding data for given fields
+ *
+ * @param array $field_names
+ */
+function bibdk_article_do_delete_fields(array $field_names) {
+  foreach ($field_names as $field_name) {
+    try {
+      // delete from field_config
+      db_delete('field_config')
+        ->condition('field_name', $field_name)
+        ->execute();
+    } catch (Exception $e) {
+      // continue
+    }
+    try {
+      //delete from field_config_instance
+      db_delete('field_config_instance')
+        ->condition('field_name', $field_name)
+        ->execute();
+    } catch (Exception $e) {
+      // continue
+    }
+    // drop revision table
+    $table_name = 'field_revision_' . $field_name;
+    try {
+      if (db_table_exists($table_name)) {
+        db_drop_table($table_name);
+      }
+    } catch (Exception $e) {
+      // continue
+    }
+    // drop data-table
+    $table_name = 'field_data_' . $field_name;
+    try {
+      if (db_table_exists($table_name)) {
+        db_drop_table($table_name);
+      }
+    } catch (Exception $e) {
+      // continue
+    }
+  }
+}
+
+
+/**
+ * map existing page_type to new
+ * @param $page_type
+ * @return bool
+ */
+function _bibdk_article_get_term_from_page_type($page_type) {
+  $valuemap = _bibdk_article_get_value_map();
+  foreach($valuemap as $key=>$value){
+    if( $key == $page_type || $value == $page_type) {
+      return $value;
+    }
+  }
+  return FALSE;
+}
+
+/**
+ * helper function for converting existing page_types to new
+ * @return array
+ */
+function _bibdk_article_get_value_map(){
+  return array(
+    'bibdk_frontpage/spil' => 'spil',
+    'bibdk_frontpage/noder' => 'noder',
+    'bibdk_frontpage/musik' => 'musik',
+    'bibdk_frontpage/film' => 'film',
+    'bibdk_frontpage/net' => 'net',
+    'bibdk_frontpage/bog' => 'bog',
+    'bibdk_frontpage/artikel' => 'artikel'
+  );
+}
+
+
+
+
+
+

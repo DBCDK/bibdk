@@ -1,0 +1,15 @@
+name = bibdk_article_view
+description = bibdk articles in a view(block)
+core = 7.x
+package = Features
+php = 5.2.4
+version = 7.x-1.0
+project = bibdk_article_view
+dependencies[] = bibdk_article
+dependencies[] = ctools
+dependencies[] = views
+dependencies[] = views_content
+features[ctools][] = views:views_default:3.0
+features[features_api][] = api:1
+features[views_view][] = article_view
+mtime = 1420635800

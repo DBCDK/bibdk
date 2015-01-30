@@ -1,0 +1,94 @@
+<?php
+/**
+ * @file
+ * Drupal webtestcase for the bibdk_banner feature.
+ */
+
+/**
+ * Class bibdkBannerWebtestCase
+ */
+class bibdkBannerWebtestCase extends DrupalWebTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => t('bibdk_banner - Webtest'),
+      'description' => t('Testing the bibdk banners functionality'),
+      'group' => t('Bibliotek.dk - Frontend'),
+    );
+  }
+
+  public function setUp() {
+    parent::setUp('bibdk_banner');
+  }
+
+  public function testRunner() {
+    global $_bibdk_banner_bannerURL;
+    // Create and log in our privileged user.
+    $this->admin_user = $this->drupalCreateUser(array(
+      'access content',
+      'access administration pages',
+      'administer blocks',
+      'administer site configuration',
+      'administer content types',
+      'create bibdk_banner content',
+      'edit any bibdk_banner content',
+      'delete any bibdk_banner content',
+        ));
+    $this->drupalLogin($this->admin_user);
+    $this->_testBannerBlock();
+    $this->CreateBannerTest();
+    $this->GetBanner();
+  }
+
+  /** Test create bibdk_banner
+   *
+   */
+  public function CreateBannerTest() {
+    global $_bibdk_banner_bannerURL;
+
+    // Create node to edit.
+    $edit = array();
+    $edit['title'] = $this->randomName(8);
+    $edit["field_banner_url[und][0][value]"] = $_bibdk_banner_bannerURL = 'http://' . $this->randomName(16);
+    $this->drupalPost('node/add/bibdk-banner', $edit, t('Save'));
+    $this->assertText('Banner image field is required.', 'Empty banner image, and banner image field is required.');
+
+    $path = drupal_get_path('module', 'bibdk_banner');
+    $this->assertTrue(file_exists($path . '/test/test-banner.png'), 'Test banner file is present.');
+
+    $edit["files[field_image_und_0]"] = $path . '/test/test-banner.png';
+    $this->drupalPost('node/add/bibdk-banner', $edit, t('Save'));
+    $this->assertText(t('@title has been created.', array('@title' => $edit['title'])));
+
+  }
+
+  /** Test retrival of bibdk_banner
+   *
+   */
+  public function GetBanner() {
+    global $_bibdk_banner_bannerURL;
+
+    $this->drupalGet('');
+
+    $banner_image = $this->xpath('//img[@id="selid-banner-1"]/@id');
+    $this->assertTrue($banner_image, 'Banner image was found on front page.');
+
+    $banner_link = $this->xpath('//a[@id="selid-banner-link-1"]/@id');
+    $this->assertTrue($banner_link, 'Banner image link was found on front page.');
+
+    // check that xpath actually fail if id is not present.
+    $banner_link = $this->xpath('//a[@id="selid-dummy-fubar-1"]/@id');
+    $this->assertFalse($banner_link, 'Dummy image link was not found on front page.');
+
+    $this->assertLinkByHref($_bibdk_banner_bannerURL, 0, 'Link to ' . $_bibdk_banner_bannerURL . ' was found on front page' );
+  }
+
+  /** Set up block in ccontent area
+   *
+   */
+  private function _testBannerBlock() {
+    $this->drupalPost('admin/structure/block', array('blocks[bibdk_banner_bibdk_banner][region]' => 'content'), t('Save blocks'));
+    $this->assertText('The block settings have been updated.', t('The block settings have been updated.'));
+  }
+
+}

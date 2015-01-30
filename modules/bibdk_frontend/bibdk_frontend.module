@@ -1,0 +1,328 @@
+<?php
+
+/**
+ * Implements hook_user_login().
+ */
+function bibdk_frontend_user_login(&$edit, $account) {
+  if (!isset($edit['uid'])) {
+    return;
+  }
+
+  // set language from account
+  $languages = language_list();
+  $lingo = !empty($account->language) ? $account->language : language_default()->language;
+  $user_language = $languages[$lingo];
+  // set options array for drupal_goto
+  $options = array('language' => $user_language);
+
+  // go to user page on first time login
+  // Fix for bug
+  if ($account->access == 0) {
+    // we KNOW that login succeeded - or we wouldn't be here
+    // unset messages
+    drupal_get_messages();
+    // set a welcome message
+    drupal_set_message(_bibdk_frontend_welcome_message());
+    // remind user to add favourites
+    drupal_set_message(_bibdk_frontend_remember_favourites_message());
+
+    $url = 'user';
+    _bibdk_frontend_login_redirect($edit, $url, $options);
+  }
+  // do NOT redirect on password reset || reload the page on normal login
+  elseif ((!isset($_GET['pass-reset-token']) && (isset($_POST['form_id']) && $_POST['form_id'] != 'user_pass_reset')) || !isset($_POST['form_id'])) {
+    $url = '';
+    _bibdk_frontend_login_redirect($edit, $url, $options);
+  }
+}
+
+/**
+ *
+ * @param $account
+ * @return mixed
+ */
+function _bibdk_frontend_get_user_language($account) {
+  // set language from account
+  $languages = language_list();
+  $lingo = !empty($account->language) ? $account->language : language_default()->language;
+
+  return $languages[$lingo];
+}
+
+/**
+ * Redirects the user after a successful login.
+ * If $ajax is set to TRUE (we are in a modal) no redirect will happen, instead
+ * the redirect URL will be returned as part of an array. The modal will handle
+ * the redirect clientside.
+ *
+ * @param array $edit
+ * @param string $url
+ * @param array $options
+ */
+function _bibdk_frontend_login_redirect(&$edit, $url, $options) {
+  if (!empty($edit['ajax'])) {
+    $edit['bibdk_modal_redirect'] = array(
+      'url' => $url,
+      'options' => $options,
+    );
+  }
+  else {
+    drupal_goto($url);
+  }
+}
+
+/**
+ * Implements hook_l10n_update_projects_alter().
+ * @see l10n_update.api.php
+ * @param $projects
+ */
+function bibdk_frontend_l10n_update_projects_alter(&$projects) {
+  $projects['bibliotekdk'] = array(
+    'project_type' => 'module',
+    'name' => 'bibliotekdk',
+    'info' => array(
+      'version' => '7.x-0.1',
+      'core' => '7.x',
+      'l10n server' => 'dringo2.ding.dbc.dk',
+      'l10n url' => 'http://dringo2.ding.dbc.dk/sites/default/files/l10n_packager/l10n_server.xml',
+      'l10n path' => 'http://dringo2.ding.dbc.dk/sites/default/files/l10n_packager/7.x/bibliotekdk/bibliotekdk-7.x-0.1.%language.po',
+    ),
+  );
+}
+
+/**
+ * @return string
+ */
+function _bibdk_frontend_remember_favourites_message() {
+  $link = l(t('add_favourites'), 'vejviser');
+
+  return t('remember_to_add_favourite_libraries') . ' ' . $link;
+}
+
+/**
+ * @return null|string
+ */
+function _bibdk_frontend_welcome_message() {
+  return t('Welcome', array(), array('context' => 'bibdk_provider'));
+}
+
+/**
+ * Implements hook_ctools_plugin_api().
+ */
+function bibdk_frontend_ctools_plugin_api() {
+  list($module, $api) = func_get_args();
+  if ($module == "page_manager" && $api == "pages_default") {
+    return array("version" => "1");
+  }
+}
+
+/**
+ * Implementation of hook_default_page_manager_pages().
+ */
+function bibdk_frontend_default_page_manager_pages() {
+  $pages = array();
+  $path = drupal_get_path('module', 'bibdk_frontend') . '/pages';
+  $files = drupal_system_listing('/\.inc$/', $path, 'name', 0);
+  foreach ($files as $file) {
+    include $file->uri; // no not use include_once(). hook_default_page_manager_pages() is called twice.
+    $pages[$page->name] = $page;
+  }
+
+  return $pages;
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function bibdk_frontend_block_info() {
+  $blocks['bibdk_tabs'] = array(
+    'info' => t('Bibdk: tabs'),
+    'description' => t('sidebar tab menu_local_tabs'),
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function bibdk_frontend_block_view($delta = '') {
+  $block = array();
+  if ($delta == 'bibdk_tabs') {
+    $tabs = menu_local_tabs();
+    if (!empty($tabs['#primary']) || !empty($tabs['#secondary'])) {
+      $block['content'] = $tabs;
+    }
+  }
+
+  return $block;
+}
+
+/**
+ * @param $data
+ */
+function bibdk_frontend_bibdk_tabs_alter(&$data) {
+  if (!empty($data['content']['#secondary'])) {
+    foreach ($data['content']['#secondary'] as $key => $tab) {
+      if ($tab['#link']['path'] == 'user/%/edit/bibdk_mypage') { // bibdk_mypage profile tab
+        $data['content']['#bibdk_mypage_tab'] = $tab;
+        unset($data['content']['#secondary'][$key]);
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_menu().
+ */
+function bibdk_frontend_menu() {
+  $items = array();
+  $forms = array('all_element_types', 'all_inline_element_types');
+  foreach ($forms as $form) {
+    $items['bibdk_forms/' . $form] = array(
+      'title' => t($form),
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('bibdk_form_callback_' . $form),
+      'access callback' => 'user_access',
+      'access arguments' => array('access developer information'),
+      'file' => 'bibdk_forms.inc',
+      'type' => MENU_NORMAL_ITEM,
+    );
+  }
+
+  return $items;
+}
+
+/**
+ * Implements hook_menu_alter()
+ *
+ * Remove forgotten password, and register user menu-links from the sidebar,
+ * by changing type MENU_LOCAL_TASK to MENU_CALLBACK
+ *
+ * And
+ *
+ * Rename userrelated page titles
+ *
+ * @param $items
+ */
+function bibdk_frontend_menu_alter(&$items) {
+  $items['user/password']['type'] = MENU_CALLBACK;
+  $items['user/register']['type'] = MENU_CALLBACK;
+  $items['user/%user/view']['title'] = 'My page';
+  $items['user/%user/edit']['title'] = 'Account';
+  $items['user/%user/edit']['weight'] = 32;
+}
+
+/**
+ * Implementats hook_form_FORM_ID_alter().
+ *
+ * Update the page action : add destination parameter in order to return to
+ * referrer.
+ *
+ * @param array $form
+ * @param array $form_state
+ * @param string $form_id
+ */
+function bibdk_frontend_form_user_login_alter(&$form, $form_state, $form_id) {
+  // check if a button has been clicked
+  if (empty($form_state['input']['op'])) {
+    drupal_set_message(t('use_bibdk_login__not_library_id', array(), array('context' => 'bibdk_frontend')), 'warning');
+  }
+  
+  $form['#action'] = url('user/login', array('query' => array('destination' => (isset($_SESSION['referrer'])) ? $_SESSION['referrer'] : '')));
+}
+
+/**
+ * Implementats hook_form_FORM_ID_alter().
+ *
+ * @param array $form
+ * @param array $form_state
+ * @param string $form_id
+ */
+function bibdk_frontend_form_user_login_block_alter(&$form, $form_state, $form_id) {
+  $form['#action'] = url('user/login', array('query' => array('destination' => (isset($_SESSION['referrer'])) ? $_SESSION['referrer'] : '')));
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Adds checkboxes in the admin interface that gives admin the ability to set
+ * visibility of specific links on different devices.
+ *
+ * @param array $form
+ * @param array $form_state
+ * @param string $form_id
+ */
+function bibdk_frontend_form_menu_edit_item_alter(&$form, $form_state, $form_id) {
+  $current_settings = !empty($form['options']['#value']['devicetypes']) ? $form['options']['#value']['devicetypes'] : NULL;
+
+  $device_types = array(
+    'small' => '<= 480px',
+    'medium' => '<= 768px',
+    'large' => '<= 1280px',
+    'xlarge' => '<= 1440px',
+    'xxlarge' => '< ∞',
+  );
+
+  $form['devicetypes'] = array(
+    '#type' => 'fieldset',
+    '#title' => 'Device visibility',
+    '#description' => 'Set visibility of menu items on different devicesizes'
+  );
+
+  foreach ($device_types as $type => $width) {
+    $current_type = 'devicesize_' . $type;
+    $form['devicetypes'][$current_type] = array(
+      '#type' => 'checkbox',
+      '#title' => ucfirst($type),
+      '#default_value' => isset($current_settings[$current_type]) ? $current_settings[$current_type] : TRUE,
+      '#description' => "This menu item should be visible on <b>$type</b> screens ($width)"
+    );
+  }
+}
+
+/**
+ * Implements hook_menu_link_alter().
+ * The settings related to devicevisibility should be stored in db with the rest
+ * of the link settings.
+ *
+ * @param $item
+ */
+function bibdk_frontend_menu_link_alter(&$item) {
+  foreach ($item as $key => $value) {
+    if (strpos($key, 'devicesize_', 0) !== FALSE) {
+      $item['options']['devicetypes'][$key] = $value;
+    }
+  }
+}
+
+/**
+ * Implements hook_exit().
+ *
+ * Saves the path a user visited on page exit.
+ */
+function bibdk_frontend_exit() {
+  $path = $_GET['q'];
+  if ((strpos($path, 'search/') === 0 || strpos($path, 'vejviser') === 0) || (strpos($path, 'user/') === 0 && $path != 'user/login' && $path != 'user/logout')) {
+    $_SESSION['referrer'] = $path . '?' . drupal_http_build_query($_GET);
+  }
+}
+
+/**
+ * Implements template_preprocess_hook().
+ */
+function template_preprocess_bibdk_custom_search_radio_buttons(&$variables) {
+  if (!empty($variables['form']['#data_toggle'])) {
+    foreach ($variables['form']['#data_toggle'] as $n => $toggle) {
+      $key = $toggle['key'];
+      $u_key = drupal_html_id($toggle['key']);
+      $first = $toggle['options']['first']['value'];
+      $last = $toggle['options']['last']['value'];
+      $variables['form'][$key]['#title'] = '<span data-child="' . $u_key . '" class="toggle-subgroup"> + </span>' . $variables['form'][$key]['#title'];
+      $variables['form'][$first]['#prefix'] = '<fieldset id="edit-term-' . $key . '" class="sub-elements form-wrapper" data-child="' . $u_key . '" style="display: block;">';
+      $variables['form'][$last]['#suffix'] = '</fieldset>';
+    }
+    unset($variables['form']['#data_toggle']);
+  }
+}
+
