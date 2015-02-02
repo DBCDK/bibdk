@@ -10,18 +10,18 @@
 function bibliotek_dk_work_entity_feature_field_default_fields() {
   $fields = array();
 
-  // Exported field: 'bibdkWorkEntity-bibdkWorkEntity-ting_cover_work'.
-  $fields['bibdkWorkEntity-bibdkWorkEntity-ting_cover_work'] = array(
+  // Exported field: 'bibdkWorkEntity-bibdkWorkEntity-bibdk_cover_work'.
+  $fields['bibdkWorkEntity-bibdkWorkEntity-bibdk_cover_work'] = array(
     'field_config' => array(
       'active' => '1',
       'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
-      'field_name' => 'ting_cover_work',
+      'field_name' => 'bibdk_cover_work',
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
-      'module' => 'ting_covers_field',
+      'module' => 'bibdk_covers_field',
       'settings' => array(),
       'storage' => array(
         'active' => '1',
@@ -30,7 +30,7 @@ function bibliotek_dk_work_entity_feature_field_default_fields() {
         'type' => 'virtual_field',
       ),
       'translatable' => '0',
-      'type' => 'ting_cover_work',
+      'type' => 'bibdk_cover_work',
     ),
     'field_instance' => array(
       'bundle' => 'bibdkWorkEntity',
@@ -41,20 +41,20 @@ function bibliotek_dk_work_entity_feature_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'hidden',
-          'module' => 'ting_covers',
+          'module' => 'bibdk_covers',
           'settings' => array(
             'image_style' => 'medium',
           ),
-          'type' => 'ting_cover_work',
+          'type' => 'bibdk_cover_work',
           'weight' => '0',
         ),
         'full' => array(
           'label' => 'above',
-          'module' => 'ting_covers',
+          'module' => 'bibdk_covers',
           'settings' => array(
             'image_style' => 'medium',
           ),
-          'type' => 'ting_cover_work',
+          'type' => 'bibdk_cover_work',
           'weight' => 0,
         ),
         'reservation' => array(
@@ -65,7 +65,7 @@ function bibliotek_dk_work_entity_feature_field_default_fields() {
         ),
       ),
       'entity_type' => 'bibdkWorkEntity',
-      'field_name' => 'ting_cover_work',
+      'field_name' => 'bibdk_cover_work',
       'label' => 'Cover image',
       'required' => FALSE,
       'settings' => array(
