@@ -9,6 +9,7 @@ function bibdk_search_carousel_install() {
 
 }
 
+
 /**
  * Set default helpdesk settings
  */
@@ -32,6 +33,16 @@ function _bibdk_search_carousel_config_ting() {
   $searches = variable_get('ting_carousel_search_queries', FALSE);
   if ($searches) {
     variable_set('bibdk_carousel_search_queries', $searches);
+  }
+  
+  $queries_max = variable_get('ting_search_carousel_queries_max', FALSE);
+  if ($queries_max) {
+    variable_set('bibdk_search_carousel_queries_max', $searches);
+  }
+
+  $covers_max = variable_get('ting_search_carousel_covers_max', FALSE);
+  if ($covers_max) {
+    variable_set('bibdk_search_carousel_covers_max', $searches);
   }
 
 }

@@ -29,26 +29,6 @@ function bibdk_covers_menu() {
     'file' => 'bibdk_covers.ajax.inc',
   );
 
-/*
-  $items['bibdk/moreinfo/covers/%/%'] = array(
-    'title' => '',
-    'page callback' => 'bibdk_covers_moreinfo_cover',
-    'page arguments' => array(3,4),
-    'access arguments' => array('access content'),
-    'type'  => MENU_NORMAL_ITEM,
-    'file'  => 'bibdk_covers.pages.inc',
-  );
-
-  $items['bibdk/moreinfo/back_covers/%'] = array(
-    'title' => '',
-    'page callback' => 'bibdk_covers_moreinfo_backcover',
-    'page arguments' => array(3),
-    'access arguments' => array('access content'),
-    'type'  => MENU_NORMAL_ITEM,
-    'file'  => 'bibdk_covers.pages.inc',
-  );
-*/
-
   return $items;
 }
 

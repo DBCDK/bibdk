@@ -90,12 +90,16 @@ function bibdk_search_carousel_theme($existing, $type, $theme, $path) {
       'template' => 'templates/bibdk_search_carousel',
       'file' => 'bibdk_search_carousel.theme.inc',
     ),
-/*
-    'ting_search_carousel_collection' => array(
-      'variables' => array('collection' => NULL),
-      'template' => 'templates/ting_search_carousel_collection',
+    'bibdk_search_carousel_item' => array(
+      'variables' => array(
+        'image'   => NULL,
+        'title'   => NULL,
+        'creator' => NULL,
+        'pid'     => NULL,
+      ),
+      'template' => 'templates/bibdk_search_carousel_item',
+      'file' => 'bibdk_search_carousel.theme.inc',
     ),
-*/
     'bibdk_search_carousel_admin_form' => array(
       'render element' => 'form',
     ),
@@ -141,6 +145,140 @@ function bibdk_search_carousel_ctools_plugin_directory($module, $plugin) {
   }
 }
 
+
+
+/**
+ * Returns the content for a search carousel tab. It utilizes cache to optimize the cover page search.
+ * It will fill the cache based on the tab index provided. This index matches the search carousel
+ * query index set in the administration backend, when defining the tabs.
+ *
+ * If no cache is found, it tries to search the data well repeatedly until
+ * BIBDK_SEARCH_CAROUSEL_COVERS_MAX or BIBDK_SEARCH_CAROUSEL_QUERIES_MAX is reached. 
+ * If data still do not exists, an empty string is returned.
+ *
+ * @param int $index
+ *  Search carsousel tab index.
+ *
+ * @param array $bibdk_seach_queries
+ *  query string and search delimiters.
+ *
+ * @return array
+ *  Returns a render array or the empty array if no covers are found.
+ */
+function _bibdk_search_carousel_get_content($index = 0, $bibdk_seach_queries = array())  {
+
+  if ( empty($bibdk_seach_queries[$index]['query']) ) {
+    return array();
+  }
+
+  $cache_key = 'bibdk_search_carousel_content_' . drupal_html_id(md5($bibdk_seach_queries[$index]['query'], true));
+
+  if ($cache = cache_get($cache_key, 'cache')) {
+    return $cache->data;
+  }
+
+  $query = $bibdk_seach_queries[$index];
+
+  // Give other modules an option to alter the carousel query
+  // See: bibdk_search_carousel_bibdk_search_carousel_query() below
+  $query = module_invoke_all('bibdk_search_carousel_query', $query);
+
+  $cover_items = array();
+
+  $max_covers = variable_get('bibdk_search_carousel_covers_max', 20);
+  $max_queries = variable_get('bibdk_search_carousel_queries_max', 400);
+
+  $numResults = 40;
+  $start = 1;
+  $more = true;
+  // Loop until we have $max_covers covers, or we've reached $max_queries queries.
+  while ((count($cover_items) < $max_covers) && ($start - $numResults < $max_queries) && $more) {
+
+    // If a query is defined, do a look-up else do nothing.
+    if ($query) {
+
+      $params['query'] = $query['query'];
+
+      // results pr. page (opensearch::stepValue) ... in ting-client/lib/request/TingClientSearchRequest.php this is called numResults
+      $params['numResults'] = $numResults;
+
+      // page number (opensearch::start)
+      $params['start'] = $start; // search results start at position 1
+
+      $params['includeHoldingsCount'] = FALSE;
+
+      // search profile (opensearch::profile)
+      $params['profile'] = variable_get('ting_search_profile', FALSE);
+      if (!($params['profile'])) {
+        watchdog('ting search carousel', 'search profile is not set - yields no search results', array(), WATCHDOG_ERROR, url('admin/config/ting/settings'));
+      }
+
+      // agency (opensearch::agency)
+      $params['agency'] = variable_get('ting_agency');
+      if (!($params['agency'])) {
+        watchdog('ting search carousel', 'agency is not set - yields no search results', array(), WATCHDOG_ERROR, url('admin/config/ting/settings'));
+      }
+
+      // set Object Format
+      $params['objectFormat'] = variable_get('objectFormat', 'briefDisplay');
+
+      if (isset($params['query']) && empty($params['query'])) {
+        return array();
+      }
+
+      // do the actual search via ting_client_class
+      $client = new ting_client_class();
+      $ting_client_search_result = $client->do_request('search', $params);
+
+      if (!$ting_client_search_result) {
+        return array();
+      }
+
+      $more = (isset($result->more)) ? $result->more : false;
+    }
+
+    $numTotalCollections = $result->numTotalCollections;
+
+    // Loop over the search results collecting basic object information.
+    foreach ($ting_client_search_result->collections as $ting_client_object_collection) {
+
+      $manifestations = $ting_client_object_collection->getFormattedCollection()->getBriefDisplay()->manifestation;
+
+      foreach ($manifestations as $manifestation) {
+
+        $item = array();
+        $item['pid'] = (!empty($manifestation->identifier->{'$'})) ? $manifestation->identifier->{'$'} : FALSE;
+        if ($item['pid']) {
+          $i = explode(':', $item['pid']);
+          $item['lok'] = $i[0];
+          $item['lid'] = $i[1];
+        }
+
+        if (!empty($item['lid']) && $item['lok'] == '870970-basis' && $cover_path = open_moreinfo_object_path($item['lid'], 'detailUrl') ) {
+          $cover_items[] = array(
+            '#theme'   => 'bibdk_search_carousel_item',
+            '#image'   => image_style_url('medium', $cover_path),
+            '#title'   => (!empty($manifestation->title->{'$'})) ? $manifestation->title->{'$'} : NULL,
+            '#creator' => (!empty($manifestation->creator->{'$'})) ? $manifestation->creator->{'$'} : NULL,
+            '#pid'     => $item['pid'],
+          );
+        }
+      }
+
+    }
+
+    // Count up search start position
+    $start += $numResults;
+
+  }
+
+  if (!empty($cover_items)) {
+    cache_set($cache_key, $cover_items, 'cache');
+  }
+
+  return $cover_items;
+
+}
 
 
 /**
