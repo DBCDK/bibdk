@@ -4,21 +4,32 @@
   <?php endif; ?>
 </p>
 
-<div class="userstatus-menu">
-  <p class="userstatus-menu-label">
-    <?php print t('label_userstatus_go_to', array(), array('context' => 'bibdk_openuserstatus')) ?>
+<div class="userstatus-menu show-for-large-up">
+  <p class="userstatus-menu-item">
+    <a href="#loans">
+      <svg class="svg-icon">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-arrow-right"></use>
+      </svg>
+      <span><?php print t('label_userstatus_loans', array(), array('context' => 'bibdk_openuserstatus')) ?></span>
+    </a>
   </p>
 
   <p class="userstatus-menu-item">
-    <a href="#loans"><?php print t('label_userstatus_loans', array(), array('context' => 'bibdk_openuserstatus')) ?></a>
+    <a href="#reservations">
+      <svg class="svg-icon">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-arrow-right"></use>
+      </svg>
+      <span><?php print t('label_userstatus_reservations', array(), array('context' => 'bibdk_openuserstatus')) ?></span>
+    </a>
   </p>
 
   <p class="userstatus-menu-item">
-    <a href="#reservations"><?php print t('label_userstatus_reservations', array(), array('context' => 'bibdk_openuserstatus')) ?></a>
-  </p>
-
-  <p class="userstatus-menu-item">
-    <a href="#fiscal"><?php print t('label_userstatus_fiscal', array(), array('context' => 'bibdk_openuserstatus')) ?></a>
+    <a href="#fiscal">
+      <svg class="svg-icon">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-arrow-right"></use>
+      </svg>
+      <span><?php print t('label_userstatus_fiscal', array(), array('context' => 'bibdk_openuserstatus')) ?></span>
+    </a>
   </p>
 
 </div>

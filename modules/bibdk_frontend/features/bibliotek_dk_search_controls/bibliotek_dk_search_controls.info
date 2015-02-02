@@ -1,0 +1,14 @@
+name = Bibliotek.dk - Search Controls
+description = Feature : Parameters for sort, size & format controls
+core = 7.x
+package = Bibliotek.dk
+php = 5.2.4
+version = 7.x-1.0
+project = bibliotek_dk_search_controls
+dependencies[] = bibdk_search_controls
+dependencies[] = ctools
+dependencies[] = strongarm
+features[ctools][] = strongarm:strongarm:1
+features[features_api][] = api:1
+features[variable][] = bibdk_search_controls
+mtime = 1421834981

@@ -5,7 +5,6 @@ version = 7.x-0.7
 package = Bibliotek.dk
 
 ; tests
-files[] = test/bibdk_sbkopi.test
 files[] = test/bibdk_sbkopi.request.test
 files[] = test/bibdk_sbkopi.fields.test
 

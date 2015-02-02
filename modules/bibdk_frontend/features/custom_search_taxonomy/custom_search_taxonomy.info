@@ -1,0 +1,9 @@
+name = custom_search_taxonomy
+description = taxonomy terms for custom search pages
+core = 7.x
+package = Features
+php = 5.2.4
+version = 7.x-1.0
+project = custom_search_taxonomy
+dependencies[] = taxonomy
+

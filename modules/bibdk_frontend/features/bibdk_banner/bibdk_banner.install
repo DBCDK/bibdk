@@ -1,0 +1,11 @@
+<?php
+/**
+ * @file
+ * Bibliotek.dk banner - install file
+ */
+
+/** Implements hook_update_N
+ * Delete tables and fields for deprecated fields
+ */
+// function bibdk_banner_update_7001() {
+// }

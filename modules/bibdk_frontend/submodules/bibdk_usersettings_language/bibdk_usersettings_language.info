@@ -1,0 +1,8 @@
+name = Bibliotek.dk Usersettings : language
+description = Create a tab in 'My Page' settings for selecting user language
+version = 7.x-0.1
+
+package = Bibliotek.dk
+core = 7.x
+
+dependencies[] = bibdk_usersettings

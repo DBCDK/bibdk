@@ -1,0 +1,15 @@
+name = Bibliotek.dk - Facets
+description = Configuration of facet browser
+core = 7.x
+package = Bibliotek.dk
+php = 5.2.4
+version = 7.x-1.0
+project = bibdk_facets
+dependencies[] = ctools
+dependencies[] = strongarm
+features[ctools][] = strongarm:strongarm:1
+features[features_api][] = api:1
+features[variable][] = bibdk_facetbrowser_facets
+features[variable][] = bibdk_facetbrowser_number_requested
+features[variable][] = bibdk_facetbrowser_number_shown
+features[variable][] = bibdk_facetbrowser_by_ajax

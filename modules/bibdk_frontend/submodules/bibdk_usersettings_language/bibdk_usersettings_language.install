@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * @file
+ * Install, update, and uninstall functions for the custom search module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function bibdk_usersettings_language_install() {
+  db_update('system')
+    ->fields(array('weight' => 10))
+    ->condition('name', 'bibdk_usersettings_language', '=')
+    ->execute();
+}

@@ -25,7 +25,7 @@
             $(response.selector).hide();
             $('#bibdk-subject-hierarchy-content').fadeIn('200');
         });
-        Foundation.libs.dropdown.close($('#searchfield-dropdown')); 
+        Foundation.libs.dropdown.close($('#searchfield-dropdown'));
     }
 
     Drupal.behaviors.subject_hierarchy_suggestion_close = {

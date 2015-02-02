@@ -1,0 +1,21 @@
+<?php
+
+/** Implements hook_menu
+*
+ */
+function bibdk_article_test_dummy_menu() {
+  $items['bibdk_frontpage'] = array(
+    'title' => 'test url',
+    'page callback' => 'bibdk_article_test_dummy_url',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+/** Page callback for article block test
+ * @return string
+ */
+function bibdk_article_test_dummy_url() {
+  return 'This is a dummy test url';
+}

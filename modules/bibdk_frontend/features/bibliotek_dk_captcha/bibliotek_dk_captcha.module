@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Bibliotek.dk - Captcha feature.
+ */
+
+include_once 'bibliotek_dk_captcha.features.inc';
