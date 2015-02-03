@@ -32,16 +32,9 @@ function bibdk_sbkopi_form_ting_client_admin_webservices_settings_alter(&$form, 
     '#title' => t('SB Copy Settings'),
     '#descriptions' => t('Settings for SB copy service'),
   );
-  $form['sbkopi']['bibdk_statsbib_url'] = array(
-    '#type' => 'textfield',
-    '#title' => t('URL to create user service @ statsbiblioteket'),
-    '#description' => t('URL to statsbibliotekets user api e.g., https://webservice.statsbiblioteket.dk/ws-create-user1/CreateUser'),
-    '#required' => TRUE,
-    '#default_value' => variable_get('bibdk_statsbib_url', FALSE),
-  );
   $form['sbkopi']['bibdk_sbkopi_place_copy_request_url'] = array(
     '#type' => 'textfield',
-    '#title' => t('URL to create user service @ statsbiblioteket'),
+    '#title' => t('URL to SB copy service'),
     '#description' => t('URL to statsbibliotekets place copy service e.g., https://webservice.statsbiblioteket.dk/placeCopyRequest'),
     '#required' => TRUE,
     '#default_value' => variable_get('bibdk_sbkopi_place_copy_request_url', FALSE),
