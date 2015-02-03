@@ -1,19 +1,7 @@
 <?php
 
-class BibdkCoversTestCase extends DrupalWebTestCase {
+/**
+ * @file bibdk_covers.test
+ * Tests, see: WebDriver: test_covers.py
+ */
 
-  static function getInfo() {
-    return array(
-      'name' => 'Bibliotek.dk covers',
-      'description' => 'Check if we can retrieve covers',
-      'group' => 'Bibliotek.dk - Covers',
-    );
-  }
-
-  public function setUp() {
-  }
-
-  public function testCoverRetrieval() {
-  }
-
-}

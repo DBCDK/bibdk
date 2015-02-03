@@ -6,12 +6,6 @@
  * Webservice client setup and cache admin, see: open_moreinfo
  */
 
-/**
- * To Do: Create field widget for bibdk_cover_work?
- * -> Notice: Undefined index: default in field_ui_field_overview_form() (line 382 of /home/jgn/jgn.ding/modules/field_ui/field_ui.admin.inc).
- */
-
-
 // Load Field module hooks.
 module_load_include('inc', 'bibdk_covers', 'bibdk_covers.field');
 
@@ -30,13 +24,6 @@ function bibdk_covers_menu() {
   );
 
   return $items;
-}
-
-
-function bibdk_covers_admin_paths_alter(&$paths) {
-  $paths['bibdk/moreinfo/covers/*'] = FALSE;
-  $paths['bibdk/moreinfo/covers/*/*'] = FALSE;
-  $paths['bibdk/moreinfo/back_covers/*'] = FALSE;
 }
 
 
