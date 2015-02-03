@@ -83,15 +83,28 @@ function bibdk_custom_search_usersettings_start_page() {
  */
 function _bibdk_custom_search_usersettings_expand_search_options_page() {
 
-  $default_values = array();
-  $default_values[] = bibdk_usersettings_user_settings_get('bibdk_custom_search_start_expand_', NULL);
-  $default_values[] = bibdk_usersettings_user_settings_get('bibdk_custom_search_start_expand_bog', NULL);
-  $default_values[] = bibdk_usersettings_user_settings_get('bibdk_custom_search_start_expand_artikel', NULL);
-  $default_values[] = bibdk_usersettings_user_settings_get('bibdk_custom_search_start_expand_film', NULL);
-  $default_values[] = bibdk_usersettings_user_settings_get('bibdk_custom_search_start_expand_net', NULL);
-  $default_values[] = bibdk_usersettings_user_settings_get('bibdk_custom_search_start_expand_spil', NULL);
-  $default_values[] = bibdk_usersettings_user_settings_get('bibdk_custom_search_start_expand_musik', NULL);
-  $default_values[] = bibdk_usersettings_user_settings_get('bibdk_custom_search_start_expand_noder', NULL);
+  $settings_updated = bibdk_usersettings_user_settings_get('bibdk_custom_search_start_expand_moved', 'found_no');
+  if ($settings_updated != 'found_yes') {
+    $default_values = array();
+    $default_values[] = 'bibdk_frontpage/bog';
+    $default_values[] = 'bibdk_frontpage/artikel';
+    $default_values[] = 'bibdk_frontpage/film';
+    $default_values[] = 'bibdk_frontpage/net';
+    $default_values[] = 'bibdk_frontpage/spil';
+    $default_values[] = 'bibdk_frontpage/musik';
+    $default_values[] = 'bibdk_frontpage/noder';
+    return $default_values;
+  } else {
+    $default_values = array();
+    $default_values[] = bibdk_usersettings_user_settings_get('bibdk_custom_search_start_expand_', NULL);
+    $default_values[] = bibdk_usersettings_user_settings_get('bibdk_custom_search_start_expand_bog', NULL);
+    $default_values[] = bibdk_usersettings_user_settings_get('bibdk_custom_search_start_expand_artikel', NULL);
+    $default_values[] = bibdk_usersettings_user_settings_get('bibdk_custom_search_start_expand_film', NULL);
+    $default_values[] = bibdk_usersettings_user_settings_get('bibdk_custom_search_start_expand_net', NULL);
+    $default_values[] = bibdk_usersettings_user_settings_get('bibdk_custom_search_start_expand_spil', NULL);
+    $default_values[] = bibdk_usersettings_user_settings_get('bibdk_custom_search_start_expand_musik', NULL);
+    $default_values[] = bibdk_usersettings_user_settings_get('bibdk_custom_search_start_expand_noder', NULL);
+  }
   return $default_values;
 }
 
