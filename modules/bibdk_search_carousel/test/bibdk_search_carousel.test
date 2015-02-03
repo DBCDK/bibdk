@@ -115,7 +115,7 @@ class BibdkCarouselWebtestCase extends DrupalWebTestCase {
       '#type' => 'select',
     );
 
-    bibdk_search_carousel_form_ting_search_carousel_admin_form_alter($form, $form_state, 'ting-search-carousel-admin-form');
+    bibdk_search_carousel_form_bibdk_search_carousel_admin_form_alter($form, $form_state, 'ting-search-carousel-admin-form');
 
     $this->assertEqual(
       $form['ting_search_carousel']['ting_searches']['search_0']['bibdk_search_carousel']['period[]']['#title'] . '+' . $form['ting_search_carousel']['ting_searches']['search_0']['bibdk_search_carousel']['period[]']['#type'],
