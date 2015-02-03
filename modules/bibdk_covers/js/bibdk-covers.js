@@ -1,10 +1,3 @@
-// <?php
-/**
- * @file bibdk-covers.js
- * Javascript file for Bibliotek.dk
- */
-// ?>
-
 (function($) {
 
   Drupal.extractCoverData = function(e) {
@@ -99,4 +92,3 @@
   };
 
 } (jQuery));
-
