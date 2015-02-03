@@ -1,3 +1,9 @@
+<?php
+/**
+ * @file
+ * JavaScript for Bibliotek.dk carousel
+ */
+?>
 (function($) {
 
   var initialized = false;

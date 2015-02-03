@@ -171,7 +171,7 @@ function _bibdk_search_carousel_get_content($index = 0, $bibdk_seach_queries = a
     return array();
   }
 
-  $cache_key = 'bibdk_search_carousel_content_' . drupal_html_id(md5($bibdk_seach_queries[$index]['query'], true));
+  $cache_key = 'bibdk_search_carousel_content_' . drupal_html_id(md5($bibdk_seach_queries[$index]['query'], TRUE));
 
   if ($cache = cache_get($cache_key, 'cache')) {
     return $cache->data;
@@ -188,11 +188,11 @@ function _bibdk_search_carousel_get_content($index = 0, $bibdk_seach_queries = a
   $max_covers = variable_get('bibdk_search_carousel_covers_max', 20);
   $max_queries = variable_get('bibdk_search_carousel_queries_max', 400);
 
-  $numResults = 40;
+  $num_results = 40;
   $start = 1;
-  $more = true;
+  $more = TRUE;
   // Loop until we have $max_covers covers, or we've reached $max_queries queries.
-  while ((count($cover_items) < $max_covers) && ($start - $numResults < $max_queries) && $more) {
+  while ((count($cover_items) < $max_covers) && ($start - $num_results < $max_queries) && $more) {
 
     // If a query is defined, do a look-up else do nothing.
     if ($query) {
@@ -200,7 +200,7 @@ function _bibdk_search_carousel_get_content($index = 0, $bibdk_seach_queries = a
       $params['query'] = $query['query'];
 
       // results pr. page (opensearch::stepValue) ... in ting-client/lib/request/TingClientSearchRequest.php this is called numResults
-      $params['numResults'] = $numResults;
+      $params['numResults'] = $num_results;
 
       // page number (opensearch::start)
       $params['start'] = $start; // search results start at position 1
@@ -234,10 +234,10 @@ function _bibdk_search_carousel_get_content($index = 0, $bibdk_seach_queries = a
         return array();
       }
 
-      $more = (isset($result->more)) ? $result->more : false;
+      $more = (isset($result->more)) ? $result->more : FALSE;
     }
 
-    $numTotalCollections = $ting_client_search_result->numTotalCollections;
+    $num_total_collections = $ting_client_search_result->numTotalCollections;
 
     // Loop over the search results collecting basic object information.
     foreach ($ting_client_search_result->collections as $ting_client_object_collection) {
@@ -271,7 +271,7 @@ function _bibdk_search_carousel_get_content($index = 0, $bibdk_seach_queries = a
     }
 
     // Count up search start position
-    $start += $numResults;
+    $start += $num_results;
 
   }
 

@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Bibliotek.dk search carousel install file.
+ */
 
 /**
  * Implements hook_install().

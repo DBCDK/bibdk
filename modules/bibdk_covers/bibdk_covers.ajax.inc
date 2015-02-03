@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @file bibdk_covers.ajax.inc
+ * AJAX callbacks for Bibliotek.dk covers, and back covers
+ */
+
+/**
  * AJAX callback
  * Return the URL for the cover of an object
  */
@@ -45,13 +50,15 @@ function bibdk_covers_objects() {
           $backcover_path = $wrapper->getExternalUrl();
         }
         $covers[ $local_id . ':' . 'backpagePdfUrl' ] = $backcover_path;
-      } else {
+      }
+      else {
         $covers[ $local_id . ':' . 'backpagePdfUrl' ] = '';
       }
 
-    } else {
+    }
+    else {
       // No cover image. Cache this for future reference to avoid unnecessary requests
-      cache_set('bibdk_covers:'.$local_id['id'], 1, 'cache', $_SERVER['REQUEST_TIME'] + variable_get('open_moreinfo_cache_lifetime', 604800));
+      cache_set('bibdk_covers:' . $local_id['id'], 1, 'cache', $_SERVER['REQUEST_TIME'] + variable_get('open_moreinfo_cache_lifetime', 604800));
     }
 
   }

@@ -1,32 +1,36 @@
 <?php
+/**
+ * @file bibdk_covers.install
+ * Install file for Bibliotek.dk covers
+ */
 
 /**
  * Implements hook_ding_entity_fields
  * */
 function bibdk_covers_ding_entity_fields() {
 
-  $display_full = array (
-    'default' => array (
+  $display_full = array(
+    'default' => array(
       'label' => 'hidden',
       'type' => 'default',
     ),
-    'reservation' => array (
+    'reservation' => array(
       'type' => 'hidden',
     ),
-    'full' => array (
+    'full' => array(
       'type' => 'default',
     ),
   );
 
-  return array (
-    'bibdk_cover_work' => array (
-      'field' => array (
+  return array(
+    'bibdk_cover_work' => array(
+      'field' => array(
         'locked' => FALSE,
-        'storage' => array (
+        'storage' => array(
           'type' => 'virtual_field',
         ),
       ),
-      'instance' => array (
+      'instance' => array(
         'ding_entity_type' => 'bibdkWorkEntity',
         'label' => t('Cover image'),
         'bundle' => 'bibdkWorkEntity',

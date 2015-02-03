@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file bibdk_covers.theme.inc
+ * Theme functions for Bibliotek.dk covers
+ */
 
 function template_preprocess_bibdk_object_cover(&$variables) {
 
@@ -16,12 +20,12 @@ function template_preprocess_bibdk_object_cover(&$variables) {
 
   foreach ($object->manifestations as $key => $manifestation) {
     if ( isset($manifestation->ding_entity_id) ) {
-      $local_id = explode(':',$manifestation->ding_entity_id);
+      $local_id = explode(':', $manifestation->ding_entity_id);
       $work_local_ids[] = $local_id[1];
     }
   }
 
-  $variables['elements']['#id'] = drupal_html_id(md5(implode($work_local_ids), true));
+  $variables['elements']['#id'] = drupal_html_id(md5(implode($work_local_ids), TRUE));
 
   $variables['elements']['#front_cover_large_image'] = array('#markup' => 'fubar');
 
@@ -43,7 +47,7 @@ function template_preprocess_bibdk_object_cover(&$variables) {
   $cover_file_path = FALSE;
   $backcoverpdf_file_path = $backcoverpdf_local_id = FALSE;
 
-  $variables['elements']['#classes'] = array('bibdk-cover', 'bibdk-cover-style-'.$image_style);
+  $variables['elements']['#classes'] = array('bibdk-cover', 'bibdk-cover-style-' . $image_style);
 
   foreach ($work_local_ids as $key => $lid) {
 
@@ -100,11 +104,13 @@ function template_preprocess_bibdk_object_cover(&$variables) {
           $creators[] = $creator->display->{'$'};
         }
         $alt = implode(', ', $creators);
-      } else {
+      }
+      else {
         $alt = $object->work->creators->creator->display->{'$'};
       }
       $alt .= ': ' . $object->work->title->titleSpecific->{'$'};
-    } else {
+    }
+    else {
       $alt = $object->work->title->titleSpecific->{'$'};
     }
 
@@ -151,7 +157,8 @@ function template_preprocess_bibdk_object_cover(&$variables) {
     // Avoid further javascript processing
     $variables['elements']['#classes'][] = 'bibdk-cover-processed';
 
-  } elseif (cache_get('bibdk_covers:' . $local_id)) {
+  }
+  elseif (cache_get('bibdk_covers:' . $local_id)) {
 
     // We know that there is no cover available for this object so avoid further javascript processing
     $variables['elements']['#classes'][] = 'bibdk-cover-processed';
