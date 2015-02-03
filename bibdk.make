@@ -197,7 +197,7 @@ projects[date][version] = 2.6
 
 projects[entity][subdir] = contrib
 projects[entity][type] = module
-projects[entity][version] = 1.0-rc3
+projects[entity][version] = 1.5
 
 projects[eu-cookie-compliance][subdir] = contrib
 projects[eu-cookie-compliance][type] = module
