@@ -1,3 +1,9 @@
+// <?php
+/**
+* @file
+* bibdk_covers javascript file
+*/
+// ?>
 (function($) {
 
   Drupal.extractCoverData = function(e) {

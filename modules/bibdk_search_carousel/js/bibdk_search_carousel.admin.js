@@ -1,9 +1,10 @@
-<?php
+// <?php
 /**
- * @file
- * Bibliotek.dk JavaScript for carousel administration.
- */
-?>
+* @file
+* bibdk_search_carousel javascript file
+*/
+// ?>
+// @codingStandardsIgnoreStart
 (function ($) {
   Drupal.behaviors.bibdkSearchCarousel = {
     attach: function(context) {
@@ -14,3 +15,4 @@
     }
   }
 })(jQuery);
+// @codingStandardsIgnoreEnd

@@ -1,9 +1,10 @@
-<?php
+// <?php
 /**
- * @file
- * JavaScript for Bibliotek.dk carousel
- */
-?>
+* @file
+* bibdk_search_carousel javascript file
+*/
+// ?>
+// @codingStandardsIgnoreStart
 (function($) {
 
   var initialized = false;
@@ -72,3 +73,4 @@
   };
 
 } (jQuery));
+// @codingStandardsIgnoreEnd
