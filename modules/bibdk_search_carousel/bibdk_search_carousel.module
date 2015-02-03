@@ -237,7 +237,7 @@ function _bibdk_search_carousel_get_content($index = 0, $bibdk_seach_queries = a
       $more = (isset($result->more)) ? $result->more : false;
     }
 
-    $numTotalCollections = $result->numTotalCollections;
+    $numTotalCollections = $ting_client_search_result->numTotalCollections;
 
     // Loop over the search results collecting basic object information.
     foreach ($ting_client_search_result->collections as $ting_client_object_collection) {
@@ -254,14 +254,17 @@ function _bibdk_search_carousel_get_content($index = 0, $bibdk_seach_queries = a
           $item['lid'] = $i[1];
         }
 
-        if (!empty($item['lid']) && $item['lok'] == '870970-basis' && $cover_path = open_moreinfo_object_path($item['lid'], 'detailUrl') ) {
-          $cover_items[] = array(
-            '#theme'   => 'bibdk_search_carousel_item',
-            '#image'   => image_style_url('medium', $cover_path),
-            '#title'   => (!empty($manifestation->title->{'$'})) ? $manifestation->title->{'$'} : NULL,
-            '#creator' => (!empty($manifestation->creator->{'$'})) ? $manifestation->creator->{'$'} : NULL,
-            '#pid'     => $item['pid'],
-          );
+        if (!empty($item['lid'])) {
+          $cover_path = open_moreinfo_object_path($item['lid'], 'detailUrl');
+          if ($item['lok'] == '870970-basis' && $cover_path && file_exists(image_style_path('medium', $cover_path))) {
+            $cover_items[] = array(
+              '#theme'   => 'bibdk_search_carousel_item',
+              '#image'   => image_style_url('medium', $cover_path),
+              '#title'   => (!empty($manifestation->title->{'$'})) ? $manifestation->title->{'$'} : NULL,
+              '#creator' => (!empty($manifestation->creator->{'$'})) ? $manifestation->creator->{'$'} : NULL,
+              '#pid'     => $item['pid'],
+            );
+          }
         }
       }
 

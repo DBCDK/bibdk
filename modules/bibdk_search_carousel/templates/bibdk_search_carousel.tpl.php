@@ -40,7 +40,7 @@
 
   <div class="slick-carousel-inner">
 
-    <!-- <div class="ajax-loader"></div> -->
+    <div class="ajax-loader"></div>
 
     <div id="bibdk-slick-carousel"></div>
 

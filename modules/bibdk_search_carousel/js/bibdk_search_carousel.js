@@ -1,13 +1,12 @@
 (function($) {
 
+  var initialized = false;
+
   Drupal.insertCovers = function(coverData) {
-
     var content = "";
-
     if (coverData) {
-
-      $('#bibdk-slick-carousel:not(.slick-cover-processed)').html(coverData["cover_list"]);
-
+      $('.slick-carousel-inner .ajax-loader').addClass('hidden');
+      $('#bibdk-slick-carousel').html(coverData["cover_list"]);
       // init slick
       $('#bibdk-slick-carousel').slick({
         dots: false,
@@ -16,44 +15,52 @@
         slidesToShow: 6,
         slidesToScroll: 1,
         autoplay: true,
-        autoplaySpeed: 2000,
+        autoplaySpeed: 8000,
         responsive: [
           {
-            breakpoint: 820,
+            breakpoint: 768,
             settings: {
               infinite: true,
               slidesToShow: 4,
               slidesToScroll: 1,
             }
-          },
-          {
-            breakpoint: 480,
-            settings: {
-              infinite: true,
-              slidesToShow: 2,
-              slidesToScroll: 2
-            }
           }
         ]
       });
     }
-
-    $('#bibdk-slick-carousel').addClass('slick-cover-processed');
-
   };
 
-  Drupal.behaviors.getCovers = {
+
+  Drupal.getCovers = function(index) {
+    // Retrieve covers
+    request = $.ajax({
+      url: Drupal.settings.basePath + 'bibdk_search_carousel/results/ajax/' + index,
+      type: 'POST',
+      dataType: 'json',
+      success: Drupal.insertCovers,
+    });
+  };
+
+
+  Drupal.behaviors.initCovers = {
     attach: function(context) {
-
-      // Current list number
-      var index = $('.bibdk-search-controls-form').index();
-
-      // Retrieve covers
-      request = $.ajax({
-        url: Drupal.settings.basePath + 'bibdk_search_carousel/results/ajax/' + index,
-        type: 'POST',
-        dataType: 'json',
-        success: Drupal.insertCovers,
+      $( document ).ready(function() {
+        if ( !initialized ) {
+          $('.slick-carousel-tabs li a').each(function( index ) {
+            $(this).click(function(e) {
+              e.preventDefault();
+              // Remove current content, show spinner and get new content.
+              $('.slick-carousel-inner .ajax-loader').removeClass('hidden');
+              $('#bibdk-slick-carousel').removeClass('slick-initialized');
+              $('#bibdk-slick-carousel').removeClass('slick-slider');
+              $('#bibdk-slick-carousel').html('');
+              var index = $(this).attr('data-value');
+              Drupal.getCovers(index);
+            });
+          });
+          Drupal.getCovers(0);
+          initialized = true;
+        }
       });
     }
   };
