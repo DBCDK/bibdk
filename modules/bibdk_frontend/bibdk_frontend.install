@@ -124,7 +124,6 @@ function _bibdk_frontend_enable_modules() {
     'bibliotek_dk_administration_menu',
     'bibliotek_dk_search_region',
     'bibdk_custom_search_feature',
-    'bibliotek_dk_lightbox2_settings',
     'bibliotek_dk_usersettings',
     'bibliotek_dk_search_controls',
     'bibliotek_dk_carousel_settings',

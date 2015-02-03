@@ -219,10 +219,6 @@ projects[l10n_update][type] = module
 projects[l10n_update][version] = 1.0-beta3
 projects[l10n_update][patch][] = http://drupal.org/files/l10n_update-drush_l10n_update_specify_modules-1982580-3.patch
 
-projects[lightbox2][subdir] = contrib
-projects[lightbox2][type] = module
-projects[lightbox2][version] = 1.0-beta1
-
 projects[libraries][subdir] = contrib
 projects[libraries][type] = module
 projects[libraries][version] = 2.1
