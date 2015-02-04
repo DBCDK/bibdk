@@ -109,34 +109,6 @@ function bibdk_search_carousel_theme($existing, $type, $theme, $path) {
 
 
 /**
- * Implements hook_block_info().
- */
-function bibdk_search_carousel_block_info() {
-  return array(
-    'ting_search_carousel' => array(
-      'info' => 'Ting search carousel, block'
-  ));
-}
-
-
-
-/**
- * Implements hook_block_view().
- *
- * We ignore delta in this block view, as we only have one block.
- */
-function bibdk_search_carousel_block_view($delta) {
-  return array(
-    'content' => theme('ting_search_carousel', array(
-        'searches' => variable_get('ting_carousel_search_queries', array()),
-        'tab_position' => variable_get('ting_search_carousel_tabs_position'),
-    )),
-  );
-}
-
-
-
-/**
  * Implements hook_ctools_plugin_directory().
  */
 function bibdk_search_carousel_ctools_plugin_directory($module, $plugin) {
@@ -246,8 +218,10 @@ function _bibdk_search_carousel_get_content($index = 0, $bibdk_seach_queries = a
 
       foreach ($manifestations as $manifestation) {
 
+
         $item = array();
         $item['pid'] = (!empty($manifestation->identifier->{'$'})) ? $manifestation->identifier->{'$'} : FALSE;
+
         if ($item['pid']) {
           $i = explode(':', $item['pid']);
           $item['lok'] = $i[0];
@@ -255,11 +229,12 @@ function _bibdk_search_carousel_get_content($index = 0, $bibdk_seach_queries = a
         }
 
         if (!empty($item['lid'])) {
-          $cover_path = open_moreinfo_object_path($item['lid'], 'detailUrl');
-          if ($item['lok'] == '870970-basis' && $cover_path && file_exists(image_style_path('medium', $cover_path))) {
+          $moreinfo_path = open_moreinfo_object_path($item['lid'], 'detailUrl');
+          if (file_exists($moreinfo_path)) {
+            $cover_url = image_style_url('medium', $moreinfo_path);
             $cover_items[] = array(
               '#theme'   => 'bibdk_search_carousel_item',
-              '#image'   => image_style_url('medium', $cover_path),
+              '#image'   => $cover_url,
               '#title'   => (!empty($manifestation->title->{'$'})) ? $manifestation->title->{'$'} : NULL,
               '#creator' => (!empty($manifestation->creator->{'$'})) ? $manifestation->creator->{'$'} : NULL,
               '#pid'     => $item['pid'],
@@ -281,6 +256,13 @@ function _bibdk_search_carousel_get_content($index = 0, $bibdk_seach_queries = a
 
   return $cover_items;
 
+}
+
+
+function log_to_file($text) {
+  $f = fopen('/home/jgn/jgn.ding/sites/default/files/log.txt', 'a');
+  fwrite($f, date('Ymd H:i:s - ') . print_r($text,1) . "\n");
+  fclose($f);
 }
 
 

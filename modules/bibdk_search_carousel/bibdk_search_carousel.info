@@ -6,6 +6,7 @@ core = "7.x"
 
 dependencies[] = open_moreinfo
 dependencies[] = ting_openformat
+dependencies[] = image
 
 files[] = test/bibdk_search_carousel.test
 
