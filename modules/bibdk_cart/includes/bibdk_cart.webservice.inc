@@ -11,7 +11,8 @@ function _bibdk_cart_add_content_webservice($content, $user = NULL) {
 
   if ($response = _bibdk_cart_call_webservice('add_cart_content', $content, $user)) {
     $xpath = bibdk_cart_webservice_responce_xpath($response['response']);
-    return reset(bibdk_cart_parse_cart_content_id($xpath));
+    $cart_content_id = bibdk_cart_parse_cart_content_id($xpath);
+    return reset($cart_content_id);
   }
 }
 
