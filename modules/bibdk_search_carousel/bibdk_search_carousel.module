@@ -231,6 +231,7 @@ function _bibdk_search_carousel_get_content($index = 0, $bibdk_seach_queries = a
         if (!empty($item['lid'])) {
           $moreinfo_path = open_moreinfo_object_path($item['lid'], 'detailUrl');
           if (file_exists($moreinfo_path)) {
+            // NB: don't check if image_style_url() create an image. Because it don't.
             $cover_url = image_style_url('medium', $moreinfo_path);
             $cover_items[] = array(
               '#theme'   => 'bibdk_search_carousel_item',
