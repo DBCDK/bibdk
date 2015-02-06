@@ -198,6 +198,7 @@ function bibdk_voxb_set_ratings($xpath) {
   $query = '//voxb:averageRating';
   $nodelist = $xpath->query($query);
   if ($nodelist->length > 0) {
+    $ret = new stdClass();
     $ret->rating = $nodelist->item(0)->nodeValue;
     $query = '//voxb:totalNumberOfRaters';
     $ret->ratingCount = $xpath->query($query)->item(0)->nodeValue;
