@@ -60,7 +60,7 @@ class BibdkOpenOrderUnitTestCase extends DrupalUnitTestCase {
 
   public function testUrlAvailablity() {
     $url = BibdkOpenorderPolicyResponse::GetObject()->getLookUpUrl();
-    $this->assertNotNull($url, 'URL is available: ' . $url);
+    $this->assertNotNull($url, 'URL is available: ' . $url[0]['url']);
   }
 
   public function testOrderPolicyOk() {
