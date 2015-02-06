@@ -213,7 +213,7 @@ projects[features_extra][version] = 1.0-alpha1
 
 projects[i18n][subdir] = contrib
 projects[i18n][type] = module
-projects[i18n][version] = 1.7
+projects[i18n][version] = 1.12
 
 projects[ie6nomore][subdir] = contrib
 projects[ie6nomore][type] = module
