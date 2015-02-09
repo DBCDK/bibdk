@@ -318,7 +318,7 @@
         myArray.push('facets[]=!' + 'facet.' + facetKey + ':' + facetsDeselect[i]);
       }
 
-      newUri = decodeURI(a.protocol + '//' + a.host + '/' + a.pathname + encodeURI(myArray.join('&')));
+      newUri = decodeURI(a.protocol + '//' + a.host + '/' + a.pathname + encodeURI(myArray.join('&')) + '#content');
 
       window.location.replace(newUri);
 
