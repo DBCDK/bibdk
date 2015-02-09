@@ -30,8 +30,8 @@ function _bibdk_frontend_set_blocks() {
       'title' => '<none>',
     ),
     array(
-      'module' => 'ting_search_carousel',
-      'delta' => 'ting_search_carousel',
+      'module' => 'bibdk_search_carousel',
+      'delta' => 'bibdk_search_carousel',
       'theme' => $default_theme,
       'status' => 1,
       'weight' => 0,
@@ -124,7 +124,6 @@ function _bibdk_frontend_enable_modules() {
     'bibliotek_dk_administration_menu',
     'bibliotek_dk_search_region',
     'bibdk_custom_search_feature',
-    'bibliotek_dk_lightbox2_settings',
     'bibliotek_dk_usersettings',
     'bibliotek_dk_search_controls',
     'bibliotek_dk_carousel_settings',
@@ -145,7 +144,6 @@ function _bibdk_frontend_enable_modules() {
     'bibdk_banner',
     'bibdk_adhl',
     //Submodule
-    'bibdk_search_carousel',
     'bibdk_modal',
     'bibdk_voxb',
     'bibdk_usersettings_language',

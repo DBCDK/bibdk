@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the Bibliotek.dk lightbox2 settings feature. 
- */
-
-include_once 'bibliotek_dk_lightbox2_settings.features.inc';

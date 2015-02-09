@@ -1,0 +1,12 @@
+name = Bibliotek.dk - Covers
+description = Displays covers for Bibliotek.dk objects and collections
+package = Bibliotek.dk
+core = 7.x
+version = 7.x-0.1
+
+files[] = test/bibdk_covers.test
+
+dependencies[] = image
+dependencies[] = virtual_field
+dependencies[] = open_moreinfo
+dependencies[] = bibdk_covers_field

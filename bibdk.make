@@ -81,11 +81,6 @@ projects[ting_agency][download][type] = git
 projects[ting_agency][download][url] = git@github.com:DBCDK/ting_agency.git
 projects[ting_agency][download][tag] = 7.x-0.38
 
-projects[ting_covers][type] = module
-projects[ting_covers][download][type] = git
-projects[ting_covers][download][url] = git@github.com:DBCDK/ting_covers.git
-projects[ting_covers][download][tag] = 7.x-0.22+dbc.14
-
 projects[ting_infomedia][type] = module
 projects[ting_infomedia][download][type] = git
 projects[ting_infomedia][download][url] = git@github.com:DBCDK/ting_infomedia.git
@@ -100,11 +95,6 @@ projects[ting_openuserstatus][type] = module
 projects[ting_openuserstatus][download][type] = git
 projects[ting_openuserstatus][download][url] = git@github.com:DBCDK/ting_openuserstatus.git
 projects[ting_openuserstatus][download][tag] = 7.x-0.2
-
-projects[ting_search_carousel][type] = module
-projects[ting_search_carousel][download][type] = git
-projects[ting_search_carousel][download][url] = git@github.com:DBCDK/ting_search_carousel.git
-projects[ting_search_carousel][download][tag] = 7.x-0.5+dbc.7
 
 ; --- Bibliotek.dk ---
 projects[microcurl][type] = module
@@ -228,10 +218,6 @@ projects[l10n_update][subdir] = contrib
 projects[l10n_update][type] = module
 projects[l10n_update][version] = 1.0-beta3
 projects[l10n_update][patch][] = http://drupal.org/files/l10n_update-drush_l10n_update_specify_modules-1982580-3.patch
-
-projects[lightbox2][subdir] = contrib
-projects[lightbox2][type] = module
-projects[lightbox2][version] = 1.0-beta1
 
 projects[libraries][subdir] = contrib
 projects[libraries][type] = module
