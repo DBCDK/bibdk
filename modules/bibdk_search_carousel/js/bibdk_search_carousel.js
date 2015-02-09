@@ -20,16 +20,16 @@
         infinite: true,
         speed: 300,
         slidesToShow: 6,
-        slidesToScroll: 1,
-        autoplay: true,
+        slidesToScroll: 6,
+        autoplay: false,
         autoplaySpeed: 8000,
         responsive: [
           {
-            breakpoint: 768,
+            breakpoint: 840,
             settings: {
               infinite: true,
               slidesToShow: 4,
-              slidesToScroll: 1,
+              slidesToScroll: 4,
             }
           }
         ]
