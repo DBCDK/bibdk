@@ -18,8 +18,8 @@ class BibdkCarouselUnitTestCase extends DrupalUnitTestCase {
   }
 
   public function setUp() {
-    module_load_include('module', 'ting_search_carousel');
-    parent::setUp('ting_search_carousel', 'bibdk_search_carousel');
+    module_load_include('module', 'bibdk_search_carousel');
+    parent::setUp('bibdk_search_carousel');
   }
 
 }
@@ -40,7 +40,7 @@ class BibdkCarouselWebtestCase extends DrupalWebTestCase {
   }
 
   public function setUp() {
-    parent::setUp('ting_search_carousel', 'bibdk_search_carousel', 'ting_openformat', 'ting_covers');
+    parent::setUp('bibdk_search_carousel', 'ting_openformat');
     variable_set('ting_search_url', 'http://lakiseks.dbc.dk/openbibdk/0.5/');
     variable_set('bibdk_provider_security_code', 'testhest');
     variable_set('search_active_modules', array('ting_openformat' => 'ting_openformat'));
@@ -60,19 +60,8 @@ class BibdkCarouselWebtestCase extends DrupalWebTestCase {
     ));
     $this->drupalLogin($this->privileged_user);
 
-    $this->_testCarouselBlock();
     $this->_testSearchSettings();
     return TRUE;
-  }
-
-  private function _testCarouselBlock() {
-
-    $this->drupalPost('admin/structure/block', array('blocks[ting_search_carousel_ting_search_carousel][region]' => 'content'), t('Save blocks'));
-    $this->assertText('The block settings have been updated.', t('The block settings have been updated.'));
-
-    $this->drupalGet('');
-    $this->assertRaw('<div class="rs-carousel-inner">', t('Carousel is present at frontpage'));
-
   }
 
   private function _testSearchSettings() {
