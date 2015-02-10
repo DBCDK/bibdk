@@ -1,0 +1,6 @@
+name = Bibliotek.dk - Covers field
+description = Displays covers for Bibliotek.dk objects and collections
+package = Bibliotek.dk
+core = 7.x
+
+dependencies[] = virtual_field

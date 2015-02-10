@@ -1,0 +1,83 @@
+<?php
+/**
+ * @file
+ * Bibliotek.dk search carousel tests.
+ */
+
+/**
+ * Class BibdkCarouselUnitTestCase
+ */
+class BibdkCarouselUnitTestCase extends DrupalUnitTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => t('Bibliotek.dk search carousel - Unittest'),
+      'description' => t('Testing Bibliotek.dk search carousel functionality'),
+      'group' => t('Bibliotek.dk - Frontend'),
+    );
+  }
+
+  public function setUp() {
+    module_load_include('module', 'bibdk_search_carousel');
+    parent::setUp('bibdk_search_carousel');
+  }
+
+}
+
+/**
+ * Class BibdkCarouselWebtestCase
+ */
+class BibdkCarouselWebtestCase extends DrupalWebTestCase {
+
+  protected $privileged_user;
+
+  public static function getInfo() {
+    return array(
+      'name' => t('Bibliotek.dk search carousel - Webtest'),
+      'description' => t('Testing Bibliotek.dk search carousel functionality'),
+      'group' => t('Bibliotek.dk - Frontend'),
+    );
+  }
+
+  public function setUp() {
+    parent::setUp('bibdk_search_carousel', 'ting_openformat');
+    variable_set('ting_search_url', 'http://lakiseks.dbc.dk/openbibdk/0.5/');
+    variable_set('bibdk_provider_security_code', 'testhest');
+    variable_set('search_active_modules', array('ting_openformat' => 'ting_openformat'));
+    variable_set('search_default_module', 'ting_openformat');
+    user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array('access content', 'search content'));
+    menu_rebuild();
+  }
+
+  public function testRunner() {
+    // Create and log in our privileged user.
+    $this->privileged_user = $this->drupalCreateUser(array(
+      'administer search',
+      'administer blocks',
+      'search content',
+      'administer site configuration',
+      'access administration pages',
+    ));
+    $this->drupalLogin($this->privileged_user);
+
+    $this->_testSearchSettings();
+    return TRUE;
+  }
+
+  private function _testSearchSettings() {
+
+    $this->drupalPost('admin/config/user-interface/bibdk_search_carousel/search_settings', array('bibdk_search_carousel_covers_max' => '10'), t('Save configuration'));
+    $this->assertText('The configuration options have been saved', t('The maximum covers configuration have been saved.'));
+
+    $this->drupalPost('admin/config/user-interface/bibdk_search_carousel/search_settings', array('bibdk_search_carousel_queries_max' => '100'), t('Save configuration'));
+    $this->assertText('The configuration options have been saved', t('The maximum queries configuration have been saved.'));
+
+    $this->drupalPost('admin/config/user-interface/bibdk_search_carousel/search_settings', array('bibdk_search_carousel_dateformat' => '10'), t('Save configuration'));
+    $this->assertText('The configuration options have been saved', t('The date format configuration have been saved.'));
+
+    $this->drupalPost('admin/config/user-interface/bibdk_search_carousel/search_settings', array('bibdk_search_carousel_week_search_code' => '100'), t('Save configuration'));
+    $this->assertText('The configuration options have been saved', t('The week search code configuration have been saved.'));
+
+  }
+
+}

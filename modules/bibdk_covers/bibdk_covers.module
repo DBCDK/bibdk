@@ -1,0 +1,79 @@
+<?php
+
+/**
+ * @file bibdk_covers.module
+ * Provide functionality and page callbacks for retrieving covers for bibliotek.dk objects and collections
+ * Webservice client setup and cache admin, see: open_moreinfo
+ */
+
+// Load Field module hooks.
+module_load_include('inc', 'bibdk_covers', 'bibdk_covers.field');
+
+/**
+ * Implementation of hook_menu().
+ */
+function bibdk_covers_menu() {
+  $items = array();
+
+  $items['bibdk/covers'] = array(
+    'title' => 'Retreives cover info for bibliotek.dk objects',
+    'page callback' => 'bibdk_covers_objects',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+    'file' => 'bibdk_covers.ajax.inc',
+  );
+
+  return $items;
+}
+
+
+/**
+ * Implementation of hook_theme().
+ */
+function bibdk_covers_theme() {
+  return array(
+    'bibdk_object_cover' => array(
+      'render element' => 'elements',
+      'file' => 'bibdk_covers.theme.inc',
+      'template' => 'theme/bibdk-covers-object',
+      'preprocess functions' => array('template_preprocess_bibdk_object_cover'),
+      'attached' => array(
+        'js' => array(drupal_get_path('module', 'bibdk_covers') . '/js/bibdk-covers.js'),
+      ),
+    ),
+  );
+}
+
+
+/**
+ * Template preprocessor.
+ */
+function bibdk_covers_preprocess_ting_object(&$variables) {
+  /*
+   * Add the image style as a class, allowing templates to react on the size.
+   */
+  if (isset($variables['elements']['bibdk_cover_work'][0])) {
+    $variables['classes_array'][] = drupal_html_class('imagestyle-' . $variables['elements']['bibdk_cover_work'][0]['#image_style']);
+  }
+}
+
+
+/**
+ * Return the file path to the cover of the object.
+ */
+function _bibdk_covers_object_path($object_id, $path = 'medium') {
+  switch ($path) {
+    case 'backpagePdfUrl':
+      return file_default_scheme() . '://moreinfo/backpagePdfUrl/' . md5($object_id) . '.pdf';
+      break;
+    case 'detailUrl':
+      return file_default_scheme() . '://moreinfo/detailUrl/' . md5($object_id) . '.jpg';
+      break;
+    case 'thumbnailUrl':
+      return file_default_scheme() . '://moreinfo/thumbnailUrl/' . md5($object_id) . '.jpg';
+      break;
+    default:
+      return NULL;
+  }
+
+}

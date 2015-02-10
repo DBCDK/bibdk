@@ -460,8 +460,8 @@ function _bibdk_custom_search_is_advanced_search_expanded($get) {
     return TRUE;
   }
 
-  if ((isset($get['q']) && $get['q'] == 'bibdk_frontpage') || (isset($get['page_id']) && $get['page_id'] == 'bibdk_frontpage')
-  ) {
+  $expand_setting = bibdk_custom_search_user_settings($get['q']);
+  if (!isset($expand_setting)) {
     return FALSE;
   }
 
