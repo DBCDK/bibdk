@@ -91,7 +91,7 @@
 
   Bibdk_voxb.voxb_review_created = function(ajax, response) {
     var pid = response.pid;
-    var tab = $('.bibdk_voxb_tab[data-pid=' + pid + ']');
+    var tab = $('.bibdk_voxb_tab[data-pid="' + pid + '"]');
 
     Bibdk_voxb.bibdkGetRating(tab);
   };

@@ -1,0 +1,98 @@
+<?php
+
+/**
+ * @file
+ * Code for the bibdk_article feature.
+ */
+include_once 'bibdk_article.features.inc';
+
+/**
+ * Implement hook_form _FORM_ID_alter (bibdk-article-node-form)
+ *
+ * hide deprecated fields
+ * @TODO delete deprecated fields
+ */
+function bibdk_article_form_bibdk_article_node_form_alter(&$form, &$form_state){
+  $form['field_bibdk_article_link']['#type'] = 'hidden';
+  $form['field_page']['#type'] = 'hidden';
+  $form['field_columns']['#type'] = 'hidden';
+  $form['field_color']['#type'] = 'hidden';
+  $form['field_rows']['#type'] = 'hidden';
+}
+
+/**
+ * Implements hook_permission().
+ */
+function bibdk_article_permission() {
+  return array(
+    'create bibdk articles' => array(
+      'title' => t('create bibdk articles'),
+      'description' => t('Allow users to create articles.'),
+    ),
+    'delete bibdk articles' => array(
+      'title' => t('delete bibdk articles'),
+      'description' => t('Allow users to delete articles.'),
+    ),
+    'edit bibdk articles' => array(
+      'title' => t('edit bibdk articles'),
+      'description' => t('Allow users to edit articles.'),
+    ),
+  );
+}
+
+/** Implements hook_node_access
+ *  custom permissions for bibdk_articles .. made for test-purposes, but
+ * might come in usefull for some other admin-type
+ */
+function bibdk_article_node_access($node, $op, $account) {
+  $type = is_string($node) ? $node : $node->type;
+  if ($type != 'bibdk_article') {
+    return NODE_ACCESS_IGNORE;
+  }
+  switch ($op) {
+    case 'create':
+      if (user_access('create bibdk articles', $account)) {
+        return NODE_ACCESS_ALLOW;
+      }
+      break;
+    case 'update':
+      if (user_access('edit bibdk articles', $account)) {
+        return NODE_ACCESS_ALLOW;
+      }
+      break;
+    case 'delete':
+      if (user_access('delete bibdk articles', $account)) {
+        return NODE_ACCESS_ALLOW;
+      }
+      break;
+    case 'view' :
+      return NODE_ACCESS_ALLOW;
+  }
+  // if none of the conditions above are met .. deny access
+  return NODE_ACCESS_DENY;
+}
+
+/**
+ * Fetch nodes of type bibdk_article from db
+ *
+ * @return mixed; An array of node objects(articles) or NULL if none found
+ */
+function bibdk_article_get_articles() {
+  //http://api.drupal.org/api/drupal/includes%21common.inc/function/entity_load/7
+  $columns = array();
+  $query = new EntityFieldQuery();
+
+  $query
+    ->entityCondition('entity_type', 'node', '=')
+    ->propertyCondition('type', 'bibdk_article', '=')
+    ->propertyCondition('status', '1', '=')
+    ->propertyOrderBy('changed', 'DESC');
+
+  $result = $query->execute();
+
+  if (!isset($result['node']))
+    return;
+
+  $articles = node_load_multiple(array_keys($result['node']));
+  return $articles;
+}

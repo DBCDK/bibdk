@@ -1,0 +1,14 @@
+name = Bibliotek.dk - Autocomplete
+description = Configure Custom search input fields for autocomplete
+core = 7.x
+package = Bibliotek.dk
+php = 5.2.4
+version = 7.x-1.0
+project = bibliotek_dk_autocomplete
+dependencies[] = ctools
+dependencies[] = strongarm
+features[ctools][] = strongarm:strongarm:1
+features[features_api][] = api:1
+features[variable][] = bibdk_autocomplete_rest_url
+features[variable][] = bibdk_autocomplete_settings
+features[variable][] = bibdk_autocomplete_var

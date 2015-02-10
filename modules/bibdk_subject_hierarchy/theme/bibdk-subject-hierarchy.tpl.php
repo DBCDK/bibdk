@@ -31,7 +31,6 @@
     <div class="subject-hierarchy-searchfield">
       <div class="show-for-large-up">
         <?php print drupal_render($searchfield_link); ?>
-        <!-- a href="#" data-dropdown="drop1" data-options="align:right;" class="button">Has right  Dropdown</a -->
       </div>
       <div class="hide-for-large-up">
         <?php
@@ -39,7 +38,6 @@
           $searchfield_link['#attributes']['data-options'] = 'align:bottom';
           print drupal_render($searchfield_link);
         ?>
-        <!-- a href="#" data-dropdown="drop1" data-options="align:bottom;" class="button">Has bottom Dropdown</a -->
       </div>
 
       <div id="searchfield-dropdown" data-dropdown-content class="f-dropdown content medium" aria-hidden="true" tabindex="-1">

@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Bibliotek.dk - User alert features feature.
+ */
+
+include_once 'bibliotek_dk_user_alert_features.features.inc';

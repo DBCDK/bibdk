@@ -1,0 +1,11 @@
+name = Bibliotek.dk - HTML5 Text Format
+description = Add a HTML 5 text format for administrators
+core = 7.x
+package = Bibliotek.dk
+php = 5.2.4
+version = 7.x-1.0
+project = html_5_text_format
+dependencies[] = features
+dependencies[] = shortcode
+features[features_api][] = api:1
+features[filter][] = html_5

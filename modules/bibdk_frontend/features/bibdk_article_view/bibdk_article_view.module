@@ -1,0 +1,131 @@
+<?php
+/**
+ * @file
+ * Code for the article_view feature.
+ */
+
+include_once 'bibdk_article_view.features.inc';
+
+/**
+ * Implements hook_preprocess_HOOK
+ *
+ * Add classes and fields that needs to be handled in special ways to
+ * bibdk_articles_view
+ * @param $vars
+ */
+function bibdk_article_view_preprocess_views_view_fields(&$vars) {
+  $view = $vars['view'];
+  // only handle bibdk_articles_view
+  if ($view->name != 'article_view') {
+    return;
+  }
+
+  // get the node
+  $node = node_load($vars['row']->nid);
+  $wrapper = entity_metadata_wrapper('node', $node);
+
+  $classes = bibdk_article_view_handle_classes($wrapper);
+  $vars['class'] = drupal_attributes($classes);
+
+  // get link text
+  $link_text = $wrapper->field_link_text->value();
+  // get link url
+  $link_url = $wrapper->field_link->value();
+
+
+  $region = $wrapper->field_page_region->value();
+  if (!empty($link_text) && !empty($link_url)) {
+    if ($region->name == 'top') {
+      $vars['fields']['field_link']->content = bibdk_article_view_get_top_link($link_text, $link_url);
+      $vars['fields']['field_link']->label_html = '';
+    }
+    else {
+      $link = bibdk_article_view_get_bottom_link($link_text, $link_url);
+      $vars['fields']['field_link']->content = $link;
+      $vars['fields']['field_link']->wrapper_prefix = '<div class="footer"><div class="field-read-more">';
+      $vars['fields']['field_link']->wrapper_suffix = '</div></div>';
+    }
+  }
+}
+
+function bibdk_article_view_get_bottom_link($txt,$path){
+  $link = array(
+    '#theme' => 'link',
+    '#text' => $txt,
+    '#path' => $path,
+    '#options' => array(
+      'attributes' => array(
+        'target' => '_blank',
+        'class' => array('article-bottom-link'),
+      ),
+      'html' => FALSE,
+      'svg' => 'svg-arrow-right',
+    ),
+  );
+
+  return drupal_render($link);
+}
+
+function bibdk_article_view_get_top_link($txt, $path) {
+  $link = array(
+    '#theme' => 'link',
+    '#text' => $txt,
+    '#path' => $path,
+    '#options' => array(
+      'attributes' => array(
+        'target' => '_blank',
+        'class' => array('article-top-link'),
+      ),
+      'html' => FALSE,
+      'svg' => 'svg-arrow-right',
+    ),
+  );
+
+  return drupal_render($link);
+}
+
+
+/**
+ * Set classes needed for styling articles
+ * @param $wrapper
+ * @return array
+ */
+function bibdk_article_view_handle_classes($wrapper) {
+  $region = $wrapper->field_page_region->value();
+  $column = $wrapper->field_column->value();
+
+  $region_class = ($region->name == 'top') ? 'bibdk-article-top' : 'bibdk-article-bottom';
+  $column_class = ($column->name == 'left') ? 'bibdk-article-left' : 'bibdk-article-right';
+
+  $classes = array(
+    'article-widget',
+    $region_class,
+    $column_class,
+  );
+
+  return array('class' => $classes);
+}
+
+
+
+
+/**
+ * callback method for bibdk_custom_header_block
+ */
+function bibdk_article_view_get_panel_link() {
+  $message = t('more_articles', array(), array('context' => 'bibdk_article'));
+  $path = 'bibdk_articles';
+  $link = array(
+    '#theme' => 'link',
+    '#text' => $message,
+    '#path' => $path,
+    '#options' => array(
+      'attributes' => array(
+        'class' => array('article-view-more-link'),
+        'id' => 'article-view-more-id',
+      ),
+      'html' => FALSE,
+    ),
+  );
+  return $link;
+}

@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the bibdk_custom_search_feature feature.
+ */
+
+include_once 'bibdk_custom_search_feature.features.inc';

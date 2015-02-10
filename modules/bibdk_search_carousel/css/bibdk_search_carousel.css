@@ -1,0 +1,27 @@
+
+// ==========================================================================
+// Admin css (admin/config/user-interface/bibdk_search_carousel)
+// ==========================================================================
+
+#bibdk-search-carousel-admin-sort fieldset {
+  border-width: 0px;
+  margin: 0;
+  padding: 0;
+}
+
+#bibdk-search-carousel-admin-sort fieldset.form-wrapper {
+  float: left;
+}
+
+#bibdk-search-carousel-admin-sort .search-carousel-query {
+  padding-left: 24px;
+}
+
+#bibdk-search-carousel-admin-sort .search-query-hidden {
+  display: none;
+}
+
+#bibdk-search-carousel-admin-sort fieldset legend {
+  display: none;
+}
+

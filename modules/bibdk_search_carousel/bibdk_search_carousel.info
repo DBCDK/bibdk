@@ -1,0 +1,13 @@
+name = Bibliotek.dk - Search carousel
+description = Show Bibliotek.dk search results in a carousel
+package = Bibliotek.dk
+version = "7.x-0.1"
+core = "7.x"
+
+dependencies[] = open_moreinfo
+dependencies[] = ting_openformat
+dependencies[] = image
+
+files[] = test/bibdk_search_carousel.test
+
+configure = admin/config/user-interface/bibdk_search_carousel

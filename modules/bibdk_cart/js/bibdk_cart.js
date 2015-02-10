@@ -51,7 +51,7 @@
    * Handle response from ajax call
    */
   function cartResponse(data) {
-    $button = $('[data-cart-pid=' + data.pid + ']');
+    $button = $('[data-cart-pid="' + data.pid + '"]');
     removeStateDisabled($button);
     if(data.error) {
       alert(Drupal.t('error_refresh_page_and_try_again', {}, {context: 'bibdk_cart:error'}));

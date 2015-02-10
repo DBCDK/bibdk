@@ -1,0 +1,52 @@
+<?php
+/**
+ * @file bibdk_covers.install
+ * Install file for Bibliotek.dk covers
+ */
+
+/**
+ * Implements hook_ding_entity_fields
+ * */
+function bibdk_covers_ding_entity_fields() {
+
+  $display_full = array(
+    'default' => array(
+      'label' => 'hidden',
+      'type' => 'default',
+    ),
+    'reservation' => array(
+      'type' => 'hidden',
+    ),
+    'full' => array(
+      'type' => 'default',
+    ),
+  );
+
+  return array(
+    'bibdk_cover_work' => array(
+      'field' => array(
+        'locked' => FALSE,
+        'storage' => array(
+          'type' => 'virtual_field',
+        ),
+      ),
+      'instance' => array(
+        'ding_entity_type' => 'bibdkWorkEntity',
+        'label' => t('Cover image'),
+        'bundle' => 'bibdkWorkEntity',
+        'entity_type' => 'bibdkWorkEntity',
+        'display' => $display_full,
+      ),
+    ),
+  );
+}
+
+
+/**
+ * implements hook_uninstall
+ * remove fields in bibdk_covers module.
+ */
+function bibdk_covers_uninstall() {
+  field_delete_field('bibdk_cover_work');
+}
+

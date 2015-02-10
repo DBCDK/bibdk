@@ -1,0 +1,132 @@
+<?php
+/**
+ * @file
+ * Code for the bibdk_banner feature.
+ */
+
+include_once 'bibdk_banner.features.inc';
+
+/*
+ * Implements hook_block_info
+ */
+function bibdk_banner_block_info() {
+  $blocks['bibdk_banner'] = array(
+    'info' => 'Bibdk banner',
+    'cache' => DRUPAL_CACHE_GLOBAL,
+    'region' => 'banner',
+    'status' => TRUE,
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '<front>',
+  );
+  return $blocks;
+}
+
+/*
+ * Implements hook_block_view
+ */
+function bibdk_banner_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {
+    case 'bibdk_banner':
+      if ( user_access('access content') ) {
+        if ( $banners = bibdk_banner_get_content() ) {
+          $block['subject'] = NULL;
+          $block['content'] = array(
+            '#theme' => 'bibdk_banner_block',
+            '#banners' => $banners,
+          );
+        }
+      }
+      break;
+  }
+  return $block;
+}
+
+/*
+ * Implements hook_theme
+ */
+function bibdk_banner_theme() {
+  $themes = array(
+    'bibdk_banner_block' => array(
+      'variables' => array('banners' => NULL),
+      'template' => 'theme/bibdk-banner-block'
+    ),
+    'bibdk_banner_content' => array(
+      'variables' => array('title' => NULL, 'banner' => NULL),
+      'template' => 'theme/bibdk-banner-content'
+    ),
+  );
+  return $themes;
+}
+
+
+
+/**
+ * Implements hook_help().
+ */
+function bibdk_banner_carousel_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#bibdk_banner';
+      $file = drupal_get_path('module', 'bibdk_search_carousel') . "/help/bibdk_banner.help";
+      return $output = file_get_contents($file);
+    break;
+  }
+}
+
+
+
+/*
+* Fetch nodes of type bibdk_banner from db and return render array.
+*/
+function bibdk_banner_get_content() {
+
+  $output = array();
+  $query = new EntityFieldQuery();
+
+  $query
+      ->entityCondition('entity_type', 'node', '=')
+      ->propertyCondition('type', 'bibdk_banner', '=')
+      ->propertyCondition('status', '1', '=')
+      ->propertyOrderBy('changed', 'DESC');
+
+  $result = $query->execute();
+
+  if ( !isset($result['node']) ) {
+    return;
+  }
+
+  foreach ( $result['node'] as $n => $banner ) {
+    $node = node_load($banner->nid);
+
+    $url = field_get_items('node', $node, 'field_banner_url');
+    $url = $url[0]['safe_value'];
+
+    $image = field_get_items('node', $node, 'field_image');
+    foreach ( $image as $key => $value ) {
+      $output = array();
+      $output = field_view_value('node', $node, 'field_image', $image[$key], array(
+        'type' => 'image',
+        'settings' => array(
+          // 'image_style' => 'thumbnail',
+          'image_link' => 'content',
+        ),
+      ));
+      $output['#item']['attributes']['id'] = array(
+        'selid-banner-' . $n,
+      );
+      $output['#path']['path'] = $url;
+      unset($output['#path']['options']);
+      $output['#path']['options']['attributes']['class'] = array(
+        'banner-link',
+      );
+      $output['#path']['options']['attributes']['id'] = array(
+        'selid-banner-link-' . $n,
+      );
+      $render[$n]['#theme'] = 'bibdk_banner_content';
+      $render[$n]['#banner'] = $output;
+    }
+  }
+
+  return $render;
+
+}

@@ -1,0 +1,133 @@
+<?php
+/**
+ * @file features handles export of taxonomy vocabolaries, but drupal sees terms as content.
+ *
+ * this file creates and defines fields for taxonomies manually. sofar the taxonomies are:
+ * page_type (spil','noder','bog','artikel','film','musik','net','alle_materialer',)
+ * page_region ('top','bottom') *
+ * column ('left','right')
+ *
+ *
+ */
+
+/**
+ * Implements hook_install
+ * create taxonomies and taxonomyterms
+ */
+function custom_search_taxonomy_install() {
+  if (module_exists('uuid')) {
+    module_load_include('module', 'uuid', 'uuid');
+    _uuid_install_uuid_fields();
+    uuid_sync_all();
+  }
+
+  custom_search_taxonomy_create_vocabularies();
+  custom_search_set_taxonomy_terms();
+}
+
+/**
+ * Create vocabularies
+ */
+function custom_search_taxonomy_create_vocabularies() {
+  $vocab = taxonomy_vocabulary_machine_name_load('page_type');
+  if (empty($vocab)) {
+    $page_type = (object) array(
+      'name' => 'Page type',
+      'description' => 'page types for custom search pages',
+      'machine_name' => 'page_type',
+    );
+
+    taxonomy_vocabulary_save($page_type);
+    if (empty($page_type->vid)) {
+      drupal_set_message('PAGE_TYPE NOT SAVED CORRECTLY', 'error');
+    }
+  }
+
+  $vocab = taxonomy_vocabulary_machine_name_load('page_region');
+  if (empty($vocab)) {
+    $page_region = (object) array(
+      'name' => 'Page region',
+      'description' => 'page regions for article view',
+      'machine_name' => 'page_region',
+    );
+
+    taxonomy_vocabulary_save($page_region);
+    if (empty($page_region->vid)) {
+      drupal_set_message('PAGE_REGION NOT SAVED CORRECTLY', 'error');
+    }
+  }
+
+  $vocab = taxonomy_vocabulary_machine_name_load('column');
+  if (empty($vocab)) {
+    $column = (object) array(
+      'name' => 'column',
+      'description' => 'columns for article view',
+      'machine_name' => 'column',
+    );
+
+    taxonomy_vocabulary_save($column);
+    if (empty($column->vid)) {
+      drupal_set_message('COLUMN NOT SAVED CORRECTLY', 'error');
+    }
+  }
+}
+
+/**
+ * set terms for taxonomies and update the taxonomy
+ */
+function custom_search_set_taxonomy_terms() {
+  $page_types = array(
+    'spil',
+    'noder',
+    'bog',
+    'artikel',
+    'film',
+    'musik',
+    'net',
+    'alle_materialer',
+  );
+  custom_search_taxonomy_update_taxonomy('page_type', $page_types);
+
+  $page_regions = array(
+    'top',
+    'bottom',
+  );
+  custom_search_taxonomy_update_taxonomy('page_region', $page_regions);
+
+  $column = array(
+    'left',
+    'right',
+  );
+  custom_search_taxonomy_update_taxonomy('column', $column);
+}
+
+/**
+ * update taxonomy with given terms
+ * @param string $machine_name ; the taxonomy to update
+ * @param array $terms ; the terms to update with
+ */
+function custom_search_taxonomy_update_taxonomy($machine_name, $terms) {
+  $tax = taxonomy_vocabulary_machine_name_load($machine_name);
+  // method returns FALSE if $machine_name is not found
+  if ($tax === FALSE) {
+    drupal_set_message('Error getting taxonomy: ' . $machine_name, 'error');
+  }
+  else {
+    foreach ($terms as $weight => $name) {
+      // check if term is already there
+      $tmp = taxonomy_get_term_by_name($name, $machine_name);
+      if (empty($tmp)) {
+        $data = new stdClass();
+        $data->name = $name;
+        $data->vid = $tax->vid;
+        $data->weight = $weight;
+
+        taxonomy_term_save($data);
+      }
+    }
+  }
+}
+
+function custom_search_taxonomy_update_7001(){
+custom_search_taxonomy_install();
+}

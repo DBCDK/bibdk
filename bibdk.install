@@ -30,6 +30,8 @@ function _bibdk_enable_modules() {
     'bibdk_borchk',
     'bibdk_behaviour',
     'bibdk_config',
+    'bibdk_covers_field',
+    'bibdk_covers',
     'bibdk_custom_search',
     'bibdk_custom_search_preprocess',
     'bibdk_favourite',
@@ -51,6 +53,7 @@ function _bibdk_enable_modules() {
     'bibdk_forsrights',
     'bibdk_openuserstatus',
     'bibdk_usersettings',
+    'bibdk_search_carousel',
     'bibdk_search_controls',
     'bibdk_subject_hierarchy',
     'bibdk_about_author',
@@ -76,11 +79,8 @@ function _bibdk_enable_modules() {
     'ting_agency',
     'ting_client',
     'ting_openformat',
-    'ting_covers',
     'ting_infomedia',
-    'ting_search_carousel',
     'i18n_variable',
-    'lightbox2',
     'worktabs',
     'help',
     'user_alert',
@@ -396,5 +396,17 @@ function bibdk_update_7023(&$sandbox) {
  */
 function bibdk_update_7024(&$sandbox){
   module_enable(array('bibdk_article_view'));
+}
+
+/**
+ * enable bibdk_search_carousel & bibdk_covers
+ */
+function bibdk_update_7025(&$sandbox){
+  module_disable(
+    array('ting_covers','ting_covers_field', 'ting_search_carousel')
+  );
+  module_enable(
+    array('bibdk_search_carousel', 'bibdk_covers_field', 'bibdk_covers')
+  );
 }
 

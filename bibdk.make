@@ -21,7 +21,7 @@ libraries[ckeditor][download][url] = http://download.cksource.com/CKEditor/CKEdi
 projects[bibdk_theme][type] = theme
 projects[bibdk_theme][download][type] = git
 projects[bibdk_theme][download][url] = git@github.com:DBCDK/bibdk_theme.git
-projects[bibdk_theme][download][tag] = 7.x-0.73.1
+projects[bibdk_theme][download][tag] = 7.x-0.74
 
 
 ; --- Bibliotek.dk versions of Ding2 modules ---
@@ -81,11 +81,6 @@ projects[ting_agency][download][type] = git
 projects[ting_agency][download][url] = git@github.com:DBCDK/ting_agency.git
 projects[ting_agency][download][tag] = 7.x-0.38
 
-projects[ting_covers][type] = module
-projects[ting_covers][download][type] = git
-projects[ting_covers][download][url] = git@github.com:DBCDK/ting_covers.git
-projects[ting_covers][download][tag] = 7.x-0.22+dbc.14
-
 projects[ting_infomedia][type] = module
 projects[ting_infomedia][download][type] = git
 projects[ting_infomedia][download][url] = git@github.com:DBCDK/ting_infomedia.git
@@ -94,25 +89,14 @@ projects[ting_infomedia][download][tag] = 7.x-1.29
 projects[ting_openformat][type] = module
 projects[ting_openformat][download][type] = git
 projects[ting_openformat][download][url] = git@github.com:DBCDK/ting_openformat.git
-projects[ting_openformat][download][tag] = 7.x-0.63
+projects[ting_openformat][download][tag] = 7.x-0.64
 
 projects[ting_openuserstatus][type] = module
 projects[ting_openuserstatus][download][type] = git
 projects[ting_openuserstatus][download][url] = git@github.com:DBCDK/ting_openuserstatus.git
 projects[ting_openuserstatus][download][tag] = 7.x-0.2
 
-projects[ting_search_carousel][type] = module
-projects[ting_search_carousel][download][type] = git
-projects[ting_search_carousel][download][url] = git@github.com:DBCDK/ting_search_carousel.git
-projects[ting_search_carousel][download][tag] = 7.x-0.5+dbc.7
-
 ; --- Bibliotek.dk ---
-
-projects[bibdk_frontend][type] = module
-projects[bibdk_frontend][download][type] = git
-projects[bibdk_frontend][download][url] = git@github.com:DBCDK/bibdk_frontend.git
-projects[bibdk_frontend][download][tag] = 7.x-0.73
-
 projects[microcurl][type] = module
 projects[microcurl][download][type] = git
 projects[microcurl][download][url] = git@github.com:DBCDK/microcurl.git
@@ -131,7 +115,7 @@ projects[open_holdingstatus][download][tag] = 7.x-0.11
 projects[open_moreinfo][type] = module
 projects[open_moreinfo][download][type] = git
 projects[open_moreinfo][download][url] = git@github.com:DBCDK/open_moreinfo.git
-projects[open_moreinfo][download][tag] = 7.x-0.3
+projects[open_moreinfo][download][tag] = 7.x-0.4
 
 projects[open_saou][type] = module
 projects[open_saou][download][type] = git
@@ -234,10 +218,6 @@ projects[l10n_update][subdir] = contrib
 projects[l10n_update][type] = module
 projects[l10n_update][version] = 1.0-beta3
 projects[l10n_update][patch][] = http://drupal.org/files/l10n_update-drush_l10n_update_specify_modules-1982580-3.patch
-
-projects[lightbox2][subdir] = contrib
-projects[lightbox2][type] = module
-projects[lightbox2][version] = 1.0-beta1
 
 projects[libraries][subdir] = contrib
 projects[libraries][type] = module

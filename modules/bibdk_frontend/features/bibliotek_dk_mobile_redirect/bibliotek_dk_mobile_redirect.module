@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Bibliotek.dk - Mobile redirect feature.
+ */
+
+include_once 'bibliotek_dk_mobile_redirect.features.inc';

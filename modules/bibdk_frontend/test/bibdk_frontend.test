@@ -1,0 +1,49 @@
+<?php
+
+/**
+ * @file
+ * Tests the functionality of the user_alert content type.
+ */
+class UserAlertWebTestCase extends DrupalWebTestCase {
+
+  protected $privileged_user;
+
+  public static function getInfo() {
+    return array(
+      'name' => 'User Alert Web Test',
+      'description' => 'Test for integration of the User Alert module',
+      'group' => 'Bibliotek.dk - Frontend',
+    );
+  }
+
+  public function setUp() {
+
+    // Enable any modules required for the test
+    parent::setUp('user_alert', 'search');
+
+    // Create and log in our privileged user.
+    $this->privileged_user = $this->drupalCreateUser(array(
+      'access content',
+      'create user_alert content',
+    ));
+  }
+
+  /**
+   * Test creation and search of a bibliotek.dk help node.
+   */
+  public function test_bibdk_bser_alert() {
+    $this->drupalLogin($this->privileged_user);
+
+    // Create node to edit.
+    $edit = array();
+    $edit['title'] = $this->randomName(8);
+    $edit["body[und][0][value]"] = $this->randomName(16);
+    $this->drupalPost('node/add/user-alert', $edit, t('Save'));
+    $this->assertText(t('User Alert @title has been created.', array('@title' => $edit['title'])), 'Found text');
+
+    // Test that the front page has a User alert block.
+    $this->drupalGet('');
+    $this->assertRaw('block-user-alert', t('User Alert block (with classname block-user-alert ) is shown on front page.', array()));
+  }
+}
+

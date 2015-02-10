@@ -1,0 +1,50 @@
+<?php
+
+/**
+ * Class bibdkArticleWebtestCase
+ */
+class bibdkArticleWebtestCase extends DrupalWebTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => t('bibdk_article - Webtest'),
+      'description' => t('Testing the bibdk articles functionality'),
+      'group' => t('Bibliotek.dk - Frontend'),
+    );
+  }
+
+  public function setUp() {
+    parent::setUp('bibdk_article','bibdk_article_view');
+  }
+
+  public function testRunner() {
+    // Create and log in our privileged user.
+    $this->admin_user = $this->drupalCreateUser(array(
+      'create bibdk articles',
+      'administer content types',
+      'delete bibdk articles',
+      'edit bibdk articles',
+      'administer blocks'
+        ));
+    $this->drupalLogin($this->admin_user);
+    $this->CreateArticleTest();
+  }
+
+  /** Test create bibdk_article
+   *
+   */
+  public function CreateArticleTest() {
+    // Create node to edit.
+    $edit = array();
+    $edit['title'] = 'article_title';
+    $edit["body[und][0][value]"] = 'article_content';
+    $edit["field_link_text[und][0][value]"] = 'link name value';
+    $edit["field_link[und][0][value]"] = 'http://someurl/';
+    $edit["field_link_classes[und][0][value]"] = 'class1 class2';
+    $edit["field_page_type[und]"] = '2';
+    $this->drupalPost('node/add/bibdk_article', $edit, t('Save'));
+    $this->assertText(t('@title has been created.', array('@title' => $edit['title'])));
+  }
+}
+
+?>

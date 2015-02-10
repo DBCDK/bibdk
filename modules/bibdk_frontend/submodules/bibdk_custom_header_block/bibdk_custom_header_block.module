@@ -1,0 +1,14 @@
+<?php
+/**
+ * @file
+ * hook into ctools
+ */
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function bibdk_custom_header_block_ctools_plugin_directory($owner, $plugin_type) {
+  if ($owner == 'ctools' && $plugin_type == 'content_types') {
+    return 'plugins/' . $plugin_type;
+  }
+}

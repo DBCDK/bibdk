@@ -1,0 +1,12 @@
+name = Bibdk_ie6nomore_settings
+description = ie6nomore module settings
+core = 7.x
+package = Features
+version = 7.x-1.0-beta4
+project = bibdk_ie6nomore_settings
+dependencies[] = ctools
+dependencies[] = strongarm
+features[ctools][] = strongarm:strongarm:1
+features[features_api][] = api:1
+features[variable][] = ie6nomore_dismissable
+features[variable][] = ie6nomore_ie

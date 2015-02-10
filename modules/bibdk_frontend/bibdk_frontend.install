@@ -1,0 +1,488 @@
+<?php
+
+function bibdk_frontend_install() {
+  _bibdk_frontend_set_variables();
+  _bibdk_frontend_set_blocks();
+  _bibdk_frontend_enable_modules();
+  bibdk_frontend_setup_cache();
+  bibdk_frontend_set_weight();
+}
+
+/** \brief
+ * define and set default theme blocks e.g header, content, subheader, menu ....
+ *
+ */
+function _bibdk_frontend_set_blocks() {
+  // set and enable default theme
+  $default_theme = variable_get('theme_default', 'bibdk_theme');
+  theme_enable(array($default_theme));
+
+  $values = array(
+    array(
+      'module' => 'bibdk_frontend',
+      'delta' => 'bibdk_tabs',
+      'theme' => $default_theme,
+      'status' => 1,
+      'weight' => 0,
+      'region' => 'sidebar',
+      'pages' => '',
+      'cache' => -1,
+      'title' => '<none>',
+    ),
+    array(
+      'module' => 'bibdk_search_carousel',
+      'delta' => 'bibdk_search_carousel',
+      'theme' => $default_theme,
+      'status' => 1,
+      'weight' => 0,
+      'region' => 'carousel',
+      'pages' => '',
+      'cache' => -1,
+      'title' => '<none>',
+    ),
+    array(
+      'module' => 'user_alert',
+      'delta' => 'user_alert',
+      'theme' => 'bibdk_theme',
+      'status' => 1,
+      'weight' => 0,
+      'region' => 'content',
+      'pages' => '',
+      'cache' => -1,
+      'title' => '<none>',
+    ),
+    array(
+      'module' => 'bibdk_banner',
+      'delta' => 'bibdk_banner',
+      'theme' => 'bibdk_theme',
+      'status' => 1,
+      'weight' => 0,
+      'region' => 'banner',
+      'pages' => '',
+      'cache' => -1,
+      'title' => '<none>',
+    ),
+  );
+
+  $query = db_insert('block')->fields(array(
+    'module',
+    'delta',
+    'theme',
+    'status',
+    'weight',
+    'region',
+    'pages',
+    'cache',
+    'title'
+  ));
+  foreach ($values as $record) {
+    $query->values($record);
+  }
+  $query->execute();
+}
+
+function _bibdk_frontend_set_variables() {
+  variable_set('theme_default', 'bibdk_theme');
+  $search_active_modules = variable_get('search_active_modules');
+  $search_active_modules['ting_openformat'] = 'ting_openformat';
+  variable_set('search_active_modules', $search_active_modules);
+  variable_set('search_default_module', 'ting_openformat');
+  // enable the panel page showing searchresult and facets
+  variable_set('page_manager_search_disabled_ting_openformat', 0);
+  // Set front page.
+  variable_set('site_frontpage', 'bibdk_frontpage');
+}
+
+/** \brief default cache setup
+ *
+ */
+function bibdk_frontend_setup_cache() {
+  // enable overall caching
+  variable_set('search_client_enable_cache', 1);
+  // agency
+  variable_set('AgencyRequest_cache_enable', 1);
+  variable_set('AgencyRequest_cache_lifetime', 10);
+  //search
+  variable_set('TingClientSearchRequest_cache_enable', 1);
+  variable_set('TingClientSearchRequest_cache_lifetime', 10);
+  //object
+  variable_set('TingClientObjectRequest_cache_enable', 1);
+  variable_set('TingClientObjectRequest_cache_lifetime', 10);
+  // borchk
+  variable_set('bibdk_borchk_cache_enable', 1);
+  variable_set('bibdk_borchk_cache_lifetime', 20);
+  //forsrights
+  variable_set('bibdk_forsrights_cache_enable', 1);
+  variable_set('bibdk_forsrights_cache_lifetime', 1);
+}
+
+//TODO move modules to .info file as dependcies and only enable new ones through hook_update_N().
+function _bibdk_frontend_enable_modules() {
+  $modules = array(
+    //Features
+    'bibdk_language_settings',
+    'bibliotek_dk_administration_menu',
+    'bibliotek_dk_search_region',
+    'bibdk_custom_search_feature',
+    'bibliotek_dk_usersettings',
+    'bibliotek_dk_search_controls',
+    'bibliotek_dk_carousel_settings',
+    'bibliotek_dk_user_alert_features',
+    'bibliotek_dk_mobile_redirect',
+    'bibliotek_dk_captcha',
+    'bibdk_role_redakteur',
+    'bibliotek_dk_autocomplete',
+    'bibliotek_dk_advanced_aggregate',
+    'bibliotek_dk_work_entity_feature',
+    'bibdk_ie6nomore_settings',
+    'bibliotek_dk_offcanvas_menu',
+    'bibliotek_dk_footer_menu',
+    'bibdk_facets',
+    //Content
+    'bibdk_custom_header_block',
+    'bibdk_article_view',
+    'bibdk_banner',
+    'bibdk_adhl',
+    //Submodule
+    'bibdk_modal',
+    'bibdk_voxb',
+    'bibdk_usersettings_language',
+    'custom_search_taxonomy',
+  );
+  if (!module_enable($modules)) {
+    throw new Exception('A module: ' . current($modules) . ' present in array \'$module_list\' in file \'bibdk_frontend.install\' was not found. Install process aborted.');
+  }
+
+  // We activate this module alone, because requirements might not be met.
+  // But this should not break the site.
+  module_enable(array('bibdk_yaz'));
+}
+
+/**
+ * Setting the correct values for the bibdk_captcha module
+ *
+ *  function _bibdk_frontend_setup_captcha() removed - setup added to bibdkcaptcha module.
+ */
+function bibdk_frontend_update_7004(&$sandbox) {
+
+}
+
+/** Implements hook_update_N
+ * set default caching
+ */
+function bibdk_frontend_update_7005(&$sandbox) {
+  bibdk_frontend_setup_cache();
+}
+
+/**
+ * Enable bibdk_custom_search_feature
+ */
+function bibdk_frontend_update_7006(&$sandbox) {
+  module_enable(array('bibdk_custom_search_feature'));
+}
+
+/**
+ * Enable feature bibliotek_dk_usersettings
+ */
+function bibdk_frontend_update_7008(&$sandbox) {
+  module_enable(array('bibliotek_dk_usersettings'));
+}
+
+/**
+ * Enable feature bibliotek_dk_usersettings
+ */
+function bibdk_frontend_update_7009(&$sandbox) {
+  module_enable(array('bibdk_search_carousel'));
+}
+
+/**
+ * Enable default modules
+ * */
+function bibdk_frontend_update_7010(&$sandbox) {
+  _bibdk_frontend_enable_modules();
+}
+
+/**
+ * Enable bibdk_search_carousel modules
+ * */
+function bibdk_frontend_update_7011(&$sandbox) {
+  _bibdk_frontend_enable_modules();
+  _bibdk_search_carousel_set_blocks_7011();
+}
+
+/** \brief
+ * define and set carousel block
+ */
+function _bibdk_search_carousel_set_blocks_7011() {
+  $values = array(
+    array(
+      'module' => 'ting_search_carousel',
+      'delta' => 'ting_search_carousel',
+      'theme' => 'bibdk_theme',
+      'status' => 1,
+      'weight' => 0,
+      'region' => 'carousel',
+      'pages' => '',
+      'cache' => -1,
+      'title' => '<none>',
+    ),
+  );
+  $query = db_insert('block')->fields(array(
+    'module',
+    'delta',
+    'theme',
+    'status',
+    'weight',
+    'region',
+    'pages',
+    'cache',
+    'title'
+  ));
+  foreach ($values as $record) {
+    try {
+      $query->values($record);
+      $query->execute();
+    }
+    catch (Exception $e) {
+      // do nothing
+    }
+  }
+}
+
+/**
+ * Enable user_alert and scheduler
+ * */
+function bibdk_frontend_update_7012(&$sandbox) {
+  module_enable(array('bibliotek_dk_user_alert_features'));
+  _bibdk_search_carousel_set_blocks_7012();
+}
+
+/** \brief
+ * define and set carousel block
+ */
+function _bibdk_search_carousel_set_blocks_7012() {
+  $values = array(
+    array(
+      'module' => 'user_alert',
+      'delta' => 'user_alert',
+      'theme' => 'bibdk_theme',
+      'status' => 1,
+      'weight' => 0,
+      'region' => 'content',
+      'pages' => '',
+      'cache' => -1,
+      'title' => '<none>',
+    ),
+  );
+  $query = db_insert('block')->fields(array(
+    'module',
+    'delta',
+    'theme',
+    'status',
+    'weight',
+    'region',
+    'pages',
+    'cache',
+    'title'
+  ));
+  foreach ($values as $record) {
+    try {
+      $query->values($record);
+      $query->execute();
+    }
+    catch (Exception $e) {
+      drupal_set_message(t("Failed to set user_alert block in content area!"), 'warning');
+    }
+  }
+}
+
+/**
+ * Enable user_banner
+ * */
+function bibdk_frontend_update_7013(&$sandbox) {
+  module_enable(array('bibdk_banner'));
+  _bibdk_banner_set_blocks_7013();
+}
+
+/** \brief
+ * define and set banner block
+ */
+function _bibdk_banner_set_blocks_7013() {
+  $values = array(
+    array(
+      'module' => 'bibdk_banner',
+      'delta' => 'bibdk_banner',
+      'theme' => 'bibdk_theme',
+      'status' => 1,
+      'weight' => 0,
+      'region' => 'banner',
+      'pages' => '',
+      'cache' => -1,
+      'title' => '<none>',
+    ),
+  );
+  $query = db_insert('block')->fields(array(
+    'module',
+    'delta',
+    'theme',
+    'status',
+    'weight',
+    'region',
+    'pages',
+    'cache',
+    'title'
+  ));
+  foreach ($values as $record) {
+    try {
+      $query->values($record);
+      $query->execute();
+    }
+    catch (Exception $e) {
+      drupal_set_message(t("Failed to set user_alert block in content area!"), 'warning');
+    }
+  }
+}
+
+/**
+ * Enable bibdk_modal
+ * */
+function bibdk_frontend_update_7014(&$sandbox) {
+  module_enable(array('bibdk_modal'));
+}
+
+/**
+ * Remove unused profile2 types
+ * */
+function bibdk_frontend_update_7015(&$sandbox) {
+  $unused_profile_types = array(
+    'bibdk_search_history',
+    'bibdk_mypage',
+    'bibdk_cart_list',
+    'bibdk_openuserstatus',
+    'bibdk_usersettings_user_settings',
+    'bibdk_favourite_list'
+  );
+  if (function_exists('profile2_type_load')) {
+    foreach ($unused_profile_types as $type) {
+      $profile_type = profile2_type_load($type);
+      if (is_object($profile_type)) {
+        $profile_type->delete();
+      }
+    }
+  }
+}
+
+/**
+ * Enable translatable module for existing installations
+ */
+function bibdk_frontend_update_7016(&$sandbox) {
+  module_enable(array('translatable'));
+}
+
+/**
+ * Enable bibliotek_dk_mobile_redirect feature for existing installations
+ */
+function bibdk_frontend_update_7017(&$sandbox) {
+  module_enable(array('bibliotek_dk_mobile_redirect'));
+}
+
+/**
+ * Set weight to make sure frontend is called last in the login process
+ */
+function bibdk_frontend_update_7018(&$sandbox) {
+  bibdk_frontend_set_weight();
+}
+
+/**
+ * Change weight on module
+ * bibdk_frontend needs to be the last module called in the login process, because
+ * it makes a redirect
+ */
+function bibdk_frontend_set_weight() {
+  db_update('system')->fields(array(
+    'weight' => 0,
+  ))->condition('type', 'module')->condition('name', 'bibdk_frontend')->execute();
+
+}
+
+/**
+ * Enable bibliotek_dk_captcha feature for existing installations
+ */
+function bibdk_frontend_update_7019(&$sandbox) {
+  module_enable(array('bibliotek_dk_captcha'));
+}
+
+/**
+ * Enable bibliotek_dk_captcha feature for existing installations
+ */
+function bibdk_frontend_update_7020(&$sandbox) {
+  module_enable(array('bibdk_usersettings_language'));
+}
+
+/**
+ * Enable Advacned Aggregate for existing installations
+ */
+function bibdk_frontend_update_7021(&$sandbox) {
+  module_enable(array('bibliotek_dk_advanced_aggregate'));
+}
+
+/**
+ * Enable bibliotek.dk autocomplete for existing installations
+ */
+function bibdk_frontend_update_7022(&$sandbox) {
+  module_enable(array('bibliotek_dk_autocomplete'));
+}
+
+/**
+ * Enable bibliotek_dk_work_entity_feature for existing installations
+ */
+function bibdk_frontend_update_7023(&$sandbox) {
+  module_enable(array('bibliotek_dk_work_entity_feature'));
+}
+
+/**
+ * Enable bibdk_yaz for existing installations
+ */
+function bibdk_frontend_update_7024(&$sandbox) {
+  // Requirements might not be met.
+  // But this should not break the site.
+  module_enable(array('bibdk_yaz'));
+}
+
+/**
+ * Enable bibdk_ie6nomore_settings for existing installations
+ */
+function bibdk_frontend_update_7025(&$sandbox) {
+  // Requirements might not be met.
+  // But this should not break the site.
+  module_enable(array('bibdk_ie6nomore_settings'));
+}
+
+/**
+ * Enable bibliotek_dk_offcanvas_menu for existing installations
+ */
+function bibdk_frontend_update_7026(&$sandbox) {
+  module_enable(array(
+    'bibliotek_dk_offcanvas_menu',
+    'bibliotek_dk_footer_menu',
+  ));
+
+  module_disable(array(
+    'bibliotek_dk_global_login_menu',
+    'bibliotek_dk_header_actions',
+    'topbar_menu_block_feature'
+  ));
+}
+
+/**
+ * Enable bibdk_facets for existing installations
+ */
+function bibdk_frontend_update_7027(&$sandbox) {
+  module_enable(array(
+    'bibdk_facets',
+  ));
+
+  module_disable(array(
+    'ding_facets',
+  ));
+}

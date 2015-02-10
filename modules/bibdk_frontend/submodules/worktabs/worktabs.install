@@ -1,0 +1,50 @@
+<?php
+
+/**
+ * Implements ding_entity_fields().
+ */
+function worktabs_ding_entity_fields() {
+  $display_full = array(
+    'default' => array(
+      'label' => 'hidden',
+      'type' => 'default',
+    ),
+    'reservation' => array(
+      'type' => 'hidden',
+    ),
+    'full' => array(
+      'label' => 'hidden',
+      'type' => 'default',
+    ),
+  );
+
+  return array(
+    'worktabs' => array(
+      'field' => array(
+        'locked' => FALSE,
+        'storage' => array(
+          'type' => 'virtual_field',
+        ),
+      ),
+      'instance' => array(
+        'ding_entity_type' => 'bibdkWorkEntity',
+        'label' => t('Worktabs'),
+        'bundle' => 'bibdkWorkEntity',
+        'entity_type' => 'bibdkWorkEntity',
+        'display' => $display_full,
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_disable.
+ */
+function worktabs_disable() {
+  $fields = worktabs_ding_entity_fields();
+  foreach ($fields as $field_name => $field) {
+    field_delete_instance($field_name);
+    field_delete_field($field_name);
+  }
+}
+

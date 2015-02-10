@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Bibdk_ie6nomore_settings feature.
+ */
+
+include_once 'bibdk_ie6nomore_settings.features.inc';

@@ -1,0 +1,171 @@
+<?php
+
+module_load_include('inc', 'worktabs', 'worktabs.field');
+
+/**
+ * Implements hook_theme().
+ */
+function worktabs_theme($existing, $type, $theme, $path) {
+  return array(
+    'worktabs' => array(
+      'template' => 'theme/worktabs',
+      'variables' => array(
+        'pid' => '',
+        'tabs' => array(),
+      ),
+    ),
+    'tab-item' => array(
+      'template' => 'theme/tab_item',
+      'variables' => array(
+        'title' => '',
+        'btn_txt_closed' => '',
+        'btn_txt_open' => '',
+        'single' => FALSE,
+        'content' => array(),
+        'more_id' => '',
+        'tab_id' => '',
+      ),
+    ),
+    'worktabs_no_content' => array(
+      'template' => 'theme/worktabs_no_content',
+      'variables' => array(
+        'no_content' => '',
+        'btn_txt_empty' => array(
+          '#type' => 'translatable',
+          '#translate' => 'No content at the moment',
+          '#options' =>  array('context' => 'worktabs'),
+        ),
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_elemenent_info().
+ */
+function worktabs_element_info() {
+  return array(
+    'worktabs' => array(
+      '#pre_render' => array('worktabs_pre_render'),
+      '#theme' => 'worktabs',
+    ),
+    'tab-item' => array(
+      '#pre_render' => array('worktabs_pre_render'),
+      '#theme' => 'worktabs',
+    ),
+  );
+}
+
+function worktabs_pre_render($elements) {
+  $pre_render_elements = array('title', 'content', 'btn_txt_closed', 'btn_txt_open', 'more_id');
+
+  foreach ($elements['#tabs'] as $type => $tab) {
+    foreach ($pre_render_elements as $pre) {
+      $elements['#tabs'][$type][$pre] = render($tab[$pre]);
+    }
+  }
+
+  return $elements;
+}
+
+/**
+ * Main function for the worktabs.
+ * Has the bibdkWork entity as paramter, which is passed along to modules
+ * implementing the hook_worktabs_items()
+ *
+ * @param BibdkWork $entity
+ * @return string
+ *
+ * @see theme/worktabs.tpl.php
+ */
+function worktabs_get_tabs($entity) {
+  $tabs = array();
+  $content = module_invoke_all('worktabs_items', $entity);
+  $tabs['#tabs'] = worktabs_merge_content($content);;
+  $tabs['#pid'] = _worktabs_trim_string($entity->id);
+  drupal_add_js(drupal_get_path('module', 'worktabs') . '/js/worktabs.js');
+  $tabs['#type'] = 'worktabs';
+  return $tabs;
+}
+
+/**
+ * Merges the cotent retreived with the outer tabs
+ *
+ * @param $content
+ * @internal param array $tabs
+ * @return array
+ */
+function worktabs_merge_content($content) {
+    $default = array(
+      '#btn_txt_closed' => array(
+        '#type' => 'translatable',
+        '#translate' => 'view_more',
+        '#options' => array('context' => 'worktabs')
+      ),
+      '#btn_txt_open' => array(
+        '#type' => 'translatable',
+        '#translate' => 'view_less',
+        '#options' => array('context' => 'worktabs')
+      ),
+      '#theme' => 'tab-item',
+    );
+  $outertabs = worktabs_get_outer();
+  foreach ($content as $tab => $inner) {
+    foreach ($inner as $key => &$element) {
+      $element += $default;
+      $element['#tab_id'] = drupal_html_id('worktab-' . $key);
+      $element['#single'] = count($inner) < 2;
+    }
+    uasort($inner, 'drupal_sort_weight');
+    $outertabs[$tab]['content'] = $inner;
+  }
+
+  return $outertabs;
+}
+
+/**
+ * Generates the outer tabs with no content
+ *
+ * @return array
+ */
+function worktabs_get_outer() {
+  return array(
+    'basic-information' => array(
+      'title' => array(
+        '#type' => 'translatable',
+        '#translate' => 'Description',
+      ),
+      'content' => array(),
+      'class' => 'active',
+      'active' => 'active',
+    ),
+    'more-about' => array(
+      'title' => array(
+        '#type' => 'translatable',
+        '#translate' => 'More Info',
+      ),
+      'content' => array(),
+      'class' => '',
+      'active' => 'visuallyhidden',
+    ),
+    'reviews' => array(
+      'title' => array(
+        '#type' => 'translatable',
+        '#translate' => 'Reviews',
+      ),
+      'content' => array(),
+      'class' => '',
+      'active' => 'visuallyhidden',
+    ),
+  );
+}
+
+/**
+ * Strips a string (pid) for :, -, __
+ *
+ * @param string $string
+ * @return string
+ */
+function _worktabs_trim_string($string) {
+  return strtolower(strtr($string, array(':' => '_', '-' => '_')));
+}
