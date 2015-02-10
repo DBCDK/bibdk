@@ -158,7 +158,7 @@ function template_preprocess_bibdk_object_cover(&$variables) {
     $variables['elements']['#classes'][] = 'bibdk-cover-processed';
 
   }
-  elseif (cache_get('bibdk_covers:' . $local_id)) {
+  elseif (cache_get('bibdk_covers:' . $local_id) !== FALSE) {
 
     // We know that there is no cover available for this object so avoid further javascript processing
     $variables['elements']['#classes'][] = 'bibdk-cover-processed';
