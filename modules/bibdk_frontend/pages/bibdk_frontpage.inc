@@ -1,4 +1,10 @@
 <?php
+
+/**
+ * @file
+ * bibdk_frontpage.inc
+ */
+
 $page = new stdClass();
 $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
 $page->api_version = 1;
@@ -199,4 +205,5 @@ $display->panels['top'][0] = 'new-5';
 $display->hide_title = PANELS_TITLE_FIXED;
 $display->title_pane = '0';
 $handler->conf['display'] = $display;
+
 $page->default_handlers[$handler->name] = $handler;
