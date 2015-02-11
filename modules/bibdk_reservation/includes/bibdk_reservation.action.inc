@@ -28,7 +28,7 @@ function bibdk_reservation_ting_openformat_actions($type, $entity, $view_mode, $
           '#markup' => l(t('Order', array(), array('context' => 'bibdk_reservation')), $accessUrlContainer['accessUrl'], array(
             'attributes' => array(
               'target' => '_blank',
-              'class' => array('btn btn-grey')
+              'class' => array('btn btn-blue')
             )
           )),
           '#weight' => -2,

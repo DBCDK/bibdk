@@ -38,7 +38,9 @@ function bibdk_reservation_link($entity_ids, $subtype, $entity_type) {
   $attributes['data-rel'] = 'reservation';
   $attributes['class'][] = 'bibdk-popup-link';
   $attributes['class'][] = 'btn';
-  $attributes['class'][] = (isset($entity_type) && $entity_type == 'bibdkManifestation') ? 'btn-grey' : 'btn-blue';
+  $attributes['class'][] = 'btn-blue';
+  //$attributes['class'][] = (isset($entity_type) && $entity_type == 'bibdkManifestation') ? 'btn-grey' : 'btn-blue';
+
 
   $link = array(
     '#theme' => 'link',
