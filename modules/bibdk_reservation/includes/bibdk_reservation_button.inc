@@ -25,7 +25,9 @@ function bibdk_reservation_link($entity_ids, $subtype, $entity_type) {
   }
   else {
     $translated_sub = t($subtype, array(), array('context' => 'bibdk_reservation'));
-    $text = ($entity_type == "bibdkSubwork") ? $translated_sub : t("Order this @type", array("@type" => $translated_sub), array('context' => 'bibdk_reservation'));
+    //$text = ($entity_type == "bibdkSubwork") ? $translated_sub : t("Order this @type", array("@type" => $translated_sub), array('context' => 'bibdk_reservation'));
+    //ANATEST 3
+    $text = ($entity_type == "bibdkSubwork") ? $translated_sub : t("Order", array('context' => 'bibdk_reservation'));
     $button_id = 'this_edition_' . current($manifestations);
   }
   $path = 'reservation';

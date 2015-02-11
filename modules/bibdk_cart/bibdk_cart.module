@@ -142,7 +142,8 @@ function bibdk_cart_get_form($form, &$form_state) {
 
   $header = array(
     'manifestation' => t('bibdk_cart_header', array(), array('context' => 'bibdk_cart')),
-    'status' => t('bibdk_cart_status', array(), array('context' => 'bibdk_cart')),
+    'status' => array('data' => t('bibdk_cart_status', array(), array('context' => 'bibdk_cart')), 'class' => array('show-for-large-up')),
+    //'status' => t('bibdk_cart_status', array(), array('context' => 'bibdk_cart')),
     'actions' => t('bibdk_cart_actions', array(), array('context' => 'bibdk_cart')),
   );
 
@@ -153,7 +154,6 @@ function bibdk_cart_get_form($form, &$form_state) {
     $pager['#value'] = $links = _bibdk_cart_pager_get_links($pager['#value']);
     $form['pager'] = $pager;
   }
-
   return $form;
 }
 
@@ -298,7 +298,8 @@ function bibdk_cart_get_items($cart, $items_per_page, $page) {
       /* @var $element BibdkCartElement */
       $item = bibdk_cart_manifestation_view($element->getManifestation(), $element->getElementArray());
       $items[$delta]['manifestation'] = drupal_render($item);
-      $items[$delta]['status'] = implode(', ', $element->getStatusView());
+      $items[$delta]['status']['class'] = array('show-for-large-up');
+      $items[$delta]['status']['data'] = implode(', ', $element->getStatusView());
       $items[$delta]['actions'] = isset($item['action']) ? $item['action'] : "";
     }
   }

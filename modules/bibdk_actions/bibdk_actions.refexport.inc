@@ -164,6 +164,11 @@ function bibdk_actions_refexport_links($pid = NULL, $attributes = array()) {
       'href' => $path,
       'attributes' => $attributes,
       'html' => TRUE,
+      'attributes' => array(
+        'class' => array(
+          'show-for-large-up',
+        ),
+      ),
     );
   }
 
