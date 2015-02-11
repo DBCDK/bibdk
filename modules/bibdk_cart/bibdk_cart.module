@@ -126,6 +126,7 @@ function bibdk_cart_get_form($form, &$form_state) {
     '#attributes' => array(
       'class' => array(
         'bibdk-cart-helptext',
+        'show-for-large-up',
       ),
     ),
   );
