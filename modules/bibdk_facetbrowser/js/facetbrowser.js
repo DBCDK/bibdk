@@ -311,15 +311,15 @@
       });
 
       for ( var i = 0; i < facetsSelect.length; i = i + 1 ) {
-        myArray.push('facets[]=' + 'facet.' + facetKey + ':' + facetsSelect[i]);
+        myArray.push('facets[]=' + 'facet.' + facetKey + ':' + encodeURI(facetsSelect[i]));
       }
 
       for ( var i = 0; i < facetsDeselect.length; i = i + 1 ) {
-        myArray.push('facets[]=!' + 'facet.' + facetKey + ':' + facetsDeselect[i]);
+        myArray.push('facets[]=!' + 'facet.' + facetKey + ':' + encodeURI(facetsDeselect[i]));
       }
 
-      newUri = decodeURI(a.protocol + '//' + a.host + '/' + a.pathname + encodeURI(myArray.join('&')) + '#content');
-
+      newUri = a.protocol + '//' + a.host + '/' + a.pathname + myArray.join('&') + '#content';
+      
       window.location.replace(newUri);
 
     });
