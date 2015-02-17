@@ -136,7 +136,7 @@ function bibdk_newsroom_search_execute($keys = NULL, $conditions = NULL) {
 
     $uri = entity_uri('node', $node);
     $results[] = array(
-      'link' => str_replace('/node/', '/overlay/newsroom/', url($uri['path']), array_merge($uri['options'], array('absolute' => TRUE))),
+      'link' => str_replace('/node/', '/overlay/newsroom/', url($uri['path'], array_merge($uri['options'], array('absolute' => TRUE)))),
       'type' => check_plain(node_type_get_name($node)),
       'title' => $node->title,
       // 'user' => theme('username', array('account' => $node)),

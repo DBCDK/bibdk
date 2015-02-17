@@ -20,24 +20,30 @@ class BibdkOpenOrderUnitTestCase extends DrupalUnitTestCase {
 
   // checck _bibdk_openorder_check_required_params method
   public function testRequiredParamsMethod() {
-    $values = array('copy' => 'hest',
+    $values = array(
+      'copy' => 'hest',
       'needBeforeDate' => 'hest'
-    , 'orderSystem' => 'hest',
+    ,
+      'orderSystem' => 'hest',
       'userIdAuthenticated' => 'hest',
       'userId' => 'hest',
       'verificationReferenceSource' => 'hest',
-      'action' => 'hest');
+      'action' => 'hest'
+    );
     $missing = _bibdk_openorder_check_required_params($values);
 
     $this->assertTrue(empty($missing), 'all parameters checked out');
 
-    $values = array('copy' => 'hest',
+    $values = array(
+      'copy' => 'hest',
       'exactEdition' => 'hest',
       'needBeforeDate' => 'hest'
-    , 'orderSystem' => 'hest',
+    ,
+      'orderSystem' => 'hest',
       'userIdAuthenticated' => 'hest',
       'userId' => 'hest',
-      'verificationReferenceSource' => 'hest');
+      'verificationReferenceSource' => 'hest'
+    );
 
     $missing = _bibdk_openorder_check_required_params($values);
     $this->assertTrue(in_array('action', $missing), 'action missing in required params');
@@ -60,7 +66,7 @@ class BibdkOpenOrderUnitTestCase extends DrupalUnitTestCase {
 
   public function testUrlAvailablity() {
     $url = BibdkOpenorderPolicyResponse::GetObject()->getLookUpUrl();
-    $this->assertNotNull($url, 'URL is available: ' . $url);
+    $this->assertNotNull($url, 'URL is available: ' . $url[0]['url']);
   }
 
   public function testOrderPolicyOk() {
@@ -97,10 +103,12 @@ class BibdkOpenOrderUnitTestCase extends DrupalUnitTestCase {
     $this->assertEqual($result, $expected_result, 'getLookupUrl should always return an array');
 
     // Test with no agencyId
-    $lookupUrl[] = new stdClass();
+    $lookupUrl = array();
+    $lookupUrl[0] = new stdClass();
     $lookupUrl[0]->{'$'} = 'look_up_url_1';
 
     $response = new stdClass();
+    $response->checkOrderPolicyResponse = new stdClass();
     $response->checkOrderPolicyResponse->lookUpUrl = $lookupUrl;
     $response_object->setResponse($response);
     $result = $response_object->getLookUpUrl();
@@ -115,9 +123,11 @@ class BibdkOpenOrderUnitTestCase extends DrupalUnitTestCase {
 
     // test one lookupUrl
     $lookupUrl[0]->{'$'} = 'look_up_url_1';
+    $lookupUrl[0]->{'@agencyId'} = new stdClass();
     $lookupUrl[0]->{'@agencyId'}->{'$'} = 'agency_id_1';
 
-    $response = new stdClass();
+    //$response = new stdClass();
+    $response->checkOrderPolicyResponse->lookUpUrl = new stdClass();
     $response->checkOrderPolicyResponse->lookUpUrl = $lookupUrl;
     $response_object->setResponse($response);
     $result = $response_object->getLookUpUrl();
@@ -132,8 +142,9 @@ class BibdkOpenOrderUnitTestCase extends DrupalUnitTestCase {
 
 
     // Test more than one lookupUrl
-    $lookupUrl[] = new stdClass();
+    $lookupUrl[1] = new stdClass();
     $lookupUrl[1]->{'$'} = 'look_up_url_2';
+    $lookupUrl[1]->{'@agencyId'} = new stdClass();
     $lookupUrl[1]->{'@agencyId'}->{'$'} = 'agency_id_2';
     $response->checkOrderPolicyResponse->lookUpUrl = $lookupUrl;
     $response_object->setResponse($response);
@@ -197,7 +208,7 @@ class BibdkOpenOrderWebTestCase extends DrupalWebTestCase {
     $this->assertTrue($result, 'Valid number have been updated');
 
     // The stats have not been updated
-    $result = bibdk_openorder_do_incrementRedirectStat(null);
+    $result = bibdk_openorder_do_incrementRedirectStat(NULL);
     $this->assertFalse($result, 'Invalid number have not been updated');
 
     // log have been added to watchdog

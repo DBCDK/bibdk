@@ -29,9 +29,7 @@ class BibdkReviewsUnitTestCase extends DrupalUnitTestCase {
     // Test method _bibdk_review_convert_result_to_bibdk_reviews
     $reviews = _bibdk_review_convert_result_to_bibdk_reviews($xml);
     $this->assertTrue(count($reviews) == 1 && is_object(current($reviews)) && get_class(current($reviews)) == 'BibdkReview', '_bibdk_review_convert_result_to_bibdk_reviews parses one object of type BibdkReview from xml');
-
     $review = current($reviews);
-
     //Test getTitle
     $expected = array(
       0 => 'Lektørudtalelse',
@@ -42,23 +40,23 @@ class BibdkReviewsUnitTestCase extends DrupalUnitTestCase {
     $expected = array(
       0 =>
       array(
-        'title' => 'Anvendelse/målgruppe/niveau',
-        'para' => 'Denne svenske skærgårds- og familieroman, tilsat troldsplinter vil give sin læser en både besættende, vanvittig og smuk oplevelse. På forsiden står "skrækroman", og hermed tunes man ind på romanens stil, hvor en families spøgelser og genfærd spiller en helt reel rolle',
+        'docbook:title' => 'Anvendelse/målgruppe/niveau',
+        'docbook:para' => 'Denne svenske skærgårds- og familieroman, tilsat troldsplinter vil give sin læser en både besættende, vanvittig og smuk oplevelse. På forsiden står "skrækroman", og hermed tunes man ind på romanens stil, hvor en families spøgelser og genfærd spiller en helt reel rolle',
       ),
       1 =>
       array(
-        'title' => 'Beskrivelse',
-        'para' => 'Barndomskæresteparret Anders og Cecilie tager en smuk vinterdag deres lille datter Maja med på en tur over isen. Men Maja forsvinder sporløst. Sorg og skilsmisse ødelægger resten af parrets liv, og 6 år senere vender Anders tilbage til skærgårdsøen for at lede efter Maja. Sammen med sine bedsteforældre dykker han længere og længere ned dels i sine egne erindringer dels i øens samlede erindringsvolumen, og der viser sig dramatiske historier om folks sporløse forsvinden og havet som en krævende og magisk modspiller. Romanen inddrager elementer fra et overnaturligt univers, hvor spøgelser og genfærd dukker op og kræver deres ret. Det fungerer fantastisk medrivende og udgør et uhyggeligt modspil til de kærlighedshistorier, der også er i romanen: bedsteforældrenes og Anders\' skyldtyngede kærlighed til sin datter',
+        'docbook:title' => 'Beskrivelse',
+        'docbook:para' => 'Barndomskæresteparret Anders og Cecilie tager en smuk vinterdag deres lille datter Maja med på en tur over isen. Men Maja forsvinder sporløst. Sorg og skilsmisse ødelægger resten af parrets liv, og 6 år senere vender Anders tilbage til skærgårdsøen for at lede efter Maja. Sammen med sine bedsteforældre dykker han længere og længere ned dels i sine egne erindringer dels i øens samlede erindringsvolumen, og der viser sig dramatiske historier om folks sporløse forsvinden og havet som en krævende og magisk modspiller. Romanen inddrager elementer fra et overnaturligt univers, hvor spøgelser og genfærd dukker op og kræver deres ret. Det fungerer fantastisk medrivende og udgør et uhyggeligt modspil til de kærlighedshistorier, der også er i romanen: bedsteforældrenes og Anders\' skyldtyngede kærlighed til sin datter',
       ),
       2 =>
       array(
-        'title' => 'Sammenligning',
-        'para' => 'Det er oplagt at prøve kræfter med forfatterens tidligere Håndteringen af udøde, og dertil nogle af Stephen Kings bedste, selv om Ajvide er i en højere litterær klasse',
+        'docbook:title' => 'Sammenligning',
+        'docbook:para' => 'Det er oplagt at prøve kræfter med forfatterens tidligere Håndteringen af udøde, og dertil nogle af Stephen Kings bedste, selv om Ajvide er i en højere litterær klasse',
       ),
       3 =>
       array(
-        'title' => 'Samlet konklusion',
-        'para' => 'Svensk roman, der både er bevægende og fuld af gru, om en skærgårdsø, en familie og en fars sorg over sit barn - med denne sære inddragelse af det overnaturlige element, som øger fornemmelsen for menneskets kampe mod de indre dæmoner',
+        'docbook:title' => 'Samlet konklusion',
+        'docbook:para' => 'Svensk roman, der både er bevægende og fuld af gru, om en skærgårdsø, en familie og en fars sorg over sit barn - med denne sære inddragelse af det overnaturlige element, som øger fornemmelsen for menneskets kampe mod de indre dæmoner',
       ),
     );
 
@@ -108,7 +106,7 @@ class BibdkReviewsWebTestCase extends DrupalWebTestCase {
     $this->assertTrue(strpos($view, 'Det er oplagt at prøve kræfter'), 'Third para found');
     $this->assertTrue(strpos($view, 'Lektørudtalelse'), 'Type found');
     $this->assertTrue(strpos($view, 'Helle Winther Olsen'), 'Author found');
-
+  
     // Test two reviews
     $ids = array('870976-anmeld:30390342', '870976-anmeld:30390334');
     $view = bibdk_reviews_view($ids);

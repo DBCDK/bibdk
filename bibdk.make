@@ -187,7 +187,7 @@ projects[date][version] = 2.6
 
 projects[entity][subdir] = contrib
 projects[entity][type] = module
-projects[entity][version] = 1.0-rc3
+projects[entity][version] = 1.5
 
 projects[eu-cookie-compliance][subdir] = contrib
 projects[eu-cookie-compliance][type] = module
@@ -203,7 +203,7 @@ projects[features_extra][version] = 1.0-alpha1
 
 projects[i18n][subdir] = contrib
 projects[i18n][type] = module
-projects[i18n][version] = 1.7
+projects[i18n][version] = 1.12
 
 projects[ie6nomore][subdir] = contrib
 projects[ie6nomore][type] = module
@@ -277,7 +277,7 @@ projects[strongarm][version] = 2.0
 
 projects[variable][subdir] = contrib
 projects[variable][type] = module
-projects[variable][version] = 2.1
+projects[variable][version] = 2.5
 
 projects[views][subdir] = contrib
 projects[views][type] = module

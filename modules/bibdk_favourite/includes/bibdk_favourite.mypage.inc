@@ -5,9 +5,6 @@
  */
 function bibdk_favourite_bibdk_mypage_tabs($max_rows = 3) {
   global $user;
-  require_once(DRUPAL_ROOT . '/profiles/bibdk/modules/ting_agency/TingAgency.php');
-
-  global $user;
 
   $ret = array();
   $ret['bibdk_favourite']['header'] = 'Favourites';

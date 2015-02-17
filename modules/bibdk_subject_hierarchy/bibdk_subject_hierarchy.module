@@ -562,7 +562,8 @@ function _bibdk_subject_hierarchy_parse_term($term) {
  */
 function _bibdk_subject_hierarchy_ccl_to_cql($ccl) {
   if (function_exists('bibdk_yaz_convert_ccl_to_cql')) {
-    return reset(bibdk_yaz_convert_ccl_to_cql($ccl));
+    $cql = bibdk_yaz_convert_ccl_to_cql($ccl);
+    return reset($cql);
   }
   return NULL;
 }
