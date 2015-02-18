@@ -196,14 +196,15 @@ function bibdk_subject_hierarchy_searchfield_form_submit($form, &$form_state) {
 
   $header['close'] = array(
     '#theme' => 'link_with_svg',
-    '#title' => '',
-    '#path' => '#',
-    '#attributes' => array(
-      'alt' => t('close subject hierarchy submenu.', array(), array('context' => 'bibdk_subject_hierarchy')),
-      'class' => array('subjects-close-button close icon'),
+    '#text' => '',
+    '#path' => FALSE,
+    '#options' => array(
+      'attributes' => array(
+        'alt' => t('close subject hierarchy submenu.', array(), array('context' => 'bibdk_subject_hierarchy')),
+        'class' => array('subjects-close-button close icon'),
+      ),
     ),
     '#svg' => 'svg-close',
-    '#href' => FALSE,
   );
 
 
