@@ -136,7 +136,7 @@ function bibdk_frontend_default_page_manager_pages() {
 
 
 /**
- * Helper function for hook_default_page_manager_pages() and hook_default_page_manager_handlers().
+ * Helper function for hook_default_page_manager_pages and hook_default_page_manager_handlers.
  */
 function _bibdk_frontend_process_includes($path, $name) {
   $items = array();
