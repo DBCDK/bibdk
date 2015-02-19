@@ -401,16 +401,11 @@ function _bibdk_custom_search_get_search_panel($page, $result, $default_values) 
 
   if ($is_visible) {
     $advanced_search_panel['#attributes']['class'][] = 'is-visible';
-    $advanced_search_is_loaded = TRUE;
   }
 
-  if ($is_visible || !empty($_GET['deliver_search_panel_by_ajax'])) {
-    //only render advanced search panel if it's going to be shown as default.
-    //Otherwise we'll get it by AJAX.
-    $panel = _bibdk_custom_search_create_advanced_form($result, $default_values);
-    $advanced_search_panel += $panel;
-    $advanced_search_is_loaded = TRUE;
-  }
+  $panel = _bibdk_custom_search_create_advanced_form($result, $default_values);
+  $advanced_search_panel += $panel;
+  $advanced_search_is_loaded = TRUE;
 
   //tell our JS if the advanced search panel should be loaded by AJAX or not
   drupal_add_js(array('bibdk_custom_search' => array('advancedSearchIsLoaded' => $advanced_search_is_loaded)), 'setting');

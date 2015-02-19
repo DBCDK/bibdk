@@ -22,7 +22,8 @@ function bibdk_about_author_ajax_get_about_author() {
     $data['query'] = $_REQUEST['query'];
 
     if ( $result = bibdk_about_author_get_about_author($_REQUEST['query']) ) {
-      $data['list'] = drupal_render(bibdk_about_author_get_link_list_view($result));
+      $list_view = bibdk_about_author_get_link_list_view($result);
+      $data['list'] = drupal_render($list_view);
     }
     else {
       $data['error']       = 'bibdk_about_author_no_records'; // nb: don't translate!

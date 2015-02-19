@@ -2,10 +2,10 @@
   <?php foreach($sections as $section) : ?>
   <div class='section'>
     <h6>
-      <?php print $section['title']; ?>
+      <?php print $section['docbook:title']; ?>
     </h6>
     <p>
-      <?php print $section['para']; ?>
+      <?php print $section['docbook:para']; ?>
     </p>
   </div>
   <?php endforeach; ?>

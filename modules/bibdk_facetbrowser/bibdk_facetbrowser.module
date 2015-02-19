@@ -534,8 +534,9 @@ function bibdk_facetbrowser_block_view($delta = FALSE) {
   );
 
   $by_ajax = variable_get('bibdk_facetbrowser_by_ajax', FALSE);
-  if ( $by_ajax ) {
-    $block['content'] = drupal_render(bibdk_facetbrowser_facetbrowser_placeholder());
+  if ($by_ajax) {
+    $place_holder = bibdk_facetbrowser_facetbrowser_placeholder();
+    $block['content'] = drupal_render($place_holder);
   }
   else {
 

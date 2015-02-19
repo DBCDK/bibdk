@@ -71,7 +71,8 @@ class BibdkReservationOrderObject {
    * @return Manifestation
    */
   public function getManifestation() {
-    return reset($this->work->getManifestations());
+    $manifestations = $this->work->getManifestations();
+    return reset($manifestations);
   }
 
   public function getwork() {

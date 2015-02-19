@@ -21,7 +21,7 @@ libraries[ckeditor][download][url] = http://download.cksource.com/CKEditor/CKEdi
 projects[bibdk_theme][type] = theme
 projects[bibdk_theme][download][type] = git
 projects[bibdk_theme][download][url] = git@github.com:DBCDK/bibdk_theme.git
-projects[bibdk_theme][download][tag] = 7.x-0.73.1
+projects[bibdk_theme][download][tag] = 7.x-0.74.1
 
 
 ; --- Bibliotek.dk versions of Ding2 modules ---
@@ -89,7 +89,7 @@ projects[ting_infomedia][download][tag] = 7.x-1.29
 projects[ting_openformat][type] = module
 projects[ting_openformat][download][type] = git
 projects[ting_openformat][download][url] = git@github.com:DBCDK/ting_openformat.git
-projects[ting_openformat][download][tag] = 7.x-0.63
+projects[ting_openformat][download][tag] = 7.x-0.64
 
 projects[ting_openuserstatus][type] = module
 projects[ting_openuserstatus][download][type] = git
@@ -115,7 +115,7 @@ projects[open_holdingstatus][download][tag] = 7.x-0.11
 projects[open_moreinfo][type] = module
 projects[open_moreinfo][download][type] = git
 projects[open_moreinfo][download][url] = git@github.com:DBCDK/open_moreinfo.git
-projects[open_moreinfo][download][tag] = 7.x-0.3
+projects[open_moreinfo][download][tag] = 7.x-0.4
 
 projects[open_saou][type] = module
 projects[open_saou][download][type] = git
@@ -187,7 +187,7 @@ projects[date][version] = 2.6
 
 projects[entity][subdir] = contrib
 projects[entity][type] = module
-projects[entity][version] = 1.0-rc3
+projects[entity][version] = 1.5
 
 projects[eu-cookie-compliance][subdir] = contrib
 projects[eu-cookie-compliance][type] = module
@@ -203,7 +203,7 @@ projects[features_extra][version] = 1.0-alpha1
 
 projects[i18n][subdir] = contrib
 projects[i18n][type] = module
-projects[i18n][version] = 1.7
+projects[i18n][version] = 1.12
 
 projects[ie6nomore][subdir] = contrib
 projects[ie6nomore][type] = module
@@ -277,7 +277,7 @@ projects[strongarm][version] = 2.0
 
 projects[variable][subdir] = contrib
 projects[variable][type] = module
-projects[variable][version] = 2.1
+projects[variable][version] = 2.5
 
 projects[views][subdir] = contrib
 projects[views][type] = module
