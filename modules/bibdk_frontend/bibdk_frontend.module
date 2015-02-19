@@ -143,12 +143,10 @@ function bibdk_frontend_default_page_manager_pages() {
 /**
  * Implements hook_default_page_manager_handlers().
  */
-/*
 function bibdk_frontend_default_page_manager_handlers() {
   $path = drupal_get_path('module', 'bibdk_frontend') . '/handlers/';
   return _bibdk_frontend_process_includes($path, "handler");
 }
-*/
 
 
 /**
