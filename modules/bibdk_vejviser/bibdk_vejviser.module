@@ -131,17 +131,38 @@ function _bibdk_vejviser_vejviser_raw($agency_name = NULL) {
   return drupal_render($ret);
 }
 
-function bibdk_vejviser_get_help_text(){
-  return array(
-  '#theme' => 'html_tag',
-    '#tag' => 'div',
-    '#value' => t('bibdk_vejviser_helptext',array(), array('context'=>'bibdk_vejviser')),
+function bibdk_vejviser_get_help_text() {
+  $container = array(
+    '#type' => 'container',
     '#attributes' => array(
-      'class' => array(
-        'bibdk-vejviser--help-text',
-      ),
-    ),
+      'class'=>array(
+        'bibdk-vejviser--help-container',
+      )
+    )
   );
+  $container['title'] = array(
+      '#theme' => 'html_tag',
+      '#tag' => 'h2',
+      '#value' => t('bibdk_vejviser_helptext_title', array(), array('context' => 'bibdk_vejviser')),
+      '#attributes' => array(
+        'class' => array(
+          'bibdk-vejviser--help-text-title',
+        ),
+      ),
+  );
+
+    $container['body'] = array(
+      '#theme' => 'html_tag',
+      '#tag' => 'div',
+      '#value' => t('bibdk_vejviser_helptext', array(), array('context' => 'bibdk_vejviser')),
+      '#attributes' => array(
+        'class' => array(
+          'bibdk-vejviser--help-text',
+        ),
+      ),
+    );
+  return $container;
+
 }
 
 function bibdk_vejviser_agency_search() {
