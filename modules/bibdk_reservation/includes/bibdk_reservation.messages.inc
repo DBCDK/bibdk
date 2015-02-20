@@ -53,8 +53,10 @@ function bibdk_reservation_get_actions($ids, $bibdk_work_entity) {
 
 function bibdk_reservation_get_action_links($ids, BibdkWork $bibdk_work_entity) {
   $links = array();
-  $manifestations = $bibdk_work_entity->getManifestations();
-  $manifestation = reset($manifestations);
+
+  $parm = $bibdk_work_entity->getManifestations();
+  $manifestation = reset($parm);
+
   if ($link = bibdk_reservation_article_infomedia_link($manifestation)) {
     $links[] = $link;
   }
