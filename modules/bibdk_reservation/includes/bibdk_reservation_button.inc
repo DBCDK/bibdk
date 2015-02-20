@@ -20,7 +20,6 @@ function bibdk_reservation_link($entity_ids, $subtype, $entity_type) {
   $manifestations = explode(',', implode(',', $entity_ids));
 
   if (count($manifestations) >= 2) {
-    //$text = t("order_any_edition", array(), array('context' => 'bibdk_reservation'));
     $text = t("Order", array(), array('context' => 'bibdk_reservation'));
     $button_id = 'any_edition_' . $manifestations[0];
   }
@@ -38,7 +37,6 @@ function bibdk_reservation_link($entity_ids, $subtype, $entity_type) {
   $attributes['class'][] = 'bibdk-popup-link';
   $attributes['class'][] = 'btn';
   $attributes['class'][] = 'btn-blue';
-  //$attributes['class'][] = (isset($entity_type) && $entity_type == 'bibdkManifestation') ? 'btn-grey' : 'btn-blue';
 
   $link = array(
     '#theme' => 'link',
