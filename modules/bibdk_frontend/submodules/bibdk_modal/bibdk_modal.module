@@ -145,8 +145,8 @@ function _bibdk_modal_get_login_form_links() {
         ),
         'target' => '_blank',
         'data-rel' => 'userhelp',
-        'html' => FALSE,
       ),
+      'html' => FALSE,
     ),
   );
 
