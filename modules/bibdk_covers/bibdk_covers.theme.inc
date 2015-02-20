@@ -36,13 +36,14 @@ function template_preprocess_bibdk_object_cover(&$variables) {
 
   $variables['elements']['#close_button'] = array(
     '#theme' => 'link_with_svg',
-    '#title' => '',
-    '#path' => '#',
-    '#attributes' => array(
-      'class' => array('close-reveal-modal'),
+    '#text' => '',
+    '#path' => FALSE,
+    '#options' => array(
+      'attributes' => array(
+        'class' => array('close-reveal-modal'),
+      ),
     ),
     '#svg' => 'svg-close',
-    '#href' => FALSE,
   );
 
 
