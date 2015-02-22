@@ -116,20 +116,38 @@ function bibdk_frontend_ctools_plugin_api() {
   }
 }
 
+
+/**
+ * Helper function for hook_default_page_manager_pages and hook_default_page_manager_handlers.
+ */
+function _bibdk_frontend_process_includes($path, $name) {
+  $items = array();
+  $files = glob($path."*.inc");
+  foreach($files as $file) {
+    include_once $file;
+    $items[$$name->name] = $$name;
+   }
+  return $items;
+}
+
+
 /**
  * Implementation of hook_default_page_manager_pages().
  */
 function bibdk_frontend_default_page_manager_pages() {
-  $pages = array();
-  $path = drupal_get_path('module', 'bibdk_frontend') . '/pages';
-  $files = drupal_system_listing('/\.inc$/', $path, 'name', 0);
-  foreach ($files as $file) {
-    include $file->uri; // no not use include_once(). hook_default_page_manager_pages() is called twice.
-    $pages[$page->name] = $page;
-  }
-
-  return $pages;
+  $path = drupal_get_path('module', 'bibdk_frontend') . '/pages/';
+  return _bibdk_frontend_process_includes($path, "page");
 }
+
+
+/**
+ * Implements hook_default_page_manager_handlers().
+ */
+function bibdk_frontend_default_page_manager_handlers() {
+  $path = drupal_get_path('module', 'bibdk_frontend') . '/handlers/';
+  return _bibdk_frontend_process_includes($path, "handler");
+}
+
 
 /**
  * Implements hook_block_info().
