@@ -253,6 +253,9 @@ function bibdk_favourite_user_form_fields($form, &$form_state, $branchid = NULL)
       '#type' => 'submit',
       '#value' => t('Save'),
       '#submit' => array('bibdk_favourite_set_userdata'),
+      '#attributes' => array(
+        'class' => array('favourite-data-save-button'),
+      ),
     );
   }
   else {
@@ -261,6 +264,7 @@ function bibdk_favourite_user_form_fields($form, &$form_state, $branchid = NULL)
       '#type' => 'submit',
       '#value' => t('Save as favourite agency'),
       '#submit' => array('bibdk_favourite_save_favourite'),
+
     );
   }
 
