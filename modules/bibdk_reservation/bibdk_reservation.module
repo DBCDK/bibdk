@@ -237,6 +237,8 @@ function bibdk_reservation_create_wizard_form($form, &$form_state) {
   // Get the form elements to display for this step.
   $form = $form_state['step_information'][$step]['form']($form, $form_state);
 
+
+
   // NAGIVATION
   $form['navigation'] = array(
     '#type' => 'container',
@@ -246,6 +248,17 @@ function bibdk_reservation_create_wizard_form($form, &$form_state) {
   $next_step = $form_state['step_information'][$step]['next_step'];
   $next_step_active = FALSE;
   $total_steps = count($form_state['step_information']);
+
+    // take the save button from userdata on step2 (if set)
+    $user_data_save_but = array();
+    // take out the save button on userdata
+    if(!empty($form['userdata']['userParameters']['userfields']['wrapper']['submit'])) {
+      $user_data_save_but = array_splice($form['userdata']['userParameters']['userfields']['wrapper']['submit'], 0);
+    }
+    // place save button correctly
+    if(!empty($user_data_save_but)) {
+      $form['navigation']['save_but'] = $user_data_save_but;
+    }
 
   if (isset($next_step) && $next_step <= $total_steps && !isset($form_state['blocked'])) {
     $next_step_active = TRUE;
@@ -270,13 +283,6 @@ function bibdk_reservation_create_wizard_form($form, &$form_state) {
   }
 
   if (!$next_step_active && isset($next_step) && $next_step > $total_steps) {
-
-    // Final submit button
-    $button_text = isset($form_state['step_information'][$step]['next button text']) ? $form_state['step_information'][$step]['next button text'] : t('Finish', array(), array('context' => 'bibdk_reservation'));
-    $form['navigation']['finish'] = array(
-      '#type' => 'markup',
-      '#markup' => '<a href="JavaScript:window.close();" class="btn btn-blue form-submit" />' . $button_text . '</a>',
-    );
 
     // Email submit button
     $form['navigation']['sendmail'] = array(
@@ -316,7 +322,6 @@ function bibdk_reservation_create_wizard_form($form, &$form_state) {
 
   unset($form_state['blocked']);
   }
-
 
   return $form;
 }
