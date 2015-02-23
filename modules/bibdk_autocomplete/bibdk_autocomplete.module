@@ -41,7 +41,6 @@ function bibdk_autocomplete_menu() {
  *                       retrying once seems to fix it most of the times.
  */
 function bibdk_autocomplete($p_uuid, $v_uuid, $string, $retry = FALSE) {
-
   $items = array();
   $settings = variable_get('bibdk_autocomplete_settings', array());
   $url = variable_get('bibdk_autocomplete_rest_url', NULL);
@@ -80,15 +79,12 @@ function bibdk_autocomplete($p_uuid, $v_uuid, $string, $retry = FALSE) {
     bibdk_autocomplete($p_uuid, $v_uuid, $string, TRUE);
   }
   else {
-    watchdog('bibdk_autocomplete', 'Autocomplete return empty set for ' . $url, array(), $severity = WATCHDOG_NOTICE);
+    watchdog('bibdk_autocomplete', 'Autocomplete return empty set for ' . $url, array(), $severity = WATCHDOG_WARNING);
     $items = array();
   }
-
-  if ($items) {
-    // Return the result to the form in json
-    drupal_json_output($items);
-    drupal_exit();
-  }
+  // Return the result to the form in json
+  drupal_json_output($items);
+  drupal_exit();
 }
 
 /**
