@@ -62,14 +62,9 @@ class BibdkReservationWebTestCase extends DrupalWebTestCase {
    * Test that hook_ting_openformat_actions is correctly implemented
    */
   private function _testActionHook() {
-
     // confim reservation button is not present
     $this->drupalGet('work/870970-basis:25294424');
     $this->assertNoLink(t('Order'));
-
-    // confim reservation link is not present //870970-basis%3A29908966
-    $this->drupalGet('work/874310-katalog:DBB0038373');
-    $this->assertNoLink(t('accessUrl'));
 
     // activate reservation module
     module_enable(array('bibdk_reservation'));
@@ -84,7 +79,7 @@ class BibdkReservationWebTestCase extends DrupalWebTestCase {
 
     // confim reservation link is present
     $this->drupalGet('work/874310-katalog:DBB0038373');
-    $this->assertLink(t('accessUrl'));
+    $this->assertLink(t('urlNota'));
   }
 
   private function _test_ting_openformat_render_direct_link() {
