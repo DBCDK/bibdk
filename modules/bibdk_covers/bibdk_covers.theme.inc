@@ -20,10 +20,13 @@ function template_preprocess_bibdk_object_cover(&$variables) {
 
   foreach ($object->manifestations as $key => $manifestation) {
     if ( isset($manifestation->ding_entity_id) ) {
-      $local_id = explode(':', $manifestation->ding_entity_id);
-      $work_local_ids[] = $local_id[1];
+      $local_id_exploded = explode(':', $manifestation->ding_entity_id);
+      $work_local_ids[] = $local_id_exploded[1];
+
     }
   }
+
+
 
   $variables['elements']['#id'] = drupal_html_id(md5(implode($work_local_ids), TRUE));
 
@@ -33,13 +36,14 @@ function template_preprocess_bibdk_object_cover(&$variables) {
 
   $variables['elements']['#close_button'] = array(
     '#theme' => 'link_with_svg',
-    '#title' => '',
-    '#path' => '#',
-    '#attributes' => array(
-      'class' => array('close-reveal-modal'),
+    '#text' => '',
+    '#path' => FALSE,
+    '#options' => array(
+      'attributes' => array(
+        'class' => array('close-reveal-modal'),
+      ),
     ),
     '#svg' => 'svg-close',
-    '#href' => FALSE,
   );
 
 
@@ -156,16 +160,7 @@ function template_preprocess_bibdk_object_cover(&$variables) {
 
     // Avoid further javascript processing
     $variables['elements']['#classes'][] = 'bibdk-cover-processed';
-
   }
-  elseif (cache_get('bibdk_covers:' . $local_id)) {
-
-    // We know that there is no cover available for this object so avoid further javascript processing
-    $variables['elements']['#classes'][] = 'bibdk-cover-processed';
-
-  }
-
-
   // front cover modal link: 
   $options = array(
     'html' => FALSE,

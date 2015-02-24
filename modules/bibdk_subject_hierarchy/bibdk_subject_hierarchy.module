@@ -159,18 +159,19 @@ function bibdk_subject_hierarchy_get_block_content($row_to_show = array()) {
   
   $searchfield_link = array(
     '#theme' => 'link_with_svg',
-    '#title' => t('search subject hierarchy', array(), array('context' => 'bibdk_subject_hierarchy')),
-    '#path' => '#',
-    '#attributes' => array(
-      'alt' => t('search subject hierarchy', array(), array('context' => 'bibdk_subject_hierarchy')),
-      'class' => array(),
-      'data-dropdown' => 'searchfield-dropdown',
-      'aria-controls' => 'searchfield-dropdown',
-      'aria-expanded' => 'false',
-      'data-options'  => 'align:left',
+    '#text' => t('search subject hierarchy', array(), array('context' => 'bibdk_subject_hierarchy')),
+    '#path' => FALSE,
+    '#options' => array(
+      'attributes' => array(
+        'alt' => t('search subject hierarchy', array(), array('context' => 'bibdk_subject_hierarchy')),
+        'class' => array(),
+        'data-dropdown' => 'searchfield-dropdown',
+        'aria-controls' => 'searchfield-dropdown',
+        'aria-expanded' => 'false',
+        'data-options'  => 'align:left',
+      ),
     ),
     '#svg' => 'svg-magnifier',
-    '#href' => FALSE,
   );
 
   $rendered = array(
@@ -326,14 +327,15 @@ function _get_bibdk_subject_hierarchy_item($emnehierarki, $key) {
 
   $close_button = array(
     '#theme' => 'link_with_svg',
-    '#title' => '',
-    '#path' => '#',
-    '#attributes' => array(
-      'alt' => t('close subject hierarchy submenu.', array(), array('context' => 'bibdk_subject_hierarchy')),
-      'class' => array(),
+    '#text' => '',
+    '#path' => FALSE,
+    '#options' => array(
+      'attributes' => array(
+        'alt' => t('close subject hierarchy submenu.', array(), array('context' => 'bibdk_subject_hierarchy')),
+        'class' => array(),
+      ),
     ),
     '#svg' => 'svg-close',
-    '#href' => FALSE,
   );
 
   return array(
@@ -562,7 +564,8 @@ function _bibdk_subject_hierarchy_parse_term($term) {
  */
 function _bibdk_subject_hierarchy_ccl_to_cql($ccl) {
   if (function_exists('bibdk_yaz_convert_ccl_to_cql')) {
-    return reset(bibdk_yaz_convert_ccl_to_cql($ccl));
+    $cql = bibdk_yaz_convert_ccl_to_cql($ccl);
+    return reset($cql);
   }
   return NULL;
 }

@@ -124,8 +124,45 @@ function _bibdk_vejviser_vejviser_raw($agency_name = NULL) {
   else if (!empty($agency_name)) {
     $ret['openagency_query']['#value'] = $agency_name;
   }
+  else{
+    $ret['help_text'] = bibdk_vejviser_get_help_text();
+  }
 
   return drupal_render($ret);
+}
+
+function bibdk_vejviser_get_help_text() {
+  $container = array(
+    '#type' => 'container',
+    '#attributes' => array(
+      'class'=>array(
+        'bibdk-vejviser--help-container',
+      )
+    )
+  );
+  $container['title'] = array(
+      '#theme' => 'html_tag',
+      '#tag' => 'h2',
+      '#value' => t('bibdk_vejviser_helptext_title', array(), array('context' => 'bibdk_vejviser')),
+      '#attributes' => array(
+        'class' => array(
+          'bibdk-vejviser--help-text-title',
+        ),
+      ),
+  );
+
+    $container['body'] = array(
+      '#theme' => 'html_tag',
+      '#tag' => 'div',
+      '#value' => t('bibdk_vejviser_helptext', array(), array('context' => 'bibdk_vejviser')),
+      '#attributes' => array(
+        'class' => array(
+          'bibdk-vejviser--help-text',
+        ),
+      ),
+    );
+  return $container;
+
 }
 
 function bibdk_vejviser_agency_search() {
@@ -144,7 +181,6 @@ function bibdk_vejviser_agency_search() {
     }
   }
   elseif (!isset($_REQUEST['openagency_query'])) {
-    drupal_static('bibdk_vejviser_empty_result', 1);
     return $raw;
   }
 
@@ -195,7 +231,6 @@ function bibdk_vejviser_agency_search() {
       '#markup' => drupal_render($branches),
     );
   }
-
   return $render;
 }
 

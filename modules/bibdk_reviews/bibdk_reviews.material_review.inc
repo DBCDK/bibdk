@@ -79,8 +79,8 @@ function _bibdk_reviews_getReview_from_webservice($ids) {
 function _bibdk_review_convert_result_to_bibdk_reviews($result) {
   $dom = new DomDocument();
 
-  if (!@$dom->loadXML($result)) {
-    //watchdog('bibdk_reviews', t('BIBDK material review could not load response: %xml', array('%xml' => var_export($xml, TRUE))), array(), WATCHDOG_ERROR);
+  if (!$dom->loadXML($result)) {
+    watchdog('bibdk_reviews', t('BIBDK material review could not load response: %xml', array('%xml' => var_export($xml, TRUE))), array(), WATCHDOG_ERROR);
   }
   $xpath = new DomXPATH($dom);
   $xpath->registerNamespace('ns', 'http://oss.dbc.dk/ns/opensearch');
@@ -88,6 +88,8 @@ function _bibdk_review_convert_result_to_bibdk_reviews($result) {
   $nodelist = $xpath->query('//ns:object');
   $reviews = array();
   foreach ($nodelist as $node) {
+    // domdocument wants the xmlns on the node
+    $node->setAttribute('xmlns:docbook', 'http://docbook.org/ns/docbook');
     $reviews[] = new BibdkReview($node->ownerDocument->saveXML($node));
   }
 

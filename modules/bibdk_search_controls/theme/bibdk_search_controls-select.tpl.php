@@ -33,7 +33,7 @@ if ( !empty($variables['form']['#action']) ) {
   <span class="selected-text"<?php print $tabindex; ?><?php print $accesskey; ?>><?php print t($selected_label); ?></span>
 </a>
 
-<ul class="dropdown-menu dropdown-leftalign hidden">
+<ul class="dropdown-menu hidden">
 <?php foreach ( $options as $value => $label ) { ?>
   <?php $query[$name] = $value; ?>
   <li>

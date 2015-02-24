@@ -56,6 +56,7 @@ class BibdkUserSettingsWebTestCase extends DrupalWebTestCase {
     $value = '24';
     bibdk_usersettings_set_cache($key, $name, $value);
 
+    $account = new stdClass();
     $account->uid = 1;
     bibdk_usersettings_user_logout($account);
 

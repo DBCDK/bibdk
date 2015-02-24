@@ -22,7 +22,8 @@ function bibdk_adhl_ajax_get_recommendations() {
     $data['pid'] = $_REQUEST['pid'];
 
     if ( $result = bibdk_adhl_get_adhl($data['pid'], 10) ) {
-      $data['list'] = drupal_render(bibdk_adhl_get_link_list_view($result));
+      $link_list = (bibdk_adhl_get_link_list_view($result));
+      $data['list'] = drupal_render($link_list);
     }
     else {
       $data['error']       = 'bibdk_adhl_no_recommendations'; // nb: don't translate!

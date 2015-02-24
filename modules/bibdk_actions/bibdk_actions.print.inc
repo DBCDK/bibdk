@@ -6,6 +6,7 @@
  * @return array
  */
 function bibdk_actions_get_print_actions($actions) {
+
   $actions['print'] = array(
     '#action_type' => 'primary',
     '#theme' => 'link',
@@ -16,7 +17,7 @@ function bibdk_actions_get_print_actions($actions) {
       'query' => null,
       'attributes' => array(
         'class' => array(
-          'cart-action-btn', 'inactive', 'cart-popup',
+          'cart-action-btn', 'inactive', 'cart-popup', 'show-for-large-up',
         ),
       ),
       'html' => FALSE,

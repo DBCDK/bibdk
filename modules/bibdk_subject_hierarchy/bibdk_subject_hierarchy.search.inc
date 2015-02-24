@@ -29,7 +29,8 @@ function _get_bibdk_subject_hierarchy_searchresult($term) {
     $items = array();
     foreach ($group_elements as $element) {
       $result['number_of_results']++;
-      $items[] = drupal_render(_get_bibdk_subject_hierarchy_searchresult_item($hierarchy, $element, $path));
+      $search_result = _get_bibdk_subject_hierarchy_searchresult_item($hierarchy, $element, $path);
+      $items[] = drupal_render($search_result);
     }
 
     $group_items = array(
@@ -196,14 +197,15 @@ function bibdk_subject_hierarchy_searchfield_form_submit($form, &$form_state) {
 
   $header['close'] = array(
     '#theme' => 'link_with_svg',
-    '#title' => '',
-    '#path' => '#',
-    '#attributes' => array(
-      'alt' => t('close subject hierarchy submenu.', array(), array('context' => 'bibdk_subject_hierarchy')),
-      'class' => array('subjects-close-button close icon'),
+    '#text' => '',
+    '#path' => FALSE,
+    '#options' => array(
+      'attributes' => array(
+        'alt' => t('close subject hierarchy submenu.', array(), array('context' => 'bibdk_subject_hierarchy')),
+        'class' => array('subjects-close-button close icon'),
+      ),
     ),
     '#svg' => 'svg-close',
-    '#href' => FALSE,
   );
 
 

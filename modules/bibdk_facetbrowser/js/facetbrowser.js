@@ -318,8 +318,7 @@
         myArray.push('facets[]=!' + 'facet.' + facetKey + ':' + encodeURI(facetsDeselect[i]));
       }
 
-      newUri = a.protocol + '//' + a.host + '/' + a.pathname + myArray.join('&') + '#content';
-      
+      newUri = a.protocol + '//' + a.host + '/' + encodeURI(a.pathname) + myArray.join('&') + '#content';
       window.location.replace(newUri);
 
     });
