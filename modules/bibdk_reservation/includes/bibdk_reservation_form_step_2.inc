@@ -6,6 +6,8 @@
 function bibdk_reservation_form_step_2($form, &$form_state) {
   global $language;
 
+  
+
   //render branch
   $branch = BibdkReservationOrderObject::GetObject()->getBranch();
 
@@ -370,12 +372,13 @@ function bibdk_reservation_form_step_2_already_ordered() {
   if (!empty($_SESSION['orderedPids'])) {
     foreach ($pid as $Spid) {
       if (in_array($Spid, $_SESSION['orderedPids'])) {
+        _bibdk_reservation_set_js_settings(TRUE);
         drupal_set_message(t('already_ordered', array(), array('context' => 'bibdk_reservation')), $type = 'warning', $repeat = FALSE);
-        break;
+        return;
       }
     }
+      _bibdk_reservation_set_js_settings(FALSE);
   }
-
 }
 
 /*
@@ -642,3 +645,15 @@ function bibdk_reservation_registrationUrl($branch) {
                  ),
               );
  }
+
+/**
+* Setting the JavaScript object Drupal.settings.alreadyOrder for bibdk_reservation.js
+*/
+function _bibdk_reservation_set_js_settings($ordered) {
+  drupal_add_js(array(
+      'alreadyOrder' => array(
+        'alert_already_showed' => $ordered,
+        'alert_message' => t('already_ordered', array(), array('context' => 'bibdk_reservation')),
+      ),
+    ), 'setting');
+}
