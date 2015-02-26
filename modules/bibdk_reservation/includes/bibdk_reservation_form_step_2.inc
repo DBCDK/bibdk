@@ -400,6 +400,10 @@ function bibdk_reservation_form_step_2_validate(&$form, &$form_state) {
   if ( !bibdk_reservation_validate_date($form_state['values']['needBeforeDate'], 7) ) {
     form_set_error('needBeforeDate', t('Date must be at least 8 days from today', array(), array('context' => 'bibdk_reservation:error')));
   }
+
+  if (form_get_errors() !== FALSE) {
+    bibdk_reservation_borchk_validate($form_state);
+  }
 }
 
 /**
