@@ -238,6 +238,35 @@ function bibdk_modal_add_to_favorites_callback() {
   bibdk_modal_deliver_output($commands);
 }
 
+
+/**
+ * Menu callback that returns the facetbrowser facetgroups form wrapped in a modal
+ *
+ * @return array|mixed
+ */
+function bibdk_modal_facetbrowser_facetgroups() {
+
+  module_load_include('pages.inc', 'user');
+
+  $form_state = _bibdk_modal_set_form_state();
+
+  $output = bibdk_modal_form_wrapper('bibdk_facetbrowser_mobile_form', $form_state);
+
+  $commands = array();
+
+  if (empty($form_state['executed'])) {
+    $commands[] = bibdk_modal_command_replace_form($output);
+  }
+  else {
+    $commands[] = bibdk_modal_command_dismiss();
+    $commands[] = bibdk_modal_command_reload();
+  }
+
+  bibdk_modal_deliver_output($commands);
+
+}
+
+
 /**
  * @return array
  */
