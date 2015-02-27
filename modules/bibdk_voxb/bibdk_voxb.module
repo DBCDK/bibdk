@@ -154,6 +154,7 @@ function bibdk_voxb_rating() {
     $ret = array(
       'pid' => $pid,
       'rating' => $voxb_object,
+      'no_review_txt' => !empty($voxb_object->reviews)?'NONE':t('bibdk_voxb_no_reviews_yet',array(),array('context'=>'bibdk_voxb')),
       'markup' => theme('voxb_rating', array(
         'object' => $voxb_object,
         'pid' => $pid,
