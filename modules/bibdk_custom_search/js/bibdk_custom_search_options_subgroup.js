@@ -11,18 +11,18 @@
 
   Drupal.bibdkCustomSearchOptionsSubgroup = function() {
     $('fieldset[data-child]').hide();
-    // $('div[data-child]').hide();
     // If child checkbox is checked remove checked from parent
     $('fieldset[data-child] input').change(function() {
-      if($(this).attr('checked') == true) {
+
+      if($(this).attr('checked') == 'checked') {
         var parentKey = $(this).closest('fieldset[data-child]').attr('data-child');
-        $('[data-parent="' + parentKey + '"]').attr('checked', false);
+        $('[data-parent][value="' + parentKey + '"]').attr('checked', false);
       }
     });
     // If parent checkbox is checked remove checked from children
     $('input[data-parent]').change(function() {
-      if($(this).attr('checked') == true) {
-        var childKey = $(this).attr('data-parent');
+      if($(this).attr('checked') == 'checked') {
+        var childKey = $(this).attr('value')
         $('fieldset[data-child="' + childKey + '"] input').attr('checked', false);
       }
     });
