@@ -1,5 +1,7 @@
 <?php
 
+require_once('includes/bibdk_frontend_html5_form_fields.inc');
+
 /**
  * Implements hook_user_login().
  */
