@@ -264,7 +264,6 @@ function bibdk_frontend_form_user_login_alter(&$form, $form_state, $form_id) {
  */
 function bibdk_frontend_element_info_alter(&$type){
   if (isset($type['emailfield']['#element_validate'])) {
-    dpm($type['emailfield']['#element_validate']);
     unset($type['emailfield']['#element_validate']);
   }
 }
