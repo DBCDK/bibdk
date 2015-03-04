@@ -33,8 +33,8 @@ function bibdk_frontend_form_bibdk_favourite_user_form_fields_alter(&$form, $for
   }
 
   //usermail - email
-  if(isset($fields['userMail'])){
-    $fields['userMail']['#type'] = 'email';
+ if(isset($fields['userMail'])){
+    $fields['userMail']['#type'] = 'emailfield';
   }
   //userTelephone - numeric
   if(isset($fields['userTelephone'])) {
