@@ -14,7 +14,6 @@
 
         if(voxb.no_review_txt != 'NONE'){
             var title = element.closest('.tab-item').find('[id^="selid-worktab-voxb"]');
-            console.log(title);
             title.html(voxb.no_review_txt);
          }
 
