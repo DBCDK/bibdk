@@ -95,7 +95,10 @@ class BibdkReservationOrderObject {
 
   public function setFavourite(FavouriteAgency $favourite) {
     $this->favourite = serialize($favourite);
-    $this->setBranch($favourite->getBranch());
+    $branch = $favourite->getBranch();
+    if($branch) {
+      $this->setBranch($branch);
+    }
   }
 
   public function getFavourite() {
