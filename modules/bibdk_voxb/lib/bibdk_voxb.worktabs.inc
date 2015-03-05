@@ -45,7 +45,6 @@ function bibdk_voxb_get_rating_container($entity) {
     ),
   );
   $item['#attached']['js'] = array(drupal_get_path('module', 'bibdk_voxb') . '/js/bibdk_voxb_load.js');
-  $item['#attached']['css'] = array(drupal_get_path('module', 'bibdk_voxb') . '/css/voxb.css');
 
   return $item;
 }
