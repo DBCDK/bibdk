@@ -149,14 +149,14 @@ function template_preprocess_bibdk_object_cover(&$variables) {
     // back cover pdf object (shown in modal window)
     if ( $wrapper = file_stream_wrapper_get_instance_by_uri($backcoverpdf_file_path) ) {
       $backcover_uri = $wrapper->getExternalUrl();
+      $variables['elements']['#back_cover_large_pdf'] = array(
+        '#markup' =>
+          '<object data="' . $backcover_uri . '?page=1&amp;view=Fit" type="application/pdf" width="590" height="925">
+              <p>It appears you don\'t have a PDF plugin for this browser.
+                 No biggie... you can <a href="' . $backcover_uri . '">click here to download the PDF file.</a></p>
+           </object>'
+      );
     }
-    $variables['elements']['#back_cover_large_pdf'] = array(
-      '#markup' => 
-        '<object data="' . $backcover_uri . '?page=1&amp;view=Fit" type="application/pdf" width="590" height="925">
-            <p>It appears you don\'t have a PDF plugin for this browser.
-               No biggie... you can <a href="' . $backcover_uri . '">click here to download the PDF file.</a></p>
-         </object>'
-    );
 
     // Avoid further javascript processing
     $variables['elements']['#classes'][] = 'bibdk-cover-processed';

@@ -159,7 +159,9 @@ class bibdk_borchk extends TingClientRequest Implements ITingClientRequestCache 
     $params = array('serviceRequester', 'libraryCode', 'userPincode', 'userId', 'outputType');
     foreach ($params as $parameter) {
       $getter = 'get' . ucfirst($parameter);
-      if ($value = $this->$getter()) {
+      $value = $this->$getter();
+      // Additional check due to PHP considers the string '0' as FALSE
+      if ($value || is_string($value) && $value != '') {
         $this->setParameter($parameter, $value);
       }
     }
