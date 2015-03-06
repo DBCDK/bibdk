@@ -50,7 +50,7 @@ function bibdk_voxb_menu() {
   );
 
   $items['voxb/offensive'] = array(
-    'title' => t('report_offensive_content', array(), array('context'=>'bibdk_voxb')),
+    'title' => t('report_offensive_content', array(), array('context' => 'bibdk_voxb')),
     'description' => 'testhest',
     'type' => MENU_CALLBACK,
     'access arguments' => array('search content'),
@@ -71,9 +71,9 @@ function bibdk_voxb_user_review_access($perm) {
 /**
  * refresh voxb
  */
-function bibdk_voxb_offensive_posted ($voxb_id) {
+function bibdk_voxb_offensive_posted($voxb_id) {
   $info = theme('status_messages');
-  $selector = '#bibdk-offensive-'.$voxb_id;
+  $selector = '#bibdk-offensive-' . $voxb_id;
   return array(
     'command' => 'bibdk_voxb_offensive_posted',
     'selector' => $selector,
@@ -154,6 +154,7 @@ function bibdk_voxb_rating() {
     $ret = array(
       'pid' => $pid,
       'rating' => $voxb_object,
+      'no_review_txt' => !empty($voxb_object->reviews) ? 'NONE' : t('bibdk_voxb_no_reviews_yet', array(), array('context' => 'bibdk_voxb')),
       'markup' => theme('voxb_rating', array(
         'object' => $voxb_object,
         'pid' => $pid,
@@ -162,7 +163,7 @@ function bibdk_voxb_rating() {
         'login_link' => bibdk_voxb_link_to_login(),
         'teasers' => array(
           '#theme' => 'voxb_teaser',
-          '#reviews' =>empty($voxb_object->reviews) ? array() : $voxb_object->reviews,
+          '#reviews' => empty($voxb_object->reviews) ? array() : $voxb_object->reviews,
           '#date_text' => bibdk_voxb_review_teaser_text_date(),
           '#author_text' => bibdk_voxb_review_teaser_text_author(),
         ),
@@ -308,8 +309,7 @@ function bibdk_voxb_get_rating($response) {
   if ($status) {
     try {
       $ret = bibdk_voxb_parse_fetchdata_request($response);
-    }
-    catch (bibdkVoxbException $e) {
+    } catch (bibdkVoxbException $e) {
       watchdog('voxb', $e->getMessage(), array(), WATCHDOG_ERROR);
       $ret->error = $e->getMessage();
     }
@@ -347,7 +347,7 @@ function bibdk_voxb_rate_me($pid, $rating) {
     $response = open_voxb_createMyDataRequest($pid, $rating, $voxb_id);
     // check response method logs errors if necessary
     $valid = bibdk_voxb_check_response($response);
-    if(!$valid){
+    if (!$valid) {
       $ret = array('error' => bibdk_voxb_set_error(t('You may only rate once pr. minut', array(), array('context' => 'voxb')), 'status'));
       drupal_json_output($ret);
       drupal_exit();
@@ -360,7 +360,7 @@ function bibdk_voxb_rate_me($pid, $rating) {
     $response = open_voxb_updateRating($identifier, $rating);
     // check_response method logs errors if necessary
     $valid = bibdk_voxb_check_response($response);
-    if(!$valid){
+    if (!$valid) {
       $ret = array('error' => bibdk_voxb_set_error(t('Sorry could not complete your rating', array(), array('context' => 'voxb')), 'status'));
       drupal_json_output($ret);
       drupal_exit();
@@ -455,8 +455,7 @@ function bibdk_voxb_user_check($voxb_user_id = NULL) {
   $xml = ding_provider_invoke('user', 'get_voxb', $user->mail);
   try {
     $voxb_id = _bibdk_voxb_parse_get_voxb_response($xml);
-  }
-  catch (bibdkVoxbException $e) {
+  } catch (bibdkVoxbException $e) {
     watchdog('voxb', $e->getMessage(), array(), WATCHDOG_ERROR);
 
     return FALSE;
@@ -493,8 +492,7 @@ function bibdk_voxb_get_user_by_fingerprint() {
   $xml = open_voxb_fetchUserByFingerPrint($userid);
   try {
     $voxb_id = bibdk_voxb_parse_create_user_response($xml, $msg);
-  }
-  catch (bibdkVoxbException $e) {
+  } catch (bibdkVoxbException $e) {
     watchdog('voxb', $e->getMessage(), array(), WATCHDOG_ERROR);
 
     return FALSE;
@@ -518,8 +516,7 @@ function bibdk_voxb_create_voxb_user() {
   if (bibdk_voxb_check_response($xml)) {
     try {
       $voxb_id = bibdk_voxb_parse_create_user_response($xml);
-    }
-    catch (bibdkVoxbException $e) {
+    } catch (bibdkVoxbException $e) {
       watchdog('voxb', $e->getMessage(), array(), WATCHDOG_ERROR);
 
       return FALSE;
@@ -550,8 +547,7 @@ function bibdk_voxb_bind_voxb_user($voxb_user_id) {
   $xml = ding_provider_invoke('user', 'bind_voxb', $user->mail, $voxb_user_id);
   try {
     $valid = bibdk_voxb_parse_bind_voxb_response($xml);
-  }
-  catch (bibdkVoxbException $e) {
+  } catch (bibdkVoxbException $e) {
     watchdog('voxb', $e->getMessage(), array(), WATCHDOG_ERROR);
 
     return FALSE;
