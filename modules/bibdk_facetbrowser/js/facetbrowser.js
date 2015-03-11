@@ -296,6 +296,7 @@
         if ( !Drupal.paramIsFacet(value, facetKey, modalGroup.find("input[type='checkbox']")) ) {
           if ( jQuery.inArray( value, myArray ) == -1 ) {
             var splitOp = value.split('=');
+            // Has to be encoded if button text is 'Søg'
             if (splitOp[0] == 'op' ) {
               myArray.push(encodeURI(value));
             } else {
