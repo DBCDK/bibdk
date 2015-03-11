@@ -6,8 +6,6 @@
 function bibdk_reservation_form_step_2($form, &$form_state) {
   global $language;
 
-  
-
   //render branch
   $branch = BibdkReservationOrderObject::GetObject()->getBranch();
 
@@ -427,7 +425,6 @@ function bibdk_reservation_validate_date($date, $buffer = 0) {
       return TRUE;
     }
   }
-
   return FALSE;
 }
 
@@ -436,7 +433,6 @@ function bibdk_reservation_validate_date($date, $buffer = 0) {
  */
 
 function bibdk_reservation_form_step_2_submit($form, &$form_state) {
-
   
   if (isset($form_state['values']['self_pickup'])) {
     BibdkReservationOrderObject::GetObject()->setArticleDirect($form_state['values']['self_pickup']);
