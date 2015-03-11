@@ -4,6 +4,8 @@
  * Main file for the bibdk_facetbrowser module.
  */
 
+require_once('bibdk_facetbrowser_help_texts.inc');
+
 /**
  * Implements hook_block_info()
  *
