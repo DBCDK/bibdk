@@ -1,5 +1,9 @@
 (function($) {
 
+  $(document).on("opened", '.bibdk-facetbrowser-modal', function () {
+    $(document).foundation('dropdown', 'reflow');
+  });
+
   Drupal.SetFacets = function(facets) {
     if(facets.error) {
       $('.bibdk_facetbrowser_facets_placeholder').prepend(facets.error);
