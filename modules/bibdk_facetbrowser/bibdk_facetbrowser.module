@@ -526,7 +526,7 @@ function bibdk_facetbrowser_block_view($delta = FALSE) {
     $block['content'] = array(
       '#theme' => 'link',
       '#text' => $text,
-      '#path' => 'bibdk_modal/facetbrowser/facets',
+      '#path' => 'bibdk_modal/facetgroups',
       '#options' => array(
         'attributes' => array(
           'class' => array('bibdk-facets-mobile', ''), 
@@ -548,8 +548,8 @@ function bibdk_facetbrowser_block_view($delta = FALSE) {
  */
 function bibdk_facetbrowser_facetbrowser_placeholder() {
   $path = drupal_get_path('module', 'bibdk_facetbrowser');
-  $jspath = $path . '/js/facetbrowser.js';
-  $js[] = $jspath;
+  $js[] = $path . '/js/facetbrowser.js';
+  $js[] = $path . '/js/facetbrowser.mobile.js';
 
   $form = array(
     'placeholder' => array(

@@ -71,14 +71,26 @@ function bibdk_modal_menu() {
     'file' => 'includes/bibdk_modal.forms.inc',
   );
 
-  // Link, see: bibdk_frontend_block_view()
-  $items['bibdk_modal/facetbrowser/facets'] = array(
-    'title' => 'Facetbrowser - list of facet groups',
+  // Link, see: bibdk_facetbrowser_block_view()
+  $items['bibdk_modal/facetgroups'] = array(
+    'title' => t('facet_list_mobile', array(), array('context' => 'bibdk_facetbrowser')),
     'page callback' => 'bibdk_modal_facetbrowser_facetgroups',
     'access callback' => TRUE,
     'file' => 'includes/bibdk_modal.forms.inc',
     'type' => MENU_CALLBACK,
   );
+
+/*
+  // Link, see: bibdk_modal_facetbrowser_facetgroups()
+  $items['bibdk_modal/facetvalues/%'] = array(
+    'title' => t('facet_list_values', array(), array('context' => 'bibdk_facetbrowser')),
+    'page callback' => 'bibdk_modal_facetbrowser_facetvalues',
+    'page arguments' => array(3),
+    'access callback' => TRUE,
+    'file' => 'includes/bibdk_modal.forms.inc',
+    'type' => MENU_CALLBACK,
+  );
+*/
 
   return $items;
 }
