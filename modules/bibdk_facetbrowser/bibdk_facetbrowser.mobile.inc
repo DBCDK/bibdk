@@ -42,7 +42,7 @@ function bibdk_facetbrowser_mobile_redirect_uri($form_state, $reset_facets = FAL
       $facet_values[$key] = $input['facet_select']['actions'][$key];
     }
   }
-log_to_file($facet_values);
+
   $parse = parse_url($_SESSION['latest_search']['request_uri']);
   $query = explode('&', $parse['query']);
   foreach ($query as $key => $query_item) {
