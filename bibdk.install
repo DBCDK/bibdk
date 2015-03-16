@@ -23,6 +23,7 @@ function bibdk_install() {
 //TODO instead of enabling modules as part of the install hook modules should be moved to the .info file as dependecies
 function _bibdk_enable_modules() {
   $module_list = array (
+    'ask_vopros',
     'views',
     'bibdk_actions',
     'bibdk_cart',
@@ -409,4 +410,12 @@ function bibdk_update_7025(&$sandbox){
     array('bibdk_search_carousel', 'bibdk_covers_field', 'bibdk_covers')
   );
 }
+
+/**
+ * enable ask_vopros
+ */
+function bibdk_update_7036(&$sandbox){
+  module_enable(array('ask_vopros'));
+}
+
 
