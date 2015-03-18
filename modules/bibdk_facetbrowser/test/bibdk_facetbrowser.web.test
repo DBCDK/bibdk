@@ -77,12 +77,14 @@ class BibdkFacetbrowserWeb extends DrupalWebTestCase {
     $exists = module_exists('bibdk_facetbrowser');
     $this->assertTrue($exists, 'Bibdk Facetbrowser is enabled');
 
+/*
     // Check if the facetbrowser block is available
     $this->drupalGet('admin/structure/block');
     $this->assertRaw('Facet browser', 'The facetbrowser block is available');
 
     $this->drupalPost('admin/structure/block', array('blocks[bibdk_facetbrowser_facetbrowser][region]' => 'content'), 'Save blocks');
-    $this->assertFieldByName('blocks[bibdk_facetbrowser_facetbrowser][region]', 'content', 'Configurable text block is enabled in first sidebar successfully verified.');
+    $this->assertFieldByName('blocks[bibdk_facetbrowser_facetbrowser][region]', 'content', 'Facetbrowser block is enabled in content region.');
+*/
 
     // Create a custom node containing the text 'harry'
     $node_title = $this->randomName(10);
@@ -103,6 +105,7 @@ class BibdkFacetbrowserWeb extends DrupalWebTestCase {
     $this->assertNoText('Harry rocks', 'Search for "Harry rocks" in drupal - failed');
     $this->assertText('Harry potter rocks', 'Search for "Harry potter rocks" in drupal - complete');
 
+/*
     $this->drupalGet('search/work/harry');
     $this->assertNoText('Da pensionisten Harry Browns gamle', 'Search for title from external search service NOT found');
     $this->assertNoText('Harry potter rocks', "We're not seeing the node.");
@@ -126,6 +129,7 @@ class BibdkFacetbrowserWeb extends DrupalWebTestCase {
     $this->assertRaw('label_facet_deselect', 'label for "deselect facets" column found');
     $this->assertRaw('label_facet_close', 'link for "close facets select window" found');
     $this->assertRaw('label_facet_save', 'link for "save selected facets" found');
+*/
 
     // check that facets_by ajax is set to FALSE
     $by_ajax = variable_get('bibdk_facetbrowser_by_ajax');
@@ -137,8 +141,10 @@ class BibdkFacetbrowserWeb extends DrupalWebTestCase {
 
     // redo search to check if facets are also present via ajax
     $this->drupalGet('search/work/harry');
+/*
     // Check if the facetbrowser has any content
     $this->assertRaw('bibdk_facetbrowser_facets_placeholder', 'placeholder for ajax found');
+*/
 
     // test that ajax call delivers expected result;
     $this->drupalGet('bibdk_facetbrowser/ajax/facets');
