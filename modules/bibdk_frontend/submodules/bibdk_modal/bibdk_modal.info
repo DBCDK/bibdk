@@ -7,3 +7,6 @@ package = Bibdk Frontend
 files[] = includes/bibdk_modal.forms.inc
 
 scripts[] = js/bibdk_modal.js
+
+dependencies[] = bibdk_facetbrowser
+dependencies[] = bibdk_voxb
