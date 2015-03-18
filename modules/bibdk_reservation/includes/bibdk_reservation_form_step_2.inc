@@ -33,8 +33,7 @@ function bibdk_reservation_form_step_2($form, &$form_state) {
   $form['branchdata']['hidden_favourite'] = bibdk_reservation_hidden_favourite();
 
   $orderpolicy = bibdk_reservation_form_step_2_do_policycheck();
-
-  bibdk_reservation_form_step_2_already_ordered();
+  bibdk_reservation_form_step_2_already_ordered(TRUE);
 
   if ($orderpolicy->getOrderPossible()) {
     bibdk_reservation_form_notice_wrapper($form, $orderpolicy);
@@ -362,7 +361,7 @@ function bibdk_reservation_form_step_2_do_policycheck() {
   return bibdk_openorder_do_checkOrderPolicy($pickUpAgencyId, $pid);
 }
 
-function bibdk_reservation_form_step_2_already_ordered() {
+function bibdk_reservation_form_step_2_already_ordered($display_alert) {
 
   $pid = BibdkReservationOrderObject::GetObject()->getManifestationIds();
 
@@ -370,12 +369,14 @@ function bibdk_reservation_form_step_2_already_ordered() {
   if (!empty($_SESSION['orderedPids'])) {
     foreach ($pid as $Spid) {
       if (in_array($Spid, $_SESSION['orderedPids'])) {
-        drupal_set_message(t('already_ordered', array(), array('context' => 'bibdk_reservation')), $type = 'warning', $repeat = FALSE);
-        break;
+        if ($display_alert) {
+          _bibdk_reservation_set_js_settings(TRUE);
+          return;
+        }
       }
     }
+      _bibdk_reservation_set_js_settings(FALSE);
   }
-
 }
 
 /*
@@ -428,7 +429,6 @@ function bibdk_reservation_validate_date($date, $buffer = 0) {
       return TRUE;
     }
   }
-
   return FALSE;
 }
 
@@ -437,6 +437,7 @@ function bibdk_reservation_validate_date($date, $buffer = 0) {
  */
 
 function bibdk_reservation_form_step_2_submit($form, &$form_state) {
+  
   if (isset($form_state['values']['self_pickup'])) {
     BibdkReservationOrderObject::GetObject()->setArticleDirect($form_state['values']['self_pickup']);
   }
@@ -494,6 +495,9 @@ function bibdk_reservation_form_step_2_submit($form, &$form_state) {
   if (isset($orderParameters)) {
     BibdkReservationOrderObject::GetObject()->setOrderParameters($orderParameters);
   }
+
+  //Do not display allert box
+  bibdk_reservation_form_step_2_already_ordered(FALSE);
 
 }
 
@@ -646,3 +650,15 @@ function bibdk_reservation_registrationUrl($branch) {
                  ),
               );
  }
+
+/**
+* Setting the JavaScript object Drupal.settings.alreadyOrder for bibdk_reservation.js
+*/
+function _bibdk_reservation_set_js_settings($ordered) {
+  drupal_add_js(array(
+      'alreadyOrder' => array(
+        'alert_already_showed' => $ordered,
+        'alert_message' => t('already_ordered', array(), array('context' => 'bibdk_reservation')),
+      ),
+    ), 'setting');
+}
