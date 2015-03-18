@@ -14,6 +14,8 @@ function bibdk_facetbrowser_mobile_form($form, $form_state) {
   if (isset($form_state['input'])) {
     foreach ($form_state['input'] as $key => $input) {
       if ( substr($key,0,11) == 'facetgroup-' ) {
+log_to_file($key);
+log_to_file($form_state);
         $facet_group = substr($key,11);
         $facet_group = str_replace('_', '.', $facet_group);
       }
@@ -24,6 +26,8 @@ function bibdk_facetbrowser_mobile_form($form, $form_state) {
     $form = bibdk_facetbrowser_mobile_form_init($form, $form_state);
   } else {
     $form = bibdk_facetbrowser_mobile_form_values($form, $form_state, $facet_group);
+    // $selected_facet_group = &drupal_static('facet_group');
+    // $selected_facet_group = $facet_group;
   }
 
   return $form;
@@ -265,6 +269,9 @@ function bibdk_facetbrowser_mobile_form_values($form, $form_state, $facet_group)
 
       $facet = $results->facets[$configured_facet['name']];
 
+      $facet_group = &drupal_static('facet_group');
+      $facet_group = $configured_facet['title'];
+
       foreach ($facet->terms as $term_name => $term_count) {
 
         $key = $term_name;
@@ -408,6 +415,17 @@ function _bibdk_facetbrowser_shortstring(&$string, $length) {
     $string = drupal_substr($string, 0, $substr_length) . '...';
   }
   return $string;
+}
+
+
+/** Title on selected facet group mobile
+ * @return string
+ */
+function bibdk_facetbrowser_mobile_form_title() {
+
+  $selected_facet_group = &drupal_static('facet_group');
+  return !empty($selected_facet_group) ? $selected_facet_group : NULL;
+
 }
 
 

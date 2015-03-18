@@ -44,6 +44,17 @@
       Drupal.ajax.prototype.commands.bibdk_modal_redirect = function (ajax, data, status) {
           location.href = data.url;
       };
+
+      Drupal.ajax.prototype.commands.bibdk_modal_set_title = function (ajax, data, status) {
+          if (status === 'success') {
+              var selector = data.selector;
+              var title = data.title;
+              $(selector).html(title);
+          }
+          else {
+              console.log('error');
+          }
+      };
   }
   // ---------------------------------------------------------------------------
   //   COMMANDS -- END

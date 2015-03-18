@@ -257,7 +257,7 @@ function bibdk_modal_facetbrowser_facetgroups() {
     $commands = $output;
   }
   elseif (empty($form_state['executed']) && !empty($form_state['submitted'])) {
-    //Something went wrong. Replace the form currently displayed in the modal and let the user try again
+    // Something went wrong. Replace the form currently displayed in the modal and let the user try again
     $commands[] = bibdk_modal_command_replace_form($output);
   }
   elseif (!empty($form_state['executed']) && !empty($form_state['submitted'])) {
@@ -272,6 +272,8 @@ function bibdk_modal_facetbrowser_facetgroups() {
     }
     else {
       $commands[] = bibdk_modal_command_replace_form($output);
+      $title = bibdk_facetbrowser_mobile_form_title();
+      $commands[] = bibdk_modal_command_set_title($title);
     }
   }
   bibdk_modal_deliver_output($commands);
