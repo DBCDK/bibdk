@@ -35,7 +35,7 @@ class BibdkHoldings {
   }
 
   private function getWillLend() {
-    return isset($this->data->willLend) ? $this->data->willLend->{'$'} : false;
+    return isset($this->data->willLend) ? $this->data->willLend->{'$'} == 'true' : false;
   }
 
   private function getExpectedDelivery() {
