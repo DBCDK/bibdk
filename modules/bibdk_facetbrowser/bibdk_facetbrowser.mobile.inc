@@ -93,6 +93,7 @@ function bibdk_facetbrowser_mobile_redirect_uri($form_state, $reset_facets = FAL
 function bibdk_facetbrowser_mobile_form_init($form, $form_state) {
 
   $form = array(
+    '#theme' => 'theme_facets_mobile',
     '#attributes' => array(
       'class' => array('bibdk-facetbrowser-mobile', 'facet-group'),
     ),
@@ -236,6 +237,7 @@ function bibdk_facetbrowser_mobile_form_init($form, $form_state) {
 function bibdk_facetbrowser_mobile_form_values($form, $form_state, $facet_group) {
 
   $form = array(
+    '#theme' => 'theme_facets_mobile',
     '#tree' => TRUE,
     '#attributes' => array(
       'class' => array('bibdk-facetbrowser-mobile', 'facet-values'),
@@ -294,9 +296,22 @@ function bibdk_facetbrowser_mobile_form_values($form, $form_state, $facet_group)
           ),
         );
 
+        _bibdk_facetbrowser_shortstring($term_name, 28);
         $form[$key]['facet_name']['facet_name_label']['title'] = array(
           '#type' => 'markup',
           '#markup' => $term_name,
+        );
+
+        $form[$key]['facet_name']['facet_count_label'] = array(
+          '#type' => 'container',
+          '#attributes' => array(
+            'class' => array('facet-count-label'),
+          ),
+        );
+
+        $form[$key]['facet_name']['facet_count_label']['count'] = array(
+          '#type' => 'markup',
+          '#markup' => $term_count,
         );
 
         $form[$key]['facet_select'] = array(
@@ -394,3 +409,11 @@ function _bibdk_facetbrowser_shortstring(&$string, $length) {
   }
   return $string;
 }
+
+
+function log_to_file($text) {
+  $f = fopen('/home/jgn/jgn.ding/sites/default/files/log.txt', 'a');
+  fwrite($f, date('Ymd H:i:s - ') . print_r($text,1) . "\n");
+  fclose($f);
+}
+

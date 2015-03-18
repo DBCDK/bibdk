@@ -62,6 +62,12 @@ function bibdk_facetbrowser_theme() {
       ),
     ),
 
+    'theme_facets_mobile' => array(
+      'render element' => 'form',
+      'path' => $path,
+      'template' => 'facetbrowser-mobile',
+    ),
+
     'theme_facet_term_names' => array(
       'render element' => 'form',
       'path' => $path,
@@ -523,6 +529,8 @@ function bibdk_facetbrowser_block_view($delta = FALSE) {
   if ($delta == 'bibdk_works_controls_facets_link') {
     // facetbrowser activation link for mobile.
     $text = t('View facets', array(), array('context' => 'bibdk_frontend'));
+    $js[] = drupal_get_path('module', 'bibdk_facetbrowser') . '/js/facetbrowser.mobile.js';
+
     $block['content'] = array(
       '#theme' => 'link',
       '#text' => $text,
@@ -535,6 +543,9 @@ function bibdk_facetbrowser_block_view($delta = FALSE) {
           'data-reveal-ajax' => 'true',
         ),
         'html' => FALSE,
+      ),
+      '#attached' => array(
+        'js' => $js,
       ),
     );
   }
@@ -549,7 +560,6 @@ function bibdk_facetbrowser_block_view($delta = FALSE) {
 function bibdk_facetbrowser_facetbrowser_placeholder() {
   $path = drupal_get_path('module', 'bibdk_facetbrowser');
   $js[] = $path . '/js/facetbrowser.js';
-  $js[] = $path . '/js/facetbrowser.mobile.js';
 
   $form = array(
     'placeholder' => array(
