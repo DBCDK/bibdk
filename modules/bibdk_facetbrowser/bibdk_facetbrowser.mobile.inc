@@ -119,7 +119,7 @@ function bibdk_facetbrowser_mobile_form_init($form, $form_state) {
     '#name'  => 'reset_facets',
     '#value' => t('reset facets', array(), array('context' => 'bibdk_facetbrowser')),
     '#attributes' => array (
-      'class' => array('use-ajax-submit', 'button-as-link'),
+      'class' => array('use-ajax-submit', 'button-as-link', 'reset-facets'),
       'title' => t('reset facets', array(), array('context' => 'bibdk_facetbrowser')),
     ),
   );
