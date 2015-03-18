@@ -4,14 +4,6 @@
  * unit test file for the bibdk_facetbrowser module.
  */
 
-/*
-function _log_to_file($text) {
-  $f = fopen('/home/jgn/jgn.ding/sites/default/files/log.txt', 'a');
-  fwrite($f, date('Ymd H:i:s - ') . $text . "\n");
-  fclose($f);
-}
-*/
-
 class BibdkFacetbrowserUnit extends DrupalUnitTestCase {
 
   static function getInfo() {

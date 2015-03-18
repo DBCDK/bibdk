@@ -14,8 +14,6 @@ function bibdk_facetbrowser_mobile_form($form, $form_state) {
   if (isset($form_state['input'])) {
     foreach ($form_state['input'] as $key => $input) {
       if ( substr($key,0,11) == 'facetgroup-' ) {
-log_to_file($key);
-log_to_file($form_state);
         $facet_group = substr($key,11);
         $facet_group = str_replace('_', '.', $facet_group);
       }
@@ -422,16 +420,6 @@ function _bibdk_facetbrowser_shortstring(&$string, $length) {
  * @return string
  */
 function bibdk_facetbrowser_mobile_form_title() {
-
   $selected_facet_group = &drupal_static('facet_group');
   return !empty($selected_facet_group) ? $selected_facet_group : NULL;
-
 }
-
-
-function log_to_file($text) {
-  $f = fopen('/home/jgn/jgn.ding/sites/default/files/log.txt', 'a');
-  fwrite($f, date('Ymd H:i:s - ') . print_r($text,1) . "\n");
-  fclose($f);
-}
-
