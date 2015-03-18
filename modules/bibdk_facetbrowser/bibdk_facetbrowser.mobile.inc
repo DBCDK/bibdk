@@ -24,8 +24,6 @@ function bibdk_facetbrowser_mobile_form($form, $form_state) {
     $form = bibdk_facetbrowser_mobile_form_init($form, $form_state);
   } else {
     $form = bibdk_facetbrowser_mobile_form_values($form, $form_state, $facet_group);
-    // $selected_facet_group = &drupal_static('facet_group');
-    // $selected_facet_group = $facet_group;
   }
 
   return $form;
@@ -267,8 +265,8 @@ function bibdk_facetbrowser_mobile_form_values($form, $form_state, $facet_group)
 
       $facet = $results->facets[$configured_facet['name']];
 
-      $facet_group = &drupal_static('facet_group');
-      $facet_group = $configured_facet['title'];
+      $facet_group_title = &drupal_static('facet_group_title');
+      $facet_group_title = $configured_facet['title'];
 
       foreach ($facet->terms as $term_name => $term_count) {
 
@@ -420,6 +418,6 @@ function _bibdk_facetbrowser_shortstring(&$string, $length) {
  * @return string
  */
 function bibdk_facetbrowser_mobile_form_title() {
-  $selected_facet_group = &drupal_static('facet_group');
+  $selected_facet_group = &drupal_static('facet_group_title');
   return !empty($selected_facet_group) ? $selected_facet_group : NULL;
 }
