@@ -39,4 +39,20 @@
     }
   };
 
+  //Confirm box for id's already ordered in reservation step 2
+  Drupal.behaviors.alreadyOrder = {
+    attach: function(context, settings) {
+      $('.edit-needbeforedate').once().ready(function(){
+        if(typeof Drupal.settings.alreadyOrder != 'undefined') {
+          if (Drupal.settings.alreadyOrder.alert_already_showed) {
+            var r = confirm(Drupal.settings.alreadyOrder.alert_message);
+            if (!r) {
+              window.close();
+            }
+          }
+        }
+        });
+    }
+  };
+
 })(jQuery);

@@ -5,6 +5,8 @@
  */
 
 require_once(drupal_get_path('module', 'bibdk_facetbrowser') . '/bibdk_facetbrowser.mobile.inc');
+require_once('bibdk_facetbrowser_help_texts.inc');
+
 
 /**
  * Implements hook_menu()

@@ -11,6 +11,12 @@
     else {
       var element = $('.bibdk_voxb_tab[data-pid="' + voxb.pid + '"]');
       element.html(voxb.markup);
+
+        if(voxb.no_review_txt != 'NONE'){
+            var title = element.closest('.tab-item').find('[id^="selid-worktab-voxb"]');
+            title.html(voxb.no_review_txt);
+         }
+
       // attach behaviours to stay in context
       Drupal.attachBehaviors(element);
       Bibdk_voxb.voxb_settings.init(voxb);

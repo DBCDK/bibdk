@@ -1,5 +1,7 @@
 <?php
 
+require_once('includes/bibdk_frontend_html5_form_fields.inc');
+
 /**
  * Implements hook_user_login().
  */
@@ -246,8 +248,26 @@ function bibdk_frontend_form_user_login_alter(&$form, $form_state, $form_id) {
   if (empty($form_state['input']['op'])) {
     drupal_set_message(t('use_bibdk_login__not_library_id', array(), array('context' => 'bibdk_frontend')), 'warning');
   }
+
+  // name is an email
+  $form['name']['#type'] = "emailfield";
+  //disabel client side validation
+  $form['#attributes'] = array(
+    'novalidate'=>'1',
+    'formnovalidate'=>'1',
+  );
   
   $form['#action'] = url('user/login', array('query' => array('destination' => (isset($_SESSION['referrer'])) ? $_SESSION['referrer'] : '')));
+}
+
+/**
+ * Implement hook_element_info_alter
+ * remove element validation for email (see contrib/elements/element.module
+ */
+function bibdk_frontend_element_info_alter(&$type){
+  if (isset($type['emailfield']['#element_validate'])) {
+    unset($type['emailfield']['#element_validate']);
+  }
 }
 
 /**

@@ -99,7 +99,7 @@ class BibdkHoldingstatusBibdkHoldingsUnitTestCase extends DrupalUnitTestCase {
       'options' => array(),
     );
     $this->assertEqual($message, $expected_message, 'Message is check_local_library');
-    $this->assertEqual('yellow', $holding->status(), 'status is yellow');
+    $this->assertEqual('red', $holding->status(), 'status is red');
     $this->assertFalse($holding->isItHome(), 'no holdings; note', 'note is no holdings');
 
   }

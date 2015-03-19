@@ -239,7 +239,7 @@ function bibdk_reservation_create_wizard_form($form, &$form_state) {
 
 
 
-  // NAGIVATION
+    // NAGIVATION
   $form['navigation'] = array(
     '#type' => 'container',
   );
@@ -379,19 +379,26 @@ function bibdk_reservation_check_order_library(&$form_state) {
     foreach ($favourites as $bibnr => $favourite) {
       $serialized_favs[$bibnr] = serialize($favourite);
     }
-    //BibdkReservationOrderObject::GetObject()->setFavourites($favourites);
+
     BibdkReservationOrderObject::GetObject()->setFavourites($serialized_favs);
     foreach ($favourites as $favourite) {
       if ($favourite->getOrderAgency()) {
         BibdkReservationOrderObject::GetObject()->setFavourite($favourite);
-        $ret = TRUE;
+        $branch = BibdkReservationOrderObject::GetObject()->getBranch();
+        if(!empty($branch)) {
+          $ret = TRUE;
+        }
+        else{
+          $message = t('bibdk_reservation_order_library_not_found_or_deleted', array(), array('context'=>'bibdk_reservation'));
+          drupal_set_message($message,'error');
+        }
       }
     }
-
     $selected_branch_id = isset($form_state['input']['favouriteselector']) ? $form_state['input']['favouriteselector'] : NULL;
     // special case; order library changed to another favourite
     if (isset($selected_branch_id)) {
-      $current_favouriteid = BibdkReservationOrderObject::GetObject()->getFavourite()->getAgencyId();
+      $current_favourite = BibdkReservationOrderObject::GetObject()->getFavourite();
+      $current_favouriteid = $current_favourite->getAgencyId();
       foreach ($favourites as $favourite) {
         if ($favourite->getAgencyId() == $selected_branch_id && !empty($current_favouriteid)) {
           BibdkReservationOrderObject::GetObject()->setFavourite($favourite);
@@ -401,7 +408,6 @@ function bibdk_reservation_check_order_library(&$form_state) {
       }
     }
   }
-
   return $ret;
 }
 
@@ -502,10 +508,6 @@ function bibdk_reservation_get_manifestation($id) {
 
   $result = ting_openformat_get_manifestations($id);
   return reset($result);
-
-  $work = reset($result)->getManifestations();
-
-  return reset($work);
 }
 
 /**
