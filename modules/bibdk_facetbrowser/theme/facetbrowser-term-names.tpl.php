@@ -32,9 +32,15 @@
     </div>
 
     <div class="checkbox-elements-header">
-      <p class="checkbox-element-label">&nbsp;</p>
-      <p class="checkbox-element-select"><?php echo t('label_facet_select', array(), array('context' => 'bibdk_facetbrowser')); ?></p>
-      <p class="checkbox-element-deselect"><?php echo t('label_facet_deselect', array(), array('context' => 'bibdk_facetbrowser')); ?></p>
+      <span>
+        <?php echo drupal_render($form['#help_select']);?>
+        <span><?php echo t('label_facet_select', array(), array('context' => 'bibdk_facetbrowser')); ?></span>
+      </span>
+
+      <span>
+        <?php echo drupal_render($form['#help_deselect']);?>
+        <span><?php echo t('label_facet_deselect', array(), array('context' => 'bibdk_facetbrowser')); ?></span>
+      </span>
     </div>
 
     <div class="checkbox-elements"></div>
