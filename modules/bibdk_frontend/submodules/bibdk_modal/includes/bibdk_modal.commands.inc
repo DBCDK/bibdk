@@ -57,3 +57,18 @@ function bibdk_modal_command_redirect($url, $options = array()){
   );
 
 }
+
+/**
+ * Replace the modal title
+ *
+ * @param string $title String
+ * @param string $selector the selector whose content should be replaced
+ * @return array
+ */
+function bibdk_modal_command_set_title($title, $selector = '.bibdk-modal-title'){
+  return array(
+    'command' => 'bibdk_modal_set_title',
+    'selector' => $selector,
+    'title' => $title,
+  );
+}

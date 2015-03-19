@@ -238,6 +238,49 @@ function bibdk_modal_add_to_favorites_callback() {
   bibdk_modal_deliver_output($commands);
 }
 
+
+/**
+ * Menu callback that returns the facetbrowser facetgroups form wrapped in a modal
+ *
+ * @return array|mixed
+ */
+function bibdk_modal_facetbrowser_facetgroups() {
+
+  module_load_include('pages.inc', 'user');
+
+  $form_state = _bibdk_modal_set_form_state();
+
+  $output = bibdk_modal_form_wrapper('bibdk_facetbrowser_mobile_form', $form_state);
+
+  $commands = array();
+  if (empty($form_state['executed']) && empty($form_state['submitted'])) {
+    $commands = $output;
+  }
+  elseif (empty($form_state['executed']) && !empty($form_state['submitted'])) {
+    // Something went wrong. Replace the form currently displayed in the modal and let the user try again
+    $commands[] = bibdk_modal_command_replace_form($output);
+  }
+  elseif (!empty($form_state['executed']) && !empty($form_state['submitted'])) {
+    if (isset($form_state['input']['reset_facets'])) {
+      $url = bibdk_facetbrowser_mobile_redirect_uri($form_state, TRUE);
+      $commands[] = bibdk_modal_command_redirect($url['path'], $url['options']);
+      $commands[] = bibdk_modal_command_dismiss();
+    }
+    elseif ($form_state['input']['step'] == '2') {
+      $url = bibdk_facetbrowser_mobile_redirect_uri($form_state);
+      $commands[] = bibdk_modal_command_redirect($url['path'], $url['options']);
+    }
+    else {
+      $commands[] = bibdk_modal_command_replace_form($output);
+      $title = bibdk_facetbrowser_mobile_form_title();
+      $commands[] = bibdk_modal_command_set_title($title);
+    }
+  }
+  bibdk_modal_deliver_output($commands);
+
+}
+
+
 /**
  * @return array
  */
