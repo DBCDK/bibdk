@@ -8,7 +8,7 @@
  *
  * @param $variables
  */
-function template_preprocess_facet_term_names(&$variables) {
+function template_preprocess_theme_facet_term_names(&$variables) {
   $facet_key = current(array_filter($variables['form']['#parents']));
   $facet_id = drupal_html_id('modal-' . $facet_key);
 
