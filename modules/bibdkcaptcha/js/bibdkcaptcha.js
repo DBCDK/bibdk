@@ -1,18 +1,33 @@
 (function($) {
+
+    Drupal.updateCaptcha = function (captchaData) {
+
+        $("#bibdkcaptcha-controls img:first").remove();
+        $(captchaData.captcha).prependTo("#bibdkcaptcha-controls");
+        $('input[name=captcha_sid]').val(captchaData.sid);
+        $('input[name=captcha_token]').val(captchaData.token);
+
+        return false;
+
+    },
+
+
     Drupal.behaviors.bibdkcaptcha = {
         attach : function(context) {
+            
             var basepath = Drupal.settings.basePath;
             var audio_element = '#bibdkcaptcha-controls-playcaptcha-embed';
 
             $("#bibdkcaptcha-controls-refreshbtn").click(function() {
                 $(audio_element)[0].removeAttribute('src');
-                jQuery.ajax({
+                $.ajax({
                     type: 'GET',
                     url: basepath + 'captcha/refreshcaptcha',
-                    success: updateCaptcha,
-                    dataType: JSON
+                    success: Drupal.updateCaptcha,
+                    dataType: 'json'
                 });
             });
+
 
             $("#bibdkcaptcha-controls-audiobtn").click(function() {
                 var type = 'wav';
@@ -36,16 +51,6 @@
                 thissound.play();
             });
 
-            function updateCaptcha(data){
-                var data = jQuery.parseJSON(data);
-                $("#bibdkcaptcha-controls img:first").remove();
-                $(data['captcha']).prependTo("#bibdkcaptcha-controls");
-
-                $('input[name=captcha_sid]').val(data['sid']);
-                $('input[name=captcha_token]').val(data['token']);
-
-                return false;
-            }
         }
     }
 })(jQuery);
