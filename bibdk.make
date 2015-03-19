@@ -161,7 +161,7 @@ projects[ask_vopros][patch][] = https://raw.githubusercontent.com/DBCDK/patches/
 
 projects[elements]{subdir] = contrib
 projects[elements][type] = module
-projects[elements][version] = 7.x-1.4
+projects[elements][version] = 1.4
 projects[elements][patch][] =https://raw.githubusercontent.com/DBCDK/patches/3bfb437aec7a6e185af4ca99fba7d5a425360d3b/elements_email_pattern_on_email_field.patch
 
 projects[uuid][subdir] = contrib
