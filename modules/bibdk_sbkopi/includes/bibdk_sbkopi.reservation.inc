@@ -183,21 +183,26 @@ function bibdk_sbkopi_order_form_submit($form, &$form_state) {
   // Get webservice URL
   $url = variable_get('bibdk_sbkopi_place_copy_request_url', FALSE);
 
-  // If request fails it throws an exception
-  try {
-    if (bibdk_sbkopi_order_request($params, $url)) {
-      $form_state['redirect'] = 'reservation/sbkopi/receipt/' . $pid;
-      $_SESSION['sbkopi']['order'][$pid] = $form_state['values'];
-    }
-  }
-  catch (SbCurlRequestException $e) {
-    // The service do not provide usable feedback for the cause of error, so
-    // we log the error and writes out a generic error message to user
-    watchdog('sb_kopi', "response code: !reponse_code, return message: !return_message, url: !url, xml: @xml", $e->getParams(), WATCHDOG_ERROR);
-    drupal_set_message(t('sb_kopi error message'), 'error');
 
-    //
-    $form_state['rebuild'] = TRUE;
+  if(isset($_SESSION['sb_kopi']['session_key']) && in_array(SbCurlRequest::get_session_key($params), $_SESSION['sb_kopi']['session_key'] )){
+    drupal_set_message(t('sb_kopi_already_ordered', array(),array('context'=>'sb_kopi')), 'status');
+    $form_state['redirect'] = 'reservation/sbkopi/receipt/' . $pid;
+  }
+  else {
+    // If request fails it throws an exception
+    try {
+      if (bibdk_sbkopi_order_request($params, $url)) {
+        $form_state['redirect'] = 'reservation/sbkopi/receipt/' . $pid;
+        $_SESSION['sbkopi']['order'][$pid] = $form_state['values'];
+      }
+    } catch (SbCurlRequestException $e) {
+      // The service do not provide usable feedback for the cause of error, so
+      // we log the error and writes out a generic error message to user
+      watchdog('sb_kopi', "response code: !reponse_code, return message: !return_message, url: !url, xml: @xml", $e->getParams(), WATCHDOG_ERROR);
+      drupal_set_message(t('sb_kopi error message'), 'error');
+
+      $form_state['rebuild'] = TRUE;
+    }
   }
 }
 
@@ -253,6 +258,7 @@ function bibdk_sbkopi_order_request($params, $url) {
   $response_code = $curl->getReponse();
 
   if ($response_code == '204') {
+    $_SESSION['sb_kopi']['session_key'][] = SbCurlRequest::get_session_key($params);
     return TRUE;
   }
   else {
