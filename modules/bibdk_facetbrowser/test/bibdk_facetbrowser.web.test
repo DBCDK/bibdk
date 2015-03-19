@@ -77,15 +77,6 @@ class BibdkFacetbrowserWeb extends DrupalWebTestCase {
     $exists = module_exists('bibdk_facetbrowser');
     $this->assertTrue($exists, 'Bibdk Facetbrowser is enabled');
 
-/*
-    // Check if the facetbrowser block is available
-    $this->drupalGet('admin/structure/block');
-    $this->assertRaw('Facet browser', 'The facetbrowser block is available');
-
-    $this->drupalPost('admin/structure/block', array('blocks[bibdk_facetbrowser_facetbrowser][region]' => 'content'), 'Save blocks');
-    $this->assertFieldByName('blocks[bibdk_facetbrowser_facetbrowser][region]', 'content', 'Facetbrowser block is enabled in content region.');
-*/
-
     // Create a custom node containing the text 'harry'
     $node_title = $this->randomName(10);
     $node_info = array(
@@ -105,32 +96,6 @@ class BibdkFacetbrowserWeb extends DrupalWebTestCase {
     $this->assertNoText('Harry rocks', 'Search for "Harry rocks" in drupal - failed');
     $this->assertText('Harry potter rocks', 'Search for "Harry potter rocks" in drupal - complete');
 
-/*
-    $this->drupalGet('search/work/harry');
-    $this->assertNoText('Da pensionisten Harry Browns gamle', 'Search for title from external search service NOT found');
-    $this->assertNoText('Harry potter rocks', "We're not seeing the node.");
-    $this->assertText('harry warren', "'Harry warren' found.");
-
-    // Check if the facetbrowser has any content
-    $this->assertText('!!facet.subject!!', 'Found the facet.subject fieldset in the facetbrowser');
-    $this->assertFieldById('edit-subject-instrumental', 'instrumental', 'Found the \'instrumental\' facet in the facet.subject fieldset');
-
-    // Check if the facetbrowser has a 'selected' and a 'deselected' fieldset
-    $this->assertText('label_facets_selected', 'Found the "selected" fieldset in the facetbrowser');
-    $this->assertText('label_facets_deselected', 'Found the "deselected" fieldset in the facetbrowser');
-
-    // Check if the facetbrowser has a 'label_facet_select_unselect' and a 'label_facet_show_more' link
-    $this->assertText('label_facet_select_unselect', 'Found the "label_facet_select_unselect" link in the facetbrowser');
-    $this->assertText('label_facet_show_more', 'Found the "label_facet_show_more" link in the facetbrowser');
-
-    // Check if the modal window for selecting/deselecting facets  has any content
-    $this->assertRaw('header_refine_facet_select', 'header for modal window found');
-    $this->assertRaw('label_facet_select', 'label for "select facets" column found');
-    $this->assertRaw('label_facet_deselect', 'label for "deselect facets" column found');
-    $this->assertRaw('label_facet_close', 'link for "close facets select window" found');
-    $this->assertRaw('label_facet_save', 'link for "save selected facets" found');
-*/
-
     // check that facets_by ajax is set to FALSE
     $by_ajax = variable_get('bibdk_facetbrowser_by_ajax');
     $this->assertTrue($by_ajax===FALSE, 'facets by ajax set to FALSE');
@@ -141,10 +106,6 @@ class BibdkFacetbrowserWeb extends DrupalWebTestCase {
 
     // redo search to check if facets are also present via ajax
     $this->drupalGet('search/work/harry');
-/*
-    // Check if the facetbrowser has any content
-    $this->assertRaw('bibdk_facetbrowser_facets_placeholder', 'placeholder for ajax found');
-*/
 
     // test that ajax call delivers expected result;
     $this->drupalGet('bibdk_facetbrowser/ajax/facets');
