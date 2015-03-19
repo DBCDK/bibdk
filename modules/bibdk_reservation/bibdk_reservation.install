@@ -36,21 +36,7 @@ function bibdk_reservation_ding_entity_fields() {
     ),
   );
 
-  $fields['bibdk_reservation_info'] = array(
-    'field' => array(
-      'locked' => FALSE,
-      'storage' => array(
-        'type' => 'virtual_field',
-      ),
-    ),
-    'instance' => array(
-      'ding_entity_type' => 'bibdkManifestation',
-      'label' => t('Infotext'),
-      'bundle' => 'bibdkManifestation',
-      'entity_type' => 'bibdkManifestation',
-      'display' => $display_full,
-    ),
-  );
+  
 
   return $fields;
 
