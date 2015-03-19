@@ -75,6 +75,7 @@ function _bibdk_enable_modules() {
     'ding_webtrends',
     'bibdk_netarchive',
     'admin_menu',
+    'elements',
     'eu_cookie_compliance',
     'microcurl',
     'ting_agency',
@@ -418,4 +419,11 @@ function bibdk_update_7036(&$sandbox){
   module_enable(array('ask_vopros'));
 }
 
+
+/**
+ * enable elements
+ */
+function bibdk_update_7026(){
+  module_enable(array('elements'));
+}
 

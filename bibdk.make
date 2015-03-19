@@ -159,6 +159,11 @@ projects[ask_vopros][subdir] = contrib
 projects[ask_vopros][download][url] = https://github.com/Biblioteksvagten/ask_vopros.git
 projects[ask_vopros][patch][] = https://raw.githubusercontent.com/DBCDK/patches/master/ask_vopros_set_usermail_and_hack_agencyid.patch
 
+projects[elements]{subdir] = contrib
+projects[elements][type] = module
+projects[elements][version] = 7.x-1.4
+projects[elements][patch][] =https://raw.githubusercontent.com/DBCDK/patches/3bfb437aec7a6e185af4ca99fba7d5a425360d3b/elements_email_pattern_on_email_field.patch
+
 projects[uuid][subdir] = contrib
 projects[uuid][type] = module
 projects[uuid][version] = 1.0-alpha6
