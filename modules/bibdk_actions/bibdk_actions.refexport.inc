@@ -25,7 +25,6 @@ function bibdk_actions_bibdk_usersettings_user_settings() {
     'endnote' => 'http://www.myendnoteweb.com/EndNoteWeb.html?func=directExport&partnerName=bibliotek.dk&dataIdentifier=1&dataRequestUrl='
   );
 
-
   foreach ($paths as $key => $path) {
     $form['export']['bibdk_actions_' . $key] = array(
       '#type' => 'checkbox',
@@ -166,7 +165,7 @@ function bibdk_actions_refexport_links($pid = NULL, $attributes = array()) {
       'html' => TRUE,
       'attributes' => array(
         'class' => array(
-          'show-for-large-up',
+          'show-for-large-up', 'cart-action-btn', 'cart-popup',
         ),
       ),
     );

@@ -38,6 +38,31 @@ class SbCurlRequest extends MicroCURL {
     return $this->get($this->url);
   }
 
+  public static function get_session_key($params) {
+    $ret = '';
+    self::make_cache_key($params, $ret);
+
+    return $ret;
+  }
+
+  /** \brief make a cachekey based on request parameters
+   *
+   * @param array $params
+   * @param string $ret
+   **/
+  private static function make_cache_key($params, &$ret) {
+    foreach ($params as $key => $value) {
+      if (is_array($value)) {
+        // recursive
+        $ret .= $key;
+        self::make_cache_key($value, $ret);
+      }
+      else {
+        $ret .= $value;
+      }
+    }
+  }
+
   /**
    * Return request params as xml string
    *

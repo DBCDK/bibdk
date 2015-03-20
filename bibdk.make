@@ -21,7 +21,7 @@ libraries[ckeditor][download][url] = http://download.cksource.com/CKEditor/CKEdi
 projects[bibdk_theme][type] = theme
 projects[bibdk_theme][download][type] = git
 projects[bibdk_theme][download][url] = git@github.com:DBCDK/bibdk_theme.git
-projects[bibdk_theme][download][tag] = 7.x-0.78
+projects[bibdk_theme][download][tag] = 7.x-0.79
 
 
 ; --- Bibliotek.dk versions of Ding2 modules ---
@@ -89,7 +89,7 @@ projects[ting_infomedia][download][tag] = 7.x-1.29
 projects[ting_openformat][type] = module
 projects[ting_openformat][download][type] = git
 projects[ting_openformat][download][url] = git@github.com:DBCDK/ting_openformat.git
-projects[ting_openformat][download][tag] = 7.x-0.66
+projects[ting_openformat][download][tag] = 7.x-0.67
 
 projects[ting_openuserstatus][type] = module
 projects[ting_openuserstatus][download][type] = git
@@ -154,6 +154,15 @@ projects[translatable][download][url] = git@github.com:DBCDK/translatable.git
 projects[translatable][download][tag] = 7.x-1.1
 
 ; --- Contrib modules ---
+projects[ask_vopros][type] = module
+projects[ask_vopros][subdir] = contrib
+projects[ask_vopros][download][url] = https://github.com/Biblioteksvagten/ask_vopros.git
+projects[ask_vopros][patch][] = https://raw.githubusercontent.com/DBCDK/patches/master/ask_vopros_set_usermail_and_hack_agencyid.patch
+
+projects[elements][subdir] = contrib
+projects[elements][type] = module
+projects[elements][version] = 1.4
+projects[elements][patch][] =https://raw.githubusercontent.com/DBCDK/patches/3bfb437aec7a6e185af4ca99fba7d5a425360d3b/elements_email_pattern_on_email_field.patch
 
 projects[uuid][subdir] = contrib
 projects[uuid][type] = module

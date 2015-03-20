@@ -71,6 +71,15 @@ function bibdk_modal_menu() {
     'file' => 'includes/bibdk_modal.forms.inc',
   );
 
+  // Link, see: bibdk_facetbrowser_block_view()
+  $items['bibdk_modal/facetgroups'] = array(
+    'title' => t('facet_list_mobile', array(), array('context' => 'bibdk_facetbrowser')),
+    'page callback' => 'bibdk_modal_facetbrowser_facetgroups',
+    'access callback' => TRUE,
+    'file' => 'includes/bibdk_modal.forms.inc',
+    'type' => MENU_CALLBACK,
+  );
+
   return $items;
 }
 

@@ -4,19 +4,8 @@
  * Main file for the bibdk_facetbrowser module.
  */
 
-/**
- * Implements hook_block_info()
- *
- * @return array
- */
-function bibdk_facetbrowser_block_info() {
-  $blocks['facetbrowser'] = array(
-    'info' => t('Facet browser'),
-    'cache' => DRUPAL_NO_CACHE,
-  );
-
-  return $blocks;
-}
+require_once(drupal_get_path('module', 'bibdk_facetbrowser') . '/bibdk_facetbrowser.mobile.inc');
+require_once('bibdk_facetbrowser_help_texts.inc');
 
 
 /**
@@ -61,20 +50,33 @@ function bibdk_facetbrowser_menu() {
 function bibdk_facetbrowser_theme() {
   $path = drupal_get_path('module', 'bibdk_facetbrowser') . '/theme';
   return array(
-    'bibdk_facetbrowser' => array(
+    'theme_bibdk_facetbrowser' => array(
+      'variables' => array(
+        'facets' => NULL,
+        'searchkey' => NULL,
+      ),
+    ),
+    
+    'theme_bibdk_facetbrowser_mobile' => array(
       'variables' => array(
         'facets' => NULL,
         'searchkey' => NULL,
       ),
     ),
 
-    'facet_term_names' => array(
+    'theme_facets_mobile' => array(
+      'render element' => 'form',
+      'path' => $path,
+      'template' => 'facetbrowser-mobile',
+    ),
+
+    'theme_facet_term_names' => array(
       'render element' => 'form',
       'path' => $path,
       'template' => 'facetbrowser-term-names',
     ),
 
-    'facet_term_selected' => array(
+    'theme_facet_term_selected' => array(
       'render element' => 'form',
       'path' => $path,
       'template' => 'facetbrowser-term-selected',
@@ -240,7 +242,7 @@ function bibdk_facetbrowser_form($form, &$form_state, $facets = FALSE, $search =
           
           $form[$facet->name][$element_name] = array(
             '#type' => 'checkboxes',
-            '#theme' => 'facet_term_names',
+            '#theme' => 'theme_facet_term_names',
             '#options' => array_merge( $selected, $not_selected ),
             '#default_value' => $default_values,
           );
@@ -284,7 +286,7 @@ function bibdk_facetbrowser_form($form, &$form_state, $facets = FALSE, $search =
     // populate 'selected' fieldset
     $form['selected']['show_selected_facets'] = array(
       '#type' => 'checkboxes',
-      '#theme' => 'facet_term_selected',
+      '#theme' => 'theme_facet_term_selected',
       '#options' => $show_selected_options,
       '#default_value' => $show_selected_options_defaults,
     );
@@ -315,7 +317,7 @@ function bibdk_facetbrowser_form($form, &$form_state, $facets = FALSE, $search =
     // populate 'deselected' fieldset
     $form['deselected']['show_deselected_facets'] = array(
       '#type' => 'checkboxes',
-      '#theme' => 'facet_term_selected',
+      '#theme' => 'theme_facet_term_selected',
       '#options' => $show_deselected_options,
       '#default_value' => $show_deselected_options_defaults,
     );
@@ -491,7 +493,7 @@ function _bibdk_facetbrowser_parseSelectionUri($uri, $facet) {
  * @param array $all_facets
  * @return string
  */
-function theme_bibdk_facetbrowser($search_result = FALSE) {
+function theme_theme_bibdk_facetbrowser($search_result = FALSE) {
   $all_facets = array_shift($search_result);
   $searchkey = array_shift($search_result);
   $elements = array();
@@ -500,6 +502,20 @@ function theme_bibdk_facetbrowser($search_result = FALSE) {
   }
 
   return drupal_render($form);
+}
+
+/**
+ * Implements hook_block_info()
+ *
+ * @return array
+ */
+function bibdk_facetbrowser_block_info() {
+  // facetbrowser activation link for mobile.
+  $blocks['bibdk_works_controls_facets_link'] = array(
+    'info' => t('Bibdk: Mobile facets link'),
+    'description' => t('Link to show facets on mobile devices'),
+  );
+  return $blocks;
 }
 
 
@@ -511,63 +527,29 @@ function theme_bibdk_facetbrowser($search_result = FALSE) {
  */
 function bibdk_facetbrowser_block_view($delta = FALSE) {
   $block = array();
-  $block_content = FALSE;
-  $content_in_facet = FALSE;
-  $executed_search_module = FALSE;
 
-  $show_count = variable_get('bibdk_facetbrowser_number_shown', 5);
-  $show_count_consecutive = variable_get('bibdk_facetbrowser_consecutive_number_shown', 10);
+  if ($delta == 'bibdk_works_controls_facets_link') {
+    // facetbrowser activation link for mobile.
+    $text = t('View facets', array(), array('context' => 'bibdk_frontend'));
+    $js[] = drupal_get_path('module', 'bibdk_facetbrowser') . '/js/facetbrowser.mobile.js';
 
-  drupal_add_js(drupal_get_path('module', 'bibdk_facetbrowser') . '/js/facetbrowser.js');
-  drupal_add_css(drupal_get_path('module', 'bibdk_facetbrowser') . '/css/facetbrowser.css');
-
-  // TODO: Get the facetbrowser dom id automatic
-  drupal_add_js(
-    array(
-      'bibdkFacetBrowser' => array(
-        'mainElement' => '.pane-bibdk-facetbrowser',
-        'showCount' => $show_count,
-        'showCountConsecutive' => $show_count_consecutive
-      )
-    ),
-    'setting'
-  );
-
-  $by_ajax = variable_get('bibdk_facetbrowser_by_ajax', FALSE);
-  if ($by_ajax) {
-    $place_holder = bibdk_facetbrowser_facetbrowser_placeholder();
-    $block['content'] = drupal_render($place_holder);
-  }
-  else {
-
-    // Invoke bibdk_facetbrowser() from executed search module
-    $executed_search = menu_get_item();
-    if ( !empty($executed_search['page_arguments']) ) {
-      list($executed_search_module) = $executed_search['page_arguments'];
-    }
-    if (is_string($executed_search_module)) {
-      $results = module_invoke($executed_search_module, 'bibdk_facetbrowser');
-      if (is_object($results)) {
-        foreach ($results->facets as $result) {
-          if (count($result->terms) == TRUE) {
-            $content_in_facet = TRUE;
-            break;
-          }
-        }
-        if ($content_in_facet === TRUE || $results->show_empty == TRUE) {
-          $block_content = theme('bibdk_facetbrowser', array(
-            $results->facets,
-            (!empty($results->searchkey) ? $results->searchkey : NULL)
-          ));
-        }
-      }
-      switch ($delta) {
-        case 'facetbrowser':
-          $block['subject'] = t('Facet browser', array(), array('context' => 'bibdk_facetbrowser'));
-          $block['content'] = $block_content;
-          break;
-      }
-  }
+    $block['content'] = array(
+      '#theme' => 'link',
+      '#text' => $text,
+      '#path' => 'bibdk_modal/facetgroups',
+      '#options' => array(
+        'attributes' => array(
+          'class' => array('bibdk-facets-mobile', ''), 
+          'title' => $text,
+          'data-reveal-id' => 'bibdk-modal',
+          'data-reveal-ajax' => 'true',
+        ),
+        'html' => FALSE,
+      ),
+      '#attached' => array(
+        'js' => $js,
+      ),
+    );
   }
 
   return $block;
@@ -579,8 +561,7 @@ function bibdk_facetbrowser_block_view($delta = FALSE) {
  */
 function bibdk_facetbrowser_facetbrowser_placeholder() {
   $path = drupal_get_path('module', 'bibdk_facetbrowser');
-  $jspath = $path . '/js/facetbrowser.js';
-  $js[] = $jspath;
+  $js[] = $path . '/js/facetbrowser.js';
 
   $form = array(
     'placeholder' => array(
@@ -625,10 +606,11 @@ function bibdk_facetbrowser_facets_by_ajax() {
       _ting_openformat_facet_cache($client, $results, $params);
     }
 
-    $markup = theme('bibdk_facetbrowser', array($results->facets, (!empty($results->search_key) ? $results->search_key : NULL)));
+    $markup = theme('theme_bibdk_facetbrowser', array($results->facets, (!empty($results->search_key) ? $results->search_key : NULL)));
 
     drupal_json_output(array('markup' => $markup));
   }
   drupal_exit();
 }
+
 
