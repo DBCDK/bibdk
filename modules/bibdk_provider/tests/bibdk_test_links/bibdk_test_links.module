@@ -21,7 +21,7 @@ function bibdk_test_links_menu() {
 function bibdk_test_links_reset ($user_mail) {
   $account = user_load_by_mail($user_mail);
   $timestamp = REQUEST_TIME;
-  $path = "user/reset/$account->uid/$timestamp/" . user_pass_rehash($account->pass, $timestamp, $account->login);
+  $path = "user/reset/$account->uid/$timestamp/" . user_pass_rehash($account->pass, $timestamp, $account->login, $account->uid);
   return array(
     '#theme' => 'link',
     '#text' => 'reset link',

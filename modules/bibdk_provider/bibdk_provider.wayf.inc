@@ -292,7 +292,7 @@ function bibdk_provider_wayf_send_confirmation_mail($account) {
 function bibdk_provider_wayf_confirm_form($form, &$form_state, $uid, $timestamp, $token, $action = false) {
   $users = user_load_multiple(array($uid), array('status' => '1'));
   $account = reset($users);
-  $hash = user_pass_rehash($account->pass, $timestamp, $account->login);
+  $hash = user_pass_rehash($account->pass, $timestamp, $account->login, $account->uid);
   if (!$action && $hash === $token) {
     $form['message'] = array('#markup' => t('<p>This is a one-time login for %user_name and will expire on %expiration_date.</p><p>Click on this button to log in to the site and verify your wayf login.</p>', array('%user_name' => $account->mail, '%expiration_date' => format_date($timestamp + 86400))));
     $form['help'] = array('#markup' => '<p>' . t('This login can be used only once.') . '</p>');
@@ -506,7 +506,7 @@ function bibdk_provider_mail_tokens(&$replacements, $data, $options) {
 
 function bibdk_provider_wayf_confirm_url($account){
   $timestamp = REQUEST_TIME;
-  $hash = user_pass_rehash($account->pass, $timestamp, $account->login);
+  $hash = user_pass_rehash($account->pass, $timestamp, $account->login, $account->uid);
   return url("user/wayf/$account->uid/confirm/$timestamp/" . $hash, array('absolute' => TRUE));
 }
 
