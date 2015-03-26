@@ -51,7 +51,7 @@ class BibdkCaptchaRequirementsTestCase extends DrupalWebTestCase {
     $this->assertText('Captcha audio requires "captcha" and "captcha/*" added to Pages at Secure Pages configuration page');
     $this->assertText('Captcha images requires "image_captcha" and "image_captcha/*" added to Pages at Secure Pages configuration page');
     $pages = variable_get('securepages_pages');
-    variable_set('securepages_pages', $pages . "\r\n\ncaptcha\r\n\ncaptcha/*");
+    variable_set('securepages_pages', $pages . "captcha\r\ncaptcha/*");
     $this->drupalGet('admin/reports/status');
     $this->assertNoText('Captcha audio requires "captcha" and "captcha/*" added to Pages at Secure Pages configuration page');
     $this->assertText('Captcha images requires "image_captcha" and "image_captcha/*" added to Pages at Secure Pages configuration page');
@@ -66,7 +66,7 @@ class BibdkCaptchaRequirementsTestCase extends DrupalWebTestCase {
     $this->assertText('Captcha audio requires "captcha" and "captcha/*" added to Pages at Secure Pages configuration page');
     $this->assertText('Captcha images requires "image_captcha" and "image_captcha/*" added to Pages at Secure Pages configuration page');
     $pages = variable_get('securepages_pages');
-    variable_set('securepages_pages', $pages . "\r\n\nimage_captcha\r\n\nimage_captcha/*");
+    variable_set('securepages_pages', $pages . "image_captcha\r\nimage_captcha/*");
     $this->drupalGet('admin/reports/status');
     $this->assertText('Captcha audio requires "captcha" and "captcha/*" added to Pages at Secure Pages configuration page');
     $this->assertNoText('Captcha images requires "image_captcha" and "image_captcha/*" added to Pages at Secure Pages configuration page');
@@ -81,7 +81,7 @@ class BibdkCaptchaRequirementsTestCase extends DrupalWebTestCase {
     $this->assertNoText('Captcha audio requires that "captcha" and "captcha/*" are not included in Ignore Pages at Secure Pages configuration page');
     $this->assertNoText('Captcha images requires that "image_captcha" and "image_captcha/*" are not included in Ignore Pages at Secure Pages configuration page');
     $ignore = variable_get('securepages_ignore');
-    variable_set('securepages_ignore', $ignore . "\r\n\ncaptcha\r\n\ncaptcha/*");
+    variable_set('securepages_ignore', $ignore . "captcha\r\ncaptcha/*");
     $this->drupalGet('admin/reports/status');
     $this->assertText('Captcha audio requires that "captcha" and "captcha/*" are not included in Ignore Pages at Secure Pages configuration page');
     $this->assertNoText('Captcha images requires that "image_captcha" and "image_captcha/*" are not included in Ignore Pages at Secure Pages configuration page');
@@ -96,7 +96,7 @@ class BibdkCaptchaRequirementsTestCase extends DrupalWebTestCase {
     $this->assertNoText('Captcha audio requires that "captcha" and "captcha/*" are not included in Ignore Pages at Secure Pages configuration page');
     $this->assertNoText('Captcha images requires that "image_captcha" and "image_captcha/*" are not included in Ignore Pages at Secure Pages configuration page');
     $ignore = variable_get('securepages_ignore');
-    variable_set('securepages_ignore', $ignore . "\r\n\nimage_captcha\r\n\nimage_captcha/*");
+    variable_set('securepages_ignore', $ignore . "image_captcha\r\nimage_captcha/*");
     $this->drupalGet('admin/reports/status');
     $this->assertNoText('Captcha audio requires that "captcha" and "captcha/*" are not included in Ignore Pages at Secure Pages configuration page');
     $this->assertText('Captcha images requires that "image_captcha" and "image_captcha/*" are not included in Ignore Pages at Secure Pages configuration page');
