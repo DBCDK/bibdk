@@ -186,21 +186,21 @@ projects[captcha][version] = 1.0-beta2
 
 projects[ctools][subdir] = contrib
 projects[ctools][type] = module
-projects[ctools][version] = 1.2
+projects[ctools][version] = 1.7
 projects[ctools][patch][] = https://raw.github.com/DBCDK/drush-features-export-page-variant/master/ctools-page_manager_load_task_handlers_alter.patch
 projects[ctools][patch][] = https://www.drupal.org/files/issues/jquery_object_always_true_whether_empty_or_not.diff
 
 projects[date][subdir] = contrib
 projects[date][type] = module
-projects[date][version] = 2.6
+projects[date][version] = 2.8
 
 projects[entity][subdir] = contrib
 projects[entity][type] = module
-projects[entity][version] = 1.5
+projects[entity][version] = 1.6
 
 projects[eu-cookie-compliance][subdir] = contrib
 projects[eu-cookie-compliance][type] = module
-projects[eu-cookie-compliance][version] = 1.8
+projects[eu-cookie-compliance][version] = 1.13
 
 projects[features][subdir] = contrib
 projects[features][type] = module
@@ -273,7 +273,7 @@ projects[rules][version] = 2.2
 
 projects[securepages][subdir] = contrib
 projects[securepages][type] = module
-projects[securepages][version] = 1.0-beta1
+projects[securepages][version] = 1.0-beta2
 projects[securepages][patch][] = http://drupal.org/files/securepages_1226702_secure_user_login_block_and_keep_form_action_secured_7.x-1.0-beta1.patch
 
 projects[shortcode][subdir] = contrib
@@ -290,7 +290,7 @@ projects[variable][version] = 2.5
 
 projects[views][subdir] = contrib
 projects[views][type] = module
-projects[views][version] = 3.5
+projects[views][version] = 3.10
 
 projects[virtual_field][subdir] = contrib
 projects[virtual_field][type] = module
@@ -307,7 +307,7 @@ projects[user_alert][patch][] = https://raw.githubusercontent.com/DBCDK/patches/
 
 projects[scheduler][subdir] = contrib
 projects[scheduler][type] = module
-projects[scheduler][version] = 1.1
+projects[scheduler][version] = 1.3
 
 projects[simple_mobile_redirect][subdir] = contrib
 projects[simple_mobile_redirect][type] = module
