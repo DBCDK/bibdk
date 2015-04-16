@@ -6,6 +6,7 @@ require_once('includes/bibdk_frontend_html5_form_fields.inc');
  * Implements hook_user_login().
  */
 function bibdk_frontend_user_login(&$edit, $account) {
+log_to_file(__FUNCTION__);
   if (!isset($edit['uid'])) {
     return;
   }
@@ -37,6 +38,22 @@ function bibdk_frontend_user_login(&$edit, $account) {
     _bibdk_frontend_login_redirect($edit, $url, $options);
   }
 }
+
+
+/**
+ * Implements hook_module_implements_alter().
+ * Change weight on module
+ * bibdk_frontend needs to be the last module called in the login process, because it makes a redirect.
+ */
+function bibdk_frontend_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'user_login') {
+    // Move bibdk_frontend_user_login() to the end of the list.
+    $group = $implementations ['bibdk_frontend'];
+    unset($implementations ['bibdk_frontend']);
+    $implementations ['bibdk_frontend'] = $group;
+  }
+}
+
 
 /**
  *
