@@ -6,7 +6,6 @@ require_once('includes/bibdk_frontend_html5_form_fields.inc');
  * Implements hook_user_login().
  */
 function bibdk_frontend_user_login(&$edit, $account) {
-log_to_file(__FUNCTION__);
   if (!isset($edit['uid'])) {
     return;
   }
