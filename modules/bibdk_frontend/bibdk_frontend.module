@@ -38,6 +38,22 @@ function bibdk_frontend_user_login(&$edit, $account) {
   }
 }
 
+
+/**
+ * Implements hook_module_implements_alter().
+ * Change weight on module
+ * bibdk_frontend needs to be the last module called in the login process, because it makes a redirect.
+ */
+function bibdk_frontend_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'user_login') {
+    // Move bibdk_frontend_user_login() to the end of the list.
+    $group = $implementations ['bibdk_frontend'];
+    unset($implementations ['bibdk_frontend']);
+    $implementations ['bibdk_frontend'] = $group;
+  }
+}
+
+
 /**
  *
  * @param $account
@@ -364,3 +380,43 @@ function template_preprocess_bibdk_custom_search_radio_buttons(&$variables) {
   }
 }
 
+/**
+ * Implements preprocess_page()
+ * Checking for support for IE browser
+ */
+function bibdk_frontend_preprocess_page(&$vars) {
+
+  preg_match('/MSIE (.*?);/', $_SERVER['HTTP_USER_AGENT'], $matches);
+  if(count($matches)<2){
+    preg_match('/Trident\/\d{1,2}.\d{1,2}; rv:([0-9]*)/', $_SERVER['HTTP_USER_AGENT'], $matches);
+  }
+
+  if (count($matches)>1){
+    //Then we're using IE
+    $version = $matches[1];
+
+    switch(true){
+      case ($version<=8):
+        //IE 8 or under - browser not supported
+        global $language;
+        if ($language->language == 'da') {
+          header('Location: ' . base_path() . drupal_get_path('module', 'bibdk_frontend') . '/browser_not_supported.html');
+        } else {
+          header('Location: ' . base_path() . drupal_get_path('module', 'bibdk_frontend') . '/browser_not_supported_en.html');        
+        }
+        exit;
+
+      case ($version==9 || $version==10):
+        //IE9 & IE10!
+        break;
+
+      case ($version==11):
+        //Version 11!
+        break;
+
+      default:
+
+    }
+  }
+
+}
