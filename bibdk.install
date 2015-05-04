@@ -39,7 +39,6 @@ function _bibdk_enable_modules() {
     'bibdk_frontend',
     'bibdk_furthersearch',
     'bibdk_help',
-    'bibdk_helpdesk',
     'bibdk_linkme',
     'bibdk_openorder',
     'bibdk_provider',
@@ -425,5 +424,12 @@ function bibdk_update_7036(&$sandbox){
  */
 function bibdk_update_7026(){
   module_enable(array('elements'));
+}
+
+/**
+ * disable helpdesk
+ */
+function bibdk_update_7039() {
+  module_disable(array('bibdk_helpdesk'));
 }
 
