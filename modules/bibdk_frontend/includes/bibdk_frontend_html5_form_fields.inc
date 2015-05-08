@@ -13,14 +13,6 @@ function bibdk_frontend_form_user_pass_alter(&$form, $form_state){
   $form['name']['#type'] = "emailfield";
 }
 
-
-/**
- * Implement hook_form_FORM_ID_alter (user_register)
- */
-function bibdk_frontend_form_user_register_form_alter(&$form, $form_state){
-  $form['mail']['#type'] = "emailfield";
-}
-
 /**
  * Implements hook_form_FORM_ID_alter (bibdk-favourite-user-form-fields)
  */
