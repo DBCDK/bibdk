@@ -2130,7 +2130,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '0a640dca-4e71-5194-d9e9-deb2c0fba93a';
   $option->v_uuid = '4ed2c5d5-656b-be14-b55f-fbc7c1aff047';
-  $option->sort = -88;
+  $option->sort = -87;
   $option->label = 'portugisisk';
   $option->value = 'term.language="por"';
   $option->expand = '0';
@@ -3078,7 +3078,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '2f1986f4-c08a-b044-95ad-464501323bd7';
   $option->v_uuid = '4ed2c5d5-656b-be14-b55f-fbc7c1aff047';
-  $option->sort = -90;
+  $option->sort = -89;
   $option->label = 'persisk';
   $option->value = 'term.language="per"';
   $option->expand = '0';
@@ -3150,7 +3150,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '316a7dea-9c98-70e4-a9b1-03767f6e368e';
   $option->v_uuid = '4ed2c5d5-656b-be14-b55f-fbc7c1aff047';
-  $option->sort = -91;
+  $option->sort = -90;
   $option->label = 'norsk';
   $option->value = 'term.language="nor"';
   $option->expand = '0';
@@ -3384,6 +3384,18 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->expand = '0';
   $option->is_disabled = FALSE;
   $export['386b4e52-6666-3354-3127-8fb68db0e1ac'] = $option;
+
+  $option = new stdClass();
+  $option->disabled = FALSE; /* Edit this to true to make a default option disabled initially */
+  $option->api_version = 1;
+  $option->o_uuid = '38a78277-4979-4c1e-816b-f95053ed490b';
+  $option->v_uuid = '4ed2c5d5-656b-be14-b55f-fbc7c1aff047';
+  $option->sort = -95;
+  $option->label = 'grønlandsk';
+  $option->value = 'term.language="kal"';
+  $option->expand = '0';
+  $option->is_disabled = FALSE;
+  $export['38a78277-4979-4c1e-816b-f95053ed490b'] = $option;
 
   $option = new stdClass();
   $option->disabled = FALSE; /* Edit this to true to make a default option disabled initially */
@@ -3798,7 +3810,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '4ca8354d-2a97-e5f4-f1fa-80229c9b2ff4';
   $option->v_uuid = '4ed2c5d5-656b-be14-b55f-fbc7c1aff047';
-  $option->sort = -92;
+  $option->sort = -91;
   $option->label = 'kinesisk';
   $option->value = 'term.language="chi"';
   $option->expand = '0';
@@ -4062,7 +4074,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '5c28868d-dde5-48fb-af37-4da92b760f05';
   $option->v_uuid = '4ed2c5d5-656b-be14-b55f-fbc7c1aff047';
-  $option->sort = -80;
+  $option->sort = -79;
   $option->label = 'alle';
   $option->value = 'facet.language=facet.language';
   $option->expand = '0';
@@ -4483,8 +4495,8 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->o_uuid = '707209a6-5118-8af4-e5ef-6c76e84c61da';
   $option->v_uuid = 'f81d0c50-5f4b-d1f4-f11f-c000c901c841';
   $option->sort = -75;
-  $option->label = 'kærlighed';
-  $option->value = '"kærlighed"';
+  $option->label = 'kunst og kunstnere ';
+  $option->value = '"kunst og kunstnere"';
   $option->expand = '0';
   $option->is_disabled = FALSE;
   $export['707209a6-5118-8af4-e5ef-6c76e84c61da'] = $option;
@@ -4602,7 +4614,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '7500eb47-bedc-ad54-2da0-f3c6809128fc';
   $option->v_uuid = '4ed2c5d5-656b-be14-b55f-fbc7c1aff047';
-  $option->sort = -85;
+  $option->sort = -84;
   $option->label = 'svensk';
   $option->value = 'term.language=("swe" or "sve")';
   $option->expand = '0';
@@ -4662,7 +4674,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '75e5df4f-aaa3-bc34-a96e-2937b653f4d4';
   $option->v_uuid = '4ed2c5d5-656b-be14-b55f-fbc7c1aff047';
-  $option->sort = -89;
+  $option->sort = -88;
   $option->label = 'polsk';
   $option->value = 'term.language="pol"';
   $option->expand = '0';
@@ -5071,8 +5083,8 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->o_uuid = '88c3c543-9aef-4463-a408-4d168ca2e5b8';
   $option->v_uuid = 'f81d0c50-5f4b-d1f4-f11f-c000c901c841';
   $option->sort = -74;
-  $option->label = 'novellefilm';
-  $option->value = '"novellefilm"';
+  $option->label = 'kærlighed';
+  $option->value = '"kærlighed"';
   $option->expand = '0';
   $option->is_disabled = FALSE;
   $export['88c3c543-9aef-4463-a408-4d168ca2e5b8'] = $option;
@@ -5431,7 +5443,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->o_uuid = '98ac7f85-2930-4576-b855-af0a431f0a38';
   $option->v_uuid = 'f81d0c50-5f4b-d1f4-f11f-c000c901c841';
   $option->sort = -62;
-  $option->label = 'Korfilm';
+  $option->label = 'korfilm';
   $option->value = '"korfilm"';
   $option->expand = '0';
   $option->is_disabled = FALSE;
@@ -5898,7 +5910,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = 'ac2e6822-aed4-c7e4-3970-7ade71e61637';
   $option->v_uuid = '4ed2c5d5-656b-be14-b55f-fbc7c1aff047';
-  $option->sort = -81;
+  $option->sort = -80;
   $option->label = 'urdu';
   $option->value = 'term.language="urd"';
   $option->expand = '0';
@@ -6090,7 +6102,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = 'b1cea512-2100-7854-d1a6-c74e53c923ae';
   $option->v_uuid = '4ed2c5d5-656b-be14-b55f-fbc7c1aff047';
-  $option->sort = -87;
+  $option->sort = -86;
   $option->label = 'russisk';
   $option->value = 'term.language="rus"';
   $option->expand = '0';
@@ -6235,8 +6247,8 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->o_uuid = 'b716e371-671f-e364-2df6-bdc0220b1d65';
   $option->v_uuid = 'f81d0c50-5f4b-d1f4-f11f-c000c901c841';
   $option->sort = -77;
-  $option->label = 'krimi';
-  $option->value = '"krimi"';
+  $option->label = 'krigsfilm';
+  $option->value = '"krigsfilm"';
   $option->expand = '0';
   $option->is_disabled = FALSE;
   $export['b716e371-671f-e364-2df6-bdc0220b1d65'] = $option;
@@ -6366,7 +6378,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = 'bc0d7849-9216-5904-95d1-3ed519d163f9';
   $option->v_uuid = '4ed2c5d5-656b-be14-b55f-fbc7c1aff047';
-  $option->sort = -82;
+  $option->sort = -81;
   $option->label = 'ungarsk';
   $option->value = 'term.language="ung"';
   $option->expand = '0';
@@ -6870,7 +6882,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = 'd2bff843-77c0-2b24-318d-692c9d6305d6';
   $option->v_uuid = '4ed2c5d5-656b-be14-b55f-fbc7c1aff047';
-  $option->sort = -86;
+  $option->sort = -85;
   $option->label = 'spansk';
   $option->value = 'term.language=("spa" or "esl")';
   $option->expand = '0';
@@ -6930,7 +6942,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = 'd3f4f0e3-cdd7-b174-59b2-96afb155a93a';
   $option->v_uuid = '4ed2c5d5-656b-be14-b55f-fbc7c1aff047';
-  $option->sort = -95;
+  $option->sort = -94;
   $option->label = 'hollandsk';
   $option->value = 'term.language=("dut" or "fle")';
   $option->expand = '0';
@@ -7087,8 +7099,8 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->o_uuid = 'd79b0d76-4e44-49ff-a5da-aa382427f45b';
   $option->v_uuid = 'f81d0c50-5f4b-d1f4-f11f-c000c901c841';
   $option->sort = -76;
-  $option->label = 'kunst og kunstnere';
-  $option->value = '"kunst og kunstnere"';
+  $option->label = 'krimi';
+  $option->value = '"krimi"';
   $option->expand = '0';
   $option->is_disabled = FALSE;
   $export['d79b0d76-4e44-49ff-a5da-aa382427f45b'] = $option;
@@ -7098,7 +7110,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = 'd7a82e8c-d8db-7d34-5d45-773837ceda52';
   $option->v_uuid = '4ed2c5d5-656b-be14-b55f-fbc7c1aff047';
-  $option->sort = -93;
+  $option->sort = -92;
   $option->label = 'italiensk';
   $option->value = 'term.language="ita"';
   $option->expand = '0';
@@ -7230,7 +7242,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = 'de1ec428-a519-9384-95b4-926c8b511c87';
   $option->v_uuid = '4ed2c5d5-656b-be14-b55f-fbc7c1aff047';
-  $option->sort = -84;
+  $option->sort = -83;
   $option->label = 'tyrkisk';
   $option->value = 'term.language="tur"';
   $option->expand = '0';
@@ -7435,8 +7447,8 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->o_uuid = 'e40d3af1-5b81-40b4-b15e-a65194d28f10';
   $option->v_uuid = 'f81d0c50-5f4b-d1f4-f11f-c000c901c841';
   $option->sort = -78;
-  $option->label = 'krigsfilm';
-  $option->value = '"krigsfilm"';
+  $option->label = 'kortfilm';
+  $option->value = '"novellefilm" or "kortfilm"';
   $option->expand = '0';
   $option->is_disabled = FALSE;
   $export['e40d3af1-5b81-40b4-b15e-a65194d28f10'] = $option;
@@ -7806,7 +7818,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = 'f7753574-f55f-cbb4-253e-5f60c9be868a';
   $option->v_uuid = '4ed2c5d5-656b-be14-b55f-fbc7c1aff047';
-  $option->sort = -83;
+  $option->sort = -82;
   $option->label = 'tysk';
   $option->value = 'term.language=("ger" or "deu")';
   $option->expand = '0';
@@ -7974,7 +7986,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = 'fd6b4c9d-6d2d-b414-d9e0-5c0bd1263e65';
   $option->v_uuid = '4ed2c5d5-656b-be14-b55f-fbc7c1aff047';
-  $option->sort = -94;
+  $option->sort = -93;
   $option->label = 'islandsk';
   $option->value = 'term.language=("ice" or "isl")';
   $option->expand = '0';
