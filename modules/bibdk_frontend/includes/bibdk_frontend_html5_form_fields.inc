@@ -13,12 +13,11 @@ function bibdk_frontend_form_user_pass_alter(&$form, $form_state){
   $form['name']['#type'] = "emailfield";
 }
 
-
 /**
  * Implement hook_form_FORM_ID_alter (user_register)
  */
 function bibdk_frontend_form_user_register_form_alter(&$form, $form_state){
-  $form['mail']['#type'] = "emailfield";
+  $form['account']['mail']['#type'] = "emailfield";
 }
 
 /**
@@ -31,6 +30,8 @@ function bibdk_frontend_form_bibdk_favourite_user_form_fields_alter(&$form, $for
     // borrower-card number - numeric
     $fields['userId']['#type'] = 'numberfield';
   }
+
+
 
   //usermail - email
  if(isset($fields['userMail'])){
