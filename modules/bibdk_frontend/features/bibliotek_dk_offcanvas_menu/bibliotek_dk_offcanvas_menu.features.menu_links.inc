@@ -58,7 +58,7 @@ function bibliotek_dk_offcanvas_menu_menu_default_menu_links() {
     'external' => '1',
     'has_children' => '0',
     'expanded' => '0',
-    'weight' => '-45',
+    'weight' => '-44',
   );
   // Exported menu link: menu-offcanvas-menu-da:overlay/help
   $menu_links['menu-offcanvas-menu-da:overlay/help'] = array(
@@ -83,7 +83,7 @@ function bibliotek_dk_offcanvas_menu_menu_default_menu_links() {
     'external' => '0',
     'has_children' => '0',
     'expanded' => '0',
-    'weight' => '-46',
+    'weight' => '-45',
   );
   // Exported menu link: menu-offcanvas-menu-da:overlay/helpdesk
   $menu_links['menu-offcanvas-menu-da:overlay/helpdesk'] = array(
@@ -108,7 +108,7 @@ function bibliotek_dk_offcanvas_menu_menu_default_menu_links() {
     'external' => '0',
     'has_children' => '0',
     'expanded' => '0',
-    'weight' => '-47',
+    'weight' => '-46',
   );
   // Exported menu link: menu-offcanvas-menu-da:user/cart
   $menu_links['menu-offcanvas-menu-da:user/cart'] = array(
@@ -158,7 +158,7 @@ function bibliotek_dk_offcanvas_menu_menu_default_menu_links() {
     'external' => '0',
     'has_children' => '0',
     'expanded' => '0',
-    'weight' => '-44',
+    'weight' => '-43',
   );
   // Exported menu link: menu-offcanvas-menu-da:vejviser
   $menu_links['menu-offcanvas-menu-da:vejviser'] = array(
@@ -233,7 +233,7 @@ function bibliotek_dk_offcanvas_menu_menu_default_menu_links() {
     'external' => '1',
     'has_children' => '0',
     'expanded' => '0',
-    'weight' => '-45',
+    'weight' => '-44',
   );
   // Exported menu link: menu-offcanvas-menu-eng:overlay/help
   $menu_links['menu-offcanvas-menu-eng:overlay/help'] = array(
@@ -258,7 +258,7 @@ function bibliotek_dk_offcanvas_menu_menu_default_menu_links() {
     'external' => '0',
     'has_children' => '0',
     'expanded' => '0',
-    'weight' => '-46',
+    'weight' => '-45',
   );
   // Exported menu link: menu-offcanvas-menu-eng:overlay/helpdesk
   $menu_links['menu-offcanvas-menu-eng:overlay/helpdesk'] = array(
@@ -283,7 +283,7 @@ function bibliotek_dk_offcanvas_menu_menu_default_menu_links() {
     'external' => '0',
     'has_children' => '0',
     'expanded' => '0',
-    'weight' => '-47',
+    'weight' => '-46',
   );
   // Exported menu link: menu-offcanvas-menu-eng:user/cart
   $menu_links['menu-offcanvas-menu-eng:user/cart'] = array(
@@ -333,7 +333,7 @@ function bibliotek_dk_offcanvas_menu_menu_default_menu_links() {
     'external' => '0',
     'has_children' => '0',
     'expanded' => '0',
-    'weight' => '-44',
+    'weight' => '-43',
   );
   // Exported menu link: menu-offcanvas-menu-eng:vejviser
   $menu_links['menu-offcanvas-menu-eng:vejviser'] = array(
