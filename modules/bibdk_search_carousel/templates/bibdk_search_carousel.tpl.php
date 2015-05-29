@@ -27,7 +27,7 @@
           <ul class="dropdown-menu dropdown-rightalign slick-carousel-tabs hidden">
             <?php foreach ($searches as $i => $search): ?>
               <li>
-                <a class="foo<?php print $i; ?>" href="#<?php print $i; ?>" data-value="<?php print $i; ?>"><?php print $searches[$i]['title'] ?></a>
+                <a class="foo<?php print $i; ?>" href="#<?php print $i; ?>" data-value="<?php print $i; ?>"><?php print t($searches[$i]['title'], array(), array('context' => 'ting_search_carousel')) ?></a>
               </li>
             <?php endforeach; ?>
           </ul>
