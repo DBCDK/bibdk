@@ -1,7 +1,7 @@
 api = 2
 core = 7.x
 
-; --- Libraries ---
+; --- Libraries  ---
 
 ; Profiler lib for profile
 libraries[profiler][download][type] = git
