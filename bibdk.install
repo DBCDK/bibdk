@@ -87,6 +87,7 @@ function _bibdk_enable_modules() {
     'user_alert',
     'scheduler',
     'simple_mobile_redirect',
+    'jquery_update',
     //Advanced aggregation
     'advagg',
     'advagg_css_compress',
@@ -433,3 +434,9 @@ function bibdk_update_7039() {
   module_disable(array('bibdk_helpdesk'));
 }
 
+/**
+ * enable module jquery_update
+ */
+function bibdk_update_7040(){
+  module_enable(array('jquery_update'));
+}
