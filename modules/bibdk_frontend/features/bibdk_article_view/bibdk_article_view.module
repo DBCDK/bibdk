@@ -32,7 +32,6 @@ function bibdk_article_view_preprocess_views_view_fields(&$vars) {
   // get link url
   $link_url = $wrapper->field_link->value();
 
-
   $region = $wrapper->field_page_region->value();
   if (!empty($link_text) && !empty($link_url)) {
     if ($region->name == 'top') {
@@ -46,9 +45,10 @@ function bibdk_article_view_preprocess_views_view_fields(&$vars) {
       $vars['fields']['field_link']->wrapper_suffix = '</div></div>';
     }
   }
+ 
 }
 
-function bibdk_article_view_get_bottom_link($txt,$path){
+function bibdk_article_view_get_bottom_link($txt, $path){
   $link = array(
     '#theme' => 'link',
     '#text' => $txt,
@@ -96,13 +96,16 @@ function bibdk_article_view_handle_classes($wrapper) {
 
   $region_class = ($region->name == 'top') ? 'bibdk-article-top' : 'bibdk-article-bottom';
   $column_class = ($column->name == 'left') ? 'bibdk-article-left' : 'bibdk-article-right';
+  $show_class_mobile = ($wrapper->field_show_mobile->value()) ? 'bibdk-article-show-mobile' : 'bibdk-article-none-show-mobile';
+  $show_class_large = ($wrapper->field_show_large_->value()) ? 'bibdk-article-show-large' : 'bibdk-article-none-show-large';
 
   $classes = array(
     'article-widget',
     $region_class,
     $column_class,
+    $show_class_mobile,
+    $show_class_large,
   );
-
   return array('class' => $classes);
 }
 
