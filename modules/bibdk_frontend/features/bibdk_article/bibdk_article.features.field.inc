@@ -833,7 +833,7 @@ function bibdk_article_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_show_large_',
       'label' => 'show large ',
-      'required' => 1,
+      'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
