@@ -42,6 +42,8 @@ class bibdkArticleWebtestCase extends DrupalWebTestCase {
     $edit["field_link[und][0][value]"] = 'http://someurl/';
     $edit["field_link_classes[und][0][value]"] = 'class1 class2';
     $edit["field_page_type[und]"] = '2';
+    $edit["field_show_large_[und]"] = '1';
+    $edit["field_show_mobile[und]"] = '1';
     $this->drupalPost('node/add/bibdk_article', $edit, t('Save'));
     $this->assertText(t('@title has been created.', array('@title' => $edit['title'])));
   }
