@@ -245,12 +245,12 @@
 
     // @TODO why would you wanna hide valid facets ??
     // disambiguate facets that are hidden because some facets are already selected, and facets that are not yet shown.
-   /* $("#bibdk-facetbrowser-form").find("a[data-hidden='0']").each(function(count, facetElement) {
+    $("#bibdk-facetbrowser-form").find("a[data-hidden='0']").each(function(count, facetElement) {
       $(this).parents('div.form-type-checkbox').addClass('facetShow');
     });
     $("#bibdk-facetbrowser-form").find("a[data-hidden='1']").each(function(count, facetElement) {
       $(this).parents('div.form-type-checkbox').hide().addClass('facetNoShow');
-    });*/
+    });
   };
 
   /**
