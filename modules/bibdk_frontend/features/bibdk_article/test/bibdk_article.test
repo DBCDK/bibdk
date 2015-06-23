@@ -44,6 +44,8 @@ class bibdkArticleWebtestCase extends DrupalWebTestCase {
     $edit["field_page_type[und]"] = '2';
     $this->drupalPost('node/add/bibdk_article', $edit, t('Save'));
     $this->assertText(t('@title has been created.', array('@title' => $edit['title'])));
+
+    $this->drupalGet("node/1");
   }
 }
 
