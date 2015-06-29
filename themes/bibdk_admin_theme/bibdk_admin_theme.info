@@ -25,12 +25,3 @@ scripts[] = ../bibdk_theme/build/js/header.js
 ;        JS LIBS
 ;==================================
 scripts[] = ../bibdk_theme/build/js/libs.js
-
-
-;==================================
-;      JS FOUNDATION
-;==================================
-scripts[] = ../bibdk_theme/libs/foundation/js/vendor/jquery.js
-scripts[] = ../bibdk_theme/build/js/foundation-concatenated.js
-
-

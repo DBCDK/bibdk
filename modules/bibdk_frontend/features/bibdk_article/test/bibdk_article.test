@@ -28,6 +28,7 @@ class bibdkArticleWebtestCase extends DrupalWebTestCase {
         ));
     $this->drupalLogin($this->admin_user);
     $this->CreateArticleTest();
+    $this->GetArticleTest();
   }
 
   /** Test create bibdk_article
@@ -41,10 +42,27 @@ class bibdkArticleWebtestCase extends DrupalWebTestCase {
     $edit["field_link_text[und][0][value]"] = 'link name value';
     $edit["field_link[und][0][value]"] = 'http://someurl/';
     $edit["field_link_classes[und][0][value]"] = 'class1 class2';
-    $edit["field_page_type[und]"] = '2';
+    $edit["field_page_type[und]"] = '8';
+    $edit["field_show_large_[und]"] = '1';
+    $edit["field_show_mobile[und]"] = '1';
     $this->drupalPost('node/add/bibdk_article', $edit, t('Save'));
     $this->assertText(t('@title has been created.', array('@title' => $edit['title'])));
+
   }
+
+  /** Test retrival of bibdk_article
+   *
+   */
+  public function GetArticleTest() {
+    //Check for article_title exist
+    $this->drupalGet('node/1');
+    $this->assertText('article_title');
+
+  }
+
 }
+
+
+
 
 ?>

@@ -12,4 +12,4 @@ dependencies[] = views_content
 features[ctools][] = views:views_default:3.0
 features[features_api][] = api:1
 features[views_view][] = article_view
-mtime = 1420635800
+mtime = 1434371349
