@@ -4,8 +4,9 @@
  * Main file for the bibdk_facetbrowser module.
  */
 
-require_once(drupal_get_path('module', 'bibdk_facetbrowser') . '/bibdk_facetbrowser.mobile.inc');
-//require_once('bibdk_facetbrowser_help_texts.inc');
+require_once(drupal_get_path('module', 'bibdk_facetbrowser') . '/includes/bibdk_facetbrowser.mobile.inc');
+require_once(drupal_get_path('module', 'bibdk_facetbrowser') . '/includes/bibdk_facetbrowser.filter_form.inc');
+//require_once('includes/bibdk_facetbrowser_help_texts.inc');
 
 
 /**
@@ -31,6 +32,14 @@ function bibdk_facetbrowser_menu() {
     'type' => MENU_CALLBACK,
   );
 
+
+  $items['bibdk_facetbrowser/filter/%'] = array(
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bibdk_facetbrowser_filter_form', 2),
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('access content'),
+  );
+
   $items['bibdk_facetbrowser/ajax/facets'] = array(
     'title' => 'facets',
     'description' => 'Get facets by ajax',
@@ -46,6 +55,8 @@ function bibdk_facetbrowser_menu() {
     'page arguments' => array(3),
     'access arguments' => array('access content'),
   );
+
+
 
   return $items;
 }
@@ -110,6 +121,19 @@ function bibdk_facetbrowser_theme() {
       'render element' => 'form',
       'file' => 'bibdk_facetbrowser.admin.inc',
     ),
+
+    'bibdk_facetbrowser_multicolumns_checkboxes' => array(
+      'render element' => 'element',
+      'path' => $path,
+      'template' => 'facetbrowser-filter-form-element',
+    ),
+
+    /*'bibdk_facetbrowser_multicolumns_checkboxes' => array(
+      'variables' => array(
+        'element' => NULL,
+        'facet_name' => '',
+      ),
+    )*/
   );
 }
 
@@ -145,14 +169,13 @@ function bibdk_facetbrowser_ctools_plugin_api($module, $api) {
  * @param $title
  * @return array; render-array(fieldset) defining a single facetgroup
  */
-function bibdk_facetbrowser_get_single_facetgroup($facet, $title) {
+function bibdk_facetbrowser_get_single_facetgroup($facet, $title, &$selected_facets_present=FALSE) {
   global $base_root;
   $show_selected_facets = array();
   $default_values = array();
   $selected = array();
   $not_selected = array();
-  $selected_facets_present = FALSE;
-  $fragment = 'content';
+
   $field_set = array();
 
   if (count($facet->terms) > 0) {
@@ -166,81 +189,84 @@ function bibdk_facetbrowser_get_single_facetgroup($facet, $title) {
         'data-count' => count($facet->terms)
       ),
     );
-    foreach ($facet->terms as $term_name => $term_count) {
-      if (_bibdk_facetbrowser_isFacetSet($facet->name, $term_name) === TRUE) {
-        $selected_facets_present = TRUE;
-        break;
-      }
-    }
 
+    $selected_facets_present = FALSE;
     foreach ($facet->terms as $term_name => $term_count) {
       $facet_name = explode('.', $facet->name);
       $element_name = end($facet_name);
-      $facets_string = $facet->name . ':' . $term_name;
-
-      // only translate material type
-      if ($element_name == 'type') {
-        $term_name_title = t($term_name, array(), array('context' => 'material_type'));
-      }
-      else {
-        $term_name_title = $term_name;
-      }
-
-      // Check if term name is longer than 14 chars,
-      // if so, short it down to fit facetbrowser
-      $substr_length = 19 + substr_count(drupal_substr($term_name, 0, 20), 'l') + strtolower(substr_count(drupal_substr($term_name, 0, 20), 'i')) - drupal_strlen((string) $term_count);
-      if (drupal_strlen($term_name) > $substr_length + 3) {
-        $term_name_title = drupal_substr($term_name, 0, $substr_length) . '...';
-      }
-
       if (_bibdk_facetbrowser_isFacetSet($facet->name, $term_name) === TRUE) {
         $selected_facets_present = TRUE;
         $default_values[] = $term_name;
-        $uri = _bibdk_facetbrowser_parseRequestUri();
-        $show_selected_facets[$term_name] = $selected[$term_name] = l($term_name_title . ' <span class="count">(' . $term_count . ' ' . _bibdk_facetbrowser_hits_label($term_count) . ')</span>', $base_root . _bibdk_facetbrowser_parseSelectionUri($uri, $facets_string), array(
-            'html' => TRUE,
-            'fragment' => $fragment,
-            'attributes' => array(
-              'title' => $term_name,
-              'data-hidden' => '0',
-            ),
-          )
-        );
-        $show_selected_facets_defaults[] = $term_name;
+        $show_selected_facets[$term_name] = $selected[$term_name] = bibdk_facetbrowser_get_facet_link($facet, $term_name, $term_count, TRUE);
       }
       else {
-        $not_selected[$term_name] = l($term_name_title . ' <span class="count">(' . $term_count . ' ' . _bibdk_facetbrowser_hits_label($term_count) . ')</span>', $base_root . _bibdk_facetbrowser_parseRequestUri(), array(
-          'html' => TRUE,
-          'query' => array(
-            'facets' => array('' => $facets_string),
-          ),
-          'fragment' => $fragment,
-          'attributes' => array(
-            'title' => $term_name,
-            'data-hidden' => ($selected_facets_present) ? '1' : '0',
-          ),
-        ));
+        $not_selected[$term_name] = bibdk_facetbrowser_get_facet_link($facet, $term_name, $term_count, FALSE);
       }
 
-      //$form[$facet->name][$element_name] = array(
       $field_set[$element_name] = array(
         '#type' => 'checkboxes',
         '#options' => array_merge($selected, $not_selected),
         '#default_value' => $default_values,
       );
-
-      /*  $field_set['container']['actions'] = array(
-          '#parents' => array($element_name),
-          '#theme' => 'theme_facet_term_names',
-        );*/
-
-
     }
+  }
+  return $field_set;
+}
 
-    $field_set['actions'] = bibdk_facetbrowser_set_actions($facet->name, $selected_facets_present);
+function bibdk_facetbrowser_get_facet_link($facet, $name, $count, $hidden = FALSE) {
+  $facet_name = explode('.', $facet->name);
+  $element_name = end($facet_name);
+  // only translate material type
+  if ($element_name == 'type') {
+    $term_name_title = t($name, array(), array('context' => 'material_type'));
+  }
+  else {
+    $term_name_title = $name;
   }
 
-  return $field_set;
+  $hit_txt = '('. $count .' '. _bibdk_facetbrowser_hits_label($count). ')';
+  $term_name_short = bibdk_facetbrowser_trim_facet_txt($term_name_title, $hit_txt);
+
+  global $base_root;
+  $facets_string = $facet->name . ':' . $name;
+  $uri = _bibdk_facetbrowser_parseRequestUri();
+  $return = l($term_name_short . ' <span class="count">' . $hit_txt . '</span>', $base_root . _bibdk_facetbrowser_parseSelectionUri($uri, $facets_string), array(
+      'html' => TRUE,
+      'query' => ($hidden) ? array() : array(
+        'facets' => array('' => $facets_string),
+      ),
+      'fragment' => 'content',
+      'attributes' => array(
+        'title' => $term_name_title,
+        'data-hidden' => ($hidden) ? '1' : '0',
+      ),
+    )
+  );
+  return $return;
+}
+
+function bibdk_facetbrowser_trim_facet_txt($name, $count){
+  $total = strlen($name.$count);
+  if($total < 25){
+    return $name;
+  }
+  $name = substr($name, 0, 17-$count );
+  return $name.'...';
+}
+
+function bibdk_facetbrowser_get_filter_link($facet){
+  $filter_link = array(
+    '#theme' => 'link',
+    '#text' => t('header_refine_facet_select', array(), array('context' => 'bibdk_facetbrowser')),
+    '#path' => 'bibdk_facetbrowser/filter/'.$facet->name,
+    '#options' => array(
+      'attributes' => array(
+        'class' => array(drupal_html_class('facetbrowser_filter_link')),
+      ),
+      'html' => FALSE,
+    ),
+  );
+  return $filter_link;
 }
 
 
@@ -288,7 +314,11 @@ function bibdk_facetbrowser_form($form, &$form_state, $facets = FALSE, $search =
   foreach (variable_get('bibdk_facetbrowser_facets', array()) as $configured_facet) {
     if (isset($facets[$configured_facet['name']])) {
       $facet = $facets[$configured_facet['name']];
-      $form[$facet->name] = bibdk_facetbrowser_get_single_facetgroup($facet, $configured_facet['title']);
+      $selected_facets_present = FALSE;
+      $field_set = bibdk_facetbrowser_get_single_facetgroup($facet, $configured_facet['title'], $selected_facets_present);
+      $field_set['actions'] = bibdk_facetbrowser_set_actions($facet->name, $selected_facets_present);
+      $field_set['filter'] = bibdk_facetbrowser_get_filter_link($facet);
+      $form[$facet->name] = $field_set;
     }
   }
 
@@ -356,6 +386,10 @@ function bibdk_facetbrowser_form($form, &$form_state, $facets = FALSE, $search =
     $form['deselected']['#attributes']['data-count'] = count($deselected);
   }
 
+  // we need to attach css for the filter_form here - it is not loaded with ajax
+  $form['#attached']['css'][] =
+    drupal_get_path('module', 'bibdk_facetbrowser') . '/css/facetbrowser_filter_form.css';
+
   return $form;
 }
 
@@ -367,45 +401,6 @@ function bibdk_facetbrowser_set_actions($id, $selected_facets) {
     '#selected_facets' => $selected_facets,
   );
 }
-
-/*function bibdk_facetbrowser_more_facets_link($facet_name){
-  dpm($facet_name);
-  return array(
-    '#theme' => 'link',
-    '#text' => t('more_facets', array(), array('context'=>'bibdk_facetbrowser')),
-    '#path' => '#',
-    '#options' => array(
-      'attributes' => array(
-        'title' => t('Home'),
-        'id' => drupal_html_id('more_facets_'.$facet_name),
-        'data-facet' => $facet_name,
-        'class' => array(drupal_html_class('more_facets_ajax_link')),
-      ),
-      'html' => TRUE,
-    ),
-  );
-
-}*/
-
-/*function bibdk_facetbrowser_ajax_facet_group_callback(&$form, &$form_state, $group = 'creator'){
-  if (module_exists('ting_openformat')) {
-    $results = ting_openformat_get_facet_group($group);
-  }
-  // unset form_build_id to avoid retrival from cache
-  unset($form_state['input']['form_build_id']);
-  // add the new facets to build info
-  //$form_state['build_info']['args'][0] = $results->facets;
-
-  $args = array($results->facets, (!empty($results->searchkey) ? $results->searchkey : NULL));
-  $form_state['build_info']['args'] = $args;
-  $new_form = drupal_build_form('bibdk_facetbrowser_form', $form_state);
-  //$new_form = theme('theme_bibdk_facetbrowser', $args);
-  $facet_name = 'facet.'.$group;
-  $return = $new_form[$facet_name];
-
-  return $return;
-}*/
-
 
 /**
  * Check if selected facet from url matches the one from params.
@@ -485,14 +480,16 @@ function _bibdk_facetbrowser_isFacetSelected($facets, $is_selected = TRUE) {
 function _bibdk_facetbrowser_getFacets() {
   $facets = & drupal_static('bibdk_facetbrowser_facets');
   if (!isset($facets)) {
-    $by_ajax = variable_get('bibdk_facetbrowser_by_ajax', FALSE);
-    if ($by_ajax) {
+    //$by_ajax = variable_get('bibdk_facetbrowser_by_ajax', FALSE);
+    //if ($by_ajax) {
+
+
       $uri = $_SESSION['latest_search']['request_uri'];
       $request_uri_parts = explode('?', $uri);
-    }
-    else {
-      $request_uri_parts = explode('?', request_uri());
-    }
+    //}
+    //else {
+      //$request_uri_parts = explode('?', request_uri());
+    //}
 
     $facets = explode('&', rawurldecode(end($request_uri_parts)));
     drupal_static('bibdk_facetbrowser_facets', $facets);
@@ -540,7 +537,6 @@ function _bibdk_facetbrowser_parseRequestUri() {
  * @return String
  */
 function _bibdk_facetbrowser_parseSelectionUri($uri, $facet) {
-
   $new_query_part = array();
   if (stristr($uri, '?')) {
     $request_uri_parts = explode('?', $uri);

@@ -101,12 +101,18 @@ function _bibdk_favourite_save_on_webservice($agencyId) {
 function _bibdk_favourite_get_from_webservice() {
   global $user;
 
-  if (ding_user_is_provider_user($user)) {
-    try {
-      $creds = ding_user_get_creds($user);
+  if (ding_user_is_provider_user($user) || $user->uid == 1) {
+    if($user->uid != 1) {
+      try {
+        $creds = ding_user_get_creds($user);
+      } catch (Exception $e) {
+        // do nothing
+      }
     }
-    catch (Exception $e) {
-      // do nothing
+    else{
+      $uid = arg(1);
+      $account = user_load($uid);
+      $creds['name'] = $account->mail;
     }
     if (empty($creds)) {
       return array();

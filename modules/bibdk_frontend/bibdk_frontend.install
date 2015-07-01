@@ -486,3 +486,7 @@ function bibdk_frontend_update_7027(&$sandbox) {
     'ding_facets',
   ));
 }
+
+function bibdk_frontend_update_7070(){
+  menu_rebuild();
+}

@@ -80,6 +80,15 @@ function bibdk_modal_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  $items['bibdk_modal/bibdk_facetbrowser/filter/%'] = array(
+    'title' => t('filter facets', array(), array('context' => 'bibdk_facetbrowser')),
+    'page callback' => 'bibdk_modal_facetbrowser_filter',
+    'page arguments' => array(3),
+    'access callback' => TRUE,
+    'file' => 'includes/bibdk_modal.forms.inc',
+    'type' => MENU_CALLBACK,
+  );
+
   return $items;
 }
 
