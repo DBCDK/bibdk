@@ -60,7 +60,7 @@ function bibdk_facetbrowser_content_type_render($subtype, $conf, $panel_args, $c
       $results = module_invoke($executed_search_module, 'bibdk_facetbrowser');
       if (is_object($results)) {
         foreach ($results->facets as $result) {
-          if (count($result->terms) == TRUE) {
+          if (isset($result) && count($result->terms) == TRUE) {
             $content_in_facet = TRUE;
             break;
           }
