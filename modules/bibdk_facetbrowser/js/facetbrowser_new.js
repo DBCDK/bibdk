@@ -194,20 +194,26 @@
    */
   BibdkFacets.setGroupEvents = function (group) {
     // show more event
-    group.not('#selected-terms').find($("div[data-expand='more'] span")).bind('click', function () {
+    group.not('#selected-terms, #deselected-terms').find($("div[data-expand='more'] span")).bind('click', function () {
       BibdkFacets.getFacetGroup(group);
     });
 
-    // special handler for selected terms
-    $('#selected-terms').find($("div[data-expand='more'] span")).bind('click', function () {
-      $('#selected-terms').find($("div[data-expand='less']")).show();
-      var len = BibdkFacets.facetGroupLength($('#selected-terms'));
-      BibdkFacets.FoldFacetGroup($('#selected-terms'), len);
-    });
+    // special handler for selected/deselected terms
+    BibdkFacets.SetNoGroupEvents($('#selected-terms'));
+    BibdkFacets.SetNoGroupEvents($('#deselected-terms'));
+
 
     // show less event
     group.find($("div[data-expand='less'] span")).on('click', function () {
       BibdkFacets.FoldFacetGroup(group, 0);
+    });
+  };
+
+  BibdkFacets.SetNoGroupEvents = function(nogroup){
+    $(nogroup).find($("div[data-expand='more'] span")).bind('click', function () {
+      $(nogroup).find($("div[data-expand='less']")).show();
+      var len = BibdkFacets.facetGroupLength(nogroup);
+      BibdkFacets.FoldFacetGroup(nogroup, len);
     });
   };
 
