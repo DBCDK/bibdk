@@ -316,9 +316,11 @@ function bibdk_facetbrowser_form($form, &$form_state, $facets = FALSE, $search =
       $facet = $facets[$configured_facet['name']];
       $selected_facets_present = FALSE;
       $field_set = bibdk_facetbrowser_get_single_facetgroup($facet, $configured_facet['title'], $selected_facets_present);
-      $field_set['actions'] = bibdk_facetbrowser_set_actions($facet->name, $selected_facets_present);
-      $field_set['filter'] = bibdk_facetbrowser_get_filter_link($facet);
-      $form[$facet->name] = $field_set;
+      if(!empty($field_set)) {
+        $field_set['actions'] = bibdk_facetbrowser_set_actions($facet->name, $selected_facets_present);
+        $field_set['filter'] = bibdk_facetbrowser_get_filter_link($facet);
+        $form[$facet->name] = $field_set;
+      }
     }
   }
 
