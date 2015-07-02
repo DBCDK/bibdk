@@ -138,6 +138,7 @@ function _bibdk_frontend_enable_modules() {
     'bibliotek_dk_offcanvas_menu',
     'bibliotek_dk_footer_menu',
     'bibdk_facets',
+    'bibdk_jquery_update_settings',
     //Content
     'bibdk_custom_header_block',
     'bibdk_article_view',
@@ -487,6 +488,12 @@ function bibdk_frontend_update_7027(&$sandbox) {
   ));
 }
 
-function bibdk_frontend_update_7070(){
-  menu_rebuild();
+
+/**
+ * Enable bibdk_jquery_update_settings for existing installations
+ */
+function bibdk_frontend_update_7028(&$sandbox) {
+  module_enable(array(
+    'bibdk_jquery_update_settings'
+  ));
 }

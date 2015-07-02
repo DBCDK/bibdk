@@ -311,3 +311,8 @@ projects[scheduler][version] = 1.3
 projects[simple_mobile_redirect][subdir] = contrib
 projects[simple_mobile_redirect][type] = module
 projects[simple_mobile_redirect][version] = 1.1
+
+//jquery_update
+projects[jquery_update][subdir] = contrib
+projects[jquery_update][type] = module
+projects[jquery_update][version] = 3.0-alpha2

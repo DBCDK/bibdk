@@ -212,6 +212,24 @@ function bibdk_article_view_views_default_views() {
   );
   $handler->display->display_options['filters']['field_page_region_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_page_region_tid']['vocabulary'] = 'page_region';
+  /* Filter criterion: Content: Language */
+  $handler->display->display_options['filters']['language']['id'] = 'language';
+  $handler->display->display_options['filters']['language']['table'] = 'node';
+  $handler->display->display_options['filters']['language']['field'] = 'language';
+  $handler->display->display_options['filters']['language']['value'] = array(
+    '***CURRENT_LANGUAGE***' => '***CURRENT_LANGUAGE***',
+    'und' => 'und',
+  );
+  $handler->display->display_options['filters']['language']['expose']['operator_id'] = 'language_op';
+  $handler->display->display_options['filters']['language']['expose']['label'] = 'Language';
+  $handler->display->display_options['filters']['language']['expose']['operator'] = 'language_op';
+  $handler->display->display_options['filters']['language']['expose']['identifier'] = 'language';
+  $handler->display->display_options['filters']['language']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    4 => 0,
+  );
   $handler->display->display_options['argument_input'] = array(
     'field_page_region_tid' => array(
       'type' => 'none',
@@ -455,6 +473,7 @@ function bibdk_article_view_views_default_views() {
     t('more'),
     t('bottom pane left'),
     t('Alle'),
+    t('Language'),
     t('View panes'),
     t('top pane'),
     t('bottom pane right'),
