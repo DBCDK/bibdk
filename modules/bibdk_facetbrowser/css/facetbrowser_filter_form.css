@@ -34,7 +34,7 @@
 }
 
 #bibdk-facetbrowser-filter-form .checkbox-elements-header span {
-    margin-right: 3%;
+    margin-left: 3%;
 }
 
 #bibdk-facetbrowser-filter-form .checkbox-element-label {
@@ -44,7 +44,7 @@
 
 #bibdk-facetbrowser-filter-form .checkbox-element-select,
 #bibdk-facetbrowser-filter-form .checkbox-element-deselect {
-    float: left;
+    float: right;
     width: 10%;
     text-align: center;
 }
