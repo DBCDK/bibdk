@@ -11,7 +11,7 @@
       var element = $('.bibdk_facetbrowser_facets_placeholder');
       if(element.length == 0) {
         // this is a standard pageload (no ajax)
-        BibdkFacets.setAllGroupEvents();
+        BibdkFacets.setAllGroupEvents(context);
         BibdkFacets.setOtherEvents();
       }
       else {
@@ -21,7 +21,7 @@
             var div = $('.bibdk_facetbrowser_facets_placeholder');
             // show a spinner while we are waiting for the facets
             div.html('<div class="ajax-progress ajax-progress-throbber"><div class="throbber"></div></div>');
-            BibdkFacets.getFacets();
+            BibdkFacets.getFacets(context);
           });
         }
       }
@@ -37,7 +37,7 @@
   /*
    * set facets
    */
-  BibdkFacets.setFacets = function (facets, group) {
+  BibdkFacets.setFacets = function (facets, group, context) {
     // call for a single group of facets
     if(group !== false) {
       // hold length of old group
@@ -48,6 +48,8 @@
       var new_group = $('#'+group.attr('id'));
       BibdkFacets.setGroupEvents(new_group);
       BibdkFacets.FoldFacetGroup(new_group, len);
+      //BibdkFacets.SetFilterEvent(new_group);
+
     }
     // call for whole facetbrowser
     else {
@@ -61,10 +63,16 @@
     BibdkFacets.setOtherEvents();
   };
 
-  BibdkFacets.setAllGroupEvents = function(){
+  BibdkFacets.SetFilterEvent = function(group){
+    if(typeof Drupal.bibdkModal.setLinkActions === 'function'){
+      Drupal.bibdkModal.setLinkActions(group);
+    }
+  };
+
+  BibdkFacets.setAllGroupEvents = function(context){
     var groups = $('#bibdk-facetbrowser-form fieldset:visible');
     groups.each(function(){
-      BibdkFacets.setGroupEvents($(this));
+      BibdkFacets.setGroupEvents($(this),context);
       BibdkFacets.FoldFacetGroup($(this), 0);
     });
   }
@@ -192,7 +200,7 @@
    * set group event (show more, show less)
    * @param group
    */
-  BibdkFacets.setGroupEvents = function (group) {
+  BibdkFacets.setGroupEvents = function (group,context) {
     // show more event
     group.not('#selected-terms, #deselected-terms').find($("div[data-expand='more'] span")).bind('click', function () {
       BibdkFacets.getFacetGroup(group);
@@ -262,10 +270,11 @@
   /**
    * get facets
    */
-  BibdkFacets.getFacets = function () {
+  BibdkFacets.getFacets = function (context) {
     var facets = BibdkFacets.getFromSessionStorage(false);
     if (facets) {
-      BibdkFacets.setFacets(facets, false );
+      BibdkFacets.setFacets(facets, false, context );
+      return;
     }
     $.ajax({
       url: Drupal.settings.basePath + Drupal.settings.pathPrefix + 'bibdk_facetbrowser/ajax/facets',
