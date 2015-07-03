@@ -142,7 +142,7 @@
     }).addClass('bibdk-modal-voxb-edit');
 
     //Rewrite offensive facetbrowser filter link
-    $("a[href*='/bibdk_facetbrowser/filter/'], a[href*='?q=/bibdk_facetbrowser/filter/']", context).attr({
+    $("a[href*='/bibdk_facetbrowser/filter/'], a[href*='?q=/bibdk_facetbrowser/filter/']", context).not($("a[href*='bibdk_modal']")).attr({
       'data-reveal-id': 'bibdk-modal',
       'data-reveal-ajax': 'true',
       'href': function(key, value) {
