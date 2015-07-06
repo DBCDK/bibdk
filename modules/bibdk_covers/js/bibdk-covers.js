@@ -30,6 +30,9 @@
   };
 
   Drupal.insertCovers = function(coverData) {
+    if(coverData === false){
+      return;
+    }
     $.each(coverData, function(coverInfo, url) {
       coverInfo = coverInfo.split(':');
       // thumbnail
@@ -59,7 +62,7 @@
       // Assemble information regarding covers
       var coverData = [];
       $('.bibdk-cover:not(.bibdk-cover-processing, .bibdk-cover-processed)', context).each(function(i, e) {
-        coverData = coverData.concat(Drupal.extractCoverData(e));
+          coverData = coverData.concat(Drupal.extractCoverData(e));
       }).addClass('bibdk-cover-processing');
 
       if ( coverData.length > 0 ) {
@@ -70,15 +73,15 @@
           data: {
             coverData: coverData // ex. array('28917074:medium')
           },
-          dataType: 'json',
+          dataType: "json",
           success: Drupal.insertCovers,
           // Keep state using classes
           complete: function(request, status) {
-            processing = $('.bibdk-cover-processing', context);
+            var processing = $('.bibdk-cover-processing', context);
             if (status == 'success') {
               processing.addClass('bibdk-cover-processed');
             }
-            // processing.removeClass('bibdk-cover-processing');
+            processing.removeClass('bibdk-cover-processing');
           }
         });
 

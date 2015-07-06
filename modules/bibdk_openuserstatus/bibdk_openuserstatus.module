@@ -103,7 +103,7 @@ function bibdk_openuserstatus_theme() {
     'bibdk_openuserstatus_help_icon' => array(
       'template' => 'bibdk_openuserstatus_help_icon',
       'path' => $theme_path,
-      'variables' => array('label' => NULL),
+      'variables' => array('label' => NULL, 'element_id' => NULL),
     ),
   );
 }

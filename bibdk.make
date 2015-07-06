@@ -21,7 +21,7 @@ libraries[ckeditor][download][url] = http://download.cksource.com/CKEditor/CKEdi
 projects[bibdk_theme][type] = theme
 projects[bibdk_theme][download][type] = git
 projects[bibdk_theme][download][url] = git@github.com:DBCDK/bibdk_theme.git
-projects[bibdk_theme][download][tag] = 7.x-0.82
+projects[bibdk_theme][download][tag] = 7.x-0.83
 
 
 ; --- Bibliotek.dk versions of Ding2 modules ---
@@ -79,7 +79,7 @@ projects[ting-client][download][tag] = 7.x-2.30
 projects[ting_agency][type] = module
 projects[ting_agency][download][type] = git
 projects[ting_agency][download][url] = git@github.com:DBCDK/ting_agency.git
-projects[ting_agency][download][tag] = 7.x-0.39
+projects[ting_agency][download][tag] = 7.x-0.40
 
 projects[ting_infomedia][type] = module
 projects[ting_infomedia][download][type] = git
@@ -89,7 +89,7 @@ projects[ting_infomedia][download][tag] = 7.x-1.29
 projects[ting_openformat][type] = module
 projects[ting_openformat][download][type] = git
 projects[ting_openformat][download][url] = git@github.com:DBCDK/ting_openformat.git
-projects[ting_openformat][download][tag] = 7.x-0.68
+projects[ting_openformat][download][tag] = 7.x-0.69
 
 projects[ting_openuserstatus][type] = module
 projects[ting_openuserstatus][download][type] = git
@@ -311,3 +311,8 @@ projects[scheduler][version] = 1.3
 projects[simple_mobile_redirect][subdir] = contrib
 projects[simple_mobile_redirect][type] = module
 projects[simple_mobile_redirect][version] = 1.1
+
+//jquery_update
+projects[jquery_update][subdir] = contrib
+projects[jquery_update][type] = module
+projects[jquery_update][version] = 3.0-alpha2
