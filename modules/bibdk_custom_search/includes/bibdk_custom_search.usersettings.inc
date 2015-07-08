@@ -530,7 +530,7 @@ function theme_bibdk_custom_search_usersettings_admin($variables) {
     '#theme'  => 'table',
     '#header' => $header,
     '#rows' => $rows,
-    '#attributes' => array('id' => $table_id), bibdk_custom_search_usersettings_set_default_values
+    '#attributes' => array('id' => $table_id),
   );
 
   return drupal_render_children($form);
