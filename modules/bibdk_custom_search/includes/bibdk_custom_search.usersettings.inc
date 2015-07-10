@@ -284,8 +284,10 @@ function bibdk_custom_search_ting_openformat_query_filter() {
   $filter = array();
 
   foreach ($elements as $element) {
-    if (isset($default_values[$element->id]) && $default_values[$element->id] == 1) {
-      $filter[$element->description] = $element->value;
+    if (isset($default_values[$element->id])) {
+      if (bibdk_usersettings_user_settings_get($element->id, 0)) {
+        $filter[$element->description] = $element->value;
+      }
     }
   }
 

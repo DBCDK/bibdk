@@ -107,11 +107,6 @@ function _bibdk_custom_search_preprocess_foo($qe, $op) {
 function _bibdk_custom_search_preprocess_query($qe) {
   if (!empty($qe['query'])) {
     $q = urldecode($qe['query']);
-    $materials_settings_query = module_invoke_all('bibdk_materials_settings_query');
-    if (!empty($materials_settings_query)) {
-      // Add users preferences for material types
-      $q .= $materials_settings_query[0];
-    }
     $qe['#preprocessed'][] = '(' . ting_openformat_string_to_cql($q) . ')';
     unset($qe['query']);
   }
