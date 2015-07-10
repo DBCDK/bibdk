@@ -279,15 +279,12 @@ function bibdk_custom_search_usersettings_form_group_element($element, $attribut
  * Method to retrieve custom search code settings
  */
 function bibdk_custom_search_ting_openformat_query_filter() {
-  $default_values = bibdk_usersettings_user_settings_get('bibdk_custom_search_materials', array());
   $elements = variable_get('bibdk_custom_search_user_settings', array());
   $filter = array();
 
   foreach ($elements as $element) {
-    if (isset($default_values[$element->id])) {
-      if (bibdk_usersettings_user_settings_get($element->id, 0)) {
-        $filter[$element->description] = $element->value;
-      }
+    if (bibdk_usersettings_user_settings_get($element->id, 0)) {
+      $filter[$element->description] = $element->value;
     }
   }
 
