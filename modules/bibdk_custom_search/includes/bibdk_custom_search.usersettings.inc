@@ -164,7 +164,6 @@ function bibdk_custom_search_usersettings_materials() {
     '#markup' => t('bibdk_custom_search_materials_description', array(), array('context' => "bibdk_custom_search")),
   );
 
-
   foreach ($elements as $group) {
     $form['materials']['bibdk_custom_search_materials'][$group->id] = bibdk_custom_search_usersettings_form_group($group);
   }
@@ -206,7 +205,7 @@ function bibdk_custom_search_usersettings_set_subelements(&$elements) {
  */
 function bibdk_custom_search_usersettings_form_group($group) {
   $id = $group->id;
-  $group->default_value =  bibdk_usersettings_user_settings_get($group->id, 0);
+  $group->default_value =  bibdk_usersettings_user_settings_get($group->id, '0');
 
   $form = array(
     '#type' => 'container',
@@ -249,6 +248,7 @@ function bibdk_custom_search_usersettings_form_group($group) {
       $form['dependent'][$element->id] = bibdk_custom_search_usersettings_form_group_element($element, $attributes);
     }
   }
+
   return $form;
 }
 
@@ -259,10 +259,12 @@ function bibdk_custom_search_usersettings_form_group($group) {
  * @return array
  */
 function bibdk_custom_search_usersettings_form_group_element($element, $attributes) {
+  if (bibdk_usersettings_user_settings_get($element->id, 0) == '') { $def = '0'; } else {$def = '1';
+  }
   return array(
     '#type' => 'radios',
     '#title' => t($element->description, array(), array('context' => "bibdk_custom_search")),
-    '#default_value' => bibdk_usersettings_user_settings_get($element->id, 0),
+    '#default_value' => $def,
     '#parents' => array('elements', 'materials', 'bibdk_custom_search_materials', $element->id),
     '#options' => array(
       0 => t('show values', array(), array('context' => "bibdk_custom_search")),
