@@ -205,7 +205,7 @@ function bibdk_custom_search_usersettings_set_subelements(&$elements) {
  */
 function bibdk_custom_search_usersettings_form_group($group) {
   $id = $group->id;
-  $group->default_value =  bibdk_usersettings_user_settings_get($group->id, '0');
+  $group->default_value =  bibdk_usersettings_user_settings_get($group->id, TRUE);
 
   $form = array(
     '#type' => 'container',
@@ -259,12 +259,10 @@ function bibdk_custom_search_usersettings_form_group($group) {
  * @return array
  */
 function bibdk_custom_search_usersettings_form_group_element($element, $attributes) {
-  if (bibdk_usersettings_user_settings_get($element->id, 0) == '') { $def = '0'; } else {$def = '1';
-  }
   return array(
     '#type' => 'radios',
     '#title' => t($element->description, array(), array('context' => "bibdk_custom_search")),
-    '#default_value' => $def,
+    '#default_value' => bibdk_usersettings_user_settings_get($element->id, TRUE),
     '#parents' => array('elements', 'materials', 'bibdk_custom_search_materials', $element->id),
     '#options' => array(
       0 => t('show values', array(), array('context' => "bibdk_custom_search")),
@@ -537,21 +535,4 @@ function theme_bibdk_custom_search_usersettings_admin($variables) {
   return drupal_render_children($form);
 }
 
-/**
- * implements hook_bibdk_materials_settings_query
- *
- */
-
-function bibdk_custom_search_bibdk_materials_settings_query() {
-  if (user_is_logged_in()) {
-    $elements = variable_get('bibdk_custom_search_user_settings', array());
-    $query = '';
-    foreach ($elements as $element) {
-      if (bibdk_usersettings_user_settings_get($element->id, 0)) {
-        $query .= CQL_NOT . '(' . $element->value . ')';
-      } 
-    }
-    return $query;
-  }
-}
 
