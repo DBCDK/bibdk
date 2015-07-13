@@ -205,7 +205,6 @@ function bibdk_custom_search_usersettings_set_subelements(&$elements) {
  */
 function bibdk_custom_search_usersettings_form_group($group) {
   $id = $group->id;
-  $group->default_value =  bibdk_usersettings_user_settings_get($group->id, TRUE);
 
   $form = array(
     '#type' => 'container',
