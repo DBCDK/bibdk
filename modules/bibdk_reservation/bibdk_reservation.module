@@ -290,12 +290,13 @@ function bibdk_reservation_create_wizard_form($form, &$form_state) {
       '#submit' => array('bibdk_reservation_mail_form_submit'),
       '#name' => 'sendmail',
       '#value' => t('sendmail', array(), array('context' => 'bibdk_reservation')),
+ 
     );
 
     //Add a print button
     $form['navigation']['print'] = array(
       '#type' => 'markup',
-      '#markup' => '<a href="JavaScript:window.print();" class="btn btn-grey form-submit" />' . t('print', array(), array('context' => 'bibdk_reservation')) . '</a>',
+      '#markup' => '<span style="display:inline-block"><a href="JavaScript:window.print();" class="btn btn-grey form-submit hide-for-small" />' . t('print', array(), array('context' => 'bibdk_reservation')) . '</a> </span>' ,
     );
 
     // Email textfield
