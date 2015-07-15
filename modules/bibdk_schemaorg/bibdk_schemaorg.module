@@ -1,0 +1,85 @@
+<?php
+
+/**
+ * @file
+ * Enables administrators to annotate their structured content with vocabularies
+ * from schema.org.
+ */
+
+require('bibdk_schemaorg.admin.inc');
+
+/**
+ * Implements hook_help().
+ */
+function bibdk_schemaorg_help($path, $arg) {
+
+  switch ($path) {
+    case 'admin/help#bibdk_schemaorg':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('<a href="@schemaorg">Schema.org</a> provides a collection of schemas useful for site builders and administrators to annotate their pages in ways recognized by major search engines including Bing, Google and Yahoo!. These semantic annotations allow search providers to improve the display of search results, making it easier for people to find what they are looking for on the Web. ', array('@schemaorg' => 'http://schema.org/')) . '</p>';
+      $output .= '<p>' . t('Each of your <a href="@content_types">content types</a> and their fields can be mapped to schema.org vocabularies. The type (e.g. Event) and the property of the title (e.g. name) are defined in the edit form of each content type, in the "Schema.org" vertical tab. The property of each field can be set when editing a field, in the schema.org fieldset.', array('@content_types' => url('admin/structure/types'))) . '</p>';
+      return $output;
+  }
+
+}
+
+
+/**
+ * Implements hook_field_alter().
+ */
+function bibdk_schemaorg_openformat_field_alter(&$field, $field_name) {
+  
+  $schema_org_vars = variable_get('schema_org_vars', array());
+
+  if ( !isset($schema_org_vars[$field_name]) ) {
+    return;
+  }
+  
+  if ( empty($schema_org_vars[$field_name]['property']) ) {
+    return;
+  }
+
+  foreach ($field as $key => $field_item) {
+    if (!isset($field_item['#theme']) || $field_item['#theme'] != 'ting_openformat_field') {
+      continue;
+    }
+    $field[$key]['#theme'] = 'bibdk_schemaorg_field';
+    $field[$key]['#property'] = $schema_org_vars[$field_name]['property'];
+    $field[$key]['#typeof'] = (!empty($schema_org_vars[$field_name]['typeof'])) ? $schema_org_vars[$field_name]['typeof'] : '';
+    $field[$key]['#typeof_property'] = (!empty($schema_org_vars[$field_name]['typeof_property'])) ? $schema_org_vars[$field_name]['typeof_property'] : '';
+    
+  }
+
+}
+
+
+/**
+ * Implements hook_theme().
+ */
+function bibdk_schemaorg_theme() {
+
+  $path = drupal_get_path('module', 'bibdk_schemaorg') . '/theme';
+
+  return array(
+    'bibdk_schemaorg_field' => array(
+      'path' => $path,
+      'render element' => 'element',
+      'template' => 'bibdk_schemaorg_field',
+    ),
+  );
+
+}
+
+
+/**
+ * Add Schema.org markup to body element
+ */
+function bibdk_schemaorg_preprocess_html(&$vars) {
+
+  $vars['attributes_array']['vocab'] = array('http://schema.org/');
+  $vars['attributes_array']['typeof'] = array('WebPage');
+
+}
+
+
