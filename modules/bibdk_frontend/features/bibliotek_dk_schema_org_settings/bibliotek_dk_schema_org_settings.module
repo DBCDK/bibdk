@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Bibliotek.dk - Schema.org settings feature.
+ */
+
+include_once 'bibliotek_dk_schema_org_settings.features.inc';
