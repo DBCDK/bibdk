@@ -1,5 +1,5 @@
 name = Bibliotek.dk - Schema.org
 description = Annotate manifestations using the schema.org vocabularies.
 package = "Bibliotek.dk"
-; dependencies[] = rdf
+dependencies[] = bibdk_linkme
 core = 7.x

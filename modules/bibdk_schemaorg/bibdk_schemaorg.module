@@ -60,7 +60,6 @@ function bibdk_schemaorg_openformat_field_alter(&$field, $field_name) {
 function bibdk_schemaorg_theme() {
 
   $path = drupal_get_path('module', 'bibdk_schemaorg') . '/theme';
-
   return array(
     'bibdk_schemaorg_field' => array(
       'path' => $path,
@@ -79,7 +78,99 @@ function bibdk_schemaorg_preprocess_html(&$vars) {
 
   $vars['attributes_array']['vocab'] = array('http://schema.org/');
   $vars['attributes_array']['typeof'] = array('WebPage');
+  
+  if (isset($vars['page']['content']['system_main']['#uid']) && $uid = $vars['page']['content']['system_main']['#uid']) {
+    $vars['attributes_array']['resource'] = array(bibdk_linkme_generate_permalink($uid));
+  }
 
 }
 
 
+/**
+ * Add Schema.org markup to body element
+ */
+function bibdk_schemaorg_preprocess_page(&$vars) {
+
+  if (isset($vars['page']['content'])) {
+
+    $vars['page']['content']['schema_org_description'] = array(
+      '#type' => 'html_tag',
+      '#tag' => 'meta',
+      '#attributes' => array('property' => 'description', 'content' => 'Om bibliotek.dk: Du kan se hvad der er udgivet i Danmark, og hvad der findes p&aring; danske offentlige biblioteker - og du kan bestille det, eller se hvilket bibliotek der har materialet hjemme.')
+    );
+
+    $vars['page']['content']['schema_org_creator'] = array(
+      '#type' => 'container',
+      '#attributes' => array('property' => 'creator', 'vocab' => 'http://schema.org/', 'typeof' => 'Organization'),
+      'publisher' => array(
+        '#type' => 'html_tag',
+        '#tag' => 'meta',
+        '#attributes' => array('property' => 'name', 'content' => 'DBC A/S'),
+      ),
+      'logo' => array(
+        '#type' => 'container',
+        '#attributes' => array('property' => 'logo', 'vocab' => 'http://schema.org/', 'typeof' => 'ImageObject '),
+        'image' => array(
+          '#type' => 'html_tag',
+          '#tag' => 'meta',
+          '#attributes' => array('property' => 'contentUrl', 'content' => 'http://www.dbc.dk/logo.png'),
+        ),
+      ),
+      'description' => array(
+        '#type' => 'html_tag',
+        '#tag' => 'meta',
+        '#attributes' => array('property' => 'description', 'content' => 'DBC\'s hovedopgave er at drive og udvikle den bibliografiske og systemm&aelig;ssige infrastruktur til bibliotekerne i Danmark.'),
+      ),
+      'telephone' => array(
+        '#type' => 'html_tag',
+        '#tag' => 'meta',
+        '#attributes' => array('property' => 'telephone', 'content' => ' +45 44 86 77 77'),
+      ),
+      'email' => array(
+        '#type' => 'html_tag',
+        '#tag' => 'meta',
+        '#attributes' => array('property' => 'email', 'content' => 'dbc@dbc.dk'),
+      ),
+      'url' => array(
+        '#type' => 'html_tag',
+        '#tag' => 'meta',
+        '#attributes' => array('property' => 'url', 'content' => 'http://www.dbc.dk/'),
+      ),
+      'address' => array(
+        '#type' => 'container',
+        '#attributes' => array('property' => 'address', 'vocab' => 'http://schema.org/', 'typeof' => 'PostalAddress'),
+        'streetaddress' => array(
+          '#type' => 'html_tag',
+          '#tag' => 'meta',
+          '#attributes' => array('property' => 'streetAddress', 'content' => 'Tempovej 7-11'),
+        ),
+        'postalcode' => array(
+          '#type' => 'html_tag',
+          '#tag' => 'meta',
+          '#attributes' => array('property' => 'postalCode', 'content' => '2750'),
+        ),
+        'addresslocality' => array(
+          '#type' => 'html_tag',
+          '#tag' => 'meta',
+          '#attributes' => array('property' => 'addressLocality', 'content' => 'Ballerup'),
+        ),
+      ),
+    );
+
+    $vars['page']['content']['schema_org_sourceorganization'] = array(
+      '#type' => 'container',
+      '#attributes' => array('property' => 'sourceOrganization', 'vocab' => 'http://schema.org/', 'typeof' => 'Organization'),
+      'creator' => array(
+        '#type' => 'html_tag',
+        '#tag' => 'meta',
+        '#attributes' => array('property' => 'name', 'content' => 'Kulturstyrelsen'),
+      ),
+      'url' => array(
+        '#type' => 'html_tag',
+        '#tag' => 'meta',
+        '#attributes' => array('property' => 'url', 'content' => 'http://www.kulturstyrelsen.dk/'),
+      ),
+    );
+
+  }
+}
