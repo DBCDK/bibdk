@@ -14,7 +14,7 @@ function bibdk_schemaorg_form_field_ui_field_edit_form_alter(&$form, &$form_stat
   $instance = $form['instance'];
   $label = isset($instance['label']) ? $instance['label']['#default_value'] : $instance['field_name'];
   
-  $schema_org_vars = variable_get('schema_org_vars', array());
+  $bibdk_schema_org_vars = variable_get('bibdk_schema_org_vars', array());
 
   // Attach the css  & js to the form
   $path = drupal_get_path('module', 'bibdk_schemaorg');
@@ -36,7 +36,7 @@ function bibdk_schemaorg_form_field_ui_field_edit_form_alter(&$form, &$form_stat
     '#type' => 'textfield',
     '#title' => t('Schema.org property'),
     '#description' => t('Specify the property you want to associated to this field.'),
-    '#default_value' => (isset($schema_org_vars[$field_name]['property'])) ? $schema_org_vars[$field_name]['property'] : '',
+    '#default_value' => (isset($bibdk_schema_org_vars[$field_name]['property'])) ? $bibdk_schema_org_vars[$field_name]['property'] : '',
     '#attributes' => array('class' => array('bibdk_schemaorg')),
   );
 
@@ -44,7 +44,7 @@ function bibdk_schemaorg_form_field_ui_field_edit_form_alter(&$form, &$form_stat
     '#type' => 'textfield',
     '#title' => t('Schema.org data type'),
     '#description' => t('Expected type for this property, if not text or an integer. f.ex. Person, Organization or Date'),
-    '#default_value' => (isset($schema_org_vars[$field_name]['typeof'])) ? $schema_org_vars[$field_name]['typeof'] : '',
+    '#default_value' => (isset($bibdk_schema_org_vars[$field_name]['typeof'])) ? $bibdk_schema_org_vars[$field_name]['typeof'] : '',
     '#attributes' => array('class' => array('bibdk_schemaorg')),
   );
 
@@ -52,7 +52,7 @@ function bibdk_schemaorg_form_field_ui_field_edit_form_alter(&$form, &$form_stat
     '#type' => 'textfield',
     '#title' => t('Data type property <span class="form-required" title="This field is required.">*</span>'),
     '#description' => t('Property for the Schema.org data type.'),
-    '#default_value' => ( isset($schema_org_vars[$field_name]['typeof_property'])) ? $schema_org_vars[$field_name]['typeof_property'] : '',
+    '#default_value' => ( isset($bibdk_schema_org_vars[$field_name]['typeof_property'])) ? $bibdk_schema_org_vars[$field_name]['typeof_property'] : '',
     '#attributes' => array('class' => array('bibdk_schemaorg')),
   );
 
@@ -68,15 +68,15 @@ function bibdk_schemaorg_field_ui_field_edit_form_submit($form, &$form_state) {
 
   $field_name = $form['#field']['field_name'];
 
-  $schema_org_vars = variable_get('schema_org_vars', array());
+  $bibdk_schema_org_vars = variable_get('bibdk_schema_org_vars', array());
 
   $typeof_property = ( empty($form_state['values']['bibdk_schemaorg_field_typeof']) ) ? '' : $form_state['values']['bibdk_schemaorg_field_typeof_property'];
 
-  $schema_org_vars[$field_name]['property']        = $form_state['values']['bibdk_schemaorg_field_property'];
-  $schema_org_vars[$field_name]['typeof']          = $form_state['values']['bibdk_schemaorg_field_typeof'];
-  $schema_org_vars[$field_name]['typeof_property'] = $typeof_property;
+  $bibdk_schema_org_vars[$field_name]['property']        = $form_state['values']['bibdk_schemaorg_field_property'];
+  $bibdk_schema_org_vars[$field_name]['typeof']          = $form_state['values']['bibdk_schemaorg_field_typeof'];
+  $bibdk_schema_org_vars[$field_name]['typeof_property'] = $typeof_property;
 
-  variable_set('schema_org_vars', $schema_org_vars);
+  variable_set('bibdk_schema_org_vars', $bibdk_schema_org_vars);
 
 }
 
