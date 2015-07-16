@@ -157,8 +157,23 @@ function bibdk_netarchive_search($local_id) {
   }
 
   foreach ( $manifestations as $manifestation ) {
-    $item['title'] = _ting_openformat_parse_element($manifestation->getTitle());
-    $item['creator'] = _ting_openformat_parse_element($manifestation->getCreator());
+
+    $title = '';
+    array_walk_recursive(_ting_openformat_parse_element($manifestation->getTitle()), function($value, $key) use(&$title) {
+      if ($key == '#markup' || $key == '#text') {
+        $title = $value;
+      }
+    });
+
+    $creator = '';
+    array_walk_recursive(_ting_openformat_parse_element($manifestation->getCreator()), function($value, $key) use(&$creator) {
+      if ($key == '#markup' || $key == '#text') {
+        $creator = $value;
+      }
+    });
+
+    $item['title'] = $title;
+    $item['creator'] = $creator;
     $item['pid'] = ( !empty($manifestation->id) ) ? $manifestation->id : FALSE;
     if ($item['pid']) {
       $i = explode(':', $item['pid']);
@@ -171,6 +186,21 @@ function bibdk_netarchive_search($local_id) {
 
 }
 
+
+/**
+ * callback for array_walk_recursive: Get value of '#markup' or '#text' key
+ * @param string $local_id openSearch record identifier
+ * @return mixed. Array or FALSE
+ */
+function _bibdk_netarchive_array_walk_callback(&$val, &$key, &$obj) {
+  dpm("$key holds $val");
+  // if ($key == '#markup' || $key == '#text') {
+  //   $obj = $val;
+  // }
+  $obj[] = $val;
+dpm($obj);
+  return $obj;
+}
 
 
 /** Implements hook_ting_openformat_actions
