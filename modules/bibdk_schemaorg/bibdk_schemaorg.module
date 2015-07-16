@@ -18,7 +18,7 @@ function bibdk_schemaorg_help($path, $arg) {
       $output = '';
       $output .= '<h3>' . t('About') . '</h3>';
       $output .= '<p>' . t('<a href="@schemaorg">Schema.org</a> provides a collection of schemas useful for site builders and administrators to annotate their pages in ways recognized by major search engines including Bing, Google and Yahoo!. These semantic annotations allow search providers to improve the display of search results, making it easier for people to find what they are looking for on the Web. ', array('@schemaorg' => 'http://schema.org/')) . '</p>';
-      $output .= '<p>' . t('Each of your <a href="@content_types">content types</a> and their fields can be mapped to schema.org vocabularies. The type (e.g. Event) and the property of the title (e.g. name) are defined in the edit form of each content type, in the "Schema.org" vertical tab. The property of each field can be set when editing a field, in the schema.org fieldset.', array('@content_types' => url('admin/structure/types'))) . '</p>';
+      $output .= '<p>' . t('Each of the bibliotek.dk fields can be mapped to schema.org vocabularies. The type (e.g. Event) and the property of the title (e.g. name) are defined in the edit form of each content type, in the "Schema.org" vertical tab. The property of each field can be set when editing a field, in the schema.org fieldset.', array('@content_types' => url('admin/structure/types'))) . '</p>';
       return $output;
   }
 
