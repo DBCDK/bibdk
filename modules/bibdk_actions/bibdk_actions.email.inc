@@ -55,7 +55,7 @@ function bibdk_actions_email_page($ids, $sent = FALSE) {
       $view['#theme'] = 'bibdk_actions_email';
       $content[]['#markup'] = theme('bibdk_actions_email', array('strings' => $view['display']));
       if (empty($title)) {
-        $title = $manifestation->getTitle();
+        $title = $manifestation->getTitleSpecific();
       }
     }
     $form_values['content'] = $content;
