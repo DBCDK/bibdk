@@ -187,22 +187,6 @@ function bibdk_netarchive_search($local_id) {
 }
 
 
-/**
- * callback for array_walk_recursive: Get value of '#markup' or '#text' key
- * @param string $local_id openSearch record identifier
- * @return mixed. Array or FALSE
- */
-function _bibdk_netarchive_array_walk_callback(&$val, &$key, &$obj) {
-  dpm("$key holds $val");
-  // if ($key == '#markup' || $key == '#text') {
-  //   $obj = $val;
-  // }
-  $obj[] = $val;
-dpm($obj);
-  return $obj;
-}
-
-
 /** Implements hook_ting_openformat_actions
  * Add actions to work, subwork and manifestations
  * @param $type
