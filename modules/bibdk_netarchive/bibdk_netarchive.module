@@ -156,21 +156,21 @@ function bibdk_netarchive_search($local_id) {
     return array('title'=>'','creator'=>'');
   }
 
+  $callback = function ($value, $key) use (&$item) {
+    if ($key == '#markup' || $key == '#text') {
+      $item = $value;
+    }
+  };
+
   foreach ( $manifestations as $manifestation ) {
 
-    $title = '';
-    array_walk_recursive(_ting_openformat_parse_element($manifestation->getTitle()), function($value, $key) use(&$title) {
-      if ($key == '#markup' || $key == '#text') {
-        $title = $value;
-      }
-    });
+    $item = '';
+    array_walk_recursive(_ting_openformat_parse_element($manifestation->getTitle()), $callback);
+    $title = $item;
 
-    $creator = '';
-    array_walk_recursive(_ting_openformat_parse_element($manifestation->getCreator()), function($value, $key) use(&$creator) {
-      if ($key == '#markup' || $key == '#text') {
-        $creator = $value;
-      }
-    });
+    $item = '';
+    array_walk_recursive(_ting_openformat_parse_element($manifestation->getCreator()), $callback);
+    $creator = $item;
 
     $item['title'] = $title;
     $item['creator'] = $creator;
