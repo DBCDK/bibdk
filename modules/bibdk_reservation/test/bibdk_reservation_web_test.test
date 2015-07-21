@@ -86,10 +86,17 @@ class BibdkReservationWebTestCase extends DrupalWebTestCase {
     debug('Testing single URL');
     $singleUrlManifestation = new Manifestation(unserialize(file_get_contents(drupal_get_path('module', 'bibdk_reservation') . '/test/mockup/serialized/singleUrl.serialized')));
     $infocode = $singleUrlManifestation->getInfoText();
+
+    if (!function_exists('_ting_openformat_render_direct_link')) {
+      module_load_include('inc', 'bibdk_reservation', 'includes/bibdk_reservation.messages');
+    }
+    if (!function_exists('bibdk_reservation_translate')) {
+      module_load_include('inc', 'bibdk_reservation', 'includes/bibdk_reservation_helpers');
+    }
+    
     $message = _ting_openformat_render_direct_link($infocode, $singleUrlManifestation);
     $links = _bibdk_reservation_get_access_links($singleUrlManifestation);
-
-    $this->assertTrue((strpos($message, $links) !== FALSE), 'Found expected links in string');
+    $this->assertTrue((strpos($message, $links[0]['#openformat_field']['#path']) !== FALSE), 'Found expected links in string');
 
     debug('Testing multiple URLs');
     $multipleUrlManifestation = new Manifestation(unserialize(file_get_contents(drupal_get_path('module', 'bibdk_reservation') . '/test/mockup/serialized/multipleUrl.serialized')));
@@ -98,8 +105,9 @@ class BibdkReservationWebTestCase extends DrupalWebTestCase {
     $message = _ting_openformat_render_direct_link($infocode, $multipleUrlManifestation);
     $links = _bibdk_reservation_get_access_links($multipleUrlManifestation);
 
-    $this->assertTrue((strpos($message, $links) !== FALSE), 'Found expected links in string');
-
+    // $this->assertTrue((strpos($message, $links) !== FALSE), 'Found expected links in string');
+    $this->assertTrue((strpos($message, $links[0]['#openformat_field']['#path']) !== FALSE), 'Found expected links in string');
+    $this->assertTrue((strpos($message, $links[2]['#openformat_field']['#path']) !== FALSE), 'Found expected links in string');
   }
 
   private function _test_bibdk_reservation_get_access_links() {
