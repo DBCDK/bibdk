@@ -165,11 +165,13 @@ function bibdk_netarchive_search($local_id) {
   foreach ( $manifestations as $manifestation ) {
 
     $item = '';
-    array_walk_recursive(_ting_openformat_parse_element($manifestation->getTitle()), $callback);
+    $title_array = _ting_openformat_parse_element($manifestation->getTitle());
+    array_walk_recursive($title_array, $callback);
     $title = $item;
 
     $item = '';
-    array_walk_recursive(_ting_openformat_parse_element($manifestation->getCreator()), $callback);
+    $creator_array = _ting_openformat_parse_element($manifestation->getCreator());
+    array_walk_recursive($creator_array, $callback);
     $creator = $item;
 
     $item['title'] = $title;
