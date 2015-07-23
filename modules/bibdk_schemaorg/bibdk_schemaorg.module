@@ -30,7 +30,7 @@ function bibdk_schemaorg_help($path, $arg) {
  */
 function bibdk_schemaorg_openformat_field_alter(&$field, $field_name) {
   
-  $schema_org_vars = variable_get('schema_org_vars', array());
+  $schema_org_vars = variable_get('bibdk_schema_org_vars', array());
 
   if ( !isset($schema_org_vars[$field_name]) ) {
     return;
