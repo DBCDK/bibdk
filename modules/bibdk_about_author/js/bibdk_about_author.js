@@ -22,7 +22,7 @@
 
         /* Call ajax */
         var request = $.ajax({
-            url:Drupal.settings.basePath + 'about_author/ajax',
+            url:Drupal.settings.basePath + Drupal.settings.pathPrefix + 'about_author/ajax',
             type:'POST',
             data:{
                 query:query

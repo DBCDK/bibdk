@@ -58,7 +58,10 @@ function bibdk_frontend_module_implements_alter(&$implementations, $hook) {
  *
  * @param $account
  * @return mixed
+ *
+ * NB: JGN: Unused function?!
  */
+/*
 function _bibdk_frontend_get_user_language($account) {
   // set language from account
   $languages = language_list();
@@ -66,6 +69,8 @@ function _bibdk_frontend_get_user_language($account) {
 
   return $languages[$lingo];
 }
+*/
+
 
 /**
  * Redirects the user after a successful login.

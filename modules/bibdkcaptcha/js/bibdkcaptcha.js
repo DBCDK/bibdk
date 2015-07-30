@@ -15,7 +15,7 @@
     Drupal.behaviors.bibdkcaptcha = {
         attach : function(context) {
             
-            var basepath = Drupal.settings.basePath;
+            var basepath = Drupal.settings.basePath + Drupal.settings.pathPrefix;
             var audio_element = '#bibdkcaptcha-controls-playcaptcha-embed';
 
             $("#bibdkcaptcha-controls-refreshbtn").click(function() {
@@ -33,7 +33,7 @@
                 var type = 'wav';
 
                 var mainUrl = 'captcha/playaudiocaptcha'+"/"+$('input[name=captcha_sid]').val()+"/"+$('input[name=captcha_token]').val()+"/"
-                var url = basepath + Drupal.settings.pathPrefix + mainUrl;
+                var url = basepath + mainUrl;
 
                 if($.browser['msie']){
                     type = 'mp3';

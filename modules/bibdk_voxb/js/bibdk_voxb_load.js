@@ -27,7 +27,7 @@
     div.find('.rating').once().last().append('<span class="ajax-progress" style="padding-left:2em; margin-top:-3px"><span class="throbber"></span></span>');
     var pid = $(div).attr('data-pid');
     var request = $.ajax({
-      url: Drupal.settings.basePath + 'voxb/ajax/get_rating',
+      url: Drupal.settings.basePath + Drupal.settings.pathPrefix + 'voxb/ajax/get_rating',
       type: 'POST',
       data: {
         pid: pid
@@ -38,7 +38,7 @@
   };
 
   Bibdk_voxb.voxbUpdateRating = function(link) {
-    var href = Drupal.settings.basePath + link.attr('href');
+    var href = Drupal.settings.basePath + Drupal.settings.pathPrefix + link.attr('href');
     // find the div holding the link
     var div = link.closest('.bibdk_voxb_tab');
     // show a throbber
