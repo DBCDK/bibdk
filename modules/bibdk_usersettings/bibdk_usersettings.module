@@ -143,7 +143,6 @@ function bibdk_usersettings_user_settings_form_submit($form, &$form_state) {
   }
   
   $groups = $form_state['values']['elements'];
-
   foreach($groups as $group) {
     foreach($group as $key => $value) {
       if (is_array($value) && isset($form_state['values']['array_filter'])) {
@@ -151,13 +150,19 @@ function bibdk_usersettings_user_settings_form_submit($form, &$form_state) {
       }
       if (is_array($value)) {
         foreach($value as $val) {
-          $key_value = 'bibdk_custom_search_start_expand_';
-          $vars = explode("/",$val);
-          if (sizeof($vars) > 1) {
-            $key_value .= $vars[1];
-          }
-          if ($vars[0] == "bibdk_frontpage") {
-            bibdk_usersettings_user_settings_set($key_value, $val);
+          if ($key == "bibdk_custom_search_materials") {
+            foreach($value as $element => $bool_val) {
+              bibdk_usersettings_user_settings_set($element, $bool_val);
+            }
+          } else {
+            $key_value = 'bibdk_custom_search_start_expand_';
+            $vars = explode("/",$val);
+            if (sizeof($vars) > 1) {
+              $key_value .= $vars[1];
+            }
+            if ($vars[0] == "bibdk_frontpage") {
+              bibdk_usersettings_user_settings_set($key_value, $val);
+            }
           }
         }
       } else {
