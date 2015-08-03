@@ -4,6 +4,8 @@
  * Holds methods for handling facet filtering
  */
 
+require_once('bibdk_facetbrowser.helptexts.inc');
+
 function bibdk_facetbrowser_filter_form_submit($form, &$form_state){
   $query = bibdk_facet_browser_filter_form_parse_query($form, $form_state);
   $form_state['redirect'] = bibdk_facetbrowser_filter_form_get_redirect($query);
@@ -87,13 +89,13 @@ function bibdk_facetbrowser_filter_form_column_headlines(){
     ),
   );
 
-  $output['container']['select'] = array(
+  $output['container']['select']['labet'] = array(
     '#type' => 'html_tag',
     '#tag' => 'span',
     '#value' => t('label_facet_select', array(), array('context' => 'bibdk_facetbrowser')),
   );
 
-  $output['container']['deselect'] = array(
+  $output['container']['deselect']['label'] = array(
     '#type' => 'html_tag',
     '#tag' => 'span',
     '#value' => t('label_facet_deselect', array(), array('context' => 'bibdk_facetbrowser')),
