@@ -93,6 +93,7 @@
     groups.each(function(){
       BibdkFacets.setGroupEvents($(this),context);
       BibdkFacets.FoldFacetGroup($(this), 0, context);
+      BibdkFacets.SetFilterEvent($(this));
     });
   };
 
@@ -234,6 +235,7 @@
     // show less event
     group.find($("div[data-expand='less'] span")).on('click', function () {
       BibdkFacets.FoldFacetGroup(group, 0);
+      BibdkFacets.showAndHide();
     });
   };
 
@@ -282,6 +284,10 @@
       window.location = $(e.target).parent().find('a').attr('href');
     });
 
+    BibdkFacets.showAndHide();
+  };
+
+  BibdkFacets.showAndHide = function(){
     // @TODO why would you wanna hide valid facets ??
     // disambiguate facets that are hidden because some facets are already selected, and facets that are not yet shown.
     $("#bibdk-facetbrowser-form").find("a[data-hidden='0']").each(function(count, facetElement) {
