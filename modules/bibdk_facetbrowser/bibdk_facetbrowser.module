@@ -547,6 +547,52 @@ function _bibdk_facetbrowser_parseSelectionUri($uri, $facet) {
   }
 }
 
+function bibdk_facetbrowser_block_info() {
+  // facetbrowser activation link for mobile.
+  $blocks['bibdk_works_controls_facets_link'] = array(
+    'info' => t('Bibdk: Mobile facets link'),
+    'description' => t('Link to show facets on mobile devices'),
+  );
+  return $blocks;
+}
+
+
+/**
+ * Implements hook_block_view()
+ *
+ * @return Array
+ * See also: bibdk_facetbrowser ctools content_type
+ */
+function bibdk_facetbrowser_block_view($delta = FALSE) {
+  $block = array();
+
+  if ($delta == 'bibdk_works_controls_facets_link') {
+    // facetbrowser activation link for mobile.
+    $text = t('View facets', array(), array('context' => 'bibdk_frontend'));
+    $js[] = drupal_get_path('module', 'bibdk_facetbrowser') . '/js/facetbrowser.mobile.js';
+
+    $block['content'] = array(
+      '#theme' => 'link',
+      '#text' => $text,
+      '#path' => 'bibdk_modal/facetgroups',
+      '#options' => array(
+        'attributes' => array(
+          'class' => array('bibdk-facets-mobile', ''),
+          'title' => $text,
+          'data-reveal-id' => 'bibdk-modal',
+          'data-reveal-ajax' => 'true',
+        ),
+        'html' => FALSE,
+      ),
+      '#attached' => array(
+        'js' => $js,
+      ),
+    );
+  }
+
+  return $block;
+}
+
 
 /**
  * facetbrowser theme function
