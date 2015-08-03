@@ -25,7 +25,8 @@
       else {
         element = $('#bibdk-facetbrowser-form');
         if (element.length < 1) {
-          $('.bibdk_facetbrowser_facets_placeholder', context).on('ready', function () {
+
+          $('.bibdk_facetbrowser_facets_placeholder', context).ready(function () {
             var div = $('.bibdk_facetbrowser_facets_placeholder');
             // show a spinner while we are waiting for the facets
             div.html('<div class="ajax-progress ajax-progress-throbber"><div class="throbber"></div></div>');
