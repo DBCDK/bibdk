@@ -89,7 +89,7 @@ function bibdk_facetbrowser_filter_form_column_headlines(){
     ),
   );
 
-  $output['container']['select']['labet'] = array(
+  $output['container']['select']['label'] = array(
     '#type' => 'html_tag',
     '#tag' => 'span',
     '#value' => t('label_facet_select', array(), array('context' => 'bibdk_facetbrowser')),
