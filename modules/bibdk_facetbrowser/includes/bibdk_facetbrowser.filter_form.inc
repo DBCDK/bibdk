@@ -146,9 +146,6 @@ function bibdk_facetbrowser_filter_form($form, $form_state, $facet_name) {
   $field_set[$name_key]['#theme'] = 'bibdk_facetbrowser_multicolumns_checkboxes';
   $form['checkbox-elements'] = $field_set;
 
-  // attach the stylesheet
-  $form['#attached']['css'][] =
-    drupal_get_path('module', 'bibdk_facetbrowser') . '/css/facetbrowser_filter_form.css';
   return $form;
 }
 
