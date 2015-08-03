@@ -7,6 +7,14 @@
    */
   Drupal.behaviors.tingOpenformatLoad = {
     attach: function (context) {
+
+      if(context !== document){
+        return;
+      }
+
+      console.log('FACET ATTACH');
+
+
       // check if placeholder for ajax is present
       var element = $('.bibdk_facetbrowser_facets_placeholder');
       if(element.length == 0) {
@@ -17,7 +25,7 @@
       else {
         element = $('#bibdk-facetbrowser-form');
         if (element.length < 1) {
-          $('.bibdk_facetbrowser_facets_placeholder', context).ready(function () {
+          $('.bibdk_facetbrowser_facets_placeholder', context).on('ready', function () {
             var div = $('.bibdk_facetbrowser_facets_placeholder');
             // show a spinner while we are waiting for the facets
             div.html('<div class="ajax-progress ajax-progress-throbber"><div class="throbber"></div></div>');
@@ -25,6 +33,16 @@
           });
         }
       }
+    },
+    detach: function(context){
+      if(context !== document){
+        return;
+      }
+      console.log('FACET DETACH');
+      var groups = $('#bibdk-facetbrowser-form fieldset:visible');
+      groups.each(function(){
+        BibdkFacets.offGroupEvent($(this), context);
+      });
     }
   };
 
@@ -47,8 +65,8 @@
       // update group element
       var new_group = $('#'+group.attr('id'));
       BibdkFacets.setGroupEvents(new_group);
-      BibdkFacets.FoldFacetGroup(new_group, len);
-      //BibdkFacets.SetFilterEvent(new_group);
+      BibdkFacets.FoldFacetGroup(new_group, len, context);
+      BibdkFacets.SetFilterEvent(new_group);
 
     }
     // call for whole facetbrowser
@@ -73,9 +91,10 @@
     var groups = $('#bibdk-facetbrowser-form fieldset:visible');
     groups.each(function(){
       BibdkFacets.setGroupEvents($(this),context);
-      BibdkFacets.FoldFacetGroup($(this), 0);
+      BibdkFacets.FoldFacetGroup($(this), 0, context);
     });
-  }
+  };
+
 
   /**
    * get lenght of visible checkbox elements in facetgroup
@@ -158,7 +177,7 @@
   /**
    * Fold facet groups to show only n per group.
    */
-  BibdkFacets.FoldFacetGroup = function(group, len) {
+  BibdkFacets.FoldFacetGroup = function(group, len, context) {
     // hide checkboxes in facetgroup
     var limit = parseInt(BibdkFacets.numberToShow(len));
     var count = parseInt(group.attr('data-count'));
@@ -218,11 +237,16 @@
   };
 
   BibdkFacets.SetNoGroupEvents = function(nogroup){
-    $(nogroup).find($("div[data-expand='more'] span")).bind('click', function () {
+    $(nogroup).find($("div[data-expand='more'] span")).on('click', function () {
       $(nogroup).find($("div[data-expand='less']")).show();
       var len = BibdkFacets.facetGroupLength(nogroup);
       BibdkFacets.FoldFacetGroup(nogroup, len);
     });
+  };
+
+  BibdkFacets.offGroupEvent = function(group, context){
+    group.find($("div[data-expand='less'] span")).off('click');
+    group.find($("div[data-expand='more'] span")).off('click');
   };
 
   /*
