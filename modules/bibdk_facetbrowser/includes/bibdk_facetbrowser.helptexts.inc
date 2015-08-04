@@ -26,8 +26,6 @@ function bibdk_facetbrowser_form_bibdk_facetbrowser_filter_form_alter(&$form, $f
   $help_deselect_txt = t('help_deselect_text', array(), array('context' => 'bibdk_facetbrowser'));
   $help_deselect = bibdk_facetbrowser_help_link( $help_deselect_txt, $id );
   $form['headlines']['container']['deselect']['help'] = $help_deselect;
-
-  dpm(func_get_args());
 }
 
 /**
@@ -68,8 +66,10 @@ function bibdk_facetbrowser_help_link($txt, $id) {
         "class" => array(
           "f-dropdown",
           $id,
+          'filter-helptexts-content',
         )
       ),
     ),
+    '#weight' => -1,
   );
 }
