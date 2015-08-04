@@ -29,12 +29,8 @@ function bibdk_facetbrowser_content_type_render($subtype, $conf, $panel_args, $c
 
   $show_count = variable_get('bibdk_facetbrowser_number_shown', 5);
   $show_count_consecutive = variable_get('bibdk_facetbrowser_consecutive_number_shown', 10);
-
-//  drupal_add_css(drupal_get_path('module', 'bibdk_facetbrowser') . '/css/facetbrowser.css');
-
-
   drupal_add_css(drupal_get_path('module', 'bibdk_facetbrowser') . '/css/facetbrowser_filter_form.css');
-  drupal_add_js(drupal_get_path('module', 'bibdk_facetbrowser') . '/js/facetbrowser_new.js');
+  drupal_add_js(drupal_get_path('module', 'bibdk_facetbrowser') . '/js/facetbrowser.js');
   drupal_add_js(
     array(
       'bibdkFacetBrowser' => array(
