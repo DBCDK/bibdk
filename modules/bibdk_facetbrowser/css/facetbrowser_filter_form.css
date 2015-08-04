@@ -34,7 +34,7 @@
 }
 
 #bibdk-facetbrowser-filter-form .checkbox-elements-header span {
-    margin-left: 3%;
+    margin-right: 1%;
 }
 
 #bibdk-facetbrowser-filter-form .checkbox-element-label {
@@ -63,10 +63,12 @@
     margin-right: 10px;
 }
 
+#bibdk-facetbrowser-filter-form .filter-helptexts-content{
+    max-width: 20em;
+}
+
 #bibdk-facetbrowser-filter-form fieldset {
     width: 100%;
-    position: relative;
-    top: -2.5em;
 }
 
 #bibdk-facetbrowser-filter-form .fieldset-wrapper {
@@ -79,11 +81,15 @@
     padding:0;
 }
 
-#bibdk-facetbrowser-filter-form .filter-form-column-header{
+#bibdk-facetbrowser-filter-form .close-reveal-modal{
+    color: #fff;
+}
+
+/*#bibdk-facetbrowser-filter-form .filter-form-column-header{
     background-color: red;
     float: right;
     clear: both;
-}
+}*/
 
 #bibdk-facetbrowser-filter-form .checkbox-element {
     border-bottom: 1px solid darkgray;
