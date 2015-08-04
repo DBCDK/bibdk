@@ -116,6 +116,11 @@ function bibdk_facetbrowser_filter_form_column_headlines(){
 function bibdk_facetbrowser_filter_form($form, $form_state, $facet_name) {
   // submit button
   $form['actions']['submit'] = bibdk_facetbrowser_filter_form_submit_button();
+  $form['actions']['close'] = bibdk_facetbrowser_filter_form_close_button();
+
+  $form['actions2']['submit'] = bibdk_facetbrowser_filter_form_submit_button();
+  $form['actions2']['close'] = bibdk_facetbrowser_filter_form_close_button();
+  $form['actions2']['#weight'] = 100;
   // column text
   $form['headlines'] = bibdk_facetbrowser_filter_form_column_headlines();
   // Get configured title.
@@ -130,12 +135,9 @@ function bibdk_facetbrowser_filter_form($form, $form_state, $facet_name) {
   $group = ting_openformat_get_facet_group($facet_name);
   // Get the fieldset
   $field_set = bibdk_facetbrowser_get_single_facetgroup($group->facets[$facet_name], $form['#title']);
-
-
   $form['#options'] = $field_set[$form['#facet_key']]['#options'];
-  // Get the key for the fieldset facet
-
   $field_set['#weight'] = 3;
+  // Get the key for the fieldset facet
   $field_set[$name_key]['#facet_key'] =  $name_key;
   // keep selected and deselected facets
   $field_set[$name_key]['#selected_facets'] = bibdk_facetbrowser_filter_form_selected_facets();
@@ -143,14 +145,43 @@ function bibdk_facetbrowser_filter_form($form, $form_state, $facet_name) {
   $field_set[$name_key]['#facet_name'] = $facet_name;
   // Unset the 'checkboxes' type.
   unset($field_set[$name_key]['#type']);
+  $page_name = drupal_get_title();
+  drupal_set_title($page_name.' : '. $field_set['#title']);
+  // unset title of the fieldset - it is in the page title
+  unset($field_set['#title']);
   //$field_set['column_headline'] = bibdk_facetbrowser_filter_form_column_headlines();
   // Give the facet a theme (@ see theme/facetbrowser-filter-form-element.tpl.php)
   $field_set[$name_key]['#theme'] = 'bibdk_facetbrowser_multicolumns_checkboxes';
   $form['checkbox-elements'] = $field_set;
 
+
+
   return $form;
 }
 
+function bibdk_facetbrowser_filter_form_close_button(){
+ return array(
+    '#type' => 'submit',
+    '#value' => t('label_facet_close', array(), array('context' => 'bibdk_facetbrowser')),
+    '#attributes' => array(
+      'class' => array('btn', 'btn-blue', 'close-reveal-modal'),
+    ),
+    '#submit' => array('bibdk_facetbrowser_filter_form_submit'),
+    '#weight' => 1,
+  );
+}
+
+function bibdk_facetbrowser_filter_form_submit_button(){
+  return array(
+    '#type' => 'submit',
+    '#value' => t('label_facet_save', array(), array('context' => 'bibdk_facetbrowser')),
+    '#attributes' => array(
+      'class' => array('btn btn-blue save-facet-modal'),
+    ),
+    '#submit' => array('bibdk_facetbrowser_filter_form_submit'),
+    '#weight' => 2,
+  );
+}
 
 function bibdk_facetbrowser_filter_form_deselected_facets(){
   return bibdk_facetbrowser_filter_form_selected_facets(FALSE);
@@ -170,17 +201,6 @@ function bibdk_facetbrowser_filter_form_selected_facets($selected=TRUE) {
 }
 
 
-function bibdk_facetbrowser_filter_form_submit_button(){
-  return array(
-    '#type' => 'submit',
-    '#value' => t('label_facet_save', array(), array('context' => 'bibdk_facetbrowser')),
-    '#attributes' => array(
-      'class' => array('btn btn-blue save-facet-modal'),
-    ),
-    '#submit' => array('bibdk_facetbrowser_filter_form_submit'),
-    '#weight' => 1,
-  );
-}
 
 function bibdk_facetbrowser_filter_form_get_title($facet_name){
   $title = '';
