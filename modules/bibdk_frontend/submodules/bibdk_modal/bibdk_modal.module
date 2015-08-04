@@ -242,6 +242,9 @@ function bibdk_modal_add_ajax_submit(&$output, $form_id) {
     case 'bibdk_voxb_offensive_form':
       $output['wrapper']['button']['#attributes']['class'][] = 'use-ajax-submit';
       break;
+    case 'bibdk_facetbrowser_filter_form' :
+      $output['actions2']['submit']['#attributes']['class'][] = 'use-ajax-submit';
+      break;
   }
 }
 
