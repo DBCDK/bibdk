@@ -164,11 +164,9 @@ function bibdk_custom_search_usersettings_materials() {
     '#markup' => t('bibdk_custom_search_materials_description', array(), array('context' => "bibdk_custom_search")),
   );
 
-
   foreach ($elements as $group) {
     $form['materials']['bibdk_custom_search_materials'][$group->id] = bibdk_custom_search_usersettings_form_group($group);
   }
-
 
   return $form;
 
@@ -229,7 +227,6 @@ function bibdk_custom_search_usersettings_form_group($group) {
 
   // Create sub elements
   if (isset($group->subelements)) {
-
     $form['dependent'] = array(
       '#type' => 'fieldset',
       '#attributes' => array(
@@ -250,6 +247,7 @@ function bibdk_custom_search_usersettings_form_group($group) {
       $form['dependent'][$element->id] = bibdk_custom_search_usersettings_form_group_element($element, $attributes);
     }
   }
+
   return $form;
 }
 
@@ -263,7 +261,7 @@ function bibdk_custom_search_usersettings_form_group_element($element, $attribut
   return array(
     '#type' => 'radios',
     '#title' => t($element->description, array(), array('context' => "bibdk_custom_search")),
-    '#default_value' => $element->default_value,
+    '#default_value' => bibdk_usersettings_user_settings_get($element->id, TRUE),
     '#parents' => array('elements', 'materials', 'bibdk_custom_search_materials', $element->id),
     '#options' => array(
       0 => t('show values', array(), array('context' => "bibdk_custom_search")),
@@ -280,12 +278,11 @@ function bibdk_custom_search_usersettings_form_group_element($element, $attribut
  * Method to retrieve custom search code settings
  */
 function bibdk_custom_search_ting_openformat_query_filter() {
-  $default_values = bibdk_usersettings_user_settings_get('bibdk_custom_search_materials', array());
   $elements = variable_get('bibdk_custom_search_user_settings', array());
   $filter = array();
 
   foreach ($elements as $element) {
-    if (isset($default_values[$element->id]) && $default_values[$element->id] == 1) {
+    if (bibdk_usersettings_user_settings_get($element->id, 0)) {
       $filter[$element->description] = $element->value;
     }
   }
@@ -536,3 +533,5 @@ function theme_bibdk_custom_search_usersettings_admin($variables) {
 
   return drupal_render_children($form);
 }
+
+
