@@ -244,17 +244,14 @@ function bibdk_modal_facetbrowser_filter($group){
   $output = bibdk_modal_form_wrapper('bibdk_facetbrowser_filter_form', $form_state);
   $commands = array();
   if (empty($form_state['executed']) && empty($form_state['submitted'])) {
-    $commands[] = ajax_command_alert('FIRST');
     $commands = $output;
   }
   elseif (empty($form_state['executed']) && !empty($form_state['submitted'])) {
     $commands[] = bibdk_modal_command_replace_form($output);
-    $commands[] = ajax_command_alert('SECOND');
     $url = bibdk_facetbrowser_mobile_redirect_uri($form_state);
 
   }
   elseif (!empty($form_state['executed']) && !empty($form_state['submitted'])) {
-    $commands[] = ajax_command_alert('THIRD');
     $url = $form_state['redirect'];
     $commands[] = bibdk_modal_command_redirect($url);
     $commands[] = bibdk_modal_command_dismiss();
