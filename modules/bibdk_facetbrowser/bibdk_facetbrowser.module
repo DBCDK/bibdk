@@ -248,11 +248,34 @@ function bibdk_facetbrowser_trim_facet_txt($name, $count){
   return $name.'...';
 }
 
-function bibdk_facetbrowser_get_filter_link($facet){
-  $filter_link = array(
+function bibdk_facetbrowser_get_filter_link($facet) {
+  $container = array(
+    '#type' => 'container',
+    '#attributes' => array(
+      'data-expand' => 'select',
+      'class' => array(
+        'select',
+      ),
+    ),
+  );
+
+  $container['icon'] = array(
+    '#type' => 'html_tag',
+    '#tag' => 'span',
+    '#value' => '+',
+    '#attributes' => array(
+      'class' => array(
+        'icon',
+        'icon-left',
+        'icon-blue-down'
+      ),
+    ),
+  );
+
+  $container['link'] = array(
     '#theme' => 'link',
     '#text' => t('header_refine_facet_select', array(), array('context' => 'bibdk_facetbrowser')),
-    '#path' => 'bibdk_facetbrowser/filter/'.$facet->name,
+    '#path' => 'bibdk_facetbrowser/filter/' . $facet->name,
     '#options' => array(
       'attributes' => array(
         'class' => array(drupal_html_class('facetbrowser_filter_link')),
@@ -260,7 +283,7 @@ function bibdk_facetbrowser_get_filter_link($facet){
       'html' => FALSE,
     ),
   );
-  return $filter_link;
+  return $container;
 }
 
 
