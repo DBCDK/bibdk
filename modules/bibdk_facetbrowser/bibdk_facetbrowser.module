@@ -274,7 +274,7 @@ function bibdk_facetbrowser_get_filter_link($facet) {
 
   $container['link'] = array(
     '#theme' => 'link',
-    '#text' => t('header_refine_facet_select', array(), array('context' => 'bibdk_facetbrowser')),
+    '#text' => t('label_facet_select_unselect', array(), array('context' => 'bibdk_facetbrowser')),
     '#path' => 'bibdk_facetbrowser/filter/' . $facet->name,
     '#options' => array(
       'attributes' => array(
