@@ -5,6 +5,7 @@
  * @return array|string
  */
 function bibdk_adhl_get_toplist($numRecords) {
+
   if ($numRecords > 100) {
     $numRecords = 100;
   }

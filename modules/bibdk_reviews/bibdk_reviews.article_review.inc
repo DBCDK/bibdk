@@ -97,11 +97,24 @@ function bibdk_reviews_article_view($manifestation) {
 
   $rating = $manifestation->getReviewRatings();
 
-  $title = _ting_openformat_parse_element($manifestation->getTitle());
-  $title_url = l($title, 'work/' . $manifestation->id);
-  $creator = $manifestation->getCreator();
+  $title = drupal_render(_ting_openformat_parse_element($manifestation->getTitle()));
+  $title_url = array(
+    '#theme' => 'link',
+    '#text' => $title,
+    '#path' => 'work/' . $manifestation->id,
+    '#options' => array(
+      'attributes' => array(
+        'class' => array(''),
+      ),
+      'html' => TRUE,
+    ),
+  );
+
+  $creator[] = array('#markup' => t('reviewed by !creator', array('!creator' => ''), array('context' => 'bibdk_reviews')));
+  $creator[] = _ting_openformat_parse_element($manifestation->getCreator());
   $host_publication = $manifestation->getHostPublication();
-  $publisher = isset($host_publication) ? $host_publication : $manifestation->getPublisher();
+  $publisher[] = array('#markup' => t('in !publisher', array('!publisher' => ''), array('context' => 'bibdk_reviews')));
+  $publisher[] = isset($host_publication) ? _ting_openformat_parse_element($host_publication) : _ting_openformat_parse_element($manifestation->getPublisher());
 
   // check if there's a pdf in DBC Web archive
   $netarchive_link = NULL;
@@ -122,12 +135,12 @@ function bibdk_reviews_article_view($manifestation) {
       ),
     );
   }
-
+ 
   return array(
     '#theme' => 'bibdk_review_article_review',
     '#title' => $title_url,
-    '#creator' => t('reviewed by !creator', array('!creator' => _ting_openformat_parse_element($creator)), array('context' => 'bibdk_reviews')),
-    '#publisher' => t('in !publisher', array('!publisher' => _ting_openformat_parse_element($publisher)), array('context' => 'bibdk_reviews')),
+    '#creator' => $creator,
+    '#publisher' => $publisher,
     '#link' => $link,
     '#rating' => bibdk_reviews_get_rating($rating),
     '#netarchive' => $netarchive_link,

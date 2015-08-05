@@ -1,0 +1,176 @@
+<?php
+
+/**
+ * @file
+ * Enables administrators to annotate their structured content with vocabularies
+ * from schema.org.
+ */
+
+require('bibdk_schemaorg.admin.inc');
+
+/**
+ * Implements hook_help().
+ */
+function bibdk_schemaorg_help($path, $arg) {
+
+  switch ($path) {
+    case 'admin/help#bibdk_schemaorg':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('<a href="@schemaorg">Schema.org</a> provides a collection of schemas useful for site builders and administrators to annotate their pages in ways recognized by major search engines including Bing, Google and Yahoo!. These semantic annotations allow search providers to improve the display of search results, making it easier for people to find what they are looking for on the Web. ', array('@schemaorg' => 'http://schema.org/')) . '</p>';
+      $output .= '<p>' . t('Each of the bibliotek.dk fields can be mapped to schema.org vocabularies. The property of each field can be set when editing a field, in the schema.org fieldset.', array('@content_types' => url('/admin/structure/manifestations/'))) . '</p>';
+      return $output;
+  }
+
+}
+
+
+/**
+ * Implements hook_field_alter().
+ */
+function bibdk_schemaorg_openformat_field_alter(&$field, $field_name) {
+  
+  $schema_org_vars = variable_get('bibdk_schema_org_vars', array());
+
+  if ( !isset($schema_org_vars[$field_name]) ) {
+    return;
+  }
+  
+  if ( empty($schema_org_vars[$field_name]['property']) ) {
+    return;
+  }
+
+  foreach ($field as $key => $field_item) {
+    if (!isset($field_item['#theme']) || $field_item['#theme'] != 'ting_openformat_field') {
+      continue;
+    }
+    $field[$key]['#theme'] = 'bibdk_schemaorg_field';
+    $field[$key]['#property'] = $schema_org_vars[$field_name]['property'];
+    $field[$key]['#typeof'] = (!empty($schema_org_vars[$field_name]['typeof'])) ? $schema_org_vars[$field_name]['typeof'] : '';
+    $field[$key]['#typeof_property'] = (!empty($schema_org_vars[$field_name]['typeof_property'])) ? $schema_org_vars[$field_name]['typeof_property'] : '';
+    
+  }
+
+}
+
+
+/**
+ * Implements hook_theme().
+ */
+function bibdk_schemaorg_theme() {
+
+  $path = drupal_get_path('module', 'bibdk_schemaorg') . '/theme';
+  return array(
+    'bibdk_schemaorg_field' => array(
+      'path' => $path,
+      'render element' => 'element',
+      'template' => 'bibdk_schemaorg_field',
+    ),
+  );
+
+}
+
+
+/**
+ * Add Schema.org markup to body element
+ */
+function bibdk_schemaorg_preprocess_html(&$vars) {
+
+  $vars['attributes_array']['vocab'] = array('http://schema.org/');
+  $vars['attributes_array']['typeof'] = array('WebPage');
+  
+  if (isset($vars['page']['content']['system_main']['#uid']) && $uid = $vars['page']['content']['system_main']['#uid']) {
+    $vars['attributes_array']['resource'] = array(bibdk_linkme_generate_permalink($uid));
+  }
+
+}
+
+
+/**
+ * Add Schema.org markup to body element
+ */
+function bibdk_schemaorg_preprocess_page(&$vars) {
+
+  if (isset($vars['page']['content'])) {
+
+    $vars['page']['content']['schema_org_description'] = array(
+      '#type' => 'html_tag',
+      '#tag' => 'meta',
+      '#attributes' => array('property' => 'description', 'content' => 'Om bibliotek.dk: Du kan se hvad der er udgivet i Danmark, og hvad der findes p&aring; danske offentlige biblioteker - og du kan bestille det, eller se hvilket bibliotek der har materialet hjemme.')
+    );
+
+    $vars['page']['content']['schema_org_creator'] = array(
+      '#type' => 'container',
+      '#attributes' => array('property' => 'creator', 'vocab' => 'http://schema.org/', 'typeof' => 'Organization'),
+      'publisher' => array(
+        '#type' => 'html_tag',
+        '#tag' => 'meta',
+        '#attributes' => array('property' => 'name', 'content' => 'DBC A/S'),
+      ),
+      'logo' => array(
+        '#type' => 'container',
+        '#attributes' => array('property' => 'logo', 'vocab' => 'http://schema.org/', 'typeof' => 'ImageObject '),
+        'image' => array(
+          '#type' => 'html_tag',
+          '#tag' => 'meta',
+          '#attributes' => array('property' => 'contentUrl', 'content' => 'http://www.dbc.dk/logo.png'),
+        ),
+      ),
+      'description' => array(
+        '#type' => 'html_tag',
+        '#tag' => 'meta',
+        '#attributes' => array('property' => 'description', 'content' => 'DBC\'s hovedopgave er at drive og udvikle den bibliografiske og systemm&aelig;ssige infrastruktur til bibliotekerne i Danmark.'),
+      ),
+      'telephone' => array(
+        '#type' => 'html_tag',
+        '#tag' => 'meta',
+        '#attributes' => array('property' => 'telephone', 'content' => ' +45 44 86 77 77'),
+      ),
+      'email' => array(
+        '#type' => 'html_tag',
+        '#tag' => 'meta',
+        '#attributes' => array('property' => 'email', 'content' => 'dbc@dbc.dk'),
+      ),
+      'url' => array(
+        '#type' => 'html_tag',
+        '#tag' => 'meta',
+        '#attributes' => array('property' => 'url', 'content' => 'http://www.dbc.dk/'),
+      ),
+      'address' => array(
+        '#type' => 'container',
+        '#attributes' => array('property' => 'address', 'vocab' => 'http://schema.org/', 'typeof' => 'PostalAddress'),
+        'streetaddress' => array(
+          '#type' => 'html_tag',
+          '#tag' => 'meta',
+          '#attributes' => array('property' => 'streetAddress', 'content' => 'Tempovej 7-11'),
+        ),
+        'postalcode' => array(
+          '#type' => 'html_tag',
+          '#tag' => 'meta',
+          '#attributes' => array('property' => 'postalCode', 'content' => '2750'),
+        ),
+        'addresslocality' => array(
+          '#type' => 'html_tag',
+          '#tag' => 'meta',
+          '#attributes' => array('property' => 'addressLocality', 'content' => 'Ballerup'),
+        ),
+      ),
+    );
+
+    $vars['page']['content']['schema_org_sourceorganization'] = array(
+      '#type' => 'container',
+      '#attributes' => array('property' => 'sourceOrganization', 'vocab' => 'http://schema.org/', 'typeof' => 'Organization'),
+      'creator' => array(
+        '#type' => 'html_tag',
+        '#tag' => 'meta',
+        '#attributes' => array('property' => 'name', 'content' => 'Kulturstyrelsen'),
+      ),
+      'url' => array(
+        '#type' => 'html_tag',
+        '#tag' => 'meta',
+        '#attributes' => array('property' => 'url', 'content' => 'http://www.kulturstyrelsen.dk/'),
+      ),
+    );
+
+  }
+}

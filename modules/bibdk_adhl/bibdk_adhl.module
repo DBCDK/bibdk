@@ -114,6 +114,10 @@ function bibdk_adhl_get_link_list_view($manifestations, $target = '_self') {
   );
 
   foreach ( $manifestations as $id => $manifestation ) {
+    $creator = _ting_openformat_parse_element($manifestation->getCreator(), array(), ', ', FALSE, FALSE);
+    $creator = (empty($creator)) ? '' : $creator[0]['#openformat_field']['#markup'];
+    $abstract = _ting_openformat_parse_element($manifestation->getAbstract(), array(), ', ', FALSE, FALSE);
+    $abstract = (empty($abstract)) ? '' : $abstract[0]['#openformat_field']['#markup'];
     $adhl_link = array(
       '#theme' => 'bibdk_adhl_link',
       '#adhl_link' => array(
@@ -123,7 +127,7 @@ function bibdk_adhl_get_link_list_view($manifestations, $target = '_self') {
         '#attributes' => array(
           'class' => array('adhl-link'),
           'target' => $target,
-          'title' => _ting_openformat_parse_element($manifestation->getCreator(), ', ', FALSE, FALSE) . ' : ' . _ting_openformat_parse_element($manifestation->getAbstract(), ', ', FALSE, FALSE),
+          'title' => $creator . ' : ' . $abstract,
         ),
       ),
     );
