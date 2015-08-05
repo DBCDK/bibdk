@@ -46,9 +46,9 @@ function bibliotek_dk_offcanvas_menu_menu_default_menu_links() {
         'title' => '',
       ),
       'devicetypes' => array(
-        'devicesize_small' => 0,
+        'devicesize_small' => 1,
         'devicesize_large' => 1,
-        'devicesize_medium' => 0,
+        'devicesize_medium' => 1,
         'devicesize_xlarge' => 1,
         'devicesize_xxlarge' => 1,
       ),
