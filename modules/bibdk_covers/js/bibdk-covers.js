@@ -68,7 +68,7 @@
       if ( coverData.length > 0 ) {
         // Retrieve covers
         request = $.ajax({
-          url: Drupal.settings.basePath + 'bibdk/covers',
+          url: Drupal.settings.basePath + Drupal.settings.pathPrefix + 'bibdk/covers',
           type: 'POST',
           data: {
             coverData: coverData // ex. array('28917074:medium')

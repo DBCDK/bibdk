@@ -55,19 +55,6 @@ function bibdk_frontend_module_implements_alter(&$implementations, $hook) {
 
 
 /**
- *
- * @param $account
- * @return mixed
- */
-function _bibdk_frontend_get_user_language($account) {
-  // set language from account
-  $languages = language_list();
-  $lingo = !empty($account->language) ? $account->language : language_default()->language;
-
-  return $languages[$lingo];
-}
-
-/**
  * Redirects the user after a successful login.
  * If $ajax is set to TRUE (we are in a modal) no redirect will happen, instead
  * the redirect URL will be returned as part of an array. The modal will handle

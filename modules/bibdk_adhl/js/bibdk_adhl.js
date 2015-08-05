@@ -24,7 +24,7 @@
 
     /* Call ajax */
     var request = $.ajax({
-      url: Drupal.settings.basePath + 'adhl/ajax',
+      url: Drupal.settings.basePath + Drupal.settings.pathPrefix + 'adhl/ajax',
       type: 'POST',
       data: {
         pid: pid
