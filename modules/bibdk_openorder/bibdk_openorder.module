@@ -1,6 +1,7 @@
 <?php
 
 function bibdk_openorder_do_placeOrder($params) {
+log_to_file($params); // DBC Test Bibliotek - 4.2
   $params += _bibdk_openorder_set_fixed_parameters();
   $additional = _bibdk_openorder_set_fixed_placeorder_params();
   $params = array_merge($additional, $params);
@@ -42,8 +43,8 @@ function _bibdk_openorder_set_fixed_placeorder_params() {
   //$params['needBeforeDate'] = date('d-m-YTH:i:s', strtotime('now+3 months'));
   // @TODO; this value is the same as service_requester --- is it always so ?? or should it be set in config ??
   $params['orderSystem'] = 'bibliotekdk';
-  // @TODO; get this value from openagency -- not yet implemented
-  $params['userIdAuthenticated'] = 'true';
+  // Get userIdAuthenticated value from borcheck. Default 'false'
+  $params['userIdAuthenticated'] = 'false';
   // @TODO; get this value from openagency -- not yet implemented
   //$params['userIdType'] = 'optional'; //BibdkReservationOrderObject::GetObject()->getFields()->getUserIdKey();
   // @TODO this value should probably be set in config -- ask somebody

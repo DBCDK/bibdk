@@ -72,6 +72,9 @@ function bibdk_reservation_form_step_4_do_order() {
     'needBeforeDate' => BibdkReservationOrderObject::GetObject()->getNeedBeforDate(),
   );
 
+  $response = bibdk_borchk_request($params['userId'], (isset($params['userPincode'])) ? $params['userPincode'] : NULL, $params['pickUpAgencyId'], 'json', 'bibliotek.dk');
+  $params['userIdAuthenticated'] = ( $response->borrowerCheckResponse->requestStatus->{'$'} == 'ok' ) ? 'true' : 'false';
+
   bibdk_reservation_form_step_4_register_pid();
   $response = bibdk_openorder_do_placeOrder($params);
 
