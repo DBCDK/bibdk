@@ -18,14 +18,8 @@ function bibdk_schemaorg_form_field_ui_field_edit_form_alter(&$form, &$form_stat
 
   // Attach the css  & js to the form
   $path = drupal_get_path('module', 'bibdk_schemaorg');
-  $form['#attached']['css'] = array(
-    'type' => 'file',
-    'data' => $path . '/css/bibdk_schemaorg_admin_form.css',
-  );
-  $form['#attached']['js'] = array(
-    'type' => 'file',
-    'data' => $path . '/js/bibdk_schemaorg_admin_form.js',
-  );
+  $form['#attached']['css'][] = $path . '/css/bibdk_schemaorg_admin_form.css';
+  $form['#attached']['js'][]  = $path . '/js/bibdk_schemaorg_admin_form.js';
 
   $form['bibdk_schemaorg_ui'] = array(
     '#type' => 'fieldset',
