@@ -13,9 +13,6 @@
         return;
       }
 
-      console.log('FACET ATTACH');
-
-
       // check if placeholder for ajax is present
       var element = $('.bibdk_facetbrowser_facets_placeholder');
       if(element.length == 0) {
@@ -40,7 +37,7 @@
       if(context !== document){
         return;
       }
-      console.log('FACET DETACH');
+
       var groups = $('#bibdk-facetbrowser-form fieldset:visible');
       groups.each(function(){
         BibdkFacets.offGroupEvent($(this), context);
@@ -142,10 +139,8 @@
     var facetsObj = sessionStorage.getItem(key);
     facetsObj = JSON.parse(facetsObj);
     if (!facetsObj || !facetsObj.markup) {
-      console.log('CACHE MISS');
       return false;
     }
-    console.log('CACHE HIT');
     return facetsObj;
   };
 
@@ -156,7 +151,6 @@
    */
   BibdkFacets.setSessionStorage = function (facets, key) {
     if (!Modernizr.sessionstorage) {
-      console.log("sessionStorage is not supported by this browser");
       return;
     }
     try {
@@ -171,7 +165,6 @@
    */
   BibdkFacets.clearSessionStorage = function () {
     if (!Modernizr.sessionstorage) {
-      console.log("sessionStorage is not supported by this browser");
       return;
     }
     sessionStorage.clear();
