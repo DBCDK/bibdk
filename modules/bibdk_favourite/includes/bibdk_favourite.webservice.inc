@@ -111,13 +111,14 @@ function _bibdk_favourite_get_from_webservice() {
     }
     else{
       $uid = arg(1);
-      $account = user_load($uid);
-      $creds['name'] = $account->mail;
+      if(!empty($uid)) {
+        $account = user_load($uid);
+        $creds['name'] = $account->mail;
+      }
     }
     if (empty($creds)) {
       return array();
     }
-
     // call openuserinfo webservice
     $xml = ding_provider_invoke('user', 'get_favourites', $creds['name']);
     module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.agencies');
