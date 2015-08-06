@@ -45,6 +45,7 @@ function _bibdk_enable_modules() {
     'bibdk_reservation',
     'bibdk_saou',
     'bibdk_sbkopi',
+    'bibdk_schemaorg',
     'bibdk_searchhistory',
     'bibdk_vejviser',
     'bibdk_holdingstatus',
@@ -439,4 +440,11 @@ function bibdk_update_7039() {
  */
 function bibdk_update_7040(){
   module_enable(array('jquery_update'));
+}
+
+/**
+ * enable module bibdk_schemaorg
+ */
+function bibdk_update_7041(){
+  module_enable(array('bibdk_schemaorg'));
 }

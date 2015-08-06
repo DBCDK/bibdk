@@ -1,7 +1,7 @@
 <div class='bibdk-article-review clearfix' >
   <div class='openformat-info'>
-    <b><?php print $title ?></b> <?php print $publisher ?> <br/>
-    <?php print $creator ?> <br/>
+    <b><?php print drupal_render($title) ?></b> <?php print drupal_render($publisher) ?> <br/>
+    <?php print drupal_render($creator) ?> <br/>
     <?php print drupal_render($rating) ?>
   </div>
   <div class='bibdk-review-link'>

@@ -37,7 +37,7 @@
   function doUpdateCart($button) {
     var pid = $button.attr('data-cart-pid');
     $.ajax({
-      url: Drupal.settings.basePath + 'cart/ajax',
+      url: Drupal.settings.basePath + Drupal.settings.pathPrefix + 'cart/ajax',
       type: 'POST',
       data: {
         pid: pid

@@ -248,6 +248,6 @@ function _parseCCLQuery($ccl){
  */
 function bibdk_linkme_generate_permalink($id){
 
-  return url(variable_get('linkme_url', "http://bibliotek.dk/linkme"), array("absolute" => TRUE, "query" => array("rec.id" => $id)));
+  return url(variable_get('linkme_url', "http://bibliotek.dk/linkme.php"), array("absolute" => TRUE, "query" => array("rec.id" => $id)));
 }
 
