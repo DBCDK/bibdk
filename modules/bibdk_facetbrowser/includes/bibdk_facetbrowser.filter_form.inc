@@ -6,11 +6,24 @@
 
 require_once('bibdk_facetbrowser.helptexts.inc');
 
+
+/**
+ * Submit function for filter form
+ * Parse query and redirect based on selected facets
+ * @param $form
+ * @param $form_state
+ */
 function bibdk_facetbrowser_filter_form_submit($form, &$form_state){
   $query = bibdk_facet_browser_filter_form_parse_query($form, $form_state);
   $form_state['redirect'] = bibdk_facetbrowser_filter_form_get_redirect($query);
 }
 
+/**
+ * Get an url to redirect to. Brackets representing keys in array are
+ * replaced with empty ones eg. [3] => []
+ * @param $query
+ * @return mixed
+ */
 function bibdk_facetbrowser_filter_form_get_redirect($query){
   global $base_root;
   $path = $base_root.base_path() . 'search/work';
@@ -18,6 +31,12 @@ function bibdk_facetbrowser_filter_form_get_redirect($query){
   return preg_replace('/\%5B\d+\%5D/', '%5B%5D',$url);
 }
 
+/**
+ * Parse the query. Remove facets that has been deselected
+ * @param $form
+ * @param $form_state
+ * @return mixed
+ */
 function bibdk_facet_browser_filter_form_parse_query($form, $form_state){
   $title = $form['#title'];
   $facet_name = $form['#facet_name'];
@@ -81,6 +100,10 @@ function bibdk_facetbrowser_filter_facets_to_remove($form, $form_state, $query){
   return $unset_me;
 }
 
+/**
+ * Get a render array for displaying headlines on filter form (select/deselect)
+ * @return mixed
+ */
 function bibdk_facetbrowser_filter_form_column_headlines(){
   $output['container'] = array(
     '#type' => 'container',
@@ -110,6 +133,7 @@ function bibdk_facetbrowser_filter_form_column_headlines(){
 
 
 /**
+ * Get a form for filtering facets in a specific facetgroup
  * @param $form
  * @param $form_state
  */
@@ -159,6 +183,10 @@ function bibdk_facetbrowser_filter_form($form, $form_state, $facet_name) {
   return $form;
 }
 
+/**
+ * Get a render array to display the close-button [input]
+ * @return array
+ */
 function bibdk_facetbrowser_filter_form_close_button(){
  return array(
     '#type' => 'submit',
@@ -167,10 +195,14 @@ function bibdk_facetbrowser_filter_form_close_button(){
       'class' => array('btn', 'btn-blue', 'close-reveal-modal'),
     ),
     '#submit' => array('bibdk_facetbrowser_filter_form_submit'),
-    '#weight' => 1,
+    '#weight' => 2,
   );
 }
 
+/**
+ * Get a render array to disply the submit button
+ * @return array
+ */
 function bibdk_facetbrowser_filter_form_submit_button(){
   return array(
     '#type' => 'submit',
@@ -179,14 +211,23 @@ function bibdk_facetbrowser_filter_form_submit_button(){
       'class' => array('btn btn-blue save-facet-modal'),
     ),
     '#submit' => array('bibdk_facetbrowser_filter_form_submit'),
-    '#weight' => 2,
+    '#weight' => 1,
   );
 }
 
+/**
+ * Wrapper for bibdk_facetbrowser_filter_form_selected_facets
+ * @return array
+ */
 function bibdk_facetbrowser_filter_form_deselected_facets(){
   return bibdk_facetbrowser_filter_form_selected_facets(FALSE);
 }
 
+/**
+ * Get an array with facets selected on filter form
+ * @param bool|TRUE $selected
+ * @return array
+ */
 function bibdk_facetbrowser_filter_form_selected_facets($selected=TRUE) {
   $uri_facets = _bibdk_facetbrowser_getFacets();
   $facets = _bibdk_facetbrowser_isFacetSelected($uri_facets, $selected);
@@ -201,7 +242,11 @@ function bibdk_facetbrowser_filter_form_selected_facets($selected=TRUE) {
 }
 
 
-
+/**
+ * Get the title for the filter form [filter facets + : facet name]
+ * @param $facet_name
+ * @return string
+ */
 function bibdk_facetbrowser_filter_form_get_title($facet_name){
   $title = '';
   $conf_facets = variable_get('bibdk_facetbrowser_facets', array());
