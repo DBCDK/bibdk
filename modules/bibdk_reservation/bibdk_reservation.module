@@ -242,6 +242,7 @@ function bibdk_reservation_create_wizard_form($form, &$form_state) {
     // NAGIVATION
   $form['navigation'] = array(
     '#type' => 'container',
+    '#attributes' => array('class' => array('clearfix')),
   );
 
   // Show the Next button only if there are more steps defined.

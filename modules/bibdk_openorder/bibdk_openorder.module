@@ -1,7 +1,6 @@
 <?php
 
 function bibdk_openorder_do_placeOrder($params) {
-log_to_file($params); // DBC Test Bibliotek - 4.2
   $params += _bibdk_openorder_set_fixed_parameters();
   $additional = _bibdk_openorder_set_fixed_placeorder_params();
   $params = array_merge($additional, $params);
