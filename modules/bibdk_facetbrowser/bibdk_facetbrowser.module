@@ -62,6 +62,11 @@ function bibdk_facetbrowser_menu() {
 }
 
 
+/**
+ * Get a single facetgroup
+ * @param $facet_name
+ *   name of the facetgroup to retrieve
+ */
 function bibdk_facetbrowser_get_facet_group_by_ajax($facet_name) {
   if (module_exists('ting_openformat')) {
     $results = ting_openformat_get_facet_group($facet_name);
@@ -202,6 +207,19 @@ function bibdk_facetbrowser_get_single_facetgroup($facet, $title, &$selected_fac
   return $field_set;
 }
 
+/**
+ *
+ * @param $facet
+ *   stdObject; the facet to handle
+ * @param $name
+ *   string; name of the facet
+ * @param $count
+ *   int; number of facets in group
+ * @param bool|FALSE $hidden
+ *   hidden or not
+ * @return string
+ *   link to new search with facet selected
+ */
 function bibdk_facetbrowser_get_facet_link($facet, $name, $count, $hidden = FALSE) {
   $facet_name = explode('.', $facet->name);
   $element_name = end($facet_name);
@@ -239,6 +257,12 @@ function bibdk_facetbrowser_get_facet_link($facet, $name, $count, $hidden = FALS
   return drupal_render($link);
 }
 
+/**
+ * Trim text to max 25 chars
+ * @param $name
+ * @param $count
+ * @return string
+ */
 function bibdk_facetbrowser_trim_facet_txt($name, $count){
   $total = strlen($name.$count);
   if($total < 25){
@@ -409,6 +433,13 @@ function bibdk_facetbrowser_form($form, &$form_state, $facets = FALSE, $search =
 }
 
 
+/**
+ * Get a render array to display actions (show more/less)
+ * @see theme/facetbrowser-term-names.tpl.php
+ * @param $id
+ * @param $selected_facets
+ * @return array
+ */
 function bibdk_facetbrowser_set_actions($id, $selected_facets) {
   return array(
     '#theme' => 'theme_facet_term_names',
@@ -576,6 +607,10 @@ function _bibdk_facetbrowser_parseSelectionUri($uri, $facet) {
   }
 }
 
+/**
+ * Implements hook_block_info
+ * @return mixed
+ */
 function bibdk_facetbrowser_block_info() {
   // facetbrowser activation link for mobile.
   $blocks['bibdk_works_controls_facets_link'] = array(
