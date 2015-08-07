@@ -66,7 +66,7 @@ function bibdk_facetbrowser_get_facet_group_by_ajax($facet_name) {
   if (module_exists('ting_openformat')) {
     $results = ting_openformat_get_facet_group($facet_name);
   }
-  $form = drupal_get_form('bibdk_facetbrowser_form', $results->facets, $results->searchkey);
+  $form = drupal_get_form('bibdk_facetbrowser_form', $results->facets);
   $markup = drupal_render($form[$facet_name]);
   drupal_json_output(array('markup' => $markup));
   drupal_exit();
