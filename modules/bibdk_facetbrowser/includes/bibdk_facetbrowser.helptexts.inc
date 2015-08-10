@@ -12,7 +12,7 @@
  * @param $form
  * @param $form_state
  */
-function bibdk_facetbrowser_form_bibdk_facetbrowser_filter_form_alter(&$form, $form_state){
+function bibdk_facetbrowser_form_bibdk_facetbrowser_filter_form_alter(&$form, $form_state) {
   $facet_key = $form['#facet_key'];
   $facet_id = drupal_html_id('modal-' . $facet_key);
 

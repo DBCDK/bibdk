@@ -1,6 +1,5 @@
 (function ($) {
 
-
   /**
    * entry point for facetbrowser.
    *

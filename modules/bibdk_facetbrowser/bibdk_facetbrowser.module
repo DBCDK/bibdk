@@ -231,7 +231,7 @@ function bibdk_facetbrowser_get_facet_link($facet, $name, $count, $hidden = FALS
     $term_name_title = $name;
   }
 
-  $hit_txt = '('. $count .' '. _bibdk_facetbrowser_hits_label($count). ')';
+  $hit_txt = '(' . $count . ' ' . _bibdk_facetbrowser_hits_label($count) . ')';
   $term_name_short = bibdk_facetbrowser_trim_facet_txt($term_name_title, $hit_txt);
 
   global $base_root;
@@ -263,13 +263,13 @@ function bibdk_facetbrowser_get_facet_link($facet, $name, $count, $hidden = FALS
  * @param $count
  * @return string
  */
-function bibdk_facetbrowser_trim_facet_txt($name, $count){
-  $total = strlen($name.$count);
-  if($total < 25){
+function bibdk_facetbrowser_trim_facet_txt($name, $count) {
+  $total = strlen($name . $count);
+  if ($total < 25) {
     return $name;
   }
   $name = mb_substr($name, 0, 16-$count );
-  return $name.'...';
+  return $name . '...';
 }
 
 function bibdk_facetbrowser_get_filter_link($facet) {
@@ -357,7 +357,7 @@ function bibdk_facetbrowser_form($form, &$form_state, $facets = FALSE, $search =
       $facet = $facets[$configured_facet['name']];
       $selected_facets_present = FALSE;
       $field_set = bibdk_facetbrowser_get_single_facetgroup($facet, $configured_facet['title'], $selected_facets_present);
-      if(!empty($field_set)) {
+      if (!empty($field_set)) {
         $field_set['actions'] = bibdk_facetbrowser_set_actions($facet->name, $selected_facets_present);
         $field_set['filter'] = bibdk_facetbrowser_get_filter_link($facet);
         $form[$facet->name] = $field_set;

@@ -13,7 +13,7 @@ require_once('bibdk_facetbrowser.helptexts.inc');
  * @param $form
  * @param $form_state
  */
-function bibdk_facetbrowser_filter_form_submit($form, &$form_state){
+function bibdk_facetbrowser_filter_form_submit($form, &$form_state) {
   $query = bibdk_facet_browser_filter_form_parse_query($form, $form_state);
   $form_state['redirect'] = bibdk_facetbrowser_filter_form_get_redirect($query);
 }
@@ -24,11 +24,11 @@ function bibdk_facetbrowser_filter_form_submit($form, &$form_state){
  * @param $query
  * @return mixed
  */
-function bibdk_facetbrowser_filter_form_get_redirect($query){
+function bibdk_facetbrowser_filter_form_get_redirect($query) {
   global $base_root;
-  $path = $base_root.base_path() . 'search/work';
-  $url = url($path, array('query'=>$query));
-  return preg_replace('/\%5B\d+\%5D/', '%5B%5D',$url);
+  $path = $base_root . base_path() . 'search/work';
+  $url = url($path, array('query' => $query));
+  return preg_replace('/\%5B\d+\%5D/', '%5B%5D', $url);
 }
 
 /**
@@ -37,7 +37,7 @@ function bibdk_facetbrowser_filter_form_get_redirect($query){
  * @param $form_state
  * @return mixed
  */
-function bibdk_facet_browser_filter_form_parse_query($form, $form_state){
+function bibdk_facet_browser_filter_form_parse_query($form, $form_state) {
   $title = $form['#title'];
   $facet_name = $form['#facet_name'];
   $facet_key = $form['#facet_key'];
@@ -47,24 +47,24 @@ function bibdk_facet_browser_filter_form_parse_query($form, $form_state){
 
   // Find and remove facets that have been deselected
   $unset = bibdk_facetbrowser_filter_facets_to_remove($form, $form_state, $query);
-  if(!empty($query['facets'])) {
+  if (!empty($query['facets'])) {
     $query['facets'] = array_diff($query['facets'], $unset);
   }
 
-  if(empty($form_state['input'][$facet_key])){
+  if (empty($form_state['input'][$facet_key])) {
     return $query;
   }
 
-  foreach( $form_state['input'][$facet_key] as $name => $selected){
-    if(empty($selected[0])){
+  foreach ($form_state['input'][$facet_key] as $name => $selected) {
+    if (empty($selected[0])) {
       $facet_value = '!' . $facet_name . ':' . $name;
-      if(!in_array($facet_value, $query)) {
+      if (!in_array($facet_value, $query)) {
         $query['facets'][] = $facet_value;
       }
     }
-    else{
+    else {
       $facet_value =  $facet_name . ':' . $name;
-      if(!in_array($facet_value, $query)) {
+      if (!in_array($facet_value, $query)) {
         $query['facets'][] = $facet_value;
       }
       $query['facets'][] = $facet_name . ':' . $name;
@@ -79,19 +79,19 @@ function bibdk_facet_browser_filter_form_parse_query($form, $form_state){
  * @param $form_state
  * @param $query
  */
-function bibdk_facetbrowser_filter_facets_to_remove($form, $form_state, $query){
+function bibdk_facetbrowser_filter_facets_to_remove($form, $form_state, $query) {
   $unset_me = array();
 
-  if(empty($query['facets'])) {
+  if (empty($query['facets'])) {
     return $unset_me;
   }
 
   $facet_keys = array_flip($query['facets']);
   $group_key = $form['#facet_key'];
 
-  foreach($form['#options'] as $name => $link){
+  foreach ($form['#options'] as $name => $link) {
     $facet_string = $form['#facet_name'] . ':' . $name;
-     if(isset($facet_keys[$facet_string]) && !isset($form_state['values'][$group_key][$name])){
+     if (isset($facet_keys[$facet_string]) && !isset($form_state['values'][$group_key][$name])) {
        // facet is in original query, but has been deselected; unset
        $unset_me[$facet_keys[$facet_string]] = $facet_string;
      }
@@ -104,7 +104,7 @@ function bibdk_facetbrowser_filter_facets_to_remove($form, $form_state, $query){
  * Get a render array for displaying headlines on filter form (select/deselect)
  * @return mixed
  */
-function bibdk_facetbrowser_filter_form_column_headlines(){
+function bibdk_facetbrowser_filter_form_column_headlines() {
   $output['container'] = array(
     '#type' => 'container',
     '#attributes' => array(
@@ -170,7 +170,7 @@ function bibdk_facetbrowser_filter_form($form, $form_state, $facet_name) {
   // Unset the 'checkboxes' type.
   unset($field_set[$name_key]['#type']);
   $page_name = drupal_get_title();
-  drupal_set_title($page_name.' : '. $field_set['#title']);
+  drupal_set_title($page_name . ' : ' . $field_set['#title']);
   // unset title of the fieldset - it is in the page title
   unset($field_set['#title']);
   //$field_set['column_headline'] = bibdk_facetbrowser_filter_form_column_headlines();
@@ -187,7 +187,7 @@ function bibdk_facetbrowser_filter_form($form, $form_state, $facet_name) {
  * Get a render array to display the close-button [input]
  * @return array
  */
-function bibdk_facetbrowser_filter_form_close_button(){
+function bibdk_facetbrowser_filter_form_close_button() {
  return array(
     '#type' => 'submit',
     '#value' => t('label_facet_close', array(), array('context' => 'bibdk_facetbrowser')),
@@ -203,7 +203,7 @@ function bibdk_facetbrowser_filter_form_close_button(){
  * Get a render array to disply the submit button
  * @return array
  */
-function bibdk_facetbrowser_filter_form_submit_button(){
+function bibdk_facetbrowser_filter_form_submit_button() {
   return array(
     '#type' => 'submit',
     '#value' => t('label_facet_save', array(), array('context' => 'bibdk_facetbrowser')),
@@ -219,7 +219,7 @@ function bibdk_facetbrowser_filter_form_submit_button(){
  * Wrapper for bibdk_facetbrowser_filter_form_selected_facets
  * @return array
  */
-function bibdk_facetbrowser_filter_form_deselected_facets(){
+function bibdk_facetbrowser_filter_form_deselected_facets() {
   return bibdk_facetbrowser_filter_form_selected_facets(FALSE);
 }
 
@@ -231,11 +231,11 @@ function bibdk_facetbrowser_filter_form_deselected_facets(){
 function bibdk_facetbrowser_filter_form_selected_facets($selected=TRUE) {
   $uri_facets = _bibdk_facetbrowser_getFacets();
   $facets = _bibdk_facetbrowser_isFacetSelected($uri_facets, $selected);
-  if(empty($facets)){
+  if (empty($facets)) {
     return array();
   }
   // we index by name value
-  foreach($facets as $facet){
+  foreach ($facets as $facet) {
     $ret[$facet['value']] = $facet['name'];
   }
   return $ret;
@@ -247,7 +247,7 @@ function bibdk_facetbrowser_filter_form_selected_facets($selected=TRUE) {
  * @param $facet_name
  * @return string
  */
-function bibdk_facetbrowser_filter_form_get_title($facet_name){
+function bibdk_facetbrowser_filter_form_get_title($facet_name) {
   $title = '';
   $conf_facets = variable_get('bibdk_facetbrowser_facets', array());
   foreach ($conf_facets as $conf) {
