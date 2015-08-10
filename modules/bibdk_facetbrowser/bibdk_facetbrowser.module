@@ -268,7 +268,7 @@ function bibdk_facetbrowser_trim_facet_txt($name, $count) {
   if ($total < 25) {
     return $name;
   }
-  $name = mb_substr($name, 0, 16-$count );
+  $name = mb_substr($name, 0, 16-strlen($count) );
   return $name . '...';
 }
 
