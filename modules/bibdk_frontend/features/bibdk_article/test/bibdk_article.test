@@ -48,6 +48,7 @@ class bibdkArticleWebtestCase extends DrupalWebTestCase {
     $this->drupalPost('node/add/bibdk_article', $edit, t('Save'));
     $this->assertText(t('@title has been created.', array('@title' => $edit['title'])));
 
+
   }
 
   /** Test retrival of bibdk_article
@@ -57,7 +58,6 @@ class bibdkArticleWebtestCase extends DrupalWebTestCase {
     //Check for article_title exist
     $this->drupalGet('node/1');
     $this->assertText('article_title');
-
   }
 
 }

@@ -489,6 +489,7 @@ function bibdk_frontend_update_7027(&$sandbox) {
   ));
 }
 
+
 /**
  * Enable bibdk_jquery_update_settings for existing installations
  */

@@ -3,24 +3,29 @@
  * @file. preprocess facet_term_names template to add helptexts on facets select/deselect
  */
 
+
 /**
- * preprocess facet_term_names template (@see bibdk_facetbrowser.module::hook_theme)
+ * Implements hook_form_FORM_ID_alter.
  *
- * @param $variables
+ * Add help texts to filter form.
+ *
+ * @param $form
+ * @param $form_state
  */
-function template_preprocess_theme_facet_term_names(&$variables) {
-  $facet_key = current(array_filter($variables['form']['#parents']));
+function bibdk_facetbrowser_form_bibdk_facetbrowser_filter_form_alter(&$form, $form_state) {
+  $facet_key = $form['#facet_key'];
   $facet_id = drupal_html_id('modal-' . $facet_key);
 
   $id = $facet_id . 'bibdk-facetbrowser-help-select';
   $help_select_txt = t('help_select_text', array(), array('context' => 'bibdk_facetbrowser'));
   $help_select = bibdk_facetbrowser_help_link($help_select_txt, $id);
-  $variables['form']['#help_select'] = $help_select;
+
+  $form['headlines']['container']['select']['help'] = $help_select;
 
   $id = $facet_id . 'bibdk-facetbrowser-help-deselect';
   $help_deselect_txt = t('help_deselect_text', array(), array('context' => 'bibdk_facetbrowser'));
   $help_deselect = bibdk_facetbrowser_help_link( $help_deselect_txt, $id );
-  $variables['form']['#help_deselect'] = $help_deselect;
+  $form['headlines']['container']['deselect']['help'] = $help_deselect;
 }
 
 /**
@@ -61,8 +66,10 @@ function bibdk_facetbrowser_help_link($txt, $id) {
         "class" => array(
           "f-dropdown",
           $id,
+          'filter-helptexts-content',
         )
       ),
     ),
+    '#weight' => -1,
   );
 }

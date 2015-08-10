@@ -1,198 +1,287 @@
-(function($) {
-
-  $(document).on("opened", '.bibdk-facetbrowser-modal', function () {
-    $(document).foundation('dropdown', 'reflow');
-  });
-
-  Drupal.SetFacets = function(facets) {
-    if(facets.error) {
-      $('.bibdk_facetbrowser_facets_placeholder').prepend(facets.error);
-    }
-    else {
-      $('.bibdk_facetbrowser_facets_placeholder').html(facets.markup);
-      Drupal.facetBrowserInit();
-
-      var facetsObj = {
-        timestamp: Date.now(),
-        markup: facets.markup
-      };
-      Drupal.tingOpenformatSetSessionStorage(facetsObj);
-    }
-  };
-
-  Drupal.tingOpenFormatGetStorageKey = function(){
-    var key = Drupal.settings.ting_openformat.search_key + Drupal.settings.pathPrefix;
-    return key;
-  }
-
+(function ($) {
 
   /**
-   * Used when setting facets with data from sessionStorage to avoid
-   * unnecessary update of the sessionStorage
-   */
-  Drupal.tingOpenformatGetFacetsFromSessionStorage = function(markup) {
-    $('.bibdk_facetbrowser_facets_placeholder').html(markup);
-    Drupal.facetBrowserInit();
-  };
-
-  /**
-   * Asks for facets based on the current search result. If the browser
-   * supports sessionStorage it will check for saved facets otherwise facets
-   * will be retrieved by AJAX.
-   */
-  Drupal.tingOpenformatGetFacets = function() {
-    if(Modernizr.sessionstorage && !Drupal.settings.ting_openformat.isAdmin) {
-      Drupal.tingOpenformatCheckSessionStorage();
-    }
-    else {
-      Drupal.tingOpenformatGetFacetsByAjax();
-      if(Drupal.settings.ting_openformat.isAdmin) {
-        console.log("You are logged in as admin and to avoid caching of facets when changes are to facets, facets are retrieved by AJAX on every page request.");
-      }
-      if(!Modernizr.sessionstorage) {
-        console.log("sessionStorage is not supoorted by this browser. Facets will be retrieved by AJAX on every page request.");
-      }
-    }
-  };
-
-  /**
-   * Returns facets stored in the sessionStorage. If none is found facets will
-   * be retrieved by AJAX.
+   * entry point for facetbrowser.
    *
-   * If the facets currently stored in the sessionStorage has an age of
-   * 24 hours or more, the stored facets will get deleted and new ones will
-   * be retrieved by AJAX.
+   * @type {{attach: attach}}
    */
-  Drupal.tingOpenformatCheckSessionStorage = function() {
-    var key = Drupal.tingOpenFormatGetStorageKey();
-
-    var facetsObj = sessionStorage.getItem(key);
-
-    facetsObj = JSON.parse(facetsObj);
-
-    if(!facetsObj || !facetsObj.markup || !facetsObj.timestamp) {
-      Drupal.tingOpenformatGetFacetsByAjax();
-    }
-    else {
-      var now = Date.now();
-      if(now - facetsObj.timestamp >= 86400000) {
-        Drupal.tingOpenformatGetFacetsByAjax();
-      }
-      else {
-        Drupal.tingOpenformatGetFacetsFromSessionStorage(facetsObj.markup);
-      }
-    }
-  };
-
-  /**
-   * Stores the given value object in the sessionStorage with the key
-   * parameter as key.
-   * If the browser doesn't support sessionStorage the operation will be
-   * aborted silently.
-   *
-   * @param value mixed
-   * @param key string
-   * @param retry bool idicating if the attempt so store is a retry after sessionStorage have been cleared
-   */
-  Drupal.tingOpenformatSetSessionStorage = function( value, retry) {
-    var key = Drupal.tingOpenFormatGetStorageKey();
-    if(!Modernizr.sessionstorage) {
-      console.log("sessionStorage is not supported by this browser");
-      return;
-    }
-
-    try {
-      sessionStorage.setItem(key, JSON.stringify(value));
-      Drupal.tingOpenformatStoreSearchKey(key);
-    } catch(e) {
-      if(!retry) {
-        Drupal.tingOpenformatClearSessionStorageSearches();
-        Drupal.tingOpenformatSetSessionStorage( value, true);
-      }
-    }
-  };
-
-  /**
-   * Stores the key associated witn the current search ion the searches array
-   * that keeps track of the searces stored in the sessionStorage.
-   *
-   * @param key string
-   * @return {boolean}
-   */
-  Drupal.tingOpenformatStoreSearchKey = function(key) {
-    var searches = sessionStorage.getItem('searches');
-    searches = JSON.parse(searches);
-
-    if(!searches) {
-      searches = [];
-    }
-
-    if(searches.indexOf(key) == -1) {
-      searches.push(key);
-      sessionStorage.setItem('searches', JSON.stringify(searches));
-    }
-  };
-
-  /**
-   * Clears out the seartches stored in sessionStorage.
-   *
-   * @return {boolean}
-   */
-  Drupal.tingOpenformatClearSessionStorageSearches = function() {
-    var searches = sessionStorage.getItem('searches');
-    searches = JSON.parse(searches);
-
-    if(!searches) {
-      searches = [];
-    }
-
-    searches.forEach(function(value) {
-      sessionStorage.removeItem(value);
-    });
-
-    sessionStorage.setItem('searches', JSON.stringify([]));
-  };
-
-  /**
-   * Retrieves the facets from the server by AJAX.
-   */
-  Drupal.tingOpenformatGetFacetsByAjax = function() {
-    // var url =  Drupal.settings.basePath + Drupal.settings.pathPrefix + 'ting_openformat/ajax/facets';
-    $.ajax({
-      url: Drupal.settings.basePath + Drupal.settings.pathPrefix + 'bibdk_facetbrowser/ajax/facets',
-      type: 'POST',
-      dataType: 'json',
-      success: Drupal.SetFacets
-    });
-  };
-
   Drupal.behaviors.tingOpenformatLoad = {
-    attach: function(context) {
+    attach: function (context) {
+
+      if(context !== document){
+        return;
+      }
+
+      // check if placeholder for ajax is present
       var element = $('.bibdk_facetbrowser_facets_placeholder');
       if(element.length == 0) {
-        Drupal.facetBrowserInit();
+        // this is a standard pageload (no ajax)
+        BibdkFacets.setAllGroupEvents(context);
+        BibdkFacets.setOtherEvents();
       }
       else {
         element = $('#bibdk-facetbrowser-form');
-        if(element.length < 1) {
-          $('.bibdk_facetbrowser_facets_placeholder', context).ready(function() {
+        if (element.length < 1) {
+
+          $('.bibdk_facetbrowser_facets_placeholder', context).ready(function () {
             var div = $('.bibdk_facetbrowser_facets_placeholder');
+            // show a spinner while we are waiting for the facets
             div.html('<div class="ajax-progress ajax-progress-throbber"><div class="throbber"></div></div>');
-            Drupal.tingOpenformatGetFacets();
+            BibdkFacets.getFacets(context);
           });
         }
       }
+    },
+    detach: function(context){
+      if(context !== document){
+        return;
+      }
+
+      var groups = $('#bibdk-facetbrowser-form fieldset:visible');
+      groups.each(function(){
+        BibdkFacets.offGroupEvent($(this), context);
+      });
     }
   };
 
-  Drupal.facetBrowserInit = function() {
+  /**
+   * Object for BibdkFacet functionality
+   * @type {{}}
+   */
+  var BibdkFacets = {}
 
+  /*
+   * set facets
+   */
+  BibdkFacets.setFacets = function (facets, group, context) {
+    // call for a single group of facets
+    if(group !== false) {
+      // hold length of old group
+      var len = BibdkFacets.facetGroupLength(group);
+      // replace group
+      group.replaceWith(facets.markup);
+      // update group element
+      var new_group = $('#'+group.attr('id'));
+      BibdkFacets.setGroupEvents(new_group);
+      BibdkFacets.FoldFacetGroup(new_group, len, context);
+      BibdkFacets.SetFilterEvent(new_group);
+
+    }
+    // call for whole facetbrowser
+    else {
+      $('.bibdk_facetbrowser_facets_placeholder').html(facets.markup);
+      BibdkFacets.setAllGroupEvents();
+    }
+    // set session storage
+    var key = BibdkFacets.getCacheKey(group);
+    BibdkFacets.setSessionStorage(facets,key);
+    // set common event
+    BibdkFacets.setOtherEvents();
+  };
+
+  BibdkFacets.SetFilterEvent = function(group){
+    if(typeof Drupal.bibdkModal.setLinkActions === 'function'){
+      Drupal.bibdkModal.setLinkActions(group);
+    }
+  };
+
+  BibdkFacets.setAllGroupEvents = function(context){
+    var groups = $('#bibdk-facetbrowser-form fieldset:visible');
+    groups.each(function(){
+      BibdkFacets.setGroupEvents($(this),context);
+      BibdkFacets.FoldFacetGroup($(this), 0, context);
+      BibdkFacets.SetFilterEvent($(this));
+    });
+  };
+
+
+  /**
+   * get lenght of visible checkbox elements in facetgroup
+   * @param group
+   * @returns {*}
+   */
+  BibdkFacets.facetGroupLength = function(group){
+    // this could be an updated group
+    var element = $('#'+group.attr('id'));
+    var len = element.find('.form-item.form-type-checkbox:visible').length;
+    return len;
+  };
+
+  /**
+   *
+   * @param len
+   *   current length of facetgroup
+   * @returns int
+   *   the number of terms to show
+   */
+  BibdkFacets.numberToShow = function(len){
+    // first time load.
+    if(len === 0){
+      return parseInt(Drupal.settings.bibdkFacetBrowser.showCount);
+    }
+    // consecutive loads
+    var toggle = parseInt(Drupal.settings.bibdkFacetBrowser.showCountConsecutive);
+    return len + toggle;
+  };
+
+  /**
+   * get facets from sessonstorage
+   * @param group
+   * @returns {*}
+   */
+  BibdkFacets.getFromSessionStorage = function (group) {
+    if (!Modernizr.sessionstorage || Drupal.settings.ting_openformat.isAdmin) {
+      return false;
+    }
+
+    var key = BibdkFacets.getCacheKey(group);
+    var facetsObj = sessionStorage.getItem(key);
+    facetsObj = JSON.parse(facetsObj);
+    if (!facetsObj || !facetsObj.markup) {
+      return false;
+    }
+    return facetsObj;
+  };
+
+  /**
+   * set sessionstorage
+   * @param facets
+   * @param key
+   */
+  BibdkFacets.setSessionStorage = function (facets, key) {
+    if (!Modernizr.sessionstorage) {
+      return;
+    }
+    try {
+      sessionStorage.setItem(key, JSON.stringify(facets));
+    } catch (e) {
+      sessionStorage.clear();
+    }
+  };
+
+  /**
+   * clear sessionstorage
+   */
+  BibdkFacets.clearSessionStorage = function () {
+    if (!Modernizr.sessionstorage) {
+      return;
+    }
+    sessionStorage.clear();
+  };
+
+  /**
+   * Fold facet groups to show only n per group.
+   */
+  BibdkFacets.FoldFacetGroup = function(group, len, context) {
+    // hide checkboxes in facetgroup
+    var limit = parseInt(BibdkFacets.numberToShow(len));
+    var count = parseInt(group.attr('data-count'));
+    group.find('.form-item.form-type-checkbox').each(function(index){
+      if($(this).css("visibility") == "visible") {
+        if (index < limit) {
+          $(this).show();
+        }
+        else{
+          $(this).hide();
+        }
+      }
+    });
+
+    // first load - hide show less
+    if(len === 0){
+      group.find($("div[data-expand='less']")).hide();
+    }
+    // less facet in group than to show
+    if(count < limit){
+      group.find($("div[data-expand='more']")).hide();
+    }
+    // more facets
+    if(count > limit){
+      group.find($("div[data-expand='more']")).show();
+    }
+    // special case same number in facetgroup as to show initially
+    if(len != 0 && count === parseInt(Drupal.settings.bibdkFacetBrowser.showCount)){
+      group.find($("div[data-expand='more']")).hide();
+      group.find($("div[data-expand='less']")).hide();
+    }
+    // special case exactly the number of facets as to show consecutively
+    if(len != 0 && count==limit){
+      group.find($("div[data-expand='more']")).hide();
+    }
+  };
+
+  /**
+   * set group event (show more, show less)
+   * @param group
+   */
+  BibdkFacets.setGroupEvents = function (group,context) {
+    // show more event
+    group.not('#selected-terms, #deselected-terms').find($("div[data-expand='more'] span")).bind('click', function () {
+      BibdkFacets.getFacetGroup(group);
+    });
+
+    // special handler for selected/deselected terms
+    BibdkFacets.SetNoGroupEvents($('#selected-terms'));
+    BibdkFacets.SetNoGroupEvents($('#deselected-terms'));
+
+
+    // show less event
+    group.find($("div[data-expand='less'] span")).on('click', function () {
+      BibdkFacets.FoldFacetGroup(group, 0);
+      BibdkFacets.showAndHide();
+    });
+  };
+
+  BibdkFacets.SetNoGroupEvents = function(nogroup){
+    $(nogroup).find($("div[data-expand='more'] span")).on('click', function () {
+      $(nogroup).find($("div[data-expand='less']")).show();
+      var len = BibdkFacets.facetGroupLength(nogroup);
+      BibdkFacets.FoldFacetGroup(nogroup, len);
+    });
+  };
+
+  BibdkFacets.offGroupEvent = function(group, context){
+    group.find($("div[data-expand='less'] span")).off('click');
+    group.find($("div[data-expand='more'] span")).off('click');
+  };
+
+  /*
+   * get a single facetgroup to replace the old one
+   */
+  BibdkFacets.getFacetGroup = function (group) {
+    // check if group is already in cache
+    var facets = BibdkFacets.getFromSessionStorage(group);
+    if (facets) {
+      BibdkFacets.setFacets(facets,  group);
+      return;
+    }
+
+    // show a spinner while waiting
+    group.find($("div[data-expand='more']")).html('<div class="ajax-progress ajax-progress-throbber"><div class="throbber"></div></div>');
+    var facet = group.attr('data-name');
+    $.ajax({
+      url: Drupal.settings.basePath + Drupal.settings.pathPrefix + 'bibdk_facetbrowser/ajax/facetgroup/' + facet,
+      type: 'POST',
+      dataType: 'json',
+      // set async to false to prevent eventhandler from acting on old facetgroup
+      async:false,
+      success: function(data){BibdkFacets.setFacets(data,  group);},
+      error:BibdkFacets.setError
+    });
+  };
+
+  BibdkFacets.setOtherEvents = function(){
     // Check for click in checkbox, and execute search
     $(Drupal.settings.bibdkFacetBrowser.mainElement + ' .form-type-checkbox input').change(function(e) {
       $('body').prepend('<div class="facetbrowser_overlay"><div class="spinner"></div></div>');
       window.location = $(e.target).parent().find('a').attr('href');
     });
 
+    BibdkFacets.showAndHide();
+  };
+
+  BibdkFacets.showAndHide = function(){
+    // @TODO why would you wanna hide valid facets ??
     // disambiguate facets that are hidden because some facets are already selected, and facets that are not yet shown.
     $("#bibdk-facetbrowser-form").find("a[data-hidden='0']").each(function(count, facetElement) {
       $(this).parents('div.form-type-checkbox').addClass('facetShow');
@@ -200,187 +289,39 @@
     $("#bibdk-facetbrowser-form").find("a[data-hidden='1']").each(function(count, facetElement) {
       $(this).parents('div.form-type-checkbox').hide().addClass('facetNoShow');
     });
-
-    Drupal.FoldFacetGroup();
-
-    $("#bibdk-facetbrowser-form").find("div[data-expand='less']").hide();
-
-    $("#bibdk-facetbrowser-form").delegate("div[data-expand='more'] span", "click", function() {
-      var facetGroup = $(this).parents('fieldset');
-      facetGroup.find('.form-type-checkbox.facetShow:hidden').each(function(count, facetElement) {
-        if ( count < Drupal.settings.bibdkFacetBrowser.showCountConsecutive ) {
-          $(facetElement).slideDown('fast', function() {
-          });
-        }
-      });
-      // add 'less' element, if there isn't one already
-      if ( facetGroup.find("div[data-expand='less']").is(':hidden') ) {
-        facetGroup.find("div[data-expand='less']").show();
-      }
-      // remove 'more' element, if we're at the end
-      if ( 
-          ( facetGroup.find('.form-type-checkbox:visible').size() >= facetGroup.attr('data-count') ) && 
-          ( facetGroup.find("div[data-expand='more']").is(':visible') )
-        ) {
-        facetGroup.find("div[data-expand='more']").hide();
-      }
-    });
-
-    $("#bibdk-facetbrowser-form").delegate("div[data-expand='less'] span", "click", function() {
-      var facetGroup = $(this).parents('fieldset');
-      facetGroup.find('.form-type-checkbox:visible').each(function(count, facetElement) {
-        if(count >= Drupal.settings.bibdkFacetBrowser.showCount) {
-          $(facetElement).slideUp('fast', function() {
-          });
-        }
-      });
-      // we're at the start, so add 'more' element, and remove 'less' element
-      facetGroup.find("div[data-expand='less']").hide();
-      if ( facetGroup.find("div[data-expand='more']").is(':hidden') ) {
-        facetGroup.find("div[data-expand='more']").show();
-      }
-    });
-
-    // Populate modal window
-    $("#bibdk-facetbrowser-form").delegate("div[data-expand='select'] span", "click", function() {
-      // get url from form data-uri attribute
-      var url = $(this).parents('#bibdk-facetbrowser-form').attr('data-uri');
-      var facetGroup = $(this).parents('fieldset');
-      facetGroup.find(".bibdk-facetbrowser-modal").attr('data-uri', url);
-      var divTemplate = facetGroup.find(".reveal-modal .checkbox-element").clone();
-      if ( !facetGroup.find(".reveal-modal .checkbox-elements").html().trim() ) {
-        facetGroup.find('.form-type-checkbox').each(function(count, facetElement) {
-          var checkboxElem         = divTemplate.clone();
-          var checkboxElemLabel    = $(facetElement).find('label').clone();
-          var checkboxElemSelect   = $(facetElement).find('input').clone();
-          var checkboxElemDeselect = $(facetElement).find('input').clone();
-          // checkboxElemDeselect.val(checkboxElemDeselect.val());
-          checkboxElemDeselect.attr("checked", false);
-          checkboxElemDeselect.attr("data-deselect", true);
-          checkboxElem.find(".checkbox-element-label").append(checkboxElemLabel);
-          checkboxElem.find(".checkbox-element-select").append(checkboxElemSelect);
-          checkboxElem.find(".checkbox-element-deselect").append(checkboxElemDeselect);
-          facetGroup.find(".reveal-modal .checkbox-elements").append(checkboxElem);
-        });
-      }
-    });
-
-    // simulate radio buttons functionality
-    $(".bibdk-facetbrowser-modal").delegate(".reveal-modal input[type='checkbox']", "change", function() {
-      // ought to use .prop() instead of .attr(), but that requires jQuery 1.6 or greater
-      if ( this.checked ) { 
-        var elemName = $(this).attr('name');
-        var modalGroup = $(this).parents('.reveal-modal');
-        modalGroup.find("input[type='checkbox']").each(function(count, modalElement) {
-          if ( $(modalElement).attr('name') == elemName ) {
-            $(modalElement).attr("checked", false);
-          }
-        });
-        $(this).attr("checked", true);
-      }
-    });
-    
-    // modal window submit button
-    $(".bibdk-facetbrowser-modal").delegate(".save-facet-modal .btn", "click", function(event) {
-      event.preventDefault();
-      var myArray        = new Array();
-      var facetsSelect   = new Array();
-      var facetsDeselect = new Array();
-      var modalGroup = $(this).parents('.bibdk-facetbrowser-modal');
-      var facetKey = $(this).parents('.bibdk-facetbrowser-modal').attr('data-facet-key');
-
-      // get url from modal div data-uri attribute
-      var url = $(this).parents('.bibdk-facetbrowser-modal').attr('data-uri');
-      // create anchor element, so we can access path from DOM
-      var a = $('<a>', { href:url } )[0];
-      var uriArray = decodeURI(a.search).split('&');
-
-      $.each( uriArray, function( key, value ) {
-        // clear facet values in this group
-        if ( !Drupal.paramIsFacet(value, facetKey, modalGroup.find("input[type='checkbox']")) ) {
-          if ( jQuery.inArray( value, myArray ) == -1 ) {
-            var splitOp = value.split('=');
-            // Has to be encoded if button text is 'Søg'
-            if (splitOp[0] == 'op' ) {
-              myArray.push(encodeURI(value));
-            } else {
-              myArray.push(value);
-            }
-          }
-        }
-      });
-
-      modalGroup.find("input[type='checkbox']").each(function(count, modalElement) {
-        if ( modalElement.checked ) {
-          if ( $(modalElement).attr('data-deselect') ) {
-            facetsDeselect.push( $(modalElement).val() );
-          } else {
-            facetsSelect.push( $(modalElement).val() ); 
-          }
-        }
-      });
-
-      for ( var i = 0; i < facetsSelect.length; i = i + 1 ) {
-        myArray.push('facets[]=' + 'facet.' + facetKey + ':' + encodeURI(facetsSelect[i]));
-      }
-
-      for ( var i = 0; i < facetsDeselect.length; i = i + 1 ) {
-        myArray.push('facets[]=!' + 'facet.' + facetKey + ':' + encodeURI(facetsDeselect[i]));
-      }
-
-      newUri = a.protocol + '//' + a.host + '/' + encodeURI(a.pathname) + myArray.join('&') + '#content';
-      window.location.replace(newUri);
-
-    });
-
   };
-
 
   /**
-   * Check if param is a facet in group
-   *
-   * @param key string
-   * @return {boolean}
+   * get facets
    */
-  Drupal.paramIsFacet = function(value, facetKey, facetGroup) {
-    var result = false;
-    facetGroup.each(function(count, modalElement) {
-      if ( 
-           decodeURI(value) == 'facets[]=facet.' + facetKey + ':' + $(modalElement).val() || 
-           decodeURI(value) == 'facets[]=-facet.' + facetKey + ':' + $(modalElement).val() ||
-           decodeURI(value) == 'facets[]=facet.' + facetKey + '%3A' + $(modalElement).val() || 
-           decodeURI(value) == 'facets[]=-facet.' + facetKey + '%3A' + $(modalElement).val()
-         ) {
-           result = true;
-      }
+  BibdkFacets.getFacets = function (context) {
+    var facets = BibdkFacets.getFromSessionStorage(false);
+    if (facets) {
+      BibdkFacets.setFacets(facets, false, context );
+      return;
+    }
+    $.ajax({
+      url: Drupal.settings.basePath + Drupal.settings.pathPrefix + 'bibdk_facetbrowser/ajax/facets',
+      type: 'POST',
+      dataType: 'json',
+      success: function(data){BibdkFacets.setFacets(data, false )},
+      error:BibdkFacets.setError
     });
-    return result;
   };
 
-
-  /**
-   * Fold facet groups to show only n per group.
-   */
-  Drupal.FoldFacetGroup = function() {
-    $(Drupal.settings.bibdkFacetBrowser.mainElement + ' fieldset.form-wrapper').each(function() {
-      // hide surplus facets, and show 'show more' element
-      var facetGroup = $(this);
-      if ( facetGroup.find('.form-type-checkbox.facetShow').size() > Drupal.settings.bibdkFacetBrowser.showCount ) {
-        facetGroup.find('.form-type-checkbox.facetShow').each(function(counter, facetElement) {
-          if ( counter >= Drupal.settings.bibdkFacetBrowser.showCount ) {
-            $(facetElement).hide();
-          }
-        });
-        if ( facetGroup.find("div[data-expand='more']").is(':hidden') ) {
-          facetGroup.find("div[data-expand='more']").show();
-        }
-      } else {
-        facetGroup.find("div[data-expand='more']").hide();
-      }
-    });
-
+  BibdkFacets.setError = function(response){
+    var facets=[];
+    facets.markup = '<div>Could not get facets</div>';
+    BibdkFacets.setFacets(facets, false);
+    BibdkFacets.clearSessionStorage();
   };
 
+  BibdkFacets.getCacheKey = function(group){
+    if(group === false){
+      return Drupal.settings.ting_openformat.search_key + Drupal.settings.pathPrefix;
+    }
+    else{
+      return group.attr('id')+Drupal.settings.ting_openformat.search_key + Drupal.settings.pathPrefix;
+    }
+  };
 })(jQuery);
-
-
