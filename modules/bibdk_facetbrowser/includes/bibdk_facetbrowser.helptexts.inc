@@ -37,6 +37,22 @@ function bibdk_facetbrowser_form_bibdk_facetbrowser_filter_form_alter(&$form, $f
  */
 function bibdk_facetbrowser_help_link($txt, $id) {
   return array(
+
+    'help_img' => array(
+      '#theme' => 'image',
+      '#path' => drupal_get_path('theme', 'bibdk_theme') . '/img/help.png',
+      '#alt' => t('help'),
+        '#attributes' => array(
+          'data-dropdown' => $id,
+          'aria-controls' => $id,
+          'aria-expanded' => "false",
+          'class' => array(
+            $id,
+          )
+        ),
+    ),
+
+/*
     'drop' => array(
       '#theme' => 'link_with_svg',
       '#text' => '',
@@ -54,6 +70,7 @@ function bibdk_facetbrowser_help_link($txt, $id) {
       ),
       '#svg' => 'svg-question',
     ),
+*/
     'content' => array(
       '#theme' => 'html_tag',
       '#tag' => 'div',
