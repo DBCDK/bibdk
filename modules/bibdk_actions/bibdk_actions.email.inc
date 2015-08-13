@@ -50,8 +50,7 @@ function bibdk_actions_email_page($ids, $sent = FALSE) {
   $content = array();
   if (isset($manifestations)) {
     foreach ($manifestations as $manifestation) {
-      $view = ting_openformat_manifestation_view($manifestation, 'email');
-      $view['display'] = bibdk_actions_get_fieldinfo($view);
+      $view['display'] = ting_openformat_manifestation_view($manifestation, 'email');
       $view['#theme'] = 'bibdk_actions_email';
       $content[]['#markup'] = theme('bibdk_actions_email', array('strings' => $view['display']));
       if (empty($title)) {
@@ -59,6 +58,7 @@ function bibdk_actions_email_page($ids, $sent = FALSE) {
       }
     }
     $form_values['content'] = $content;
+    $form_values['content'] = 'fubar';
     $form_values['title'] = $title;
     $form_values['ids'] = $ids;
     $form_values['sent'] = $sent;
