@@ -77,7 +77,6 @@ function bibdk_actions_email_page($ids, $sent = FALSE) {
  * @return array
  */
 function bibdk_actions_get_fieldinfo($view) {
-  _bibdk_cart_manifestation_view_strip_links($view);
   $display_strings = array();
   if (isset($view['#fields']) && is_array($view['#fields'])) {
     foreach ($view['#fields'] as $key => $field) {
