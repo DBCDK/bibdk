@@ -33,7 +33,7 @@ class BibdkSubjectHierarchyUnitTestCase extends DrupalUnitTestCase {
     $parse_term_in = array(
       'ccl' => 'lds=foo',
     );
-    $parse_term_out = 'dkcclphrase.lds=foo';
+    $parse_term_out = 'dkcclphrase.lds = foo';
     $parsed = _bibdk_subject_hierarchy_parse_term($parse_term_in);
     $this->assertTrue(($parsed['cql'] == $parse_term_out), 'Test term cql search term (phrase) replaced correctly.');
 
@@ -41,7 +41,7 @@ class BibdkSubjectHierarchyUnitTestCase extends DrupalUnitTestCase {
     $parse_term_in = array(
       'ccl' => 'em=foo',
     );
-    $parse_term_out = 'dkcclterm.em=foo';
+    $parse_term_out = 'dkcclterm.em = foo';
     $parsed = _bibdk_subject_hierarchy_parse_term($parse_term_in);
     $this->assertTrue(($parsed['cql'] == $parse_term_out), 'Test term cql search terms (term) replaced correctly.');
 
