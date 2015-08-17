@@ -34,8 +34,21 @@ class BibdkYazTestCase extends DrupalUnitTestCase {
     $yaz = new PhpYazConverter();
 
     foreach ($valid_ccl as $ccl => $cql) {
-      $result = $yaz->CclToCql($ccl);
+      $result = $this->_normalizeCcl($yaz->CclToCql($ccl));
       $this->assertEqual($result['cql'], $cql, format_string('ccl is correctly converted to cql', array('ccl' => $ccl)));
     }
+  }
+
+  /**
+   * apparently libyaz5 5.14.4-1.indexdata introduces a space befor and after
+   * '=' which is perfectly ok .. but makes the test fail. Remove it
+   *
+   * @param $ccl
+   */
+  private function _normalizeCcl($ccl){
+    // remove whitespaces before and after '='
+    $ret = str_replace(' = ', '=', $ccl);
+    return $ret;
+
   }
 }
