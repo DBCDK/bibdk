@@ -41,7 +41,7 @@
   Drupal.getCovers = function(index) {
     // Retrieve covers
     request = $.ajax({
-      url: Drupal.settings.basePath + 'bibdk_search_carousel/results/ajax/' + index,
+      url: Drupal.settings.basePath + Drupal.settings.pathPrefix + 'bibdk_search_carousel/results/ajax/' + index,
       type: 'POST',
       dataType: 'json',
       success: Drupal.insertCovers,

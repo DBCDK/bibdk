@@ -450,6 +450,14 @@ function bibdk_article_view_views_default_views() {
   );
   $handler->display->display_options['filters']['field_column_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_column_tid']['vocabulary'] = 'column';
+  /* Filter criterion: Content: Language */
+  $handler->display->display_options['filters']['language']['id'] = 'language';
+  $handler->display->display_options['filters']['language']['table'] = 'node';
+  $handler->display->display_options['filters']['language']['field'] = 'language';
+  $handler->display->display_options['filters']['language']['value'] = array(
+    '***CURRENT_LANGUAGE***' => '***CURRENT_LANGUAGE***',
+    'und' => 'und',
+  );
   $handler->display->display_options['argument_input'] = array(
     'tid' => array(
       'type' => 'panel',
@@ -478,7 +486,8 @@ function bibdk_article_view_views_default_views() {
     t('top pane'),
     t('bottom pane right'),
   );
+
   $export['article_view'] = $view;
 
   return $export;
-}
+} 

@@ -199,13 +199,13 @@ function _bibdk_reservation_get_message_type($index) {
  * @return string
  */
 function _ting_openformat_render_direct_link($infocode, $manifestation) {
-  if($links = _bibdk_reservation_get_access_links($manifestation)) {
-    return bibdk_reservation_translate("$infocode !links", array('!links' => $links));
+  if ($links = _bibdk_reservation_get_access_links($manifestation)) {
+    return bibdk_reservation_translate("$infocode !links", array('!links' => drupal_render($links)));
   }
 }
 
 /**
- * Retrieves any accessUrl's from the given manifestation (main or volume) a string of links
+ * Retrieves any accessUrl's from the given manifestation (main or volume) a render array of links
  * seprated by <br />
  *
  * @param Manifestation $manifestation
@@ -216,5 +216,5 @@ function _bibdk_reservation_get_access_links($manifestation) {
   if (!isset($info)) {
     $info = $manifestation->getAccessInformation();
   }
-  return _ting_openformat_parse_element($info, '<br/>');
+  return _ting_openformat_parse_element($info, array(), '<br/>');
 }

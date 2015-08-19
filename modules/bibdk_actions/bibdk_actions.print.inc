@@ -43,11 +43,12 @@ function bibdk_actions_print_page($ids) {
     }
     drupal_add_js(drupal_get_path('module', 'bibdk_actions') . '/js/bibdk_actions.print.js');
     drupal_add_css(drupal_get_path('module', 'bibdk_actions') . '/css/bibdk_actions.css', array('media' => 'all'));
-    $return  = drupal_render($views);
+    $return = $views;
   }
   bibdk_cart_reservation_update_status('print_complete', $ids);
   return $return;
 }
+
 
 /** Generate viewmode for manifestation in print cart viewmode
  *
@@ -57,25 +58,13 @@ function bibdk_actions_print_page($ids) {
 function _bibdk_actions_print_manifestation_view($manifestation) {
   $work = new BibdkWork($manifestation->getWork());
   $view = ting_openformat_manifestation_view($manifestation, 'print');
-  _bibdk_actions_manifestation_view_strip_links($view);
+  if (isset($view['#fields']) && is_array($view['#fields'])) {
+    _bibdk_actions_manifestation_view_strip_links($view['#fields']);
+  }
   $view['#theme'] = 'bibdk_actions_print';
   $view += array(
-    '#title' => _ting_openformat_parse_element($work->getTitle(), ',', TRUE, TRUE),
+    '#title' => $work->getTitle(),
   );
   return $view;
 }
 
-/**
- * Hack to remove html tags from fields
- *
- * @param $view
- */
-function _bibdk_actions_manifestation_view_strip_links(&$view) {
-  if (isset($view['#fields']) && is_array($view['#fields'])) {
-    foreach ($view['#fields'] as $key => $field) {
-      if (isset($field[0]['#markup'])) {
-        $view['#fields'][$key][0]['#markup'] = strip_tags($field[0]['#markup']);
-      }
-    }
-  }
-}

@@ -1,0 +1,8 @@
+name = Bibliotek.dk - Schema.org settings
+core = 7.x
+package = Bibliotek.dk
+dependencies[] = ctools
+dependencies[] = strongarm
+features[ctools][] = strongarm:strongarm:1
+features[features_api][] = api:1
+features[variable][] = bibdk_schema_org_vars

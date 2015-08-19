@@ -156,9 +156,26 @@ function bibdk_netarchive_search($local_id) {
     return array('title'=>'','creator'=>'');
   }
 
+  $callback = function ($value, $key) use (&$item) {
+    if ($key == '#markup' || $key == '#text') {
+      $item = $value;
+    }
+  };
+
   foreach ( $manifestations as $manifestation ) {
-    $item['title'] = _ting_openformat_parse_element($manifestation->getTitle());
-    $item['creator'] = _ting_openformat_parse_element($manifestation->getCreator());
+
+    $item = '';
+    $title_array = _ting_openformat_parse_element($manifestation->getTitle());
+    array_walk_recursive($title_array, $callback);
+    $title = $item;
+
+    $item = '';
+    $creator_array = _ting_openformat_parse_element($manifestation->getCreator());
+    array_walk_recursive($creator_array, $callback);
+    $creator = $item;
+
+    $item['title'] = $title;
+    $item['creator'] = $creator;
     $item['pid'] = ( !empty($manifestation->id) ) ? $manifestation->id : FALSE;
     if ($item['pid']) {
       $i = explode(':', $item['pid']);
@@ -170,7 +187,6 @@ function bibdk_netarchive_search($local_id) {
   return $item;
 
 }
-
 
 
 /** Implements hook_ting_openformat_actions

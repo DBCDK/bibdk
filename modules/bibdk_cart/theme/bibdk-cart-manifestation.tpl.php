@@ -3,8 +3,8 @@
 
     <?php if (!empty($fields['bibdk_mani_title_specific'])) : ?>
       <h6>
-        <?php print $fields['bibdk_mani_title_specific'][0]['#markup']; ?>
-        <span class="italic normal"> - <?php print $type_translated['type']; ?> <?php print $several_editions; ?></span>
+        <?php print drupal_render($fields['bibdk_mani_title_specific']); ?>
+        <span class="italic normal"> <?php print $type_translated; ?> <?php print $several_editions; ?></span>
       </h6>
 
       <?php hide($fields['bibdk_mani_title_specific']); ?>

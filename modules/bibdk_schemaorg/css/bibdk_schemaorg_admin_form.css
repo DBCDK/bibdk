@@ -1,0 +1,11 @@
+#edit-bibdk-schemaorg-ui .form-item {
+  padding: 0 9px 0;
+  float: left;
+  width: 26em;
+}
+
+#edit-bibdk-schemaorg-ui label,
+#edit-bibdk-schemaorg-ui input {
+  padding: 0 9px 0;
+  max-width: 24em;
+}

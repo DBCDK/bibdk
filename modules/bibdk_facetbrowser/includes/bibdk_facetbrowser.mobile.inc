@@ -13,8 +13,8 @@ function bibdk_facetbrowser_mobile_form($form, $form_state) {
   $facet_group = FALSE;
   if (isset($form_state['input'])) {
     foreach ($form_state['input'] as $key => $input) {
-      if ( substr($key,0,11) == 'facetgroup-' ) {
-        $facet_group = substr($key,11);
+      if ( substr($key, 0, 11) == 'facetgroup-' ) {
+        $facet_group = substr($key, 11);
         $facet_group = str_replace('_', '.', $facet_group);
       }
     }
@@ -22,7 +22,8 @@ function bibdk_facetbrowser_mobile_form($form, $form_state) {
 
   if (!$facet_group) {
     $form = bibdk_facetbrowser_mobile_form_init($form, $form_state);
-  } else {
+  }
+  else {
     $form = bibdk_facetbrowser_mobile_form_values($form, $form_state, $facet_group);
   }
 
@@ -32,7 +33,6 @@ function bibdk_facetbrowser_mobile_form($form, $form_state) {
 
 
 function bibdk_facetbrowser_mobile_redirect_uri($form_state, $reset_facets = FALSE) {
-
   $facet_group = $form_state['input']['facet_group'];
 
   $facet_values = array();
@@ -43,11 +43,7 @@ function bibdk_facetbrowser_mobile_redirect_uri($form_state, $reset_facets = FAL
     }
   }
 
-  $parse = parse_url($_SESSION['latest_search']['request_uri']);
-  $query = explode('&', $parse['query']);
-  foreach ($query as $key => $query_item) {
-    $query[$key] = urldecode($query_item);
-  }
+  $query = bibdk_facetbrowser_mobile_parse_request_uri();
 
   foreach ($facet_values as $facet_key => $checked) {
     if ($checked) {
@@ -86,6 +82,20 @@ function bibdk_facetbrowser_mobile_redirect_uri($form_state, $reset_facets = FAL
   return $url;
 }
 
+/**
+ * Get latest search from SESSION and parse it into an array
+ * @return array
+ */
+function bibdk_facetbrowser_mobile_parse_request_uri() {
+  $parse = parse_url($_SESSION['latest_search']['request_uri']);
+  $query = explode('&', $parse['query']);
+  foreach ($query as $key => $query_item) {
+    $query[$key] = urldecode($query_item);
+  }
+
+  return $query;
+}
+
 
 /** Render array with facet groups for mobile
  * @return array
@@ -118,7 +128,7 @@ function bibdk_facetbrowser_mobile_form_init($form, $form_state) {
     '#type'  => 'submit',
     '#name'  => 'reset_facets',
     '#value' => t('reset facets', array(), array('context' => 'bibdk_facetbrowser')),
-    '#attributes' => array (
+    '#attributes' => array(
       'class' => array('use-ajax-submit', 'button-as-link', 'reset-facets'),
       'title' => t('reset facets', array(), array('context' => 'bibdk_facetbrowser')),
     ),
@@ -195,7 +205,7 @@ function bibdk_facetbrowser_mobile_form_init($form, $form_state) {
           if ( $n > 1 ) {
             $form[$key]['facet_select']['facet_selected_label']['selected'] = array(
               '#type' => 'markup',
-              '#markup' => t("%n seleced facets", array('%n'=>$n), array('context' => 'bibdk_facetbrowser')),
+              '#markup' => t("%n seleced facets", array('%n' => $n), array('context' => 'bibdk_facetbrowser')),
             );
           }
           if ( $n == 1 ) {
@@ -212,7 +222,7 @@ function bibdk_facetbrowser_mobile_form_init($form, $form_state) {
           '#type'  => 'submit',
           '#name'  => 'facetgroup-' . $configured_facet['name'],
           '#value' => t('select', array(), array('context' => 'bibdk_facetbrowser')),
-          '#attributes' => array (
+          '#attributes' => array(
             'class' => array('use-ajax-submit'),
             'title' => t('Select facets', array(), array('context' => 'bibdk_facetbrowser')),
           ),
@@ -249,14 +259,16 @@ function bibdk_facetbrowser_mobile_form_values($form, $form_state, $facet_group)
     '#value' => '2',
   );
 
-  $client = new ting_client_class();
+/*  $client = new ting_client_class();
   $params = !empty($_SESSION['latest_search']['params']) ? $_SESSION['latest_search']['params'] : NULL;;
   $results = new stdClass();
   $results->search_key = !empty($_SESSION['latest_search']['search_key']) ? $_SESSION['latest_search']['search_key'] : NULL;
-  $results->cacheKey   = !empty($_SESSION['latest_search']['cache_key'])  ? $_SESSION['latest_search']['cache_key']  : NULL;
+  $results->cacheKey   = !empty($_SESSION['latest_search']['cache_key'])  ? $_SESSION['latest_search']['cache_key']  : NULL;*/
 
+  $results = new stdClass();
   if ( module_exists('ting_openformat') ) {
-    _ting_openformat_facet_cache($client, $results, $params);
+    //_ting_openformat_facet_cache($client, $results, $params);
+    $results = ting_openformat_get_facet_group($facet_group);
   }
 
   foreach (variable_get('bibdk_facetbrowser_facets', array()) as $configured_facet) {
@@ -386,7 +398,7 @@ function bibdk_facetbrowser_mobile_form_values($form, $form_state, $facet_group)
     '#type'  => 'submit',
     '#name'  => 'facetgroup-' . $facet_group,
     '#value' => t('select and search', array(), array('context' => 'bibdk_facetbrowser')),
-    '#attributes' => array (
+    '#attributes' => array(
       'class' => array('use-ajax-submit'),
       'title' => t('select and search', array(), array('context' => 'bibdk_facetbrowser')),
     ),
@@ -406,7 +418,7 @@ function bibdk_facetbrowser_mobile_form_values($form, $form_state, $facet_group)
  * @return string
  */
 function _bibdk_facetbrowser_shortstring(&$string, $length) {
-  $substr_length = $length + substr_count(drupal_substr($string, 0, $length), 'l') + strtolower(substr_count(drupal_substr($string, 0, $length), 'i')) - 1;
+  $substr_length = $length + substr_count(drupal_substr($string, 0, $length), 'l') + substr_count(drupal_substr($string, 0, $length), 'i') - 1;
   if (drupal_strlen($string) > $substr_length + 3) {
     $string = drupal_substr($string, 0, $substr_length) . '...';
   }

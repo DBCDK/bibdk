@@ -74,7 +74,7 @@
     }
 
     $.ajax({
-      url: Drupal.settings.basePath + 'cart/ajax/deleteitems',
+      url: Drupal.settings.basePath + Drupal.settings.pathPrefix + 'cart/ajax/deleteitems',
       type: 'POST',
       data: {
         pids: items

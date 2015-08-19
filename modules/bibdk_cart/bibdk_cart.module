@@ -481,15 +481,15 @@ function bibdk_cart_manifestation_view($manifestation, $pids) {
     $view['action'] = t('cannot_reservate');
   }
 
-  _bibdk_cart_manifestation_view_strip_links($view);
-
+  $sub_type = $manifestation->getSubType();
   $view['#theme'] = 'bibdk_cart_manifestation';
   $view += array(
     '#pid' => drupal_strtolower(preg_replace('/[^a-zA-Z0-9-]+/', '-', $manifestation->id)),
     '#several_editions' => (!empty($pids) && count($pids) > 1) ? t('all_editions', array(), array('context' => 'bibdk_cart')) : '',
     '#fields' => $view['#fields'],
-    '#type_translated' => isset($view['#fields']['bibdk_mani_type'][0]['#markup']) ? _bibdk_cart_translate_type($view['#fields']['bibdk_mani_type'][0]['#markup']) : '',
+    '#type_translated' => !empty($sub_type) ? t($sub_type) : '',
   );
+
   return $view;
 }
 
@@ -513,13 +513,7 @@ function _bibdk_cart_no_manifestation_view($pids) {
 
 }
 
-/**
- * @param $type
- * @return array
- */
-function _bibdk_cart_translate_type($type) {
-  return array('type' => t($type));
-}
+
 
 /**
  * Implements hook_entity_info_alter().
@@ -579,20 +573,6 @@ function bibdk_cart_reservation_update_status($status, $pids) {
   drupal_add_js(drupal_get_path('module', 'bibdk_cart') . '/js/bibdk_cart_reload.js');
 }
 
-/**
- * Hack to remove html tags from fields
- *
- * @param $view
- */
-function _bibdk_cart_manifestation_view_strip_links(&$view) {
-  if (isset($view['#fields']) && is_array($view['#fields'])) {
-    foreach ($view['#fields'] as $key => $field) {
-      if (isset($field[0]['#markup'])) {
-        $view['#fields'][$key][0]['#markup'] = t(strip_tags($field[0]['#markup']));
-      }
-    }
-  }
-}
 
 /**
  * Implements hook_order_any_btn_lists().

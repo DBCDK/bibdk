@@ -16,20 +16,21 @@ class BibdkActionsWebTestCase extends DrupalWebTestCase {
 
   public function setUp() {
     parent::setUp('bibdk_cart', 'bibdk_actions', 'ting_openformat', 'field_ui', 'bibdk_provider', 'bibdk_webservice');
-    variable_set('ting_search_url', 'lakiseks.dbc.dk/openbibdk/0.5/');
+    //variable_set('ting_search_url', 'lakiseks.dbc.dk/openbibdk/0.5/');
+    variable_set('ting_search_url', 'http://opensearch.addi.dk/4.0.1/');
     variable_set('bibdk_provider_webservice_url', $this->getAbsoluteUrl('bibdk_webservice'));
     variable_set('bibdk_provider_security_code', 'securityCode');
   }
 
   public function testRunner() {
-    // $this->_testBibdkCartHook();
-    // $this->_testPrintview();
-    // $this->_testPrintFunctions();
-    // $this->_testActionFunctions();
-    // $this->_testEmailFunctions();
-    // $this->_testEmailview();
+    $this->_testBibdkCartHook();
+    $this->_testPrintview();
+    $this->_testPrintFunctions();
+    $this->_testActionFunctions();
+    $this->_testEmailFunctions();
+    $this->_testEmailview();
     $this->_testExportFunctions();
-    // $this->_testExportView();
+    // -- is this still a valid test -- $this->_testExportView();
   }
 
   private function _login_as_admin() {
@@ -107,14 +108,19 @@ TY  - BOOKA1  - Hvass,HansA1  - Eigener,WilhelmT1  - Fische der WeltSP  - 158 S.
   private function _testBibdkCartHook() {
     // Empty cart
     $this->drupalGet('user/cart');
-    $this->assertNoLink('print_manifestation', 0, 'print link is not present when cart is empty');
+    $link =  $this->xpath('//a[normalize-space(text())=:label]', array(':label' => 'print_manifestation'));
+    $classes = $link[0]->attributes()->class;
+    $this->assertTrue(strpos($classes[0],'inactive') !== FALSE, 'print link is inactive when empty cart');
 
     // Test link exists
     $this->_addElementToCart();
     $this->drupalGet('user/cart');
     $this->assertLink('print_manifestation', 0, 'print link is present');
     $this->assertLink('email_manifestation', 0, 'email link is present');
-    $this->assertLink('export_manifestation', 0, 'email link is present');
+    $this->assertLink('export_manifestation_direct', 0, 'export direct link is present');
+    $this->assertLink('export_manifestation_refworks', 0, 'export refwork link is present');
+    $this->assertLink('export_manifestation_endnote', 0, 'export endnote link is present');
+
   }
 
   private function _testActionFunctions() {
@@ -123,7 +129,8 @@ TY  - BOOKA1  - Hvass,HansA1  - Eigener,WilhelmT1  - Fische der WeltSP  - 158 S.
     // Test if manifestations are loaded
     $result = bibdk_actions_get_manifestations(array('852350-katalog:000006180', '830080-katalog:000145418', '820030-katalog:179554', '870970-basis:21905208'));
     $this->assertTrue(count($result) == 4, 'right number of results');
-    $this->assertTrue(get_class($result['852350-katalog:000006180']) == 'manifestation', 'first element is a manifestation object');
+
+    $this->assertTrue(get_class($result['852350-katalog:000006180']) == 'Manifestation', 'first element is a manifestation object');
 
     // Test if function kan handle empty array
     $result = bibdk_actions_get_manifestations(array());
@@ -142,37 +149,28 @@ TY  - BOOKA1  - Hvass,HansA1  - Eigener,WilhelmT1  - Fische der WeltSP  - 158 S.
     /* bibdk_actions_print_page */
     // more than one id
     $ids = '852350-katalog:000006180,830080-katalog:000145418,820030-katalog:179554,870970-basis:21905208';
-    $result = bibdk_actions_print_page($ids);
-    $this->assertTrue(preg_match('@<h4> Bare rolig - der er stress nok til alle</h4>@', $result), 'Results are generated, when more than 1 pid is given');
+    $view = bibdk_actions_print_page($ids);
+    $result = drupal_render($view);
+    $valid = preg_match('@<h4>Bare rolig - der er stress nok til alle</h4>@', $result);
+    $this->assertTrue($valid, 'Results are generated, when more than 1 pid is given');
 
     // one id
     $ids = '870970-basis:21905208';
-    $result = bibdk_actions_print_page($ids);
-    $this->assertTrue(preg_match('@<h4> Tove Ditlevsen</h4>@', $result), 'Results are generated, when 1 pid is given');
+    $view = bibdk_actions_print_page($ids);
+    $result = drupal_render($view);
+    $this->assertTrue(preg_match('@<h4>Tove Ditlevsen</h4>@', $result), 'Results are generated, when 1 pid is given');
 
     // no ids
     $ids = '';
-    $result = bibdk_actions_print_page($ids);
-    $this->assertTrue(preg_match('@no_elements_to_be_printed@', $result), 'No Results are generated if no pids are send');
+    $view = bibdk_actions_print_page($ids);
+    $result = drupal_render($view);
+    $this->assertTrue(preg_match('@<h4></h4>@', $result), 'No Results are generated if no pids are send');
 
     // invalid id
     $ids = 'not_a_manifestation';
-    $result = bibdk_actions_print_page($ids);
-    $this->assertTrue(preg_match('@no_elements_to_be_printed@', $result), 'No Results are generated if pid is invalid');
-
-    /* _bibdk_actions_manifestation_view_strip_links */
-    $view = array(
-      '#fields' => array(
-        'bibdk_mani_creators' => array(array('#markup' => '<a href="/bibdk/da/search/work/phrase.creator%3D%22Sikker%20Hansen%22">Test Link Text</a>')),
-        'bibdk_mani_format' => array(array('#markup' => 'just text')),
-      ),
-    );
-    _bibdk_actions_manifestation_view_strip_links($view);
-
-    // Link has been stripped
-    $this->assertEqual($view['#fields']['bibdk_mani_creators'][0]['#markup'], 'Test Link Text', 'links have been stripped from html');
-    // Text remain unchanced
-    $this->assertEqual($view['#fields']['bibdk_mani_format'][0]['#markup'], 'just text', 'Textstring preserved');
+    $view = bibdk_actions_print_page($ids);
+    $result = drupal_render($view);
+    $this->assertTrue(preg_match('@<h4></h4>@', $result), 'No Results are generated if pid is invalid');
 
     // function handles empty array
     $view = array();
@@ -181,16 +179,9 @@ TY  - BOOKA1  - Hvass,HansA1  - Eigener,WilhelmT1  - Fische der WeltSP  - 158 S.
   }
 
   public function _testPrintview() {
-    //No manifestations
-    $this->drupalGet('/print/cart/empty');
-    $this->assertText(t('no_elements_to_be_printed'));
-
     //print view generated
-    $this->drupalGet('print/cart/852350-katalog:000006180,830080-katalog:000145418,820030-katalog:179554,870970-basis:21905208');
+    $this->drupalGet('print/cart/852350-katalog:000006180, 852350-katalog:000006180');
     $this->assertText('Bare rolig - der er stress nok til alle');
-    $this->assertText('Tove Ditlevsen');
-    $this->assertRaw('bibdk_actions.print.js', 'js seems to have been loaded');
-
   }
 
   private function _testEmailFunctions() {
@@ -203,6 +194,8 @@ TY  - BOOKA1  - Hvass,HansA1  - Eigener,WilhelmT1  - Fische der WeltSP  - 158 S.
     // one id
     $ids = '870970-basis:21905208';
     $form = bibdk_actions_email_page($ids);
+
+    //debug($form);
 
     $this->assertTrue(array_key_exists('recipient', $form), 'recipient field is present in returned formarray');
     $this->assertTrue($form['recipient']['#type'] == 'textfield', 'recipient field is of type textfield');
@@ -225,16 +218,9 @@ TY  - BOOKA1  - Hvass,HansA1  - Eigener,WilhelmT1  - Fische der WeltSP  - 158 S.
     $this->assertTrue(array_key_exists('note', $form), 'note field is present in returned formarray');
     $this->assertTrue($form['note']['#type'] == 'textfield', 'note field is of type textfield');
 
-    //false pid
-    $result = bibdk_actions_email_page('hest');
-    $this->assertEqual($result, t('no_elements_to_be_emailed'), 'No PID provided by request');
   }
 
   private function _testEmailview() {
-    //No manifestations
-    $this->drupalGet('email/cart/nopid');
-    $this->assertText(t('no_elements_to_be_emailed'));
-
     //email view generated - one pid
     $this->drupalGet('email/cart/852350-katalog:000006180');
     $this->assertRaw('Bare rolig - der er stress nok til alle');
