@@ -195,7 +195,7 @@ function bibdk_saou_field_get_element_to_toggle($message) {
     )
   );
   $element['container']['text'] = array(
-    '#markup' => $message,
+    '#markup' => drupal_render($message),
   );
 
   return $element;
