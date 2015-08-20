@@ -95,7 +95,7 @@ function bibdk_saou_field_get_wrong_library_link($entity) {
     ),
   );
 
-  return drupal_render($link);
+  return $link;
 }
 
 /** get a link to ressource.
