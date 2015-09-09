@@ -95,7 +95,7 @@ function bibdk_saou_field_get_wrong_library_link($entity) {
     ),
   );
 
-  return drupal_render($link);
+  return $link;
 }
 
 /** get a link to ressource.
@@ -195,7 +195,7 @@ function bibdk_saou_field_get_element_to_toggle($message) {
     )
   );
   $element['container']['text'] = array(
-    '#markup' => $message,
+    '#markup' => drupal_render($message),
   );
 
   return $element;
@@ -263,6 +263,5 @@ function bibdk_saou_link_to_login() {
       'html' => FALSE,
     ),
   );
-
-  return drupal_render($link);
+  return $link;
 }

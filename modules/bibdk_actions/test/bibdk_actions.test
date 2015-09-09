@@ -198,25 +198,25 @@ TY  - BOOKA1  - Hvass,HansA1  - Eigener,WilhelmT1  - Fische der WeltSP  - 158 S.
     //debug($form);
 
     $this->assertTrue(array_key_exists('recipient', $form), 'recipient field is present in returned formarray');
-    $this->assertTrue($form['recipient']['#type'] == 'textfield', 'recipient field is of type textfield');
+    $this->assertTrue($form['recipient']['#type'] == 'textarea', 'recipient field is of type textarea');
 
     $this->assertTrue(array_key_exists('subject', $form), 'subject field is present in returned formarray');
-    $this->assertTrue($form['subject']['#type'] == 'textfield', 'subject field is of type textfield');
+    $this->assertTrue($form['subject']['#type'] == 'textarea', 'subject field is of type textarea');
 
     $this->assertTrue(array_key_exists('note', $form), 'note field is present in returned formarray');
-    $this->assertTrue($form['note']['#type'] == 'textfield', 'note field is of type textfield');
+    $this->assertTrue($form['note']['#type'] == 'textarea', 'note field is of type textarea');
 
     // more than one id
     $ids = '852350-katalog:000006180,830080-katalog:000145418,820030-katalog:179554,870970-basis:21905208';
     $form = bibdk_actions_email_page($ids);
     $this->assertTrue(array_key_exists('recipient', $form), 'recipient field is present in returned formarray');
-    $this->assertTrue($form['recipient']['#type'] == 'textfield', 'recipient field is of type textfield');
+    $this->assertTrue($form['recipient']['#type'] == 'textarea', 'recipient field is of type textarea');
 
     $this->assertTrue(array_key_exists('subject', $form), 'subject field is present in returned formarray');
-    $this->assertTrue($form['subject']['#type'] == 'textfield', 'subject field is of type textfield');
+    $this->assertTrue($form['subject']['#type'] == 'textarea', 'subject field is of type textarea');
 
     $this->assertTrue(array_key_exists('note', $form), 'note field is present in returned formarray');
-    $this->assertTrue($form['note']['#type'] == 'textfield', 'note field is of type textfield');
+    $this->assertTrue($form['note']['#type'] == 'textarea', 'note field is of type textarea');
 
   }
 

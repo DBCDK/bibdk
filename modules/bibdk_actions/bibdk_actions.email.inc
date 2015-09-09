@@ -51,7 +51,7 @@ function bibdk_actions_email_page($ids, $sent = FALSE) {
       $view['#theme'] = 'bibdk_actions_email';
       $content[]['#markup'] = theme('bibdk_actions_email', array('strings' => $view['display']));
       if (empty($title)) {
-        $title = $manifestation->getTitle();
+        $title = $manifestation->getTitleSpecific();
       }
     }
     $form_values['content'] = $content;
@@ -98,7 +98,7 @@ function bibdk_actions_get_fieldinfo($view) {
 function bibdk_actions_mail_form($form_id, &$form_state) {
   global $user;
   $form['recipient'] = array(
-    '#type' => 'textfield',
+    '#type' => 'textarea',
     '#title' => t('recipients_email_adress', array(), array('context' => 'bibdk_actions')),
     '#default_value' => ($user->uid != 0) ? $user->mail : '',
     '#required' => TRUE,
@@ -108,13 +108,13 @@ function bibdk_actions_mail_form($form_id, &$form_state) {
   $subject_more = (count($form_state['build_info']['args'][0]['content']) >= 2) ? ' - ' . t('and_other_titles', array(), array('context' => 'bibdk_actions')) : '';
   $subject = _bibdk_actions_shorten_subject($subject_intro, $subject_title, $subject_more);
   $form['subject'] = array(
-    '#type' => 'textfield',
+    '#type' => 'textarea',
     '#title' => t('email_subject', array(), array('context' => 'bibdk_actions')),
     '#default_value' => $subject,
     '#required' => FALSE,
   );
   $form['note'] = array(
-    '#type' => 'textfield',
+    '#type' => 'textarea',
     '#title' => t('note_for_recipient', array(), array('context' => 'bibdk_actions')),
     '#required' => FALSE,
   );
@@ -128,6 +128,9 @@ function bibdk_actions_mail_form($form_id, &$form_state) {
     '#value' => t('close_window', array(), array('context' => 'bibdk_actions')),
     '#attributes' => array(
       'onClick' => array('window.close();'),
+      'class' => array(
+        'inactive', 'show-for-medium-up',
+      ),
     ),
   );
   if($form_state['build_info']['args'][0]['sent']){
