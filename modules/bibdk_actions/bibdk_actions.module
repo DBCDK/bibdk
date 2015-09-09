@@ -143,3 +143,28 @@ function bibdk_actions_theme($existing, $type, $theme, $path) {
 
   );
 }
+
+
+/**
+ * Remove html tags from fields
+ *
+ * @param $view
+ */
+function _bibdk_actions_manifestation_view_strip_links(&$view, &$break = FALSE) {
+  foreach ($view as $key => $item) {
+    if ( is_array($item) && 
+         isset($item['#openformat_field']) && 
+         isset($item['#openformat_field']['#theme']) && 
+         $item['#openformat_field']['#theme'] == 'link' ) {
+      $view[$key]['#openformat_field'] = array('#markup' => $item['#openformat_field']['#text']);
+      $break = TRUE;
+      break;
+    }
+    if (is_array($item)) {
+      _bibdk_actions_manifestation_view_strip_links($view[$key], $break);
+    }
+    if ( $break ) {
+      break;
+    }
+  }
+}
