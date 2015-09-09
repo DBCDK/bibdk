@@ -265,10 +265,10 @@ function bibdk_facetbrowser_get_facet_link($facet, $name, $count, $hidden = FALS
  */
 function bibdk_facetbrowser_trim_facet_txt($name, $count) {
   $total = strlen($name . $count);
-  if ($total < 25) {
+  if ($total < 35) {
     return $name;
   }
-  $name = mb_substr($name, 0, 16-strlen($count) );
+  $name = mb_substr($name, 0, 30-strlen($count) );
   return $name . '...';
 }
 

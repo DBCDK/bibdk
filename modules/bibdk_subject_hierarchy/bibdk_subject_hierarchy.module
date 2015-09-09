@@ -267,8 +267,9 @@ function _bibdk_subject_hierarchy_get_arranged_items($hierarchy, $row_to_show) {
  * AJAX callback
  */
 function bibdk_subject_hierarchy_ajax_callback($key) {
+  // fix ajax error
+  ajax_set_verification_header();
   $emnehierarki = _get_bibdk_subject_hierarchy();
-
   $emnehierarki_item = _get_bibdk_subject_hierarchy_item($emnehierarki, $key);
   $row = $emnehierarki_item['row'];
   $level = $emnehierarki_item['level'];
