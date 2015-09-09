@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Defines the link for
  *
@@ -24,9 +23,9 @@ function bibdk_actions_get_email_actions($actions) {
       'html' => FALSE,
     ),
   );
-
   return $actions;
 }
+
 
 /**
  * Callback function when user clicks email button in cart view
@@ -39,18 +38,16 @@ function bibdk_actions_email_page($ids, $sent = FALSE) {
   if (empty($ids)) {
     return FALSE;
   }
-
   $idsstring = $ids;
   $pids = preg_replace('@;@', ',', $ids);
   $pids = explode(',', $pids);
-
   $manifestations = bibdk_actions_get_manifestations($pids);
-
   $title = '';
   $content = array();
   if (isset($manifestations)) {
     foreach ($manifestations as $manifestation) {
-      $view['display'] = ting_openformat_manifestation_view($manifestation, 'email');
+      $view = ting_openformat_manifestation_view($manifestation, 'email');
+      $view['display'] = bibdk_actions_get_fieldinfo($view);
       $view['#theme'] = 'bibdk_actions_email';
       $content[]['#markup'] = theme('bibdk_actions_email', array('strings' => $view['display']));
       if (empty($title)) {
@@ -58,12 +55,10 @@ function bibdk_actions_email_page($ids, $sent = FALSE) {
       }
     }
     $form_values['content'] = $content;
-    $form_values['content'] = 'fubar';
     $form_values['title'] = $title;
     $form_values['ids'] = $ids;
     $form_values['sent'] = $sent;
     $form_values['idsstring'] = $idsstring;
-
     $mail_form = drupal_get_form('bibdk_actions_mail_form', $form_values);
   }
   else {
@@ -72,22 +67,25 @@ function bibdk_actions_email_page($ids, $sent = FALSE) {
   return $mail_form;
 }
 
+
 /**
  * @param $view
  * @return array
  */
 function bibdk_actions_get_fieldinfo($view) {
+  _bibdk_actions_manifestation_view_strip_links($view);
   $display_strings = array();
   if (isset($view['#fields']) && is_array($view['#fields'])) {
     foreach ($view['#fields'] as $key => $field) {
-      if (isset($field[0]['#markup']) && isset($field['#title'])) {
-        $display_strings[$field['#weight']] = t($field['#title']) . ': ' . $field[0]['#markup'];
+      if (is_array($field[0]) && is_array($field[0][0]) && isset($field[0][0]['#openformat_field']['#markup']) && isset($field['#title'])) {
+        $display_strings[$field['#weight']] = t($field['#title']) . ': ' . $field[0][0]['#openformat_field']['#markup']; 
       }
     }
   }
   ksort($display_strings);
   return $display_strings;
 }
+
 
 /**
  * Creates the bibdk_actions_mail_form form
@@ -99,39 +97,32 @@ function bibdk_actions_get_fieldinfo($view) {
  */
 function bibdk_actions_mail_form($form_id, &$form_state) {
   global $user;
-
   $form['recipient'] = array(
     '#type' => 'textarea',
     '#title' => t('recipients_email_adress', array(), array('context' => 'bibdk_actions')),
     '#default_value' => ($user->uid != 0) ? $user->mail : '',
     '#required' => TRUE,
   );
-
   $subject_intro = t('manifestations_from @site-name', array('@site-name' => variable_get('site_name', t('email_site_name', array(), array('context' => 'bibdk_actions')))));
   $subject_title = (isset($form_state['build_info']['args'][0]['title'])) ? ' - ' . $form_state['build_info']['args'][0]['title'] : '';
   $subject_more = (count($form_state['build_info']['args'][0]['content']) >= 2) ? ' - ' . t('and_other_titles', array(), array('context' => 'bibdk_actions')) : '';
-
   $subject = _bibdk_actions_shorten_subject($subject_intro, $subject_title, $subject_more);
-
   $form['subject'] = array(
     '#type' => 'textarea',
     '#title' => t('email_subject', array(), array('context' => 'bibdk_actions')),
     '#default_value' => $subject,
     '#required' => FALSE,
   );
-
   $form['note'] = array(
     '#type' => 'textarea',
     '#title' => t('note_for_recipient', array(), array('context' => 'bibdk_actions')),
     '#required' => FALSE,
   );
-
   $form['send'] = array(
     '#type' => 'submit',
     '#submit' => array('bibdk_actions_mail_form_submit'),
     '#value' => t('send_email', array(), array('context' => 'bibdk_actions')),
   );
-
   $form['close'] = array(
     '#type' => 'button',
     '#value' => t('close_window', array(), array('context' => 'bibdk_actions')),
@@ -142,13 +133,12 @@ function bibdk_actions_mail_form($form_id, &$form_state) {
       ),
     ),
   );
-
   if($form_state['build_info']['args'][0]['sent']){
     drupal_add_js(drupal_get_path('module', 'bibdk_cart') . '/js/bibdk_cart_reload.js');
   }
-
   return $form;
 }
+
 
 /**
  * if subjectfield is going to be more than tha maximum allowed 128 chars we will shorten the title
@@ -166,6 +156,7 @@ function _bibdk_actions_shorten_subject($subject_intro, $subject_title, $subject
   return $subject_intro . $subject_title . $subject_more;
 }
 
+
 /**
  * Validates form elements in bibdk_actions_mail_form
  *
@@ -178,6 +169,7 @@ function bibdk_actions_mail_form_validate($form, &$form_state) {
     form_set_error('recipient', $error_msg);
   }
 }
+
 
 /**
  * @param $form_id
@@ -197,6 +189,7 @@ function bibdk_actions_mail_form_submit($form_id, &$form_state) {
   drupal_goto('email/cart/'.$form_state['build_info']['args'][0]['idsstring'].'/1');
 }
 
+
 /**
  * @param $params
  * @internal param $form_values
@@ -206,12 +199,9 @@ function bibdk_actions_mail_send($params) {
   $module = 'bibdk_actions';
   $key = 'mail_cart_items';
   $to = $params['recipient'];
-
   global $language;
-
   $from = variable_get('bibdk_actions_email_sender_adress', 'noreply@bibliotek.dk');
   $send = TRUE;
-
   $result = drupal_mail($module, $key, $to, $language, $params, $from, $send);
   if ($result['result'] == TRUE) {
     drupal_set_message(t('Your message has been sent.'));
@@ -220,6 +210,7 @@ function bibdk_actions_mail_send($params) {
     drupal_set_message(t('There was a problem sending your message and it was not sent.'), 'error');
   }
 }
+
 
 /**
  * Implements hook_mail().
@@ -237,5 +228,3 @@ function bibdk_actions_mail($key, &$message, $params) {
       break;
   }
 }
-
-

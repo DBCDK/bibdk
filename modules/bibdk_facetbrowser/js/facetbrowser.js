@@ -228,7 +228,6 @@
     // show less event
     group.find($("div[data-expand='less'] span")).on('click', function () {
       BibdkFacets.FoldFacetGroup(group, 0);
-      BibdkFacets.showAndHide();
     });
   };
 
@@ -275,19 +274,6 @@
     $(Drupal.settings.bibdkFacetBrowser.mainElement + ' .form-type-checkbox input').change(function(e) {
       $('body').prepend('<div class="facetbrowser_overlay"><div class="spinner"></div></div>');
       window.location = $(e.target).parent().find('a').attr('href');
-    });
-
-    BibdkFacets.showAndHide();
-  };
-
-  BibdkFacets.showAndHide = function(){
-    // @TODO why would you wanna hide valid facets ??
-    // disambiguate facets that are hidden because some facets are already selected, and facets that are not yet shown.
-    $("#bibdk-facetbrowser-form").find("a[data-hidden='0']").each(function(count, facetElement) {
-      $(this).parents('div.form-type-checkbox').addClass('facetShow');
-    });
-    $("#bibdk-facetbrowser-form").find("a[data-hidden='1']").each(function(count, facetElement) {
-      $(this).parents('div.form-type-checkbox').hide().addClass('facetNoShow');
     });
   };
 

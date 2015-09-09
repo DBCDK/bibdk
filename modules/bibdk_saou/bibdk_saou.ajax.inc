@@ -149,20 +149,19 @@ function bibdk_saou_get_output_by_permission($saou, $pid, $url = NULL) {
     if (empty($link)) {
       $link = $saou->get_link();
     }
-
     $remote_user_access = $saou->get_remoteUserAccess();
     if ($link && $remote_user_access) {
       $output = bibdk_saou_ajax_get_proxylink($link, $pid);
-
+      $html = drupal_render($output);
       return array(
-        'redirect' => $output,
+        'redirect' => $html,
         'selector' => bibdk_saou_field_pid_to_selector($pid),
         'error' => ''
       );
     }
     elseif ($link && empty($remote_user_access)) {
       $message = t('bibdk_saou_walkin_access', array(), array('context' => 'bibdk_saou'));
-      $url = l($message, $link, array('attributes' => array('target' => '_blank')));
+      $url = array('#markup' => l($message, $link, array('attributes' => array('target' => '_blank'))));
       $output = bibdk_saou_field_get_element_to_toggle($url);
       bibdk_saou_remove_hidden_class($output['container']['#attributes']['class']);
       $html = drupal_render($output);
@@ -225,5 +224,5 @@ function bibdk_saou_ajax_get_proxylink($link, $pid) {
     ),
   );
 
-  return drupal_render($proxy_link);
+  return $proxy_link;
 }
