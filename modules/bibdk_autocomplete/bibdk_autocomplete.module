@@ -211,6 +211,9 @@ function bibdk_autocomplete_0_hit_search($conditions) {
   return $link_items;
 }
 
+/**
+ * helper function for 0_hit_search()
+ */
 function bibdk_make_item_list($items) {
 
   $links = array();
