@@ -96,8 +96,8 @@ function bibdk_reviews_article_view($manifestation) {
   }
 
   $rating = $manifestation->getReviewRatings();
-
-  $title = drupal_render(_ting_openformat_parse_element($manifestation->getTitle()));
+  $title_array = _ting_openformat_parse_element($manifestation->getTitle());
+  $title = drupal_render($title_array);
   $title_url = array(
     '#theme' => 'link',
     '#text' => $title,
