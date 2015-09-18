@@ -56,7 +56,7 @@ function bibdk_autocomplete($p_uuid, $v_uuid, $string, $retry = FALSE) {
     drupal_exit();
   }
 
-  $url = ($value_vars['facetIndex']) ? $url . '/facets' : $url . '/terms';
+  $url = ($value_vars['facetIndex']) ? $url . '/facetSpell' : $url . '/terms';
 
   $settings['highlight'] = ($settings['highlight']) ? 'true' : NULL;
 
@@ -72,7 +72,7 @@ function bibdk_autocomplete($p_uuid, $v_uuid, $string, $retry = FALSE) {
 
   if (!empty($result->suggestions)) {
     foreach ($result->suggestions as $suggestion) {
-      $items[bibdk_autocomplete_truncate(html_entity_decode(strip_tags($suggestion->suggestion)), 64)] = $suggestion->suggestion;
+      $items[bibdk_autocomplete_truncate(html_entity_decode(strip_tags($suggestion->phrase)), 64)] = $suggestion->phrase;
     }
   }
   else if (empty($result->suggestions) && !$retry) {
