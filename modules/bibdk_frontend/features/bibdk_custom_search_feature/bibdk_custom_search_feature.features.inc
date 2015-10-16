@@ -2118,7 +2118,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '0981bf00-199a-3134-ed87-8a8cb76dc8c8';
   $option->v_uuid = 'f81d0c50-5f4b-d1f4-f11f-c000c901c841';
-  $option->sort = -70;
+  $option->sort = -69;
   $option->label = 'science fiction';
   $option->value = '"science fiction"';
   $option->expand = '0';
@@ -2310,7 +2310,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '13e9c659-5d7c-4fd9-b8a9-634363b8b3f3';
   $option->v_uuid = 'f81d0c50-5f4b-d1f4-f11f-c000c901c841';
-  $option->sort = -64;
+  $option->sort = -63;
   $option->label = 'jazzfilm';
   $option->value = '"jazzfilm"';
   $option->expand = '0';
@@ -2370,7 +2370,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '173d181f-3013-06b4-2153-a5f2eafb0876';
   $option->v_uuid = 'f81d0c50-5f4b-d1f4-f11f-c000c901c841';
-  $option->sort = -73;
+  $option->sort = -72;
   $option->label = 'politi';
   $option->value = '"politifilm"';
   $option->expand = '0';
@@ -2442,7 +2442,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '19fde25a-29c6-9bf4-31a2-ec3037108a0c';
   $option->v_uuid = 'f81d0c50-5f4b-d1f4-f11f-c000c901c841';
-  $option->sort = -60;
+  $option->sort = -59;
   $option->label = 'operafilm';
   $option->value = '"operafilm"';
   $option->expand = '0';
@@ -2874,7 +2874,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '287ba40b-f593-ca14-5943-97e81e88d359';
   $option->v_uuid = 'f81d0c50-5f4b-d1f4-f11f-c000c901c841';
-  $option->sort = -57;
+  $option->sort = -56;
   $option->label = 'rockfilm';
   $option->value = '"rockfilm"';
   $option->expand = '0';
@@ -2994,7 +2994,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '2c584806-b4a2-4eba-839d-a70146fc85ea';
   $option->v_uuid = 'f81d0c50-5f4b-d1f4-f11f-c000c901c841';
-  $option->sort = -80;
+  $option->sort = -79;
   $option->label = 'horror';
   $option->value = '"horror"';
   $option->expand = '0';
@@ -3498,7 +3498,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '3ba4096a-04c6-4ad0-a54f-9aec40c6670c';
   $option->v_uuid = 'f81d0c50-5f4b-d1f4-f11f-c000c901c841';
-  $option->sort = -65;
+  $option->sort = -64;
   $option->label = 'western';
   $option->value = '"westerns"';
   $option->expand = '0';
@@ -4134,7 +4134,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '5faae28a-5305-f8d4-39e5-2e88c130c7c2';
   $option->v_uuid = 'f81d0c50-5f4b-d1f4-f11f-c000c901c841';
-  $option->sort = -79;
+  $option->sort = -78;
   $option->label = 'komedier';
   $option->value = '"komedier"';
   $option->expand = '0';
@@ -4494,7 +4494,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '707209a6-5118-8af4-e5ef-6c76e84c61da';
   $option->v_uuid = 'f81d0c50-5f4b-d1f4-f11f-c000c901c841';
-  $option->sort = -75;
+  $option->sort = -74;
   $option->label = 'kunst og kunstnere ';
   $option->value = '"kunst og kunstnere"';
   $option->expand = '0';
@@ -4578,7 +4578,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '7469d725-4e5f-8884-7150-bc8d653adf09';
   $option->v_uuid = 'f81d0c50-5f4b-d1f4-f11f-c000c901c841';
-  $option->sort = -58;
+  $option->sort = -57;
   $option->label = 'popfilm';
   $option->value = '"popfilm"';
   $option->expand = '0';
@@ -5034,7 +5034,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '876fa643-58b8-4951-8636-9804f7bf9796';
   $option->v_uuid = 'f81d0c50-5f4b-d1f4-f11f-c000c901c841';
-  $option->sort = -59;
+  $option->sort = -58;
   $option->label = 'operette';
   $option->value = '"operetteklassikere"';
   $option->expand = '0';
@@ -5082,7 +5082,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '88c3c543-9aef-4463-a408-4d168ca2e5b8';
   $option->v_uuid = 'f81d0c50-5f4b-d1f4-f11f-c000c901c841';
-  $option->sort = -74;
+  $option->sort = -73;
   $option->label = 'kærlighed';
   $option->value = '"kærlighed"';
   $option->expand = '0';
@@ -5118,7 +5118,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '8b442f0f-07a4-c124-1958-01cac9498a93';
   $option->v_uuid = 'f81d0c50-5f4b-d1f4-f11f-c000c901c841';
-  $option->sort = -69;
+  $option->sort = -68;
   $option->label = 'socialrealisme';
   $option->value = '"socialrealisme"';
   $option->expand = '0';
@@ -5358,7 +5358,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '93c3c006-33ef-5174-4d8f-1522208e4d4d';
   $option->v_uuid = 'f81d0c50-5f4b-d1f4-f11f-c000c901c841';
-  $option->sort = -68;
+  $option->sort = -67;
   $option->label = 'tegnefilm';
   $option->value = '"tegnefilm"';
   $option->expand = '0';
@@ -5442,7 +5442,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '98ac7f85-2930-4576-b855-af0a431f0a38';
   $option->v_uuid = 'f81d0c50-5f4b-d1f4-f11f-c000c901c841';
-  $option->sort = -62;
+  $option->sort = -61;
   $option->label = 'korfilm';
   $option->value = '"korfilm"';
   $option->expand = '0';
@@ -5538,7 +5538,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '9d8e4436-74ce-9704-8d42-3fcafbdb35eb';
   $option->v_uuid = 'f81d0c50-5f4b-d1f4-f11f-c000c901c841';
-  $option->sort = -82;
+  $option->sort = -81;
   $option->label = 'folkekomedie';
   $option->value = '"folkekomedier"';
   $option->expand = '0';
@@ -5656,6 +5656,18 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option = new stdClass();
   $option->disabled = FALSE; /* Edit this to true to make a default option disabled initially */
   $option->api_version = 1;
+  $option->o_uuid = 'a23a5a9f-4e26-401e-a6ee-bcc2ae44c1a3';
+  $option->v_uuid = 'f81d0c50-5f4b-d1f4-f11f-c000c901c841';
+  $option->sort = -82;
+  $option->label = 'film baseret på bøger';
+  $option->value = 'no=("baseret på bogen" or "baseret på romanen")';
+  $option->expand = '0';
+  $option->is_disabled = FALSE;
+  $export['a23a5a9f-4e26-401e-a6ee-bcc2ae44c1a3'] = $option;
+
+  $option = new stdClass();
+  $option->disabled = FALSE; /* Edit this to true to make a default option disabled initially */
+  $option->api_version = 1;
   $option->o_uuid = 'a24fef0c-5b25-da24-810d-d927ec434b09';
   $option->v_uuid = 'fbeb5556-778a-ab64-2522-89eeef2793eb';
   $option->sort = -89;
@@ -5742,7 +5754,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = 'a5b66943-98cf-ddd4-a9f0-5e63ab4b6f9b';
   $option->v_uuid = 'f81d0c50-5f4b-d1f4-f11f-c000c901c841';
-  $option->sort = -61;
+  $option->sort = -60;
   $option->label = 'musicalfilm';
   $option->value = '"musicalfilm"';
   $option->expand = '0';
@@ -6246,7 +6258,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = 'b716e371-671f-e364-2df6-bdc0220b1d65';
   $option->v_uuid = 'f81d0c50-5f4b-d1f4-f11f-c000c901c841';
-  $option->sort = -77;
+  $option->sort = -76;
   $option->label = 'krigsfilm';
   $option->value = '"krigsfilm"';
   $option->expand = '0';
@@ -6282,7 +6294,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = 'b9241a28-bd21-2354-e1e9-653722dd5ab1';
   $option->v_uuid = 'f81d0c50-5f4b-d1f4-f11f-c000c901c841';
-  $option->sort = -67;
+  $option->sort = -66;
   $option->label = 'thriller';
   $option->value = '"thriller"';
   $option->expand = '0';
@@ -6426,7 +6438,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = 'bc80c239-fe6d-4fe5-9254-84cba151648b';
   $option->v_uuid = 'f81d0c50-5f4b-d1f4-f11f-c000c901c841';
-  $option->sort = -72;
+  $option->sort = -71;
   $option->label = 'politik og politikere';
   $option->value = '"politik og politikere"';
   $option->expand = '0';
@@ -6546,7 +6558,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = 'c1f171a4-4f5f-4194-6522-dcd248294e5e';
   $option->v_uuid = 'f81d0c50-5f4b-d1f4-f11f-c000c901c841';
-  $option->sort = -71;
+  $option->sort = -70;
   $option->label = 'road movies';
   $option->value = '"road movies"';
   $option->expand = '0';
@@ -6966,7 +6978,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = 'd4173a4c-3c03-2f94-dd81-56ff83728e1d';
   $option->v_uuid = 'f81d0c50-5f4b-d1f4-f11f-c000c901c841';
-  $option->sort = -66;
+  $option->sort = -65;
   $option->label = 'tv-serie';
   $option->value = '"tv-serier"';
   $option->expand = '0';
@@ -7110,7 +7122,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = 'd79b0d76-4e44-49ff-a5da-aa382427f45b';
   $option->v_uuid = 'f81d0c50-5f4b-d1f4-f11f-c000c901c841';
-  $option->sort = -76;
+  $option->sort = -75;
   $option->label = 'krimi';
   $option->value = '"krimi"';
   $option->expand = '0';
@@ -7458,7 +7470,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = 'e40d3af1-5b81-40b4-b15e-a65194d28f10';
   $option->v_uuid = 'f81d0c50-5f4b-d1f4-f11f-c000c901c841';
-  $option->sort = -78;
+  $option->sort = -77;
   $option->label = 'kortfilm';
   $option->value = '"novellefilm" or "kortfilm"';
   $option->expand = '0';
@@ -7854,7 +7866,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = 'f798b11c-a17e-435e-a252-230f5374e053';
   $option->v_uuid = 'f81d0c50-5f4b-d1f4-f11f-c000c901c841';
-  $option->sort = -63;
+  $option->sort = -62;
   $option->label = 'koncertfilm';
   $option->value = '"koncertfilm"';
   $option->expand = '0';
@@ -7866,7 +7878,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = 'f7ad177a-625c-52c4-ad82-57b45445cfcc';
   $option->v_uuid = 'f81d0c50-5f4b-d1f4-f11f-c000c901c841';
-  $option->sort = -81;
+  $option->sort = -80;
   $option->label = 'gyserfilm';
   $option->value = '"gyserfilm"';
   $option->expand = '0';
