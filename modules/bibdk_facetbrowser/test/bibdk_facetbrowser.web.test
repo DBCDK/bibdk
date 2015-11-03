@@ -15,8 +15,8 @@ class BibdkFacetbrowserWeb extends DrupalWebTestCase {
   }
 
   public function setUp() {
-    parent::setUp('bibdk_facetbrowser', 'ting_openformat');
-    variable_set('ting_search_url', 'http://bibdk-prod-ws.dbc.dk/opensearch/3.2/');
+    parent::setUp('bibdk_facetbrowser', 'ting_openformat', 'bibdk_webservice_settings_develop', 'features');
+
     variable_set('search_active_modules', array('node' => 'node', 'ting_openformat' => 'ting_openformat'));
     variable_set('search_default_module', 'ting_openformat');
 
