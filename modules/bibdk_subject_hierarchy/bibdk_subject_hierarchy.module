@@ -484,11 +484,6 @@ function _get_bibdk_subject_hierarchy_heading($emnehierarki, $keys, $path = 'wor
  * @return bool|array
  */
 function _bibdk_subject_hierarchy_read_data() {
-  // fallback if bibdk_yaz is not enabled
-  if (!module_exists('bibdk_yaz')) {
-    $filename = drupal_get_path('module', 'bibdk_subject_hierarchy') . '/data/emnehierarki_full.json';
-    return json_decode(file_get_contents($filename), TRUE);
-  }
 
   $filename = drupal_get_path('module', 'bibdk_subject_hierarchy') . '/data/emnehierarki_full.xml';
   $data = _bibdk_subject_hierarchy_parse_xml($filename);
