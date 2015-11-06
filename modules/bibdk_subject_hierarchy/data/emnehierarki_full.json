@@ -72,6 +72,7 @@
                             },
                             {
                                 "ord": "Unge mødre - teenagemødre",
+                                "cql":"dkcclterm.em=\"unge m\u00f8dre\"",
                                 "ccl": "em=unge mødre",
                                 "kommentar": "",
                                 "hjaelpetekst": "",
