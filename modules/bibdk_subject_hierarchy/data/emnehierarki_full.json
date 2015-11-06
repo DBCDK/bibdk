@@ -1,5 +1,6 @@
 [
             {
+                "note":"LABEL_MENNESKE_OG_SAMFUND",
                 "ord": "Menneske og samfund",
                 "ccl": "",
                 "kommentar": "",
@@ -1246,6 +1247,7 @@
                 ]
             },
             {
+                "note":"LABEL_SUNDHED_OG_SYGDOM",
                 "ord": "Sundhed og sygdom",
                 "ccl": "ok=61 og (em=sundhed eller em=sygdom?)",
                 "kommentar": "Lidt mere",
@@ -3239,6 +3241,7 @@
                 ]
             },
             {
+                "note":"LABEL_HJEM_OG_FRITID",
                 "ord": "Hjem og fritid",
                 "ccl": "",
                 "kommentar": "dette er en test",
@@ -5427,6 +5430,7 @@
                 ]
             },
             {
+                "note":"LABEL_PAEDAGOGIK_PSYKOLOGI_UNDERVISNING_OG_UDDANNELSE",
                 "ord": "Pædagogik, psykologi, undervisning og uddannelse",
                 "ccl": "",
                 "kommentar": "",
@@ -6433,6 +6437,7 @@
                 ]
             },
             {
+                "note":"LABEL_SAMFUNDET_OKONOMI_OG_POLITIK",
                 "ord": "Samfundet, økonomi og politik",
                 "ccl": "",
                 "kommentar": "ingen ccl laves",
@@ -8760,6 +8765,7 @@
                 ]
             },
             {
+                "note":"LABEL_LANDE_HISTORIE_REJSER_OG_SPROG",
                 "ord": "Lande: Historie, rejser og sprog",
                 "ccl": "",
                 "kommentar": "ingen ccl laves",
@@ -12890,6 +12896,7 @@
                 ]
             },
             {
+                "note":"LABEL_IT_MEDIER_OG_KOMMUNIKATION",
                 "ord": "IT, medier og kommunikation",
                 "ccl": "ok=19.5 og (ti=(it eller informationsteknologi eller ict eller ikt) eller em=informationsteknologi) ikke medier ikke fl=(amt eller kommun*)",
                 "kommentar": "93 poster",
@@ -13578,6 +13585,7 @@
                 ]
             },
             {
+                "note":"LABEL_ERHVERVSLIV_OG_BRANCHER",
                 "ord": "Erhvervsliv og brancher",
                 "ccl": "",
                 "kommentar": "Ingen ccl laves",
@@ -15218,6 +15226,7 @@
                 ]
             },
             {
+                "note":"LABEL_FORSKNING_NATUR_OG_TEKNIK",
                 "ord": "Forskning, natur og teknik",
                 "ccl": "((ok=50 eller ok=60) og em=(naturvidenskab eller teknik)) ikke ma=(pe eller bs)",
                 "kommentar": "Det er nødvendigt at kunne sortere periodica fra i de store brede grupper.",
@@ -16915,6 +16924,7 @@
                 ]
             },
             {
+                "note":"LABEL_FILOSOFI_OG_RELIGION",
                 "ord": "Filosofi og religion",
                 "ccl": "",
                 "kommentar": "Ingen ccl lavet.\r\nDette er en term på øverste niveau",
@@ -18131,6 +18141,7 @@
                 ]
             },
             {
+                "note":"LABEL_LITTERATUR_ARKITEKTUR_KUNST_FILM_TV_TEATER_OG_MUSIK",
                 "ord": "Litteratur, arkitektur, kunst, film, tv, teater og musik",
                 "ccl": "",
                 "kommentar": "ingen ccl laves",
@@ -20485,6 +20496,7 @@
                 ]
             },
             {
+                "note":"LABEL_SKONLITTERATUR_OG_BIOGRAFIER",
                 "ord": "Skønlitteratur og biografier",
                 "ccl": "",
                 "kommentar": "ingen ccl laves",
