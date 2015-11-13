@@ -23,4 +23,13 @@ class BibdkBorchkWebserviceTestCast extends DrupalWebTestCase {
     preg_match($pattern,$response,$matches);
     $this->assertTrue(!empty($matches));
   }
+
+  public function testWebserviceWithDelimiter() {
+    $this->assertTrue(TRUE);
+    $response = bibdk_borchk_request('00-19','0019','DK-716500','xml','bibliotek.dk');
+    $matches = array();
+    $pattern = '/borrowerCheckResponse/';
+    preg_match($pattern,$response,$matches);
+    $this->assertTrue(!empty($matches));
+  }
 }
