@@ -73,7 +73,12 @@ function bibdk_autocomplete($p_uuid, $v_uuid, $string, $retry = FALSE) {
 
   if (!empty($result->suggestions)) {
     foreach ($result->suggestions as $suggestion) {
-      $items[bibdk_autocomplete_truncate(html_entity_decode(strip_tags($suggestion->phrase)), 64)] = $suggestion->phrase;
+      if ( strpos($suggestion->phrase, ' ')) {
+        // contains blank
+        $items['"' . bibdk_autocomplete_truncate(html_entity_decode(strip_tags($suggestion->phrase)), 64) . '"'] = $suggestion->phrase;
+      } else {
+        $items[bibdk_autocomplete_truncate(html_entity_decode(strip_tags($suggestion->phrase)), 64)] = $suggestion->phrase;
+      }
     }
   }
   else if (empty($result->suggestions) && !$retry) {
@@ -123,7 +128,6 @@ function bibdk_autocomplete_form_search_block_form_alter(&$form, &$form_state, $
   }
   
   $autocomplete_elements = variable_get('bibdk_autocomplete_var', array());
-  //dpm($autocomplete_elements,'$autocomplete_elements');
   foreach ($autocomplete_elements as $key => $page) {
     if ($page['page_path'] == $page_path) {
       $vars = $page['vars'];
