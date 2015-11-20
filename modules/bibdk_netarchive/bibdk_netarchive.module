@@ -173,7 +173,8 @@ function bibdk_netarchive_search($local_id) {
     $creator_array = _ting_openformat_parse_element($manifestation->getCreator());
     array_walk_recursive($creator_array, $callback);
     $creator = $item;
-
+    
+    $item = '';
     $item['title'] = $title;
     $item['creator'] = $creator;
     $item['pid'] = ( !empty($manifestation->id) ) ? $manifestation->id : FALSE;
