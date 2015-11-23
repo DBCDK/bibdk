@@ -17,7 +17,7 @@
   /**
    * Add customSearch method to Drupal.ADCB
    *  @see misc/autocomplete.js
-   *  
+   *
    * @param input
    * @param searchString
    */
