@@ -4,7 +4,7 @@ core = 7.x
 package = Bibliotek.dk
 
 files[] = test/bibdk_autocomplete_web_test.test
-scripts[] = js/bibdk_autocomplete.js
+files[] = test/bibdk_autocomplete_unit_test.test
 
 dependencies[] = bibdk_custom_search
 dependencies[] = microcurl
