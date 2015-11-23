@@ -84,7 +84,6 @@ function bibdk_autocomplete($p_uuid, $v_uuid, $string, $retry = false) {
   } else {
     if (empty($result->suggestions) && !$retry) {
       watchdog('bibdk_autocomplete', 'AUTOCOMPLETE RETRY' . $url, array(), $severity = WATCHDOG_WARNING);
-      dpm('autocomplete_RETRY');
       bibdk_autocomplete($p_uuid, $v_uuid, $string, true);
     } else {
       watchdog('bibdk_autocomplete', 'Autocomplete return empty set for ' . $url, array(), $severity = WATCHDOG_WARNING);
