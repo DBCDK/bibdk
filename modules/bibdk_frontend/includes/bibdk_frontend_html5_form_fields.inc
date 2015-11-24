@@ -24,21 +24,24 @@ function bibdk_frontend_form_user_register_form_alter(&$form, $form_state){
  * Implements hook_form_FORM_ID_alter (bibdk-favourite-user-form-fields)
  */
 function bibdk_frontend_form_bibdk_favourite_user_form_fields_alter(&$form, $form_state ){
+
   $fields = &$form['wrapper'];
   // most fields in user-form-fields might not be set
+
   if(isset($fields['userId'])){
-    // borrower-card number - numeric
-    $fields['userId']['#type'] = 'numberfield';
+    // borrower-card number - numeric (*)
+    // * bug 19622: iPad don't support #type=numberfield;
+    $fields['userId']['#type'] = 'textfield';
   }
-
-
 
   //usermail - email
- if(isset($fields['userMail'])){
+  if(isset($fields['userMail'])){
     $fields['userMail']['#type'] = 'emailfield';
   }
+
   //userTelephone - numeric
   if(isset($fields['userTelephone'])) {
     $fields['userTelephone']['#type'] = 'telfield';
   }
+
 }
