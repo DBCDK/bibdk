@@ -226,7 +226,7 @@ function bibdk_make_item_list($items) {
   foreach ( $items as $suggest ) {
     $zero_hit_link = array(
       '#theme' => 'link',
-      '#path' => 'search/work/' . $suggest,
+      '#path' => 'search/work/' . '"' . $suggest . '"',
       '#weight' => 0,
       '#text' => $suggest,
       '#options' => array(
