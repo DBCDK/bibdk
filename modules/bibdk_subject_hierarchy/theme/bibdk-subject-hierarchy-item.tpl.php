@@ -20,15 +20,25 @@
   <div class="subjects-sublist">
     <ul>
       <?php foreach ($variables['hierarchy']['term'] as $key => $item) {
+        $link = array(
+            '#theme' => 'link',
+            '#text' => $item['ord'],
+            '#path' => NULL,
+            '#options' => array('attributes' => array()),
+            '#prefix' => '<li>',
+            '#suffix' => '</li>'
+        );
         if (!empty($item['cql']) && empty($item['term'])) {
-          $url = 'search/' . $variables['search_path'] . '/' . trim($item['cql']);
-          $attributes['attributes'] = array();
+            $link['#path'] = 'search/' . $variables['search_path'];
+            $link['#options']['query'] = array('search_block_form' => trim($item['cql']));
+            $link['#options']['fragment'] = 'content';
+            $link['#options']['html'] = TRUE;
         }
         else {
-          $url = 'bibdk_subject_hierarchy/nojs/' . $variables['current_key'] . ',' . $key;
-          $attributes['attributes']['class'] = array('use-ajax', 'nesting');
+            $link['#path'] = 'bibdk_subject_hierarchy/nojs/' . $variables['current_key'] . ',' . $key;
+            $link['#options']['attributes']['class'] = array('use-ajax', 'nesting');
         }
-        echo '<li>' . l($item['ord'], $url, $attributes) . "</li>\n";
+        echo render($link);
       } ?>
     </ul>
   </div>
