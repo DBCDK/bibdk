@@ -510,7 +510,7 @@ function _bibdk_subject_hierarchy_read_data() {
     $filename = drupal_get_path('module', 'bibdk_subject_hierarchy') . '/data/emnehierarki_full.json';
     return json_decode(file_get_contents($filename), TRUE);
   }
-
+  
   $filename = drupal_get_path('module', 'bibdk_subject_hierarchy') . '/data/emnehierarki_full.xml';
   $data = _bibdk_subject_hierarchy_parse_xml($filename);
   if (!empty($data)) {

@@ -258,15 +258,14 @@ function bibdk_subject_hierarchy_searchfield_custom_search($term) {
   $params['numResults'] = 0;
   $params['objectFormat'] = 'DKABM';
   $params['collectionType'] = 'work';
-  $params['query'] = $term;
-
+  $params['query'] = '"' . $term . '"';
   $client = new ting_client_class();
   $opensearch_result = $client->do_request('search', $params);
 
   $return['result']['#markup'] = t('A search on %term gives %results results', array('%term' => $term, '%results' => $opensearch_result->numTotalObjects)) . ' ';
   $return['link'] = array(
     '#theme' => 'link',
-    '#path' => 'search/work/' . $term,
+    '#path' => 'search/work/' . $params['query'],
     '#text' => t('Show result'),
     '#options' => array(
       'attributes' => array(),

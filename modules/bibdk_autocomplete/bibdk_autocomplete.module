@@ -4,6 +4,7 @@
  * Code for Bibliotek.dk Autocomplete
  */
 
+
 /**
  * Implements hook_menu().
  */
@@ -28,41 +29,46 @@ function bibdk_autocomplete_menu() {
   );
 
   return $items;
-
 }
 
 /**
  * Callback function used when input is entered in a search field.
  *
- * @param $p_uuid
- * @param $v_uuid
- * @param $string
+ * @param      $p_uuid
+ * @param      $v_uuid
+ * @param      $string
  * @param bool $retry -- the server tends to respond with a error 500 however
  *                       retrying once seems to fix it most of the times.
  */
-function bibdk_autocomplete($p_uuid, $v_uuid, $string, $retry = FALSE) {
+function bibdk_autocomplete($p_uuid, $v_uuid, $string, $retry = false) {
   $items = array();
   $settings = variable_get('bibdk_autocomplete_settings', array());
-  $url = variable_get('bibdk_autocomplete_rest_url', NULL);
+  $url = variable_get('bibdk_autocomplete_rest_url', null);
   $vars = variable_get('bibdk_autocomplete_var', array());
-  
   $value_vars = $vars[$p_uuid]['vars'][$v_uuid];
-
   unset($value_vars['autocomplete']);
-
   if (empty($value_vars['index'])) {
     watchdog('bibdk_autocomplete', 'Autocomplete index not defined for value uuid ' . $v_uuid, array(), $severity = WATCHDOG_WARNING);
     drupal_json_output(array());
     drupal_exit();
   }
 
-  $url = ($value_vars['facetIndex']) ? $url . '/facetSpell' : $url . '/terms';
+  $filter_array = bibdk_autocomplete_parse_filters($string);
+  $search_string = key($filter_array);
+  $filter_string = bibdk_autocomplete_set_filter_query($filter_array[$search_string]);
+  if (!empty($filter_string)) {
+    if (!empty($value_vars['filterQuery'])) {
+      $value_vars['filterQuery'] .= ' AND ' . $filter_string;
+    } else {
+      $value_vars['filterQuery'] = $filter_string;
+    }
+  }
 
-  $settings['highlight'] = ($settings['highlight']) ? 'true' : NULL;
-
-  $options['query'] = array('query' => check_plain($string)) + $value_vars + $settings;
+  $settings['highlight'] = ($settings['highlight']) ? 'true' : null;
+  $options['query'] = array('query' => check_plain($search_string)) + $value_vars + $settings;
   $options['maxTime'] = 300;
 
+  $url = ($value_vars['facetIndex']) ? $url . '/facetSpell' : $url . '/terms';
   $url = url($url, $options);
 
   watchdog('bibdk_autocomplete', 'Autocomplete URL sent: ' . $url, array(), $severity = WATCHDOG_DEBUG);
@@ -73,19 +79,53 @@ function bibdk_autocomplete($p_uuid, $v_uuid, $string, $retry = FALSE) {
 
   if (!empty($result->suggestions)) {
     foreach ($result->suggestions as $suggestion) {
-      $items[bibdk_autocomplete_truncate(html_entity_decode(strip_tags($suggestion->phrase)), 64)] = $suggestion->phrase;
+      if ( strpos($suggestion->phrase, ' ')) {
+        // contains blank
+        $items['"' . bibdk_autocomplete_truncate(html_entity_decode(strip_tags($suggestion->phrase)), 64) . '"'] = $suggestion->phrase;
+      } else {
+        $items[bibdk_autocomplete_truncate(html_entity_decode(strip_tags($suggestion->phrase)), 64)] = $suggestion->phrase;
+      }
     }
-  }
-  else if (empty($result->suggestions) && !$retry) {
-    bibdk_autocomplete($p_uuid, $v_uuid, $string, TRUE);
-  }
-  else {
-    watchdog('bibdk_autocomplete', 'Autocomplete return empty set for ' . $url, array(), $severity = WATCHDOG_WARNING);
-    $items = array();
+  } else {
+    if (empty($result->suggestions) && !$retry) {
+      watchdog('bibdk_autocomplete', 'AUTOCOMPLETE RETRY' . $url, array(), $severity = WATCHDOG_WARNING);
+      bibdk_autocomplete($p_uuid, $v_uuid, $string, true);
+    } else {
+      watchdog('bibdk_autocomplete', 'Autocomplete return empty set for ' . $url, array(), $severity = WATCHDOG_WARNING);
+      $items = array();
+    }
   }
   // Return the result to the form in json
   drupal_json_output($items);
   drupal_exit();
+}
+
+function bibdk_autocomplete_parse_filters($filter_string) {
+  $search_filter = explode('::::', $filter_string);
+  $search_string = $search_filter[0];
+  $filter_array = array();
+  for ($i = 1; $i < count($search_filter); $i++) {
+    $filter = array();
+    $elements = explode('$$', $search_filter[$i]);
+    $filter['v_uuid'] = $elements[0];
+    $filter['p_uuid'] = $elements[1];
+    $filter['term'] = $elements[2];
+    $filter_array[] = $filter;
+  }
+  return array($search_string => $filter_array);
+}
+
+function bibdk_autocomplete_set_filter_query(array $filters) {
+  $filter_query = '';
+  $vars = variable_get('bibdk_autocomplete_var', array());
+  foreach ($filters as $filter) {
+    $values = $vars[$filter['p_uuid']]['vars'][$filter['v_uuid']];
+    if (!empty($filter_query)) {
+      $filter_query .= ' AND ';
+    }
+    $filter_query .= $values['facetIndex'] . '=' . '"' . $filter['term'] . '"';
+  }
+  return $filter_query;
 }
 
 /**
@@ -111,19 +151,17 @@ function bibdk_autocomplete_truncate($string, $width) {
  * Implements hook_form_FORM_ID_alter() for form search_block_form.
  */
 function bibdk_autocomplete_form_search_block_form_alter(&$form, &$form_state, $form_id) {
-
   if (!empty($form['page_id']['#value'])) {
     $page_path = $form['page_id']['#value'];
+  } else {
+    if ($_GET['q']['page_id ']) {
+      $page_path = $_GET['q']['page_id '];
+    } else {
+      $page_path = $_GET['q'];
+    }
   }
-  else if ($_GET['q']['page_id ']) {
-    $page_path = $_GET['q']['page_id '];
-  }
-  else {
-    $page_path = $_GET['q'];
-  }
-  
+
   $autocomplete_elements = variable_get('bibdk_autocomplete_var', array());
-  //dpm($autocomplete_elements,'$autocomplete_elements');
   foreach ($autocomplete_elements as $key => $page) {
     if ($page['page_path'] == $page_path) {
       $vars = $page['vars'];
@@ -145,7 +183,7 @@ function bibdk_autocomplete_form_search_block_form_alter(&$form, &$form_state, $
       }
     }
   }
-
+  $form['#attached']['js'][] = drupal_get_path('module', 'bibdk_autocomplete') . '/js/bibdk_autocomplete.js';
   return $form;
 }
 
@@ -182,16 +220,16 @@ function bibdk_autocomplete_help($path, $arg) {
  *
  */
 function bibdk_autocomplete_0_hit_search($conditions) {
- 
+
   $settings = variable_get('bibdk_autocomplete_settings', array());
-  $url = variable_get('bibdk_autocomplete_rest_url', NULL);
+  $url = variable_get('bibdk_autocomplete_rest_url', null);
 
   $value_vars = array();
   $value_vars['index'] = 'scanterm.default';
   $value_vars['facetIndex'] = 'scanphrase.default';
 
   $url = $url . '/facetSpell';
-  $settings['highlight'] = ($settings['highlight']) ? 'true' : NULL;
+  $settings['highlight'] = ($settings['highlight']) ? 'true' : null;
   $options['query'] = array('query' => check_plain($conditions)) + $value_vars + $settings;
   $options['maxTime'] = 300;
   $url = url($url, $options);
@@ -206,7 +244,7 @@ function bibdk_autocomplete_0_hit_search($conditions) {
       $items[bibdk_autocomplete_truncate(html_entity_decode(strip_tags($suggestion->phrase)), 64)] = $suggestion->phrase;
     }
   }
-  $link_items= bibdk_make_item_list($items);
+  $link_items = bibdk_make_item_list($items);
 
   return $link_items;
 }
@@ -219,10 +257,10 @@ function bibdk_make_item_list($items) {
   $links = array();
 
   // make a list of suggesttions
-  foreach ( $items as $suggest ) {
+  foreach ($items as $suggest) {
     $zero_hit_link = array(
       '#theme' => 'link',
-      '#path' => 'search/work/' . $suggest,
+      '#path' => 'search/work/' . '"' . $suggest . '"',
       '#weight' => 0,
       '#text' => $suggest,
       '#options' => array(
@@ -231,7 +269,7 @@ function bibdk_make_item_list($items) {
             'bibdk-suggest-link',
           ),
         ),
-        'html' => FALSE,
+        'html' => false,
       ),
     );
     $links[] = drupal_render($zero_hit_link);
