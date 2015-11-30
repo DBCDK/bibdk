@@ -16,11 +16,7 @@ class BibdkAboutAuthorTest extends DrupalWebTestCase {
 
 
   public function setUp() {
-    parent::setUp('bibdk_about_author', 'ting_openformat', 'worktabs');
-
-    //search service
-    variable_set('ting_search_url', 'http://bibdk-prod-ws.dbc.dk/opensearch/3.1/');
-
+    parent::setUp('bibdk_about_author', 'ting_openformat', 'worktabs', 'bibdk_webservice_settings_develop', 'features');
   }
 
 

@@ -16,9 +16,11 @@ class BibdkLinkmeTestCase extends DrupalWebTestCase {
         'ting_openformat',
         'bibdk_linkme_webservice_mockup',
         'microcurl',
+        'bibdk_webservice_settings_develop',
+        'features',
       )
     );
-    variable_set('ting_search_url', 'http://bibdk-prod-ws.dbc.dk/opensearch/3.2/');
+
     variable_set('bibdk_provider_webservice_url', $this->getAbsoluteUrl('bibdk_webservice'));
     variable_set('bibdk_provider_security_code', 'securityCode');
     variable_set('search_active_modules', array('ting_openformat' => 'ting_openformat'));
