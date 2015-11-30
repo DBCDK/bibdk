@@ -119,17 +119,22 @@ function bibdk_adhl_get_link_list_view($manifestations, $target = '_self') {
     $abstract = _ting_openformat_parse_element($manifestation->getAbstract(), array(), ', ', FALSE, FALSE);
     $abstract = (empty($abstract)) ? '' : $abstract[0]['#openformat_field']['#markup'];
     $adhl_link = array(
-      '#theme' => 'bibdk_adhl_link',
-      '#adhl_link' => array(
-        '#type'  => 'link',
-        '#title' => $manifestation->getTitle(),
-        '#href'  => 'work/' . $id,
-        '#attributes' => array(
-          'class' => array('adhl-link'),
-          'target' => $target,
-          'title' => $creator . ' : ' . $abstract,
+        '#theme' => 'bibdk_adhl_link',
+        '#adhl_link' => array(
+            '#theme' => 'link',
+            '#text' => $manifestation->getTitle(),
+            '#path' => 'search/work/',
+            '#options' => array(
+                'query' => array('search_block_form' => $id),
+                'fragment' => 'content',
+                'attributes' => array(
+                    'class' => array('adhl-link'),
+                    'target' => $target,
+                    'title' => $creator . ' : ' . $abstract,
+                ),
+                'html' => TRUE,
+            ),
         ),
-      ),
     );
     $render['#adhl_links']['#items'][] = drupal_render($adhl_link);
   }
