@@ -79,7 +79,7 @@ function bibdk_autocomplete($p_uuid, $v_uuid, $string, $retry = false) {
 
   if (!empty($result->suggestions)) {
     foreach ($result->suggestions as $suggestion) {
-      if ( strpos($suggestion->phrase, ' ')) {
+      if (strpos($suggestion->phrase, ' ')) {
         // contains blank
         $items['"' . bibdk_autocomplete_truncate(html_entity_decode(strip_tags($suggestion->phrase)), 64) . '"'] = $suggestion->phrase;
       } else {
@@ -123,7 +123,9 @@ function bibdk_autocomplete_set_filter_query(array $filters) {
     if (!empty($filter_query)) {
       $filter_query .= ' AND ';
     }
-    $filter_query .= $values['facetIndex'] . '=' . '"' . $filter['term'] . '"';
+    // trim qoutes if any
+    $term = trim($filter['term'], '"');
+    $filter_query .= $values['facetIndex'] . '=' . '"' . $term . '"';
   }
   return $filter_query;
 }
