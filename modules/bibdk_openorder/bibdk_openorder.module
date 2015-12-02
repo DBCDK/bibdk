@@ -14,7 +14,7 @@ function bibdk_openorder_do_placeOrder($params) {
     return $response;
   }
   else {
-    $message = t('a required parameter is missing in placeorder request - please contact system administrator if problem persists');
+    $message = t('a required parameter is missing in placeorder request - please contact system administrator if problem persists' , array(), array('context' => 'bibdk_openorder'));
     drupal_set_message($message, 'warning');
     watchdog('openorder', $message.'%values', array('%values'=>implode(', ',$missing)), WATCHDOG_ERROR);
   }
