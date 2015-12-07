@@ -373,7 +373,6 @@ function template_preprocess_bibdk_custom_search_radio_buttons(&$variables) {
  */
 function bibdk_frontend_preprocess_page(&$vars) {
 
-  drupal_set_message($_SERVER['HTTP_USER_AGENT']);
   preg_match('/MSIE (.*?);/', $_SERVER['HTTP_USER_AGENT'], $matches);
   if(count($matches)<2){
     preg_match('/Trident\/\d{1,2}.\d{1,2}; rv:([0-9]*)/', $_SERVER['HTTP_USER_AGENT'], $matches);
@@ -382,15 +381,14 @@ function bibdk_frontend_preprocess_page(&$vars) {
   if (count($matches)>1){
     //Then we're using IE
     $version = $matches[1];
-    drupal_set_message($version,'Version');
     switch(true){
       case ($version<=8):
         //IE 8 or under - browser not supported
         global $language;
         if ($language->language == 'da') {
-          //header('Location: ' . base_path() . drupal_get_path('module', 'bibdk_frontend') . '/browser_not_supported.html');
+          header('Location: ' . base_path() . drupal_get_path('module', 'bibdk_frontend') . '/browser_not_supported.html');
         } else {
-          //header('Location: ' . base_path() . drupal_get_path('module', 'bibdk_frontend') . '/browser_not_supported_en.html');
+          header('Location: ' . base_path() . drupal_get_path('module', 'bibdk_frontend') . '/browser_not_supported_en.html');
         }
         //exit;
 
