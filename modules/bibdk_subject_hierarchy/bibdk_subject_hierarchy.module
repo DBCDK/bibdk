@@ -299,11 +299,11 @@ function bibdk_subject_hierarchy_nojs_callback($key) {
   return bibdk_subject_hierarchy_get_block_content($row_to_show);
 }
 
-function _get_bibdk_subject_hierarchy_item($emnehierarki, $key) {
+function _get_bibdk_subject_hierarchy_item($emnehierarki, $current_key) {
 
   $heading = '';
 
-  $key_arr = explode(',', $key);
+  $key_arr = explode(',', $current_key);
 
   $search_path = _bibdk_subject_hierarchy_search_info();
 
@@ -322,6 +322,27 @@ function _get_bibdk_subject_hierarchy_item($emnehierarki, $key) {
 
   if (sizeof($key_arr) > 0) {
     $emnehierarki = _get_bibdk_subject_hierarchy_level($emnehierarki, $key_arr);
+  }
+
+  foreach ($emnehierarki['term'] as $key2 => $item) {
+    $link = array(
+        '#theme' => 'link',
+        '#text' => $item['ord'],
+        '#path' => NULL,
+        '#options' => array('attributes' => array()),
+        '#prefix' => '<li>',
+        '#suffix' => '</li>'
+    );
+    if (!empty($item['cql']) && empty($item['term'])) {
+      $link['#path'] = 'search/' . $search_path;
+      $link['#options']['query'] = array('search_block_form' => trim($item['cql']));
+      $link['#options']['fragment'] = 'content';
+      $link['#options']['html'] = TRUE;
+    } else {
+      $link['#path'] = 'bibdk_subject_hierarchy/nojs/' . $current_key . ',' . $key2;
+      $link['#options']['attributes']['class'] = array('use-ajax', 'nesting');
+    }
+    $emnehierarki_links[] = $link;
   }
 
   drupal_set_title($breadcrumbs[count($breadcrumbs) - 1]['final-breadcrumb']['#markup']);
@@ -343,8 +364,8 @@ function _get_bibdk_subject_hierarchy_item($emnehierarki, $key) {
     '#theme' => 'bibdk_subject_hierarchy_item',
     '#breadcrumbs' => $breadcrumbs,
     '#heading' => $heading,
-    '#hierarchy' => $emnehierarki,
-    '#current_key' => $key,
+    '#hierarchy' => $emnehierarki_links,
+    '#current_key' => current_key,
     '#search_path' => $search_path,
     '#close_button' => $close_button,
     'row' => $row,
@@ -489,7 +510,7 @@ function _bibdk_subject_hierarchy_read_data() {
     $filename = drupal_get_path('module', 'bibdk_subject_hierarchy') . '/data/emnehierarki_full.json';
     return json_decode(file_get_contents($filename), TRUE);
   }
-
+  
   $filename = drupal_get_path('module', 'bibdk_subject_hierarchy') . '/data/emnehierarki_full.xml';
   $data = _bibdk_subject_hierarchy_parse_xml($filename);
   if (!empty($data)) {

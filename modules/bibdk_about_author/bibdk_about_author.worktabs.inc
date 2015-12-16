@@ -44,15 +44,19 @@ function bibdk_about_author_get_link_list_view($queries, $target = '_self') {
   foreach ( $queries as $id => $query ) {
     $title = t("bibdk_about_author_read @display", array('@display' =>   $query['display']), array('context' => 'bibdk_about_author'));
     $link = array(
-      '#type'  => 'link',
-      '#title' => $title,
-      '#href'  => 'search/work/' . $query['searchCode'],
-      '#attributes' => array(
-        'class' => array('about-author-links'),
-        'target' => $target,
-        'title'  =>  $title,
-      ),
-
+        '#theme' => 'link',
+        '#text' => $title,
+        '#path' => 'search/work/',
+        '#options' => array(
+            'query' => array('search_block_form' => $query['searchCode']),
+            'fragment' => 'content',
+            'attributes' => array(
+                'class' => array('about-author-links'),
+                'target' => $target,
+                'title'  =>  $title,
+            ),
+            'html' => TRUE,
+        ),
     );
     $items[]= render($link);
   }

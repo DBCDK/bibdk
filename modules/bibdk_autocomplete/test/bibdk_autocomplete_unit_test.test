@@ -1,0 +1,49 @@
+<?php
+
+class BibdkAutocompleteUnitTest extends DrupalUnitTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => t('Bibdk Autocomplete unit test'),
+      'description' => t('Unit testing bibdk autocomplete'),
+      'group' => t('Bibliotek.dk - Autocomplete'),
+    );
+  }
+
+  public function setUp() {
+    parent::setUp();
+  }
+
+  public function testFilterParser() {
+    module_load_include('module', 'bibdk_autocomplete');
+
+    $teststring = 'hest';
+    $filter_array = bibdk_autocomplete_parse_filters($teststring);
+    $search_string = key($filter_array);
+    $this->assertTrue($search_string == 'hest', 'key is searchstring');
+    $this->assertTrue(empty($filter_array[$search_string]), 'no filters parsed');
+
+    $teststring = 'hest::::1150ebb6-8e38-27d4-b929-840f71d17137$$b29c03e2-f2a9-9504-f97f-2cb529a0dad3$$jens';
+    $filter_array = bibdk_autocomplete_parse_filters($teststring);
+    $this->assertTrue(is_array($filter_array), 'parse_filters returns an array');
+    $this->assertTrue($search_string == 'hest', 'key is searchstring');
+    $filters = $filter_array[$search_string];
+    $this->assertTrue(is_array($filters), 'filters is an array');
+    $this->assertTrue(count($filters) == 1, 'Óne filter set');
+    $this->assertTrue($filters[0]['v_uuid'] == '1150ebb6-8e38-27d4-b929-840f71d17137', 'v_uuid parsed correctly');
+    $this->assertTrue($filters[0]['p_uuid'] == 'b29c03e2-f2a9-9504-f97f-2cb529a0dad3', 'p_uuid parsed correctly');
+    $this->assertTrue($filters[0]['term'] == 'jens', 'term parsed');
+
+    $teststring = 'hest::::1150ebb6-8e38-27d4-b929-840f71d17137$$b29c03e2-f2a9-9504-f97f-2cb529a0dad3$$jens::::d119b2ef-6c7d-0c04-a105-f1628434e336$$b29c03e2-f2a9-9504-f97f-2cb529a0dad3$$hest';
+    $filter_array = bibdk_autocomplete_parse_filters($teststring);
+    $filters = $filter_array[$search_string];
+    $this->assertTrue(is_array($filters), 'filters is an array');
+    $this->assertTrue(count($filters) == 2, 'Two filters set');
+    $this->assertTrue($filters[0]['v_uuid'] == '1150ebb6-8e38-27d4-b929-840f71d17137', 'v_uuid parsed correctly');
+    $this->assertTrue($filters[0]['p_uuid'] == 'b29c03e2-f2a9-9504-f97f-2cb529a0dad3', 'p_uuid parsed correctly');
+    $this->assertTrue($filters[0]['term'] == 'jens', 'term parsed');
+    $this->assertTrue($filters[1]['v_uuid'] == 'd119b2ef-6c7d-0c04-a105-f1628434e336', 'v_uuid parsed correctly');
+    $this->assertTrue($filters[1]['p_uuid'] == 'b29c03e2-f2a9-9504-f97f-2cb529a0dad3', 'p_uuid parsed correctly');
+    $this->assertTrue($filters[1]['term'] == 'hest', 'term parsed');
+  }
+}

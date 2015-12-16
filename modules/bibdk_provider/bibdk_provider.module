@@ -169,12 +169,11 @@ function bibdk_provider_form_user_profile_form_alter(&$form, &$form_state) {
  
   // Move 'Cancel Account' button before 'Save'
   $form['actions']['submit'] += array(
-    '#weight' => 1,
-  );
-  $form['actions']['cancel'] += array(
     '#weight' => 0,
   );
-  
+  $form['actions']['cancel'] += array(
+    '#weight' => 1,
+  );
 }
 
 /**

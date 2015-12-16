@@ -23,6 +23,7 @@ projects[drupal][patch][] = http://drupal.org/files/1852888-sort-translations-by
 projects[drupal][patch][] = https://raw.github.com/DBCDK/patches/master/file_create_url-no_change_of_relative_url_to_absolute-all_tests.patch
 projects[drupal][patch][] = https://raw.github.com/DBCDK/patches/master/drupal_http_build_query_html5_encode_brackets.patch
 projects[drupal][patch][] = https://www.drupal.org/files/issues/1232416-225.patch
+projects[drupal][patch][] = https://raw.githubusercontent.com/DBCDK/patches/master/autocomplete_return_when_undefined.patch
 ;projects[drupal][patch][] = https://raw.githubusercontent.com/DBCDK/patches/master/print_missing_module_on_install.diff
 
 ;TODO all patches on drupal core should go here
@@ -30,4 +31,4 @@ projects[drupal][patch][] = https://www.drupal.org/files/issues/1232416-225.patc
 projects[bibdk][type] = profile
 projects[bibdk][download][type] = git
 projects[bibdk][download][url] = git@github.com:DBCDK/bibdk.git
-projects[bibdk][download][tag] = 7.x-0.78.1
+projects[bibdk][download][tag] = 7.x-0.79.3
