@@ -149,9 +149,7 @@ function bibdk_actions_refexport_links($pid = NULL, $attributes = array()) {
   foreach ($paths as $type => $value) {
     $attributes['target'] = $value['target'];
     $attributes['class'] = array(
-      'class' => array(
          'show-for-large-up', 'cart-action-btn', 'cart-popup',
-      ),
     );
     if (!bibdk_usersettings_user_settings_get('bibdk_actions_' . $type, TRUE)) {
       continue;
