@@ -55,8 +55,8 @@ function bibdk_soau_field_check_favourites($entity) {
     $fav = current($favourites);
     $agency_id = $fav->getAgencyId();
     $userid = $fav->getUserId();
-    // only handle agencyId that starts with 7 (public libraries)
-    if (strpos($agency_id, '7') !== 0) {
+    // only handle agencyId that starts with 7 or 8 (public and education libraries)
+    if (strpos($agency_id, '7') !== 0 && strpos($agency_id, '8') !== 0) {
       $message = bibdk_saou_field_get_wrong_library_link($entity);
     }
     elseif (empty($userid)) {

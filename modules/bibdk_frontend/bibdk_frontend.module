@@ -381,7 +381,6 @@ function bibdk_frontend_preprocess_page(&$vars) {
   if (count($matches)>1){
     //Then we're using IE
     $version = $matches[1];
-
     switch(true){
       case ($version<=8):
         //IE 8 or under - browser not supported
@@ -389,9 +388,9 @@ function bibdk_frontend_preprocess_page(&$vars) {
         if ($language->language == 'da') {
           header('Location: ' . base_path() . drupal_get_path('module', 'bibdk_frontend') . '/browser_not_supported.html');
         } else {
-          header('Location: ' . base_path() . drupal_get_path('module', 'bibdk_frontend') . '/browser_not_supported_en.html');        
+          header('Location: ' . base_path() . drupal_get_path('module', 'bibdk_frontend') . '/browser_not_supported_en.html');
         }
-        exit;
+        //exit;
 
       case ($version==9 || $version==10):
         //IE9 & IE10!
