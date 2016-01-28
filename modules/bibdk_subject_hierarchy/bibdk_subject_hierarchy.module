@@ -479,6 +479,8 @@ function _get_bibdk_subject_hierarchy_heading($emnehierarki, $keys, $path = 'wor
   foreach ($keys as $key) {
     $current_level = ( empty($current_level) ) ? $emnehierarki[$key] : $current_level['term'][$key];
   }
+  
+  $search_path = _bibdk_subject_hierarchy_search_info();
 
   if ( !empty($current_level['cql']) ) {
     $heading = array(
@@ -487,6 +489,20 @@ function _get_bibdk_subject_hierarchy_heading($emnehierarki, $keys, $path = 'wor
       '#path' => 'search/' . $path . '/' . $current_level['cql'],
       '#options' => array(
         'attributes' => array(),
+        'html' => FALSE,
+      ),
+    );
+
+    $heading = array(
+      '#theme' => 'link',
+      '#text' => $current_level['ord'],
+      '#path' => 'search/' . $search_path,
+      '#options' => array(
+        'attributes' => array(
+          'class' => array(),
+        ),
+        'query' => array('search_block_form' => trim($current_level['cql'])),
+        'fragment' => 'content',
         'html' => FALSE,
       ),
     );

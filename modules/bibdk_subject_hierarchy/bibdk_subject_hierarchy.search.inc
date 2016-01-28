@@ -118,9 +118,11 @@ function _get_bibdk_subject_hierarchy_searchresult_item_link($item, $key, $path)
     return array();
   }
   $search_path = _bibdk_subject_hierarchy_search_info();
+  $query = '';
 
   if (!empty($item['cql']) && empty($item['term'])) {
     $url = 'search/' . $search_path;
+    $query = array('search_block_form' => trim($item['cql']));
     $class = array();
   }
   else {
@@ -135,15 +137,12 @@ function _get_bibdk_subject_hierarchy_searchresult_item_link($item, $key, $path)
       'attributes' => array(
         'class' => $class,
       ),
-      'query' => array(
-        'search_block_form' => trim($item['cql']),
-      ),
+      'query' => $query,
       'fragment' => 'content',
       'html' => FALSE,
     ),
   );
   return $link;
-
 }
 
 
@@ -272,11 +271,11 @@ function bibdk_subject_hierarchy_searchfield_custom_search($term) {
   $search_path = 'search/' .  _bibdk_subject_hierarchy_search_info();
   $return['link'] = array(
     '#theme' => 'link',
-    '#path' => $url,
+    '#path' => $search_path,
     '#text' => t('Show result'),
     '#options' => array(
       'attributes' => array(
-        'class' => $class,
+        'class' => array(),
       ),
       'query' => array(
         'search_block_form' => trim($params['query']),

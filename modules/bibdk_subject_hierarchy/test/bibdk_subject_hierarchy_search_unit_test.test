@@ -109,17 +109,17 @@ class BibdkSubjectHierarchySearchUnitTestCase extends DrupalUnitTestCase {
     $expected_result = array(
       '#theme' => 'link',
       '#text' => 'test_5 level_2',
-      '#path' => 'search/testpath/cql_string',
-      '#options' =>
-        array(
-          'attributes' =>
-            array(
-              'class' =>
-                array(
-                ),
-            ),
-          'html' => FALSE,
+      '#path' => 'search/',
+      '#options' => array(
+        'attributes' => array(
+          'class' => array(),
         ),
+        'query' => array(
+          'search_block_form' => 'cql_string',
+        ),
+        'fragment' => 'content',
+        'html' => FALSE,
+      ),
     );
     $this->assertEqual($result, $expected_result, 'correct item is extracted with cql url');
 
@@ -129,18 +129,17 @@ class BibdkSubjectHierarchySearchUnitTestCase extends DrupalUnitTestCase {
       '#theme' => 'link',
       '#text' => 'Test_4 level_1',
       '#path' => 'bibdk_subject_hierarchy/nojs/2,0',
-      '#options' =>
-        array(
-          'attributes' =>
-            array(
-              'class' =>
-                array(
-                  0 => 'use-ajax',
-                  1 => 'nesting',
-                ),
-            ),
-          'html' => FALSE,
+      '#options' => array(
+        'attributes' => array(
+          'class' => array(
+            0 => 'use-ajax',
+            1 => 'nesting',
+          ),
         ),
+        'query' => '',
+        'fragment' => 'content',
+        'html' => FALSE,
+      ),
     );
     $this->assertEqual($result, $expected_result, 'correct item is extracted with index url');
 
@@ -153,9 +152,6 @@ class BibdkSubjectHierarchySearchUnitTestCase extends DrupalUnitTestCase {
     $result = _get_bibdk_subject_hierarchy_searchresult_item($hierarchy, '2,5', 'testpath');
     $expected_result = array();
     $this->assertEqual($result, $expected_result, 'undefined index returns empty array');
-
-
-    debug($result);
 
   }
 }
