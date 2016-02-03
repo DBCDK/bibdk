@@ -151,7 +151,7 @@ function bibdk_saou_get_output_by_permission($saou, $pid, $url = NULL) {
     }
     $remote_user_access = $saou->get_remoteUserAccess();
     if ($link && $remote_user_access) {
-      $output = bibdk_saou_ajax_get_proxylink($link, $pid);
+      $output = bibdk_saou_ajax_get_proxylink($link, $pid, $saou);
       $html = drupal_render($output);
       return array(
         'redirect' => $html,
@@ -208,8 +208,15 @@ function bibdk_saou_remove_hidden_class(array &$classes) {
  * @param string $pid
  * @return string,html as ouptput by drupal_render
  */
-function bibdk_saou_ajax_get_proxylink($link, $pid) {
+function bibdk_saou_ajax_get_proxylink($link, $pid, $saou) {
   $message = t('bibdk_saou_click_here_for_access', array(), array('context' => 'bibdk_saou'));
+  
+  // check for quota exceeded
+  $text_code = $saou->get_responseCode();
+  if ($text_code == 'bibdk_saou_OK_USER_QUOTA_EXCEEDED' ) {
+    $message = t($text_code, array(), array('context' => 'bibdk_saou'));
+  }
+
   $proxy_link = array(
     '#theme' => 'link',
     '#text' => $message,
