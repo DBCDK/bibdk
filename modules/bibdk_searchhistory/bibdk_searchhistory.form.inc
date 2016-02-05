@@ -181,7 +181,8 @@ function bibdk_searchhistory_form_combine($form, $form_state) {
 
   $new_string = implode($combinator, $combined);
 
-  drupal_goto('search/work/' . $new_string);
+  drupal_goto('search/work/', array('query' => array('search_block_form' => $new_string)));
+
 }
 
 /** Method for recreating old cql searchstrings
@@ -214,20 +215,32 @@ function _bibdk_searchhistory_element_view($element) {
   $memolist = bibdk_searchhistory_action_link($element);
 
   $string = _bibdk_searchhistory_get_search_string($element, TRUE);
-  $link = !empty($string) ? 'search/work/' . $string : 'search/work/';
+
+  $query = array('search_block_form' => $string);
+  if (!empty($element['params'])) {
+    $query += $element['params'];
+  }
 
   $display = _bibdk_searchhistory_get_markup_for_search($element);
 
-  return array(
-    'search_string' => l($display, $link, array(
-      'query' => (!empty($element['params'])) ? $element['params'] : array(),
-      'attributes' => array(
-        'class' => 'searchhistory-searchstring',
+  $search = array(
+      '#theme' => 'link',
+      '#text' => $display,
+      '#path' => 'search/work/',
+      '#options' => array(
+          'query' => $query,
+          'fragment' => 'content',
+          'attributes' => array(
+              'class' => array('searchhistory-searchstring'),
+          ),
+          'html' => TRUE,
       ),
-      'html' => TRUE
-    )),
-    'result_count' => $count,
-    'memolist' => drupal_render($memolist),
+  );
+
+  return array(
+      'result_count' => $count,
+      'memolist' => drupal_render($memolist),
+      'search_string' => drupal_render($search),
   );
 }
 

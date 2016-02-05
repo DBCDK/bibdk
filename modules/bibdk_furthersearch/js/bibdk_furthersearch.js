@@ -26,7 +26,7 @@
         });
 
         var url = Drupal.makeUrl(types, elements, fictions);
-        window.open(Drupal.settings.basePath + Drupal.settings.pathPrefix + 'search/work/' + url, '_self');
+        window.open(Drupal.settings.basePath + Drupal.settings.pathPrefix + 'search/work/?search_block_form=' + url, '_self');
     };
 
     Drupal.makeUrl = function(types, elements, fictions) {
@@ -44,7 +44,7 @@
 
     Drupal.addType = function(types, type) {
         if(types === '') {
-            types = '?facets[]=' + type;
+            types = '&facets[]=' + type;
         } else {
             types += '&' + type;
         }
