@@ -235,12 +235,20 @@ function _bibdk_search_carousel_get_content($index = 0, $bibdk_seach_queries = a
           if (file_exists($moreinfo_path)) {
             // NB: don't check if image_style_url() create an image. Because it don't.
             $cover_url = image_style_url('medium', $moreinfo_path);
+            $url = url(
+              'search/work/',
+              array(
+                'query' => array('search_block_form' => 'rec.id='. $item['pid']),
+                'fragment' => 'content',
+                'html' => TRUE,
+              )
+            );
             $cover_items[] = array(
               '#theme'   => 'bibdk_search_carousel_item',
               '#image'   => $cover_url,
               '#title'   => (!empty($manifestation->title->{'$'})) ? $manifestation->title->{'$'} : NULL,
               '#creator' => (!empty($manifestation->creator->{'$'})) ? $manifestation->creator->{'$'} : NULL,
-              '#url'     => url('search/work/rec.id='. $item['pid']),
+              '#url'     => $url,
             );
           }
         }
