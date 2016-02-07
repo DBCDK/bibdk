@@ -25,7 +25,7 @@ class BibdkAdhlUnitTest extends DrupalWebTestCase {
   public function testRunner() {
     $this->_testAjaxResponse();
     $this->_testAdhlWorktabs();
-    $this->_testTopTenList();
+    //$this->_testTopTenList();
   }
 
   private function _testTopTenList() {
