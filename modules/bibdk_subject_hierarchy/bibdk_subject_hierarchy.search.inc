@@ -117,9 +117,12 @@ function _get_bibdk_subject_hierarchy_searchresult_item_link($item, $key, $path)
   if (empty($item)) {
     return array();
   }
+  $search_path = _bibdk_subject_hierarchy_search_info();
+  $query = '';
 
   if (!empty($item['cql']) && empty($item['term'])) {
-    $url = 'search/' . $path . '/' . trim($item['cql']);
+    $url = 'search/' . $search_path;
+    $query = array('search_block_form' => trim($item['cql']));
     $class = array();
   }
   else {
@@ -134,11 +137,12 @@ function _get_bibdk_subject_hierarchy_searchresult_item_link($item, $key, $path)
       'attributes' => array(
         'class' => $class,
       ),
+      'query' => $query,
+      'fragment' => 'content',
       'html' => FALSE,
     ),
   );
   return $link;
-
 }
 
 
@@ -263,12 +267,20 @@ function bibdk_subject_hierarchy_searchfield_custom_search($term) {
   $opensearch_result = $client->do_request('search', $params);
 
   $return['result']['#markup'] = t('A search on %term gives %results results', array('%term' => $term, '%results' => $opensearch_result->numTotalObjects)) . ' ';
+
+  $search_path = 'search/' .  _bibdk_subject_hierarchy_search_info();
   $return['link'] = array(
     '#theme' => 'link',
-    '#path' => 'search/work/' . $params['query'],
+    '#path' => $search_path,
     '#text' => t('Show result'),
     '#options' => array(
-      'attributes' => array(),
+      'attributes' => array(
+        'class' => array(),
+      ),
+      'query' => array(
+        'search_block_form' => trim($params['query']),
+      ),
+      'fragment' => 'content',
       'html' => FALSE,
     ),
   );
