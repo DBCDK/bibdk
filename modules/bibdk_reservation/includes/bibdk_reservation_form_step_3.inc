@@ -56,7 +56,8 @@ function bibdk_reservation_form_step_3_validate($form, &$form_state) {
   }
 
   // eliminate orders  - when user click more than once on the order buttom
-  if (bibdk_reservation_form_step_3_stop_already_ordered() == 'already_ordered'  ) {
+  $returnMsg = bibdk_reservation_form_step_3_stop_already_ordered();
+  if ($returnMsg == 'already_ordered') {
     return;
   }
 
