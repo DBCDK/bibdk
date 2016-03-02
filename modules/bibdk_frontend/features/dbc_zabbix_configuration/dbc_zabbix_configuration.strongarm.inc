@@ -32,7 +32,7 @@ function dbc_zabbix_configuration_strongarm() {
       'url' => 'ask_vopros_uri',
     ),
     4 => array(
-      'label' => ' Bibdk Behaviour',
+      'label' => 'Bibdk Behaviour',
       'url' => 'bibdk_behavoir_url',
     ),
   );
@@ -98,7 +98,7 @@ function dbc_zabbix_configuration_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'zabbix_host';
-  $strongarm->value = 'jgn.dscrum.dbc.dk';
+  $strongarm->value = 'bibliotek.dk';
   $export['zabbix_host'] = $strongarm;
 
   $strongarm = new stdClass();
