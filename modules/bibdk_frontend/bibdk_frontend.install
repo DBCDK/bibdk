@@ -140,6 +140,7 @@ function _bibdk_frontend_enable_modules() {
     'bibdk_facets',
     'bibdk_jquery_update_settings',
     'bibliotek_dk_schema_org_settings',
+    'dbc_zabbix_configuration',
     //Content
     'bibdk_custom_header_block',
     'bibdk_article_view',
@@ -489,7 +490,6 @@ function bibdk_frontend_update_7027(&$sandbox) {
   ));
 }
 
-
 /**
  * Enable bibdk_jquery_update_settings for existing installations
  */
@@ -507,3 +507,13 @@ function bibdk_frontend_update_7029(&$sandbox) {
     'bibliotek_dk_schema_org_settings'
   ));
 }
+
+/**
+ * Enable dbc_zabbix_configuration for existing installations
+ */
+function bibdk_frontend_update_7030(&$sandbox) {
+  module_enable(array(
+    'dbc_zabbix_configuration'
+  ));
+}
+

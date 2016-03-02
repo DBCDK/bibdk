@@ -62,6 +62,7 @@ function _bibdk_enable_modules() {
     'bibdk_autocomplete',
     'bibdk_facetbrowser',
     'cql_strict_parser',
+    'dbc_zabbix',
     'ting_openuserstatus',
     'open_holdingstatus',
     'open_moreinfo',
