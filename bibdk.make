@@ -157,12 +157,11 @@ projects[translatable][download][tag] = 7.x-1.1
 projects[ask_vopros][type] = module
 projects[ask_vopros][subdir] = contrib
 projects[ask_vopros][download][url] = https://github.com/Biblioteksvagten/ask_vopros.git
-projects[ask_vopros][patch][] = https://raw.githubusercontent.com/DBCDK/patches/master/ask_vopros_set_usermail_and_hack_agencyid.patch
+projects[ask_vopros][patch][] = https://raw.githubusercontent.com/DBCDK/patches/master/ask_vopros_set_usermail_and_hack_agencyid_and_check_opening.patch
 
 projects[elements][subdir] = contrib
 projects[elements][type] = module
 projects[elements][version] = 1.4
-projects[elements][patch][] = https://raw.githubusercontent.com/DBCDK/patches/master/ask_vopros_set_usermail_and_hack_agencyid_and_check_opening.patch
 
 projects[uuid][subdir] = contrib
 projects[uuid][type] = module
