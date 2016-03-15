@@ -162,7 +162,7 @@ projects[ask_vopros][patch][] = https://raw.githubusercontent.com/DBCDK/patches/
 projects[elements][subdir] = contrib
 projects[elements][type] = module
 projects[elements][version] = 1.4
-projects[elements][patch][] =https://raw.githubusercontent.com/DBCDK/patches/3bfb437aec7a6e185af4ca99fba7d5a425360d3b/elements_email_pattern_on_email_field.patch
+projects[elements][patch][] = https://raw.githubusercontent.com/DBCDK/patches/master/ask_vopros_set_usermail_and_hack_agencyid_and_check_opening.patch
 
 projects[uuid][subdir] = contrib
 projects[uuid][type] = module
