@@ -452,6 +452,8 @@ function bibdk_reservation_form_step_2_submit($form, &$form_state) {
     if (!empty($value)) {
       $userData[$name] = $value;
       if (in_array($type, array('cpr', 'userId', 'cardno', 'customId'))) {
+        //replace any '-' in input
+        $form_state['values'][$type] = str_replace("-","",$form_state['values'][$type]);
         $userOrderData['userId'] = isset($userOrderData['userId']) ? $userOrderData['userId'] : $form_state['values'][$type];
       }
       else {
