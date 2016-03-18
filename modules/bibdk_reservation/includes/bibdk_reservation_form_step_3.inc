@@ -55,16 +55,9 @@ function bibdk_reservation_form_step_3_validate($form, &$form_state) {
     return;
   }
 
-  // eliminate orders  - when user click more than once on the order buttom
-  $returnMsg = bibdk_reservation_form_step_3_stop_already_ordered();
-  if ($returnMsg == 'already_ordered') {
-    return;
-  }
-
   $orderId = BibdkReservationOrderObject::GetObject()->getOrderId();
   if (!isset($orderId)) {
     $result = bibdk_reservation_form_step_4_do_order();
-    bibdk_reservation_form_step_3_register_pid();
     if (isset($result['error'])) {
       form_set_error('form', t($result['error'], array(), array('context' => 'bibdk_reservation:error')));
     }
@@ -189,27 +182,3 @@ function bibdk_reservation_convert_array_to_table($array) {
   return $table;
 }
 
-// Add pid to the session array
-function bibdk_reservation_form_step_3_register_pid() {
-  $pid = BibdkReservationOrderObject::GetObject()->getManifestationIds();
-  if (array_key_exists('ordered_Pids', $_SESSION)) {
-    $_SESSION['ordered_Pids'] = array_merge($_SESSION['ordered_Pids'], $pid);
-  }
-  else {
-    $_SESSION['ordered_Pids'] = $pid;
-  }
-}
-
-// Check if pid exist - then it already has been ordered
-function bibdk_reservation_form_step_3_stop_already_ordered() {
-  $pid = BibdkReservationOrderObject::GetObject()->getManifestationIds();
-  //Check for already ordered in this session
-  if (!empty($_SESSION['ordered_Pids'])) {
-    foreach ($pid as $Spid) {
-      if (in_array($Spid, $_SESSION['ordered_Pids'])) {
-        return 'already_ordered';
-      }
-    }
-  }
-  return 'not_ordered';
-}

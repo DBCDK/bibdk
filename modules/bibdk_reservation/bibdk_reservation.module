@@ -263,13 +263,21 @@ function bibdk_reservation_create_wizard_form($form, &$form_state) {
 
   if (isset($next_step) && $next_step <= $total_steps && !isset($form_state['blocked'])) {
     $next_step_active = TRUE;
+
+    $but_text = isset($form_state['step_information'][$step]['next button text']) ? $form_state['step_information'][$step]['next button text'] : t('Next', array(), array('context' => 'bibdk_reservation'));
     // The Next button should be included on every step
     $form['navigation']['next'] = array(
       '#type' => 'submit',
-      '#value' => isset($form_state['step_information'][$step]['next button text']) ? $form_state['step_information'][$step]['next button text'] : t('Next', array(), array('context' => 'bibdk_reservation')),
+      '#value' => $but_text,
       '#name' => 'next',
       '#submit' => array('bibdk_reservation_wizard_next_submit'),
     );
+
+    if ($next_step == 4) {
+      // add disable on Order button
+      $form['navigation']['next']['#attached']['js'][] = drupal_get_path('module', 'bibdk_reservation') . '/js/bibdk_reservation_order_disable.js';
+    }
+
   }
 
   // Show the 'previous' button if appropriate.
