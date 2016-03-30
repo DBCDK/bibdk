@@ -363,6 +363,10 @@ function bibdk_reservation_form_step_2_do_policycheck() {
 
 function bibdk_reservation_form_step_2_already_ordered($display_alert) {
 
+  if (isset($_SESSION['ordered_Pids'])) {
+    unset($_SESSION['ordered_Pids']);
+  }
+
   $pid = BibdkReservationOrderObject::GetObject()->getManifestationIds();
 
   //Check for already ordered in this session
