@@ -7,7 +7,7 @@
   //disable order button after in reservation next step 4
   Drupal.behaviors.alreadyOrder = {
     attach: function() {
-      $('#edit-next').click (function(){
+      $('#bibdk-reservation-create-wizard-form').submit(function(){
         $('#edit-next').prop('disabled', true);
       });
     }
