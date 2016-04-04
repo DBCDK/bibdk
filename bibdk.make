@@ -21,7 +21,7 @@ libraries[ckeditor][download][url] = http://download.cksource.com/CKEditor/CKEdi
 projects[bibdk_theme][type] = theme
 projects[bibdk_theme][download][type] = git
 projects[bibdk_theme][download][url] = git@github.com:DBCDK/bibdk_theme.git
-projects[bibdk_theme][download][tag] = 7.x-0.87
+projects[bibdk_theme][download][tag] = 7.x-0.88
 
 
 ; --- Bibliotek.dk versions of Ding2 modules ---
@@ -49,12 +49,12 @@ projects[ding_popup][download][tag] = 7.x-0.4+dbc.5
 projects[ding_provider][type] = module
 projects[ding_provider][download][type] = git
 projects[ding_provider][download][url] = git@github.com:DBCDK/ding_provider.git
-projects[ding_provider][download][tag] = 7.x-0.13+dbc.11
+projects[ding_provider][download][tag] = 7.x-0.13-dbc.12
 
 projects[ding_user][type] = module
 projects[ding_user][download][type] = git
 projects[ding_user][download][url] = git@github.com:DBCDK/ding_user.git
-projects[ding_user][download][tag] = 7.x-0.19+dbc.16
+projects[ding_user][download][tag] = 7.x-0.19-dbc.17
 
 projects[ding_wayf][type] = module
 projects[ding_wayf][download][type] = git
@@ -74,7 +74,7 @@ projects[ding_webtrends_2014][download][tag] = 7.x-0.3
 projects[ting-client][type] = module
 projects[ting-client][download][type] = git
 projects[ting-client][download][url] = git@github.com:DBCDK/ting-client.git
-projects[ting-client][download][tag] = 7.x-2.33
+projects[ting-client][download][tag] = 7.x-2.34
 
 projects[ting_agency][type] = module
 projects[ting_agency][download][type] = git
@@ -157,12 +157,11 @@ projects[translatable][download][tag] = 7.x-1.1
 projects[ask_vopros][type] = module
 projects[ask_vopros][subdir] = contrib
 projects[ask_vopros][download][url] = https://github.com/Biblioteksvagten/ask_vopros.git
-projects[ask_vopros][patch][] = https://raw.githubusercontent.com/DBCDK/patches/master/ask_vopros_set_usermail_and_hack_agencyid.patch
+projects[ask_vopros][patch][] = https://raw.githubusercontent.com/DBCDK/patches/master/ask_vopros_set_usermail_and_hack_agencyid_and_check_opening.patch
 
 projects[elements][subdir] = contrib
 projects[elements][type] = module
 projects[elements][version] = 1.4
-projects[elements][patch][] =https://raw.githubusercontent.com/DBCDK/patches/3bfb437aec7a6e185af4ca99fba7d5a425360d3b/elements_email_pattern_on_email_field.patch
 
 projects[uuid][subdir] = contrib
 projects[uuid][type] = module

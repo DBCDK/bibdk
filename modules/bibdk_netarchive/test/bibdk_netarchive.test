@@ -19,7 +19,7 @@ class bibdkNetarchiveUnitTest extends DrupalWebTestCase {
     $this->profile = 'minimal';
 
     //search service
-    variable_set('ting_search_url',     'http://opensearch.addi.dk/3.1/');
+    variable_set('ting_search_url',     'http://opensearch.addi.dk/b3.0_4.2/');
     variable_set('ting_search_profile', 'default');
     variable_set('ting_agency',         '190101');
 
