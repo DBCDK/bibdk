@@ -230,10 +230,10 @@ function bibdk_sbkopi_messages($pid, TingClientAgencyBranch $branch) {
       drupal_set_message(t('sb_no_subscription', array(), array('context' => 'bibdk_sbkopi')), 'warning');
     }
     else if ($delivery == 'postal') {
-      drupal_set_message(t('sb_subscription_and_postal', array(), array('context' => 'bibdk_sbkopi')), 'status');
+      drupal_set_message(t('sb_subscription_and_postal', array(), array('context' => 'bibdk_sbkopi')), 'warning');
     }
     else {
-      drupal_set_message(t('sb_subscription_and_electronic', array(), array('context' => 'bibdk_sbkopi')), 'status');
+      drupal_set_message(t('sb_subscription_and_electronic', array(), array('context' => 'bibdk_sbkopi')), 'warning');
     }
   }
   else {
