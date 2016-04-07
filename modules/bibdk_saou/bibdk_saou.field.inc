@@ -61,6 +61,7 @@ function bibdk_soau_field_check_favourites($entity) {
     }
     elseif (empty($userid)) {
       $message = t('bibdk_saou_incomplete_favorite_data', array(), array('context' => 'bibdk_saou'));
+      return array('#markup' => $message);
     }
   }
 
@@ -125,7 +126,6 @@ function bibdk_saou_field_get_link_and_toggle_element($entity, $message) {
   $output['wrapper'] = bibdk_saou_field_get_dropdown_wrapper();
   $output['wrapper']['link'] = bibdk_saou_field_get_message_link($entity);
   $output['wrapper']['toggle'] = bibdk_saou_field_get_element_to_toggle($message);
-
   return $output;
 }
 
