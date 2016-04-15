@@ -54,6 +54,7 @@
    * set facets
    */
   BibdkFacets.setFacets = function (facets, group, context) {
+    console.log('1');
     // call for a single group of facets
     if(group !== false) {
       // hold length of old group
@@ -173,6 +174,8 @@
    * Fold facet groups to show only n per group.
    */
   BibdkFacets.FoldFacetGroup = function(group, len, context) {
+    console.log('klik');
+    console.log(group);
     // hide checkboxes in facetgroup
     var limit = parseInt(BibdkFacets.numberToShow(len));
     var count = parseInt(group.attr('data-count'));
@@ -186,6 +189,25 @@
         }
       }
     });
+
+
+    if(len === 0){
+      //TODO todo - test
+      group.find("fieldset");
+      //group.find($("fieldset[data-show='1']")).show();
+      var facet = group.attr('data-show');
+      console.log(facet);
+      if (facet === '0') {
+        //console.log('IS 0');
+        group.find($("div[data-facet-group-expand='less']")).hide();
+        group.find($("div[data-facet-group-expand='more']")).show();
+      } else {
+        //console.log('NOT 0');
+        group.find($("div[data-facet-group-expand='less']")).hide();
+        group.find($("div[data-facet-group-expand='more']")).hide();
+      }
+      //TODO todo - test
+    }
 
     // first load - hide show less
     if(len === 0){
@@ -215,6 +237,7 @@
    * @param group
    */
   BibdkFacets.setGroupEvents = function (group,context) {
+    console.log('2');
     // show more event
     group.not('#selected-terms, #deselected-terms').find($("div[data-expand='more'] span")).bind('click', function () {
       BibdkFacets.getFacetGroup(group);
@@ -232,6 +255,7 @@
   };
 
   BibdkFacets.SetNoGroupEvents = function(nogroup){
+    console.log('3');
     $(nogroup).find($("div[data-expand='more'] span")).on('click', function () {
       $(nogroup).find($("div[data-expand='less']")).show();
       var len = BibdkFacets.facetGroupLength(nogroup);
@@ -240,6 +264,7 @@
   };
 
   BibdkFacets.offGroupEvent = function(group, context){
+    console.log('4');
     group.find($("div[data-expand='less'] span")).off('click');
     group.find($("div[data-expand='more'] span")).off('click');
   };
@@ -249,6 +274,7 @@
    */
   BibdkFacets.getFacetGroup = function (group) {
     // check if group is already in cache
+    console.log('5');
     var facets = BibdkFacets.getFromSessionStorage(group);
     if (facets) {
       BibdkFacets.setFacets(facets,  group);
@@ -270,6 +296,7 @@
   };
 
   BibdkFacets.setOtherEvents = function(){
+    console.log('6');
     // Check for click in checkbox, and execute search
     $(Drupal.settings.bibdkFacetBrowser.mainElement + ' .form-type-checkbox input').change(function(e) {
       $('body').prepend('<div class="facetbrowser_overlay"><div class="spinner"></div></div>');
@@ -281,6 +308,7 @@
    * get facets
    */
   BibdkFacets.getFacets = function (context) {
+    console.log('7');
     var facets = BibdkFacets.getFromSessionStorage(false);
     if (facets) {
       BibdkFacets.setFacets(facets, false, context );
@@ -296,6 +324,7 @@
   };
 
   BibdkFacets.setError = function(response){
+    console.log('8');
     var facets=[];
     facets.markup = '<div>Could not get facets</div>';
     BibdkFacets.setFacets(facets, false);
@@ -303,6 +332,7 @@
   };
 
   BibdkFacets.getCacheKey = function(group){
+      console.log('9');
     if(group === false){
       return Drupal.settings.ting_openformat.search_key + Drupal.settings.pathPrefix;
     }

@@ -154,5 +154,12 @@ function bibdk_facets_strongarm() {
   $strongarm->value = '3';
   $export['bibdk_facetbrowser_number_shown'] = $strongarm;
 
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'bibdk_facetbrowser_group_number_shown';
+  $strongarm->value = '5';
+  $export['bibdk_facetbrowser_group_number_shown'] = $strongarm;
+
   return $export;
 }

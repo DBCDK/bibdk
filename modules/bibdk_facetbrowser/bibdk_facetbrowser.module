@@ -57,7 +57,6 @@ function bibdk_facetbrowser_menu() {
   );
 
 
-
   return $items;
 }
 
@@ -162,7 +161,7 @@ function bibdk_facetbrowser_ctools_plugin_api($module, $api) {
  * @param $title
  * @return array; render-array(fieldset) defining a single facetgroup
  */
-function bibdk_facetbrowser_get_single_facetgroup($facet, $title, &$selected_facets_present=FALSE) {
+function bibdk_facetbrowser_get_single_facetgroup($facet, $title, &$selected_facets_present=FALSE, $facets_display) {
   $default_values = array();
   $selected = array();
   $not_selected = array();
@@ -170,15 +169,72 @@ function bibdk_facetbrowser_get_single_facetgroup($facet, $title, &$selected_fac
   $field_set = array();
 
   if (count($facet->terms) > 0) {
-    $field_set = array(
-      '#type' => 'fieldset',
-      '#title' => t($title, array(), array('context' => 'facet_titles')),
-      '#attributes' => array(
-        'id' => str_replace('.', '-', $facet->name),
-        'data-name' => array($facet->name),
-        'data-count' => count($facet->terms)
+    if ($facets_display === TRUE) {
+      $field_set = array(
+        '#type' => 'fieldset',
+        '#title' => t($title, array(), array('context' => 'facet_titles')) . ' -',
+        '#attributes' => array(
+          'id' => str_replace('.', '-', $facet->name),
+          'data-name' => array($facet->name),
+          'data-count' => count($facet->terms),
+          'data-show' => '1'
+        ),
+      );
+    } else {
+      $field_set = array(
+        '#type' => 'fieldset',
+        '#title' => t($title, array(), array('context' => 'facet_titles')) . ' +',
+        '#attributes' => array(
+          'id' => str_replace('.', '-', $facet->name),
+          'data-name' => array($facet->name),
+          'data-count' => count($facet->terms),
+          'style' => 'display:',
+          'data-show' => '0'
+        ),
+        $container = array(
+          '#type' => 'container',
+          '#attributes' => array(
+          'data-facet-group-expand' => 'select',
+          'class' => array(
+            'select',
+          ),
+         ),
+        ),
+
+        $container['icon'] = array(
+          '#type' => 'html_tag',
+          '#tag' => 'span',
+          '#value' => '+',
+          '#attributes' => array(
+            'class' => array(
+            'icon',
+            'icon-left',
+            'icon-blue-down'
+            ),
+          ),
+         ),
+
+  $container['link'] = array(
+    '#theme' => 'link',
+    '#text' => t('label_facet_group_show_more', array(), array('context' => 'bibdk_facetbrowser')),
+    '#path' => 'bibdk_facetbrowser/filter/' . $facet->name,
+    '#options' => array(
+      'attributes' => array(
+        'class' => array(drupal_html_class('facetbrowser_filter_link')),
       ),
-    );
+      'html' => FALSE,
+    ),
+  )
+
+
+
+        
+      );
+
+
+
+
+    }
 
     // reference parameter
     $selected_facets_present = FALSE;
@@ -202,7 +258,6 @@ function bibdk_facetbrowser_get_single_facetgroup($facet, $title, &$selected_fac
       '#default_value' => $default_values,
     );
   }
-
 
   return $field_set;
 }
@@ -307,6 +362,7 @@ function bibdk_facetbrowser_get_filter_link($facet) {
       'html' => FALSE,
     ),
   );
+  dpm($container);
   return $container;
 }
 
@@ -352,11 +408,14 @@ function bibdk_facetbrowser_form($form, &$form_state, $facets = FALSE, $search =
     ),
   );
 
+  $facets_display_count = 0;
   foreach (variable_get('bibdk_facetbrowser_facets', array()) as $configured_facet) {
     if (isset($facets[$configured_facet['name']])) {
       $facet = $facets[$configured_facet['name']];
       $selected_facets_present = FALSE;
-      $field_set = bibdk_facetbrowser_get_single_facetgroup($facet, $configured_facet['title'], $selected_facets_present);
+      $facets_display = ($facets_display_count < variable_get('bibdk_facetbrowser_group_number_shown', 5));
+      $facets_display_count = $facets_display_count + 1;
+      $field_set = bibdk_facetbrowser_get_single_facetgroup($facet, $configured_facet['title'], $selected_facets_present, $facets_display);
       if (!empty($field_set)) {
         $field_set['actions'] = bibdk_facetbrowser_set_actions($facet->name, $selected_facets_present);
         $field_set['filter'] = bibdk_facetbrowser_get_filter_link($facet);
@@ -428,7 +487,7 @@ function bibdk_facetbrowser_form($form, &$form_state, $facets = FALSE, $search =
     $form['deselected']['#attributes']['class'] = array();
     $form['deselected']['#attributes']['data-count'] = count($deselected);
   }
-
+  dpm($form,'xxxxxxxxxxx');
   return $form;
 }
 
