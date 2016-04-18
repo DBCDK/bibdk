@@ -479,6 +479,10 @@ function _bibdk_facetbrowser_isFacetSelected($facets, $is_selected = TRUE) {
 
   foreach ($facets as $facet) {
     $facet_string_array = explode('=', $facet, 2);
+    if (substr($facet_string_array[0], 0, 6) != 'facets') {
+      // skip input that isn't a facet
+      continue;
+    }
     if (!empty($facet_string_array[1])) {
       $item_array = explode(':', $facet_string_array[1], 2);
       if (substr($facet_string_array[1], 0, 1) == '!') {
