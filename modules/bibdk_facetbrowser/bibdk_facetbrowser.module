@@ -195,14 +195,12 @@ function bibdk_facetbrowser_get_single_facetgroup($facet, $title, &$selected_fac
         $not_selected[$term_name] = bibdk_facetbrowser_get_facet_link($facet, $term_name, $term_count, FALSE);
       }
     }
-
     $field_set[$element_name] = array(
       '#type' => 'checkboxes',
-      '#options' => array_merge($selected, $not_selected),
+      '#options' => $selected + $not_selected, // nb: array_merge() renumber numeric keys. I.e. year facet
       '#default_value' => $default_values,
     );
   }
-
 
   return $field_set;
 }
