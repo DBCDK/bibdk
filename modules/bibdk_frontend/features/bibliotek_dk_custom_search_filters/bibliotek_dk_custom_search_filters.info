@@ -1,0 +1,11 @@
+name = Bibliotek.dk - Custom search filters
+description = Feature defining filter options by adding a description and a searchcode
+core = 7.x
+package = Bibdk features
+version = 7.x-1.0
+project = bibliotek_dk_custom_search_filters
+dependencies[] = ctools
+dependencies[] = strongarm
+features[ctools][] = strongarm:strongarm:1
+features[features_api][] = api:1
+features[variable][] = bibdk_custom_search_user_settings

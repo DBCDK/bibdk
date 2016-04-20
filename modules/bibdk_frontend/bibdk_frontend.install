@@ -140,6 +140,7 @@ function _bibdk_frontend_enable_modules() {
     'bibdk_facets',
     'bibdk_jquery_update_settings',
     'bibliotek_dk_schema_org_settings',
+    'bibliotek_dk_custom_search_filters',
     //Content
     'bibdk_custom_header_block',
     'bibdk_article_view',
@@ -505,5 +506,14 @@ function bibdk_frontend_update_7028(&$sandbox) {
 function bibdk_frontend_update_7029(&$sandbox) {
   module_enable(array(
     'bibliotek_dk_schema_org_settings'
+  ));
+}
+
+/**
+ * Enable bibliotek_dk_custom_search_filters for existing installations
+ */
+function bibdk_frontend_update_7030(&$sandbox) {
+  module_enable(array(
+    'bibliotek_dk_custom_search_filters'
   ));
 }
