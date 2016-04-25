@@ -307,9 +307,9 @@ projects[scheduler][subdir] = contrib
 projects[scheduler][type] = module
 projects[scheduler][version] = 1.3
 
-projects[simple_mobile_redirect][subdir] = contrib
-projects[simple_mobile_redirect][type] = module
-projects[simple_mobile_redirect][version] = 1.1
+//projects[simple_mobile_redirect][subdir] = contrib
+//projects[simple_mobile_redirect][type] = module
+//projects[simple_mobile_redirect][version] = 1.1
 
 //jquery_update
 projects[jquery_update][subdir] = contrib
