@@ -87,7 +87,7 @@ function _bibdk_enable_modules() {
     'help',
     'user_alert',
     'scheduler',
-    'simple_mobile_redirect',
+    //'simple_mobile_redirect',
     'jquery_update',
     //Advanced aggregation
     'advagg',
@@ -308,11 +308,11 @@ function bibdk_update_7014(&$sandbox) {
 /**
  * Enable simple_mobile_redirect
  */
-function bibdk_update_7015(&$sandbox) {
-  module_enable(array(
-    'simple_mobile_redirect',
-  ));
-}
+//function bibdk_update_7015(&$sandbox) {
+//  module_enable(array(
+//    'simple_mobile_redirect',
+//  ));
+//}
 
 /**
  * Enable simple_mobile_redirect
