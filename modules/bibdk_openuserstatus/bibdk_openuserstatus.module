@@ -116,22 +116,30 @@ function bibdk_openuserstatus_theme() {
  */
 function bibdk_openuserstatus_request() {
   $favourites = bibdk_favourite_get_favourites();
+
   if (empty($favourites)) {
     return array();
   }
   $ret = array();
   foreach ($favourites as $favourite) {
     $res = $favourite->getUserStatus();
+    $agency_id = $favourite->getAgencyId();
+
+    // if user has main branch AND local branch in favorites, use only main branch.
+    $agency_main_id = $favourite->getAgencyMainId();
+    if (array_key_exists($agency_main_id, $favourites) && $agency_main_id != $agency_id) {
+      continue;
+    }
 
     if ($res === FALSE) {
       continue;
     }
 
     if (isset($res['error'])) {
-      $ret[$favourite->getAgencyId()] = new UserStatusResponse(NULL, $res['error']);
+      $ret[$agency_id] = new UserStatusResponse(NULL, $res['error']);
     }
     else {
-      $ret[$favourite->getAgencyId()] = new UserStatusResponse($res['response']);
+      $ret[$agency_id] = new UserStatusResponse($res['response']);
     }
   }
   return $ret;
