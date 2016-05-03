@@ -195,14 +195,12 @@ function bibdk_facetbrowser_get_single_facetgroup($facet, $title, &$selected_fac
         $not_selected[$term_name] = bibdk_facetbrowser_get_facet_link($facet, $term_name, $term_count, FALSE);
       }
     }
-
     $field_set[$element_name] = array(
       '#type' => 'checkboxes',
-      '#options' => array_merge($selected, $not_selected),
+      '#options' => $selected + $not_selected, // nb: array_merge() renumber numeric keys. I.e. year facet
       '#default_value' => $default_values,
     );
   }
-
 
   return $field_set;
 }
@@ -481,6 +479,10 @@ function _bibdk_facetbrowser_isFacetSelected($facets, $is_selected = TRUE) {
 
   foreach ($facets as $facet) {
     $facet_string_array = explode('=', $facet, 2);
+    if (substr($facet_string_array[0], 0, 6) != 'facets') {
+      // skip input that isn't a facet
+      continue;
+    }
     if (!empty($facet_string_array[1])) {
       $item_array = explode(':', $facet_string_array[1], 2);
       if (substr($facet_string_array[1], 0, 1) == '!') {
