@@ -121,13 +121,18 @@ function bibdk_openuserstatus_request() {
     return array();
   }
   $ret = array();
+
   foreach ($favourites as $favourite) {
     $res = $favourite->getUserStatus();
     $agency_id = $favourite->getAgencyId();
 
     // if user has main branch AND local branch in favorites, use only main branch.
     $agency_main_id = $favourite->getAgencyMainId();
-    if (array_key_exists($agency_main_id, $favourites) && $agency_main_id != $agency_id) {
+    if (
+         array_key_exists($agency_main_id, $favourites)
+      && $agency_main_id != $agency_id
+      && $favourites[$agency_main_id]->userData !== FALSE
+    ) {
       continue;
     }
 
