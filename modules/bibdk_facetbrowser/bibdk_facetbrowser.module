@@ -186,6 +186,34 @@ function bibdk_facetbrowser_get_single_facetgroup($facet, $title, &$selected_fac
       // Fold facet groups
       $field_set = array(
         '#type' => 'fieldset',
+        'con' => array(
+          '#type' => 'container',
+          '#attributes' => array('data-expand' => 'more', 'id' => str_replace('.', '-', $facet->name)),
+          'icon' => array(
+            '#type' => 'html_tag',
+            '#tag' => 'span',
+            '#value' => '+',
+            '#attributes' => array(
+              'class' => array(
+                'icon',
+                'icon-left',
+                'icon-blue-plus'
+              ),
+            ),
+          ),
+          'spa' => array(
+            '#value' => $title,
+            '#type' => 'html_tag',
+            '#tag' => 'span'
+          ),
+
+        ),
+      );
+
+
+      /*
+      $field_set = array(
+        '#type' => 'fieldset',
         '#title' => drupal_render(bibdk_facetbrowser_get_actions_show_hide($title)),
         '#attributes' => array(
           'id' => str_replace('.', '-', $facet->name),
@@ -195,6 +223,8 @@ function bibdk_facetbrowser_get_single_facetgroup($facet, $title, &$selected_fac
           'data-show' => '0'
         ),
       );
+       *
+       */
       return $field_set;
 
     }
@@ -795,12 +825,12 @@ function bibdk_facetbrowser_get_actions_show_hide($title) {
       'class' => array(
         'icon',
         'icon-left',
-        'icon-blue-down'
+        'icon-blue-plus'
       ),
     ),
   );
 
-/*
+
   $container['link'] = array(
     '#theme' => 'link',
     '#text' => $title,
@@ -811,10 +841,10 @@ function bibdk_facetbrowser_get_actions_show_hide($title) {
       'attributes' => array(
         'class' => array(drupal_html_class('facetbrowser_filter_link')),
       ),
-      'html' => FALSE,
+    //  'html' => FALSE,
     ),
   );
-*/
+
   
   return $container;
 }
