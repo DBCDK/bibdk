@@ -184,49 +184,8 @@ function bibdk_facetbrowser_get_single_facetgroup($facet, $title, &$selected_fac
       );
     } else {
       // Fold facet groups
-      $field_set = array(
-        '#type' => 'fieldset',
-        'con' => array(
-          '#type' => 'container',
-          '#attributes' => array('data-expand' => 'more', 'id' => str_replace('.', '-', $facet->name)),
-          'icon' => array(
-            '#type' => 'html_tag',
-            '#tag' => 'span',
-            '#value' => '+',
-            '#attributes' => array(
-              'class' => array(
-                'icon',
-                'icon-left',
-                'icon-blue-plus'
-              ),
-            ),
-          ),
-          'spa' => array(
-            '#value' => $title,
-            '#type' => 'html_tag',
-            '#tag' => 'span'
-          ),
-
-        ),
-      );
-
-
-      /*
-      $field_set = array(
-        '#type' => 'fieldset',
-        '#title' => drupal_render(bibdk_facetbrowser_get_actions_show_hide($title)),
-        '#attributes' => array(
-          'id' => str_replace('.', '-', $facet->name),
-          'data-name' => array($facet->name),
-          'data-count' => count($facet->terms),
-          //'style' => array('display:none;'),
-          'data-show' => '0'
-        ),
-      );
-       *
-       */
+      $field_set = bibdk_facetbrowser_get_actions_fold($facet, $title);
       return $field_set;
-
     }
 
     // reference parameter
@@ -431,6 +390,7 @@ $form['creatorFunction'] = array(
           $field_set['filter'] = bibdk_facetbrowser_get_filter_link($facet);
         }
         $form[$facet->name] = $field_set;
+        dpm($form[$facet->name]);
       }
     }
   }
@@ -847,4 +807,62 @@ function bibdk_facetbrowser_get_actions_show_hide($title) {
 
   
   return $container;
+}
+
+function bibdk_facetbrowser_get_actions_fold($facet, $title) {
+
+
+        $field_set = array(
+        '#type' => 'fieldset',
+        '#title' => t($title, array(), array('context' => 'facet_titles')),
+        '#attributes' => array(
+          'id' => str_replace('.', '-', $facet->name),
+          'data-name' => array($facet->name),
+          'data-count' => count($facet->terms),
+          'style' => '',
+          'data-show' => '1'
+        ),
+      );
+
+  $field_set = array(
+    '#type' => 'fieldset',
+       '#title' => t($title, array(), array('context' => 'facet_titles')),
+        '#attributes' => array(
+          'id' => str_replace('.', '-', $facet->name),
+          'data-name' => array($facet->name),
+          'data-count' => count($facet->terms),
+          'style' => '',
+          'data-show' => '1'
+    ),
+    'con' => array(
+      '#type' => 'container',
+      '#attributes' => array(
+        'data-expand' => 'more',
+        'id' => str_replace('.', '-', $facet->name),
+        'data-name' => array($facet->name),
+        'data-count' => count($facet->terms),
+        'data-show' => '0'
+        ),
+      'icon' => array(
+        '#type' => 'html_tag',
+        '#tag' => 'span',
+        '#value' => '+',
+        '#attributes' => array(
+          'class' => array(
+            'icon',
+            'icon-left',
+            'icon-blue-plus'
+          ),
+        ),
+      ),
+      'spa' => array(
+        '#value' => t($title, array(), array('context' => 'facet_titles')),
+        '#type' => 'html_tag',
+        '#tag' => 'span'
+      ),
+
+    ),
+  );
+
+  return $field_set;
 }
