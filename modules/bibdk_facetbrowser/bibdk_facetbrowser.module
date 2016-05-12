@@ -178,7 +178,6 @@ function bibdk_facetbrowser_get_single_facetgroup($facet, $title, &$selected_fac
           'id' => str_replace('.', '-', $facet->name),
           'data-name' => array($facet->name),
           'data-count' => count($facet->terms),
-          'style' => '',
           'data-show' => '1'
         ),
       );
@@ -360,22 +359,6 @@ function bibdk_facetbrowser_form($form, &$form_state, $facets = FALSE, $search =
     ),
   );
 
-
-/*
-$form['creatorFunction'] = array(
-  '#type' => 'fieldset',
-  '#title' => 'HUNDEPRUT',
-    'fisk' => array(
-    '#type' => 'container',
-    '#attributes' => array('data-expand' => 'more', 'id' => 'facet-creatorFunction'),
-    'hest' => array(
-      '#type' => 'html_tag',
-      '#tag' => 'span'
-    ),
-  )
-);
-*/
-
   $facets_display_count = 0;
   foreach (variable_get('bibdk_facetbrowser_facets', array()) as $configured_facet) {
     if (isset($facets[$configured_facet['name']])) {
@@ -390,7 +373,6 @@ $form['creatorFunction'] = array(
           $field_set['filter'] = bibdk_facetbrowser_get_filter_link($facet);
         }
         $form[$facet->name] = $field_set;
-        dpm($form[$facet->name]);
       }
     }
   }
@@ -762,86 +744,21 @@ function bibdk_facetbrowser_facets_by_ajax() {
   drupal_exit();
 }
 
-function bibdk_facetbrowser_get_actions_show_hide($title) {
-
-  $container = array(
-    '#type' => 'container',
-    '#text' => $title,
-    '#attributes' => array(
-      'data-expand' => 'select',
-      'class' => array(
-        'select',
-      ),
-    ),
-    'placeholder' => bibdk_facetbrowser_facetbrowser_placeholder()
-  );
-
-
-  $container['icon'] = array(
-    '#type' => 'html_tag',
-    '#tag' => 'span',
-    '#value' => '+',
-    '#attributes' => array(
-      'class' => array(
-        'icon',
-        'icon-left',
-        'icon-blue-plus'
-      ),
-    ),
-  );
-
-
-  $container['link'] = array(
-    '#theme' => 'link',
-    '#text' => $title,
-    //'#text' => t('label_facet_select_unselect', array(), array('context' => 'bibdk_facetbrowser')),
-    //'#path' => 'bibdk_facetbrowser/filter/' . $facet->name,
-    //'#path' => 'bibdk_facetbrowser/filter/' . $title,
-    '#options' => array(
-      'attributes' => array(
-        'class' => array(drupal_html_class('facetbrowser_filter_link')),
-      ),
-    //  'html' => FALSE,
-    ),
-  );
-
-  
-  return $container;
-}
-
 function bibdk_facetbrowser_get_actions_fold($facet, $title) {
-
-
-        $field_set = array(
-        '#type' => 'fieldset',
-        '#title' => t($title, array(), array('context' => 'facet_titles')),
-        '#attributes' => array(
-          'id' => str_replace('.', '-', $facet->name),
-          'data-name' => array($facet->name),
-          'data-count' => count($facet->terms),
-          'style' => '',
-          'data-show' => '1'
-        ),
-      );
 
   $field_set = array(
     '#type' => 'fieldset',
-       '#title' => t($title, array(), array('context' => 'facet_titles')),
-        '#attributes' => array(
-          'id' => str_replace('.', '-', $facet->name),
-          'data-name' => array($facet->name),
-          'data-count' => count($facet->terms),
-          'style' => '',
-          'data-show' => '1'
+    '#attributes' => array(
+      'style' => 'cursor: pointer',
+      'id' => str_replace('.', '-', $facet->name),
+      'data-name' => array($facet->name)
     ),
     'con' => array(
       '#type' => 'container',
       '#attributes' => array(
         'data-expand' => 'more',
         'id' => str_replace('.', '-', $facet->name),
-        'data-name' => array($facet->name),
-        'data-count' => count($facet->terms),
-        'data-show' => '0'
+        'data-name' => array($facet->name)
         ),
       'icon' => array(
         '#type' => 'html_tag',
