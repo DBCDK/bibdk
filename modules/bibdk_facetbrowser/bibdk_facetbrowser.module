@@ -155,7 +155,6 @@ function bibdk_facetbrowser_ctools_plugin_api($module, $api) {
   }
 }
 
-
 /**
  * @param $facet
  * @param $title
@@ -170,19 +169,10 @@ function bibdk_facetbrowser_get_single_facetgroup($facet, $title, &$selected_fac
 
   if (count($facet->terms) > 0) {
     if ($facets_display === TRUE) {
-      // Show facet group
-      $field_set = array(
-        '#type' => 'fieldset',
-        '#title' => t($title, array(), array('context' => 'facet_titles')),
-        '#attributes' => array(
-          'id' => str_replace('.', '-', $facet->name),
-          'data-name' => array($facet->name),
-          'data-count' => count($facet->terms),
-          'data-show' => '1'
-        ),
-      );
+      // Show facet group unfolded
+      $field_set = bibdk_facetbrowser_get_actions_unfold($facet, $title);
     } else {
-      // Fold facet groups
+      // Show facet groups folded
       $field_set = bibdk_facetbrowser_get_actions_fold($facet, $title);
       return $field_set;
     }
@@ -376,7 +366,6 @@ function bibdk_facetbrowser_form($form, &$form_state, $facets = FALSE, $search =
       }
     }
   }
-
 
   $request_uri_facets = _bibdk_facetbrowser_getFacets();
   
@@ -744,6 +733,34 @@ function bibdk_facetbrowser_facets_by_ajax() {
   drupal_exit();
 }
 
+/**
+ * facetbrowser get_actions_unfold
+ *
+ * @param array $facet, string title
+ * @return array
+ */
+function bibdk_facetbrowser_get_actions_unfold($facet, $title) {
+
+  $field_set = array(
+    '#type' => 'fieldset',
+    '#title' => t($title, array(), array('context' => 'facet_titles')),
+    '#attributes' => array(
+      'id' => str_replace('.', '-', $facet->name),
+      'data-name' => array($facet->name),
+      'data-count' => count($facet->terms),
+      'data-show' => '1'
+    ),
+  );
+
+  return $field_set;
+}
+
+/**
+ * facetbrowser get_actions_fold
+ *
+ * @param array $facet, string title
+ * @return array
+ */
 function bibdk_facetbrowser_get_actions_fold($facet, $title) {
 
   $field_set = array(
@@ -751,7 +768,8 @@ function bibdk_facetbrowser_get_actions_fold($facet, $title) {
     '#attributes' => array(
       'style' => 'cursor: pointer',
       'id' => str_replace('.', '-', $facet->name),
-      'data-name' => array($facet->name)
+      'data-name' => array($facet->name),
+      'data-show' => '0'
     ),
     'con' => array(
       '#type' => 'container',
