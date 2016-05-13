@@ -368,7 +368,7 @@ function bibdk_facetbrowser_form($form, &$form_state, $facets = FALSE, $search =
   }
 
   $request_uri_facets = _bibdk_facetbrowser_getFacets();
-  
+
   if ($selected = _bibdk_facetbrowser_isFacetSelected($request_uri_facets, TRUE)) {
     foreach ($selected as $term_selected) {
       $uri = _bibdk_facetbrowser_parseRequestUri();
