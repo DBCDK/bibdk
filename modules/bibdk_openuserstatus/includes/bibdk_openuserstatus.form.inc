@@ -270,7 +270,7 @@ function bibdk_openuserstatus_get_reservations_inprocess_table($form, $reservati
   $reservations_in_process = t('Reservations_in_process', array(), array('context' => 'bibdk_userstatus'));
 
   if (!empty($reservations)) {
-    $in_process_states = array('In process', 'Requested via ill', 'Requested');
+    $in_process_states = array('In process', 'Requested via ill', 'Requested', 'Active');
     foreach ($reservations as $reservation) {
       if (isset($reservation['orderStatus']) && (in_array($reservation['orderStatus'], $in_process_states))) {
         // If reservation has pickUpExpiryDate set this is an order ready for
