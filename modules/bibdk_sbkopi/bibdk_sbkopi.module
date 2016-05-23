@@ -111,6 +111,7 @@ function bibdk_sbkopi_ting_openformat_actions($type, $entity, $view_mode, $langc
     // Check for sb link for following types
     $sb_type_list = array('Tidsskriftsartikel', 'Tidsskrift', 'Årbog', 'Periodikum', );
     if (in_array($entity->getSubType(), $sb_type_list)) {
+      drupal_add_js(drupal_get_path('module', 'bibdk_sbkopi') . '/js/ajaxGetCopyOptions.js');
       $actions['sbkopi'] = array(
         '#theme' => 'html_tag',
         '#tag' => 'span',
@@ -120,7 +121,6 @@ function bibdk_sbkopi_ting_openformat_actions($type, $entity, $view_mode, $langc
           'pid' => $entity->id
         ),
         '#weight' => 0.1,
-        '#attached' => array('js' => array(drupal_get_path('module', 'bibdk_sbkopi') . '/js/ajaxGetCopyOptions.js')),
       );
 
       return $actions;
