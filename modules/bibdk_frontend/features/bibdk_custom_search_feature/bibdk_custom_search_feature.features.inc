@@ -2310,7 +2310,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '13e9c659-5d7c-4fd9-b8a9-634363b8b3f3';
   $option->v_uuid = 'f81d0c50-5f4b-d1f4-f11f-c000c901c841';
-  $option->sort = -63;
+  $option->sort = -62;
   $option->label = 'jazzfilm';
   $option->value = '"jazzfilm"';
   $option->expand = '0';
@@ -6144,6 +6144,18 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->expand = '0';
   $option->is_disabled = FALSE;
   $export['b1d09bde-480b-437a-9689-d4df58b5ebb8'] = $option;
+
+  $option = new stdClass();
+  $option->disabled = FALSE; /* Edit this to true to make a default option disabled initially */
+  $option->api_version = 1;
+  $option->o_uuid = 'b21f084c-b5dd-4321-8b5c-1a356fb8dd48';
+  $option->v_uuid = 'f81d0c50-5f4b-d1f4-f11f-c000c901c841';
+  $option->sort = -63;
+  $option->label = 'balletfilm';
+  $option->value = '"balletfilm"';
+  $option->expand = '0';
+  $option->is_disabled = FALSE;
+  $export['b21f084c-b5dd-4321-8b5c-1a356fb8dd48'] = $option;
 
   $option = new stdClass();
   $option->disabled = FALSE; /* Edit this to true to make a default option disabled initially */
