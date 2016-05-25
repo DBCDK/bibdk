@@ -116,6 +116,7 @@ function bibdk_openuserstatus_theme() {
  */
 function bibdk_openuserstatus_request() {
   $favourites = bibdk_favourite_get_favourites();
+  $array_main_id = [];
 
   if (empty($favourites)) {
     return array();
@@ -133,6 +134,14 @@ function bibdk_openuserstatus_request() {
       && $agency_main_id != $agency_id
       && $favourites[$agency_main_id]->userData !== FALSE
     ) {
+      continue;
+    }
+
+    // if user favorite branch mainlibrary allready exist in list continiue
+    if (!in_array($agency_main_id, $array_main_id))
+    {
+      $array_main_id[] = $agency_main_id;
+    } else {
       continue;
     }
 
@@ -197,6 +206,17 @@ function bibdk_openuserstatus_get_agencyname($agencyId) {
   //  $name = $agency->getBranch()->getBranchName($language->language);
   //  return isset ($name) ? $name : NULL;
   $name = $agency->getBranch()->getBranchShortName($language->language);
+  return isset($name) ? $name : NULL;
+}
+
+/**
+ * @param $agencyId
+ * @return null|string
+ */
+function bibdk_openuserstatus_get_agency_branch_name($agencyId) {
+  global $language;
+  $agency = new TingAgency($agencyId);
+  $name = $agency->getBranch()->getBranchName($language->language);
   return isset($name) ? $name : NULL;
 }
 
