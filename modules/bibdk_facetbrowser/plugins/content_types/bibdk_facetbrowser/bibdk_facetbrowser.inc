@@ -27,6 +27,7 @@ function bibdk_facetbrowser_content_type_render($subtype, $conf, $panel_args, $c
   $block->delta  = 'bibdk_facetbrowser';
   $block->title = t('Bibdk Facetbrowser', array(), array('context' => 'bibdk_facetbrowser block title'));
 
+  $show_group_count = variable_get('bibdk_facetbrowser_group_number_shown', 5);
   $show_count = variable_get('bibdk_facetbrowser_number_shown', 5);
   $show_count_consecutive = variable_get('bibdk_facetbrowser_consecutive_number_shown', 10);
   drupal_add_css(drupal_get_path('module', 'bibdk_facetbrowser') . '/css/facetbrowser_filter_form.css');
@@ -35,6 +36,7 @@ function bibdk_facetbrowser_content_type_render($subtype, $conf, $panel_args, $c
     array(
       'bibdkFacetBrowser' => array(
         'mainElement' => '.pane-bibdk-facetbrowser',
+        'showGroupCount' => $show_group_count,
         'showCount' => $show_count,
         'showCountConsecutive' => $show_count_consecutive
       )

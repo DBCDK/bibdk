@@ -158,7 +158,7 @@ function bibdk_facetbrowser_filter_form($form, $form_state, $facet_name) {
   // get given facetgroup
   $group = ting_openformat_get_facet_group($facet_name);
   // Get the fieldset
-  $field_set = bibdk_facetbrowser_get_single_facetgroup($group->facets[$facet_name], $form['#title']);
+  $field_set = bibdk_facetbrowser_get_single_facetgroup($group->facets[$facet_name], $form['#title'], $doselected_facets_present=FALSE , $dodisplay=TRUE);
   $form['#options'] = $field_set[$form['#facet_key']]['#options'];
   $field_set['#weight'] = 3;
   // Get the key for the fieldset facet

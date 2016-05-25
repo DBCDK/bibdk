@@ -78,6 +78,15 @@ function bibdk_facetbrowser_settings($form_state) {
   );
   $i++;
 
+    $form['bibdk_facetbrowser_group_number_shown'] = array(
+    '#type' => 'textfield',
+    '#size' => 8,
+    '#weight' => -115,
+    '#title' => t('Number of group facets shown.'),
+    '#description' => t('Number of group facets shown initially'),
+    '#default_value' => variable_get('bibdk_facetbrowser_group_number_shown', 5),
+  );
+
   $form['bibdk_facetbrowser_number_shown'] = array(
     '#type' => 'textfield',
     '#size' => 8,
@@ -134,6 +143,10 @@ function bibdk_facetbrowser_settings_submit($form, &$form_state) {
   }
   usort($facets, 'drupal_sort_weight');
   variable_set('bibdk_facetbrowser_facets', $facets);
+
+  //setting for group_number_shown
+  $number_of_group_facets = $form_state['values']['bibdk_facetbrowser_group_number_shown'];
+  variable_set('bibdk_facetbrowser_group_number_shown', $number_of_group_facets);
 
   $number_of_facets = $form_state['values']['bibdk_facetbrowser_number_shown'];
   variable_set('bibdk_facetbrowser_number_shown', $number_of_facets);
