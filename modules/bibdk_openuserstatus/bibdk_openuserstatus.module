@@ -116,7 +116,7 @@ function bibdk_openuserstatus_theme() {
  */
 function bibdk_openuserstatus_request() {
   $favourites = bibdk_favourite_get_favourites();
-  $array_main_id = [];
+  $array_main_id = array();
 
   if (empty($favourites)) {
     return array();
