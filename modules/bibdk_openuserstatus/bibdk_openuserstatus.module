@@ -221,6 +221,19 @@ function bibdk_openuserstatus_get_agency_branch_name($agencyId) {
 }
 
 /**
+ * @param $agencyId
+ * @return null|string
+ */
+function bibdk_openuserstatus_get_agencyname_main($agencyId) {
+  global $language;
+  $agency = new TingAgency($agencyId);
+  $agency_main_id = $agency->getAgencyMainId();
+  $agency = new TingAgency($agency_main_id);
+  $name = $agency->getBranch()->getAgencyName($language->language);
+  return isset($name) ? $name : NULL;
+}
+
+/**
  * Gets favourite libraries for the current user
  * Returns empty array if zero libraries are found
  *

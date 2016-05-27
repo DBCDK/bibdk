@@ -45,7 +45,7 @@ function bibdk_openuserstatus_get_tables($form, $response) {
   $loan_agencies = bibdk_openuserstatus_get_pickup_agencies_from_material_list($loans);
   $reservation_agencies = bibdk_openuserstatus_get_pickup_agencies_from_material_list($reservations);
   $agencies = array_unique(array_merge($loan_agencies, $reservation_agencies));
-  $named_agencies = bibdk_openuserstatus_agency_names($agencies);
+  $named_agencies = bibdk_openuserstatus_agency_name_main($agencies);
   
   $form = bibdk_openuserstatus_get_loans_table($form, $loans, $named_agencies);
   $form = bibdk_openuserstatus_get_reservations_readyforpickup_table($form, $reservations, $named_agencies);
@@ -632,6 +632,22 @@ function bibdk_openuserstatus_agency_names($agencies) {
 
   foreach ($agencies as $agency) {
     $named_agencies[$agency] = bibdk_openuserstatus_get_agencyname($agency);
+  }
+
+  return $named_agencies;
+}
+
+/**
+ * Looks up names for a list of agencies.
+ *
+ * @param array $agencies
+ * @return array
+ */
+function bibdk_openuserstatus_agency_name_main($agencies) {
+  $named_agencies = array();
+
+  foreach ($agencies as $agency) {
+    $named_agencies[$agency] = bibdk_openuserstatus_get_agencyname_main($agency);
   }
 
   return $named_agencies;
