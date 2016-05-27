@@ -42,7 +42,7 @@ function _bibdk_favourite_get_userid_from_array($values) {
   $userId_key = array_intersect($possible_userId_keys, array_keys($values));
   if (isset($userId_key) && is_array($userId_key)) {
     $userId_key = reset($userId_key);
-    return $values[$userId_key];
+    return str_replace("-","",$values[$userId_key]);
   }
 
   return null;

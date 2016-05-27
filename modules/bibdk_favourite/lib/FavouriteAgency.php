@@ -33,7 +33,7 @@ class FavouriteAgency extends TingAgency {
     $possibilities = array('cpr', 'userId', 'barcode', 'cardno', 'customId',);
     foreach ($possibilities as $pos) {
       if (isset($this->userData[$pos])) {
-        return $this->userData[$pos];
+        return str_replace("-","",$this->userData[$pos]);
       }
     }
     return FALSE;
