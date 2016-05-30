@@ -28,6 +28,7 @@ function bibdk_facetbrowser_update_7001(&$sandbox) {
 */
 
 function bibdk_facetbrowser_install() {
+  variable_set('bibdk_facetbrowser_group_number_shown', 5);
   variable_set('bibdk_facetbrowser_number_shown', 5);
   variable_set('bibdk_facetbrowser_number_requested', 25);
   variable_set('bibdk_facetbrowser_consecutive_number_shown', 10);

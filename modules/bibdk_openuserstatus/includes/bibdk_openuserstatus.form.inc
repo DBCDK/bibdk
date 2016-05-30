@@ -45,8 +45,8 @@ function bibdk_openuserstatus_get_tables($form, $response) {
   $loan_agencies = bibdk_openuserstatus_get_pickup_agencies_from_material_list($loans);
   $reservation_agencies = bibdk_openuserstatus_get_pickup_agencies_from_material_list($reservations);
   $agencies = array_unique(array_merge($loan_agencies, $reservation_agencies));
-  $named_agencies = bibdk_openuserstatus_agency_names($agencies);
-
+  $named_agencies = bibdk_openuserstatus_agency_name_main($agencies);
+  
   $form = bibdk_openuserstatus_get_loans_table($form, $loans, $named_agencies);
   $form = bibdk_openuserstatus_get_reservations_readyforpickup_table($form, $reservations, $named_agencies);
   $form = bibdk_openuserstatus_get_reservations_inprocess_table($form, $reservations, $named_agencies);
@@ -270,7 +270,7 @@ function bibdk_openuserstatus_get_reservations_inprocess_table($form, $reservati
   $reservations_in_process = t('Reservations_in_process', array(), array('context' => 'bibdk_userstatus'));
 
   if (!empty($reservations)) {
-    $in_process_states = array('In process', 'Requested via ill', 'Requested');
+    $in_process_states = array('In process', 'Requested via ill', 'Requested', 'Active');
     foreach ($reservations as $reservation) {
       if (isset($reservation['orderStatus']) && (in_array($reservation['orderStatus'], $in_process_states))) {
         // If reservation has pickUpExpiryDate set this is an order ready for
@@ -400,7 +400,7 @@ function bibdk_openuserstatus_get_reservations_readyforpickup_table($form, $rese
 
   if (!empty($reservations)) {
     $items = array();
-    $pickup_states = array('Available for pickup', 'Shelved');
+    $pickup_states = array('Available for pickup', 'Shelved', 'At reservation shelf');
     foreach ($reservations as $reservation) {
       $available_pickup = isset($reservation['orderStatus']) && in_array($reservation['orderStatus'], $pickup_states);
       // Last part of if statement is a fix for orders from Integra libraries
@@ -412,9 +412,11 @@ function bibdk_openuserstatus_get_reservations_readyforpickup_table($form, $rese
         $item = array();
         $pickupDate = isset($reservation['pickUpExpiryDate']) ? date('d.m.Y', strtotime($reservation['pickUpExpiryDate'])) : '';
         $pickupId = isset($reservation['pickUpId']) ? $reservation['pickUpId'] : '';
-
         $item['material'] = _bibdk_openuserstatus_material($reservation, $named_agencies[$reservation['agencyId']]);
-        $item['pickup_date'] = '<span class="userstatus--date">' . $pickupDate . '</span>' . '<span class="userstatus--pickupid">' . $pickupId . '</span>';
+        $pickUpAgency = isset($reservation['pickUpAgency']) ? $reservation['pickUpAgency'] : '';
+        //get pickupagency name
+        $agencybranchName = bibdk_openuserstatus_get_agency_branch_name($reservation['pickUpAgency']);
+        $item['pickup_date'] = '<span class="userstatus--date">' . $pickupDate . '</span>' . '<span class="userstatus--pickupid">' . $pickupId . '</span>' . '<span class="userstatus--pickupid">' . '  ' . $agencybranchName . '' . '</span>';
         $items[] = $item;
       }
     }
@@ -446,6 +448,7 @@ function bibdk_openuserstatus_get_reservations_readyforpickup_table($form, $rese
       ),
     ),
   );
+  
   return $form;
 }
 
@@ -629,6 +632,22 @@ function bibdk_openuserstatus_agency_names($agencies) {
 
   foreach ($agencies as $agency) {
     $named_agencies[$agency] = bibdk_openuserstatus_get_agencyname($agency);
+  }
+
+  return $named_agencies;
+}
+
+/**
+ * Looks up names for a list of agencies.
+ *
+ * @param array $agencies
+ * @return array
+ */
+function bibdk_openuserstatus_agency_name_main($agencies) {
+  $named_agencies = array();
+
+  foreach ($agencies as $agency) {
+    $named_agencies[$agency] = bibdk_openuserstatus_get_agencyname_main($agency);
   }
 
   return $named_agencies;
