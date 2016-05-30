@@ -13,34 +13,20 @@ function bibliotek_dk_carousel_settings_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'bibdk_search_carousel_dateformat';
-  $strongarm->value = 'bk\\mYW';
-  $export['bibdk_search_carousel_dateformat'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'bibdk_search_carousel_week_search_code';
-  $strongarm->value = 'dkcclterm.kk';
-  $export['bibdk_search_carousel_week_search_code'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'bibdk_carousel_search_queries';
   $strongarm->value = array(
     0 => array(
+      'title' => 'Nye bøger - skønlitteratur',
+      'subtitle' => 'Skønlitteratur for voksne',
+      'query' => 'dkcclterm.sf=v and dkcclterm.uu=nt and term.literaryForm=fiktion and (term.type=bog) not (term.type=skrift)',
+      'period' => '3',
+      'offset' => '4',
+    ),
+    1 => array(
       'title' => 'Nye bøger - faglitteratur',
       'subtitle' => 'Faglitteratur for voksne',
       'query' => 'dkcclterm.sf=v and dkcclterm.uu=nt and (term.type=bog) not term.literaryForm=fiktion',
       'period' => '2',
-      'offset' => '4',
-    ),
-    1 => array(
-      'title' => 'Nye bøger - skønlitteratur',
-      'subtitle' => 'Skønlitteratur for voksne',
-      'query' => 'dkcclterm.sf=v and dkcclterm.uu=nt and term.literaryForm=fiktion and (term.type=bog)',
-      'period' => '3',
       'offset' => '4',
     ),
     2 => array(
@@ -112,6 +98,13 @@ function bibliotek_dk_carousel_settings_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'bibdk_search_carousel_dateformat';
+  $strongarm->value = 'bk\\mYW';
+  $export['bibdk_search_carousel_dateformat'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'bibdk_search_carousel_description_toggle';
   $strongarm->value = 0;
   $export['bibdk_search_carousel_description_toggle'] = $strongarm;
@@ -129,6 +122,13 @@ function bibliotek_dk_carousel_settings_strongarm() {
   $strongarm->name = 'bibdk_search_carousel_tabs_position';
   $strongarm->value = 'bottom';
   $export['bibdk_search_carousel_tabs_position'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'bibdk_search_carousel_week_search_code';
+  $strongarm->value = 'dkcclterm.kk';
+  $export['bibdk_search_carousel_week_search_code'] = $strongarm;
 
   return $export;
 }
