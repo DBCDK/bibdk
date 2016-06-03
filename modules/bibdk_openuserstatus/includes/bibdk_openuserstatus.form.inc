@@ -415,7 +415,7 @@ function bibdk_openuserstatus_get_reservations_readyforpickup_table($form, $rese
         $item['material'] = _bibdk_openuserstatus_material($reservation, $named_agencies[$reservation['agencyId']]);
         $pickUpAgency = isset($reservation['pickUpAgency']) ? $reservation['pickUpAgency'] : '';
         //get pickupagency name
-        $agencybranchName = bibdk_openuserstatus_get_agency_branch_name($reservation['pickUpAgency']);
+        $agencybranchName = bibdk_openuserstatus_get_agencyname($reservation['pickUpAgency']);
         $item['pickup_date'] = '<span class="userstatus--date">' . $pickupDate . '</span>' . '<span class="userstatus--pickupid">' . $pickupId . '</span>' . '<span class="userstatus--pickupid">' . '  ' . $agencybranchName . '' . '</span>';
         $items[] = $item;
       }
