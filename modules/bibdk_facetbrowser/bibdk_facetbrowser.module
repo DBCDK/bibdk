@@ -160,7 +160,7 @@ function bibdk_facetbrowser_ctools_plugin_api($module, $api) {
  * @param $title
  * @return array; render-array(fieldset) defining a single facetgroup
  */
-function bibdk_facetbrowser_get_single_facetgroup($facet, $title, &$selected_facets_present=FALSE, $facets_display, $doTrimLength) {
+function bibdk_facetbrowser_get_single_facetgroup($facet, $title, &$selected_facets_present, $facets_display, $doTrimLength) {
   $default_values = array();
   $selected = array();
   $not_selected = array();
