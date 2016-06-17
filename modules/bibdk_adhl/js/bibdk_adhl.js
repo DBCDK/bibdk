@@ -1,4 +1,12 @@
 (function($) {
+
+  var BibdkAdhl = {};
+  /* set link action to popup link overlay */
+  BibdkAdhl.setLinkActions = function(context) {
+    $("a[href*='/overlay/adhl/top/20/'], a[href*='?q=overlay/adhl/top/20/']", context).attr({
+    }).addClass('bibdk-popup-link');
+  };
+
   /** Insert adhl results */
   function addRecommendation(adhl) {
     if(adhl.error) {
@@ -42,6 +50,7 @@
           loadRecommendation(element);
         });
       });
+      BibdkAdhl.setLinkActions(context);
     }
   };
 
