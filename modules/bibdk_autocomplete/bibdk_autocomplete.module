@@ -229,13 +229,13 @@ function bibdk_autocomplete_0_hit_search($conditions) {
   $value_vars = array();
   $value_vars['index'] = 'scanterm.default';
   $value_vars['facetIndex'] = 'scanphrase.default';
-
+  $value_vars['agency'] = $settings['agency'];
+  $value_vars['profile'] = $settings['profile'];
   $url = $url . '/facetSpell';
   $settings['highlight'] = ($settings['highlight']) ? 'true' : null;
   $options['query'] = array('query' => check_plain($conditions)) + $value_vars + $settings;
   $options['maxTime'] = 300;
   $url = url($url, $options);
-
   $curl = new MicroCURL();
   $result = json_decode($curl->get(array($url)));
   $curl->close();
