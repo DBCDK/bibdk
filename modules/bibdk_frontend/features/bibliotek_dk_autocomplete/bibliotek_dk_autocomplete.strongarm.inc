@@ -14,7 +14,7 @@ function bibliotek_dk_autocomplete_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'bibdk_autocomplete_rest_url';
-  $strongarm->value = 'http://opensuggestion.addi.dk/1.0/rest';
+  $strongarm->value = 'http://opensuggestion.addi.dk/b3.0_2.0/rest';
   $export['bibdk_autocomplete_rest_url'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -22,10 +22,10 @@ function bibliotek_dk_autocomplete_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'bibdk_autocomplete_settings';
   $strongarm->value = array(
-    'agency' => '',
+    'agency' => '190101',
     'maxSuggestions' => '10',
     'maxTime' => '',
-    'profile' => '',
+    'profile' => 'default',
     'highlight' => 0,
     'highlight.pre' => '<em>',
     'highlight.post' => '</em>',
