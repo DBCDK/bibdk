@@ -8,3 +8,4 @@ dependencies[] = open_adhl
 dependencies[] = ting_openformat
 
 files[] = test/bibdk_adhl.test
+scripts[] = js/bibdk_adhl.js
