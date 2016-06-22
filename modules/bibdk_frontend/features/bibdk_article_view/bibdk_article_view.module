@@ -35,20 +35,21 @@ function bibdk_article_view_preprocess_views_view_fields(&$vars) {
   $region = $wrapper->field_page_region->value();
   if (!empty($link_text) && !empty($link_url)) {
     if ($region->name == 'top') {
-      $vars['fields']['field_link']->content = bibdk_article_view_get_top_link($link_text, $link_url);
+      $vars['fields']['field_link']->content = bibdk_article_view_get_top_link($link_text, $link_url, $wrapper);
       $vars['fields']['field_link']->label_html = '';
     }
     else {
-      $link = bibdk_article_view_get_bottom_link($link_text, $link_url);
+      $link = bibdk_article_view_get_bottom_link($link_text, $link_url, $wrapper);
       $vars['fields']['field_link']->content = $link;
       $vars['fields']['field_link']->wrapper_prefix = '<div class="footer"><div class="field-read-more">';
       $vars['fields']['field_link']->wrapper_suffix = '</div></div>';
     }
   }
- 
+
 }
 
-function bibdk_article_view_get_bottom_link($txt, $path){
+function bibdk_article_view_get_bottom_link($txt, $path, $wrapper){
+  $custom_class = $wrapper->field_link_classes->value();
   $link = array(
     '#theme' => 'link',
     '#text' => $txt,
@@ -56,7 +57,7 @@ function bibdk_article_view_get_bottom_link($txt, $path){
     '#options' => array(
       'attributes' => array(
         'target' => '_blank',
-        'class' => array('article-bottom-link'),
+        'class' => array('article-bottom-link ' . $custom_class),
       ),
       'html' => FALSE,
       'svg' => 'svg-arrow-right',
@@ -66,7 +67,9 @@ function bibdk_article_view_get_bottom_link($txt, $path){
   return drupal_render($link);
 }
 
-function bibdk_article_view_get_top_link($txt, $path) {
+
+function bibdk_article_view_get_top_link($txt, $path, $wrapper) {
+  $custom_class = $wrapper->field_link_classes->value();
   $link = array(
     '#theme' => 'link',
     '#text' => $txt,
@@ -74,7 +77,7 @@ function bibdk_article_view_get_top_link($txt, $path) {
     '#options' => array(
       'attributes' => array(
         'target' => '_blank',
-        'class' => array('article-top-link'),
+        'class' => array('article-top-link ' . $custom_class),
       ),
       'html' => FALSE,
       'svg' => 'svg-arrow-right',
