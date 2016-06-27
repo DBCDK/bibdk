@@ -808,7 +808,7 @@ function bibdk_facetbrowser_get_actions_fold($facet, $title) {
         ),
       ),
       'spa' => array(
-        '#value' => 'label_facet_show_more',
+        '#value' => t('label_facet_show_more', array(), array('context' => 'bibdk_facetbrowser')),
         '#type' => 'html_tag',
         '#tag' => 'span'
       ),
