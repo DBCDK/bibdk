@@ -44,7 +44,7 @@ function bibdk_facets_strongarm() {
     ),
     4 => array(
       'name' => 'facet.date',
-      'title' => 'Årstal',
+      'title' => 'Udgivelsesår',
       'weight' => '-6',
     ),
     5 => array(
@@ -84,7 +84,7 @@ function bibdk_facets_strongarm() {
     ),
     12 => array(
       'name' => 'facet.level',
-      'title' => 'Niveau',
+      'title' => 'Fagligt niveau',
       'weight' => '2',
     ),
     13 => array(
@@ -123,18 +123,18 @@ function bibdk_facets_strongarm() {
       'weight' => '9',
     ),
     20 => array(
+      'name' => 'facet.primaryCreator',
+      'title' => 'Hovedansvar',
+      'weight' => '10',
+    ),
+    21 => array(
       'name' => 'facet.sheetMusic',
       'title' => 'Nodetype',
       'weight' => '10',
     ),
-    21 => array(
+    22 => array(
       'name' => 'facet.dk5',
       'title' => 'Opstilling i folkebiblioteker',
-      'weight' => '10',
-    ),
-    22 => array(
-      'name' => 'facet.primaryCreator',
-      'title' => 'Hovedansvar',
       'weight' => '10',
     ),
   );
@@ -153,13 +153,6 @@ function bibdk_facets_strongarm() {
   $strongarm->name = 'bibdk_facetbrowser_number_shown';
   $strongarm->value = '3';
   $export['bibdk_facetbrowser_number_shown'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'bibdk_facetbrowser_group_number_shown';
-  $strongarm->value = '5';
-  $export['bibdk_facetbrowser_group_number_shown'] = $strongarm;
 
   return $export;
 }

@@ -54,7 +54,7 @@ projects[ding_provider][download][tag] = 7.x-0.13-dbc.12
 projects[ding_user][type] = module
 projects[ding_user][download][type] = git
 projects[ding_user][download][url] = git@github.com:DBCDK/ding_user.git
-projects[ding_user][download][tag] = 7.x-0.19-dbc.17
+projects[ding_user][download][tag] = 7.x-0.19-dbc.18
 
 projects[ding_wayf][type] = module
 projects[ding_wayf][download][type] = git
@@ -115,7 +115,7 @@ projects[open_holdingstatus][download][tag] = 7.x-0.11
 projects[open_moreinfo][type] = module
 projects[open_moreinfo][download][type] = git
 projects[open_moreinfo][download][url] = git@github.com:DBCDK/open_moreinfo.git
-projects[open_moreinfo][download][tag] = 7.x-0.4
+projects[open_moreinfo][download][tag] = 7.x-0.5
 
 projects[open_saou][type] = module
 projects[open_saou][download][type] = git
