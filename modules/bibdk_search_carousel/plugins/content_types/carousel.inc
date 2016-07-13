@@ -22,6 +22,11 @@ function bibdk_search_carousel_carousel_content_type_render($subtype, $conf, $pa
   $tab_position = 0;
   if (isset($_SESSION['carousel_settings']['show_carousel_number'])) {
     $tab_position = (int)$_SESSION['carousel_settings']['show_carousel_number'];
+    drupal_add_js(array(
+      'displayindex' => array(
+        'show_carousel_index' => $tab_position,
+      ),
+    ), 'setting');
   }
 
   $block->content = theme('bibdk_search_carousel', array('searches' => $searches, 'tab_position' => $tab_position));
