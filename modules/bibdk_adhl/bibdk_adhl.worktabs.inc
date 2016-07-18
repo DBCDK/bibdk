@@ -53,7 +53,7 @@ function bibdk_adhl_work_tabs_render($id) {
       'data-pid' => $id,
     ),
     '#attached' => array(
-      //'js' => array(drupal_get_path('module', 'bibdk_adhl') . '/js/bibdk_adhl.js'),
+      'js' => array(drupal_get_path('module', 'bibdk_adhl') . '/js/bibdk_adhl.js'),
     ),
   );
 
