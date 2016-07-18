@@ -33,9 +33,7 @@ function bibdk_search_carousel_result($index) {
  * @return string
  */
 function bibdk_search_carousel_index($index) {
-  if (isset($_SESSION['carousel_settings']['show_carousel_number'])) {
-    $_SESSION['carousel_settings']['show_carousel_number'] = $index;
-  } else {
-    $_SESSION['carousel_settings']['show_carousel_number'] = $index;
-  }
+
+  $_SESSION['carousel_settings']['show_carousel_number'] = $index;
+
 }
