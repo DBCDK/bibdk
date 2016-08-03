@@ -40,6 +40,14 @@
 
   Drupal.getCovers = function(index) {
     // Retrieve covers
+    if(typeof Drupal.settings.displayindex != 'undefined') {
+      if ( Drupal.settings.displayindex.show_carousel_index != -1) {
+        // just use show_carousel_index firsttime
+        index = Drupal.settings.displayindex.show_carousel_index;
+        Drupal.settings.displayindex.show_carousel_index = -1;
+      }
+    }
+
     request = $.ajax({
       url: Drupal.settings.basePath + Drupal.settings.pathPrefix + 'bibdk_search_carousel/results/ajax/' + index,
       type: 'POST',
