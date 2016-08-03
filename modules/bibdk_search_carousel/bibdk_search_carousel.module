@@ -165,6 +165,7 @@ function _bibdk_search_carousel_get_content($index = 0, $bibdk_seach_queries = a
   $num_results = 40;
   $start = 1;
   $more = TRUE;
+
   // Loop until we have $max_covers covers, or we've reached $max_queries queries.
   while ((count($cover_items) < $max_covers) && ($start - $num_results < $max_queries) && $more) {
 
