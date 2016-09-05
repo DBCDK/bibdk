@@ -305,15 +305,11 @@ function bibdk_search_carousel_bibdk_search_carousel_query($query) {
  * Implements a query string for adhl top20.
  */
 function bibdk_search_carousel_bibdk_search_carousel_query_list_for_top($numberOfItems) {
-  $i=0;
-  $result = open_adhl_topTenRequest($numberOfItems + 5);
+  $result = open_adhl_topTenRequest($numberOfItems);
 
   $query_string = '(';
   foreach ( $result as $id => $res ) {
-    if ($i < $numberOfItems) {
-      $query_string .= $res . ' or ';
-    }
-    $i++;
+    $query_string .= $res . ' or ';
   }
   $query_string = substr($query_string, 0, -4);
   $query_string .= ')';
