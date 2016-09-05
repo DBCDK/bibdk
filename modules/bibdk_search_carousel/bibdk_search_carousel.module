@@ -162,6 +162,7 @@ function _bibdk_search_carousel_get_content($index = 0, $bibdk_seach_queries = a
   $max_covers = variable_get('bibdk_search_carousel_covers_max', 20);
   $max_queries = variable_get('bibdk_search_carousel_queries_max', 400);
 
+
   $num_results = 40;
   $start = 1;
   $more = TRUE;
@@ -275,12 +276,16 @@ function _bibdk_search_carousel_get_content($index = 0, $bibdk_seach_queries = a
  * Implements hook_bibdk_search_carousel_query().
  */
 function bibdk_search_carousel_bibdk_search_carousel_query($query) {
-
   $bibdk_query_prefix = CQL_AND . variable_get('bibdk_search_carousel_week_search_code', 'dkcclterm.kk') . '=(';
   $bibdk_query_suffix = ')';
   $bibdk_dateformat = variable_get('bibdk_search_carousel_dateformat', 'bk\mYW');
   $today = time();
   $week = 7 * 24 * 60 * 60; // 7 days; 24 hours; 60 mins; 60secs
+
+  if ($query['query'] == 'top20') {
+    // 'top20' have to call adhl service to get adhl id list
+    $query['query'] = bibdk_search_carousel_bibdk_search_carousel_query_list_for_top(20);
+  }
 
   $periods = array();
   for ($n = 0; $n < $query['period']; $n++) {
@@ -292,5 +297,25 @@ function bibdk_search_carousel_bibdk_search_carousel_query($query) {
     $query['query'] = $query['query'] . $bibdk_query_prefix . implode(CQL_OR, $periods) . $bibdk_query_suffix;
   }
 
+
   return $query;
+}
+
+/**
+ * Implements a query string for adhl top20.
+ */
+function bibdk_search_carousel_bibdk_search_carousel_query_list_for_top($numberOfItems) {
+  $i=0;
+  $result = open_adhl_topTenRequest($numberOfItems + 5);
+
+  $query_string = '(';
+  foreach ( $result as $id => $res ) {
+    if ($i < $numberOfItems) {
+      $query_string .= $res . ' or ';
+    }
+    $i++;
+  }
+  $query_string = substr($query_string, 0, -4);
+  $query_string .= ')';
+  return $query_string;
 }

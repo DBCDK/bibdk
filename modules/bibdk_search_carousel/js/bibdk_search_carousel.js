@@ -69,6 +69,10 @@
               $('#bibdk-slick-carousel').removeClass('slick-initialized');
               $('#bibdk-slick-carousel').removeClass('slick-slider');
               $('#bibdk-slick-carousel').html('');
+              for(var i=0; i<10; i++) {
+                var tabindex = '.tab' + i.toString();
+                $(tabindex).removeClass('active');
+              }
               var index = $(this).attr('data-value');
               Drupal.getCovers(index);
             });
