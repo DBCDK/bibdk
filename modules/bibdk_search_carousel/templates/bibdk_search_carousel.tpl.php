@@ -12,7 +12,9 @@
 
 
 <div class="slick-carousel">
-
+  <div class="slick-carousel-header-title">
+     <?php print t('LABEL_CAROUSEL_HEADER', array(), array('context' => 'ting_search_carousel')); ?>
+  </div>
   <div class="slick-carousel-header">
 
     <div class="slick-carousel-header-title">
@@ -22,9 +24,6 @@
        <div class="slick-carousel-tab-select">
          <form class="bibdk-search-controls-form" data-control-name="controls_carousel">
            <ul class="tab slick-carousel-tabs">
-             <li>
-               <div><?php print t('LABEL_HEAD ', array(), array('context' => 'ting_search_carousel')); ?></div>
-             </li>
              <?php foreach ($searches as $i => $search): ?>
                <li>
                  <?php if ($tab_position == $i): ?>

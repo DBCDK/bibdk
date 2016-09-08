@@ -47,7 +47,6 @@
         Drupal.settings.displayindex.show_carousel_index = -1;
       }
     }
-
     request = $.ajax({
       url: Drupal.settings.basePath + Drupal.settings.pathPrefix + 'bibdk_search_carousel/results/ajax/' + index,
       type: 'POST',
@@ -74,6 +73,7 @@
                 $(tabindex).removeClass('active');
               }
               var index = $(this).attr('data-value');
+              $(index).addClass('active');
               Drupal.getCovers(index);
             });
           });
