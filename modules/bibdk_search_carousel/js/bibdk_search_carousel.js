@@ -60,7 +60,7 @@
     attach: function(context) {
       $( document ).ready(function() {
         if ( !initialized ) {
-          $('.slick-carousel-tabs li a').each(function( index ) {
+          $('.slick-carousel-tabs li a').each(function( index, element ) {
             $(this).click(function(e) {
               e.preventDefault();
               // Remove current content, show spinner and get new content.
@@ -68,12 +68,11 @@
               $('#bibdk-slick-carousel').removeClass('slick-initialized');
               $('#bibdk-slick-carousel').removeClass('slick-slider');
               $('#bibdk-slick-carousel').html('');
-              for(var i=0; i<10; i++) {
-                var tabindex = '.tab' + i.toString();
-                $(tabindex).removeClass('active');
-              }
+              // remove all active tabs
+              $('.tab.slick-carousel-tabs li a').removeClass('active');
+              // set selected tab
+              $(element).addClass('active');
               var index = $(this).attr('data-value');
-              $(index).addClass('active');
               Drupal.getCovers(index);
             });
           });
