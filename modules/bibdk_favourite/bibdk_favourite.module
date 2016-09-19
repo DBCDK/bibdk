@@ -285,6 +285,7 @@ function bibdk_favourite_set_userdata($form, &$form_state) {
     'customId',
     'pincode',
     'userName',
+    'userDateOfBirth',
     'userAddress',
     'userMail',
     'userTelephone',
