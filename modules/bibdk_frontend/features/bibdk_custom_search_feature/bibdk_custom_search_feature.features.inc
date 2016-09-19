@@ -4696,6 +4696,18 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option = new stdClass();
   $option->disabled = FALSE; /* Edit this to true to make a default option disabled initially */
   $option->api_version = 1;
+  $option->o_uuid = '76df51ae-4d8f-46df-be9a-ff6d05d9f02c';
+  $option->v_uuid = 'e23b14bf-2112-19c4-41a7-64c531a76301';
+  $option->sort = 10;
+  $option->label = 'noder';
+  $option->value = 'term.type="node" or term.workType="sheetmusic"';
+  $option->expand = '0';
+  $option->is_disabled = FALSE;
+  $export['76df51ae-4d8f-46df-be9a-ff6d05d9f02c'] = $option;
+
+  $option = new stdClass();
+  $option->disabled = FALSE; /* Edit this to true to make a default option disabled initially */
+  $option->api_version = 1;
   $option->o_uuid = '7725de77-b75d-aaa4-6906-3170a680ac7f';
   $option->v_uuid = '95788824-6d40-ebd4-8912-ce2194f48d62';
   $option->sort = -93;
@@ -8016,18 +8028,6 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->expand = '0';
   $option->is_disabled = FALSE;
   $export['fc2162ad-9939-f554-41ca-693e2b4f5cd4'] = $option;
-
-  $option = new stdClass();
-  $option->disabled = FALSE; /* Edit this to true to make a default option disabled initially */
-  $option->api_version = 1;
-  $option->o_uuid = 'fc46b70c-b228-448b-b8b9-4d3c831712b6';
-  $option->v_uuid = 'e23b14bf-2112-19c4-41a7-64c531a76301';
-  $option->sort = 0;
-  $option->label = 'noder';
-  $option->value = 'term.type="node" or term.workType="sheetmusic"';
-  $option->expand = '2dfa5ad4-131f-4fb8-881f-3607e4e1d4d1';
-  $option->is_disabled = FALSE;
-  $export['fc46b70c-b228-448b-b8b9-4d3c831712b6'] = $option;
 
   $option = new stdClass();
   $option->disabled = FALSE; /* Edit this to true to make a default option disabled initially */
