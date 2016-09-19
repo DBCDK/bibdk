@@ -21,7 +21,7 @@ libraries[ckeditor][download][url] = http://download.cksource.com/CKEditor/CKEdi
 projects[bibdk_theme][type] = theme
 projects[bibdk_theme][download][type] = git
 projects[bibdk_theme][download][url] = git@github.com:DBCDK/bibdk_theme.git
-projects[bibdk_theme][download][tag] = 7.x-0.91
+projects[bibdk_theme][download][tag] = 7.x-0.92
 
 
 ; --- Bibliotek.dk versions of Ding2 modules ---
@@ -79,7 +79,7 @@ projects[ting-client][download][tag] = 7.x-2.34
 projects[ting_agency][type] = module
 projects[ting_agency][download][type] = git
 projects[ting_agency][download][url] = git@github.com:DBCDK/ting_agency.git
-projects[ting_agency][download][tag] = 7.x-0.41
+projects[ting_agency][download][tag] = 7.x-0.42
 
 projects[ting_infomedia][type] = module
 projects[ting_infomedia][download][type] = git
