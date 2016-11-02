@@ -58,7 +58,7 @@
 
     Drupal.behaviors.userstatus = {
         attach: function(context) {
-            $('.form-select', context).change(function() {
+            $('.openuserstatus-form-select-pickup-agency', context).change(function() {
                 var element = $(this);
                 Drupal.deactivateSelects();
                 Drupal.addThrobber(element);
