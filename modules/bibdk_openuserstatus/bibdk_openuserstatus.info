@@ -20,4 +20,8 @@ files[] = test/bibdk_openuserstatus_cancel_reservation.test
 files[] = test/bibdk_openuserstatus_unittest.test
 files[] = test/bibdk_openuserstatus_form.test
 
+scripts[] = js/bibdk_openuserstatus.js
+scripts[] = js/bibdk_openuserstatus_ajax.js
+scripts[] = js/getOpenUserStatus.js
+
 configure = admin/config/user-interface/bibdk_openuserstatus
