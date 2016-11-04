@@ -74,12 +74,12 @@ projects[ding_webtrends_2014][download][tag] = 7.x-0.3
 projects[ting-client][type] = module
 projects[ting-client][download][type] = git
 projects[ting-client][download][url] = git@github.com:DBCDK/ting-client.git
-projects[ting-client][download][tag] = 7.x-2.35
+projects[ting-client][download][tag] = 7.x-2.36
 
 projects[ting_agency][type] = module
 projects[ting_agency][download][type] = git
 projects[ting_agency][download][url] = git@github.com:DBCDK/ting_agency.git
-projects[ting_agency][download][tag] = 7.x-0.42
+projects[ting_agency][download][tag] = 7.x-0.43
 
 projects[ting_infomedia][type] = module
 projects[ting_infomedia][download][type] = git
@@ -89,7 +89,7 @@ projects[ting_infomedia][download][tag] = 7.x-1.30
 projects[ting_openformat][type] = module
 projects[ting_openformat][download][type] = git
 projects[ting_openformat][download][url] = git@github.com:DBCDK/ting_openformat.git
-projects[ting_openformat][download][tag] = 7.x-0.77
+projects[ting_openformat][download][tag] = 7.x-0.78
 
 projects[ting_openuserstatus][type] = module
 projects[ting_openuserstatus][download][type] = git
