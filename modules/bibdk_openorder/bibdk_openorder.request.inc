@@ -35,6 +35,7 @@ class bibdk_openorder extends TingClientRequest {
   protected $pagination;
   protected $pickUpAgencySubdivision;
   protected $placeOfPublication;
+  protected $placeOnHold;
   protected $publicationDate;
   protected $publicationDateOfComponent;
   protected $publisher;
@@ -225,6 +226,14 @@ class bibdk_openorder extends TingClientRequest {
 
   public function setPlaceOfPublication($placeOfPublication) {
     $this->placeOfPublication = $placeOfPublication;
+  }
+
+  public function getplaceOnHold() {
+    return $this->placeOnHold;
+  }
+
+  public function setplaceOnHold($placeOnHold) {
+    $this->placeOnHold = $placeOnHold;
   }
 
   public function getPublicationDate() {
