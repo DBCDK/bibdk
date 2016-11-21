@@ -29,7 +29,7 @@ function bibdk_saou_field_formatter_info() {
 function bibdk_saou_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
   $element = array();
   foreach ($items as $delta => $item) {
-    // check if entity has fields with restricted access 
+    // check if entity has fields with restricted access
     if ($entity->getRestrictedUse() === 'restrictedAccess' ) {
       // Check for extended use
       $link = $entity->getRestrictedExtendedUse();
@@ -38,6 +38,8 @@ function bibdk_saou_field_formatter_view($entity_type, $entity, $field, $instanc
         if ($entity->getRestrictedUse() === 'restrictedAccess' && $entity->getRequestMethod() == 'link') {
           $link = bibdk_soau_field_get_link($entity);
         }
+      } else {
+        $link = bibdk_soau_field_get_link($entity);
       }
       $element[$delta] = $link;
       $element['#attached']['js'][] = drupal_get_path('module', 'bibdk_saou') . '/js/bibdk_saou.js';
