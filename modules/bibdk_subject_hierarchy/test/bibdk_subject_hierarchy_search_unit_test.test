@@ -109,7 +109,7 @@ class BibdkSubjectHierarchySearchUnitTestCase extends DrupalUnitTestCase {
     $expected_result = array(
       '#theme' => 'link',
       '#text' => 'test_5 level_2',
-      '#path' => 'search/',
+      '#path' => 'search/work',
       '#options' => array(
         'attributes' => array(
           'class' => array(),
@@ -142,6 +142,9 @@ class BibdkSubjectHierarchySearchUnitTestCase extends DrupalUnitTestCase {
       ),
     );
     $this->assertEqual($result, $expected_result, 'correct item is extracted with index url');
+
+    debug(print_r($result,1));
+    debug(print_r($expected_result,1));
 
     // invalid base index
     $result = _get_bibdk_subject_hierarchy_searchresult_item($hierarchy, '4,0', 'testpath');

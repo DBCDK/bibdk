@@ -94,13 +94,6 @@
       <hjaelpetekst></hjaelpetekst>
       <visundermenu>1</visundermenu>
       <term>
-        <ord>Homoseksualitet - b&#248;sser og lesbiske</ord>
-        <ccl>dk=30.1776 eller df=homoseksualitet eller df=b&#248;sser eller df=lesbiske</ccl>
-        <kommentar>109 poster - alle aspeker</kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
         <ord>Dating - netdating</ord>
         <ccl>df=dating eller df=netdating eller df=kontaktannoncer</ccl>
         <kommentar>14 bogposter</kommentar>
@@ -108,16 +101,23 @@
         <visundermenu>1</visundermenu>
       </term>
       <term>
-        <ord>Incest</ord>
-        <ccl>em=incest ikke dk=sk</ccl>
-        <kommentar>79 poster -alle aspekter + 99.4</kommentar>
+        <ord>Seksuelle overgreb og sexchikane</ord>
+        <ccl>(em=sexchikane eller em=seksuelle overgreb) ikke incest ikke dk=8?</ccl>
+        <kommentar></kommentar>
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
       </term>
       <term>
-        <ord>Seksuelle overgreb og sexchikane</ord>
-        <ccl>(em=sexchikane eller em=seksuelle overgreb) ikke incest ikke dk=8?</ccl>
-        <kommentar></kommentar>
+        <ord>Homoseksualitet - b&#248;sser og lesbiske</ord>
+        <ccl>dk=30.1776 eller df=homoseksualitet eller df=b&#248;sser eller df=lesbiske</ccl>
+        <kommentar>109 poster - alle aspeker</kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Incest</ord>
+        <ccl>em=incest ikke dk=sk</ccl>
+        <kommentar>79 poster -alle aspekter + 99.4</kommentar>
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
       </term>
@@ -808,13 +808,6 @@
         </term>
       </term>
       <term>
-        <ord>Velg&#248;renhed</ord>
-        <ccl>em=velg&#248;renhed</ccl>
-        <kommentar></kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
         <ord>&#198;ldre</ord>
         <ccl>dk=38.6 og (em=&#230;ldrepolitik eller em=&#230;ldrepleje eller em=&#230;ldreforsorg)</ccl>
         <kommentar>177 poster</kommentar>
@@ -855,6 +848,13 @@
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
+      </term>
+      <term>
+        <ord>Velg&#248;renhed</ord>
+        <ccl>em=velg&#248;renhed</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
       </term>
       <term>
         <ord>Alkoholikere og narkomaner</ord>
@@ -1214,6 +1214,13 @@
     <kommentar>Lidt mere</kommentar>
     <hjaelpetekst></hjaelpetekst>
     <visundermenu>1</visundermenu>
+    <term>
+      <ord>Retsmedicin</ord>
+      <ccl>dk=61.42 og em=retsmedicin</ccl>
+      <kommentar></kommentar>
+      <hjaelpetekst></hjaelpetekst>
+      <visundermenu>1</visundermenu>
+    </term>
     <term>
       <ord>Graviditet og f&#248;dsel</ord>
       <ccl>(df=graviditet eller df=f&#248;dsel) og ok=61.?</ccl>
@@ -1725,6 +1732,328 @@
         </term>
       </term>
       <term>
+        <ord>Sygdomme i dele af kroppen</ord>
+        <ccl></ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>0</visundermenu>
+        <term>
+          <ord>Lungesygdomme</ord>
+          <ccl>df=lungesygdomme</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+          <term>
+            <ord>Bronkitis og astma</ord>
+            <ccl>cl=61.62 og (df=astma eller df=bronkitis)</ccl>
+            <kommentar></kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>KOL (Kronisk Obstruktiv Lungesygdom)</ord>
+            <ccl>cl=61.62 og (ti=kol eller em=kronisk obstruktiv lungesygdom)</ccl>
+            <kommentar></kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+        </term>
+        <term>
+          <ord>Hjerte-karsygdomme</ord>
+          <ccl>hjerte-karsygdom? og ok=61.625</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+          <term>
+            <ord>Blod</ord>
+            <ccl>ok=61.613</ccl>
+            <kommentar>60 poster</kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>Blodpropper og kolesterol</ord>
+            <ccl>ok=61.625 og (em=(blodprop* eller kolesterol* eller *kolesterol) eller ti=(*blodprop eller *trombose eller *thrombosis eller trombos* eller thrombos* eller kolesterol* eller cholesterol* eller *isk&#230;mi eller ischaemia))</ccl>
+            <kommentar>40 poster</kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>Forh&#248;jet blodtryk</ord>
+            <ccl>ok=61.625 og (em=forh&#248;jet blodtryk eller ti=(*blodtryk eller blodtryk* eller hypertens*))</ccl>
+            <kommentar>49 poster</kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>Hjerteb&#248;rn</ord>
+            <ccl>dk=(61.625 eller sk eller 99.4) og (em=hjertefejl eller em=(hjertesygdomme og b&#248;rn) eller ti=(b&#248;rn og hjerte*))</ccl>
+            <kommentar>13 poster</kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>Hjertekirurgi</ord>
+            <ccl>dk=61.663 og (em=hjerte* eller ti=(hjerte* eller cardi* eller aort*))</ccl>
+            <kommentar>bare 11 bogposter</kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>Hjertesygdomme</ord>
+            <ccl>df=hjertesygdomme</ccl>
+            <kommentar>73 poster</kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+        </term>
+        <term>
+          <ord>Hoved, hjerne og nerver</ord>
+          <ccl>dk=(61.64 eller 61.641) og (df=neurologi eller df=hjernen)</ccl>
+          <kommentar>70 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+          <term>
+            <ord>Alzheimer og demens</ord>
+            <ccl>ok=61? og (em=(alzheimer? eller demens eller demente) eller ti=(alzheimer eller demens))</ccl>
+            <kommentar>64 poster</kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>Hjernebl&#248;dning - apopleksi</ord>
+            <ccl>df=(slagtilf&#230;lde eller hjernebl&#248;dning eller apopleksi)</ccl>
+            <kommentar>28 poster</kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>Parkinson</ord>
+            <ccl>em=parkinson*</ccl>
+            <kommentar>28 poster</kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>Sclerose</ord>
+            <ccl>em=sclerose</ccl>
+            <kommentar>44 poster</kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>Epilepsi</ord>
+            <ccl>df=epilepsi og cl=61.641</ccl>
+            <kommentar></kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>Hovedpine og migr&#230;ne</ord>
+            <ccl>em=(hovedpine eller migr&#230;ne)</ccl>
+            <kommentar></kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>Kronisk tr&#230;thedssyndrom</ord>
+            <ccl>df=kronisk tr&#230;thedssyndrom</ccl>
+            <kommentar></kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>Tourettes syndrom</ord>
+            <ccl>em=Tourettes syndrom</ccl>
+            <kommentar></kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+        </term>
+        <term>
+          <ord>Hudsygdomme</ord>
+          <ccl>ok=(61.69 eller 61.602) og (em=hud* eller ti=hud*)</ccl>
+          <kommentar>60 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+          <term>
+            <ord>Eksem</ord>
+            <ccl>df=eksem eller ti=(eksem* eller ecsem* eller udsl&#230;t) ikke eksemp*</ccl>
+            <kommentar>26 poster</kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>Psoriasis</ord>
+            <ccl>em=psoriasis* eller ti=psoriasis*</ccl>
+            <kommentar>35 poster</kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+        </term>
+        <term>
+          <ord>Knogler, led og ryg</ord>
+          <ccl>ok=61.65</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+          <term>
+            <ord>Knoglesygdomme</ord>
+            <ccl>dk=61.65 og (knogle* eller osteo*)</ccl>
+            <kommentar>64 poster mest om knoglesk&#248;rhed</kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+            <term>
+              <ord>Knoglesk&#248;rhed</ord>
+              <ccl>df=knoglesk&#248;rhed</ccl>
+              <kommentar></kommentar>
+              <hjaelpetekst></hjaelpetekst>
+              <visundermenu>1</visundermenu>
+            </term>
+          </term>
+          <term>
+            <ord>Ondt i ryggen</ord>
+            <ccl>dk=61.65 og ryg*</ccl>
+            <kommentar>89 poster</kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>Gigt og ledsygdomme</ord>
+            <ccl>ok=61.65 og (em=(?gigt eller ledsygdomme) eller ti=(*gigt eller gigt* eller led*))</ccl>
+            <kommentar>85 poster</kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>Fibromyalgi</ord>
+            <ccl>df=fibromyalgi</ccl>
+            <kommentar></kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+        </term>
+        <term>
+          <ord>Nyrer og urinveje</ord>
+          <ccl>ok=61.617  og (nyre* eller urinvej*)</ccl>
+          <kommentar>53 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+          <term>
+            <ord>Inkontinens</ord>
+            <ccl>dk=61.617 og (em=ufrivillig vandladning eller ti=(ufrivillig* eller inkontnen* eller urininkontinen*))</ccl>
+            <kommentar>37 poster</kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>Prostatasygdomme</ord>
+            <ccl>dk=61.617 og (prostat* eller bl&#230;rehals*)</ccl>
+            <kommentar>18 poster</kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+        </term>
+        <term>
+          <ord>Stofskifte og ford&#248;jelse</ord>
+          <ccl></ccl>
+          <kommentar>Ingen ccl laves</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+          <term>
+            <ord>Diabetes</ord>
+            <ccl>(em=diabetes og ok=61.615) ikke (mad eller di&#230;t)</ccl>
+            <kommentar>55 poster</kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+            <term>
+              <ord>Mad for diabetikere</ord>
+              <ccl>em=diabetes og (mad eller di&#230;t) ikke dk=sk</ccl>
+              <kommentar>61 poster</kommentar>
+              <hjaelpetekst></hjaelpetekst>
+              <visundermenu>1</visundermenu>
+            </term>
+          </term>
+          <term>
+            <ord>Leversygdomme</ord>
+            <ccl>dk=61.63 og (levers* eller hepa* eller leveren)</ccl>
+            <kommentar>25 poster</kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>Sygdomme i mave-tarmsystemet</ord>
+            <ccl>dk=61.63 og (mave* eller tarm* eller *tarmen)</ccl>
+            <kommentar>53 poster</kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>C&#248;liaki (glutenallergi)</ord>
+            <ccl>em=c&#248;liaki og dk=61.615</ccl>
+            <kommentar></kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+            <term>
+              <ord>Glutenfri kost</ord>
+              <ccl>em=glutenfri kost og dk=64.14</ccl>
+              <kommentar></kommentar>
+              <hjaelpetekst></hjaelpetekst>
+              <visundermenu>1</visundermenu>
+            </term>
+          </term>
+          <term>
+            <ord>Lavt blodsukker</ord>
+            <ccl>em=lavt blodsukker</ccl>
+            <kommentar></kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+        </term>
+        <term>
+          <ord>&#216;jensygdomme</ord>
+          <ccl>ok=61.67</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+          <term>
+            <ord>St&#230;r</ord>
+            <ccl>(em=st&#230;r* eller ti=(st&#230;r* eller glau* eller cataract* eller amau*) og ok=61.67)</ccl>
+            <kommentar></kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+        </term>
+        <term>
+          <ord>&#216;re-, n&#230;se- og halssygdomme</ord>
+          <ccl></ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+          <term>
+            <ord>Fork&#248;lelse og influenza</ord>
+            <ccl>em=(influenza* eller fork&#248;lelse*) eller (dk=(61.612 eller 61.62 eller 61.675) og (fork&#248;lelse* eller influenza*))</ccl>
+            <kommentar></kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>Tinnitus</ord>
+            <ccl>em=tinnitus</ccl>
+            <kommentar></kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>Mellem&#248;rebet&#230;ndelse</ord>
+            <ccl>(em=mellem&#248;re* eller ti=(mellem&#248;re* eller otit*)) og dk=61.675</ccl>
+            <kommentar></kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+        </term>
+      </term>
+      <term>
         <ord>Allergi</ord>
         <ccl>ok=61.602 og df=allergi</ccl>
         <kommentar>77 poster</kommentar>
@@ -1743,6 +2072,90 @@
           <kommentar>26 poster</kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
+        </term>
+      </term>
+      <term>
+        <ord>Sygdomme hos m&#230;nd, kvinder, b&#248;rn og &#230;ldre</ord>
+        <ccl></ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+        <term>
+          <ord>Alderdommens sygdomme</ord>
+          <ccl>ok=61.6018</ccl>
+          <kommentar>42 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+          <term>
+            <ord>Demens</ord>
+            <ccl>df=demens og em=(&#230;ldre eller senil?)</ccl>
+            <kommentar></kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>Knoglesk&#248;rhed</ord>
+            <ccl>df=knoglesk&#248;rhed</ccl>
+            <kommentar>30 poster</kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>Slidgigt</ord>
+            <ccl>dk=61.65 og em=*gigt ikke (b&#248;rn eller ung*)</ccl>
+            <kommentar>47 poster</kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+        </term>
+        <term>
+          <ord>B&#248;rns sygdomme</ord>
+          <ccl>df=b&#248;rnesygdomme eller df=(b&#248;rn og sygdomme) ikke em=psykiske sygdomme</ccl>
+          <kommentar>46</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Kvindesygdomme</ord>
+          <ccl>(dk=61.68 og em=(gyn&#230;kologi eller kvindesygdomme)) eller (df=kvinder og df=sygdomme)</ccl>
+          <kommentar>51</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+          <term>
+            <ord>Brystkr&#230;ft</ord>
+            <ccl>df=brystkr&#230;ft</ccl>
+            <kommentar>29 poster</kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>Kr&#230;ft i livmoder og &#230;ggestokke</ord>
+            <ccl>dk=61.68 og (em=(?kr&#230;ft ikke bryst?) eller ti=(?kr&#230;ft ikke bryst?))</ccl>
+            <kommentar></kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+        </term>
+        <term>
+          <ord>Mandesygdomme</ord>
+          <ccl>mandesygdomme eller (df=m&#230;nd og df=sygdomme)</ccl>
+          <kommentar>16</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+          <term>
+            <ord>Impotens</ord>
+            <ccl>em=impotens</ccl>
+            <kommentar></kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>Prostatasygdomme</ord>
+            <ccl>dk=61.617 og (prostat* eller bl&#230;rehals*)</ccl>
+            <kommentar>18 poster</kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
         </term>
       </term>
       <term>
@@ -1782,6 +2195,20 @@
         <term>
           <ord>Pest og kolera</ord>
           <ccl>df=kolera eller df=pest</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+      </term>
+      <term>
+        <ord>Psykosomatiske sygdomme - Funktionelle lidelser</ord>
+        <ccl>df=psykosomatiske sygdomme eller df=funktionelle lidelser</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+        <term>
+          <ord>Hypokondri</ord>
+          <ccl>em=hypokondri</ccl>
           <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
@@ -1940,6 +2367,13 @@
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
           <term>
+            <ord>ADHD</ord>
+            <ccl>em=ADHD</ccl>
+            <kommentar></kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
             <ord>Autisme og Asperger</ord>
             <ccl>ok=(13* eller 61.64*) og df=(autisme* eller aspergers)</ccl>
             <kommentar>42 poster</kommentar>
@@ -1954,30 +2388,9 @@
             <visundermenu>1</visundermenu>
           </term>
           <term>
-            <ord>ADHD</ord>
-            <ccl>em=ADHD</ccl>
-            <kommentar></kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-          <term>
             <ord>Downs syndrom</ord>
             <ccl>dk=(13? eller 38? eller 61.64? eller 99.4) og em=(mongol? eller down?)</ccl>
             <kommentar>55 poster</kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-        </term>
-        <term>
-          <ord>Psykosomatiske sygdomme</ord>
-          <ccl>dk=61.609</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-          <term>
-            <ord>Hypokondri</ord>
-            <ccl>em=hypokondri</ccl>
-            <kommentar></kommentar>
             <hjaelpetekst></hjaelpetekst>
             <visundermenu>1</visundermenu>
           </term>
@@ -2025,398 +2438,6 @@
           <visundermenu>1</visundermenu>
         </term>
       </term>
-      <term>
-        <ord>Sygdomme hos m&#230;nd, kvinder, b&#248;rn og &#230;ldre</ord>
-        <ccl></ccl>
-        <kommentar></kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-        <term>
-          <ord>Alderdommens sygdomme</ord>
-          <ccl>ok=61.6018</ccl>
-          <kommentar>42 poster</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-          <term>
-            <ord>Demens</ord>
-            <ccl>df=demens og em=(&#230;ldre eller senil?)</ccl>
-            <kommentar></kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-          <term>
-            <ord>Knoglesk&#248;rhed</ord>
-            <ccl>df=knoglesk&#248;rhed</ccl>
-            <kommentar>30 poster</kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-          <term>
-            <ord>Slidgigt</ord>
-            <ccl>dk=61.65 og em=*gigt ikke (b&#248;rn eller ung*)</ccl>
-            <kommentar>47 poster</kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-        </term>
-        <term>
-          <ord>B&#248;rns sygdomme</ord>
-          <ccl>df=b&#248;rnesygdomme eller df=(b&#248;rn og sygdomme) ikke em=psykiske sygdomme</ccl>
-          <kommentar>46</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>Kvindesygdomme</ord>
-          <ccl>(dk=61.68 og em=(gyn&#230;kologi eller kvindesygdomme)) eller (df=kvinder og df=sygdomme)</ccl>
-          <kommentar>51</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-          <term>
-            <ord>Brystkr&#230;ft</ord>
-            <ccl>df=brystkr&#230;ft</ccl>
-            <kommentar>29 poster</kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-          <term>
-            <ord>Kr&#230;ft i livmoder og &#230;ggestokke</ord>
-            <ccl>dk=61.68 og (em=(?kr&#230;ft ikke bryst?) eller ti=(?kr&#230;ft ikke bryst?))</ccl>
-            <kommentar></kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-        </term>
-        <term>
-          <ord>Mandesygdomme</ord>
-          <ccl>mandesygdomme eller (df=m&#230;nd og df=sygdomme)</ccl>
-          <kommentar>16</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-          <term>
-            <ord>Impotens</ord>
-            <ccl>em=impotens</ccl>
-            <kommentar></kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-          <term>
-            <ord>Prostatasygdomme</ord>
-            <ccl>dk=61.617 og (prostat* eller bl&#230;rehals*)</ccl>
-            <kommentar>18 poster</kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-        </term>
-      </term>
-      <term>
-        <ord>Sygdomme i dele af kroppen</ord>
-        <ccl></ccl>
-        <kommentar></kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>0</visundermenu>
-        <term>
-          <ord>Lungesygdomme</ord>
-          <ccl>df=lungesygdomme</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-          <term>
-            <ord>Bronkitis og astma</ord>
-            <ccl>cl=61.62 og (df=astma eller df=bronkitis)</ccl>
-            <kommentar></kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-          <term>
-            <ord>KOL (Kronisk Obstruktiv Lungesygdom)</ord>
-            <ccl>cl=61.62 og (ti=kol eller em=kronisk obstruktiv lungesygdom)</ccl>
-            <kommentar></kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-        </term>
-        <term>
-          <ord>Hjerte-karsygdomme</ord>
-          <ccl>hjerte-karsygdom? og ok=61.625</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-          <term>
-            <ord>Blod</ord>
-            <ccl>ok=61.613</ccl>
-            <kommentar>60 poster</kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-          <term>
-            <ord>Blodpropper og kolesterol</ord>
-            <ccl>ok=61.625 og (em=(blodprop* eller kolesterol* eller *kolesterol) eller ti=(*blodprop eller *trombose eller *thrombosis eller trombos* eller thrombos* eller kolesterol* eller cholesterol* eller *isk&#230;mi eller ischaemia))</ccl>
-            <kommentar>40 poster</kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-          <term>
-            <ord>Forh&#248;jet blodtryk</ord>
-            <ccl>ok=61.625 og (em=forh&#248;jet blodtryk eller ti=(*blodtryk eller blodtryk* eller hypertens*))</ccl>
-            <kommentar>49 poster</kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-          <term>
-            <ord>Hjerteb&#248;rn</ord>
-            <ccl>dk=(61.625 eller sk eller 99.4) og (em=hjertefejl eller em=(hjertesygdomme og b&#248;rn) eller ti=(b&#248;rn og hjerte*))</ccl>
-            <kommentar>13 poster</kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-          <term>
-            <ord>Hjertekirurgi</ord>
-            <ccl>dk=61.663 og (em=hjerte* eller ti=(hjerte* eller cardi* eller aort*))</ccl>
-            <kommentar>bare 11 bogposter</kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-          <term>
-            <ord>Hjertesygdomme</ord>
-            <ccl>df=hjertesygdomme</ccl>
-            <kommentar>73 poster</kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-        </term>
-        <term>
-          <ord>Hoved, hjerne og nerver</ord>
-          <ccl>dk=(61.64 eller 61.641) og (df=neurologi eller df=hjernen)</ccl>
-          <kommentar>70 poster</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-          <term>
-            <ord>Alzheimer og demens</ord>
-            <ccl>ok=61? og (em=(alzheimer? eller demens eller demente) eller ti=(alzheimer eller demens))</ccl>
-            <kommentar>64 poster</kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-          <term>
-            <ord>Hjernebl&#248;dning - apopleksi</ord>
-            <ccl>df=(slagtilf&#230;lde eller hjernebl&#248;dning eller apopleksi)</ccl>
-            <kommentar>28 poster</kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-          <term>
-            <ord>Parkinson</ord>
-            <ccl>em=parkinson*</ccl>
-            <kommentar>28 poster</kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-          <term>
-            <ord>Sklerose</ord>
-            <ccl>em=sklerose</ccl>
-            <kommentar>44 poster</kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-          <term>
-            <ord>Epilepsi</ord>
-            <ccl>df=epilepsi og cl=61.641</ccl>
-            <kommentar></kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-          <term>
-            <ord>Hovedpine og migr&#230;ne</ord>
-            <ccl>em=(hovedpine eller migr&#230;ne)</ccl>
-            <kommentar></kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-          <term>
-            <ord>Tourettes syndrom</ord>
-            <ccl>em=Tourettes syndrom</ccl>
-            <kommentar></kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-        </term>
-        <term>
-          <ord>Hudsygdomme</ord>
-          <ccl>ok=(61.69 eller 61.602) og (em=hud* eller ti=hud*)</ccl>
-          <kommentar>60 poster</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-          <term>
-            <ord>Eksem</ord>
-            <ccl>df=eksem eller ti=(eksem* eller ecsem* eller udsl&#230;t) ikke eksemp*</ccl>
-            <kommentar>26 poster</kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-          <term>
-            <ord>Psoriasis</ord>
-            <ccl>em=psoriasis* eller ti=psoriasis*</ccl>
-            <kommentar>35 poster</kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-        </term>
-        <term>
-          <ord>Knogler, led og ryg</ord>
-          <ccl>ok=61.65</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-          <term>
-            <ord>Gigt og ledsygdomme</ord>
-            <ccl>ok=61.65 og (em=(?gigt eller ledsygdomme) eller ti=(*gigt eller gigt* eller led*))</ccl>
-            <kommentar>85 poster</kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-          <term>
-            <ord>Knoglesygdomme</ord>
-            <ccl>dk=61.65 og (knogle* eller osteo*)</ccl>
-            <kommentar>64 poster mest om knoglesk&#248;rhed</kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-            <term>
-              <ord>Knoglesk&#248;rhed</ord>
-              <ccl>df=knoglesk&#248;rhed</ccl>
-              <kommentar></kommentar>
-              <hjaelpetekst></hjaelpetekst>
-              <visundermenu>1</visundermenu>
-            </term>
-          </term>
-          <term>
-            <ord>Ondt i ryggen</ord>
-            <ccl>dk=61.65 og ryg*</ccl>
-            <kommentar>89 poster</kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-        </term>
-        <term>
-          <ord>Nyrer og urinveje</ord>
-          <ccl>ok=61.617  og (nyre* eller urinvej*)</ccl>
-          <kommentar>53 poster</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-          <term>
-            <ord>Inkontinens</ord>
-            <ccl>dk=61.617 og (em=ufrivillig vandladning eller ti=(ufrivillig* eller inkontnen* eller urininkontinen*))</ccl>
-            <kommentar>37 poster</kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-          <term>
-            <ord>Prostatasygdomme</ord>
-            <ccl>dk=61.617 og (prostat* eller bl&#230;rehals*)</ccl>
-            <kommentar>18 poster</kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-        </term>
-        <term>
-          <ord>Stofskifte og ford&#248;jelse</ord>
-          <ccl></ccl>
-          <kommentar>Ingen ccl laves</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-          <term>
-            <ord>Diabetes</ord>
-            <ccl>(em=diabetes og ok=61.615) ikke (mad eller di&#230;t)</ccl>
-            <kommentar>55 poster</kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-            <term>
-              <ord>Mad for diabetikere</ord>
-              <ccl>em=diabetes og (mad eller di&#230;t) ikke dk=sk</ccl>
-              <kommentar>61 poster</kommentar>
-              <hjaelpetekst></hjaelpetekst>
-              <visundermenu>1</visundermenu>
-            </term>
-          </term>
-          <term>
-            <ord>Leversygdomme</ord>
-            <ccl>dk=61.63 og (levers* eller hepa* eller leveren)</ccl>
-            <kommentar>25 poster</kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-          <term>
-            <ord>Sygdomme i mave-tarmsystemet</ord>
-            <ccl>dk=61.63 og (mave* eller tarm* eller *tarmen)</ccl>
-            <kommentar>53 poster</kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-          <term>
-            <ord>C&#248;liaki (glutenallergi)</ord>
-            <ccl>em=c&#248;liaki og dk=61.615</ccl>
-            <kommentar></kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-            <term>
-              <ord>Glutenfri kost</ord>
-              <ccl>em=glutenfri kost og dk=64.14</ccl>
-              <kommentar></kommentar>
-              <hjaelpetekst></hjaelpetekst>
-              <visundermenu>1</visundermenu>
-            </term>
-          </term>
-          <term>
-            <ord>Lavt blodsukker</ord>
-            <ccl>em=lavt blodsukker</ccl>
-            <kommentar></kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-        </term>
-        <term>
-          <ord>&#216;jensygdomme</ord>
-          <ccl>ok=61.67</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-          <term>
-            <ord>St&#230;r</ord>
-            <ccl>(em=st&#230;r* eller ti=(st&#230;r* eller glau* eller cataract* eller amau*) og ok=61.67)</ccl>
-            <kommentar></kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-        </term>
-        <term>
-          <ord>&#216;re-, n&#230;se- og halssygdomme</ord>
-          <ccl></ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-          <term>
-            <ord>Fork&#248;lelse og influenza</ord>
-            <ccl>em=(influenza* eller fork&#248;lelse*) eller (dk=(61.612 eller 61.62 eller 61.675) og (fork&#248;lelse* eller influenza*))</ccl>
-            <kommentar></kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-          <term>
-            <ord>Tinnitus</ord>
-            <ccl>em=tinnitus</ccl>
-            <kommentar></kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-          <term>
-            <ord>Mellem&#248;rebet&#230;ndelse</ord>
-            <ccl>(em=mellem&#248;re* eller ti=(mellem&#248;re* eller otit*)) og dk=61.675</ccl>
-            <kommentar></kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-        </term>
-      </term>
     </term>
     <term>
       <ord>Behandling</ord>
@@ -2437,6 +2458,13 @@
         <kommentar>43 poster</kommentar>
         <hjaelpetekst>S&#248;g ogs&#229; under den specifikke sygdom</hjaelpetekst>
         <visundermenu>1</visundermenu>
+        <term>
+          <ord>Aromaterapi</ord>
+          <ccl>em=aromaterapi</ccl>
+          <kommentar>17 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
         <term>
           <ord>Healing</ord>
           <ccl>em=healing eller ti=healing* og ok=61.54*</ccl>
@@ -2595,6 +2623,13 @@
           <ord>Mental tr&#230;ning og selvudvikling</ord>
           <ccl>em=(mental tr&#230;ning eller selvudvikling) og ok=61.36</ccl>
           <kommentar>137 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>NLP - neurolingvistisk programmering</ord>
+          <ccl>em=neurolingvistisk programmering og dk=61.642</ccl>
+          <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
@@ -2970,16 +3005,16 @@
           <visundermenu>1</visundermenu>
         </term>
         <term>
-          <ord>Neurofysiologi og hjerneforskning</ord>
-          <ccl>(em=neurofysiologi eller em=hjerneforskning) ikke dk=sk</ccl>
-          <kommentar></kommentar>
+          <ord>S&#248;vn</ord>
+          <ccl>em=s&#248;vn* ikke dk=(sk eller 99.4)</ccl>
+          <kommentar>34 poster</kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
         <term>
-          <ord>S&#248;vn</ord>
-          <ccl>em=s&#248;vn* ikke dk=(sk eller 99.4)</ccl>
-          <kommentar>34 poster</kommentar>
+          <ord>Neurofysiologi og hjerneforskning</ord>
+          <ccl>(em=neurofysiologi eller em=hjerneforskning) ikke dk=sk</ccl>
+          <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
@@ -3454,76 +3489,6 @@
       <hjaelpetekst></hjaelpetekst>
       <visundermenu>1</visundermenu>
       <term>
-        <ord>Boligen</ord>
-        <ccl>ok=69.2 og em=huse</ccl>
-        <kommentar>40 poster, heriblandt 8 g&#248;r-det-selv-b&#248;ger og lidt b&#248;rnefagb&#248;ger (skal de sorteres fra?)</kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-        <term>
-          <ord>G&#248;r-det-selv</ord>
-          <ccl>em=g&#248;r-det-selv og dk=(69.2? eller 68?)</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>M&#248;belrenovering</ord>
-          <ccl>ke=m&#248;bler og em=(reparation eller restaurering)</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>Boligindretning</ord>
-          <ccl>ke=boligindretning og ok=64.5</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>Badev&#230;relser</ord>
-          <ccl>em=badev&#230;relser og dk=(69? eller 64?)</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>B&#248;rnev&#230;relser</ord>
-          <ccl>(em=boligindretning eller em=indretning) og em=b&#248;rnev&#230;relser</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>K&#248;kkener</ord>
-          <ccl>em=k&#248;kkener og dk=(64? eller 69?)</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>Feng shui</ord>
-          <ccl>em=feng shui</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>Reng&#248;ring</ord>
-          <ccl>em=reng&#248;ring og dk=64?</ccl>
-          <kommentar>25 poster</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-      </term>
-      <term>
-        <ord>Boligk&#248;b - boligsalg</ord>
-        <ccl>(df=fast ejendom eller df=ejerboliger) og (df=k&#248;b eller df=salg eller df=ejendomshandel)</ccl>
-        <kommentar></kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
         <ord>Have og planter</ord>
         <ccl>dk=63.5 og ke=(haver eller havebrug)</ccl>
         <kommentar>100 poster</kommentar>
@@ -3642,9 +3607,86 @@
           <visundermenu>1</visundermenu>
         </term>
         <term>
-          <ord>Taghaver og terrasser</ord>
-          <ccl>(em=taghaver eller em=tagterrasser eller terrasser) og dk=63?</ccl>
+          <ord>Taghaver, altaner og terrasser</ord>
+          <ccl>(em=altaner eller em=taghaver eller em=terrasser eller em=tagterrasser) og dk=63?</ccl>
           <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Vinterhaver - udestuer - orangerier</ord>
+          <ccl>em=havestuer eller em= orangerier eller em=vinterhaver</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+      </term>
+      <term>
+        <ord>Boligk&#248;b - boligsalg</ord>
+        <ccl>(df=fast ejendom eller df=ejerboliger) og (df=k&#248;b eller df=salg eller df=ejendomshandel)</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Boligen</ord>
+        <ccl>ok=69.2 og em=huse</ccl>
+        <kommentar>40 poster, heriblandt 8 g&#248;r-det-selv-b&#248;ger og lidt b&#248;rnefagb&#248;ger (skal de sorteres fra?)</kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+        <term>
+          <ord>G&#248;r-det-selv</ord>
+          <ccl>em=g&#248;r-det-selv og dk=(69.2? eller 68?)</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>M&#248;belrenovering</ord>
+          <ccl>ke=m&#248;bler og em=(reparation eller restaurering)</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Boligindretning</ord>
+          <ccl>ke=boligindretning og ok=64.5</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Badev&#230;relser</ord>
+          <ccl>em=badev&#230;relser og dk=(69? eller 64?)</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>B&#248;rnev&#230;relser</ord>
+          <ccl>(em=boligindretning eller em=indretning) og em=b&#248;rnev&#230;relser</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>K&#248;kkener</ord>
+          <ccl>em=k&#248;kkener og dk=(64? eller 69?)</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Feng shui</ord>
+          <ccl>em=feng shui</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Reng&#248;ring</ord>
+          <ccl>em=reng&#248;ring og dk=64?</ccl>
+          <kommentar>25 poster</kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
@@ -3754,15 +3796,15 @@
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
         <term>
-          <ord>Sy til boligen</ord>
-          <ccl>ok=64.61 og (gardin* eller pude* eller sofapude* eller linned* eller senge* eller lampe* eller dug*)</ccl>
+          <ord>Syopskrifter og m&#248;nstre</ord>
+          <ccl>(ke=syning og ke=opskrifter) eller ke=snitm&#248;nstre</ccl>
           <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
         <term>
-          <ord>Syopskrifter og m&#248;nstre</ord>
-          <ccl>(ke=syning og ke=opskrifter) eller ke=snitm&#248;nstre</ccl>
+          <ord>Sy til boligen</ord>
+          <ccl>ok=64.61 og (gardin* eller pude* eller sofapude* eller linned* eller senge* eller lampe* eller dug*)</ccl>
           <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
@@ -3785,6 +3827,13 @@
       <term>
         <ord>V&#230;vning</ord>
         <ccl>ok=64.69</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Makrame og knytning</ord>
+        <ccl>dk=64.653 og (em=knytning eller em=makrame)</ccl>
         <kommentar></kommentar>
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
@@ -4402,13 +4451,6 @@
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
           <term>
-            <ord>Fransk mad</ord>
-            <ccl>dk=64.1? og em=(frankrig eller fransk)</ccl>
-            <kommentar></kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-          <term>
             <ord>Amerikansk mad</ord>
             <ccl>dk=64.1? og em=(usa eller amerika?)</ccl>
             <kommentar></kommentar>
@@ -4451,6 +4493,13 @@
             <visundermenu>1</visundermenu>
           </term>
           <term>
+            <ord>Vietnamesisk mad</ord>
+            <ccl>dk=64.1? og em=vietnam?</ccl>
+            <kommentar></kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
             <ord>Dansk mad</ord>
             <ccl>dk=64.1? og em=danmark</ccl>
             <kommentar></kommentar>
@@ -4458,8 +4507,8 @@
             <visundermenu>1</visundermenu>
           </term>
           <term>
-            <ord>Vietnamesisk mad</ord>
-            <ccl>dk=64.1? og em=vietnam?</ccl>
+            <ord>Fransk mad</ord>
+            <ccl>dk=64.1? og em=(frankrig eller fransk)</ccl>
             <kommentar></kommentar>
             <hjaelpetekst></hjaelpetekst>
             <visundermenu>1</visundermenu>
@@ -4650,7 +4699,7 @@
       </term>
       <term>
         <ord>Sportsfolk</ord>
-        <ccl>dk=99.4 og dk=(79.5* eller 79.6* eller 79.7* eller 79.8* eller 79.93 eler 79.95)</ccl>
+        <ccl>dk=99.4 og dk=(79.5* eller 79.6* eller 79.7* eller 79.8* eller 79.93 eller 79.95)</ccl>
         <kommentar>Biografier og erindringer</kommentar>
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>0</visundermenu>
@@ -4758,6 +4807,13 @@
           <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
+          <term>
+            <ord>Boksere</ord>
+            <ccl>dk=79.621 og em=boksere og em=(erindringer eller biografier)</ccl>
+            <kommentar></kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
         </term>
         <term>
           <ord>Bordtennis</ord>
@@ -4786,6 +4842,20 @@
           <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
+          <term>
+            <ord>Cykelryttere</ord>
+            <ccl>dk=79.66 og em=cykelrytter? og em=(erindringer eller biografier)</ccl>
+            <kommentar></kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>Skriv emne</ord>
+            <ccl></ccl>
+            <kommentar></kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
         </term>
         <term>
           <ord>Dans</ord>
@@ -4821,6 +4891,13 @@
           <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
+          <term>
+            <ord>Fodboldspillere</ord>
+            <ccl>(dk=79.71 eller dk=79.706) og em=fodbold? og em=(erindringer eller biografier) eller dk=99.4 og fodboldspiller?</ccl>
+            <kommentar></kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
         </term>
         <term>
           <ord>Folkedans</ord>
@@ -4856,6 +4933,20 @@
           <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
+          <term>
+            <ord>H&#229;ndboldspillere</ord>
+            <ccl>em=h&#229;ndbold? og em=(erindring? eller biografi?) ikke dk=sk</ccl>
+            <kommentar></kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>Skriv emne</ord>
+            <ccl></ccl>
+            <kommentar></kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
         </term>
         <term>
           <ord>Ishockey</ord>
@@ -4940,6 +5031,13 @@
           <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
+          <term>
+            <ord>Racerk&#248;rere</ord>
+            <ccl>dk=79.86 og em=racerk&#248;rere og em=(erindringer eller biografier)</ccl>
+            <kommentar></kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
         </term>
         <term>
           <ord>Ninjutsu</ord>
@@ -4958,6 +5056,13 @@
         <term>
           <ord>Pilates</ord>
           <ccl>ok=79.59 og em=pilates</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>P&#233;tanque</ord>
+          <ccl>em=p&#233;tanque</ccl>
           <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
@@ -5012,6 +5117,13 @@
           <visundermenu>0</visundermenu>
         </term>
         <term>
+          <ord>Skateboarding</ord>
+          <ccl>df=skateboarding</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
           <ord>Skil&#248;b - alpint</ord>
           <ccl>ok=79.672 og em=alpin?</ccl>
           <kommentar></kommentar>
@@ -5021,6 +5133,13 @@
         <term>
           <ord>Skil&#248;b - langrend</ord>
           <ccl>ok=79.672 og em=langrend</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Skriv emne</ord>
+          <ccl></ccl>
           <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
@@ -5115,6 +5234,13 @@
           <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
+          <term>
+            <ord>Tennisspillere</ord>
+            <ccl>dk=79.73 og em=tennisspillere og em=(erindringer eller biografier)</ccl>
+            <kommentar></kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
         </term>
         <term>
           <ord>Trampolinspring</ord>
@@ -5299,6 +5425,13 @@
           <visundermenu>1</visundermenu>
         </term>
         <term>
+          <ord>B&#248;rn og motorik</ord>
+          <ccl>(df=motorisk udvikling eller df=motorik) og df=b&#248;rn</ccl>
+          <kommentar>100 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
           <ord>Pubertetsb&#248;rn</ord>
           <ccl>(em=pubertet?) og dk=(13.43 eller 37.31 eller 37.2 eller 30.1662 eller 30.1664 eller 61.266)</ccl>
           <kommentar>56 POSTER</kommentar>
@@ -5323,13 +5456,6 @@
           <ord>Sp&#230;db&#248;rn</ord>
           <ccl>df=sp&#230;db&#248;rn og ok=(13.43 eller 37.2 eller 61.39 eller 61.265)</ccl>
           <kommentar>159 poster</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>B&#248;rn og motorik</ord>
-          <ccl>(df=motorisk udvikling eller df=motorik) og df=b&#248;rn</ccl>
-          <kommentar>100 poster</kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
@@ -5657,13 +5783,6 @@
         <visundermenu>1</visundermenu>
       </term>
       <term>
-        <ord>Inklusion i folkeskolen</ord>
-        <ccl>em=(folkeskolen og inklusion) eller em=inkluderende skole</ccl>
-        <kommentar>55 poster</kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
         <ord>Skoleledelse</ord>
         <ccl>(df=skoleledelse eller (df=ledelse og df=folkeskolen)) og ok=(37.33 eller 37.363)</ccl>
         <kommentar>100 poster</kommentar>
@@ -5676,6 +5795,13 @@
         <kommentar>105 poster</kommentar>
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>0</visundermenu>
+      </term>
+      <term>
+        <ord>Inklusion i folkeskolen</ord>
+        <ccl>em=(folkeskolen og inklusion) eller em=inkluderende skole</ccl>
+        <kommentar>55 poster</kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
       </term>
       <term>
         <ord>Rummelighed i folkeskolen</ord>
@@ -5860,6 +5986,13 @@
         <visundermenu>1</visundermenu>
       </term>
       <term>
+        <ord>Motivationspsykologi</ord>
+        <ccl>dk=13.16 og em=motivation?</ccl>
+        <kommentar>90 poster</kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
         <ord>Dr&#248;mmetydning</ord>
         <ccl>df=dr&#248;mme eller df=dr&#248;mmetydning</ccl>
         <kommentar>94</kommentar>
@@ -5884,6 +6017,13 @@
         <ord>Identitet</ord>
         <ccl>em=identitet og dk=13.3</ccl>
         <kommentar>21 hits</kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Narcissisme</ord>
+        <ccl>em=narcissisme ikke dk=sk</ccl>
+        <kommentar>110 poster</kommentar>
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
       </term>
@@ -5958,6 +6098,13 @@
         <visundermenu>1</visundermenu>
       </term>
       <term>
+        <ord>NLP - neurolingvistisk programmering</ord>
+        <ccl>em=neurolingvistisk programmering og dk=13.15</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
         <ord>Sorg</ord>
         <ccl>df="sorg" og dk=(13? eller 61.64? eller 99.4?)</ccl>
         <kommentar>205</kommentar>
@@ -5996,6 +6143,13 @@
         <ord>Socialpsykologi</ord>
         <ccl>df=socialpsykologi og ok=30.13</ccl>
         <kommentar>ca. 40 poster</kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Gruppedynamik</ord>
+        <ccl>em=gruppedynamik og dk=(13? eller 30?)</ccl>
+        <kommentar>26 hits</kommentar>
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
       </term>
@@ -6553,6 +6707,20 @@
         <visundermenu>0</visundermenu>
       </term>
       <term>
+        <ord>&#216;kologi og fysisk planl&#230;gning</ord>
+        <ccl>ok=71.9? og em=&#248;kologi?</ccl>
+        <kommentar>24 poster</kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Christiania</ord>
+        <ccl>ke=christiania</ccl>
+        <kommentar>71 poster</kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>0</visundermenu>
+      </term>
+      <term>
         <ord>Planl&#230;gningsret</ord>
         <ccl>ok=34.26 eller (ok=34.66 og em=planl&#230;gning)</ccl>
         <kommentar>86 poster (mange udgaver af "love")</kommentar>
@@ -6572,13 +6740,6 @@
         <kommentar>50 poster - men igen meget lokalt - sv&#230;rt at afgr&#230;nse det generelle</kommentar>
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
-      </term>
-      <term>
-        <ord>Christiania</ord>
-        <ccl>ke=christiania</ccl>
-        <kommentar>71 poster</kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>0</visundermenu>
       </term>
       <term>
         <ord>Trafikplanl&#230;gning</ord>
@@ -6621,13 +6782,6 @@
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
-      </term>
-      <term>
-        <ord>&#216;kologi og fysisk planl&#230;gning</ord>
-        <ccl>ok=71.9? og em=&#248;kologi?</ccl>
-        <kommentar>24 poster</kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
       </term>
     </term>
     <term>
@@ -7104,6 +7258,13 @@
             <visundermenu>1</visundermenu>
           </term>
           <term>
+            <ord>Hadforbrydelser - hate crimes</ord>
+            <ccl>em=hadforbrydelser ikke dk=sk</ccl>
+            <kommentar></kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
             <ord>Kriminalitet og kriminalsager</ord>
             <ccl>dk=34.31 og em=(krimi? eller tyv? eller forbryd? eller ?forbrydelser eller ?tyveri eller ?kriminalitet eller lov? eller r&#248;v? eller bedrag? eller mord?) ikke dk=99.4 ikke em=ung? ikke em=b&#248;rn? ikke em=kriminalpr&#230;v?</ccl>
             <kommentar></kommentar>
@@ -7111,7 +7272,7 @@
             <visundermenu>1</visundermenu>
           </term>
           <term>
-            <ord>Kvindehandel</ord>
+            <ord>Kvindehandel og trafficking</ord>
             <ccl>em=kvindehandel eller em=trafficking ikke dk=sk</ccl>
             <kommentar></kommentar>
             <hjaelpetekst></hjaelpetekst>
@@ -7132,6 +7293,13 @@
             <visundermenu>1</visundermenu>
           </term>
           <term>
+            <ord>Skatteunddragelse og skattely</ord>
+            <ccl>em=skatteunddragelse ikke dk=sk</ccl>
+            <kommentar></kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
             <ord>Unge</ord>
             <ccl>dk=34.35 eller dk=34.31 eller dk=34.38 og em=ung?</ccl>
             <kommentar></kommentar>
@@ -7141,6 +7309,13 @@
           <term>
             <ord>Vold og overgreb</ord>
             <ccl>(dk=34.31 eller dk=34.38) og em=(vold? eller ?vold eller ?mishandling eller seksu? eller incest?) eller (dk=99.4 og em=vold?)</ccl>
+            <kommentar></kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>Voldt&#230;gt</ord>
+            <ccl>(dk=34.31 eller dk=34.38 eller em=99.4) og em=voldt&#230;gt</ccl>
             <kommentar></kommentar>
             <hjaelpetekst></hjaelpetekst>
             <visundermenu>1</visundermenu>
@@ -7167,8 +7342,8 @@
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
           <term>
-            <ord>Ut&#248;ya-massakren</ord>
-            <ccl>dk=34.38 og em=ut&#248;ya</ccl>
+            <ord>Mafiaen</ord>
+            <ccl>em=mafia ikke dk=sk</ccl>
             <kommentar></kommentar>
             <hjaelpetekst></hjaelpetekst>
             <visundermenu>1</visundermenu>
@@ -7181,16 +7356,30 @@
             <visundermenu>1</visundermenu>
           </term>
           <term>
-            <ord>Mafiaen</ord>
-            <ccl>em=mafia ikke dk=sk</ccl>
+            <ord>Ut&#248;ya-massakren</ord>
+            <ccl>dk=34.38 og em=ut&#248;ya</ccl>
             <kommentar></kommentar>
             <hjaelpetekst></hjaelpetekst>
             <visundermenu>1</visundermenu>
           </term>
         </term>
         <term>
+          <ord>D&#248;dsstraf</ord>
+          <ccl>df=d&#248;dsstraf</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
           <ord>Kriminalpoliti og efterretningstjeneste, PET</ord>
           <ccl>dk=34.33</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Folkemord og folkedrab</ord>
+          <ccl>df=folkemord</ccl>
           <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
@@ -7208,20 +7397,6 @@
             <hjaelpetekst></hjaelpetekst>
             <visundermenu>1</visundermenu>
           </term>
-        </term>
-        <term>
-          <ord>D&#248;dsstraf</ord>
-          <ccl>df=d&#248;dsstraf</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>Folkemord og folkedrab</ord>
-          <ccl>df=folkemord</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
         </term>
       </term>
       <term>
@@ -7244,20 +7419,6 @@
         <kommentar></kommentar>
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
-        <term>
-          <ord>B&#248;rnesoldater</ord>
-          <ccl>em=b&#248;rnesoldater ikke dk=sk</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>Danmarks deltagelse i krigen i Afghanistan</ord>
-          <ccl>em=afghanistan og em=danmark og  (em=krige eller em=danske soldater)</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
         <term>
           <ord>Hjemvendte soldater</ord>
           <ccl>em=hjemvendte soldater ikke dk=sk</ccl>
@@ -7285,6 +7446,13 @@
             <hjaelpetekst></hjaelpetekst>
             <visundermenu>1</visundermenu>
           </term>
+        </term>
+        <term>
+          <ord>Danmarks deltagelse i krigen i Afghanistan</ord>
+          <ccl>em=afghanistan og em=danmark og  (em=krige eller em=danske soldater)</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
         </term>
         <term>
           <ord>Elitesoldater, specialstyrker og fremmedlegion</ord>
@@ -7369,8 +7537,8 @@
             <hjaelpetekst></hjaelpetekst>
             <visundermenu>1</visundermenu>
             <term>
-              <ord>Masse&#248;del&#230;ggelsesv&#229;ben</ord>
-              <ccl>dk=62.634 eller dk=62.67 eller dk=62.634 og (atom? eller kernev? eller masse&#248;del&#230;g?)</ccl>
+              <ord>Masse&#248;del&#230;ggelsesv&#229;ben: atomv&#229;ben</ord>
+              <ccl>dk=62.634 eller dk=62.67 eller dk=62.634 og (atom? eller kernev? eller masse&#248;del&#230;g?) eller em=atomv&#229;ben ikke dk=sk</ccl>
               <kommentar></kommentar>
               <hjaelpetekst></hjaelpetekst>
               <visundermenu>1</visundermenu>
@@ -7387,6 +7555,13 @@
         <term>
           <ord>Milit&#230;re uniformer</ord>
           <ccl>dk=35.508</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>B&#248;rnesoldater</ord>
+          <ccl>em=b&#248;rnesoldater ikke dk=sk</ccl>
           <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
@@ -7630,6 +7805,20 @@
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>0</visundermenu>
         <term>
+          <ord>Imperialisme</ord>
+          <ccl>df=imperialisme</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Liberalisme</ord>
+          <ccl>dk=33? eller dk=32.1? og em=liberalisme ikke dk=sk</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
           <ord>Demokrati</ord>
           <ccl>dk=32.15 og em=(demokra? eller politi? eller ideo? eller liber? eller konser?) eller (dk=32.1 og em=demokrati)</ccl>
           <kommentar></kommentar>
@@ -7681,13 +7870,6 @@
         <term>
           <ord>Radikalisering og ekstremisme</ord>
           <ccl>em=radikalisering og em=ekstremisme ikke dk=sk</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>Imperialisme</ord>
-          <ccl>df=imperialisme</ccl>
           <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
@@ -8205,6 +8387,13 @@
         </term>
       </term>
       <term>
+        <ord>Kapitalisme</ord>
+        <ccl>ldk=32.15 eller dk=33.1 og em=kapitalisne</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
         <ord>National&#248;konomi og samfunds&#248;konomi</ord>
         <ccl>dk=33 eller dk=33.03 og em=(&#248;konomi? eller ?&#248;konomi)</ccl>
         <kommentar></kommentar>
@@ -8358,15 +8547,15 @@
           <visundermenu>1</visundermenu>
         </term>
         <term>
-          <ord>Fattigdom</ord>
-          <ccl>em=fattigdom og em=danmark ikke dk=sk</ccl>
+          <ord>Regional- og erhvervsudvikling</ord>
+          <ccl>dk=33.19 og (em=regional? eller em=lokal? eller em=erhvervs?)</ccl>
           <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
         <term>
-          <ord>Regional- og erhvervsudvikling</ord>
-          <ccl>dk=33.19 og (em=regional? eller em=lokal? eller em=erhvervs?)</ccl>
+          <ord>Fattigdom</ord>
+          <ccl>em=fattigdom og em=danmark ikke dk=sk</ccl>
           <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
@@ -8449,6 +8638,20 @@
       <kommentar>204 poster</kommentar>
       <hjaelpetekst></hjaelpetekst>
       <visundermenu>1</visundermenu>
+      <term>
+        <ord>Danske konger og dronninger</ord>
+        <ccl>em=(konger eller dronninger) og em=danmark og em=historie ikke dk=sk</ccl>
+        <kommentar>ca. 290 hits</kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>National identitet / danskhed</ord>
+        <ccl>(em=national identititet og em=danmark) eller em=danskhed ikke dk=sk</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
       <term>
         <ord>Dansk-Vestindien og Tranquebar</ord>
         <ccl>dk=46.8</ccl>
@@ -8729,16 +8932,16 @@
           <visundermenu>1</visundermenu>
         </term>
         <term>
-          <ord>Christian VII</ord>
-          <ccl>lem=christian 7 konge af danmark ikke dk=sk</ccl>
-          <kommentar>14 poster</kommentar>
+          <ord>Den danske slavehandel</ord>
+          <ccl>em=danmark og em=slaveri</ccl>
+          <kommentar>13 poster</kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
         <term>
-          <ord>Den danske slavehandel</ord>
-          <ccl>em=danmark og em=slaveri</ccl>
-          <kommentar>13 poster</kommentar>
+          <ord>Christian VII</ord>
+          <ccl>lem=christian 7 konge af danmark ikke dk=sk</ccl>
+          <kommentar>14 poster</kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
@@ -8764,6 +8967,27 @@
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>0</visundermenu>
         <term>
+          <ord>Andelsbev&#230;gelsen</ord>
+          <ccl>em=andelsbev&#230;gelsen og (em=historie eller em=18?)</ccl>
+          <kommentar>11 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Industrialiseringen</ord>
+          <ccl>em=industrialisering og em=danmark og em=historie</ccl>
+          <kommentar>50 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Provisorietiden</ord>
+          <ccl>estrup og provisorie?</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
           <ord>Arbejderbev&#230;gelsen</ord>
           <ccl>em=(fagbev&#230;gelsen eller arbejderbev&#230;gelsen ) og em=historie og em=18?</ccl>
           <kommentar>18 poster</kommentar>
@@ -8778,23 +9002,9 @@
           <visundermenu>1</visundermenu>
         </term>
         <term>
-          <ord>Andelsbev&#230;gelsen</ord>
-          <ccl>em=andelsbev&#230;gelsen og (em=historie eller em=18?)</ccl>
-          <kommentar>11 poster</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
           <ord>H&#248;jskolebev&#230;gelsen</ord>
           <ccl>((em=h&#248;jskolebev&#230;gelsen) eller (em=h&#248;jskoler og em=historie og dk=37.41))</ccl>
           <kommentar>25 poster</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>Provisorietiden</ord>
-          <ccl>estrup og provisorie?</ccl>
-          <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
@@ -8821,7 +9031,7 @@
         </term>
       </term>
       <term>
-        <ord>Danmarks historie 1900-1919</ord>
+        <ord>Danmarks historie 1900-1920 (1. verdenskrig)</ord>
         <ccl>dk=96.7 og (ke=historie eller lem=1. verdenskrig) og em=(1900-1909 eller 1910?)</ccl>
         <kommentar>57 poster.</kommentar>
         <hjaelpetekst></hjaelpetekst>
@@ -9016,6 +9226,20 @@
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
         <term>
+          <ord>Englands imperialisme og kolonier</ord>
+          <ccl>em=england  og em=(imperialisme eller kolonialisme)</ccl>
+          <kommentar>15 hits</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Winston Churchill</ord>
+          <ccl>lem=(churchill winston s)</ccl>
+          <kommentar>54 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
           <ord>Den nordirske konflikt</ord>
           <ccl>df=nordirland</ccl>
           <kommentar></kommentar>
@@ -9030,16 +9254,9 @@
           <visundermenu>1</visundermenu>
         </term>
         <term>
-          <ord>Winston Churchill</ord>
-          <ccl>lem=(churchill winston s)</ccl>
-          <kommentar>54 poster</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>Englands imperialisme og kolonier</ord>
-          <ccl>em=england  og em=(imperialisme eller kolonialisme)</ccl>
-          <kommentar>15 hits</kommentar>
+          <ord>National identitet</ord>
+          <ccl>em=national identitet og em=storbritannien</ccl>
+          <kommentar>11 poster</kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
@@ -9065,13 +9282,6 @@
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
         <term>
-          <ord>2. verdenskrig</ord>
-          <ccl>em=frankrig og em=2. verdenskrig ikke dk=8?</ccl>
-          <kommentar>13 poster</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
           <ord>Napoleonskrigene</ord>
           <ccl>em=napoleonskrigene</ccl>
           <kommentar>140 hits</kommentar>
@@ -9092,6 +9302,20 @@
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
+        <term>
+          <ord>2. verdenskrig</ord>
+          <ccl>em=frankrig og em=2. verdenskrig ikke dk=8?</ccl>
+          <kommentar>13 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>National identitet</ord>
+          <ccl>em=national identitet og em=frankrig</ccl>
+          <kommentar>10 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
       </term>
       <term>
         <ord>Gr&#230;kenland</ord>
@@ -9100,16 +9324,16 @@
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
         <term>
-          <ord>Det antikke Gr&#230;kenland</ord>
-          <ccl>(((ke=antikken eller ke=oldtiden) og ke=gr&#230;kenland) og dk=91.43)</ccl>
-          <kommentar>48 poster</kommentar>
+          <ord>Alexander den Store</ord>
+          <ccl>em=Alexander den Store</ccl>
+          <kommentar>26 poster</kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
         <term>
-          <ord>Alexander den Store</ord>
-          <ccl>em=Alexander den Store</ccl>
-          <kommentar>26 poster</kommentar>
+          <ord>Det antikke Gr&#230;kenland</ord>
+          <ccl>(((ke=antikken eller ke=oldtiden) og ke=gr&#230;kenland) og dk=91.43)</ccl>
+          <kommentar>48 poster</kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
@@ -9138,6 +9362,13 @@
           <ord>Mussolini og fascismen</ord>
           <ccl>lem=Mussolini Benito eller (em=italien og em=fascisme)</ccl>
           <kommentar>10 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Mafiaen</ord>
+          <ccl>em=mafia og em=italien ikke dk=8?</ccl>
+          <kommentar>30 poster</kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
@@ -9219,6 +9450,13 @@
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
         <term>
+          <ord>2. verdenskrig</ord>
+          <ccl>em=(rusland eller sovjetunionen) og df=2. verdenskrig</ccl>
+          <kommentar>19</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
           <ord>Den kolde krig</ord>
           <ccl>em=(rusland eller sovjetunionen) og (kold krig? eller kolde krig? eller koldkrig?)</ccl>
           <kommentar>11 poster</kommentar>
@@ -9233,44 +9471,9 @@
           <visundermenu>1</visundermenu>
         </term>
         <term>
-          <ord>Fangelejre i Sibirien</ord>
-          <ccl>em=fangelejre og em=(sibirien eller gulag)</ccl>
-          <kommentar>27 poster</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
           <ord>Revolutionen</ord>
           <ccl>lem=russiske revolution og dk=97.931</ccl>
           <kommentar>18 poster</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>Stalin</ord>
-          <ccl>lem=stalin josef</ccl>
-          <kommentar>47 poster</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>Cubakrisen</ord>
-          <ccl>em=cubakrisen</ccl>
-          <kommentar>31 hits</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>Tjetjenien-konflikten</ord>
-          <ccl>em=tjetjenien og (konflikt? eller rusland)</ccl>
-          <kommentar>10 poster i standard</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>2. verdenskrig</ord>
-          <ccl>em=(rusland eller sovjetunionen) og df=2. verdenskrig</ccl>
-          <kommentar>19</kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
@@ -9282,9 +9485,37 @@
           <visundermenu>1</visundermenu>
         </term>
         <term>
+          <ord>Stalin</ord>
+          <ccl>lem=stalin josef</ccl>
+          <kommentar>47 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
           <ord>Zarerne</ord>
           <ccl>em=rusland og em=zar</ccl>
           <kommentar>25 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Cubakrisen</ord>
+          <ccl>em=cubakrisen</ccl>
+          <kommentar>31 hits</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Fangelejre i Sibirien</ord>
+          <ccl>em=fangelejre og em=(sibirien eller gulag)</ccl>
+          <kommentar>27 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Tjetjenien-konflikten</ord>
+          <ccl>em=tjetjenien og (konflikt? eller rusland)</ccl>
+          <kommentar>10 poster i standard</kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
@@ -9317,13 +9548,6 @@
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
         <term>
-          <ord>Kalmarunionen</ord>
-          <ccl>em=kalmarunionen</ccl>
-          <kommentar>33 poster, heriblandt en del skoleb&#248;ger</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
           <ord>Sk&#229;ne, Halland og Blekinge</ord>
           <ccl>dk=95.69</ccl>
           <kommentar>20 poster</kommentar>
@@ -9334,6 +9558,13 @@
           <ord>Svenskekrigene</ord>
           <ccl>lem=svenskekrigene? og dk=96.?</ccl>
           <kommentar>15</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Kalmarunionen</ord>
+          <ccl>em=kalmarunionen</ccl>
+          <kommentar>33 poster, heriblandt en del skoleb&#248;ger</kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
@@ -9417,6 +9648,13 @@
         <term>
           <ord>Genforeningen</ord>
           <ccl>em=tyskland og genforening? og dk=(94.43 eller 44?)</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>National identitet</ord>
+          <ccl>em=national identitet og em=tyskland</ccl>
           <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
@@ -9699,13 +9937,6 @@
           </term>
         </term>
         <term>
-          <ord>Tibet</ord>
-          <ccl>dk=98.282 eller (df=tibet og df=historie)</ccl>
-          <kommentar>120 poster i folk</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
           <ord>Korea</ord>
           <ccl>dk=98.275</ccl>
           <kommentar>26 hits</kommentar>
@@ -9716,6 +9947,41 @@
           <ord>Koreakrigen</ord>
           <ccl>em=koreakrigen ikke dk=sk</ccl>
           <kommentar>33 posten</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Kuwait</ord>
+          <ccl>ok=98.2169</ccl>
+          <kommentar>40 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Thailand</ord>
+          <ccl>ok=98.242</ccl>
+          <kommentar>49 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Tibet</ord>
+          <ccl>dk=98.282 eller (df=tibet og df=historie)</ccl>
+          <kommentar>120 poster i folk</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Syrien</ord>
+          <ccl>dk=98.214</ccl>
+          <kommentar>27 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Tyrkiet</ord>
+          <ccl>dk=98.21 og em=tyrkiet</ccl>
+          <kommentar>31 poster</kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
@@ -9775,11 +10041,6 @@
             <type>liste</type>
           </term>
           <term>
-            <ord>Kuwait</ord>
-            <ccl>ok=98.2169 og em=kuwait</ccl>
-            <type>liste</type>
-          </term>
-          <term>
             <ord>Laos</ord>
             <ccl>ok=98.244</ccl>
             <type>liste</type>
@@ -9796,7 +10057,7 @@
           </term>
           <term>
             <ord>Nepal</ord>
-            <ccl>ok=98.234</ccl>
+            <ccl>dk=98.234</ccl>
             <type>liste</type>
           </term>
           <term>
@@ -9806,27 +10067,12 @@
           </term>
           <term>
             <ord>Saudi Arabien</ord>
-            <ccl>ok=98.2162</ccl>
+            <ccl>dk=98.2162</ccl>
             <type>liste</type>
           </term>
           <term>
             <ord>Sri Lanka</ord>
             <ccl>ok=98.237</ccl>
-            <type>liste</type>
-          </term>
-          <term>
-            <ord>Syrien</ord>
-            <ccl>ok=98.214</ccl>
-            <type>liste</type>
-          </term>
-          <term>
-            <ord>Thailand</ord>
-            <ccl>ok=98.242</ccl>
-            <type>liste</type>
-          </term>
-          <term>
-            <ord>Tyrkiet</ord>
-            <ccl>ok=98.21 og em=tyrkiet</ccl>
             <type>liste</type>
           </term>
         </term>
@@ -9971,6 +10217,13 @@
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
         <term>
+          <ord>National identitet</ord>
+          <ccl>em=national identitet og em=usa</ccl>
+          <kommentar>28 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
           <ord>Indianernes historie</ord>
           <ccl>dk=98.638 eller (ok=59.55 og em=historie og em=(usa eller nordamerika))</ccl>
           <kommentar>109 poster</kommentar>
@@ -10016,6 +10269,13 @@
           <ord>Mellemkrigstiden - Wallstreetkrakket</ord>
           <ccl>em=usa og em=historie og em=(1920? eller 930? eller mellemkrigstiden)</ccl>
           <kommentar>34 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Mafiaen</ord>
+          <ccl>em=mafia og em=usa ikke dk=8?</ccl>
+          <kommentar>13 poster</kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
@@ -10315,6 +10575,13 @@
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
+        <term>
+          <ord>Kelterne</ord>
+          <ccl>em=keltere ikke dk=sk</ccl>
+          <kommentar>ca. 16 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
       </term>
       <term>
         <ord>Folkevandringstiden (ca. &#229;r 200-500)</ord>
@@ -10343,6 +10610,13 @@
         <kommentar>49 poster</kommentar>
         <hjaelpetekst>ca. &#229;r 476-1453</hjaelpetekst>
         <visundermenu>1</visundermenu>
+        <term>
+          <ord>Normannerne</ord>
+          <ccl>em=normannerne ikke dk=sk</ccl>
+          <kommentar>kun 11 poster i folk+forsk</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
         <term>
           <ord>Danmark i middelalderen</ord>
           <ccl>em=middelalderen og ok=96.1?</ccl>
@@ -10700,6 +10974,41 @@
         <kommentar>23 poster</kommentar>
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
+        <term>
+          <ord>Bornholm</ord>
+          <ccl>dk=46.4? og em=geografi ikke em=rejseh&#229;ndb&#248;ger og bornholm</ccl>
+          <kommentar>10 hits</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Jylland</ord>
+          <ccl>dk=46.4 og em=geografi ikke em=rejseh&#229;ndb&#248;ger og ?jylland</ccl>
+          <kommentar>10 poster (der er en del poster, der ikke fanges i s&#248;gningen, fordi de ikke indeholdet 'jylland' i registreringen, desv&#230;rre)</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>K&#248;benhavn og Frederiksberg</ord>
+          <ccl>dk=46.3? og em=geografi ikke em=rejseh&#229;ndb&#248;ger</ccl>
+          <kommentar>13 hits</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Sj&#230;lland og &#248;erne</ord>
+          <ccl>dk=46.4? og em=geografi ikke em=rejseh&#229;ndb&#248;ger og (?sj&#230;lland eller lolland eller falster eller m&#248;n)</ccl>
+          <kommentar>10 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>&#216;resundsregionen</ord>
+          <ccl>em=&#248;resundsregionen og (dk=45? eller dk=95?)</ccl>
+          <kommentar>15 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
       </term>
       <term>
         <ord>Europa</ord>
@@ -11317,13 +11626,6 @@
           <visundermenu>1</visundermenu>
         </term>
         <term>
-          <ord>Tyrkiet</ord>
-          <ccl>dk=(47.69 eller 48.21) og em=rejsef&#248;rere</ccl>
-          <kommentar>24 hits</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
           <ord>Rusland, Polen og Baltikum</ord>
           <ccl>dk=47.9? og em=rejsef&#248;rere</ccl>
           <kommentar></kommentar>
@@ -11363,6 +11665,13 @@
           <ccl>(dk=48.21? eller dk=48.225 eller dk=48.15) og em=rejse? ikke em=tyrkiet ikke em=cypern</ccl>
           <kommentar></kommentar>
           <hjaelpetekst>Med vilje ikke bare rejsef&#248;rere - for at f&#229; antallet af poster op...</hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Tyrkiet</ord>
+          <ccl>dk=(47.69 eller 48.21) og em=rejsef&#248;rere</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
         <term>
@@ -11485,16 +11794,16 @@
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>0</visundermenu>
         <term>
-          <ord>Afrika</ord>
-          <ccl>((dk=99.4 og em=rejsebeskrivelser) eller (ok=4? og em=rejsebeskrivel?)) og (dk=48.3? eller dk=48.4?)</ccl>
-          <kommentar>38 hits</kommentar>
+          <ord>Australien og Oceanien</ord>
+          <ccl>((dk=99.4 og em=rejsebeskrivelser) eller (ok=4? og em=rejsebeskrivel?)) og dk=48.9?</ccl>
+          <kommentar>20 hits</kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
         <term>
-          <ord>Asien</ord>
-          <ccl>((dk=99.4 og em=rejsebeskrivelser) eller (ok=4? og em=rejsebeskrivel?)) og (dk=48.1? eller dk=48.2?)</ccl>
-          <kommentar>107 hits</kommentar>
+          <ord>Danmark, F&#230;r&#248;erne og Gr&#248;nland</ord>
+          <ccl>((dk=99.4 og em=rejsebeskrivelser) eller (ok=4? og em=rejsebeskrivel?)) og dk=46?</ccl>
+          <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
@@ -11506,16 +11815,16 @@
           <visundermenu>1</visundermenu>
         </term>
         <term>
-          <ord>Australien og Oceanien</ord>
-          <ccl>((dk=99.4 og em=rejsebeskrivelser) eller (ok=4? og em=rejsebeskrivel?)) og dk=48.9?</ccl>
-          <kommentar>20 hits</kommentar>
+          <ord>Afrika</ord>
+          <ccl>((dk=99.4 og em=rejsebeskrivelser) eller (ok=4? og em=rejsebeskrivel?)) og (dk=48.3? eller dk=48.4?)</ccl>
+          <kommentar>38 hits</kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
         <term>
-          <ord>Danmark, F&#230;r&#248;erne og Gr&#248;nland</ord>
-          <ccl>((dk=99.4 og em=rejsebeskrivelser) eller (ok=4? og em=rejsebeskrivel?)) og dk=46?</ccl>
-          <kommentar></kommentar>
+          <ord>Asien</ord>
+          <ccl>((dk=99.4 og em=rejsebeskrivelser) eller (ok=4? og em=rejsebeskrivel?)) og (dk=48.1? eller dk=48.2?)</ccl>
+          <kommentar>107 hits</kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
@@ -11619,7 +11928,7 @@
         </term>
         <term>
           <ord>Vandreture i udlandet</ord>
-          <ccl>(df="vandring" eller df="vandreture" eller df="trekking" eller df="vandresport") ikke dk=("46*" eller "50.26*" eller "sk")</ccl>
+          <ccl>(df="vandring" eller df="vandreture" eller df="trekking" eller df="vandresport") ikke dk=("46?" eller "50.26?" eller "sk")</ccl>
           <kommentar>122 poster</kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
@@ -11647,13 +11956,6 @@
       <hjaelpetekst></hjaelpetekst>
       <visundermenu>1</visundermenu>
       <term>
-        <ord>Polarekspeditioner</ord>
-        <ccl>(dk=40.9 eller (ke=opdagelsesrejser eller ke=ekspeditioner)) og (dk=46.7? eller dk=49?) ikke dk=sk</ccl>
-        <kommentar>65 hits</kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
         <ord>Galathea</ord>
         <ccl>em=galathea og (opdagelsesrejser eller ekspeditioner)</ccl>
         <kommentar>10 poster</kommentar>
@@ -11667,6 +11969,13 @@
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
       </term>
+      <term>
+        <ord>Polarekspeditioner</ord>
+        <ccl>(dk=40.9 eller (ke=opdagelsesrejser eller ke=ekspeditioner)) og (dk=46.7? eller dk=49?) ikke dk=sk</ccl>
+        <kommentar>65 hits</kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
     </term>
     <term>
       <ord>Sprog</ord>
@@ -11674,27 +11983,6 @@
       <kommentar>denne kan vel ikke v&#230;re andet end tom - evt. en se-ogs&#229; til "kommunikation-sprog (ok=89.01)</kommentar>
       <hjaelpetekst></hjaelpetekst>
       <visundermenu>0</visundermenu>
-      <term>
-        <ord>Albansk</ord>
-        <ccl>dk=89.87 og em=albansk</ccl>
-        <kommentar>20 hits</kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
-        <ord>Farsi</ord>
-        <ccl>dk=89.82 og em=farsi</ccl>
-        <kommentar>23 poster</kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
-        <ord>Finsk</ord>
-        <ccl>dk=89.9152 og em=finsk</ccl>
-        <kommentar>30 poster</kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
       <term>
         <ord>Italiensk</ord>
         <ccl>dk=(89.26 eller 89.261) og df=italiensk sprog</ccl>
@@ -11709,26 +11997,19 @@
           <visundermenu>1</visundermenu>
         </term>
         <term>
-          <ord>Italienske sprogkurser</ord>
-          <ccl>em=sprogkurser og em=italiensk sprog og sp=(ita eller mul)</ccl>
-          <kommentar>7 - Udg&#229;r?</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
           <ord>Ordb&#248;ger: Dansk-italiensk/italiensk-dansk</ord>
           <ccl>dk=89.263 og em=(dansk-italiensk eller italiensk-dansk)</ccl>
           <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
-      </term>
-      <term>
-        <ord>F&#230;r&#248;sk</ord>
-        <ccl>dk=89.54 og f&#230;r&#248;sk</ccl>
-        <kommentar>31 poster</kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
+        <term>
+          <ord>Italienske sprogkurser</ord>
+          <ccl>em=sprogkurser og em=italiensk sprog og sp=(ita eller mul)</ccl>
+          <kommentar>7 - Udg&#229;r?</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
       </term>
       <term>
         <ord>Spansk</ord>
@@ -11736,6 +12017,13 @@
         <kommentar></kommentar>
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
+        <term>
+          <ord>Spansk grammatik</ord>
+          <ccl>df=spansk grammatik og sp=(dan eller mul eller spa)</ccl>
+          <kommentar>29 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
         <term>
           <ord>Spanske sprogkurser</ord>
           <ccl>em=sprogkurser og em=spansk sprog og sp=(spa eller mul)</ccl>
@@ -11750,25 +12038,11 @@
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
-        <term>
-          <ord>Spansk grammatik</ord>
-          <ccl>df=spansk grammatik og sp=(dan eller mul eller spa)</ccl>
-          <kommentar>29 poster</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
       </term>
       <term>
-        <ord>Gr&#248;nlandsk</ord>
-        <ccl>dk=89.982 og em=gr&#248;nlandsk</ccl>
-        <kommentar>57 poster</kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
-        <ord>Hindi</ord>
-        <ccl>dk=89.8172 og em=hindi</ccl>
-        <kommentar>16 poster</kommentar>
+        <ord>Albansk</ord>
+        <ccl>dk=89.87 og em=albansk</ccl>
+        <kommentar>20 hits</kommentar>
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
       </term>
@@ -11786,192 +12060,31 @@
           <visundermenu>1</visundermenu>
         </term>
         <term>
-          <ord>Ordb&#248;ger: Dansk-fransk/fransk-dansk</ord>
-          <ccl>dk=89.23 og em=(dansk-fransk eller fransk-dansk)</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
           <ord>Franske sprogkurser</ord>
           <ccl>em=sprogkurser og em=fransk sprog og sp=(fre eller mul)</ccl>
           <kommentar>14</kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
-      </term>
-      <term>
-        <ord>Hollandsk</ord>
-        <ccl>dk=89.47 og em=hollandsk</ccl>
-        <kommentar>31 poster</kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
-        <ord>Islandsk</ord>
-        <ccl>dk=89.53 og em=islandsk</ccl>
-        <kommentar>22 poster</kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
-        <ord>Japansk</ord>
-        <ccl>dk=89.969 og em=japansk</ccl>
-        <kommentar></kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
-        <ord>Tysk</ord>
-        <ccl>ok=(89.4 eller 89.41) og df=tysk sprog</ccl>
-        <kommentar></kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
         <term>
-          <ord>Tyske sprogkurser</ord>
-          <ccl>em=sprogkurser og em=tysk sprog og sp=(ger eller mul)</ccl>
-          <kommentar>10 - nok?</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>Ordb&#248;ger: Dansk-tysk/tysk-dansk</ord>
-          <ccl>ok=89.43 og (em=dansk-tysk eller em=tysk-dansk)</ccl>
+          <ord>Ordb&#248;ger: Dansk-fransk/fransk-dansk</ord>
+          <ccl>dk=89.23 og em=(dansk-fransk eller fransk-dansk)</ccl>
           <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
-        <term>
-          <ord>Tysk grammatik</ord>
-          <ccl>df=tysk grammatik og sp=(dan eller ger eller mul)</ccl>
-          <kommentar>64</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
       </term>
       <term>
-        <ord>Jiddisch</ord>
-        <ccl>dk=89.44 og jiddisch</ccl>
-        <kommentar>14 poster</kommentar>
+        <ord>Farsi</ord>
+        <ccl>dk=89.82 og em=farsi</ccl>
+        <kommentar>23 poster</kommentar>
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
       </term>
       <term>
-        <ord>Kinesisk</ord>
-        <ccl>dk=89.961 og em=kinesisk</ccl>
-        <kommentar></kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
-        <ord>Klassisk gr&#230;sk</ord>
-        <ccl>dk=89.11 og em=klassisk gr&#230;sk</ccl>
+        <ord>Finsk</ord>
+        <ccl>dk=89.9152 og em=finsk</ccl>
         <kommentar>30 poster</kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
-        <ord>Latin</ord>
-        <ccl>dk=89.15 og em=latin</ccl>
-        <kommentar>170 hits</kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
-        <ord>Norsk</ord>
-        <ccl>dk=89.55? og em=norsk</ccl>
-        <kommentar></kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
-        <ord>Nygr&#230;sk</ord>
-        <ccl>dk=89.13 og em=gr&#230;sk</ccl>
-        <kommentar>85 poster</kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
-        <ord>Persisk</ord>
-        <ccl>dk=89.82 og em=persisk</ccl>
-        <kommentar>46 poster</kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
-        <ord>Polsk</ord>
-        <ccl>dk=89.843 og em=polsk</ccl>
-        <kommentar>50 hits</kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
-        <ord>Portugisisk</ord>
-        <ccl>dk=89.28 og em=portugisisk</ccl>
-        <kommentar></kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>0</visundermenu>
-      </term>
-      <term>
-        <ord>Russisk</ord>
-        <ccl>dk=89.841 og em=russisk</ccl>
-        <kommentar></kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
-        <ord>Svensk</ord>
-        <ccl>dk=89.7? og em=svensk</ccl>
-        <kommentar></kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
-        <ord>Thai</ord>
-        <ccl>dk=89.962 og em=thai</ccl>
-        <kommentar>43 poster</kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
-        <ord>Engelsk</ord>
-        <ccl>(dk=89.3 eller ok=89.31) og em=engelsk sprog og sp=mul</ccl>
-        <kommentar>37</kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-        <term>
-          <ord>Ordb&#248;ger: Dansk-engelsk/engelsk-dansk</ord>
-          <ccl>ok=89.33 og em=(dansk-engelsk eller engelsk-dansk)og em=ordb&#248;ger</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>Engelsk grammatik</ord>
-          <ccl>df=engelsk grammatik og sp=(dan eller eng eller mul)</ccl>
-          <kommentar>91 poster</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>Engelske sprogkurser</ord>
-          <ccl>em=sprogkurser og em=engelsk sprog og sp=(eng eller mul)</ccl>
-          <kommentar>45</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-      </term>
-      <term>
-        <ord>Tjekkisk</ord>
-        <ccl>dk=89.844 og em=tjekkisk</ccl>
-        <kommentar>18 poster</kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
-        <ord>Tyrkisk</ord>
-        <ccl>dk=89.913? og em=tyrkisk</ccl>
-        <kommentar></kommentar>
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
       </term>
@@ -12137,6 +12250,209 @@
         </term>
       </term>
       <term>
+        <ord>Engelsk</ord>
+        <ccl>(dk=89.3 eller ok=89.31) og em=engelsk sprog og sp=mul</ccl>
+        <kommentar>37</kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+        <term>
+          <ord>Ordb&#248;ger: Dansk-engelsk/engelsk-dansk</ord>
+          <ccl>ok=89.33 og em=(dansk-engelsk eller engelsk-dansk)og em=ordb&#248;ger</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Engelsk grammatik</ord>
+          <ccl>df=engelsk grammatik og sp=(dan eller eng eller mul)</ccl>
+          <kommentar>91 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Engelske sprogkurser</ord>
+          <ccl>em=sprogkurser og em=engelsk sprog og sp=(eng eller mul)</ccl>
+          <kommentar>45</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+      </term>
+      <term>
+        <ord>Tysk</ord>
+        <ccl>ok=(89.4 eller 89.41) og df=tysk sprog</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+        <term>
+          <ord>Tysk grammatik</ord>
+          <ccl>df=tysk grammatik og sp=(dan eller ger eller mul)</ccl>
+          <kommentar>64</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Ordb&#248;ger: Dansk-tysk/tysk-dansk</ord>
+          <ccl>ok=89.43 og (em=dansk-tysk eller em=tysk-dansk)</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Tyske sprogkurser</ord>
+          <ccl>em=sprogkurser og em=tysk sprog og sp=(ger eller mul)</ccl>
+          <kommentar>10 - nok?</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+      </term>
+      <term>
+        <ord>F&#230;r&#248;sk</ord>
+        <ccl>dk=89.54 og f&#230;r&#248;sk</ccl>
+        <kommentar>31 poster</kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Gr&#248;nlandsk</ord>
+        <ccl>dk=89.982 og em=gr&#248;nlandsk</ccl>
+        <kommentar>57 poster</kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Hindi</ord>
+        <ccl>dk=89.8172 og em=hindi</ccl>
+        <kommentar>16 poster</kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Arabiske sprog</ord>
+        <ccl>dk=89.946 og em=arabisk?</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Hollandsk</ord>
+        <ccl>dk=89.47 og em=hollandsk</ccl>
+        <kommentar>31 poster</kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Islandsk</ord>
+        <ccl>dk=89.53 og em=islandsk</ccl>
+        <kommentar>22 poster</kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Japansk</ord>
+        <ccl>dk=89.969 og em=japansk</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Jiddisch</ord>
+        <ccl>dk=89.44 og jiddisch</ccl>
+        <kommentar>14 poster</kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Kinesisk</ord>
+        <ccl>dk=89.961 og em=kinesisk</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Klassisk gr&#230;sk</ord>
+        <ccl>dk=89.11 og em=klassisk gr&#230;sk</ccl>
+        <kommentar>30 poster</kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Latin</ord>
+        <ccl>dk=89.15 og em=latin</ccl>
+        <kommentar>170 hits</kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Norsk</ord>
+        <ccl>dk=89.55? og em=norsk</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Nygr&#230;sk</ord>
+        <ccl>dk=89.13 og em=gr&#230;sk</ccl>
+        <kommentar>85 poster</kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Persisk</ord>
+        <ccl>dk=89.82 og em=persisk</ccl>
+        <kommentar>46 poster</kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Polsk</ord>
+        <ccl>dk=89.843 og em=polsk</ccl>
+        <kommentar>50 hits</kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Portugisisk</ord>
+        <ccl>dk=89.28 og em=portugisisk</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>0</visundermenu>
+      </term>
+      <term>
+        <ord>Russisk</ord>
+        <ccl>dk=89.841 og em=russisk</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Svensk</ord>
+        <ccl>dk=89.7? og em=svensk</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Thai</ord>
+        <ccl>dk=89.962 og em=thai</ccl>
+        <kommentar>43 poster</kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Tjekkisk</ord>
+        <ccl>dk=89.844 og em=tjekkisk</ccl>
+        <kommentar>18 poster</kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Tyrkisk</ord>
+        <ccl>dk=89.913? og em=tyrkisk</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
         <ord>Ungarsk</ord>
         <ccl>dk=89.9151 og em=ungarsk</ccl>
         <kommentar>29 poster</kommentar>
@@ -12147,13 +12463,6 @@
         <ord>Urdu</ord>
         <ccl>dk=89.8171 og em=urdu</ccl>
         <kommentar>23 poster</kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
-        <ord>Arabiske sprog</ord>
-        <ccl>dk=89.946 og em=arabisk?</ccl>
-        <kommentar></kommentar>
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
       </term>
@@ -12249,6 +12558,27 @@
       <hjaelpetekst></hjaelpetekst>
       <visundermenu>1</visundermenu>
       <term>
+        <ord>Asiatisk kulturhistorie</ord>
+        <ccl>(dk=90.1 og em=(asien, kina, japan, indien, tibet, nepal, vietnam, korea, mongoliet, indokina, thailand)) eller (dk=98.2? og em=kulturhistorie)</ccl>
+        <kommentar>10 hits</kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Danmarks kulturhistorie</ord>
+        <ccl>em=Danmark og df=kulturhistorie</ccl>
+        <kommentar>214 hits</kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Europas kulturhistorie</ord>
+        <ccl>em=europa og em=kulturhistorie</ccl>
+        <kommentar>46 poster</kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
         <ord>Etnografi - oprindelige folks kulturer</ord>
         <ccl>df=oprindelige folk eller df=indf&#248;dte folk</ccl>
         <kommentar>47</kommentar>
@@ -12319,20 +12649,6 @@
         <visundermenu>1</visundermenu>
       </term>
       <term>
-        <ord>J&#248;disk kulturhistorie</ord>
-        <ccl>dk=(91.241 eller 91.246) og (em=historie eller kultur?)</ccl>
-        <kommentar>89</kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
-        <ord>Asiatisk kulturhistorie</ord>
-        <ccl>(dk=90.1 og em=(asien, kina, japan, indien, tibet, nepal, vietnam, korea, mongoliet, indokina, thailand)) eller (dk=98.2? og em=kulturhistorie)</ccl>
-        <kommentar>10 hits</kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
         <ord>Islams kulturhistorie</ord>
         <ccl>dk=90.12</ccl>
         <kommentar>47 - oprettes ogs&#229; under religion - islam</kommentar>
@@ -12340,16 +12656,9 @@
         <visundermenu>1</visundermenu>
       </term>
       <term>
-        <ord>Danmarks kulturhistorie</ord>
-        <ccl>em=Danmark og df=kulturhistorie</ccl>
-        <kommentar>214 hits</kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
-        <ord>Europas kulturhistorie</ord>
-        <ccl>em=europa og em=kulturhistorie</ccl>
-        <kommentar>46 poster</kommentar>
+        <ord>J&#248;disk kulturhistorie</ord>
+        <ccl>dk=(91.241 eller 91.246) og (em=historie eller kultur?)</ccl>
+        <kommentar>89</kommentar>
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
       </term>
@@ -12900,6 +13209,13 @@
         <visundermenu>1</visundermenu>
       </term>
       <term>
+        <ord>New journalism</ord>
+        <ccl>em=new journalism</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
         <ord>Presseetik</ord>
         <ccl>(em=presseetik) eller (dk=(07.1 eller 37.8*) og (*etik eller etik*))</ccl>
         <kommentar>34 poster</kommentar>
@@ -13153,34 +13469,6 @@
       <visundermenu>0</visundermenu>
     </term>
     <term>
-      <ord>Erhvervsvirksomheder</ord>
-      <ccl></ccl>
-      <kommentar></kommentar>
-      <hjaelpetekst></hjaelpetekst>
-      <visundermenu>0</visundermenu>
-      <term>
-        <ord>A. P. M&#248;ller - M&#230;rsk</ord>
-        <ccl>ke=a.p. m&#248;ller</ccl>
-        <kommentar></kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
-        <ord>Lego</ord>
-        <ccl>dk=68.9 og em=lego</ccl>
-        <kommentar></kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
-        <ord>Novo, Novo Nordisk, Novozymes</ord>
-        <ccl>em=novo eller em=novo nordisk eller em=novozymes</ccl>
-        <kommentar></kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-    </term>
-    <term>
       <ord>Handel og service</ord>
       <ccl></ccl>
       <kommentar>Ingen ccl lavet</kommentar>
@@ -13229,6 +13517,13 @@
         </term>
       </term>
       <term>
+        <ord>Nethandel</ord>
+        <ccl>em=e-handel</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
         <ord>Hotel og restauration</ord>
         <ccl>ok=64.9 og (hotel? eller motel? eller restaurant? eller spise? eller kro? eller g&#230;stgiv?)</ccl>
         <kommentar></kommentar>
@@ -13248,13 +13543,6 @@
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
-      </term>
-      <term>
-        <ord>Nethandel</ord>
-        <ccl>em=e-handel</ccl>
-        <kommentar></kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
       </term>
       <term>
         <ord>Kontor</ord>
@@ -13571,29 +13859,8 @@
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
         <term>
-          <ord>Stenhuggeri</ord>
-          <ccl>em=stenhugning</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>Stuk</ord>
-          <ccl>em=stuk? ikke bang</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
           <ord>M&#248;belpolstrere og saddelmagere</ord>
           <ccl>ok=68.7</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>Urmageri</ord>
-          <ccl>ok=68.13</ccl>
           <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
@@ -13625,6 +13892,27 @@
             <hjaelpetekst></hjaelpetekst>
             <visundermenu>1</visundermenu>
           </term>
+        </term>
+        <term>
+          <ord>Stenhuggeri</ord>
+          <ccl>em=stenhugning</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Stuk</ord>
+          <ccl>em=stuk? ikke bang</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Urmageri</ord>
+          <ccl>ok=68.13</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
         </term>
       </term>
       <term>
@@ -13851,13 +14139,6 @@
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
         <term>
-          <ord>T&#248;jindustri og skr&#230;dderh&#229;ndv&#230;rk</ord>
-          <ccl>ok=68.81</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
           <ord>Fris&#248;rer</ord>
           <ccl>em=fris&#248;r?</ccl>
           <kommentar></kommentar>
@@ -13874,6 +14155,13 @@
         <term>
           <ord>Hattemageri og handskemageri</ord>
           <ccl>ok=68.83 eller ok=68.85</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>T&#248;jindustri og skr&#230;dderh&#229;ndv&#230;rk</ord>
+          <ccl>ok=68.81</ccl>
           <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
@@ -14031,6 +14319,13 @@
             <hjaelpetekst></hjaelpetekst>
             <visundermenu>1</visundermenu>
             <term>
+              <ord>H&#248;ns, kyllinger og &#230;g</ord>
+              <ccl>ok=63.651</ccl>
+              <kommentar></kommentar>
+              <hjaelpetekst></hjaelpetekst>
+              <visundermenu>1</visundermenu>
+            </term>
+            <term>
               <ord>&#198;nder, g&#230;s, duer, strudse - og andet, der ikke er h&#248;ns</ord>
               <ccl>ok=63.652 eller ok=63.659</ccl>
               <kommentar></kommentar>
@@ -14044,24 +14339,17 @@
               <hjaelpetekst></hjaelpetekst>
               <visundermenu>1</visundermenu>
             </term>
-            <term>
-              <ord>H&#248;ns, kyllinger og &#230;g</ord>
-              <ccl>ok=63.651</ccl>
-              <kommentar></kommentar>
-              <hjaelpetekst></hjaelpetekst>
-              <visundermenu>1</visundermenu>
-            </term>
           </term>
           <term>
-            <ord>Dyreetik og dyrevelf&#230;rd</ord>
-            <ccl>ok=15.9 eller ((ok=61.607 eller 63.6?) og em=etik)</ccl>
+            <ord>F&#229;r og geder</ord>
+            <ccl>63.63</ccl>
             <kommentar></kommentar>
             <hjaelpetekst></hjaelpetekst>
             <visundermenu>1</visundermenu>
           </term>
           <term>
-            <ord>F&#229;r og geder</ord>
-            <ccl>63.63</ccl>
+            <ord>Dyreetik og dyrevelf&#230;rd</ord>
+            <ccl>ok=15.9 eller ((ok=61.607 eller 63.6?) og em=etik)</ccl>
             <kommentar></kommentar>
             <hjaelpetekst></hjaelpetekst>
             <visundermenu>1</visundermenu>
@@ -14342,6 +14630,13 @@
       <hjaelpetekst></hjaelpetekst>
       <visundermenu>1</visundermenu>
       <term>
+        <ord>Branding</ord>
+        <ccl>em=branding</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
         <ord>Markedsanalyse</ord>
         <ccl>ok=65.53</ccl>
         <kommentar></kommentar>
@@ -14382,13 +14677,6 @@
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
-      </term>
-      <term>
-        <ord>Branding</ord>
-        <ccl>em=branding</ccl>
-        <kommentar></kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
       </term>
       <term>
         <ord>Salg</ord>
@@ -14457,6 +14745,34 @@
         <ord>Revision</ord>
         <ccl>dk=65.215 og em=revision</ccl>
         <kommentar>B&#248;r "besk&#230;res" lidt mere, - pt. 295 poster ...</kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+    </term>
+    <term>
+      <ord>Erhvervsvirksomheder</ord>
+      <ccl></ccl>
+      <kommentar></kommentar>
+      <hjaelpetekst></hjaelpetekst>
+      <visundermenu>0</visundermenu>
+      <term>
+        <ord>A. P. M&#248;ller - M&#230;rsk</ord>
+        <ccl>ke=a.p. m&#248;ller</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Lego</ord>
+        <ccl>dk=68.9 og em=lego</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Novo, Novo Nordisk, Novozymes</ord>
+        <ccl>em=novo eller em=novo nordisk eller em=novozymes</ccl>
+        <kommentar></kommentar>
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
       </term>
@@ -14551,13 +14867,6 @@
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
         <term>
-          <ord>Kommunikation p&#229; arbejdspladsen</ord>
-          <ccl>ok=60.13? og em=kommunikation</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
           <ord>Coaching og mentoring</ord>
           <ccl>(ok=60.1? eller ok=60.13?) og (coach? eller mentor?)</ccl>
           <kommentar></kommentar>
@@ -14565,22 +14874,8 @@
           <visundermenu>1</visundermenu>
         </term>
         <term>
-          <ord>Motivationspsykologi</ord>
-          <ccl>em=motivationspsykologi og dk=(13? eller 60?)</ccl>
-          <kommentar>40</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
           <ord>Efteruddannelse</ord>
           <ccl>ok=37.4? og efteruddannelse?</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>Videndeling</ord>
-          <ccl>em=videndeling</ccl>
           <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
@@ -14613,6 +14908,27 @@
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
+        <term>
+          <ord>Kommunikation p&#229; arbejdspladsen</ord>
+          <ccl>ok=60.13? og em=kommunikation</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Motivationspsykologi</ord>
+          <ccl>em=motivationspsykologi og dk=(13? eller 60?)</ccl>
+          <kommentar>40</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Videndeling</ord>
+          <ccl>em=videndeling</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
       </term>
       <term>
         <ord>Projektledelse</ord>
@@ -14630,8 +14946,8 @@
     <hjaelpetekst></hjaelpetekst>
     <visundermenu>1</visundermenu>
     <term>
-      <ord>Universet</ord>
-      <ccl>(ok=52 eller ok=52.4) og univers*</ccl>
+      <ord>Universet - astrofysik</ord>
+      <ccl>(ok=52 eller ok=52.4) og (univers* eller astrofysi*)</ccl>
       <kommentar>M&#229;ske kunstigt (umuligt?) at skelne mellem "universet" og "solsystemet" i litteraturen...?</kommentar>
       <hjaelpetekst></hjaelpetekst>
       <visundermenu>0</visundermenu>
@@ -14733,15 +15049,15 @@
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
         <term>
-          <ord>Kontinentaldrift</ord>
-          <ccl>pladetektonik</ccl>
+          <ord>Vulkaner og geysere</ord>
+          <ccl>ok=55.3 og (vulkan* eller geyser*)</ccl>
           <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
         <term>
-          <ord>Vulkaner og geysere</ord>
-          <ccl>ok=55.3 og (vulkan* eller geyser*)</ccl>
+          <ord>Kontinentaldrift</ord>
+          <ccl>pladetektonik</ccl>
           <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
@@ -14867,20 +15183,6 @@
       <hjaelpetekst></hjaelpetekst>
       <visundermenu>0</visundermenu>
       <term>
-        <ord>Charles Darwin</ord>
-        <ccl>(ok=56.5 eller ok=99.4) og em=darwin</ccl>
-        <kommentar>M&#229;ske ikke specielt interessant?</kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
-        <ord>Menneskets afstamning</ord>
-        <ccl>ok=59.1 og (afstamning* eller oprindelse* eller udvikling*)</ccl>
-        <kommentar></kommentar>
-        <hjaelpetekst>Antropologi</hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
         <ord>Arvehygiejne og racehygiejne</ord>
         <ccl>df=arvehygiejne</ccl>
         <kommentar></kommentar>
@@ -14907,6 +15209,20 @@
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
+      </term>
+      <term>
+        <ord>Charles Darwin</ord>
+        <ccl>(ok=56.5 eller ok=99.4) og em=darwin</ccl>
+        <kommentar>M&#229;ske ikke specielt interessant?</kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Menneskets afstamning</ord>
+        <ccl>ok=59.1 og (afstamning* eller oprindelse* eller udvikling*)</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst>Antropologi</hjaelpetekst>
+        <visundermenu>1</visundermenu>
       </term>
     </term>
     <term>
@@ -14957,13 +15273,6 @@
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
         <term>
-          <ord>Foderbr&#230;tter og redekasser</ord>
-          <ccl>em=(redekasser eller foderbr&#230;tter) eller ti=(redekas? eller foderbr&#230;t?)</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
           <ord>Fugle du ser i naturen</ord>
           <ccl>ok=58.83 og ti=(hav* eller *s&#248; eller mos* eller foder* )</ccl>
           <kommentar>Bedre overskrift efterlyses for fugle i have, ved foderbr&#230;t, eng, mose, hav osv</kommentar>
@@ -14991,6 +15300,13 @@
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
+        <term>
+          <ord>Foderbr&#230;tter og redekasser</ord>
+          <ccl>em=(redekasser eller foderbr&#230;tter) eller ti=(redekas? eller foderbr&#230;t?)</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
       </term>
       <term>
         <ord>Pattedyr</ord>
@@ -14998,6 +15314,27 @@
         <kommentar></kommentar>
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
+        <term>
+          <ord>Bj&#248;rne</ord>
+          <ccl>ok=58.95 og (bj&#248;rn? eller isbj&#248;rn? eller panda?)</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Elefanter</ord>
+          <ccl>em=elefanter og ok=58.98</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Ulve</ord>
+          <ccl>ok=58.95 og em=ulve</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
         <term>
           <ord>De store katte</ord>
           <ccl>ok=58.95 og ti=(kat* eller tig* eller l&#248;ve* eller gepard* eller leopard*)</ccl>
@@ -15029,27 +15366,6 @@
         <term>
           <ord>Aber</ord>
           <ccl>ok=58.99</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>Bj&#248;rne</ord>
-          <ccl>ok=58.95 og (bj&#248;rn? eller isbj&#248;rn? eller panda?)</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>Elefanter</ord>
-          <ccl>em=elefanter og ok=58.98</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>Ulve</ord>
-          <ccl>ok=58.95 og em=ulve</ccl>
           <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
@@ -15175,15 +15491,15 @@
         <visundermenu>1</visundermenu>
       </term>
       <term>
-        <ord>Vilde blomster</ord>
-        <ccl>(vilde blomster eller vilde planter) og ok=57*</ccl>
+        <ord>Danmarks planter</ord>
+        <ccl>ok=57.2 og (danmark eller dansk)</ccl>
         <kommentar></kommentar>
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
       </term>
       <term>
-        <ord>Danmarks planter</ord>
-        <ccl>ok=57.2 og (danmark eller dansk)</ccl>
+        <ord>Vilde blomster</ord>
+        <ccl>(vilde blomster eller vilde planter) og ok=57*</ccl>
         <kommentar></kommentar>
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
@@ -15259,30 +15575,9 @@
       <hjaelpetekst></hjaelpetekst>
       <visundermenu>1</visundermenu>
       <term>
-        <ord>B&#230;redygtig udvikling</ord>
-        <ccl>ok=50.1 og em=b&#230;redygtig udvikling</ccl>
-        <kommentar></kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
-        <ord>Biodiversitet</ord>
-        <ccl>em=biodiversitet</ccl>
-        <kommentar></kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
         <ord>Greenpeace, NOAH og andre milj&#248;organisationer</ord>
         <ccl>(em=milj&#248;organisationer) eller ti=(milj&#248;organi* eller naturfredningsfor* eller verdensnaturfon* eller wwf eller institut for milj&#248;vurdering)</ccl>
         <kommentar>Medtager en del serier fra Danmarks Naturfredningsforening, men det er vist ok</kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>0</visundermenu>
-      </term>
-      <term>
-        <ord>Gr&#248;nne regnskaber</ord>
-        <ccl>ok=69.8* og (regnskab* eller *regnskab) ikke fl=(amt* eller kommun*)</ccl>
-        <kommentar></kommentar>
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>0</visundermenu>
       </term>
@@ -15327,6 +15622,27 @@
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
+      </term>
+      <term>
+        <ord>Biodiversitet</ord>
+        <ccl>em=biodiversitet</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>B&#230;redygtig udvikling</ord>
+        <ccl>ok=50.1 og em=b&#230;redygtig udvikling</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Gr&#248;nne regnskaber</ord>
+        <ccl>ok=69.8* og (regnskab* eller *regnskab) ikke fl=(amt* eller kommun*)</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>0</visundermenu>
       </term>
     </term>
     <term>
@@ -15420,13 +15736,6 @@
       <hjaelpetekst></hjaelpetekst>
       <visundermenu>1</visundermenu>
       <term>
-        <ord>Lys og lamper</ord>
-        <ccl>dk=62.15</ccl>
-        <kommentar></kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
         <ord>Foto</ord>
         <ccl></ccl>
         <kommentar></kommentar>
@@ -15474,6 +15783,13 @@
             <visundermenu>1</visundermenu>
           </term>
         </term>
+      </term>
+      <term>
+        <ord>Lys og lamper</ord>
+        <ccl>dk=62.15</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
       </term>
       <term>
         <ord>Radio og hi-fi</ord>
@@ -15580,13 +15896,6 @@
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
         <term>
-          <ord>Vindkraft</ord>
-          <ccl>ok=62.28 og em=(vindm&#248;ller eller vindkraft)</ccl>
-          <kommentar>1298 poster (488 ma=b&#229;)</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
           <ord>Biomasse</ord>
           <ccl>ok=62.015 og biomasse*</ccl>
           <kommentar></kommentar>
@@ -15604,6 +15913,13 @@
           <ord>Solvarme</ord>
           <ccl>ok=62.0155 eller (ok=62.015 og sol?)</ccl>
           <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Vindkraft</ord>
+          <ccl>ok=62.28 og em=(vindm&#248;ller eller vindkraft)</ccl>
+          <kommentar>1298 poster (488 ma=b&#229;)</kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
@@ -15646,6 +15962,13 @@
       <term>
         <ord>GPS</ord>
         <ccl>(em=gps eller ti=gps) og ok=(40? eller 62? eller 65?)</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Skriv emne</ord>
+        <ccl></ccl>
         <kommentar></kommentar>
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
@@ -15734,13 +16057,6 @@
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
         <term>
-          <ord>Elbiler</ord>
-          <ccl>df=elbiler</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
           <ord>Bilmotorer</ord>
           <ccl>ok=62.24 eller (ok=62.722* og (ti=(motor* eller *motor eller *motorer eller *motoren) eller em=*motorer) ikke (forurening*))</ccl>
           <kommentar></kommentar>
@@ -15748,7 +16064,7 @@
           <visundermenu>1</visundermenu>
         </term>
         <term>
-          <ord>Gamle biler</ord>
+          <ord>Gamle biler - veteranbiler</ord>
           <ccl>dk=62.72209</ccl>
           <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
@@ -15757,6 +16073,13 @@
         <term>
           <ord>K&#248;b af ny eller brugt bil</ord>
           <ccl>ok=62.722 og (ti=(k&#248;b* eller *k&#248;b eller brugt*) eller em=(brugt* eller *handel))</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Elbiler</ord>
+          <ccl>df=elbiler</ccl>
           <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
@@ -15860,20 +16183,6 @@
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
         <term>
-          <ord>Fyr, signaler og s&#248;m&#230;rker</ord>
-          <ccl>dk=65.95 eller (dk=65.9* og (signal* eller s&#248;m&#230;rke*))</ccl>
-          <kommentar>85 poster</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>Vikingeskibe</ord>
-          <ccl>ok=62.8 og vikinge?</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
           <ord>Navigation og s&#248;mandskab</ord>
           <ccl>ok=(65.92 eller 65.91) ikke (knob eller tov* eller opgave*)</ccl>
           <kommentar>256 poster</kommentar>
@@ -15883,6 +16192,20 @@
         <term>
           <ord>Sejlskibe</ord>
           <ccl>ok=62.8 og em=sejl?</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Fyr, signaler og s&#248;m&#230;rker</ord>
+          <ccl>dk=65.95 eller (dk=65.9* og (signal* eller s&#248;m&#230;rke*))</ccl>
+          <kommentar>85 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Vikingeskibe</ord>
+          <ccl>ok=62.8 og vikinge?</ccl>
           <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
@@ -16043,6 +16366,27 @@
       <hjaelpetekst></hjaelpetekst>
       <visundermenu>1</visundermenu>
       <term>
+        <ord>Det fysiske verdensbillede</ord>
+        <ccl>em=fysiske verdensbillede</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Skriv emne</ord>
+        <ccl></ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Termodynamik</ord>
+        <ccl>(em=termodynamik eller em=varmel&#230;re) og ok=53?</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
         <ord>Atomfysik</ord>
         <ccl>ok=53.22 og atom? ikke Ris&#248;-R</ccl>
         <kommentar>M&#229;ske kan Ris&#248;-R udskilles mere elegant?</kommentar>
@@ -16086,6 +16430,13 @@
         <term>
           <ord>Organiske stoffer</ord>
           <ccl>ok=54.5</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Grundstoffer og det periodiske system</ord>
+          <ccl>em=grundstof? og ok=(54? eller 53?)</ccl>
           <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
@@ -16174,6 +16525,13 @@
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
+        <term>
+          <ord>Laboratorieteknik</ord>
+          <ccl>em=laboratori? og ok=(53? eller 54?)</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
       </term>
     </term>
     <term>
@@ -16249,13 +16607,6 @@
       <hjaelpetekst></hjaelpetekst>
       <visundermenu>1</visundermenu>
       <term>
-        <ord>Dyreetik og dyrevelf&#230;rd</ord>
-        <ccl>ok=15.9 eller ((ok=61.607 eller 63.6?) og em=etik)</ccl>
-        <kommentar></kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
         <ord>Det gode, det onde og d&#248;dssynderne</ord>
         <ccl>(ok=15 eller ok=16) og (d&#248;dssynd? eller onde eller gode)</ccl>
         <kommentar></kommentar>
@@ -16286,6 +16637,20 @@
       <term>
         <ord>N&#230;stek&#230;rlighed</ord>
         <ccl>em=n&#230;stek&#230;rlighed eller (ok=24.1 og n&#230;stek&#230;rlighed)</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Dyreetik og dyrevelf&#230;rd</ord>
+        <ccl>ok=15.9 eller ((ok=61.607 eller 63.6?) og em=etik)</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Dyrefors&#248;g</ord>
+        <ccl>ke=dyrefors&#248;g</ccl>
         <kommentar></kommentar>
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
@@ -16740,6 +17105,13 @@
         <visundermenu>1</visundermenu>
       </term>
       <term>
+        <ord>Numerologi</ord>
+        <ccl>em=numerologi</ccl>
+        <kommentar>26 hits</kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
         <ord>Astrologi</ord>
         <ccl>ok=14.1 og (horoskop? eller astrolog?) ikke kinesisk?</ccl>
         <kommentar></kommentar>
@@ -16799,6 +17171,13 @@
         <ord>Hekse</ord>
         <ccl>em=hekse ikke dk=(7? eller sk)</ccl>
         <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Heksekunst og magi</ord>
+        <ccl>(em=heksekunst eller em=magi) og dk=14.1</ccl>
+        <kommentar>43 hits</kommentar>
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
       </term>
@@ -17013,7 +17392,7 @@
       <hjaelpetekst></hjaelpetekst>
       <visundermenu>1</visundermenu>
       <term>
-        <ord>Dogmatik/id&#233;historie</ord>
+        <ord>Dogmatik/id&#233;historie - teologi</ord>
         <ccl>ok=23</ccl>
         <kommentar></kommentar>
         <hjaelpetekst></hjaelpetekst>
@@ -17146,15 +17525,15 @@
         </term>
       </term>
       <term>
-        <ord>Kristendom og kultur</ord>
-        <ccl>ok=20.1 og kultur?</ccl>
+        <ord>Om Bibelen</ord>
+        <ccl>ok=22 og df=bibelen ikke ma=pe</ccl>
         <kommentar></kommentar>
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
       </term>
       <term>
-        <ord>Om Bibelen</ord>
-        <ccl>ok=22 og df=bibelen ikke ma=pe</ccl>
+        <ord>Kristendom og kultur</ord>
+        <ccl>ok=20.1 og kultur?</ccl>
         <kommentar></kommentar>
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
@@ -17165,13 +17544,6 @@
         <kommentar></kommentar>
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
-        <term>
-          <ord>Adventister</ord>
-          <ccl>dk=28.93</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
         <term>
           <ord>Baptister</ord>
           <ccl>ok=28.62</ccl>
@@ -17248,6 +17620,13 @@
             <hjaelpetekst></hjaelpetekst>
             <visundermenu>1</visundermenu>
           </term>
+        </term>
+        <term>
+          <ord>Adventister</ord>
+          <ccl>dk=28.93</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
         </term>
         <term>
           <ord>Metodister</ord>
@@ -17531,13 +17910,6 @@
       <hjaelpetekst></hjaelpetekst>
       <visundermenu>1</visundermenu>
       <term>
-        <ord>Filmpriser og filmfestivaler</ord>
-        <ccl>em=filmpriser eller em=filmfestivaler ikke dk=sk</ccl>
-        <kommentar></kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
         <ord>Film- og videoproduktion</ord>
         <ccl>dk=77.61? og em=(film? eller video?)</ccl>
         <kommentar>44 poster</kommentar>
@@ -17692,6 +18064,13 @@
         </term>
       </term>
       <term>
+        <ord>Filmpriser og filmfestivaler</ord>
+        <ccl>em=filmpriser eller em=filmfestivaler ikke dk=sk</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
         <ord>Biografer: bygninger og historie</ord>
         <ccl>dk=77.68 eller dk=77.67</ccl>
         <kommentar>43 poster</kommentar>
@@ -17810,6 +18189,265 @@
       <kommentar>29 poster</kommentar>
       <hjaelpetekst></hjaelpetekst>
       <visundermenu>1</visundermenu>
+      <term>
+        <ord>Grafisk kunst</ord>
+        <ccl></ccl>
+        <kommentar>ingen ccl laves</kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+        <term>
+          <ord>Grafikkens historie</ord>
+          <ccl>dk=75.09? og em=(grafik eller illustration? eller ?illustration eller grafisk) ikke dk=sk</ccl>
+          <kommentar>54 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Grafisk kunstteknik</ord>
+          <ccl>dk=(75.01 eller  75.1 eller 75.2 eller 75.3) og em=(grafisk eller ?illustration eller illustration?)</ccl>
+          <kommentar>31 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Plakatkunst, brugsgrafik, postkort, etiketter mv.</ord>
+          <ccl>em=plakatkunst</ccl>
+          <kommentar>156 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+      </term>
+      <term>
+        <ord>Installationskunst, eksperimental- og konceptkunst</ord>
+        <ccl>dk=70.02? og em=(?kunst eller kunst?) eller (ke=installationskunst)  ikke (em=video? eller em=computer?) ikke em=dansk kunst</ccl>
+        <kommentar>95 poster</kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>0</visundermenu>
+        <term>
+          <ord>Dansk installationskunst</ord>
+          <ccl>dk=70.02? og em=(?kunst eller kunst?) eller (ke=installationskunst)  ikke (em=video? eller em=computer?) og em=dansk kunst</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+      </term>
+      <term>
+        <ord>Kunstens ismer</ord>
+        <ccl>dk=70.15 eller ((dk=73? eller dk=74? og em=(?isme eller ?ismen eller ?stil ikke tekstil?)))</ccl>
+        <kommentar>85 poster</kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+        <term>
+          <ord>Ekspressionisme</ord>
+          <ccl>em=ekspressionisme ikke dk=8?  ikke dk=sk ikke dk=78?</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Ren&#230;ssance</ord>
+          <ccl>dk=7? og em=ren&#230;ssance ikke dk=sk</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Impressionisme</ord>
+          <ccl>impressionisme og ok=(70.8 eller 70.9? eller 72 eller 73? eller 74? eller 99.4)</ccl>
+          <kommentar>37 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Surrealisme</ord>
+          <ccl>em=surrealisme ikke dk=8? ikke dk=sk</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Symbolisme</ord>
+          <ccl>em=symbolisme ikke dk=8? ikke dk=sk</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+      </term>
+      <term>
+        <ord>Kunsthistorie</ord>
+        <ccl>ok=70.9 ikke arbejdspapir?</ccl>
+        <kommentar>82 poster</kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+        <term>
+          <ord>19. &#229;rhundrede (1800-1899)</ord>
+          <ccl>dk=(70.916 eller 73.16 eller 74.16 eller 74.916 eller 75.0916)</ccl>
+          <kommentar>40 poster (alle kunstarter)&#13;&#10;dk=70.916 18 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+          <term>
+            <ord>Billedv&#230;rker af enkelte kunstnere</ord>
+            <ccl>(ok=72 og lke=18?) ikke em=dansk</ccl>
+            <kommentar>18 poster</kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>Dansk kunst</ord>
+            <ccl>dk=70.96 eller (ok=72 og em =dansk kunst) og lke=18?</ccl>
+            <kommentar>43 poster</kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+            <term>
+              <ord>Guldalderen</ord>
+              <ccl>em=guldalderen og dk=7?</ccl>
+              <kommentar></kommentar>
+              <hjaelpetekst></hjaelpetekst>
+              <visundermenu>1</visundermenu>
+            </term>
+          </term>
+        </term>
+        <term>
+          <ord>20. &#229;rhundrede (1900-1999)</ord>
+          <ccl>dk=70.917</ccl>
+          <kommentar>184 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+          <term>
+            <ord>Billedv&#230;rker af enkelte kunstnere</ord>
+            <ccl>ok=72 og lke=19? ikke em=dansk</ccl>
+            <kommentar>89 poster</kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>Dansk kunst</ord>
+            <ccl>dk=70.96 og lke=19?</ccl>
+            <kommentar>223 poster</kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+            <term>
+              <ord>Billedv&#230;rker af enkelte kunstnere</ord>
+              <ccl>ok=72 og em=dansk kunst og lke=19?</ccl>
+              <kommentar>130 poster</kommentar>
+              <hjaelpetekst></hjaelpetekst>
+              <visundermenu>1</visundermenu>
+            </term>
+          </term>
+        </term>
+        <term>
+          <ord>21. &#229;rhundrede (2000-2099)</ord>
+          <ccl>dk=70.918</ccl>
+          <kommentar>7 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+          <term>
+            <ord>Billedv&#230;rker af enkelte kunstnere</ord>
+            <ccl>dk=72 og lke=2000-2009 og em=kunst ikke em=dansk</ccl>
+            <kommentar>3 poster</kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>Dansk kunst</ord>
+            <ccl>dk=70.96 og lke=20?</ccl>
+            <kommentar>33 poster</kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+            <term>
+              <ord>Billedv&#230;rker af enkelte kunstere</ord>
+              <ccl>dk=72? og em=2000? og em=dansk kunst</ccl>
+              <kommentar>9 poster</kommentar>
+              <hjaelpetekst></hjaelpetekst>
+              <visundermenu>1</visundermenu>
+            </term>
+          </term>
+        </term>
+        <term>
+          <ord>Middelalderen  (ca. 500-1500)</ord>
+          <ccl>dk=(70.912 eller 73.12 eller 74.12 eller 74.912 eller 75.0912)</ccl>
+          <kommentar>23 poster&#13;&#10;dk=70.912 (17 poster)</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Ren&#230;ssancen (ca. 1400-1600)</ord>
+          <ccl>dk=(70.913 eller 73.13 eller 74.13 eller 74.913 eller 75.0913)</ccl>
+          <kommentar>15 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Barok, rokoko, nyklassicisme   (ca. 1500-1800)</ord>
+          <ccl>dk=(70.914 eller 73.14 eller 74.14 eller 74.914 eller 75.0914)</ccl>
+          <kommentar>41 poster  (alle kunstarter pga de f&#229; titler!)&#13;&#10;dk=70.914   (17 poster)</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+      </term>
+      <term>
+        <ord>Billedanalyse</ord>
+        <ccl>dk=70? og em=billedanalyse</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Kunstmuseer og kunstsamlinger</ord>
+        <ccl>dk=70.8? og (em=kunst? eller em=?kunst) ikke dk=70.86</ccl>
+        <kommentar>166 poster</kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>0</visundermenu>
+        <term>
+          <ord>Danske kunstmuseer og kunstsamlinger</ord>
+          <ccl>dk=70.86 og (em=kunst? eller em=?kunst)</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+          <term>
+            <ord>Aros</ord>
+            <ccl>dk=70.86 og (em=kunst? eller em=?kunst) og em=(aros eller aarhus kunstmuseum)</ccl>
+            <kommentar></kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>Louisiana</ord>
+            <ccl>dk=70.86 og (em=kunst? eller em=?kunst) og em=louisiana</ccl>
+            <kommentar></kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>Ny Carlsberg Glyptotek</ord>
+            <ccl>dk=70.86 og (em=kunst? eller em=?kunst) og em=ny carlsberg glyptotek</ccl>
+            <kommentar></kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>Statens Museum for Kunst</ord>
+            <ccl>dk=70.86 og (em=kunst? eller em=?kunst) og em=statens museum for kunst</ccl>
+            <kommentar></kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>Thorvaldsens Museum</ord>
+            <ccl>dk=70.86 og (em=kunst? eller em=?kunst) og em=thorvaldsens museum</ccl>
+            <kommentar></kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+          <term>
+            <ord>Trapholt</ord>
+            <ccl>dk=70.86 og (em=kunst? eller em=?kunst) og em=trapholt</ccl>
+            <kommentar></kommentar>
+            <hjaelpetekst></hjaelpetekst>
+            <visundermenu>1</visundermenu>
+          </term>
+        </term>
+      </term>
       <term>
         <ord>Kunstteknik</ord>
         <ccl>dk=(70.08 eller 73.01 eller 74.01 eller 74.901) og em=(?teknik eller ?maleri eller ?tegning eller tegn?) ikke tegneprogram?</ccl>
@@ -18062,13 +18700,6 @@
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
         <term>
-          <ord>Skulpturens materialer, metoder og teknik</ord>
-          <ccl>dk=73.01</ccl>
-          <kommentar>25 poster</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
           <ord>Udenlandsk skulptur</ord>
           <ccl>ke=skulptur og dk=(73.2? eller 73.3? eller 73.4? eller 73.5? eller 73.7? eller 73.8?)</ccl>
           <kommentar>33 poster</kommentar>
@@ -18146,6 +18777,13 @@
           </term>
         </term>
         <term>
+          <ord>Skulpturens materialer, metoder og teknik</ord>
+          <ccl>dk=73.01</ccl>
+          <kommentar>25 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
           <ord>Dansk skulptur 1800-1899</ord>
           <ccl>dk=73.6 og lke=18? eller  (ok=72 og em=dansk skulptur og lke=18?)</ccl>
           <kommentar>38 poster</kommentar>
@@ -18217,258 +18855,6 @@
         <visundermenu>1</visundermenu>
       </term>
       <term>
-        <ord>Billedanalyse</ord>
-        <ccl>dk=70? og em=billedanalyse</ccl>
-        <kommentar></kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
-        <ord>Grafisk kunst</ord>
-        <ccl></ccl>
-        <kommentar>ingen ccl laves</kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-        <term>
-          <ord>Grafikkens historie</ord>
-          <ccl>dk=75.09? og em=(grafik eller illustration? eller ?illustration eller grafisk) ikke dk=sk</ccl>
-          <kommentar>54 poster</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>Grafisk kunstteknik</ord>
-          <ccl>dk=(75.01 eller  75.1 eller 75.2 eller 75.3) og em=(grafisk eller ?illustration eller illustration?)</ccl>
-          <kommentar>31 poster</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>Plakatkunst, brugsgrafik, postkort, etiketter mv.</ord>
-          <ccl>em=plakatkunst</ccl>
-          <kommentar>156 poster</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-      </term>
-      <term>
-        <ord>Installationskunst, eksperimental- og konceptkunst</ord>
-        <ccl>dk=70.02? og em=(?kunst eller kunst?) eller (ke=installationskunst)  ikke (em=video? eller em=computer?) ikke em=dansk kunst</ccl>
-        <kommentar>95 poster</kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>0</visundermenu>
-        <term>
-          <ord>Dansk installationskunst</ord>
-          <ccl>dk=70.02? og em=(?kunst eller kunst?) eller (ke=installationskunst)  ikke (em=video? eller em=computer?) og em=dansk kunst</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-      </term>
-      <term>
-        <ord>Kunstens ismer</ord>
-        <ccl>dk=70.15 eller ((dk=73? eller dk=74? og em=(?isme eller ?ismen eller ?stil ikke tekstil?)))</ccl>
-        <kommentar>85 poster</kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-        <term>
-          <ord>Ekspressionisme</ord>
-          <ccl>em=ekspressionisme ikke dk=8?  ikke dk=sk ikke dk=78?</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>Impressionisme</ord>
-          <ccl>impressionisme og ok=(70.8 eller 70.9? eller 72 eller 73? eller 74? eller 99.4)</ccl>
-          <kommentar>37 poster</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>Surrealisme</ord>
-          <ccl>em=surrealisme ikke dk=8? ikke dk=sk</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>Symbolisme</ord>
-          <ccl>em=symbolisme ikke dk=8? ikke dk=sk</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-      </term>
-      <term>
-        <ord>Kunsthistorie</ord>
-        <ccl>ok=70.9 ikke arbejdspapir?</ccl>
-        <kommentar>82 poster</kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-        <term>
-          <ord>19. &#229;rhundrede (1800-1899)</ord>
-          <ccl>dk=(70.916 eller 73.16 eller 74.16 eller 74.916 eller 75.0916)</ccl>
-          <kommentar>40 poster (alle kunstarter)&#13;&#10;dk=70.916 18 poster</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-          <term>
-            <ord>Billedv&#230;rker af enkelte kunstnere</ord>
-            <ccl>(ok=72 og lke=18?) ikke em=dansk</ccl>
-            <kommentar>18 poster</kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-          <term>
-            <ord>Dansk kunst</ord>
-            <ccl>dk=70.96 eller (ok=72 og em =dansk kunst) og lke=18?</ccl>
-            <kommentar>43 poster</kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-            <term>
-              <ord>Guldalderen</ord>
-              <ccl>em=guldalderen og dk=7?</ccl>
-              <kommentar></kommentar>
-              <hjaelpetekst></hjaelpetekst>
-              <visundermenu>1</visundermenu>
-            </term>
-          </term>
-        </term>
-        <term>
-          <ord>20. &#229;rhundrede (1900-1999)</ord>
-          <ccl>dk=70.917</ccl>
-          <kommentar>184 poster</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-          <term>
-            <ord>Billedv&#230;rker af enkelte kunstnere</ord>
-            <ccl>ok=72 og lke=19? ikke em=dansk</ccl>
-            <kommentar>89 poster</kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-          <term>
-            <ord>Dansk kunst</ord>
-            <ccl>dk=70.96 og lke=19?</ccl>
-            <kommentar>223 poster</kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-            <term>
-              <ord>Billedv&#230;rker af enkelte kunstnere</ord>
-              <ccl>ok=72 og em=dansk kunst og lke=19?</ccl>
-              <kommentar>130 poster</kommentar>
-              <hjaelpetekst></hjaelpetekst>
-              <visundermenu>1</visundermenu>
-            </term>
-          </term>
-        </term>
-        <term>
-          <ord>21. &#229;rhundrede (2000-2099)</ord>
-          <ccl>dk=70.918</ccl>
-          <kommentar>7 poster</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-          <term>
-            <ord>Billedv&#230;rker af enkelte kunstnere</ord>
-            <ccl>dk=72 og lke=2000-2009 og em=kunst ikke em=dansk</ccl>
-            <kommentar>3 poster</kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-          <term>
-            <ord>Dansk kunst</ord>
-            <ccl>dk=70.96 og lke=20?</ccl>
-            <kommentar>33 poster</kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-            <term>
-              <ord>Billedv&#230;rker af enkelte kunstere</ord>
-              <ccl>dk=72? og em=2000? og em=dansk kunst</ccl>
-              <kommentar>9 poster</kommentar>
-              <hjaelpetekst></hjaelpetekst>
-              <visundermenu>1</visundermenu>
-            </term>
-          </term>
-        </term>
-        <term>
-          <ord>Middelalderen  (ca. 500-1500)</ord>
-          <ccl>dk=(70.912 eller 73.12 eller 74.12 eller 74.912 eller 75.0912)</ccl>
-          <kommentar>23 poster&#13;&#10;dk=70.912 (17 poster)</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>Ren&#230;ssancen (ca. 1400-1600)</ord>
-          <ccl>dk=(70.913 eller 73.13 eller 74.13 eller 74.913 eller 75.0913)</ccl>
-          <kommentar>15 poster</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>Barok, rokoko, nyklassicisme   (ca. 1500-1800)</ord>
-          <ccl>dk=(70.914 eller 73.14 eller 74.14 eller 74.914 eller 75.0914)</ccl>
-          <kommentar>41 poster  (alle kunstarter pga de f&#229; titler!)&#13;&#10;dk=70.914   (17 poster)</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-      </term>
-      <term>
-        <ord>Kunstmuseer og kunstsamlinger</ord>
-        <ccl>dk=70.8? og (em=kunst? eller em=?kunst) ikke dk=70.86</ccl>
-        <kommentar>166 poster</kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>0</visundermenu>
-        <term>
-          <ord>Danske kunstmuseer og kunstsamlinger</ord>
-          <ccl>dk=70.86 og (em=kunst? eller em=?kunst)</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-          <term>
-            <ord>Aros</ord>
-            <ccl>dk=70.86 og (em=kunst? eller em=?kunst) og em=(aros eller aarhus kunstmuseum)</ccl>
-            <kommentar></kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-          <term>
-            <ord>Louisiana</ord>
-            <ccl>dk=70.86 og (em=kunst? eller em=?kunst) og em=louisiana</ccl>
-            <kommentar></kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-          <term>
-            <ord>Ny Carlsberg Glyptotek</ord>
-            <ccl>dk=70.86 og (em=kunst? eller em=?kunst) og em=ny carlsberg glyptotek</ccl>
-            <kommentar></kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-          <term>
-            <ord>Statens Museum for Kunst</ord>
-            <ccl>dk=70.86 og (em=kunst? eller em=?kunst) og em=statens museum for kunst</ccl>
-            <kommentar></kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-          <term>
-            <ord>Thorvaldsens Museum</ord>
-            <ccl>dk=70.86 og (em=kunst? eller em=?kunst) og em=thorvaldsens museum</ccl>
-            <kommentar></kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-          <term>
-            <ord>Trapholt</ord>
-            <ccl>dk=70.86 og (em=kunst? eller em=?kunst) og em=trapholt</ccl>
-            <kommentar></kommentar>
-            <hjaelpetekst></hjaelpetekst>
-            <visundermenu>1</visundermenu>
-          </term>
-        </term>
-      </term>
-      <term>
         <ord>Foreninger,  udstillinger og handel</ord>
         <ccl>dk=70.6? og (em=kunst? eller em=?kunst)</ccl>
         <kommentar>81 poster</kommentar>
@@ -18489,6 +18875,20 @@
       <kommentar>44 poster</kommentar>
       <hjaelpetekst></hjaelpetekst>
       <visundermenu>1</visundermenu>
+      <term>
+        <ord>Antikviteter</ord>
+        <ccl>em=antikviteter</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>Dansk design</ord>
+        <ccl>em=dansk design</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
       <term>
         <ord>Glaskunst</ord>
         <ccl>dk=76.25 eller dk=66.21 og em=glas?</ccl>
@@ -18539,20 +18939,6 @@
         <visundermenu>1</visundermenu>
       </term>
       <term>
-        <ord>Antikviteter</ord>
-        <ccl>em=antikviteter</ccl>
-        <kommentar></kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
-        <ord>Dansk design</ord>
-        <ccl>em=dansk design</ccl>
-        <kommentar></kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
-      <term>
         <ord>Industriel design</ord>
         <ccl>em=industriel design</ccl>
         <kommentar></kommentar>
@@ -18566,41 +18952,6 @@
       <kommentar></kommentar>
       <hjaelpetekst></hjaelpetekst>
       <visundermenu>1</visundermenu>
-      <term>
-        <ord>B&#248;ger og bogh&#229;ndv&#230;rk</ord>
-        <ccl>ok=00 og em=(b&#248;ger eller bogfremstilling eller bogtilrettel&#230;ggelse)</ccl>
-        <kommentar></kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-        <term>
-          <ord>Bogbinding</ord>
-          <ccl>ok=00.3 og kk=(sfd? eller bkm?)</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>E-b&#248;ger</ord>
-          <ccl>em=e-b&#248;ger</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>Forlag og bogudgivelse</ord>
-          <ccl>ok=00.4 og kk=(sfd? eller bkm?)</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>H&#229;ndskrifter - mest om de islandske</ord>
-          <ccl>ok=00.08 og kk=(sfd? eller bkm?)</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-      </term>
       <term>
         <ord>B&#248;rne- og ungdomslitteraturs historie</ord>
         <ccl>ok=81.01 ikke (em=l&#230;sevaner ikke litteraturanalyser)</ccl>
@@ -18635,13 +18986,6 @@
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
-      </term>
-      <term>
-        <ord>Billedanalyse</ord>
-        <ccl>dk=8? og em=billedanalyse</ccl>
-        <kommentar></kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
       </term>
       <term>
         <ord>Emner og genrer i litteraturen</ord>
@@ -19015,6 +19359,48 @@
         </term>
       </term>
       <term>
+        <ord>Billedanalyse</ord>
+        <ccl>dk=8? og em=billedanalyse</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
+        <ord>B&#248;ger og bogh&#229;ndv&#230;rk</ord>
+        <ccl>ok=00 og em=(b&#248;ger eller bogfremstilling eller bogtilrettel&#230;ggelse)</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+        <term>
+          <ord>Bogbinding</ord>
+          <ccl>ok=00.3 og kk=(sfd? eller bkm?)</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>E-b&#248;ger</ord>
+          <ccl>em=e-b&#248;ger</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Forlag og bogudgivelse</ord>
+          <ccl>ok=00.4 og kk=(sfd? eller bkm?)</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>H&#229;ndskrifter - mest om de islandske</ord>
+          <ccl>ok=00.08 og kk=(sfd? eller bkm?)</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+      </term>
+      <term>
         <ord>Skrivekunst og fort&#230;lleteknik</ord>
         <ccl>dk=80.8 og (em=fort&#230;lleteknik eller em=skrivekunst)</ccl>
         <kommentar>45 poster</kommentar>
@@ -19104,16 +19490,16 @@
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
           <term>
-            <ord>Enkelte rockmusikere</ord>
-            <ccl>dk=78.9064 og em=biografier</ccl>
-            <kommentar>449 poster</kommentar>
+            <ord>Rockgrupper</ord>
+            <ccl>ok=78.9061 og em=biografier</ccl>
+            <kommentar>122 poster</kommentar>
             <hjaelpetekst></hjaelpetekst>
             <visundermenu>1</visundermenu>
           </term>
           <term>
-            <ord>Rockgrupper</ord>
-            <ccl>ok=78.9061 og em=biografier</ccl>
-            <kommentar>122 poster</kommentar>
+            <ord>Enkelte rockmusikere</ord>
+            <ccl>dk=78.9064 og em=biografier</ccl>
+            <kommentar>449 poster</kommentar>
             <hjaelpetekst></hjaelpetekst>
             <visundermenu>1</visundermenu>
           </term>
@@ -19462,13 +19848,6 @@
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
         <term>
-          <ord>Direktion og korledelse</ord>
-          <ccl>dk=78.18 eller em=direktion eller em=korledelse</ccl>
-          <kommentar>180 poster</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
           <ord>Forml&#230;re</ord>
           <ccl>ok=78.16</ccl>
           <kommentar>36poster</kommentar>
@@ -19490,6 +19869,13 @@
           <visundermenu>1</visundermenu>
         </term>
         <term>
+          <ord>Komposition og arrangement</ord>
+          <ccl>ok=78.15?</ccl>
+          <kommentar>185 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
           <ord>Nodel&#230;re</ord>
           <ccl>ok=78.11</ccl>
           <kommentar>103 poster</kommentar>
@@ -19504,23 +19890,9 @@
           <visundermenu>1</visundermenu>
         </term>
         <term>
-          <ord>Melodil&#230;re</ord>
-          <ccl>em=melodil&#230;re</ccl>
-          <kommentar></kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>Komposition og arrangement</ord>
-          <ccl>ok=78.15?</ccl>
-          <kommentar>185 poster</kommentar>
-          <hjaelpetekst></hjaelpetekst>
-          <visundermenu>1</visundermenu>
-        </term>
-        <term>
-          <ord>Rytmel&#230;re</ord>
-          <ccl>em=rytmel&#230;re</ccl>
-          <kommentar>58 poster</kommentar>
+          <ord>Direktion og korledelse</ord>
+          <ccl>dk=78.18 eller em=direktion eller em=korledelse</ccl>
+          <kommentar>180 poster</kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
@@ -19528,6 +19900,20 @@
           <ord>Improvisation</ord>
           <ccl>ok=78.147 eller (dk=78? og em=improvisation)</ccl>
           <kommentar>250 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Melodil&#230;re</ord>
+          <ccl>em=melodil&#230;re</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Rytmel&#230;re</ord>
+          <ccl>em=rytmel&#230;re</ccl>
+          <kommentar>58 poster</kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
@@ -20192,6 +20578,13 @@
         <visundermenu>1</visundermenu>
       </term>
       <term>
+        <ord>Urban fantasy</ord>
+        <ccl>em=urban fantasy</ccl>
+        <kommentar></kommentar>
+        <hjaelpetekst></hjaelpetekst>
+        <visundermenu>1</visundermenu>
+      </term>
+      <term>
         <ord>Forelskelse, sex, k&#230;rlighed...</ord>
         <ccl>ds=unge og ds=(forelskelse eller  k&#230;rlighed eller erotik eller sex) og ma=b&#229;</ccl>
         <kommentar></kommentar>
@@ -20328,13 +20721,6 @@
       <kommentar></kommentar>
       <hjaelpetekst></hjaelpetekst>
       <visundermenu>1</visundermenu>
-      <term>
-        <ord>Litteratur p&#229; indvandrersprog</ord>
-        <ccl></ccl>
-        <kommentar></kommentar>
-        <hjaelpetekst></hjaelpetekst>
-        <visundermenu>1</visundermenu>
-      </term>
       <term>
         <ord>Biografiske romaner</ord>
         <ccl></ccl>
@@ -21614,6 +22000,20 @@
               </term>
             </term>
             <term>
+              <ord>King. Stephen</ord>
+              <ccl></ccl>
+              <kommentar></kommentar>
+              <hjaelpetekst></hjaelpetekst>
+              <visundermenu>1</visundermenu>
+              <term>
+                <ord>Bill Hodges-serien</ord>
+                <ccl>fo=king, stephen og no=krimiserien med: bill rodgers</ccl>
+                <kommentar></kommentar>
+                <hjaelpetekst></hjaelpetekst>
+                <visundermenu>1</visundermenu>
+              </term>
+            </term>
+            <term>
               <ord>Lawrence, Margaret</ord>
               <ccl></ccl>
               <kommentar></kommentar>
@@ -22041,6 +22441,20 @@
               </term>
             </term>
             <term>
+              <ord>Dalgaard, Lotte</ord>
+              <ccl></ccl>
+              <kommentar></kommentar>
+              <hjaelpetekst></hjaelpetekst>
+              <visundermenu>1</visundermenu>
+              <term>
+                <ord>Line Lyng-serien</ord>
+                <ccl>fo=dalg&#229;rd lotte og no=krimiserien med: line lyng</ccl>
+                <kommentar></kommentar>
+                <hjaelpetekst></hjaelpetekst>
+                <visundermenu>1</visundermenu>
+              </term>
+            </term>
+            <term>
               <ord>Dorph, Christian</ord>
               <ccl></ccl>
               <kommentar></kommentar>
@@ -22231,6 +22645,20 @@
               <term>
                 <ord>Morten Krag-serien</ord>
                 <ccl>fo=harvig, steen og no=krimiserien med: morten krag</ccl>
+                <kommentar></kommentar>
+                <hjaelpetekst></hjaelpetekst>
+                <visundermenu>1</visundermenu>
+              </term>
+            </term>
+            <term>
+              <ord>Hastrup, Julie</ord>
+              <ccl></ccl>
+              <kommentar></kommentar>
+              <hjaelpetekst></hjaelpetekst>
+              <visundermenu>1</visundermenu>
+              <term>
+                <ord>Rebekka Holm-serien</ord>
+                <ccl>fo=hastrup julie og no=krimiserien med: rebekka holm</ccl>
                 <kommentar></kommentar>
                 <hjaelpetekst></hjaelpetekst>
                 <visundermenu>1</visundermenu>
@@ -22447,6 +22875,20 @@
               </term>
             </term>
             <term>
+              <ord>Kazinski, A. J.</ord>
+              <ccl></ccl>
+              <kommentar></kommentar>
+              <hjaelpetekst></hjaelpetekst>
+              <visundermenu>1</visundermenu>
+              <term>
+                <ord>Niels Bentzon-serien</ord>
+                <ccl>fo=kazinski a j og no=krimiserien med: niels bentzon</ccl>
+                <kommentar></kommentar>
+                <hjaelpetekst></hjaelpetekst>
+                <visundermenu>1</visundermenu>
+              </term>
+            </term>
+            <term>
               <ord>Kj&#230;degaard, Lars</ord>
               <ccl></ccl>
               <kommentar></kommentar>
@@ -22455,6 +22897,20 @@
               <term>
                 <ord>Anita Hvid og Thor Belling-serien</ord>
                 <ccl>fo=kj&#230;deg&#229;rd, lars og no=krimiserien med:  Anita Hvid og Thor Belling</ccl>
+                <kommentar></kommentar>
+                <hjaelpetekst></hjaelpetekst>
+                <visundermenu>1</visundermenu>
+              </term>
+            </term>
+            <term>
+              <ord>Klostergaard, Louis</ord>
+              <ccl></ccl>
+              <kommentar></kommentar>
+              <hjaelpetekst></hjaelpetekst>
+              <visundermenu>1</visundermenu>
+              <term>
+                <ord>Pieter Martins-serien</ord>
+                <ccl>fo=klosterg&#229;rd louis og no=krimiserien med: pieter martins</ccl>
                 <kommentar></kommentar>
                 <hjaelpetekst></hjaelpetekst>
                 <visundermenu>1</visundermenu>
@@ -22804,6 +23260,20 @@
               </term>
             </term>
             <term>
+              <ord>Theils, Lone</ord>
+              <ccl></ccl>
+              <kommentar></kommentar>
+              <hjaelpetekst></hjaelpetekst>
+              <visundermenu>1</visundermenu>
+              <term>
+                <ord>Nora Sand-serien</ord>
+                <ccl>fo=theils lone og no=krimiserien med: nora sand</ccl>
+                <kommentar></kommentar>
+                <hjaelpetekst></hjaelpetekst>
+                <visundermenu>1</visundermenu>
+              </term>
+            </term>
+            <term>
               <ord>Thiele, Jan</ord>
               <ccl></ccl>
               <kommentar></kommentar>
@@ -22851,6 +23321,13 @@
               <kommentar></kommentar>
               <hjaelpetekst></hjaelpetekst>
               <visundermenu>1</visundermenu>
+              <term>
+                <ord>Christian Falk-serien</ord>
+                <ccl>fo=wolf inger og no=krimiserien med: christian falk</ccl>
+                <kommentar></kommentar>
+                <hjaelpetekst></hjaelpetekst>
+                <visundermenu>1</visundermenu>
+              </term>
               <term>
                 <ord>Daniel Trokic-serien</ord>
                 <ccl>fo=wolf inger og no=krimiserien med daniel trokic</ccl>
@@ -22945,6 +23422,20 @@
               <term>
                 <ord>John Cardinal og Lise Delorme-serien</ord>
                 <ccl>fo=blunt, giles og no=krimiserien med: john cardinal og lise delorme</ccl>
+                <kommentar></kommentar>
+                <hjaelpetekst></hjaelpetekst>
+                <visundermenu>1</visundermenu>
+              </term>
+            </term>
+            <term>
+              <ord>Bolton, S. J.</ord>
+              <ccl></ccl>
+              <kommentar></kommentar>
+              <hjaelpetekst></hjaelpetekst>
+              <visundermenu>1</visundermenu>
+              <term>
+                <ord>Lacey Flint-serien</ord>
+                <ccl>fo=bolton s j og no=krimiserien med: lacey flint</ccl>
                 <kommentar></kommentar>
                 <hjaelpetekst></hjaelpetekst>
                 <visundermenu>1</visundermenu>
@@ -23218,6 +23709,20 @@
               <term>
                 <ord>Anna Travis-serien</ord>
                 <ccl>fo=la plante, lynda og no=krimiserien med: anna travis</ccl>
+                <kommentar></kommentar>
+                <hjaelpetekst></hjaelpetekst>
+                <visundermenu>1</visundermenu>
+              </term>
+            </term>
+            <term>
+              <ord>MacBride, Stuart</ord>
+              <ccl></ccl>
+              <kommentar></kommentar>
+              <hjaelpetekst></hjaelpetekst>
+              <visundermenu>1</visundermenu>
+              <term>
+                <ord>Ash Henderson-serien</ord>
+                <ccl>fo=macbride, Stuart og no=krimiserien med Ash Henderson</ccl>
                 <kommentar></kommentar>
                 <hjaelpetekst></hjaelpetekst>
                 <visundermenu>1</visundermenu>
@@ -23966,6 +24471,13 @@
               </term>
             </term>
             <term>
+              <ord>Skriv emne</ord>
+              <ccl></ccl>
+              <kommentar></kommentar>
+              <hjaelpetekst></hjaelpetekst>
+              <visundermenu>1</visundermenu>
+            </term>
+            <term>
               <ord>Sm&#229;ge, Kim</ord>
               <ccl></ccl>
               <kommentar></kommentar>
@@ -24030,6 +24542,20 @@
               <term>
                 <ord>Rolf Lykke-serien</ord>
                 <ccl>fo=try, Kjetil og no=krimiserien med rolf lykke</ccl>
+                <kommentar></kommentar>
+                <hjaelpetekst></hjaelpetekst>
+                <visundermenu>1</visundermenu>
+              </term>
+            </term>
+            <term>
+              <ord>Tvedt, Chris</ord>
+              <ccl></ccl>
+              <kommentar></kommentar>
+              <hjaelpetekst></hjaelpetekst>
+              <visundermenu>1</visundermenu>
+              <term>
+                <ord>Edvard Matre-serien</ord>
+                <ccl>fo=tvedt chris og no=krimiserien med: edvard matre</ccl>
                 <kommentar></kommentar>
                 <hjaelpetekst></hjaelpetekst>
                 <visundermenu>1</visundermenu>
@@ -24176,6 +24702,20 @@
               </term>
             </term>
             <term>
+              <ord>Carlsson, Christoffer</ord>
+              <ccl></ccl>
+              <kommentar></kommentar>
+              <hjaelpetekst></hjaelpetekst>
+              <visundermenu>1</visundermenu>
+              <term>
+                <ord>Leo Junker-serien</ord>
+                <ccl>fo=carlsson, christoffer og no=krimiserien med: leo junker</ccl>
+                <kommentar></kommentar>
+                <hjaelpetekst></hjaelpetekst>
+                <visundermenu>1</visundermenu>
+              </term>
+            </term>
+            <term>
               <ord>Dahl, Arne</ord>
               <ccl></ccl>
               <kommentar></kommentar>
@@ -24191,6 +24731,13 @@
               <term>
                 <ord>Opcop-serien</ord>
                 <ccl>fo=dahl arne og no=krimiserien med opcop</ccl>
+                <kommentar></kommentar>
+                <hjaelpetekst></hjaelpetekst>
+                <visundermenu>1</visundermenu>
+              </term>
+              <term>
+                <ord>Sam Berger-serien</ord>
+                <ccl>fo=dahl arne og no=krimiserien med Sam Berger</ccl>
                 <kommentar></kommentar>
                 <hjaelpetekst></hjaelpetekst>
                 <visundermenu>1</visundermenu>
@@ -24387,6 +24934,20 @@
               <term>
                 <ord>Svea Lundstr&#246;m Duval-serien</ord>
                 <ccl>fo=klackenberg tove og no=krimiserien med svea lundstr&#246;m duval</ccl>
+                <kommentar></kommentar>
+                <hjaelpetekst></hjaelpetekst>
+                <visundermenu>1</visundermenu>
+              </term>
+            </term>
+            <term>
+              <ord>Lapidus, Jens</ord>
+              <ccl></ccl>
+              <kommentar></kommentar>
+              <hjaelpetekst></hjaelpetekst>
+              <visundermenu>1</visundermenu>
+              <term>
+                <ord>Advokaten Emelie og gangsteren Teddy-serien</ord>
+                <ccl>fo=Lapidus,Ted og no=krimiserien med Advokaten Emelie og gangsteren Teddy</ccl>
                 <kommentar></kommentar>
                 <hjaelpetekst></hjaelpetekst>
                 <visundermenu>1</visundermenu>
@@ -26398,8 +26959,15 @@
         <visundermenu>1</visundermenu>
         <term>
           <ord>Andre sportsfolk</ord>
-          <ccl>dk=79.4? eller dk=79.6? eller dk=79.7 eller dk=79.8? og em=(biografier eller erindringer)  ikke dk=79.71 ikke dk=79.66 ikke dk=79.75? ikke jagtoplevelser ikke dk=79.695</ccl>
+          <ccl>dk=79.4? eller dk=79.6? eller dk=79.7? eller dk=79.8? og em=(biografier eller erindringer)  ikke dk=79.71 ikke dk=79.66 ikke dk=79.75? ikke jagtoplevelser ikke dk=79.695</ccl>
           <kommentar>42 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Boksere</ord>
+          <ccl>dk=79.621 og em=boksere og em=(erindringer eller biografier)</ccl>
+          <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
@@ -26428,6 +26996,20 @@
           <ord>J&#230;gere</ord>
           <ccl>ke=jagtoplevelser</ccl>
           <kommentar>64 poster</kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Racerk&#248;rere</ord>
+          <ccl>dk=79.86 og em=racerk&#248;rere og em=(erindringer eller biografier)</ccl>
+          <kommentar></kommentar>
+          <hjaelpetekst></hjaelpetekst>
+          <visundermenu>1</visundermenu>
+        </term>
+        <term>
+          <ord>Tennisspillere</ord>
+          <ccl>dk=79.73 og em=tennisspillere og em=(erindringer eller biografier)</ccl>
+          <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
         </term>
