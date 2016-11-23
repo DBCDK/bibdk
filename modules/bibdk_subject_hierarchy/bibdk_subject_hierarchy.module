@@ -521,6 +521,7 @@ function _get_bibdk_subject_hierarchy_heading($emnehierarki, $keys, $path = 'wor
  * @return bool|array
  */
 function _bibdk_subject_hierarchy_read_data() {
+  // NB: husk update hook, hvis emnehierarki xml bliver opdateret.
   $filename = drupal_get_path('module', 'bibdk_subject_hierarchy') . '/data/emnehierarki_full.xml';
   $data = _bibdk_subject_hierarchy_parse_xml($filename);
   if (!empty($data)) {
@@ -540,6 +541,7 @@ function _bibdk_subject_hierarchy_parse_xml($filename) {
   $xml = simplexml_load_file($filename);
   // Simple trick to convert xml to php array
   $data = drupal_json_decode(drupal_json_encode($xml));
+  dpm($data['term']);
   return (isset($data['term'])) ? $data['term'] : array();
 }
 
