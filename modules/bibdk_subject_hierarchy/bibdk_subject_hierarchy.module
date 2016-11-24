@@ -597,7 +597,15 @@ function _bibdk_subject_hierarchy_parse_term($term) {
 function _bibdk_subject_hierarchy_ccl_to_cql($ccl) {
   if (function_exists('bibdk_yaz_convert_ccl_to_cql')) {
     $cql = bibdk_yaz_convert_ccl_to_cql($ccl);
-    return reset($cql);
+    if (isset($cql['cql'])) {
+      return $cql['cql'];
+    } else if (isset($cql['error'])) {
+      watchdog('subject_hierarchy', 'Failed to convert ccl: %ccl.', array('%ccl' => $cql['cql']), WATCHDOG_ERROR);
+      return $ccl;
+    } else {
+      watchdog('subject_hierarchy', 'Call to bibdk_yaz_convert_ccl_to_cql() failed.', array(), WATCHDOG_ERROR);
+      return $ccl;
+    }
   }
   return NULL;
 }
