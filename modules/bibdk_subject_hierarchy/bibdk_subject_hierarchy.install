@@ -95,3 +95,10 @@ function bibdk_subject_hierarchy_update_7011(&$sandbox) {
 function bibdk_subject_hierarchy_update_7012(&$sandbox) {
   _update_bibdk_subject_hierarchy();
 }
+
+/**
+ * update hierarchy november 2016.test
+ */
+function bibdk_subject_hierarchy_update_7013(&$sandbox) {
+  _update_bibdk_subject_hierarchy();
+}
