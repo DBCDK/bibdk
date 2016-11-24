@@ -263,6 +263,13 @@ function _bibdk_subject_hierarchy_get_arranged_items($hierarchy, $row_to_show) {
   return $rows;
 }
 
+
+function log_to_file($text) {
+  $f = fopen('/tmp/drupal_debug.txt', 'a');
+  fwrite($f, date('Ymd H:i:s - ') . print_r($text,1) . "\n");
+  fclose($f);
+}
+
 /**
  * AJAX callback
  */
@@ -270,6 +277,7 @@ function bibdk_subject_hierarchy_ajax_callback($key) {
   // fix ajax error
   ajax_set_verification_header();
   $emnehierarki = _get_bibdk_subject_hierarchy();
+log_to_file(print_r($emnehierarki_item,1));
   $emnehierarki_item = _get_bibdk_subject_hierarchy_item($emnehierarki, $key);
   $row = $emnehierarki_item['row'];
   $level = $emnehierarki_item['level'];
@@ -541,7 +549,6 @@ function _bibdk_subject_hierarchy_parse_xml($filename) {
   $xml = simplexml_load_file($filename);
   // Simple trick to convert xml to php array
   $data = drupal_json_decode(drupal_json_encode($xml));
-  dpm($data['term']);
   return (isset($data['term'])) ? $data['term'] : array();
 }
 
@@ -571,15 +578,15 @@ function _bibdk_subject_hierarchy_parse_term($term) {
   foreach ($term as $key => $item) {
     if ((string) $key != (string) (int) $key) {
       if ($key == 'term') {
-        $record[$key] = _bibdk_subject_hierarchy_parse($item);
+        $record['term'] = _bibdk_subject_hierarchy_parse($item);
       }
       elseif ($key == 'ccl' && !empty($item)) {
         $record['cql'] = _bibdk_subject_hierarchy_ccl_to_cql($item);
-        $record[$key] = $item;
+        $record['ccl'] = $item;
       }
       elseif ($key == 'ord') {
         $record['note'] = 'LABEL_' . normalize_string($item);
-        $record[$key] = $item;
+        $record['ord'] = $item;
       }
       else {
         $record[$key] = !empty($item) ? $item : '';
