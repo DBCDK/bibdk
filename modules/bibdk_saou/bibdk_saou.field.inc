@@ -24,7 +24,7 @@ function bibdk_saou_field_formatter_info() {
 }
 
 /**
- * Implements hook_field_formatter_view().
+ * Implements hook_field_formatter_view()
  */
 function bibdk_saou_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
   $element = array();
@@ -37,14 +37,25 @@ function bibdk_saou_field_formatter_view($entity_type, $entity, $field, $instanc
         // no link - do it the old way
         if ($entity->getRestrictedUse() === 'restrictedAccess' && $entity->getRequestMethod() == 'link') {
           $link = bibdk_soau_field_get_link($entity);
+          //dpm($link,'link old way');
         }
       } else {
         $link = bibdk_soau_field_get_link($entity);
+        //dpm($link,'link getRestrictedExtendedUse');
       }
       $element[$delta] = $link;
       $element['#attached']['js'][] = drupal_get_path('module', 'bibdk_saou') . '/js/bibdk_saou.js';
+    } else {
+      $link = $entity->getRestrictedExtendedUse();
+      if ($link) {
+        $link = bibdk_soau_field_get_link($entity);
+        $element[$delta] = $link;
+        $element['#attached']['js'][] = drupal_get_path('module', 'bibdk_saou') . '/js/bibdk_saou.js';
+        //dpm($link,'link NO restrictedAccess');
+      }
     }
   }
+  //dpm($element,'$element');
   return $element;
 }
 
@@ -85,7 +96,7 @@ function bibdk_saou_field_get_wrong_library_link($entity) {
   $uri = $entity->getRemoteAccess();
 
   if (empty($uri)) {
-    $uri = $entity->getRelationUri();
+    $uri = $entity->getRestrictedExtendedUse();
   }
 
   $pid = $entity->id;
@@ -142,6 +153,7 @@ function bibdk_saou_field_get_link_and_toggle_element($entity, $message) {
  * @return array
  */
 function bibdk_saou_field_get_message_link($entity) {
+
   $text = t($entity->getRestrictedUse(), array(), array('context' => 'bibdk_saou'));
   $link = array(
     '#theme' => 'link',
@@ -213,12 +225,13 @@ function bibdk_saou_field_get_element_to_toggle($message) {
  * @return array
  */
 function bibdk_saou_link_to_soau_ressource($entity) {
+
   $message = t($entity->getRestrictedUse(), array(), array('context' => 'bibdk_saou'));
   $path = 'saou/ajax';
   $uri = $entity->getRemoteAccess();
 
   if (empty($uri)) {
-    $uri = $entity->getRelationUri();
+    $uri = $entity->getRestrictedExtendedUse();
   }
 
   $pid = $entity->id;
