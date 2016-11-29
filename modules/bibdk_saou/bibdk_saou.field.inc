@@ -37,25 +37,14 @@ function bibdk_saou_field_formatter_view($entity_type, $entity, $field, $instanc
         // no link - do it the old way
         if ($entity->getRestrictedUse() === 'restrictedAccess' && $entity->getRequestMethod() == 'link') {
           $link = bibdk_soau_field_get_link($entity);
-          //dpm($link,'link old way');
         }
       } else {
         $link = bibdk_soau_field_get_link($entity);
-        //dpm($link,'link getRestrictedExtendedUse');
       }
       $element[$delta] = $link;
       $element['#attached']['js'][] = drupal_get_path('module', 'bibdk_saou') . '/js/bibdk_saou.js';
-    } else {
-      $link = $entity->getRestrictedExtendedUse();
-      if ($link) {
-        $link = bibdk_soau_field_get_link($entity);
-        $element[$delta] = $link;
-        $element['#attached']['js'][] = drupal_get_path('module', 'bibdk_saou') . '/js/bibdk_saou.js';
-        //dpm($link,'link NO restrictedAccess');
-      }
     }
   }
-  //dpm($element,'$element');
   return $element;
 }
 
