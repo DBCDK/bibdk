@@ -152,13 +152,11 @@ function bibdk_saou_field_get_message_link($entity) {
       'attributes' => array(
         'data-pid' => $entity->id,
         'class' => array('dropdown-toggle'),
-        //'id' => 'bibdk_saou_' . $entity->id,
         'id' => 'bibdk_saou_' . bibdk_saou_field_pid_to_selector($entity->id),
       ),
       'html' => FALSE,
     ),
   );
-
   return $link;
 }
 
@@ -224,7 +222,6 @@ function bibdk_saou_link_to_soau_ressource($entity) {
   }
 
   $pid = $entity->id;
-  $link_collection_identifier = $entity->getlinkCollectionIdentifier();
 
   $link = array(
     '#theme' => 'link',
@@ -234,14 +231,13 @@ function bibdk_saou_link_to_soau_ressource($entity) {
       'attributes' => array(
         'data-pid' => $pid,
         'data-url' => ($uri) ? $uri : 'NONE',
-        'data-alt-pid' => ($link_collection_identifier) ? $link_collection_identifier : 'NONE',
+        'data-alt-pid' => $pid,
         'class' => array('soau-ressource-link'),
         'id' => 'bibdk_saou_' . bibdk_saou_field_pid_to_selector($pid),
       ),
       'html' => FALSE,
     ),
   );
-
   return $link;
 }
 
