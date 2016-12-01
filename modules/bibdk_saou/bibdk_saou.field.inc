@@ -29,12 +29,11 @@ function bibdk_saou_field_formatter_info() {
 function bibdk_saou_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
   $element = array();
   foreach ($items as $delta => $item) {
-    // check if entity has fields with restricted access
     if ($entity->getRestrictedUse() === 'restrictedAccess' ) {
       // Check for extended use
       $link = $entity->getRestrictedExtendedUse();
-      if (!$link) {
-        // no link - do it the old way
+      if (!isset($link)) {
+         //no link - do it the old way
         if ($entity->getRestrictedUse() === 'restrictedAccess' && $entity->getRequestMethod() == 'link') {
           $link = bibdk_soau_field_get_link($entity);
         }
