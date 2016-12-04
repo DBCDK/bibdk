@@ -28,20 +28,26 @@ function bibdk_saou_field_formatter_info() {
  */
 function bibdk_saou_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
   $element = array();
+  $link = '';
   foreach ($items as $delta => $item) {
-    if ($entity->getRestrictedUse() === 'restrictedAccess' ) {
-      // Check for extended use
-      $link = $entity->getRestrictedExtendedUse();
-      if (!isset($link)) {
-         //no link - do it the old way
-        if ($entity->getRestrictedUse() === 'restrictedAccess' && $entity->getRequestMethod() == 'link') {
-          $link = bibdk_soau_field_get_link($entity);
-        }
-      } else {
-        $link = bibdk_soau_field_get_link($entity);
+    if ($entity->getRestrictedExtendedUse() != '') {
+      $link = bibdk_soau_field_get_link($entity);
+      if ($link != '') {
+        $element[$delta] = $link;
+        $element['#attached']['js'][] = drupal_get_path('module', 'bibdk_saou') . '/js/bibdk_saou.js';
       }
-      $element[$delta] = $link;
-      $element['#attached']['js'][] = drupal_get_path('module', 'bibdk_saou') . '/js/bibdk_saou.js';
+    } else {
+      // do check for access the old way
+      if ($entity->getRestrictedUse() === 'restrictedAccess') {
+        $method = $entity->getRequestMethod();
+        if ($method[0] === 'link' || method === 'link') {
+          $link = bibdk_soau_field_get_link($entity);
+          if ($link != '') {
+            $element[$delta] = $link;
+            $element['#attached']['js'][] = drupal_get_path('module', 'bibdk_saou') . '/js/bibdk_saou.js';
+          }
+        }
+      }
     }
   }
   return $element;
@@ -142,7 +148,7 @@ function bibdk_saou_field_get_link_and_toggle_element($entity, $message) {
  */
 function bibdk_saou_field_get_message_link($entity) {
 
-  $text = t($entity->getRestrictedUse(), array(), array('context' => 'bibdk_saou'));
+  $text = t('restrictedAccess', array(), array('context' => 'bibdk_saou'));
   $link = array(
     '#theme' => 'link',
     '#text' => $text,
@@ -212,7 +218,8 @@ function bibdk_saou_field_get_element_to_toggle($message) {
  */
 function bibdk_saou_link_to_soau_ressource($entity) {
 
-  $message = t($entity->getRestrictedUse(), array(), array('context' => 'bibdk_saou'));
+  $message = t('restrictedAccess', array(), array('context' => 'bibdk_saou'));
+
   $path = 'saou/ajax';
   $uri = $entity->getRemoteAccess();
 
