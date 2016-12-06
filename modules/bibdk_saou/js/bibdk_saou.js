@@ -22,6 +22,7 @@
             var url = link.attr('data-url');
             var alt_pid = link.attr('data-alt-pid');
             var destination = link.attr('href');
+            var agency_id = link.attr('data-agency-id');
 
             var request = $.ajax({
                 url: destination,
@@ -29,7 +30,8 @@
                 data: {
                     pid: pid,
                     url: url,
-                    altpid: alt_pid
+                    altpid: alt_pid,
+                    agency_id: agency_id
                 },
                 dataType: 'json',
                 success: BibdkSaou.bibdkHandleSaou
