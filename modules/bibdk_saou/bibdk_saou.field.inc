@@ -250,7 +250,7 @@ function bibdk_saou_link_to_soau_ressource($entity) {
             'data-url' => ($uri) ? $uri : 'NONE',
             'data-alt-pid' => $pid,
             'class' => array('soau-ressource-link'),
-            'id' => 'bibdk_saou_' . bibdk_saou_field_pid_to_selector($pid),
+            'id' => 'bibdk_saou_' . bibdk_saou_field_pid_to_selector($pid) . '_' .$agency_id,
             'data-agency-id' => $agency_id,
           ),
           'html' => FALSE,

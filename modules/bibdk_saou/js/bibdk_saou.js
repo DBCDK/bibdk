@@ -28,7 +28,7 @@
                 url: destination,
                 type: 'POST',
                 data: {
-                    pid: pid,
+                    pid: pid + '_' + agency_id,
                     url: url,
                     altpid: alt_pid,
                     agency_id: agency_id
