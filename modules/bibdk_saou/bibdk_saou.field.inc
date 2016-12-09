@@ -40,7 +40,7 @@ function bibdk_saou_field_formatter_view($entity_type, $entity, $field, $instanc
       // do check for access the old way
       if ($entity->getRestrictedUse() === 'restrictedAccess') {
         $method = $entity->getRequestMethod();
-        if ($method[0] === 'link' || method === 'link') {
+        if ((is_array($method) && $method[0] === 'link' ) || $method === 'link') {
           $link = bibdk_soau_field_get_link($entity);
           if ($link != '') {
             $element[$delta] = $link;
@@ -78,7 +78,7 @@ function bibdk_soau_field_check_valid_favourites($entity) {
         }
       }
       else {
-        //Found one valid fvorite, clear message
+        //Found one valid favorite, clear message
         $message = '';
         return $message;
       }
