@@ -15,6 +15,7 @@ function bibdk_saou_ajax($pid = NULL, $url = NULL) {
   $pid = check_plain($_POST['pid']);
   $url = check_plain($_POST['url']);
   $alt_pid = check_plain($_POST['altpid']);
+  $agency_id = check_plain($_POST['agency_id']);
 
   if ($url == 'NONE') {
     $url = NULL;
@@ -22,16 +23,17 @@ function bibdk_saou_ajax($pid = NULL, $url = NULL) {
   if ($alt_pid == 'NONE') {
     $alt_pid = NULL;
   }
+
   //use case: pid starts with 870970-basis and no relationurl is given
   if (strpos($pid, '870970-basis') === 0 && empty($url)) {
-    $output = bibdk_saou_ajax_fetchLicensByPid($pid);
+    $output = bibdk_saou_ajax_fetchLicensByPid($pid, $agency_id);
   }
   elseif (!empty($url)) {
-    $output = bibdk_saou_fetchLicenseByUrl($pid, $url, $alt_pid);
+    $output = bibdk_saou_fetchLicenseByUrl($pid, $url, $alt_pid, $agency_id);
   }
   else {
     // default behoviour
-    $output = bibdk_saou_ajax_fetchLicensByPid($pid);
+    $output = bibdk_saou_ajax_fetchLicensByPid($pid, $agency_id);
   }
   drupal_json_output($output);
   drupal_exit();
@@ -43,8 +45,8 @@ function bibdk_saou_ajax($pid = NULL, $url = NULL) {
  * @param $url
  * @return array, render array from output function
  */
-function bibdk_saou_fetchLicenseByUrl($pid, $url, $alt_pid = NULL) {
-  $agency_and_user_ids = bibdk_saout_get_agency_and_userids($agency_id);
+function bibdk_saou_fetchLicenseByUrl($pid, $url, $alt_pid = NULL, $agency_id) {
+  $agency_and_user_ids = bibdk_saou_get_agency_and_userids($agency_id);
   $response = open_saou_FetchLicenseByUrl($pid, $url, $agency_and_user_ids, $agency_id, $alt_pid);
   $saou = bibdk_saou_check_saou_response($response);
 
@@ -72,8 +74,8 @@ function bibdk_saou_check_saou_response($response) {
  * @param $pid
  * @return array, render array from output function
  */
-function bibdk_saou_ajax_fetchLicensByPid($pid) {
-  $agency_and_user_ids = bibdk_saout_get_agency_and_userids($agency_id);
+function bibdk_saou_ajax_fetchLicensByPid($pid, $agency_id) {
+  $agency_and_user_ids = bibdk_saou_get_agency_and_userids($agency_id);
   $response = open_saou_FetchLicenseByPid($pid, $agency_and_user_ids, $agency_id);
   $saou = bibdk_saou_check_saou_response($response);
 
@@ -87,13 +89,12 @@ function bibdk_saou_ajax_fetchLicensByPid($pid) {
  * @param $agency_id NOTICE by reference
  * @return array agencyAndUserId => [agencyId, userId]
  */
-function bibdk_saout_get_agency_and_userids(&$agency_id) {
+function bibdk_saou_get_agency_and_userids(&$agency_id) {
   $agency_and_user_ids = array();
-  $agency = bibdk_saou_get_order_agency();
+  $agency = bibdk_saou_get_order_agency($agency_id);
   if (!empty($agency)) {
     // saou do NOT accept a branchid - get the mainId
     $agency_id = $agency->getAgencyMainId();
-
     $agency_and_user_ids = array(
       'agencyAndUserId' => array(
         'agencyId' => $agency_id,
@@ -101,7 +102,6 @@ function bibdk_saout_get_agency_and_userids(&$agency_id) {
       )
     );
   }
-
   return $agency_and_user_ids;
 }
 
@@ -210,7 +210,6 @@ function bibdk_saou_remove_hidden_class(array &$classes) {
  */
 function bibdk_saou_ajax_get_proxylink($link, $pid, $saou) {
   $message = t('bibdk_saou_click_here_for_access', array(), array('context' => 'bibdk_saou'));
-  
   // check for quota exceeded
   $text_code = $saou->get_responseCode();
   if ($text_code == 'bibdk_saou_OK_USER_QUOTA_EXCEEDED' ) {
