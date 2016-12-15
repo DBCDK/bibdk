@@ -76,7 +76,12 @@ function bibdk_saou_check_saou_response($response) {
  */
 function bibdk_saou_ajax_fetchLicensByPid($pid, $agency_id) {
   $agency_and_user_ids = bibdk_saou_get_agency_and_userids($agency_id);
-  $response = open_saou_FetchLicenseByPid($pid, $agency_and_user_ids, $agency_id);
+  if (substr($pid, -7, 1) == '_') {
+    $fetch_pid = substr_replace($pid,"",-7);
+  } else {
+    $fetch_pid = $pid;
+  }
+  $response = open_saou_FetchLicenseByPid($fetch_pid, $agency_and_user_ids, $agency_id);
   $saou = bibdk_saou_check_saou_response($response);
 
   return bibdk_saou_get_output_by_permission($saou, $pid);
