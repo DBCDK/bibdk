@@ -157,7 +157,7 @@ function bibdk_saou_field_get_link_and_toggle_element($entity, $message) {
  * @return array
  */
 function bibdk_saou_field_get_message_link($entity) {
-  $text = t('restrictedAccess', array(), array('context' => 'bibdk_saou'));
+  $text = t('showAccess', array(), array('context' => 'bibdk_saou'));
   $link = array(
     '#theme' => 'link',
     '#text' => $text,
@@ -224,7 +224,7 @@ function bibdk_saou_field_get_element_to_toggle($message) {
  * @return array
  */
 function bibdk_saou_link_to_soau_ressource($entity) {
-  $message = t('restrictedAccess', array(), array('context' => 'bibdk_saou'));
+  $message = t('showAccess', array(), array('context' => 'bibdk_saou'));
   $link = array();
   $path = 'saou/ajax';
   $uri = $entity->getRemoteAccess();
