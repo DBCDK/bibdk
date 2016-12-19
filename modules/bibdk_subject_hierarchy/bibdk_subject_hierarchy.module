@@ -600,7 +600,7 @@ function _bibdk_subject_hierarchy_ccl_to_cql($ccl) {
     if (isset($cql['cql'])) {
       return $cql['cql'];
     } else if (isset($cql['error'])) {
-      watchdog('subject_hierarchy', 'Failed to convert ccl: %ccl. Error: %error', array('%ccl' => $cql['cql'], '%error' => $cql['error']), WATCHDOG_ERROR);
+      watchdog('subject_hierarchy', 'Failed to convert ccl: %ccl. Error: %error', array('%ccl' => $ccl, '%error' => $cql['error']), WATCHDOG_ERROR);
       return $ccl;
     } else {
       watchdog('subject_hierarchy', 'Call to bibdk_yaz_convert_ccl_to_cql() failed.', array(), WATCHDOG_ERROR);
