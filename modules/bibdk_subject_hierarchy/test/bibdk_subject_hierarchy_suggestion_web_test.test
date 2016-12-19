@@ -19,7 +19,7 @@ class BibdkSubjectHierarchySuggestionWebTestCase extends DrupalWebTestCase {
 
 
   public function setUp() {
-    parent::setUp('bibdk_subject_hierarchy', 'bibdk_subject_hierarchy_mockup', 'ting_client');
+    parent::setUp('bibdk_subject_hierarchy', 'bibdk_subject_hierarchy_mockup', 'ting_client', 'bibdk_yaz');
     variable_set('ting_search_url', $this->getAbsoluteUrl('bibdk_subject_hierarchy_mockup'));
   }
 
