@@ -20,10 +20,10 @@ function bibdk_saou_menu() {
   return $items;
 }
 
-/** Get order agency from bibdk_favourites
- * @return bool|mixed
+/** Get agency informations from bibdk_favourites
+ * @return bool FALSE |mixed agency
  */
-function bibdk_saou_get_order_agency() {
+function bibdk_saou_get_order_agency(&$agency_id) {
   // pre: user is logged in or we wouldn't be here
   $agencies = array();
   if (module_exists('bibdk_favourite')) {
@@ -32,10 +32,14 @@ function bibdk_saou_get_order_agency() {
   if (empty($agencies)) {
     return FALSE;
   }
-  // first agency is order-agency
-  $agency = reset($agencies);
 
-  return $agency;
+  foreach ($agencies as $agency) {
+    if ($agency->getAgencyid() == $agency_id) {
+      // got agency for agency_id
+      return $agency;
+    }
+  }
+  return FALSE;
 }
 
 /** get a single manifestation via openformat
@@ -46,6 +50,5 @@ function bibdk_saou_get_manifestation($pid) {
   $result = ting_openformat_get_single($pid);
   $work = reset($result)->getManifestations();
   $manifestation = reset($work);
-
   return $manifestation;
 }
