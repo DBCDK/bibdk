@@ -365,7 +365,7 @@ function _get_bibdk_subject_hierarchy_item($emnehierarki, $current_key) {
     '#breadcrumbs' => $breadcrumbs,
     '#heading' => $heading,
     '#hierarchy' => $emnehierarki_links,
-    '#current_key' => current_key,
+    '#current_key' => $current_key,
     '#search_path' => $search_path,
     '#close_button' => $close_button,
     'row' => $row,
@@ -521,12 +521,7 @@ function _get_bibdk_subject_hierarchy_heading($emnehierarki, $keys, $path = 'wor
  * @return bool|array
  */
 function _bibdk_subject_hierarchy_read_data() {
-  // fallback if bibdk_yaz is not enabled
-  if (!module_exists('bibdk_yaz')) {
-    $filename = drupal_get_path('module', 'bibdk_subject_hierarchy') . '/data/emnehierarki_full.json';
-    return json_decode(file_get_contents($filename), TRUE);
-  }
-  
+  // NB: husk update hook, hvis emnehierarki xml bliver opdateret.
   $filename = drupal_get_path('module', 'bibdk_subject_hierarchy') . '/data/emnehierarki_full.xml';
   $data = _bibdk_subject_hierarchy_parse_xml($filename);
   if (!empty($data)) {
@@ -535,7 +530,6 @@ function _bibdk_subject_hierarchy_read_data() {
   else {
     watchdog('subject_hierarchy', 'No XML file found.', array(), WATCHDOG_ERROR);
   }
-
   return FALSE;
 }
 
@@ -603,8 +597,17 @@ function _bibdk_subject_hierarchy_parse_term($term) {
 function _bibdk_subject_hierarchy_ccl_to_cql($ccl) {
   if (function_exists('bibdk_yaz_convert_ccl_to_cql')) {
     $cql = bibdk_yaz_convert_ccl_to_cql($ccl);
-    return reset($cql);
+    if (isset($cql['cql'])) {
+      return $cql['cql'];
+    } else if (isset($cql['error'])) {
+      watchdog('subject_hierarchy', 'Failed to convert ccl: %ccl. Error: %error', array('%ccl' => $cql['cql'], '%error' => $cql['error']), WATCHDOG_ERROR);
+      return $ccl;
+    } else {
+      watchdog('subject_hierarchy', 'Call to bibdk_yaz_convert_ccl_to_cql() failed.', array(), WATCHDOG_ERROR);
+      return $ccl;
+    }
   }
+  watchdog('subject_hierarchy', 'No function named bibdk_yaz_convert_ccl_to_cql() exist.', array(), WATCHDOG_ERROR);
   return NULL;
 }
 
