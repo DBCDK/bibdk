@@ -4,6 +4,7 @@
     var BibdkSaou = {
         bibdkHandleSaou: function (saou) {
             var link = $('#bibdk_saou_' + saou.selector);
+            
             if (saou.error.length > 0) {
                 // remove throbber
                 link.find('span').remove();
@@ -11,6 +12,7 @@
                 link.after(saou.error);
             }
             else {
+                //var rx = confirm("Press a button x");
                 link.replaceWith(saou.redirect);
             }
         },
@@ -23,7 +25,6 @@
             var alt_pid = link.attr('data-alt-pid');
             var destination = link.attr('href');
             var agency_id = link.attr('data-agency-id');
-
             var request = $.ajax({
                 url: destination,
                 type: 'POST',
@@ -36,6 +37,12 @@
                 dataType: 'json',
                 success: BibdkSaou.bibdkHandleSaou
             });
+        },
+
+        bibdkActivateSaouRessource: function (ressource) {
+            var rx = confirm("bibdkActivateSaouRessource");
+            //$('.soau-ressource-link').show();
+
         }
     };
 
@@ -44,6 +51,11 @@
             $('.soau-ressource-link', context).click(function (e) {
                 e.preventDefault();
                 BibdkSaou.bibdkGetSaouRessource($(this));
+            });
+
+            $('.soau-ressource-click-links', context).click(function (e) {
+                e.preventDefault();
+                BibdkSaou.bibdkActivateSaouRessource($(this));
             });
         }
     };

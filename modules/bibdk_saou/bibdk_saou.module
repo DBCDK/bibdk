@@ -4,6 +4,7 @@
  *
  * Module file for this module - generel methods used across various files
  */
+include_once('bibdk_saou.ajax.inc');
 include_once('bibdk_saou.field.inc');
 
 /**

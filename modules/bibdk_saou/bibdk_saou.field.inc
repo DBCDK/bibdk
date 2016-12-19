@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * remaining field definitions for the bibdk_saou field
@@ -130,6 +131,7 @@ function bibdk_soau_field_get_link($entity) {
 
   if (empty($message)) {
     $output['wrapper'] = bibdk_saou_field_get_dropdown_wrapper();
+    $output['wrapper']['main_link'] = bibdk_saou_field_get_restricted_link($entity);
     $output['wrapper']['item_list_link'] = bibdk_saou_link_to_soau_ressource($entity);
   }
   else {
@@ -149,6 +151,30 @@ function bibdk_saou_field_get_link_and_toggle_element($entity, $message) {
   $output['wrapper']['link'] = bibdk_saou_field_get_message_link($entity);
   $output['wrapper']['toggle'] = bibdk_saou_field_get_element_to_toggle($message);
   return $output;
+}
+
+/** get a render array with no link to reesource. this is to diplay messages
+ * for users not logged in or incomplete userdata in favourites
+ * @param $entity
+ * @return array
+ */
+function bibdk_saou_field_get_restricted_link($entity) {
+  $text = t('getRestrictedAccess', array(), array('context' => 'bibdk_saou'));
+  $link = array(
+    '#theme' => 'link',
+    '#text' => $text,
+    '#path' => '#',
+    '#options' => array(
+      'attributes' => array(
+        'data-pid' => $entity->id,
+        'class' => array('soau-ressource-click-links'),
+        'id' => 'bibdk_saou_' . bibdk_saou_field_pid_to_selector($entity->id),
+        'agencies' => bibdk_saou_agency_soau_ressource($entity),
+      ),
+      'html' => FALSE,
+    ),
+  );
+  return $link;
 }
 
 /** get a render array with no link to reesource. this is to diplay messages
@@ -224,7 +250,7 @@ function bibdk_saou_field_get_element_to_toggle($message) {
  * @return array
  */
 function bibdk_saou_link_to_soau_ressource($entity) {
-  $message = t('checkRestrictAccess', array(), array('context' => 'bibdk_saou'));
+  $message = t('restrictedAccess', array(), array('context' => 'bibdk_saou'));
   $link = array();
   $path = 'saou/ajax';
   $uri = $entity->getRemoteAccess();
@@ -239,8 +265,29 @@ function bibdk_saou_link_to_soau_ressource($entity) {
       //do nothing not valid favourite
     }
     else {
-      //Found valid favorite - add one link for each library
+      $idlink = bibdk_saou_get_data($entity->id, $uri, $agency_id, $saou_error);
+      if ($saou_error) {
+        $message = t($idlink, array(), array('context' => 'bibdk_saou'));
+        $idlink = '';
+      } else {
+        $message = t('checkAccess', array(), array('context' => 'bibdk_saou'));
+      }
+
       $link[] = array(
+        '#theme' => 'link',
+        '#text' => $message . ' ' . $favourite->getInformation()->getAgencyName() . ' ',
+        '#path' => $idlink,
+        '#options' => array(
+          'attributes' => array(
+            'class' => array('soau-ressource-link','hidden'),
+            'data-agency-id' => $agency_id,
+          ),
+          'html' => FALSE,
+        ),
+      );
+
+      //Found valid favorite - add one link for each library
+      $oldlink[] = array(
         '#theme' => 'link',
         '#text' => $message . ' ' . $favourite->getInformation()->getAgencyName() . ' ',
         '#path' => $path,
@@ -249,6 +296,7 @@ function bibdk_saou_link_to_soau_ressource($entity) {
             'data-pid' => $pid,
             'data-url' => ($uri) ? $uri : 'NONE',
             'data-alt-pid' => $pid,
+            //'class' => array('soau-ressource-link','hidden'),
             'class' => array('soau-ressource-link'),
             'id' => 'bibdk_saou_' . bibdk_saou_field_pid_to_selector($pid) . '_' .$agency_id,
             'data-agency-id' => $agency_id,
@@ -258,7 +306,69 @@ function bibdk_saou_link_to_soau_ressource($entity) {
       );
     } //end else
   }
+  dpm($link,'LINK');
+  dpm($oldlink,'OLDLINK');
   return $link;
+}
+
+function bibdk_saou_get_data($pid = NULL, $url = NULL, $agency_id = NULL, &$sou_error ) {
+  $alt_pid = $pid;
+  if ($url == 'NONE') { $url = NULL; }
+  if ($alt_pid == 'NONE') { $alt_pid = NULL; }
+  $sou_error = FALSE;
+
+  //use case: pid starts with 870970-basis and no relationurl is given
+  if (strpos($pid, '870970-basis') === 0 && empty($url)) {
+    $output = bibdk_saou_ajax_fetchLicensByPid($pid, $agency_id);
+  }
+  elseif (!empty($url)) {
+    $output = bibdk_saou_fetchLicenseByUrl($pid, $url, $alt_pid, $agency_id);
+  }
+  else {
+    // default behoviour
+    $output = bibdk_saou_ajax_fetchLicensByPid($pid, $agency_id);
+  }
+  //return $output;
+  if ( $output['error'] == '' ) {
+    $return_output = $output['redirect'];
+  } else {
+    $sou_error = TRUE;
+    $return_output = $output['error'];
+  }
+
+  return $return_output;
+}
+
+/** Render array for links to soau ressource for all valid favourite libraries
+ * @param $entity
+ * @return array
+ */
+function bibdk_saou_agency_soau_ressource($entity) {
+  $link = array();
+  $agencies = '';
+  $favourites = bibdk_favourite_get_favourites();
+  foreach ($favourites as $id => $favourite) {
+    $agency_id = $favourite->getAgencyId();
+    $user_id = $favourite->getUserId();
+    // only handle agencyId that starts with 7 or 8 (public and education libraries)
+    if (strpos($agency_id, '7') !== 0 && strpos($agency_id, '8') !== 0 || (empty($user_id))) {
+      //do nothing not valid favourite
+    }
+    else {
+      $agencies = $agencies . $agency_id .'_';
+      $link[] = array(
+        '#text' => $message . ' ' . $favourite->getInformation()->getAgencyName() . ' ',
+        'attributes' => array(
+          'data-pid' => $entity->id,
+          'data-alt-pid' => $entity->id,
+          'id' => 'bibdk_saou_' . bibdk_saou_field_pid_to_selector($pid) . '_' .$agency_id,
+          'data-agency-id' => $agency_id,
+        ),
+      );
+    } //end else
+  }
+  //$linktop[] = $link;
+  return $agencies;
 }
 
 /** Make a valid html id from given pid

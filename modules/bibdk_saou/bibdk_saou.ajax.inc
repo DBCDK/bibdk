@@ -76,12 +76,7 @@ function bibdk_saou_check_saou_response($response) {
  */
 function bibdk_saou_ajax_fetchLicensByPid($pid, $agency_id) {
   $agency_and_user_ids = bibdk_saou_get_agency_and_userids($agency_id);
-  if (substr($pid, -7, 1) == '_') {
-    $fetch_pid = substr_replace($pid,"",-7);
-  } else {
-    $fetch_pid = $pid;
-  }
-  $response = open_saou_FetchLicenseByPid($fetch_pid, $agency_and_user_ids, $agency_id);
+  $response = open_saou_FetchLicenseByPid($pid, $agency_and_user_ids, $agency_id);
   $saou = bibdk_saou_check_saou_response($response);
 
   return bibdk_saou_get_output_by_permission($saou, $pid);
@@ -124,7 +119,6 @@ function bibdk_saou_get_output_by_permission($saou, $pid, $url = NULL) {
     $manifestation = bibdk_saou_get_manifestation($pid);
     $txt = $manifestation->getInfotext();
     $url = $manifestation->getSingleAccessUrl();
-
     $value['accessUrl'] = current($url);
     $code = $saou->get_responseCode();
     $message = isset($code) ? $code : 'internal error: malformed answer from saou';
@@ -132,14 +126,14 @@ function bibdk_saou_get_output_by_permission($saou, $pid, $url = NULL) {
 
     $element[] = $value;
     $link = _ting_openformat_parse_element($element);
-
     // no licenseinfo - permission is NULL
     $message = $link;
     $output = bibdk_saou_field_get_element_to_toggle($message);
     bibdk_saou_remove_hidden_class($output['container']['#attributes']['class']);
     $html = drupal_render($output);
     $output = array(
-      'error' => $html,
+      //'error' => $html,
+      'error' => $value['accessUrlDisplay'],
       'selector' => bibdk_saou_field_pid_to_selector($pid)
     );
 
@@ -159,10 +153,12 @@ function bibdk_saou_get_output_by_permission($saou, $pid, $url = NULL) {
       $output = bibdk_saou_ajax_get_proxylink($link, $pid, $saou);
       $html = drupal_render($output);
       return array(
-        'redirect' => $html,
+        //'redirect' => $html,
+        'redirect' => $link,
         'selector' => bibdk_saou_field_pid_to_selector($pid),
         'error' => ''
       );
+
     }
     elseif ($link && empty($remote_user_access)) {
       $message = t('bibdk_saou_walkin_access', array(), array('context' => 'bibdk_saou'));
@@ -234,6 +230,5 @@ function bibdk_saou_ajax_get_proxylink($link, $pid, $saou) {
       'absolute => TRUE',
     ),
   );
-
   return $proxy_link;
 }

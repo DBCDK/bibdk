@@ -12,4 +12,4 @@ files[] = bibdk_saou.ajax.inc
 dependencies[] = open_saou
 dependencies[] = bibdk_saou_field
 
-
+scripts[] = js/bibdk_saou.js
