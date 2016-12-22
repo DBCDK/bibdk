@@ -12,7 +12,7 @@
 
 /**
  * Implements hook_field_formatter_info().
- */
+*/
 function bibdk_saou_field_formatter_info() {
   return array(
     'bibdk_saou_link_default' => array(
@@ -27,6 +27,7 @@ function bibdk_saou_field_formatter_info() {
 /**
  * Implements hook_field_formatter_view()
  */
+
 function bibdk_saou_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
   $element = array();
   $link = '';
@@ -92,7 +93,6 @@ function bibdk_soau_field_check_valid_favourites($entity) {
   return $message;
 }
 
-
 /**
  * get a link stating that this is an unknown library
  * @param $entity
@@ -128,16 +128,16 @@ function bibdk_saou_field_get_wrong_library_link($entity) {
  */
 function bibdk_soau_field_get_link($entity) {
   $message = bibdk_saou_get_user_message($entity);
-
   if (empty($message)) {
+    // logged in
     $output['wrapper'] = bibdk_saou_field_get_dropdown_wrapper();
     $output['wrapper']['main_link'] = bibdk_saou_field_get_restricted_link($entity);
     $output['wrapper']['item_list_link'] = bibdk_saou_link_to_soau_ressource($entity);
   }
   else {
+    //not logged in - redirect to login
     $output = bibdk_saou_field_get_link_and_toggle_element($entity, $message);
   }
-
   return drupal_render($output);
 }
 
@@ -169,7 +169,6 @@ function bibdk_saou_field_get_restricted_link($entity) {
         'data-pid' => $entity->id,
         'class' => array('soau-ressource-click-links'),
         'id' => 'bibdk_saou_' . bibdk_saou_field_pid_to_selector($entity->id),
-        'agencies' => bibdk_saou_agency_soau_ressource($entity),
       ),
       'html' => FALSE,
     ),
@@ -250,12 +249,10 @@ function bibdk_saou_field_get_element_to_toggle($message) {
  * @return array
  */
 function bibdk_saou_link_to_soau_ressource($entity) {
-  $message = t('restrictedAccess', array(), array('context' => 'bibdk_saou'));
-  $link = array();
-  $path = 'saou/ajax';
+  $link['container'] = bibdk_saou_field_get_dropdown_link_wrapper();
   $uri = $entity->getRemoteAccess();
   if (empty($uri)) { $uri = $entity->getRestrictedExtendedUse();}
-  $pid = $entity->id;
+
   $favourites = bibdk_favourite_get_favourites();
   foreach ($favourites as $id => $favourite) {
     $agency_id = $favourite->getAgencyId();
@@ -267,50 +264,65 @@ function bibdk_saou_link_to_soau_ressource($entity) {
     else {
       $idlink = bibdk_saou_get_data($entity->id, $uri, $agency_id, $saou_error);
       if ($saou_error) {
-        $message = t($idlink, array(), array('context' => 'bibdk_saou'));
-        $idlink = '';
+        $link['container'][] = bibdk_saou_field_get_saou_error_link_wrapper($idlink, $favourite);
       } else {
-        $message = t('checkAccess', array(), array('context' => 'bibdk_saou'));
+        $link['container'][] = bibdk_saou_field_get_saou_link_wrapper($idlink, $favourite);
       }
-
-      $link[] = array(
-        '#theme' => 'link',
-        '#text' => $message . ' ' . $favourite->getInformation()->getAgencyName() . ' ',
-        '#path' => $idlink,
-        '#options' => array(
-          'attributes' => array(
-            'class' => array('soau-ressource-link','hidden'),
-            'data-agency-id' => $agency_id,
-          ),
-          'html' => FALSE,
-        ),
-      );
-
-      //Found valid favorite - add one link for each library
-      $oldlink[] = array(
-        '#theme' => 'link',
-        '#text' => $message . ' ' . $favourite->getInformation()->getAgencyName() . ' ',
-        '#path' => $path,
-        '#options' => array(
-          'attributes' => array(
-            'data-pid' => $pid,
-            'data-url' => ($uri) ? $uri : 'NONE',
-            'data-alt-pid' => $pid,
-            //'class' => array('soau-ressource-link','hidden'),
-            'class' => array('soau-ressource-link'),
-            'id' => 'bibdk_saou_' . bibdk_saou_field_pid_to_selector($pid) . '_' .$agency_id,
-            'data-agency-id' => $agency_id,
-          ),
-          'html' => FALSE,
-        ),
-      );
-    } //end else
+    }
   }
-  dpm($link,'LINK');
-  dpm($oldlink,'OLDLINK');
   return $link;
 }
 
+/** get a wrapper for dropdown link message
+ * @return array
+ */
+function bibdk_saou_field_get_dropdown_link_wrapper() {
+  return array(
+    '#type' => 'container',
+    '#attributes' => array(
+       'class' => array('dropdown-menu-link', 'hidden'),
+    )
+  );
+}
+
+/** get a wrapper for dropdown saou error link message
+ * @return array
+ */
+function bibdk_saou_field_get_saou_error_link_wrapper($idlink, $favourite) {
+  return array(
+    '#theme' => 'link',
+    '#text' => t($idlink, array(), array('context' => 'bibdk_saou')) . ' ' . $favourite->getInformation()->getAgencyName() . ' ',
+    '#path' => '',
+    '#options' => array(
+      'attributes' => array(
+        'disabled' => 'disabled',
+        'class' => array('inactive'),
+      ),
+      'html' => FALSE,
+    ),
+  );
+}
+
+/** get a wrapper for dropdown saou error link message
+ * @return array
+ */
+function bibdk_saou_field_get_saou_link_wrapper($idlink, $favourite) {
+  return array(
+    '#theme' => 'link',
+    '#text' => t('checkAccess', array(), array('context' => 'bibdk_saou')) . ' ' . $favourite->getInformation()->getAgencyName() . ' ',
+    '#path' => $idlink,
+    '#options' => array(
+      'attributes' => array(
+        'target' => '_blank',
+      ),
+      'html' => FALSE,
+    ),
+  );
+}
+
+/** get a saou data - error or link message
+ * @return array
+ */
 function bibdk_saou_get_data($pid = NULL, $url = NULL, $agency_id = NULL, &$sou_error ) {
   $alt_pid = $pid;
   if ($url == 'NONE') { $url = NULL; }
@@ -328,7 +340,7 @@ function bibdk_saou_get_data($pid = NULL, $url = NULL, $agency_id = NULL, &$sou_
     // default behoviour
     $output = bibdk_saou_ajax_fetchLicensByPid($pid, $agency_id);
   }
-  //return $output;
+
   if ( $output['error'] == '' ) {
     $return_output = $output['redirect'];
   } else {
@@ -337,38 +349,6 @@ function bibdk_saou_get_data($pid = NULL, $url = NULL, $agency_id = NULL, &$sou_
   }
 
   return $return_output;
-}
-
-/** Render array for links to soau ressource for all valid favourite libraries
- * @param $entity
- * @return array
- */
-function bibdk_saou_agency_soau_ressource($entity) {
-  $link = array();
-  $agencies = '';
-  $favourites = bibdk_favourite_get_favourites();
-  foreach ($favourites as $id => $favourite) {
-    $agency_id = $favourite->getAgencyId();
-    $user_id = $favourite->getUserId();
-    // only handle agencyId that starts with 7 or 8 (public and education libraries)
-    if (strpos($agency_id, '7') !== 0 && strpos($agency_id, '8') !== 0 || (empty($user_id))) {
-      //do nothing not valid favourite
-    }
-    else {
-      $agencies = $agencies . $agency_id .'_';
-      $link[] = array(
-        '#text' => $message . ' ' . $favourite->getInformation()->getAgencyName() . ' ',
-        'attributes' => array(
-          'data-pid' => $entity->id,
-          'data-alt-pid' => $entity->id,
-          'id' => 'bibdk_saou_' . bibdk_saou_field_pid_to_selector($pid) . '_' .$agency_id,
-          'data-agency-id' => $agency_id,
-        ),
-      );
-    } //end else
-  }
-  //$linktop[] = $link;
-  return $agencies;
 }
 
 /** Make a valid html id from given pid

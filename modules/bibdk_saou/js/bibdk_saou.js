@@ -2,57 +2,17 @@
 
     /** @namespace Namespace for BibdkSaou classes and functions. */
     var BibdkSaou = {
-        bibdkHandleSaou: function (saou) {
-            var link = $('#bibdk_saou_' + saou.selector);
-            
-            if (saou.error.length > 0) {
-                // remove throbber
-                link.find('span').remove();
-                link.addClass('dropdown-toggle');
-                link.after(saou.error);
-            }
-            else {
-                //var rx = confirm("Press a button x");
-                link.replaceWith(saou.redirect);
-            }
-        },
-
-        bibdkGetSaouRessource: function (ressource) {
-            var link = ressource;
-            link.append('<span class="ajax-progress"><span class="throbber" style="margin-top:-3px"></span></span>');
-            var pid = link.attr('data-pid');
-            var url = link.attr('data-url');
-            var alt_pid = link.attr('data-alt-pid');
-            var destination = link.attr('href');
-            var agency_id = link.attr('data-agency-id');
-            var request = $.ajax({
-                url: destination,
-                type: 'POST',
-                data: {
-                    pid: pid + '_' + agency_id,
-                    url: url,
-                    altpid: alt_pid,
-                    agency_id: agency_id
-                },
-                dataType: 'json',
-                success: BibdkSaou.bibdkHandleSaou
-            });
-        },
 
         bibdkActivateSaouRessource: function (ressource) {
-            var rx = confirm("bibdkActivateSaouRessource");
-            //$('.soau-ressource-link').show();
-
+             $('html').click(function() {
+               $('.dropdown-menu-link').removeClass('hidden');
+               $('.soau-ressource-click-links').addClass('hidden');
+              });
         }
     };
 
     Drupal.behaviors.bibdk_saou_load = {
         attach: function (context) {
-            $('.soau-ressource-link', context).click(function (e) {
-                e.preventDefault();
-                BibdkSaou.bibdkGetSaouRessource($(this));
-            });
-
             $('.soau-ressource-click-links', context).click(function (e) {
                 e.preventDefault();
                 BibdkSaou.bibdkActivateSaouRessource($(this));

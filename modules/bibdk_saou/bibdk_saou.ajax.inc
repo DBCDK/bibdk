@@ -6,40 +6,6 @@
  */
 
 /**
- * Ajax page callback
- *
- * @param null $pid
- * @param null $url
- */
-function bibdk_saou_ajax($pid = NULL, $url = NULL) {
-  $pid = check_plain($_POST['pid']);
-  $url = check_plain($_POST['url']);
-  $alt_pid = check_plain($_POST['altpid']);
-  $agency_id = check_plain($_POST['agency_id']);
-
-  if ($url == 'NONE') {
-    $url = NULL;
-  }
-  if ($alt_pid == 'NONE') {
-    $alt_pid = NULL;
-  }
-
-  //use case: pid starts with 870970-basis and no relationurl is given
-  if (strpos($pid, '870970-basis') === 0 && empty($url)) {
-    $output = bibdk_saou_ajax_fetchLicensByPid($pid, $agency_id);
-  }
-  elseif (!empty($url)) {
-    $output = bibdk_saou_fetchLicenseByUrl($pid, $url, $alt_pid, $agency_id);
-  }
-  else {
-    // default behoviour
-    $output = bibdk_saou_ajax_fetchLicensByPid($pid, $agency_id);
-  }
-  drupal_json_output($output);
-  drupal_exit();
-}
-
-/**
  * Do fetchLicenseByUrl request and pass response to output function
  * @param $pid
  * @param $url
@@ -153,12 +119,10 @@ function bibdk_saou_get_output_by_permission($saou, $pid, $url = NULL) {
       $output = bibdk_saou_ajax_get_proxylink($link, $pid, $saou);
       $html = drupal_render($output);
       return array(
-        //'redirect' => $html,
         'redirect' => $link,
         'selector' => bibdk_saou_field_pid_to_selector($pid),
         'error' => ''
       );
-
     }
     elseif ($link && empty($remote_user_access)) {
       $message = t('bibdk_saou_walkin_access', array(), array('context' => 'bibdk_saou'));
