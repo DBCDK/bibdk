@@ -394,7 +394,7 @@ function _update_bibdk_subject_hierarchy() {
 function _bibdk_subject_hierarchy_search_info() {
   $path = '';
   $search_info = search_get_default_module_info();
-  if (!empty($search_info['path']) && in_array($search_info['module'], variable_get('search_active_modules', array()))) {
+  if (!empty($search_info['path']) && in_array($search_info['module'], variable_get('search_active_modules', array('ting_openformat' => 'ting_openformat')))) {
     $path = $search_info['path'];
   }
 
