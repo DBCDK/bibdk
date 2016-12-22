@@ -117,7 +117,8 @@ function _get_bibdk_subject_hierarchy_searchresult_item_link($item, $key, $path)
   if (empty($item)) {
     return array();
   }
-  $search_path = _bibdk_subject_hierarchy_search_info();
+  $search_path_tmp = _bibdk_subject_hierarchy_search_info();
+  $search_path = (!empty($search_path_tmp)) ? $search_path_tmp : 'work'; // default value aht. unit test
   $query = '';
 
   if (!empty($item['cql']) && empty($item['term'])) {
