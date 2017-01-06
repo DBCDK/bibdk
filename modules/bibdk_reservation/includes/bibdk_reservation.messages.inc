@@ -61,10 +61,23 @@ function bibdk_reservation_get_action_links($ids, BibdkWork $bibdk_work_entity) 
     $links[] = $link;
   }
   if ($link = bibdk_reservation_get_sbkopi_link($ids)) {
+    $netarchivelink= bibdk_netarchive_ting_openformat_actions($type = 'bibdkManifestation', $manifestation, $view_mode = 'full', $langcode = NULL);
+    $links[] = $netarchivelink;
     $links[] = $link;
   }
-  if ($manifestation->hasDirectLink()) {
-    $links[]['#markup'] = _ting_openformat_render_direct_link($manifestation->getInfotext(), $manifestation);
+
+  if ($manifestation->hasDirectLink() && $manifestation->getRestrictedExtendedUse()) {
+    if (!user_is_logged_in()) {
+      // not logged in - do log on to see if your favorite library gives access
+      _bibdk_reservation_set_saou_login_message();
+    } else {
+      $links['wrapper']['main_link'] = bibdk_saou_field_get_restricted_link($manifestation);
+      $links['wrapper']['item_list_link'] = bibdk_saou_link_to_soau_ressource($manifestation);
+    }
+  } else {
+    if ($manifestation->hasDirectLink()) {
+      $links[]['#markup'] = _ting_openformat_render_direct_link($manifestation->getInfotext(), $manifestation);
+    }
   }
   return $links;
 }
