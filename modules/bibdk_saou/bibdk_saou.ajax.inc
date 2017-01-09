@@ -125,13 +125,9 @@ function bibdk_saou_get_output_by_permission($saou, $pid, $url = NULL) {
       );
     }
     elseif ($link && empty($remote_user_access)) {
-      $message = t('bibdk_saou_walkin_access', array(), array('context' => 'bibdk_saou'));
-      $url = array('#markup' => l($message, $link, array('attributes' => array('target' => '_blank'))));
-      $output = bibdk_saou_field_get_element_to_toggle($url);
-      bibdk_saou_remove_hidden_class($output['container']['#attributes']['class']);
-      $html = drupal_render($output);
       $output = array(
-        'error' => $html,
+        'redirect' => $link,
+        'error' => '',
         'selector' => bibdk_saou_field_pid_to_selector($pid)
       );
 
@@ -147,7 +143,6 @@ function bibdk_saou_get_output_by_permission($saou, $pid, $url = NULL) {
         'error' => $html,
         'selector' => bibdk_saou_field_pid_to_selector($pid)
       );
-
       return $output;
     }
   }
