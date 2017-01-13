@@ -501,7 +501,6 @@ function bibdk_openuserstatus_get_fiscal_account_table($form, $fiscals, $fiscals
   );
 
   if ( $fiscals_total  > 0 ) {
-    //$fiscalTotalTxt = ' ' . $fiscalTotalTxt . ' kr ' . $fiscals_total . ',00';
     $form['fiscal']['fiscal_total'] = array(
       '#type' => 'html_tag',
       '#tag' => 'div',
