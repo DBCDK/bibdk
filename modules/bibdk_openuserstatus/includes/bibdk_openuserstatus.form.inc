@@ -500,27 +500,31 @@ function bibdk_openuserstatus_get_fiscal_account_table($form, $fiscals, $fiscals
     '#value_suffix' => '</h2>',
   );
 
-  if ( $fiscals_total  > 0 ) {
-    $form['fiscal']['fiscal_total'] = array(
-      '#type' => 'html_tag',
-      '#tag' => 'div',
-      '#attributes' => array(
-        'class' => array(
-          'element-title',
-        ),
-      ),
-      '#value' =>  ' ' . $fiscalTotalTxt . '  kr ' . $fiscals_total . ',00',
-      '#value_prefix' => '<h3>',
-      '#value_suffix' => '</h3>',
-    );
-  }
-
   $header = array(
     'material' => t('author_title', array(), array('context' => 'bibdk_openuserstatus')),
     'type' => t('type_header', array(), array('context' => 'bibdk_openuserstatus')),
     'date' => array('data' => t('date_header', array(), array('context' => 'bibdk_openuserstatus')), 'class' => array('show-for-large-up')),
     'amount' => t('amount_header', array(), array('context' => 'bibdk_openuserstatus')),
   );
+
+  if (!empty($fiscals_total)) {
+    foreach ($fiscals_total as $fiscals_total_elsments) {
+      foreach ($fiscals_total_elsments as $fiscals_total_elsment) {
+        $form['fiscal']['fiscal_total'][] = array(
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          '#attributes' => array(
+            'class' => array(
+              'element-title',
+            ),
+          ),
+          '#value' =>  ' ' . $fiscalTotalTxt . ' ' . $fiscals_total_elsment,
+          '#value_prefix' => '<h3>',
+          '#value_suffix' => '</h3>',
+        );
+      }
+    }
+  }
 
   if (!empty($fiscals)) {
     $items = array();
@@ -640,7 +644,7 @@ function bibdk_openuserstatus_get_group_elements($user_status, $group, $element)
 
 /**
  * Extracts the from the user status each specified element from a group and
- * returns the accumulated ammount
+ * returns the accumulated ammount for each library
  *
  * @param array $user_status
  * @param string $group
@@ -648,15 +652,19 @@ function bibdk_openuserstatus_get_group_elements($user_status, $group, $element)
  * @return string
  */
 function bibdk_openuserstatus_get_group_element_amount($user_status, $group, $element) {
-  $item = 0;
+  $favourites = bibdk_favourite_get_favourites();
+  global $language;
+  $items = array();
   foreach ($user_status as $agencyId => $agency_data) {
     if (is_object($agency_data)) {
       if (isset($agency_data->response[$group][$element])) {
-        $item += $agency_data->response[$group][$element];
+        if ($agency_data->response[$group][$element] > 0 ) {
+          $items['agencyId'][] = $favourites[$agencyId]->getBranch()->getBranchShortName($language->language) . ' kr: ' . $agency_data->response[$group][$element];
+        }
       }
     }
   }
-  return $item;
+  return $items;
 }
 
 /**
