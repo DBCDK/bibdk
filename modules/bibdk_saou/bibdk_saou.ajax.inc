@@ -85,7 +85,9 @@ function bibdk_saou_get_output_by_permission($saou, $pid, $url = NULL) {
     $manifestation = bibdk_saou_get_manifestation($pid);
     $txt = $manifestation->getInfotext();
     $url = $manifestation->getSingleAccessUrl();
-    $value['accessUrl'] = current($url);
+    if ($url != NULL ) {
+      $value['accessUrl'] = current($url);
+    }
     $code = $saou->get_responseCode();
     $message = isset($code) ? $code : 'internal error: malformed answer from saou';
     $value['accessUrlDisplay'] = $message;
@@ -98,7 +100,6 @@ function bibdk_saou_get_output_by_permission($saou, $pid, $url = NULL) {
     bibdk_saou_remove_hidden_class($output['container']['#attributes']['class']);
     $html = drupal_render($output);
     $output = array(
-      //'error' => $html,
       'error' => $value['accessUrlDisplay'],
       'selector' => bibdk_saou_field_pid_to_selector($pid)
     );

@@ -36,7 +36,6 @@ function bibdk_saou_field_formatter_view($entity_type, $entity, $field, $instanc
       $link = bibdk_soau_field_get_link($entity);
       if ($link != '') {
         $element[$delta] = $link;
-        $element['#attached']['js'][] = drupal_get_path('module', 'bibdk_saou') . '/js/bibdk_saou.js';
       }
     } else {
       // do check for access the old way
@@ -46,7 +45,6 @@ function bibdk_saou_field_formatter_view($entity_type, $entity, $field, $instanc
           $link = bibdk_soau_field_get_link($entity);
           if ($link != '') {
             $element[$delta] = $link;
-            $element['#attached']['js'][] = drupal_get_path('module', 'bibdk_saou') . '/js/bibdk_saou.js';
           }
         }
       }
@@ -131,8 +129,10 @@ function bibdk_soau_field_get_link($entity) {
   if (empty($message)) {
     // logged in
     $output['wrapper'] = bibdk_saou_field_get_dropdown_wrapper();
-    $output['wrapper']['main_link'] = bibdk_saou_field_get_restricted_link($entity);
     $output['wrapper']['item_list_link'] = bibdk_saou_link_to_soau_ressource($entity);
+    if( empty($output['wrapper']['item_list_link'])) {
+      $output = '';
+    }
   }
   else {
     //not logged in - redirect to login
@@ -151,29 +151,6 @@ function bibdk_saou_field_get_link_and_toggle_element($entity, $message) {
   $output['wrapper']['link'] = bibdk_saou_field_get_message_link($entity);
   $output['wrapper']['toggle'] = bibdk_saou_field_get_element_to_toggle($message);
   return $output;
-}
-
-/** get a render array with no link to reesource. this is to diplay messages
- * for users not logged in or incomplete userdata in favourites
- * @param $entity
- * @return array
- */
-function bibdk_saou_field_get_restricted_link($entity) {
-  $text = t('getRestrictedAccess', array(), array('context' => 'bibdk_saou'));
-  $link = array(
-    '#theme' => 'link',
-    '#text' => $text,
-    '#path' => '#',
-    '#options' => array(
-      'attributes' => array(
-        'data-pid' => $entity->id,
-        'class' => array('soau-ressource-click-links'),
-        'id' => 'bibdk_saou_' . bibdk_saou_field_pid_to_selector($entity->id),
-      ),
-      'html' => FALSE,
-    ),
-  );
-  return $link;
 }
 
 /** get a render array with no link to reesource. this is to diplay messages
@@ -249,6 +226,7 @@ function bibdk_saou_field_get_element_to_toggle($message) {
  * @return array
  */
 function bibdk_saou_link_to_soau_ressource($entity) {
+  $link_found = FALSE;
   $link['container'] = bibdk_saou_field_get_dropdown_link_wrapper();
   $uri = $entity->getRemoteAccess();
   if (empty($uri)) { $uri = $entity->getRestrictedExtendedUse();}
@@ -263,14 +241,14 @@ function bibdk_saou_link_to_soau_ressource($entity) {
     }
     else {
       $idlink = bibdk_saou_get_data($entity->id, $uri, $agency_id, $saou_error);
-      if ($saou_error) {
-        $link['container'][] = bibdk_saou_field_get_saou_error_link_wrapper($idlink, $favourite);
-      } else {
+      if (!$saou_error) {
+        //just show ok
         $link['container'][] = bibdk_saou_field_get_saou_link_wrapper($idlink, $favourite);
+        $link_found = TRUE;
       }
     }
   }
-  return $link;
+  return ($link_found) ? $link : '';
 }
 
 /** get a wrapper for dropdown link message
@@ -280,26 +258,8 @@ function bibdk_saou_field_get_dropdown_link_wrapper() {
   return array(
     '#type' => 'container',
     '#attributes' => array(
-       'class' => array('dropdown-menu-link', 'hidden'),
+       'class' => array('dropdown-menu-link'),
     )
-  );
-}
-
-/** get a wrapper for dropdown saou error link message
- * @return array
- */
-function bibdk_saou_field_get_saou_error_link_wrapper($idlink, $favourite) {
-  return array(
-    '#theme' => 'link',
-    '#text' => t($idlink, array(), array('context' => 'bibdk_saou')) . ' ' . $favourite->getInformation()->getAgencyName() . ' ',
-    '#path' => '',
-    '#options' => array(
-      'attributes' => array(
-        'disabled' => 'disabled',
-        'class' => array('inactive'),
-      ),
-      'html' => FALSE,
-    ),
   );
 }
 
