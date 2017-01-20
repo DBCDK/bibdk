@@ -344,6 +344,14 @@ function _bibdk_reservation_set_login_message() {
   drupal_set_message(t('It would be better for you if you were logged in: !link', array('!link' => $loginlink), array('context' => 'bibdk_reservation')), 'warning', FALSE);
 }
 
+function _bibdk_reservation_set_saou_login_message() {
+  $link = 'user/login';
+
+  $loginlink = l(t('login_link', array(), array('context' => 'bibdk_reservation')), $link);
+
+  drupal_set_message(t('log in to see if your favorite library gives access: !link', array('!link' => $loginlink), array('context' => 'bibdk_reservation')), 'warning', FALSE);
+}
+
 /**
  * Validation handler for bibdk_reservation_validate_email;
  */
