@@ -613,7 +613,7 @@ function bibdk_openuserstatus_get_fiscals($response) {
  * @return string
  */
 function bibdk_openuserstatus_get_fiscals_total($response) {
-  return bibdk_openuserstatus_get_group_element_amount($response, 'fiscalAccount', 'totalAmount', 'totalAmountCurrency');
+  return bibdk_openuserstatus_get_group_element_amount($response);
 }
 
 /**
@@ -651,16 +651,16 @@ function bibdk_openuserstatus_get_group_elements($user_status, $group, $element)
  * @param string $element
  * @return string
  */
-function bibdk_openuserstatus_get_group_element_amount($user_status, $group, $element, $element_currency) {
+function bibdk_openuserstatus_get_group_element_amount($user_status) {
   $favourites = bibdk_favourite_get_favourites();
   global $language;
   $items = array();
   foreach ($user_status as $agencyId => $agency_data) {
     if (is_object($agency_data)) {
-      if (isset($agency_data->response[$group][$element])) {
-        if ($agency_data->response[$group][$element] > 0 ) {
-          $currency_text = t($agency_data->response[$group][$element_currency], array(), array('context' => 'bibdk_openuserstatus'));
-          $items['agencyId'][] = $favourites[$agencyId]->getBranch()->getBranchShortName($language->language) . ' ' . $currency_text . ' ' . $agency_data->response[$group][$element];
+      if (isset($agency_data->response['fiscalAccount']['totalAmount'])) {
+        if ($agency_data->response['fiscalAccount']['totalAmount'] > 0 ) {
+          $currency_text = t($agency_data->response['fiscalAccount']['totalAmountCurrency'], array(), array('context' => 'bibdk_openuserstatus'));
+          $items['agencyId'][] = $favourites[$agencyId]->getBranch()->getBranchShortName($language->language) . ' ' . $currency_text . ' ' . $agency_data->response['fiscalAccount']['totalAmount'];
         }
       }
     }
