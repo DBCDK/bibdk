@@ -53,9 +53,6 @@ function bibdk_favourite_get_favourites_form($form, $form_state) {
     $form['empty'] = bibdk_favourite_empty_favourite_form_element();
   }
 
-
-  dpm($form);
-
   return $form;
 }
 
