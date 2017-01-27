@@ -3200,7 +3200,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->v_uuid = '95788824-6d40-ebd4-8912-ce2194f48d62';
   $option->sort = -70;
   $option->label = 'ungarsk';
-  $option->value = 'term.language="ung"';
+  $option->value = 'term.language="hun"';
   $option->expand = '0';
   $option->is_disabled = FALSE;
   $export['33f4a211-7b06-2a74-594d-71ef52132a7b'] = $option;
