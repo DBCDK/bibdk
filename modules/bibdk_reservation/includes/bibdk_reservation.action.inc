@@ -13,7 +13,7 @@ function bibdk_reservation_ting_openformat_actions($type, $entity, $view_mode, $
   $element = array();
   switch ($type) {
     case "bibdkManifestation" :
-      if ($entity->isReservable()) {
+      if ($entity->isReservable() || ($entity->isLink() && $entity->getRestrictedExtendedUse())) {
         $element['reservation'] = array(
           '#markup' => bibdk_reservation_link($entity->getIDs(), $entity->getSubType(), $type),
           '#weight' => -2,
@@ -21,7 +21,6 @@ function bibdk_reservation_ting_openformat_actions($type, $entity, $view_mode, $
       }
       elseif ($entity->isLink()) {
         $accessUrlContainer = $entity->getSingleAccessUrl();
-
         $element['reservation'] = array(
           '#markup' => l(t('Order', array(), array('context' => 'bibdk_reservation')), $accessUrlContainer['accessUrl'], array(
             'attributes' => array(
