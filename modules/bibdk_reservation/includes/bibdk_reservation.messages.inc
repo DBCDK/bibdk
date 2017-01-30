@@ -61,6 +61,9 @@ function bibdk_reservation_get_action_links($ids, BibdkWork $bibdk_work_entity) 
     $links[] = $link;
   }
   $link = bibdk_reservation_get_sbkopi_link($ids);
+  if ($link) {
+    $links[] = $link;
+  }
   $netarchivelink= bibdk_netarchive_ting_openformat_actions($type = 'bibdkManifestation', $manifestation, $view_mode = 'full', $langcode = NULL);
   if ($netarchivelink) {
     $links[] = $netarchivelink;
