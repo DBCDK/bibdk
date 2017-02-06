@@ -17,7 +17,23 @@ function __construct($xml) {
   $this->xpath->registerNamespace('docbook', 'http://docbook.org/ns/docbook');
 }
 
-  function getSections() {
+  /*
+  Get marcxchange subfield y for makeing link in material reviews
+  */
+  function getSubfields() {
+    $this->xpath->registerNamespace('marcx', 'info:lc/xmlns/marcxchange-v1');
+    $return = array();
+    //search for subfield y
+    $datafields = $this->xpath->query('/object/marcx:collection/marcx:record/marcx:datafield/marcx:subfield[@code="y"]');
+    foreach ($datafields as $datafield) {
+      foreach ($datafield->childNodes as $node) {
+          $return[] = $node->nodeValue;
+      }
+    }
+    return $return;
+  }
+
+  function getSections($reviews_marcx_link) {
     $sections = $this->xpath->query('/object/docbook:article/docbook:section');
     $return = array();
     foreach ($sections as $section) {
@@ -63,3 +79,4 @@ function __construct($xml) {
 
   }
 }
+
