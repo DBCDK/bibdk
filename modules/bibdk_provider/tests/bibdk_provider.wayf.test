@@ -33,7 +33,7 @@ class BibdkProviderWAYFTestCase extends DrupalWebTestCase {
 
   private function testNewUser() {
     $mail = 'new_user@dbc.dk';
-    $wayf_id = 'WAYF-new-ID';
+    $wayf_id = 'WAYF-test-ID';
 
     $this->drupalGet('wayf/login', array(
       'query' => array(
@@ -125,7 +125,7 @@ class BibdkProviderWAYFTestCase extends DrupalWebTestCase {
         'destination' => 'user/login,'
       )));
     $this->assertUrl($this->getAbsoluteUrl('wayf/gateway') . '?returnUrl=' . $this->getAbsoluteUrl('/') . 'wayf/login&idp=nemlogin', array(), t('User is redirected to gateway'));
-    $this->drupalPost(null, array('mail[]' => $mail, 'eduPersonTargetedID[]' => 'WAYF-new-ID'), 'accept');
+    $this->drupalPost(null, array('mail[]' => $mail, 'eduPersonTargetedID[]' => 'WAYF-test-ID'), 'accept');
     // Test we end up at the right url
     $this->assertUrl('wayf/accept');
     // Accept
@@ -205,6 +205,7 @@ class BibdkProviderWAYFTestCase extends DrupalWebTestCase {
       'ding_wayf[wayflogin]' => 1,
       'ding_wayf[nemlogin]' => 1,
       'ding_wayf[gatewayf]' => $this->getAbsoluteUrl('wayf/gateway'),
+      'ding_wayf[safetyhash]' => '12345',
     );
     $account = $this->drupalCreateUser(array('administer site configuration', 'configure wayf'));
     $this->drupalLogin($account);
