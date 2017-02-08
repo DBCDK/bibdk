@@ -133,21 +133,21 @@ function _bibdk_review_convert_result_to_bibdk_reviews($result) {
 
 /** Replace all replace tags in review text
  * @param $replace_link string
- * @param $replace_tagets array
+ * @param $replace_targets array
  * @return string
  */
-function _bibdk_reviews_insert_link($replace_link, $replace_tagets) {
+function _bibdk_reviews_insert_link($replace_link, $replace_targets) {
   $return_replace_link = $replace_link;
-  foreach ($replace_tagets as $replace_taget){
-    $target_link = bibdk_review_make_search_link($replace_taget);
-    $return_replace_link = str_replace($replace_taget, $target_link, $return_replace_link);
+  foreach ($replace_targets as $replace_target){
+    $target_link = bibdk_review_make_search_link($replace_target);
+    $return_replace_link = str_replace($replace_target, $target_link, $return_replace_link);
   }
   return $return_replace_link;
 }
 
 /** Makes link to replace into review text
  * @param $title string
- * @return array
+ * @return string
  */
 function bibdk_review_make_search_link($title) {
 

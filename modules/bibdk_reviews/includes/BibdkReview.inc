@@ -33,7 +33,7 @@ function __construct($xml) {
     return $return;
   }
 
-  function getSections($reviews_marcx_link) {
+  function getSections() {
     $sections = $this->xpath->query('/object/docbook:article/docbook:section');
     $return = array();
     foreach ($sections as $section) {
