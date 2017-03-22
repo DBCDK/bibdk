@@ -15,10 +15,7 @@ class BibdkActionsWebTestCase extends DrupalWebTestCase {
   }
 
   public function setUp() {
-    parent::setUp('bibdk_cart', 'bibdk_actions', 'ting_openformat', 'field_ui', 'bibdk_provider', 'bibdk_webservice');
-    //variable_set('ting_search_url', 'lakiseks.dbc.dk/openbibdk/0.5/');
-    variable_set('ting_search_url', 'http://opensearch.addi.dk/4.0.1/');
-    variable_set('ting_search_url', 'http://bibdk-prod-ws.dbc.dk/opensearch/b3.0_4.2/');
+    parent::setUp('bibdk_cart', 'bibdk_actions', 'ting_openformat','field_ui', 'bibdk_provider', 'bibdk_webservice', 'bibdk_webservice_settings_develop');
     variable_set('bibdk_provider_webservice_url', $this->getAbsoluteUrl('bibdk_webservice'));
     variable_set('bibdk_provider_security_code', 'securityCode');
   }
