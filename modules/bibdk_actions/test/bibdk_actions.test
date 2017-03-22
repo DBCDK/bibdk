@@ -15,12 +15,15 @@ class BibdkActionsWebTestCase extends DrupalWebTestCase {
   }
 
   public function setUp() {
-    parent::setUp('bibdk_cart', 'bibdk_actions', 'ting_openformat','field_ui', 'bibdk_provider', 'bibdk_webservice', 'bibdk_webservice_settings_develop');
+    parent::setUp('bibdk_cart', 'bibdk_actions', 'ting_openformat','field_ui', 'bibdk_provider', 'bibdk_webservice', 'bibdk_webservice_settings_develop','features', 'strongarm');
     variable_set('bibdk_provider_webservice_url', $this->getAbsoluteUrl('bibdk_webservice'));
     variable_set('bibdk_provider_security_code', 'securityCode');
   }
 
   public function testRunner() {
+
+    debug(variable_get('ting_search_url', 'FISK'));
+
     $this->_testBibdkCartHook();
     $this->_testPrintview();
     $this->_testPrintFunctions();
