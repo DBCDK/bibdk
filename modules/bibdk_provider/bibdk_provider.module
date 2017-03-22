@@ -47,6 +47,7 @@ function bibdk_provider_form_user_register_form_alter(&$form, &$form_state) {
   $form['#validate'][] = 'bibdk_provider_user_register_form_validate';
 
   // Alter form for wayf registration
+
   bibdk_provider_wayf_alter_user_register_form($form, $form_state);
 }
 

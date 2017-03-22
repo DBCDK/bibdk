@@ -38,6 +38,7 @@ function _bibdk_enable_modules() {
     'bibdk_favourite',
     'bibdk_frontend',
     'bibdk_furthersearch',
+    'bibdk_heimdal',
     'bibdk_help',
     'bibdk_linkme',
     'bibdk_openorder',

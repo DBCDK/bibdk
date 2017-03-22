@@ -809,4 +809,57 @@ class BibdkUser {
     }
   }
 
+/**
+   * Function to check if the borrowerId exists.
+   *
+   * @param $borrowerId
+   *   BorrowerId identification which is used as login.
+   *
+   * @return
+   *   username if exist else blank
+   */
+  public function verifyborrowerid($borrowerId) {
+
+    $params = array(
+      'oui:borrowerId' => $borrowerId,
+      'oui:outputType' => 'xml',
+    );
+    $response[$borrowerId] = $this->makeRequest('verifyborroweridRequest', $params);
+
+    $xmlmessage = $this->responseExtractor($response[$borrowerId], 'verifyUserResponse');
+    if ($xmlmessage != FALSE && $xmlmessage->nodeName == 'oui:username') {
+      return $xmlmessage->nodeValue;
+    }
+    return '';
+  }
+
+  /**
+   * Function to update borrowerId for a existing user.
+   *
+   * @param $username, $borrowerId
+   *   $username - identification for which user to update
+   *   $borrowerId - to update.
+   *
+   * @return
+   *   username if exist else blank
+   */
+  public function updateBorrowerId($username, $borrowerId) {
+
+    $params = array(
+      'oui:userId' => $username,
+      'oui:borrowerId' => $borrowerId,
+      'oui:outputType' => 'xml',
+    );
+    $response[$username] = $this->makeRequest('updateBorrowerIdRequest', $params);
+
+    $xmlmessage = $this->responseExtractor($response[$username], 'updateBorrowerIdResponse');
+
+    if ($xmlmessage != FALSE && $xmlmessage->nodeName == 'oui:userId') {
+      return $xmlmessage->nodeValue;
+    }
+    else {
+      return '';
+    }
+  }
+
 }
