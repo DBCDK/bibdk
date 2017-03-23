@@ -33,7 +33,7 @@ function bibdk_facets_strongarm() {
       'weight' => '-9',
     ),
     2 => array(
-      'name' => 'facet.creatorFunction',
+      'name' => 'facet.creator',
       'title' => 'Forfatter',
       'weight' => '-8',
     ),
@@ -123,18 +123,18 @@ function bibdk_facets_strongarm() {
       'weight' => '9',
     ),
     20 => array(
+      'name' => 'facet.dk5',
+      'title' => 'Opstilling i folkebiblioteker',
+      'weight' => '10',
+    ),
+    21 => array(
       'name' => 'facet.primaryCreator',
       'title' => 'Hovedansvar',
       'weight' => '10',
     ),
-    21 => array(
+    22 => array(
       'name' => 'facet.sheetMusic',
       'title' => 'Nodetype',
-      'weight' => '10',
-    ),
-    22 => array(
-      'name' => 'facet.dk5',
-      'title' => 'Opstilling i folkebiblioteker',
       'weight' => '10',
     ),
   );
