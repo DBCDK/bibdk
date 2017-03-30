@@ -28,14 +28,19 @@ function bibdk_heimdal_redirect_login() {
 
   $borrower_id_url = bibdk_heimdal_get_login_ticket();
   $borrower_id = bibdk_heimdal_get_userid($borrower_id_url);
-
-  $name = BibdkUser::instance()->verifyborrowerid($borrower_id);
-  if ($user->uid == 0 && !empty($name) ) {
-    // user exists username and borrowerid
-    bibdk_heimdal_do_login($name);
+  if (!empty($borrower_id)) {
+    $name = BibdkUser::instance()->verifyborrowerid($borrower_id);
+    if ($user->uid == 0 && !empty($name) ) {
+      // user exists username and borrowerid
+      bibdk_heimdal_do_login($name);
+    } else {
+      // user do not exist - add data
+      return drupal_get_form('bibdk_heimdal_form');
+    }
   } else {
-    // user do not exist - add data
-    return drupal_get_form('bibdk_heimdal_form');
+    $text = t('unfortunately we could not log you in due to empty borrowerID', array(), array('context' => 'heimdal'));
+    drupal_set_message($text, 'warning');
+    drupal_goto('');
   }
 }
 
@@ -219,6 +224,7 @@ function bibdk_heimdal_do_login($name) {
   $state['values']['name'] = $name;
   $state['values']['mail'] = $name;
   $state['values']['pass'] = 'ldp88ihhGipkOPpppl0888qd'; // ?
+  $_SESSION['heimdal_login'] = TRUE;
 
   //submit login form
   drupal_form_submit('user_login_block', $state);
@@ -228,8 +234,21 @@ function bibdk_heimdal_do_login($name) {
     drupal_goto('user');
   }
   else {
-      $_SESSION['persistent_login_login'] = TRUE;
-      drupal_goto('user/' . $user->uid . '/edit');
+    drupal_goto('user/' . $user->uid . '/edit');
+  }
+}
+
+/**
+ * Heimdal do logout
+ *
+ */
+function bibdk_heimdal_do_logout() {
+  if (isset($_SESSION['heimdal_login'])) {
+    if ($_SESSION['heimdal_login'] ) {
+      unset($_SESSION['heimdal_login']);
+      $config = variable_get('ding_wayf', NULL);
+      drupal_goto($config['hosturl'] . '/logout');
+    }
   }
 }
 
