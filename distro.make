@@ -18,7 +18,7 @@ core = 7.x
 projects[drupal][type] = core
 
 ; uncomment to specify drupal version. Otherwise newest version is downloaded
-projects[drupal][version] = 7.43
+projects[drupal][version] = 7.54
 projects[drupal][patch][] = http://drupal.org/files/1852888-sort-translations-by-context-2.diff
 projects[drupal][patch][] = https://raw.github.com/DBCDK/patches/master/file_create_url-no_change_of_relative_url_to_absolute-all_tests.patch
 projects[drupal][patch][] = https://raw.github.com/DBCDK/patches/master/drupal_http_build_query_html5_encode_brackets.patch
