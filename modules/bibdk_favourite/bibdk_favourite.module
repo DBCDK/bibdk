@@ -318,7 +318,7 @@ function bibdk_favourite_set_userdata($form, &$form_state) {
  * @param $agencyid
  * @param array $userdata
  */
-function bibdk_favourite_save_userdata($agencyid, array $userdata) {
+function bibdk_favourite_save_userdata($agencyid, array $userdata, $show_message = TRUE) {
   global $user;
   if (!ding_user_is_provider_user($user)) {
     return;
@@ -333,9 +333,15 @@ function bibdk_favourite_save_userdata($agencyid, array $userdata) {
   $data = serialize($userdata);
   $response = bibdk_provider_user_save_favourite_data($creds['name'], $agencyid, $data);
   if ($response !== FALSE) {
+    if ($show_message) {
     $agencyid =_bibdk_favourite_get_branch_name_from_id($agencyid);
     $message_text = t('user_changes_saved', array(), array('context' => 'bibdk_favourite'));
     drupal_set_message($message_text . ': ' . $agencyid);
+    } else {
+      $agencyid =_bibdk_favourite_get_branch_name_from_id($agencyid);
+      $message_text = t('library is automatic added to your favorite, add data before futher use', array(), array('context' => 'bibdk_favourite'));
+      drupal_set_message($message_text . ': ' . $agencyid);
+    }
   }
 }
 
@@ -396,7 +402,7 @@ function bibdk_favourite_create_favourite() {
         $userdata = array();
         $userdata['userId'] = $value->userId;
         bibdk_provider_user_add_favourite($name,$agencyId);
-        bibdk_favourite_save_userdata($agencyId, $userdata);
+        bibdk_favourite_save_userdata($agencyId, $userdata, $show_standard_message = FALSE);
         unset($_SESSION['bibdk_favourites']);
       }
     }
