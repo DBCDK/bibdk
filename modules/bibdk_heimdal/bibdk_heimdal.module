@@ -269,8 +269,7 @@ function bibdk_heimdal_login_link() {
       $config = variable_get('ding_wayf', NULL);
       $heimdal_link = $config['hosturl'] . $config['loginpath'] . '?token=' . $config['clienttoken'] . '&destination=heimdal/login';
       $logo_path = base_path() . drupal_get_path('theme', $GLOBALS['theme']);
-      $logo_path .= '/img/in_use/heimdal-login.png';
-      //$logo_path .= '/img/in_use/bibliotekslogin_logo.svg';
+      $logo_path .= '/img/in_use/bibliotekslogin_logo.png';
       $logo_alt_text_accessplatform = t('logo_alt_text_accessplatform', array(), array('context' => 'heimdal'));
       $login_link = '<div id="block-ding-wayf-login" class="block block-ding-wayf">';
       $login_link .= '<div class="ding-wayf-logon-block"> <div class="ding-wayf-logoninfo">' . t('Log in to hejmdal') . '</div>';
