@@ -85,8 +85,6 @@ function bibdk_heimdal_get_userid($borrower_id_url) {
   }
 }
 
-
-
 /**
  * Get heimdal register form for typing username/password
  *
@@ -271,10 +269,11 @@ function bibdk_heimdal_login_link() {
       $config = variable_get('ding_wayf', NULL);
       $heimdal_link = $config['hosturl'] . $config['loginpath'] . '?token=' . $config['clienttoken'] . '&destination=heimdal/login';
       $logo_path = base_path() . drupal_get_path('theme', $GLOBALS['theme']);
-      $logo_path .= '/img/in_use/heimdal-login.png';
+      //$logo_path .= '/img/in_use/heimdal-login.png';
+      $logo_path .= '/img/in_use/bibliotekslogin_logo.svg';
       $logo_alt_text_accessplatform = t('logo_alt_text_accessplatform', array(), array('context' => 'heimdal'));
       $login_link = '<div id="block-ding-wayf-login" class="block block-ding-wayf">';
-      $login_link .= '<div class="ding-wayf-logon-block"> <div class="ding-wayf-logoninfo">' . t('Log in to heimdal') . '</div>';
+      $login_link .= '<div class="ding-wayf-logon-block"> <div class="ding-wayf-logoninfo">' . t('Log in to hejmdal') . '</div>';
       $login_link .= l('<img src="' . $logo_path . '" alt="' . $logo_alt_text_accessplatform . '"/>', $heimdal_link, array('html' => TRUE,)) .'</div>';
       $login_link .= '</div>';
     }
