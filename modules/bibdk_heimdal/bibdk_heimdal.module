@@ -28,7 +28,6 @@ function bibdk_heimdal_redirect_login() {
 
   $borrower_id_url = bibdk_heimdal_get_login_ticket();
   $borrower_id = bibdk_heimdal_get_userid($borrower_id_url);
-
   $name = BibdkUser::instance()->verifyborrowerid($borrower_id);
   if ($user->uid == 0 && !empty($name) ) {
     // user exists username and borrowerid
@@ -69,14 +68,24 @@ function bibdk_heimdal_get_userid($borrower_id_url) {
   $heimdal_attributes = $curl->get($borrower_id_url);
   $curl->close();
   $result = json_decode($heimdal_attributes);
+  //dpm($result);
+  $favorit_links = '';
+  if (!empty($result->attributes->agencies)) {
+    foreach ($result->attributes->agencies as $id => $branch) {
+      $favorit_links[$branch->agencyId] = $branch;
+    }
+  }
   if (!empty($result->attributes->cpr)) {
     $borrower_id = $result->attributes->cpr;
     bibdk_heimdal_set_session('heimdal_borrower_id',$borrower_id);
+    bibdk_heimdal_set_session('favorit_links', $favorit_links);
     return $borrower_id;
   } else {
     return '';
   }
 }
+
+
 
 /**
  * Get heimdal register form for typing username/password
@@ -145,7 +154,6 @@ function bibdk_heimdal_validate($form, $form_state) {
   // do username/pincode exist
   $valid_user = BibdkUser::instance()->login($username, $pincode);
   $borrowerid_session = bibdk_heimdal_set_session("heimdal_borrower_id");
-
   if ($valid_user && !empty($borrowerid_session)) {
     // bind borrower_id for username
     bibdk_heimdal_bind_borrower_id($username, $borrowerid_session);
@@ -163,7 +171,6 @@ function bibdk_heimdal_validate($form, $form_state) {
 function bibdk_heimdal_bind_borrower_id($username, $borrowerid_session) {
 
   BibdkUser::instance()->updateBorrowerId($username, $borrowerid_session);
-  bibdk_heimdal_set_session('heimdal_borrower_id','');
   $text = t('heimdal user added to existing bibliotek.dk', array(), array('context' => 'heimdal'));
   drupal_set_message($text . ': ' . $username, 'status');
   // do login
@@ -197,9 +204,10 @@ function bibdk_heimdal_create_borrower_id($username, $borrowerid_session, $pinco
         // bind borrower_id for username
         BibdkUser::instance()->updateBorrowerId($username, $borrowerid_session);
         // delete session borrower_id
-        bibdk_heimdal_set_session('heimdal_borrower_id','');
+        // ANA bibdk_heimdal_set_session('heimdal_borrower_id','');
         // do login
         bibdk_heimdal_do_login($username);
+
       }
     } else {
         $text = t('could not added new user to bibliotek.dk : ' . $username );

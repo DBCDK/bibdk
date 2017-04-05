@@ -329,10 +329,13 @@ function bibdk_favourite_save_userdata($agencyid, array $userdata) {
   catch (Exception $e) {
     // do nothing
   }
+
   $data = serialize($userdata);
   $response = bibdk_provider_user_save_favourite_data($creds['name'], $agencyid, $data);
   if ($response !== FALSE) {
-    drupal_set_message(t('user_changes_saved', array(), array('context' => 'bibdk_favourite')));
+    $agencyid =_bibdk_favourite_get_branch_name_from_id($agencyid);
+    $message_text = t('user_changes_saved', array(), array('context' => 'bibdk_favourite'));
+    drupal_set_message($message_text . ': ' . $agencyid);
   }
 }
 
@@ -375,6 +378,47 @@ function bibdk_favourite_set_favourite($branchId) {
 }
 
 /**
+ * creates users favourite libraries
+ *
+ * @global stdClass $user
+ * @param
+ * @return
+ */
+function bibdk_favourite_create_favourite() {
+  global $user;
+  $favorit_links = bibdk_heimdal_set_session('favorit_links');
+  foreach ($favorit_links as $agencyId => $value) {
+    if (!empty($value)) {
+      $fav_exist = bibdk_favourite_favourite_exist($agencyId);
+      if (!$fav_exist) {
+        $creds = ding_user_get_creds($user);
+        $name = $creds['name'];
+        $userdata = array();
+        $userdata['userId'] = $value->userId;
+        bibdk_provider_user_add_favourite($name,$agencyId);
+        bibdk_favourite_save_userdata($agencyId, $userdata);
+        unset($_SESSION['bibdk_favourites']);
+      }
+    }
+  }
+}
+
+/**
+ * check if agencyId all ready exist as a favourite library
+ * @param $agencyId
+ * @return TRUE/FALSE
+ */
+function bibdk_favourite_favourite_exist($agencyId) {
+  $user_favourites = bibdk_favourite_get_favourites();
+  foreach ($user_favourites as $user_favourite => $value) {
+    if (!empty($value)) {
+      if ($agencyId == $user_favourite) { return TRUE; }
+    }
+  }
+  return FALSE;
+}
+
+/**
  * Translate and return a bibdk_favourite standard error message
  *
  * @return null|string
@@ -401,3 +445,20 @@ function _bibdk_favourite_set_delete_text() {
   return t('Favourite library has been deleted', array(), array('context' => 'bibdk_favourite'));
 }
 
+/**
+ * Helper function to get branch name from an Agency ID
+ * @param $agencyId
+ *        $type 'long' or 'short'
+ * @return text
+ */
+function _bibdk_favourite_get_branch_name_from_id($agencyId, $type = 'long') {
+  global $language;
+  $lang = $language->language;
+  $consortia = new TingAgency($agencyId);
+  if ($type == 'short') {
+    return $consortia->getBranch()->getBranchShortName($lang);
+  }
+  else {
+    return $consortia->getBranch()->getBranchName($lang);
+  }
+}

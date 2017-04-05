@@ -27,13 +27,13 @@ function bibdk_frontend_user_login(&$edit, $account) {
     drupal_set_message(_bibdk_frontend_welcome_message());
     // remind user to add favourites
     drupal_set_message(_bibdk_frontend_remember_favourites_message());
-
     $url = 'user';
     _bibdk_frontend_login_redirect($edit, $url, $options);
   }
   // do NOT redirect on password reset || reload the page on normal login
   elseif ((!isset($_GET['pass-reset-token']) && (isset($_POST['form_id']) && $_POST['form_id'] != 'user_pass_reset')) || !isset($_POST['form_id'])) {
     $url = '';
+    bibdk_favourite_create_favourite();
     _bibdk_frontend_login_redirect($edit, $url, $options);
   }
 }
