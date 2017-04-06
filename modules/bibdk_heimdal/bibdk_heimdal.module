@@ -98,8 +98,7 @@ function bibdk_heimdal_form($form, $form_state) {
     '#value' => t('type existing username and password for binding or create new user ...', array(), array('context' => 'heimdal')),
     '#tag' => 'p',
     '#attributes' => array(
-      'style' => 'margin-bottom: 10px',
-      'class' => array('bibdk-heimdal-save'),
+      'class' => array('bibdk-heimdal-info'),
     ),
   );
 
@@ -130,7 +129,6 @@ function bibdk_heimdal_form($form, $form_state) {
     '#type' => 'submit',
     '#value' => t('save', array(), array('context' => 'heimdal')),
     '#attributes' => array(
-      'style' => 'margin-top: 10px',
       'class' => array('bibdk-heimdal-save'),
     ),
   );
@@ -152,12 +150,17 @@ function bibdk_heimdal_validate($form, $form_state) {
   // do username/pincode exist
   $valid_user = BibdkUser::instance()->login($username, $pincode);
   $borrowerid_session = bibdk_heimdal_set_session("heimdal_borrower_id");
-  if ($valid_user && !empty($borrowerid_session)) {
+  if ($valid_user && $borrowerid_session != '') {
     // bind borrower_id for username
     bibdk_heimdal_bind_borrower_id($username, $borrowerid_session);
   } else {
-    // create user
-    bibdk_heimdal_create_borrower_id($username, $borrowerid_session, $pincode);
+    if ($borrowerid_session != '') {
+      // create user
+      bibdk_heimdal_create_borrower_id($username, $borrowerid_session, $pincode);
+    } else {
+      $text = t('user could not added to bibliotek.dk', array(), array('context' => 'heimdal'));
+      drupal_set_message($text . ': ' . $username, 'status');
+    }
   }
 }
 
@@ -167,13 +170,11 @@ function bibdk_heimdal_validate($form, $form_state) {
  * @param $username, $borrowerid_session
  */
 function bibdk_heimdal_bind_borrower_id($username, $borrowerid_session) {
-
   BibdkUser::instance()->updateBorrowerId($username, $borrowerid_session);
-  $text = t('heimdal user added to existing bibliotek.dk', array(), array('context' => 'heimdal'));
+  $text = t('user added to existing bibliotek.dk', array(), array('context' => 'heimdal'));
   drupal_set_message($text . ': ' . $username, 'status');
   // do login
   bibdk_heimdal_do_login($username);
-
 }
 
 /**
@@ -187,29 +188,26 @@ function bibdk_heimdal_create_borrower_id($username, $borrowerid_session, $pinco
   $valid_user = BibdkUser::instance()->verify($username);
   if ($valid_user) {
      // username exist
-     $text = t('user exist bibliotek.dk, type correct password', array(), array('context' => 'heimdal'));
+     $text = t('user exist in bibliotek.dk, but password not correct', array(), array('context' => 'heimdal'));
      drupal_set_message($text . ': ' . $username, 'warning');
   } else {
     // username do not exist - create new user
     $valid_user = BibdkUser::instance()->create($username, $pincode);
     if ($valid_user) {
       // new user created
-      $text = t('heimdal user added bibliotek.dk', array(), array('context' => 'heimdal'));
+      $text = t('user added bibliotek.dk', array(), array('context' => 'heimdal'));
       drupal_set_message($text . ': ' . $username, 'status');
       $valid_user = BibdkUser::instance()->login($username, $pincode);
       $borrowerid_session = bibdk_heimdal_set_session("heimdal_borrower_id");
-      if ($valid_user && !empty($borrowerid_session)) {
+      if ($valid_user && $borrowerid_session != '') {
         // bind borrower_id for username
         BibdkUser::instance()->updateBorrowerId($username, $borrowerid_session);
-        // delete session borrower_id
-        // ANA bibdk_heimdal_set_session('heimdal_borrower_id','');
         // do login
         bibdk_heimdal_do_login($username);
-
       }
     } else {
-        $text = t('could not added new user to bibliotek.dk : ' . $username );
-        drupal_set_message($text,'error');
+      $text = t('could not added new user to bibliotek.dk : ' . $username );
+      drupal_set_message($text,'error');
     }
   }
 }
@@ -272,7 +270,7 @@ function bibdk_heimdal_login_link() {
       $logo_path .= '/img/in_use/bibliotekslogin_logo.png';
       $logo_alt_text_accessplatform = t('logo_alt_text_accessplatform', array(), array('context' => 'heimdal'));
       $login_link = '<div id="block-ding-wayf-login" class="block block-ding-wayf">';
-      $login_link .= '<div class="ding-wayf-logon-block"> <div class="ding-wayf-logoninfo">' . t('Log in to hejmdal') . '</div>';
+      $login_link .= '<div class="ding-wayf-logon-block"> <div class="ding-wayf-logoninfo">' . t('Log in to hejmdal', array(), array('context' => 'heimdal')) . '</div>';
       $login_link .= l('<img src="' . $logo_path . '" alt="' . $logo_alt_text_accessplatform . '"/>', $heimdal_link, array('html' => TRUE,)) .'</div>';
       $login_link .= '</div>';
     }

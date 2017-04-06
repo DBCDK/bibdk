@@ -401,6 +401,7 @@ function bibdk_favourite_create_favourite() {
         $name = $creds['name'];
         $userdata = array();
         $userdata['userId'] = $value->userId;
+        $userdata['cpr'] = $value->userId;
         bibdk_provider_user_add_favourite($name,$agencyId);
         bibdk_favourite_save_userdata($agencyId, $userdata, $show_standard_message = FALSE);
         unset($_SESSION['bibdk_favourites']);
