@@ -24,6 +24,9 @@ class BibdkActionsWebTestCase extends DrupalWebTestCase {
 
     debug(variable_get('ting_search_url', 'FISK'));
 
+    $this->assertTrue(module_exists('field_ui'));
+
+
     $this->_testBibdkCartHook();
     $this->_testPrintview();
     $this->_testPrintFunctions();
@@ -35,8 +38,9 @@ class BibdkActionsWebTestCase extends DrupalWebTestCase {
   }
 
   private function _login_as_admin() {
-    $admin_user = $this->drupalCreateUser(array('access content', 'administer content types'));
+    $admin_user = $this->drupalCreateUser(array('access content', 'administer content types', 'administer users','administer permissions'));
     $this->drupalLogin($admin_user);
+    $this->drupalPost('user/2/edit', array('roles[3]' => TRUE), t('Save'));
   }
 
   /**
