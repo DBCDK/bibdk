@@ -68,7 +68,6 @@ function bibdk_heimdal_get_userid($borrower_id_url) {
   $heimdal_attributes = $curl->get($borrower_id_url);
   $curl->close();
   $result = json_decode($heimdal_attributes);
-  //dpm($result);
   $favorit_links = '';
   if (!empty($result->attributes->agencies)) {
     foreach ($result->attributes->agencies as $id => $branch) {
@@ -295,8 +294,8 @@ function bibdk_heimdal_form_user_login_alter(&$form, &$form_state) {
  *
  */
 function bibdk_heimdal_check_token() {
-  // Look up last time and compare to 1 months ago.
-  if (variable_get('bibdk_heimdal_function_last_run', 0) <= strtotime('-1 month')) {
+  // Look up last time and compare to 1 day ago.
+  if (variable_get('bibdk_heimdal_function_last_run', 0) <= strtotime('-1 day')) {
     $config = variable_get('ding_wayf', NULL);
     $newtoken = bibdk_heimdal_get_token();
     if (!empty($newtoken)) {
@@ -383,4 +382,14 @@ function bibdk_heimdal_set_session($key, $value = NULL) {
     $storage[$key] = $_SESSION['lists'][$key];
   }
   return $storage[$key];
+}
+
+/**
+ * Implements hook_user_logout().
+ *
+ * logout from heimdal
+ */
+function bibdk_heimdal_user_logout($account) {
+  cache_clear_all(session_name() . '-' . $account->uid, 'cache_ding_user_credentials');
+  bibdk_heimdal_do_logout();
 }
