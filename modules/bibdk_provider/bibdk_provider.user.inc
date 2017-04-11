@@ -13,8 +13,8 @@ function bibdk_provider_user_authenticate($name, $pass) {
     'success' => FALSE,
   );
   
-  //TODO somthing i rotten here!!!
-  if ($pass == 'ldp88ihhGipkOPpppl0888qd') {
+  //login adgangsplatform
+  if ($pass == 'heimdal_login' && $_SESSION['heimdal_login']) {
     $return['creds'] = array(
       'name' => $name,
       'pass' => 'xxx',
