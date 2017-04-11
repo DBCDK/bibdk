@@ -28,20 +28,13 @@ function bibdk_heimdal_redirect_login() {
 
   $borrower_id_url = bibdk_heimdal_get_login_ticket();
   $borrower_id = bibdk_heimdal_get_userid($borrower_id_url);
-  if ($borrower_id['cpr'] != '') {
-    $name = BibdkUser::instance()->verifyborrowerid($borrower_id['cpr']);
-    if ($user->uid == 0 && !empty($name) ) {
-      // user exists username and borrowerid
-      bibdk_heimdal_do_login($name);
-    } else {
-      // user do not exist - add data
-      return drupal_get_form('bibdk_heimdal_form');
-    }
+  $name = BibdkUser::instance()->verifyborrowerid($borrower_id);
+  if ($user->uid == 0 && !empty($name) ) {
+    // user exists username and borrowerid
+    bibdk_heimdal_do_login($name);
   } else {
-    if ($borrower_id['wayfId'] != '') {
-      // wayfId logon todo
-      drupal_set_message('TODO - wayf logon for ' . $borrower_id['wayfId'] , 'warning');
-    }
+    // user do not exist - add data
+    return drupal_get_form('bibdk_heimdal_form');
   }
 }
 
@@ -81,19 +74,14 @@ function bibdk_heimdal_get_userid($borrower_id_url) {
       $favorit_links[$branch->agencyId] = $branch;
     }
   }
-  $borrower_info = array();
-  $borrower_info['wayfId'] = '';
-  if (!empty($result->attributes->wayfId)) {
-    $borrower_info['wayfId'] = $result->attributes->wayfId;
-    bibdk_heimdal_set_session('heimdal_borrower_wayfid', $result->attributes->wayfId);
-  }
-  $borrower_info['cpr'] = '';
   if (!empty($result->attributes->cpr)) {
-    $borrower_info['cpr'] = $result->attributes->cpr;
-    bibdk_heimdal_set_session('heimdal_borrower_id', $result->attributes->cpr);
+    $borrower_id = $result->attributes->cpr;
+    bibdk_heimdal_set_session('heimdal_borrower_id',$borrower_id);
     bibdk_heimdal_set_session('favorit_links', $favorit_links);
+    return $borrower_id;
+  } else {
+    return '';
   }
-  return $borrower_info;
 }
 
 /**
@@ -232,7 +220,7 @@ function bibdk_heimdal_do_login($name) {
   $state = array();
   $state['values']['name'] = $name;
   $state['values']['mail'] = $name;
-  $state['values']['pass'] = 'heimdal_login';
+  $state['values']['pass'] = 'ldp88ihhGipkOPpppl0888qd';
   $_SESSION['heimdal_login'] = TRUE;
 
   //submit login form
@@ -243,7 +231,6 @@ function bibdk_heimdal_do_login($name) {
     drupal_goto('user');
   }
   else {
-    global $user;
     drupal_goto('user/' . $user->uid . '/edit');
   }
 }
