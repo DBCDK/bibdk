@@ -27,8 +27,16 @@ function bibdk_heimdal_redirect_login() {
   global $user;
 
   $borrower_id_url = bibdk_heimdal_get_login_ticket();
+  $borrower_id = array();
   $borrower_id = bibdk_heimdal_get_userid($borrower_id_url);
-  $name = BibdkUser::instance()->verifyborrowerid($borrower_id);
+
+  /*
+  if ($borrower_id['wayfId'] != '') {
+    drupal_set_message('Do som wayf stuff for ' . $borrower_id['wayfId']);
+  }
+  */
+
+  $name = BibdkUser::instance()->verifyborrowerid($borrower_id['cpr']);
   if ($user->uid == 0 && !empty($name) ) {
     // user exists username and borrowerid
     bibdk_heimdal_do_login($name);
@@ -36,6 +44,7 @@ function bibdk_heimdal_redirect_login() {
     // user do not exist - add data
     return drupal_get_form('bibdk_heimdal_form');
   }
+
 }
 
 /**
@@ -68,20 +77,26 @@ function bibdk_heimdal_get_userid($borrower_id_url) {
   $heimdal_attributes = $curl->get($borrower_id_url);
   $curl->close();
   $result = json_decode($heimdal_attributes);
-  $favorit_links = '';
+
+  $favorit_links = array();
   if (!empty($result->attributes->agencies)) {
     foreach ($result->attributes->agencies as $id => $branch) {
       $favorit_links[$branch->agencyId] = $branch;
     }
   }
-  if (!empty($result->attributes->cpr)) {
-    $borrower_id = $result->attributes->cpr;
-    bibdk_heimdal_set_session('heimdal_borrower_id',$borrower_id);
-    bibdk_heimdal_set_session('favorit_links', $favorit_links);
-    return $borrower_id;
-  } else {
-    return '';
+  $borrower_info = array();
+  $borrower_info['wayfId'] = '';
+  $borrower_info['cpr'] = '';
+  if (!empty($result->attributes->wayfId)) {
+    $borrower_info['wayfId'] = $result->attributes->wayfId;
   }
+  if (!empty($result->attributes->cpr)) {
+    $borrower_info['cpr'] = $result->attributes->cpr;
+  }
+  bibdk_heimdal_set_session('heimdal_borrower_wayfid', $borrower_info['wayfId']);
+  bibdk_heimdal_set_session('heimdal_borrower_id', $borrower_info['cpr']);
+  bibdk_heimdal_set_session('favorit_links', $favorit_links);
+  return $borrower_info;
 }
 
 /**
