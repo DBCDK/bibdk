@@ -173,13 +173,13 @@ TY  - BOOKA1  - Hvass,HansA1  - Eigener,WilhelmT1  - Fische der WeltSP  - 158 S.
     $ids = '';
     $view = bibdk_actions_print_page($ids);
     $result = drupal_render($view);
-    $this->assertTrue(preg_match('@<h4></h4>@', $result), 'No Results are generated if no pids are send');
+    $this->assertTrue(preg_match('@@', $result), 'No Results are generated if no pids are send');
 
     // invalid id
     $ids = 'not_a_manifestation';
     $view = bibdk_actions_print_page($ids);
     $result = drupal_render($view);
-    $this->assertTrue(preg_match('@<h4></h4>@', $result), 'No Results are generated if pid is invalid');
+    $this->assertTrue(preg_match('@@', $result), 'No Results are generated if pid is invalid');
 
     // function handles empty array
     $view = array();
