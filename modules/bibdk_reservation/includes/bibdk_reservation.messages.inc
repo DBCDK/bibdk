@@ -73,7 +73,6 @@ function bibdk_reservation_get_action_links($ids, BibdkWork $bibdk_work_entity) 
   if ($manifestation->hasDirectLink() && $manifestation->getRestrictedExtendedUse()) {
     if (!user_is_logged_in()) {
       // not logged in - do log on to see if your favorite library gives access
-      _bibdk_reservation_set_saou_login_message();
     } else {
       $links['wrapper']['item_list_link'] = bibdk_saou_link_to_soau_ressource($manifestation);
     }
