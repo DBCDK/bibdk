@@ -85,7 +85,7 @@ function bibdk_heimdal_get_userid($borrower_id_url) {
     }
   }
   $borrower_info = array();
-  $borrower_info['wayfId'] = '';
+  $borrower_info['wayfId'] = NULL;
   $borrower_info['cpr'] = '';
   if (!empty($result->attributes->wayfId)) {
     $borrower_info['wayfId'] = $result->attributes->wayfId;
@@ -93,9 +93,14 @@ function bibdk_heimdal_get_userid($borrower_id_url) {
   if (!empty($result->attributes->cpr)) {
     $borrower_info['cpr'] = $result->attributes->cpr;
   }
+  if (!empty($result->attributes->userId)) {
+    $borrower_info['cpr'] = $result->attributes->userId;
+  }
+
   bibdk_heimdal_set_session('heimdal_borrower_wayfid', $borrower_info['wayfId']);
   bibdk_heimdal_set_session('heimdal_borrower_id', $borrower_info['cpr']);
   bibdk_heimdal_set_session('favorit_links', $favorit_links);
+
   return $borrower_info;
 }
 
