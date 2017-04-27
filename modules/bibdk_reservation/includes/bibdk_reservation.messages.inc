@@ -72,7 +72,7 @@ function bibdk_reservation_get_action_links($ids, BibdkWork $bibdk_work_entity) 
 
   if ($manifestation->hasDirectLink() && $manifestation->getRestrictedExtendedUse()) {
     if (!user_is_logged_in()) {
-      // not logged in - do log on to see if your favorite library gives access
+      // not logged in, do log on to see if your favorite library gives access
     } else {
       $links['wrapper']['item_list_link'] = bibdk_saou_link_to_soau_ressource($manifestation);
     }
@@ -215,7 +215,7 @@ function _bibdk_reservation_get_message_type($index) {
  */
 function _ting_openformat_render_direct_link($infocode, $manifestation) {
   if ($links = _bibdk_reservation_get_access_links($manifestation)) {
-    return bibdk_reservation_translate("$infocode !links", array('!links' => drupal_render($links)));
+    return bibdk_reservation_translate("!links", array('!links' => drupal_render($links)));
   }
 }
 
