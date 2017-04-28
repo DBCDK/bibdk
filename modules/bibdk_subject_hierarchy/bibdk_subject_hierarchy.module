@@ -550,7 +550,7 @@ function _bibdk_subject_hierarchy_parse($terms) {
 
   // if the key ccl exists there is only one term and wee need to wrap it in
   // an array for the foreach loop to work correctly
-  if ( isset($terms['ccl']) ) {
+  if ( isset($terms['cql']) ) {
     $terms = array($terms);
   }
 
@@ -569,13 +569,18 @@ function _bibdk_subject_hierarchy_parse_term($term) {
   foreach ($term as $key => $item) {
     if ((string) $key != (string) (int) $key) {
       if ($key == 'term') {
-        $record[$key] = _bibdk_subject_hierarchy_parse($item);
+        $record['term'] = _bibdk_subject_hierarchy_parse($item);
       }
+      elseif ($key == 'cql' && !empty($item)) {
+        $record['cql'] = $item;
+      }
+/*
       elseif ($key == 'ccl' && !empty($item)) {
         $record['cql'] = _bibdk_subject_hierarchy_ccl_to_cql($item);
         $record[$key] = $item;
       }
-      elseif ($key == 'ord') {
+*/
+      elseif ($key == 'ord' && !empty($item)) {
         $record['note'] = 'LABEL_' . normalize_string($item);
         $record[$key] = $item;
       }
@@ -593,7 +598,8 @@ function _bibdk_subject_hierarchy_parse_term($term) {
  * @param $ccl
  * @return string|null
  */
-function _bibdk_subject_hierarchy_ccl_to_cql($ccl) {
+/*
+ function _bibdk_subject_hierarchy_ccl_to_cql($ccl) {
   if (function_exists('bibdk_yaz_convert_ccl_to_cql')) {
     $cql = bibdk_yaz_convert_ccl_to_cql($ccl);
     if (isset($cql['cql'])) {
@@ -609,6 +615,7 @@ function _bibdk_subject_hierarchy_ccl_to_cql($ccl) {
   watchdog('subject_hierarchy', 'No function named bibdk_yaz_convert_ccl_to_cql() exist.', array(), WATCHDOG_ERROR);
   return NULL;
 }
+*/
 
 /** Normalize a string so that it can be compared with others without being too fussy.
  *   e.g. "?dr???l?n?" would return "adrenaline"

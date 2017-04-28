@@ -10,6 +10,4 @@ files[] = test/bibdk_subject_hierarchy_search_web_test.test
 files[] = test/bibdk_subject_hierarchy_search_unit_test.test
 files[] = test/bibdk_subject_hierarchy_suggestion_web_test.test
 
-dependencies[] = bibdk_yaz
-
 configure = admin/config/search/bibdk_subject_hierarchy
