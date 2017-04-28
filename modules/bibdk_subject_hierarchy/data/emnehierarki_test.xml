@@ -7,28 +7,28 @@
                                   http://emnehierarki.dbc.dk/emnehierarkiFull_2007-10-25.xsd">
   <term>
     <ord>ord level0</ord>
-    <ccl>ccl level0</ccl>
+    <cql>ccl level0</cql>
     <kommentar>kommentar level0</kommentar>
     <hjaelpetekst></hjaelpetekst>
     <infotekst></infotekst>
     <visundermenu>1</visundermenu>
     <term>
       <ord>Ord level1</ord>
-      <ccl>ccl level1</ccl>
+      <cql>ccl level1</cql>
       <kommentar></kommentar>
       <hjaelpetekst></hjaelpetekst>
       <infotekst></infotekst>
       <visundermenu>1</visundermenu>
       <term>
         <ord>Ord level2</ord>
-        <ccl>ccl level2</ccl>
+        <cql>ccl level2</cql>
         <kommentar></kommentar>
         <hjaelpetekst></hjaelpetekst>
         <infotekst></infotekst>
         <visundermenu>1</visundermenu>
         <term>
           <ord>Ord level3.0</ord>
-          <ccl>ccl level3.0</ccl>
+          <cql>ccl level3.0</cql>
           <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <infotekst></infotekst>
@@ -36,7 +36,7 @@
         </term>
         <term>
           <ord>Ord level3.1</ord>
-          <ccl>ccl level3.1</ccl>
+          <cql>ccl level3.1</cql>
           <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <infotekst></infotekst>
@@ -44,7 +44,7 @@
         </term>
         <term>
           <ord>Ord level3.2</ord>
-          <ccl>ccl level3.2</ccl>
+          <cql>ccl level3.2</cql>
           <kommentar>poster</kommentar>
           <hjaelpetekst></hjaelpetekst>
           <infotekst></infotekst>

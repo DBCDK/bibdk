@@ -548,9 +548,9 @@ function _bibdk_subject_hierarchy_parse_xml($filename) {
  */
 function _bibdk_subject_hierarchy_parse($terms) {
 
-  // if the key ccl exists there is only one term and wee need to wrap it in
+  // if the key 'ord' exists there is only one term, and we need to wrap it in
   // an array for the foreach loop to work correctly
-  if ( isset($terms['cql']) ) {
+  if ( isset($terms['ord']) ) {
     $terms = array($terms);
   }
 
