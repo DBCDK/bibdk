@@ -64,6 +64,29 @@ function bibdk_modal_forgot_password() {
   bibdk_modal_deliver_output($commands);
 }
 
+function bibdk_modal_forgot_password_direct() {
+  module_load_include('pages.inc', 'user');
+
+  $form_state = _bibdk_modal_set_form_state();
+
+  $output = bibdk_modal_form_wrapper('user_pass', $form_state);
+  $commands = array();
+
+  if (empty($form_state['executed']) && empty($form_state['submitted'])) {
+    $commands = $output;
+  }
+  elseif (empty($form_state['executed']) && !empty($form_state['submitted'])) {
+    //Something went wrong. Replace the form currently displayed in the modal and let the user try again
+    $commands[] = bibdk_modal_command_replace_form($output);
+  }
+  elseif (!empty($form_state['executed']) && !empty($form_state['submitted'])) {
+    $commands[] = bibdk_modal_command_reload();
+    $commands[] = bibdk_modal_command_dismiss();
+  }
+
+  bibdk_modal_deliver_output($commands);
+}
+
 /**
  * Menu callback that returns the user register form wrapped in a modal
  * If JavaScript is disabled the normal form will be returned without the modal

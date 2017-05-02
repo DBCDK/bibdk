@@ -152,6 +152,22 @@ function bibdk_heimdal_form($form, $form_state) {
     ),
   );
 
+  $form['heimdal'][] = array (
+    '#theme' => 'link',
+    '#text' => t('Request new password', array(), array('context' => 'heimdal')),
+    '#path' => 'bibdk_modal/forgot_password_direct',
+    '#options' => array(
+      'attributes' => array(
+        'data-reveal-id' => 'bibdk-modal',
+        'data-reveal-ajax' => 'true',
+        'alt' => t('Request new password via e-mail.', array(), array('context' => 'heimdal')),
+        'class' => array('bibdk-heimdal-forgot', 'forgot-pword-link', 'bibdk-modal-login')
+      ),
+      'html' => TRUE,
+    ),
+    '#weight' => -1,
+  );
+
   return $form;
 }
 

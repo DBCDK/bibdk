@@ -23,6 +23,14 @@ function bibdk_modal_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  $items['bibdk_modal/forgot_password_direct'] = array(
+    'title' => 'Forgot Password',
+    'page callback' => 'bibdk_modal_forgot_password_direct',
+    'access callback' => TRUE,
+    'file' => 'includes/bibdk_modal.forms.inc',
+    'type' => MENU_CALLBACK,
+  );
+
   $items['bibdk_modal/register'] = array(
     'title' => 'Register new user',
     'page callback' => 'bibdk_modal_register',
