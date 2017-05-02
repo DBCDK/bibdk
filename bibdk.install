@@ -462,3 +462,25 @@ function bibdk_update_7042() {
     ->execute();
 }
 
+/**
+ * Delete {system} records for long-lost modules.
+ */
+function bibdk_update_7043() {
+  $modules = array(
+    'bibliotek_dk_lightbox2_settings',
+    'simple_mobile_redirect',
+    'ting_search_carousel',
+    'ting_covers_field',
+    'ding_facetbrowser',
+    'ting_covers',
+    'bibliotek_dk_global_login_menu',
+    'topbar_menu_block_feature',
+    'lightbox2',
+    'bibliotek_dk_header_actions'
+  );
+  db_delete('system')
+    ->condition('name', $modules, 'IN')
+    ->condition('type', 'module')
+    ->execute();
+
+}
