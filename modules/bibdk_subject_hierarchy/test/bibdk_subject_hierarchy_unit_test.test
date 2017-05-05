@@ -1,12 +1,5 @@
 <?php
 
-function log_to_file($text) {
-  $file = sys_get_temp_dir() . '/drupal_debug.txt';
-  $f = fopen($file, 'a');
-  fwrite($f, date('Ymd H:i:s - ') . print_r($text, 1) . "\n");
-  fclose($f);
-}
-
 /**
  * @file
  * DrupalUnitTest for Bibliotek.dk Subject Hierarchy
@@ -66,7 +59,5 @@ class BibdkSubjectHierarchyUnitTestCase extends DrupalUnitTestCase {
     $hierarchy_level = _get_bibdk_subject_hierarchy_level($emnehierarki_test[0], array('0', '0', '1'));
     $this->assertTrue((serialize($hierarchy_level) == $hierarchy_level_out), 'Test retrieval of hierarchy sublevel works correctly.');
 
-    log_to_file($hierarchy_level);
-    log_to_file(serialize($hierarchy_level));
   }
 }
