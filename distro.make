@@ -31,4 +31,4 @@ projects[drupal][patch][] = https://raw.github.com/DBCDK/patches/master/drupal_h
 projects[bibdk][type] = profile
 projects[bibdk][download][type] = git
 projects[bibdk][download][url] = git@github.com:DBCDK/bibdk.git
-projects[bibdk][download][tag] = 7.x-0.80.15
+projects[bibdk][download][tag] = 7.x-0.80.16
