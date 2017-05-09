@@ -499,3 +499,17 @@ function bibdk_update_7044() {
     ->execute();
 
 }
+
+/**
+ * Delete {system} records for long-lost modules.
+ */
+function bibdk_update_7045() {
+  $modules = array(
+    'ting_covers_field'
+  );
+  db_delete('system')
+    ->condition('name', $modules, 'IN')
+    ->condition('type', 'module')
+    ->execute();
+
+}
