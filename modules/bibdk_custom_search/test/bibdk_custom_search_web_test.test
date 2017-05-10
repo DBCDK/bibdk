@@ -19,7 +19,7 @@ class BibdkCustomSearchWebTestCase extends DrupalWebTestCase {
   public function setUp() {
     // $this->profile = 'minimal';
     parent::setUp('bibdk_custom_search', 'search', 'uuid', 'ting_openformat');
-    variable_set('ting_search_url', 'http://lakiseks.dbc.dk/openbibdk/next/');
+    variable_set('ting_search_url', 'http://bibdk-prod-ws.dbc.dk/opensearch/b3.0_4.3/');
     variable_set('bibdk_provider_security_code', 'testhest');
     variable_set('search_active_modules', array('ting_openformat' => 'ting_openformat'));
     variable_set('search_default_module', 'ting_openformat');
