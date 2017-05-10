@@ -91,7 +91,7 @@ class BibdkReviewsWebTestCase extends DrupalWebTestCase {
 
   public function setUp() {
     parent::setUp(array('bibdk_reviews', 'ting_openformat', 'worktabs', 'devel'));
-    variable_set('ting_search_url', 'http://lakiseks.dbc.dk/openbibdk/0.5/');
+    variable_set('ting_search_url', 'http://bibdk-prod-ws.dbc.dk/opensearch/b3.0_4.3/');
 
   }
 
