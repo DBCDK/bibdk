@@ -513,3 +513,23 @@ function bibdk_update_7045() {
     ->execute();
 
 }
+
+/**
+ * Delete {system} records for long-lost modules.
+ */
+function bibdk_update_7046() {
+  $modules = array(
+    'bibliotek_dk_user_mails',
+    'token',
+    'bibdk_navfors',
+    'bibdk_field_settings',
+    'dbtng_migrator',
+    'backup_migrate',
+    'pathauto'
+  );
+  db_delete('system')
+    ->condition('name', $modules, 'IN')
+    ->condition('type', 'module')
+    ->execute();
+
+}
