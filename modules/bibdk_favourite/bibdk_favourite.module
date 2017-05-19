@@ -395,16 +395,18 @@ function bibdk_favourite_set_favourite($branchId) {
 function bibdk_favourite_create_favourite() {
   global $user;
   $favorit_links = bibdk_heimdal_set_session('favorit_links');
-  foreach ($favorit_links as $agencyId => $value) {
-    if (!empty($value)) {
-      $fav_exist = bibdk_favourite_favourite_exist($agencyId);
-      if (!$fav_exist) {
-        $creds = ding_user_get_creds($user);
-        $name = $creds['name'];
-        $userdata = array();
-        bibdk_provider_user_add_favourite($name,$agencyId);
-        bibdk_favourite_save_userdata($agencyId, $userdata, $show_standard_message = FALSE);
-        unset($_SESSION['bibdk_favourites']);
+  if (!empty($favorit_links)) {
+    foreach ($favorit_links as $agencyId => $value) {
+      if (!empty($value)) {
+        $fav_exist = bibdk_favourite_favourite_exist($agencyId);
+        if (!$fav_exist) {
+          $creds = ding_user_get_creds($user);
+          $name = $creds['name'];
+          $userdata = array();
+          bibdk_provider_user_add_favourite($name,$agencyId);
+          bibdk_favourite_save_userdata($agencyId, $userdata, $show_standard_message = FALSE);
+          unset($_SESSION['bibdk_favourites']);
+        }
       }
     }
   }

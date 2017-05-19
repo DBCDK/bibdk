@@ -27,14 +27,7 @@ function bibdk_heimdal_redirect_login() {
   global $user;
 
   $borrower_id_url = bibdk_heimdal_get_login_ticket();
-  $borrower_id = array();
   $borrower_id = bibdk_heimdal_get_userid($borrower_id_url);
-
-  /*
-  if ($borrower_id['wayfId'] != '') {
-    drupal_set_message('Do som wayf stuff for ' . $borrower_id['wayfId']);
-  }
-  */
 
   $name = BibdkUser::instance()->verifyborrowerid($borrower_id['cpr']);
   if ($user->uid == 0 && !empty($name) ) {
@@ -77,7 +70,6 @@ function bibdk_heimdal_get_userid($borrower_id_url) {
   $heimdal_attributes = $curl->get($borrower_id_url);
   $curl->close();
   $result = json_decode($heimdal_attributes);
-
   $favorit_links = array();
   if (!empty($result->attributes->agencies)) {
     foreach ($result->attributes->agencies as $id => $branch) {
@@ -213,7 +205,7 @@ function bibdk_heimdal_bind_borrower_id($username, $borrowerid_session) {
 }
 
 /**
- * create new user whith heimdal borrowerid, username and pincode
+ * create new or bind user with heimdal borrowerid, username and pincode
  *
  * @param $username, $borrowerid_session, $pincode
  */
@@ -227,8 +219,12 @@ function bibdk_heimdal_create_borrower_id($username, $borrowerid_session, $pinco
      drupal_set_message($text . ': ' . $username, 'warning');
   } else {
     // username do not exist - create new user
+    $wayfid = bibdk_heimdal_set_session('heimdal_borrower_wayfid');
     $valid_user = BibdkUser::instance()->create($username, $pincode);
     if ($valid_user) {
+      if (!empty($wayfid)) {
+        BibdkUser::instance()->bindWayf($username, $wayfid, $loginType = 'wayf_id');
+      }
       // new user created
       $text = t('user added bibliotek.dk', array(), array('context' => 'heimdal'));
       drupal_set_message($text . ': ' . $username, 'status');
@@ -256,7 +252,7 @@ function bibdk_heimdal_do_login($name) {
   $state = array();
   $state['values']['name'] = $name;
   $state['values']['mail'] = $name;
-  $state['values']['pass'] = 'ldp88ihhGipkOPpppl0888qd';
+  $state['values']['pass'] = 'pass';
   $_SESSION['heimdal_login'] = TRUE;
 
   //submit login form
@@ -416,6 +412,9 @@ function bibdk_heimdal_set_session($key, $value = NULL) {
   }
   else if (empty($storage[$key]) && isset($_SESSION['lists'][$key])) {
     $storage[$key] = $_SESSION['lists'][$key];
+  }
+  if (empty($storage[$key])) {
+    return NULL;
   }
   return $storage[$key];
 }

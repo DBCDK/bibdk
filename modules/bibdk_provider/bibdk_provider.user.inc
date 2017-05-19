@@ -13,11 +13,10 @@ function bibdk_provider_user_authenticate($name, $pass) {
     'success' => FALSE,
   );
   
-  //TODO 
-  if ($pass == 'ldp88ihhGipkOPpppl0888qd') {
+  if (isset($_SESSION['heimdal_login'])) {
     $return['creds'] = array(
       'name' => $name,
-      'pass' => 'xxx',
+      'pass' => 'ssaplamjeh',
     );
     $return['user'] = array(
       'data' => array('display_name' => $name),
