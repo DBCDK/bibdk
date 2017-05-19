@@ -1,6 +1,22 @@
 <?php
 
 /**
+ * @file bibdk_heimdal.module
+ * Provide functionality for retrieving logindata from the hjemdal client
+ * and bind hjemdal userdata with existing user or create a new user.
+ * Users known in bibliotek.dk will be automaticly logged in.
+ * Handle data from:
+ *   Library login - userid/cpr from the users local library
+ *   NemId - cpr/userid
+ *   Wayf - wayfid
+ * And agency data known for the user
+ *
+ * Setup for hjemdal client is handled in SMAUG ADMIN -
+ * urls, attributes, displayname, services and identityProviders
+ *
+ */
+
+/**
  * Implements hook_menu().
  */
 function bibdk_heimdal_menu() {
@@ -62,7 +78,7 @@ function bibdk_heimdal_get_login_ticket() {
  * Get heimdal ticket
  *
  * @param heimdal url
- * @return string  - borrower_id
+ * @return array - borrower_info
  */
 function bibdk_heimdal_get_userid($borrower_id_url) {
   $curl = new MicroCURL();
