@@ -3,7 +3,7 @@
  * @file
  * bibdk_netarchive.test
  */
-/*
+
 class bibdkNetarchiveUnitTest extends DrupalWebTestCase {
 
   public static function getInfo() {
@@ -54,4 +54,4 @@ class bibdkNetarchiveUnitTest extends DrupalWebTestCase {
   }
 
 }
-*/
+
