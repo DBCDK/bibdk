@@ -67,6 +67,9 @@ function bibdk_heimdal_get_login_ticket() {
   $accessplatform = isset($config['heimdallogin']) ? $config['heimdallogin'] : FALSE;
 
   $hemidal_token = $_REQUEST['token'];
+  if (empty($hemidal_token)) {
+    watchdog('security', 'Bibdk login token not set: access_token (%token) ', array('%token' => $hemidal_token,), WATCHDOG_ERROR);
+  }
   $hemidal_id = $_REQUEST['id'];
   if ($accessplatform) {
     $ticket_link  = $config['hosturl'] . '/getTicket/' . $hemidal_token . '/' . $hemidal_id;
@@ -188,21 +191,27 @@ function bibdk_heimdal_form($form, $form_state) {
 function bibdk_heimdal_validate($form, $form_state) {
 
   $username = $form_state['values']['username_name'];
-  $pincode = $form_state['values']['username_name_password'];
-
-  // do username/pincode exist
-  $valid_user = BibdkUser::instance()->login($username, $pincode);
-  $borrowerid_session = bibdk_heimdal_set_session("heimdal_borrower_id");
-  if ($valid_user && $borrowerid_session != '') {
-    // bind borrower_id for username
-    bibdk_heimdal_bind_borrower_id($username, $borrowerid_session);
+  if (!valid_email_address($username)) {
+    $text = t('user name is not a valid email address', array(), array('context' => 'heimdal'));
+    drupal_set_message($text . ': ' . $username, 'status');
   } else {
-    if ($borrowerid_session != '') {
-      // create user
-      bibdk_heimdal_create_borrower_id($username, $borrowerid_session, $pincode);
+
+    $pincode = $form_state['values']['username_name_password'];
+
+    // do username/pincode exist
+    $valid_user = BibdkUser::instance()->login($username, $pincode);
+    $borrowerid_session = bibdk_heimdal_set_session("heimdal_borrower_id");
+    if ($valid_user && $borrowerid_session != '') {
+      // bind borrower_id for username
+      bibdk_heimdal_bind_borrower_id($username, $borrowerid_session);
     } else {
-      $text = t('user could not added to bibliotek.dk', array(), array('context' => 'heimdal'));
-      drupal_set_message($text . ': ' . $username, 'status');
+      if ($borrowerid_session != '') {
+        // create user
+        bibdk_heimdal_create_borrower_id($username, $borrowerid_session, $pincode);
+      } else {
+        $text = t('user could not added to bibliotek.dk', array(), array('context' => 'heimdal'));
+        drupal_set_message($text . ': ' . $username, 'status');
+      }
     }
   }
 }
@@ -316,10 +325,12 @@ function bibdk_heimdal_login_link() {
       $logo_path = base_path() . drupal_get_path('theme', $GLOBALS['theme']);
       $logo_path .= '/img/in_use/bibliotekslogin_logo.png';
       $logo_alt_text_accessplatform = t('logo_alt_text_accessplatform', array(), array('context' => 'heimdal'));
+
       $login_link = '<div id="block-ding-wayf-login" class="block block-ding-wayf">';
       $login_link .= '<div class="ding-wayf-logon-block"> <div class="ding-wayf-logoninfo">' . t('Log in to hejmdal', array(), array('context' => 'heimdal')) . '</div>';
       $login_link .= l('<img src="' . $logo_path . '" alt="' . $logo_alt_text_accessplatform . '"/>', $heimdal_link, array('html' => TRUE,)) .'</div>';
       $login_link .= '</div>';
+
     }
   }
   return $login_link;
@@ -353,7 +364,7 @@ function bibdk_heimdal_check_token() {
       //Store the time for last run.
       variable_set('bibdk_heimdal_function_last_run', time());
     } else {
-      watchdog('security', 'Bibdk get new token set: access_token (%token) could not be reciived', array('%token' => $newtoken,), WATCHDOG_ERROR);
+      watchdog('security', 'Bibdk get new token set: access_token (%token) could not be recieved', array('%token' => $newtoken,), WATCHDOG_CRITICAL);
     }
   }
 }
