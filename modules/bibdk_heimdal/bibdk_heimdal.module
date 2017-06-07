@@ -326,14 +326,20 @@ function bibdk_heimdal_login_link() {
       $logo_path .= '/img/in_use/bibliotekslogin_logo.png';
       $logo_alt_text_accessplatform = t('logo_alt_text_accessplatform', array(), array('context' => 'heimdal'));
 
-      $login_link = '<div id="block-ding-wayf-login" class="block block-ding-wayf">';
-      $login_link .= '<div class="ding-wayf-logon-block"> <div class="ding-wayf-logoninfo">' . t('Log in to hejmdal', array(), array('context' => 'heimdal')) . '</div>';
-      $login_link .= l('<img src="' . $logo_path . '" alt="' . $logo_alt_text_accessplatform . '"/>', $heimdal_link, array('html' => TRUE,)) .'</div>';
-      $login_link .= '</div>';
-
+      $wrapper['login_link'] = array(
+        '#prefix' => '<div id="block-ding-wayf-login" class="block block-ding-wayf biblogin"><div id="bibliotekslogin">',
+        '#suffix' => '</div></div></div>',
+        '#type'  => 'link',
+        '#title' =>  '<img src="' . $logo_path . '" alt="' . $logo_alt_text_accessplatform . '"/>',
+        '#href'  =>  $heimdal_link,
+        '#options' => array(
+          'html' => TRUE,
+        ),
+      );
+      return drupal_render($wrapper);
     }
   }
-  return $login_link;
+  return '';
 }
 
 /** Implements hook_form_FORM_ID_alter (user_login)
