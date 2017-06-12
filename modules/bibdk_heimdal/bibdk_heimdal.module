@@ -319,7 +319,9 @@ function bibdk_heimdal_login_link() {
     $config = variable_get('ding_wayf', NULL);
     $accessplatform = isset($config['heimdallogin']) ? $config['heimdallogin'] : FALSE;
     if ($accessplatform) {
-      bibdk_heimdal_check_token();
+      $config = variable_get('ding_wayf', NULL);
+      bibdk_heimdal_check_token($config['clienttoken']);
+      // get variable again - if new token
       $config = variable_get('ding_wayf', NULL);
       $heimdal_link = $config['hosturl'] . $config['loginpath'] . '?token=' . $config['clienttoken'] . '&destination=heimdal/login';
       $logo_path = base_path() . drupal_get_path('theme', $GLOBALS['theme']);
@@ -355,12 +357,12 @@ function bibdk_heimdal_form_user_login_alter(&$form, &$form_state) {
 
 /**
  * Check if it's time to get a new token
- * Get new token if it's first time elsewhere every month
+ * Get new token if it's first time elsewhere every 2 days
  *
  */
-function bibdk_heimdal_check_token() {
+function bibdk_heimdal_check_token($excisting_token) {
   // Look up last time and compare to 1 day ago.
-  if (variable_get('bibdk_heimdal_function_last_run', 0) <= strtotime('-1 day')) {
+  if ((variable_get('bibdk_heimdal_function_last_run', 0) <= strtotime('-2 day')) or (empty($excisting_token))) {
     $config = variable_get('ding_wayf', NULL);
     $newtoken = bibdk_heimdal_get_token();
     if (!empty($newtoken)) {
