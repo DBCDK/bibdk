@@ -69,6 +69,7 @@ function bibdk_heimdal_get_login_ticket() {
   $hemidal_token = $_REQUEST['token'];
   if (empty($hemidal_token)) {
     watchdog('security', 'Bibdk login token not set: access_token (%token) ', array('%token' => $hemidal_token,), WATCHDOG_ERROR);
+    drupal_goto('user');
   }
   $hemidal_id = $_REQUEST['id'];
   if ($accessplatform) {
