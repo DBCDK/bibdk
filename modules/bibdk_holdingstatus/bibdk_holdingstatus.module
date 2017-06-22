@@ -141,12 +141,12 @@ function bibdk_holdingstatus_get_localisation($pids, $ref=NULL) {
         $element = bibdk_holdingstatus_handle_response($information, $localization, $worldcat_info);
         if ( $logged_in_and_favourite_order_Agency ) {
           //Order agency - will be placed first in list
-          $sortkey = $worldcat_info['sortkey'] . $favourit_postcode . $information->getAgencyName();
+          $sortkey = $worldcat_info['sortkey'] . $favourit_postcode . $information->getAgencyName() . $information->getBranchId();
           $render_agencies[$sortkey] = drupal_render($element);
           $logged_in_and_favourite_order_Agency = false;
         }
         else {
-          $sortkey = $worldcat_info['sortkey'] . $information->getPostalCode() . $information->getAgencyName();
+          $sortkey = $worldcat_info['sortkey'] . $information->getPostalCode() . $information->getAgencyName() . $information->getBranchId();
           $render_agencies[$sortkey] = drupal_render($element);
         }
       }
