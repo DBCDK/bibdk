@@ -132,12 +132,6 @@ projects[cql_strict_parser][download][type] = git
 projects[cql_strict_parser][download][url] = git@github.com:DBCDK/cql_strict_parser.git
 projects[cql_strict_parser][download][tag] = 7.x-0.4
 
-projects[dbc_zabbix][type] = module
-projects[dbc_zabbix][download][type] = git
-projects[dbc_zabbix][download][url] = git@github.com:DBCDK/dbc_zabbix.git
-projects[dbc_zabbix][download][tag] = 7.x-0.1
-
-
 ; THIS MODULE IS ONLY AVAILABLE WITHIN THE DBC A/S ORGANISATION
 ; PLEASE UNCOMMENT AS THE MODULE WONT BE DOWNLOADABLE OUTSIDE DBC A/S
 projects[bibdk_config][type] = module
@@ -152,6 +146,11 @@ projects[bibdk_behaviour][download][tag] = 7.x-0.9
 
 
 ; --- Non Ding2 or Bibliotek.dk specific
+
+projects[dbc_zabbix][type] = module
+projects[dbc_zabbix][download][type] = git
+projects[dbc_zabbix][download][url] = git@github.com:DBCDK/dbc_zabbix.git
+projects[dbc_zabbix][download][tag] = 7.x-0.1
 
 projects[translatable][type] = module
 projects[translatable][subdir] = contrib
@@ -320,3 +319,8 @@ projects[scheduler][version] = 1.3
 projects[jquery_update][subdir] = contrib
 projects[jquery_update][type] = module
 projects[jquery_update][version] = 3.0-alpha2
+
+//zabbix
+projects[zabbix][subdir] = contrib
+projects[zabbix][type] = module
+projects[zabbix][version] = 1.x-dev
