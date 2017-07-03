@@ -13,4 +13,4 @@ features[variable][] = bibdk_facetbrowser_by_ajax
 features[variable][] = bibdk_facetbrowser_facets
 features[variable][] = bibdk_facetbrowser_number_requested
 features[variable][] = bibdk_facetbrowser_number_shown
-mtime = 1450256241
+mtime = 1486491236

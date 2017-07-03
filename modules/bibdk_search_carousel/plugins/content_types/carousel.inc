@@ -19,7 +19,15 @@ function bibdk_search_carousel_carousel_content_type_render($subtype, $conf, $pa
   $block = new stdClass();
 
   $searches = variable_get('bibdk_carousel_search_queries', array());
-  $tab_position = variable_get('bibdk_search_carousel_tabs_position');
+  $tab_position = 0;
+  if (isset($_SESSION['carousel_settings']['show_carousel_number'])) {
+    $tab_position = (int)$_SESSION['carousel_settings']['show_carousel_number'];
+    drupal_add_js(array(
+      'displayindex' => array(
+        'show_carousel_index' => $tab_position,
+      ),
+    ), 'setting');
+  }
 
   $block->content = theme('bibdk_search_carousel', array('searches' => $searches, 'tab_position' => $tab_position));
   return $block;

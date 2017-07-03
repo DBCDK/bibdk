@@ -33,7 +33,7 @@ function bibdk_facets_strongarm() {
       'weight' => '-9',
     ),
     2 => array(
-      'name' => 'facet.creatorFunction',
+      'name' => 'facet.creator',
       'title' => 'Forfatter',
       'weight' => '-8',
     ),
@@ -44,7 +44,7 @@ function bibdk_facets_strongarm() {
     ),
     4 => array(
       'name' => 'facet.date',
-      'title' => 'Årstal',
+      'title' => 'Udgivelsesår',
       'weight' => '-6',
     ),
     5 => array(
@@ -84,7 +84,7 @@ function bibdk_facets_strongarm() {
     ),
     12 => array(
       'name' => 'facet.level',
-      'title' => 'Niveau',
+      'title' => 'Fagligt niveau',
       'weight' => '2',
     ),
     13 => array(
@@ -123,18 +123,18 @@ function bibdk_facets_strongarm() {
       'weight' => '9',
     ),
     20 => array(
-      'name' => 'facet.sheetMusic',
-      'title' => 'Nodetype',
-      'weight' => '10',
-    ),
-    21 => array(
       'name' => 'facet.dk5',
       'title' => 'Opstilling i folkebiblioteker',
       'weight' => '10',
     ),
-    22 => array(
+    21 => array(
       'name' => 'facet.primaryCreator',
       'title' => 'Hovedansvar',
+      'weight' => '10',
+    ),
+    22 => array(
+      'name' => 'facet.sheetMusic',
+      'title' => 'Nodetype',
       'weight' => '10',
     ),
   );

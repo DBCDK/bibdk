@@ -166,7 +166,8 @@ function bibdk_custom_search_list_options($result, $term_type, $ignore_values) {
   $result = array_keys($result);
   // Set keys = values in options array
   foreach ($result as $option) {
-    $options[$term_type . '=' . $option] = $option;
+    $t_type = $term_type . "='" . $option . "'";
+    $options[$t_type] = $option;
   }
 
   // Sort alphabetically

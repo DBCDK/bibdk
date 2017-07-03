@@ -117,11 +117,29 @@ function bibdk_sbkopi_user_not_logged_in() {
     '#tag' => 'p',
     '#value' => t('bibdk_sbkopi_user_needs_to_be_logged_in_information', array(), array('context' => 'bibdk_sbkopi')),
   );
-  // Return a login button
+  
+  // Return a login link
   $render_array['link'] = array(
     '#theme' => 'link',
     '#text' => t('Login to order at sb_kopi', array(), array('context' => 'bibdk_sbkopi')),
     '#path' => 'user/login',
+    '#options' => array(
+      'attributes' => array(),
+      'html' => TRUE,
+    ),
+  );
+
+  $render_array['infotextnewuser'] = array(
+    '#type' => 'html_tag',
+    '#tag' => 'p',
+    '#value' => t('bibdk_sbkopi_user_needs_to_create_new_user', array(), array('context' => 'bibdk_sbkopi')),
+  );
+
+  // Return a create new user link
+  $render_array['linknewuser'] = array(
+    '#theme' => 'link',
+    '#text' => t('Create new user', array(), array('context' => 'bibdk_sbkopi')),
+    '#path' => 'user/register',
     '#options' => array(
       'attributes' => array(),
       'html' => TRUE,
@@ -230,10 +248,10 @@ function bibdk_sbkopi_messages($pid, TingClientAgencyBranch $branch) {
       drupal_set_message(t('sb_no_subscription', array(), array('context' => 'bibdk_sbkopi')), 'warning');
     }
     else if ($delivery == 'postal') {
-      drupal_set_message(t('sb_subscription_and_postal', array(), array('context' => 'bibdk_sbkopi')), 'status');
+      drupal_set_message(t('sb_subscription_and_postal', array(), array('context' => 'bibdk_sbkopi')), 'warning');
     }
     else {
-      drupal_set_message(t('sb_subscription_and_electronic', array(), array('context' => 'bibdk_sbkopi')), 'status');
+      drupal_set_message(t('sb_subscription_and_electronic', array(), array('context' => 'bibdk_sbkopi')), 'warning');
     }
   }
   else {

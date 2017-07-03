@@ -42,13 +42,16 @@ class SaouResponse {
     if (!isset($this->response->Licenses)) {
       return FALSE;
     }
+
     // there might be more than one license
-    if (is_array($this->response->Licenses->License)) {
-      // use the first license found
-      $this->License = current($this->response->Licenses->License);
-    }
-    else {
-      $this->License = isset($this->response->Licenses->License) ? $this->response->Licenses->License : FALSE;
+    if (isset($this->response->Licenses->License)) {
+      if (is_array($this->response->Licenses->License)) {
+        // use the first license found
+        $this->License = current($this->response->Licenses->License);
+      }
+      else {
+        $this->License = isset($this->response->Licenses->License) ? $this->response->Licenses->License : FALSE;
+      }
     }
     // check if licenseinfo is set
     return isset($this->License->licenseInfo) ? $this->License->licenseInfo : FALSE;

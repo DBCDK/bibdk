@@ -285,6 +285,7 @@ function bibdk_favourite_set_userdata($form, &$form_state) {
     'customId',
     'pincode',
     'userName',
+    'userDateOfBirth',
     'userAddress',
     'userMail',
     'userTelephone',
@@ -294,7 +295,11 @@ function bibdk_favourite_set_userdata($form, &$form_state) {
   foreach ($form_state['values'] as $key => $value) {
     if (in_array($key, $valid_fields)) {
       if (!empty($value)) {
-        $userdata[$key] = $value;
+        if ( $key == 'cpr' or $key == 'userId' or $key == 'cardno' ) {
+          $userdata[$key] = str_replace("-","",$value);
+        } else {
+          $userdata[$key] = $value;
+        }
       }
     }
   }

@@ -30,6 +30,9 @@ function bibdk_covers_field_field_load($entity_type, $entities, $field, $instanc
   foreach ($entities as $id => $entity) {
     // bibdkWork object
     $local_id = explode(':', $entity->ding_entity_id);
+    if(empty($id[0])){
+      return;
+    }
     $items[$id][0] = array(
       'local_id' => $local_id[1],
     );

@@ -87,7 +87,6 @@ function bibdk_webservice_request($reset = false) {
       case 'bindWayfRequest':
         return bibdk_webservice_bindWayfRequest($request);
         break;
-      default:
      case 'deleteWayfRequest':
         return bibdk_webservice_deleteWayfRequest($request);
         break;

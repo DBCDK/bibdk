@@ -21,7 +21,7 @@ libraries[ckeditor][download][url] = http://download.cksource.com/CKEditor/CKEdi
 projects[bibdk_theme][type] = theme
 projects[bibdk_theme][download][type] = git
 projects[bibdk_theme][download][url] = git@github.com:DBCDK/bibdk_theme.git
-projects[bibdk_theme][download][tag] = 7.x-0.87
+projects[bibdk_theme][download][tag] = 7.x-0.94
 
 
 ; --- Bibliotek.dk versions of Ding2 modules ---
@@ -49,17 +49,17 @@ projects[ding_popup][download][tag] = 7.x-0.4+dbc.5
 projects[ding_provider][type] = module
 projects[ding_provider][download][type] = git
 projects[ding_provider][download][url] = git@github.com:DBCDK/ding_provider.git
-projects[ding_provider][download][tag] = 7.x-0.13+dbc.11
+projects[ding_provider][download][tag] = 7.x-0.13-dbc.13
 
 projects[ding_user][type] = module
 projects[ding_user][download][type] = git
 projects[ding_user][download][url] = git@github.com:DBCDK/ding_user.git
-projects[ding_user][download][tag] = 7.x-0.19+dbc.16
+projects[ding_user][download][tag] = 7.x-0.19-dbc.20
 
 projects[ding_wayf][type] = module
 projects[ding_wayf][download][type] = git
 projects[ding_wayf][download][url] = git@github.com:DBCDK/ding_wayf.git
-projects[ding_wayf][download][tag] = 7.x-0.6+dbc.11
+projects[ding_wayf][download][tag] = 7.x-0.6-dbc.12
 
 projects[ding_webtrends][type] = module
 projects[ding_webtrends][download][type] = git
@@ -74,22 +74,22 @@ projects[ding_webtrends_2014][download][tag] = 7.x-0.3
 projects[ting-client][type] = module
 projects[ting-client][download][type] = git
 projects[ting-client][download][url] = git@github.com:DBCDK/ting-client.git
-projects[ting-client][download][tag] = 7.x-2.33
+projects[ting-client][download][tag] = 7.x-2.39
 
 projects[ting_agency][type] = module
 projects[ting_agency][download][type] = git
 projects[ting_agency][download][url] = git@github.com:DBCDK/ting_agency.git
-projects[ting_agency][download][tag] = 7.x-0.40
+projects[ting_agency][download][tag] = 7.x-0.46
 
 projects[ting_infomedia][type] = module
 projects[ting_infomedia][download][type] = git
 projects[ting_infomedia][download][url] = git@github.com:DBCDK/ting_infomedia.git
-projects[ting_infomedia][download][tag] = 7.x-1.29
+projects[ting_infomedia][download][tag] = 7.x-1.31
 
 projects[ting_openformat][type] = module
 projects[ting_openformat][download][type] = git
 projects[ting_openformat][download][url] = git@github.com:DBCDK/ting_openformat.git
-projects[ting_openformat][download][tag] = 7.x-0.75
+projects[ting_openformat][download][tag] = 7.x-0.82
 
 projects[ting_openuserstatus][type] = module
 projects[ting_openuserstatus][download][type] = git
@@ -110,12 +110,12 @@ projects[open_adhl][download][tag] = 7.x-0.4
 projects[open_holdingstatus][type] = module
 projects[open_holdingstatus][download][type] = git
 projects[open_holdingstatus][download][url] = git@github.com:DBCDK/open_holdingstatus.git
-projects[open_holdingstatus][download][tag] = 7.x-0.11
+projects[open_holdingstatus][download][tag] = 7.x-0.13
 
 projects[open_moreinfo][type] = module
 projects[open_moreinfo][download][type] = git
 projects[open_moreinfo][download][url] = git@github.com:DBCDK/open_moreinfo.git
-projects[open_moreinfo][download][tag] = 7.x-0.4
+projects[open_moreinfo][download][tag] = 7.x-0.6
 
 projects[open_saou][type] = module
 projects[open_saou][download][type] = git
@@ -143,12 +143,12 @@ projects[dbc_zabbix][download][tag] = 7.x-0.1
 projects[bibdk_config][type] = module
 projects[bibdk_config][download][type] = git
 projects[bibdk_config][download][url] = git.dbc.dk:/repos/bibliotek.dk/bibdk_config.git
-projects[bibdk_config][download][tag] = 7.x-0.31
+projects[bibdk_config][download][tag] = 7.x-0.32
 
 projects[bibdk_behaviour][type] = module
 projects[bibdk_behaviour][download][type] = git
 projects[bibdk_behaviour][download][url] = git.dbc.dk:/repos/bibdk_behaviour.git
-projects[bibdk_behaviour][download][tag] = 7.x-0.8
+projects[bibdk_behaviour][download][tag] = 7.x-0.9
 
 
 ; --- Non Ding2 or Bibliotek.dk specific
@@ -162,12 +162,11 @@ projects[translatable][download][tag] = 7.x-1.1
 projects[ask_vopros][type] = module
 projects[ask_vopros][subdir] = contrib
 projects[ask_vopros][download][url] = https://github.com/Biblioteksvagten/ask_vopros.git
-projects[ask_vopros][patch][] = https://raw.githubusercontent.com/DBCDK/patches/master/ask_vopros_set_usermail_and_hack_agencyid.patch
+projects[ask_vopros][patch][] = https://raw.githubusercontent.com/DBCDK/patches/master/ask_vopros_set_usermail_and_hack_agencyid_and_check_opening.patch
 
 projects[elements][subdir] = contrib
 projects[elements][type] = module
 projects[elements][version] = 1.4
-projects[elements][patch][] =https://raw.githubusercontent.com/DBCDK/patches/3bfb437aec7a6e185af4ca99fba7d5a425360d3b/elements_email_pattern_on_email_field.patch
 
 projects[uuid][subdir] = contrib
 projects[uuid][type] = module
@@ -313,9 +312,9 @@ projects[scheduler][subdir] = contrib
 projects[scheduler][type] = module
 projects[scheduler][version] = 1.3
 
-projects[simple_mobile_redirect][subdir] = contrib
-projects[simple_mobile_redirect][type] = module
-projects[simple_mobile_redirect][version] = 1.1
+//projects[simple_mobile_redirect][subdir] = contrib
+//projects[simple_mobile_redirect][type] = module
+//projects[simple_mobile_redirect][version] = 1.1
 
 //jquery_update
 projects[jquery_update][subdir] = contrib

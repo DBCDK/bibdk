@@ -263,13 +263,21 @@ function bibdk_reservation_create_wizard_form($form, &$form_state) {
 
   if (isset($next_step) && $next_step <= $total_steps && !isset($form_state['blocked'])) {
     $next_step_active = TRUE;
+
+    $but_text = isset($form_state['step_information'][$step]['next button text']) ? $form_state['step_information'][$step]['next button text'] : t('Next', array(), array('context' => 'bibdk_reservation'));
     // The Next button should be included on every step
     $form['navigation']['next'] = array(
       '#type' => 'submit',
-      '#value' => isset($form_state['step_information'][$step]['next button text']) ? $form_state['step_information'][$step]['next button text'] : t('Next', array(), array('context' => 'bibdk_reservation')),
+      '#value' => $but_text,
       '#name' => 'next',
       '#submit' => array('bibdk_reservation_wizard_next_submit'),
     );
+
+    if ($next_step == 4) {
+      // add disable on Order button
+      $form['navigation']['next']['#attached']['js'][] = drupal_get_path('module', 'bibdk_reservation') . '/js/bibdk_reservation_order_disable.js';
+    }
+
   }
 
   // Show the 'previous' button if appropriate.
@@ -334,6 +342,14 @@ function _bibdk_reservation_set_login_message() {
   $loginlink = l(t('login_link', array(), array('context' => 'bibdk_reservation')), $link);
 
   drupal_set_message(t('It would be better for you if you were logged in: !link', array('!link' => $loginlink), array('context' => 'bibdk_reservation')), 'warning', FALSE);
+}
+
+function _bibdk_reservation_set_saou_login_message() {
+  $link = 'user/login';
+
+  $loginlink = l(t('login_link', array(), array('context' => 'bibdk_reservation')), $link);
+
+  drupal_set_message(t('log in to see if your favorite library gives access: !link', array('!link' => $loginlink), array('context' => 'bibdk_reservation')), 'warning', FALSE);
 }
 
 /**

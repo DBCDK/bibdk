@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Bibliotek.dk - Custom search filters feature.
+ */
+
+include_once 'bibliotek_dk_custom_search_filters.features.inc';

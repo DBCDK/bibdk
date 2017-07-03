@@ -181,3 +181,4 @@ function bibdk_reservation_convert_array_to_table($array) {
 
   return $table;
 }
+

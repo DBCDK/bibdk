@@ -8,10 +8,11 @@ function bibdk_reservation_form_step_2($form, &$form_state) {
 
   //render branch
   $branch = BibdkReservationOrderObject::GetObject()->getBranch();
-
+  $show_url = true;
   if ($branch->getTemporarilyClosedReason($language->language) != 'ting_agency_no_temporarilyClosedReason') {
     //set closed information
     drupal_set_message($branch->getTemporarilyClosedReason($language->language), 'warning');
+    $show_url = false; // don't show not owned message and link to own catalog
   }
 
   //render manifestation
@@ -50,7 +51,8 @@ function bibdk_reservation_form_step_2($form, &$form_state) {
 
       return $form;
     }
-    $msgs = _bibdk_reservation_generate_policy_messages($orderpolicy);
+
+    $msgs = _bibdk_reservation_generate_policy_messages($orderpolicy, $show_url);
 
     if ($msgs) {
       $form['messages_wrapper'] = array(
@@ -60,7 +62,7 @@ function bibdk_reservation_form_step_2($form, &$form_state) {
     }
 
     if ($reason = $orderpolicy->getOrderPossibleReason()){
-      if ($reason != 'not_owned_accepted_by_consortia')
+      if ($reason != 'not_owned_accepted_by_consortia' and $show_url == true)
         form_set_error('bibdk_reservation_form_step_2', t($reason, array(), array('context' => 'bibdk_reservation:error')));
     }
   }
@@ -187,8 +189,11 @@ function bibdk_reservation_get_favourites_for_selector() {
  * @param $policy_response
  * @return array
  */
-function _bibdk_reservation_generate_policy_messages($policy_response) {
+function _bibdk_reservation_generate_policy_messages($policy_response, $show_url) {
   $msgs = array();
+  if ($show_url == false) {
+    return $msgs;
+  }
   $lookup_url = current($policy_response->getLookUpUrl());
   $agencyId = $policy_response->getAgencyId();
 
@@ -363,6 +368,10 @@ function bibdk_reservation_form_step_2_do_policycheck() {
 
 function bibdk_reservation_form_step_2_already_ordered($display_alert) {
 
+  if (isset($_SESSION['ordered_Pids'])) {
+    unset($_SESSION['ordered_Pids']);
+  }
+
   $pid = BibdkReservationOrderObject::GetObject()->getManifestationIds();
 
   //Check for already ordered in this session
@@ -452,6 +461,8 @@ function bibdk_reservation_form_step_2_submit($form, &$form_state) {
     if (!empty($value)) {
       $userData[$name] = $value;
       if (in_array($type, array('cpr', 'userId', 'cardno', 'customId'))) {
+        //replace any '-' in input
+        $form_state['values'][$type] = str_replace("-","",$form_state['values'][$type]);
         $userOrderData['userId'] = isset($userOrderData['userId']) ? $userOrderData['userId'] : $form_state['values'][$type];
       }
       else {

@@ -1,4 +1,5 @@
 (function($) {
+
   /** Insert adhl results */
   function addRecommendation(adhl) {
     if(adhl.error) {

@@ -57,7 +57,6 @@ function bibdk_facetbrowser_menu() {
   );
 
 
-
   return $items;
 }
 
@@ -156,13 +155,12 @@ function bibdk_facetbrowser_ctools_plugin_api($module, $api) {
   }
 }
 
-
 /**
  * @param $facet
  * @param $title
  * @return array; render-array(fieldset) defining a single facetgroup
  */
-function bibdk_facetbrowser_get_single_facetgroup($facet, $title, &$selected_facets_present=FALSE) {
+function bibdk_facetbrowser_get_single_facetgroup($facet, $title, &$selected_facets_present, $facets_display, $doTrimLength) {
   $default_values = array();
   $selected = array();
   $not_selected = array();
@@ -170,15 +168,14 @@ function bibdk_facetbrowser_get_single_facetgroup($facet, $title, &$selected_fac
   $field_set = array();
 
   if (count($facet->terms) > 0) {
-    $field_set = array(
-      '#type' => 'fieldset',
-      '#title' => t($title, array(), array('context' => 'facet_titles')),
-      '#attributes' => array(
-        'id' => str_replace('.', '-', $facet->name),
-        'data-name' => array($facet->name),
-        'data-count' => count($facet->terms)
-      ),
-    );
+    if ($facets_display === TRUE) {
+      // Show facet group unfolded
+      $field_set = bibdk_facetbrowser_get_actions_unfold($facet, $title);
+    } else {
+      // Show facet groups folded
+      $field_set = bibdk_facetbrowser_get_actions_fold($facet, $title);
+      return $field_set;
+    }
 
     // reference parameter
     $selected_facets_present = FALSE;
@@ -189,20 +186,19 @@ function bibdk_facetbrowser_get_single_facetgroup($facet, $title, &$selected_fac
       if (_bibdk_facetbrowser_isFacetSet($facet->name, $term_name) === TRUE) {
         $selected_facets_present = TRUE;
         $default_values[] = $term_name;
-        $selected[$term_name] = bibdk_facetbrowser_get_facet_link($facet, $term_name, $term_count, TRUE);
-      }
-      else {
-        $not_selected[$term_name] = bibdk_facetbrowser_get_facet_link($facet, $term_name, $term_count, FALSE);
+        $selected[$term_name] = bibdk_facetbrowser_get_facet_link($facet, $term_name, $term_count, TRUE, $doTrimLength );
+    }
+    else {
+        $not_selected[$term_name] = bibdk_facetbrowser_get_facet_link($facet, $term_name, $term_count, FALSE, $doTrimLength);
       }
     }
-
     $field_set[$element_name] = array(
       '#type' => 'checkboxes',
-      '#options' => array_merge($selected, $not_selected),
+      '#options' => $selected + $not_selected, // nb: array_merge() renumber numeric keys. I.e. year facet
       '#default_value' => $default_values,
     );
-  }
 
+  }
 
   return $field_set;
 }
@@ -220,7 +216,7 @@ function bibdk_facetbrowser_get_single_facetgroup($facet, $title, &$selected_fac
  * @return string
  *   link to new search with facet selected
  */
-function bibdk_facetbrowser_get_facet_link($facet, $name, $count, $hidden = FALSE) {
+function bibdk_facetbrowser_get_facet_link($facet, $name, $count, $hidden = FALSE, $doTrimLength) {
   $facet_name = explode('.', $facet->name);
   $element_name = end($facet_name);
   // only translate material type
@@ -232,7 +228,7 @@ function bibdk_facetbrowser_get_facet_link($facet, $name, $count, $hidden = FALS
   }
 
   $hit_txt = '(' . $count . ' ' . _bibdk_facetbrowser_hits_label($count) . ')';
-  $term_name_short = bibdk_facetbrowser_trim_facet_txt($term_name_title, $hit_txt);
+  $term_name_short = bibdk_facetbrowser_trim_facet_txt($term_name_title, $hit_txt, $doTrimLength);
 
   global $base_root;
   $facets_string = $facet->name . ':' . $name;
@@ -258,17 +254,29 @@ function bibdk_facetbrowser_get_facet_link($facet, $name, $count, $hidden = FALS
 }
 
 /**
- * Trim text to max 25 chars
+ * Trim text facet text for facet or facetform
  * @param $name
  * @param $count
+ * @param $doTrimLength)TRUE=trim test for facet-form
  * @return string
  */
-function bibdk_facetbrowser_trim_facet_txt($name, $count) {
-  $total = strlen($name . $count);
-  if ($total < 35) {
+function bibdk_facetbrowser_trim_facet_txt($name, $count, $doTrimLength) {
+  $textlength = 35; //standard length for facets
+  $textlength_facet_form = 82; //standard length for facets in facetform
+  $textsubstrlength = 33; //standard length when name is too long
+  $total = strlen($name . ' ' . $count ); // total length incl. count
+
+  if ($doTrimLength === TRUE) {
+    //called from facetform
+    $textlength = $textlength_facet_form;
+    $textsubstrlength = $textlength;
+  }
+
+  if ($total < $textlength) {
     return $name;
   }
-  $name = mb_substr($name, 0, 30-strlen($count) );
+
+  $name = mb_substr($name, 0, $textsubstrlength-strlen('... ' . $count ));
   return $name . '...';
 }
 
@@ -307,6 +315,7 @@ function bibdk_facetbrowser_get_filter_link($facet) {
       'html' => FALSE,
     ),
   );
+
   return $container;
 }
 
@@ -352,14 +361,19 @@ function bibdk_facetbrowser_form($form, &$form_state, $facets = FALSE, $search =
     ),
   );
 
+  $facets_display_count = 0;
   foreach (variable_get('bibdk_facetbrowser_facets', array()) as $configured_facet) {
     if (isset($facets[$configured_facet['name']])) {
       $facet = $facets[$configured_facet['name']];
       $selected_facets_present = FALSE;
-      $field_set = bibdk_facetbrowser_get_single_facetgroup($facet, $configured_facet['title'], $selected_facets_present);
+      $facets_display = ($facets_display_count < variable_get('bibdk_facetbrowser_group_number_shown', 5));
+      $facets_display_count = $facets_display_count + 1;
+      $field_set = bibdk_facetbrowser_get_single_facetgroup($facet, $configured_facet['title'], $selected_facets_present, $facets_display, $doTrimLength=FALSE);
       if (!empty($field_set)) {
-        $field_set['actions'] = bibdk_facetbrowser_set_actions($facet->name, $selected_facets_present);
-        $field_set['filter'] = bibdk_facetbrowser_get_filter_link($facet);
+        if ( $facets_display === TRUE) {
+          $field_set['actions'] = bibdk_facetbrowser_set_actions($facet->name, $selected_facets_present);
+          $field_set['filter'] = bibdk_facetbrowser_get_filter_link($facet);
+        }
         $form[$facet->name] = $field_set;
       }
     }
@@ -481,6 +495,10 @@ function _bibdk_facetbrowser_isFacetSelected($facets, $is_selected = TRUE) {
 
   foreach ($facets as $facet) {
     $facet_string_array = explode('=', $facet, 2);
+    if (substr($facet_string_array[0], 0, 6) != 'facets') {
+      // skip input that isn't a facet
+      continue;
+    }
     if (!empty($facet_string_array[1])) {
       $item_array = explode(':', $facet_string_array[1], 2);
       if (substr($facet_string_array[1], 0, 1) == '!') {
@@ -731,4 +749,72 @@ function bibdk_facetbrowser_facets_by_ajax() {
   drupal_exit();
 }
 
+/**
+ * facetbrowser get_actions_unfold
+ *
+ * @param array $facet, string title
+ * @return array
+ */
+function bibdk_facetbrowser_get_actions_unfold($facet, $title) {
 
+  $field_set = array(
+    '#type' => 'fieldset',
+    '#title' => t($title, array(), array('context' => 'facet_titles')),
+    '#attributes' => array(
+      'id' => str_replace('.', '-', $facet->name),
+      'data-name' => array($facet->name),
+      'data-count' => count($facet->terms),
+      'data-show' => '1'
+    ),
+  );
+
+  return $field_set;
+}
+
+/**
+ * facetbrowser get_actions_fold
+ *
+ * @param array $facet, string title
+ * @return array
+ */
+function bibdk_facetbrowser_get_actions_fold($facet, $title) {
+
+  $field_set = array(
+    '#type' => 'fieldset',
+    '#title' => t($title, array(), array('context' => 'facet_titles')),
+    '#attributes' => array(
+      'style' => 'cursor: pointer',
+      'id' => str_replace('.', '-', $facet->name),
+      'data-name' => array($facet->name),
+      'data-show' => '0'
+    ),
+    'con' => array(
+      '#type' => 'container',
+      '#attributes' => array(
+        'data-expand' => 'more',
+        'id' => str_replace('.', '-', $facet->name),
+        'data-name' => array($facet->name)
+        ),
+      'icon' => array(
+        '#type' => 'html_tag',
+        '#tag' => 'span',
+        '#value' => '+',
+        '#attributes' => array(
+          'class' => array(
+            'icon',
+            'icon-left',
+            'icon-blue-plus'
+          ),
+        ),
+      ),
+      'spa' => array(
+        '#value' => t('label_facet_show_more', array(), array('context' => 'bibdk_facetbrowser')),
+        '#type' => 'html_tag',
+        '#tag' => 'span'
+      ),
+
+    ),
+  );
+
+  return $field_set;
+}

@@ -11,7 +11,7 @@ class BibdkBorchkWebserviceTestCast extends DrupalWebTestCase {
 
   public function setUp() {
     parent::setUp(array('ting_client', 'bibdk_borchk'));
-    variable_set('bibdk_borchk_url','https://borchk.addi.dk/2.4/');
+    variable_set('bibdk_borchk_url','https://borchk.addi.dk/2.5/');
     variable_set('bibdk_borchk_servicerequester','bibliotek.dk');
   }
 

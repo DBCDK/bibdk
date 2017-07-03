@@ -1,6 +1,23 @@
 <?php
 
 /**
+ * Returns render form array containing tables representing the userstatus
+ *
+ * @param $form
+ * @return array
+ */
+function bibdk_openuserstatus_by_ajax() {
+
+  $output =  drupal_get_form('bibdk_openuserstatus_form');
+  $js_array = array (
+    'markup' => drupal_render($output),
+  );
+
+  return drupal_json_output($js_array);
+
+}
+
+/**
  * Returns renderable form array containing tables representing the userstatus
  *
  * @param $form
@@ -8,6 +25,7 @@
  */
 function bibdk_openuserstatus_form($form) {
   $response = bibdk_openuserstatus_request();
+
   $form = bibdk_openuserstatus_get_tables($form, $response);
   $favourites = bibdk_favourite_get_favourites();
   $do_print_status = FALSE;
@@ -19,11 +37,13 @@ function bibdk_openuserstatus_form($form) {
       $do_print_status = TRUE;
     }
   }
+
   if (!$do_print_status) {
     $text = t('label_userstatus_no_favourite', array(), array('context' => 'bibdk_openuserstatus'));
     $type = 'warning';
     drupal_set_message($text, $type);
   }
+
   return $form;
 }
 
@@ -45,12 +65,12 @@ function bibdk_openuserstatus_get_tables($form, $response) {
   $loan_agencies = bibdk_openuserstatus_get_pickup_agencies_from_material_list($loans);
   $reservation_agencies = bibdk_openuserstatus_get_pickup_agencies_from_material_list($reservations);
   $agencies = array_unique(array_merge($loan_agencies, $reservation_agencies));
-  $named_agencies = bibdk_openuserstatus_agency_names($agencies);
+  $named_agencies = bibdk_openuserstatus_agency_name_main($agencies);
 
   $form = bibdk_openuserstatus_get_loans_table($form, $loans, $named_agencies);
   $form = bibdk_openuserstatus_get_reservations_readyforpickup_table($form, $reservations, $named_agencies);
   $form = bibdk_openuserstatus_get_reservations_inprocess_table($form, $reservations, $named_agencies);
-  $form = bibdk_openuserstatus_get_fiscal_account_table($form, $fiscals);
+  $form = bibdk_openuserstatus_get_fiscal_account_table($form, $fiscals, bibdk_openuserstatus_get_fiscals_total($response));
 
   $form['#attributes'] = array('class' => array('openuserstatus'));
   $form['#attached']['js'] = array(
@@ -262,7 +282,8 @@ function bibdk_openuserstatus_get_reservations_inprocess_table($form, $reservati
     'material' => t('author_title', array(), array('context' => 'bibdk_openuserstatus')),
     'library' => t('library_header', array(), array('context' => 'bibdk_openuserstatus')),
     'help' => '',
-    'reservation_date' => array('data' => t('reservation_date', array(), array('context' => 'bibdk_openuserstatus')), 'class' => array('show-for-large-up')),
+    'reservation_date' => array('data' => t('reservation_date', array(), array('context' => 'bibdk_openuserstatus')), 'class' => array('show-for-
+large-up')),
     'queue_position' => t('queue_position', array(), array('context' => 'bibdk_openuserstatus')),
   );
   $msg = t('no_loans_found', array(), array('context' => 'bibdk_openuserstatus'));
@@ -270,7 +291,7 @@ function bibdk_openuserstatus_get_reservations_inprocess_table($form, $reservati
   $reservations_in_process = t('Reservations_in_process', array(), array('context' => 'bibdk_userstatus'));
 
   if (!empty($reservations)) {
-    $in_process_states = array('In process', 'Requested via ill', 'Requested');
+    $in_process_states = array('In process', 'Requested via ill', 'Requested', 'Active');
     foreach ($reservations as $reservation) {
       if (isset($reservation['orderStatus']) && (in_array($reservation['orderStatus'], $in_process_states))) {
         // If reservation has pickUpExpiryDate set this is an order ready for
@@ -369,6 +390,9 @@ function bibdk_openuserstatus_select($pickUpAgencies, $reservation) {
     '#options' => $pickUpAgencies,
     '#value' => $pickupAgency,
     '#attributes' => array(
+      'class' => array(
+        'openuserstatus-form-select-pickup-agency',
+      ),
       'data-oid' => array(
         $reservation['orderId'],
       ),
@@ -393,14 +417,15 @@ function bibdk_openuserstatus_get_reservations_readyforpickup_table($form, $rese
   $data = array();
   $data['header'] = array(
     'material' => t('author_title', array(), array('context' => 'bibdk_openuserstatus')),
-    'pickup_date' => t('pickup_date_header', array(), array('context' => 'bibdk_openuserstatus')) . ' /<br/>' . t('pickup_id_header', array(), array('context' => 'bibdk_openuserstatus')),
+    'pickup_date' => t('pickup_date_header', array(), array('context' => 'bibdk_openuserstatus')) . ' /<br/>' . t('pickup_id_header', array(),
+array('context' => 'bibdk_openuserstatus')),
   );
   $data['items'] = array();
   $readyforpcikTxt = t('Reservations_readyforpickup', array(), array('context' => 'bibdk_userstatus'));
 
   if (!empty($reservations)) {
     $items = array();
-    $pickup_states = array('Available for pickup', 'Shelved');
+    $pickup_states = array('Available for pickup', 'Shelved', 'At reservation shelf');
     foreach ($reservations as $reservation) {
       $available_pickup = isset($reservation['orderStatus']) && in_array($reservation['orderStatus'], $pickup_states);
       // Last part of if statement is a fix for orders from Integra libraries
@@ -412,9 +437,12 @@ function bibdk_openuserstatus_get_reservations_readyforpickup_table($form, $rese
         $item = array();
         $pickupDate = isset($reservation['pickUpExpiryDate']) ? date('d.m.Y', strtotime($reservation['pickUpExpiryDate'])) : '';
         $pickupId = isset($reservation['pickUpId']) ? $reservation['pickUpId'] : '';
-
         $item['material'] = _bibdk_openuserstatus_material($reservation, $named_agencies[$reservation['agencyId']]);
-        $item['pickup_date'] = '<span class="userstatus--date">' . $pickupDate . '</span>' . '<span class="userstatus--pickupid">' . $pickupId . '</span>';
+        $pickUpAgency = isset($reservation['pickUpAgency']) ? $reservation['pickUpAgency'] : '';
+        //get pickupagency name
+        $agencybranchName = bibdk_openuserstatus_get_agencyname($reservation['pickUpAgency']);
+        $item['pickup_date'] = '<span class="userstatus--date">' . $pickupDate . '</span>' . '<span class="userstatus--pickupid">' . $pickupId .
+'</span>' . '<span class="userstatus--pickupid">' . '  ' . $agencybranchName . '' . '</span>';
         $items[] = $item;
       }
     }
@@ -446,6 +474,7 @@ function bibdk_openuserstatus_get_reservations_readyforpickup_table($form, $rese
       ),
     ),
   );
+
   return $form;
 }
 
@@ -454,8 +483,10 @@ function bibdk_openuserstatus_get_reservations_readyforpickup_table($form, $rese
  * @param $response
  * @return mixed
  */
-function bibdk_openuserstatus_get_fiscal_account_table($form, $fiscals) {
+function bibdk_openuserstatus_get_fiscal_account_table($form, $fiscals, $fiscals_total) {
   $fiscalBaseTxt = t('fiscal_account', array(), array('context' => 'bibdk_userstatus'));
+  $fiscalTotalTxt = t('fiscal_total', array(), array('context' => 'bibdk_userstatus'));
+
   $form['fiscal']['fiscal_name'] = array(
     '#type' => 'html_tag',
     '#tag' => 'div',
@@ -468,12 +499,32 @@ function bibdk_openuserstatus_get_fiscal_account_table($form, $fiscals) {
     '#value_prefix' => '<h2>',
     '#value_suffix' => '</h2>',
   );
+
   $header = array(
     'material' => t('author_title', array(), array('context' => 'bibdk_openuserstatus')),
     'type' => t('type_header', array(), array('context' => 'bibdk_openuserstatus')),
     'date' => array('data' => t('date_header', array(), array('context' => 'bibdk_openuserstatus')), 'class' => array('show-for-large-up')),
     'amount' => t('amount_header', array(), array('context' => 'bibdk_openuserstatus')),
   );
+
+  if (!empty($fiscals_total)) {
+    foreach ($fiscals_total as $fiscals_total_elsments) {
+      foreach ($fiscals_total_elsments as $fiscals_total_elsment) {
+        $form['fiscal']['fiscal_total'][] = array(
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          '#attributes' => array(
+            'class' => array(
+              'element-title',
+            ),
+          ),
+          '#value' =>  ' ' . $fiscalTotalTxt . ' ' . $fiscals_total_elsment,
+          '#value_prefix' => '<h3>',
+          '#value_suffix' => '</h3>',
+        );
+      }
+    }
+  }
 
   if (!empty($fiscals)) {
     $items = array();
@@ -556,6 +607,16 @@ function bibdk_openuserstatus_get_fiscals($response) {
 }
 
 /**
+ * Extracts the total amount fiscal items from each favourite library and return the accumulated amount
+ *
+ * @param array $response
+ * @return string
+ */
+function bibdk_openuserstatus_get_fiscals_total($response) {
+  return bibdk_openuserstatus_get_group_element_amount($response);
+}
+
+/**
  * Extracts the from the user status each specified element from a group and
  * returns the elements as an array
  *
@@ -573,6 +634,33 @@ function bibdk_openuserstatus_get_group_elements($user_status, $group, $element)
         foreach ($resp[$group][$element] as $item) {
           $item['agencyId'] = $agencyId;
           $items[] = $item;
+        }
+      }
+    }
+  }
+
+  return $items;
+}
+
+/**
+ * Extracts the from the user status each specified element from a group and
+ * returns the accumulated ammount for each library
+ *
+ * @param array $user_status
+ * @param string $group
+ * @param string $element
+ * @return string
+ */
+function bibdk_openuserstatus_get_group_element_amount($user_status) {
+  $favourites = bibdk_favourite_get_favourites();
+  global $language;
+  $items = array();
+  foreach ($user_status as $agencyId => $agency_data) {
+    if (is_object($agency_data)) {
+      if (isset($agency_data->response['fiscalAccount']['totalAmount'])) {
+        if ($agency_data->response['fiscalAccount']['totalAmount'] > 0 ) {
+          $currency_text = t($agency_data->response['fiscalAccount']['totalAmountCurrency'], array(), array('context' => 'bibdk_openuserstatus'));
+          $items['agencyId'][] = $favourites[$agencyId]->getBranch()->getBranchShortName($language->language) . ' ' . $currency_text . ' ' . $agency_data->response['fiscalAccount']['totalAmount'];
         }
       }
     }
@@ -629,6 +717,22 @@ function bibdk_openuserstatus_agency_names($agencies) {
 
   foreach ($agencies as $agency) {
     $named_agencies[$agency] = bibdk_openuserstatus_get_agencyname($agency);
+  }
+
+  return $named_agencies;
+}
+
+/**
+ * Looks up names for a list of agencies.
+ *
+ * @param array $agencies
+ * @return array
+ */
+function bibdk_openuserstatus_agency_name_main($agencies) {
+  $named_agencies = array();
+
+  foreach ($agencies as $agency) {
+    $named_agencies[$agency] = bibdk_openuserstatus_get_agencyname_main($agency);
   }
 
   return $named_agencies;
