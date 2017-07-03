@@ -509,6 +509,7 @@ function bibdk_frontend_update_7029(&$sandbox) {
   ));
 }
 
+/**
  * Enable bibliotek_dk_custom_search_filters for existing installations
  */
 function bibdk_frontend_update_7030(&$sandbox) {
