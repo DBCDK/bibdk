@@ -324,3 +324,4 @@ projects[jquery_update][version] = 3.0-alpha2
 projects[zabbix][subdir] = contrib
 projects[zabbix][type] = module
 projects[zabbix][version] = 1.x-dev
+projects[zabbix][patch][] = https://raw.githubusercontent.com/DBCDK/patches/master/zabbix_fix_strict_pass_by_reference_errors.patch
