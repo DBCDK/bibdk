@@ -150,7 +150,7 @@ projects[bibdk_behaviour][download][tag] = 7.x-0.9
 projects[dbc_zabbix][type] = module
 projects[dbc_zabbix][download][type] = git
 projects[dbc_zabbix][download][url] = git@github.com:DBCDK/dbc_zabbix.git
-projects[dbc_zabbix][download][tag] = 7.x-0.1
+projects[dbc_zabbix][download][tag] = 7.x-0.2
 
 projects[translatable][type] = module
 projects[translatable][subdir] = contrib
