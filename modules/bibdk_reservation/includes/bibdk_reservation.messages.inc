@@ -60,11 +60,26 @@ function bibdk_reservation_get_action_links($ids, BibdkWork $bibdk_work_entity) 
   if ($link = bibdk_reservation_article_infomedia_link($manifestation)) {
     $links[] = $link;
   }
-  if ($link = bibdk_reservation_get_sbkopi_link($ids)) {
+  $link = bibdk_reservation_get_sbkopi_link($ids);
+  if ($link) {
     $links[] = $link;
   }
-  if ($manifestation->hasDirectLink()) {
-    $links[]['#markup'] = _ting_openformat_render_direct_link($manifestation->getInfotext(), $manifestation);
+  $netarchivelink= bibdk_netarchive_ting_openformat_actions($type = 'bibdkManifestation', $manifestation, $view_mode = 'full', $langcode = NULL);
+  if ($netarchivelink) {
+    $links[] = $netarchivelink;
+    $links[] = $link;
+  }
+
+  if ($manifestation->hasDirectLink() && $manifestation->getRestrictedExtendedUse()) {
+    if (!user_is_logged_in()) {
+      // not logged in, do log on to see if your favorite library gives access
+    } else {
+      $links['wrapper']['item_list_link'] = bibdk_saou_link_to_soau_ressource($manifestation);
+    }
+  } else {
+    if ($manifestation->hasDirectLink()) {
+      $links[]['#markup'] = _ting_openformat_render_direct_link($manifestation->getInfotext(), $manifestation);
+    }
   }
   return $links;
 }
@@ -200,7 +215,7 @@ function _bibdk_reservation_get_message_type($index) {
  */
 function _ting_openformat_render_direct_link($infocode, $manifestation) {
   if ($links = _bibdk_reservation_get_access_links($manifestation)) {
-    return bibdk_reservation_translate("$infocode !links", array('!links' => drupal_render($links)));
+    return bibdk_reservation_translate("!links", array('!links' => drupal_render($links)));
   }
 }
 

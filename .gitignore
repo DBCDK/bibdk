@@ -1,4 +1,12 @@
 libraries
+modules/ding_*
 modules/ting_*
+modules/ting-client
 modules/open_*
 modules/contrib
+modules/bibdk_behaviour
+modules/bibdk_config
+modules/cql_strict_parser
+modules/microcurl
+modules/dbc_zabbix
+themes/bibdk_theme

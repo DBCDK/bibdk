@@ -62,6 +62,7 @@ function _bibdk_enable_modules() {
     'bibdk_autocomplete',
     'bibdk_facetbrowser',
     'cql_strict_parser',
+    'dbc_zabbix',
     'ting_openuserstatus',
     'open_holdingstatus',
     'open_moreinfo',
@@ -447,4 +448,115 @@ function bibdk_update_7040(){
  */
 function bibdk_update_7041(){
   module_enable(array('bibdk_schemaorg'));
+}
+
+/**
+ * Delete {system} records for long-lost modules (open_holdingstatus_webservice).
+ */
+function bibdk_update_7042() {
+  $modules = array(
+    'open_holdingstatus_webservice'
+  );
+  db_delete('system')
+    ->condition('name', $modules, 'IN')
+    ->condition('type', 'module')
+    ->execute();
+}
+
+/**
+ * Delete {system} records for long-lost modules.
+ */
+function bibdk_update_7043() {
+  $modules = array(
+    'bibliotek_dk_lightbox2_settings',
+    'simple_mobile_redirect',
+    'ting_search_carousel',
+    'ting_covers_field',
+    'ding_facetbrowser',
+    'ting_covers',
+    'bibliotek_dk_global_login_menu',
+    'topbar_menu_block_feature',
+    'lightbox2',
+    'bibliotek_dk_header_actions'
+  );
+  db_delete('system')
+    ->condition('name', $modules, 'IN')
+    ->condition('type', 'module')
+    ->execute();
+
+}
+
+/**
+ * Delete {system} records for long-lost modules.
+ */
+function bibdk_update_7044() {
+  $modules = array(
+    'diff',
+    'devel'
+  );
+  db_delete('system')
+    ->condition('name', $modules, 'IN')
+    ->condition('type', 'module')
+    ->execute();
+
+}
+
+/**
+ * Delete {system} records for long-lost modules.
+ */
+function bibdk_update_7045() {
+  $modules = array(
+    'ting_covers_field'
+  );
+  db_delete('system')
+    ->condition('name', $modules, 'IN')
+    ->condition('type', 'module')
+    ->execute();
+
+}
+
+/**
+ * Delete {system} records for long-lost modules.
+ */
+function bibdk_update_7046() {
+  $modules = array(
+    'bibliotek_dk_user_mails',
+    'token',
+    'bibdk_navfors',
+    'bibdk_field_settings',
+    'dbtng_migrator',
+    'backup_migrate',
+    'pathauto'
+  );
+  db_delete('system')
+    ->condition('name', $modules, 'IN')
+    ->condition('type', 'module')
+    ->execute();
+
+}
+
+/**
+ * Delete {system} records for long-lost modules.
+ */
+function bibdk_update_7047() {
+  $modules = array(
+    'bibdk_field_settings'
+  );
+  db_delete('system')
+    ->condition('name', $modules, 'IN')
+    ->condition('type', 'module')
+    ->execute();
+}
+
+/**
+ * Delete {system} records for long-lost modules.
+ */
+function bibdk_update_7048() {
+  $modules = array(
+    'ting_covers_field'
+  );
+  db_delete('system')
+    ->condition('name', $modules, 'IN')
+    ->condition('type', 'module')
+    ->execute();
 }

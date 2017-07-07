@@ -184,8 +184,9 @@ function bibdk_autocomplete_form_search_block_form_alter(&$form, &$form_state, $
         }
       }
     }
+    $form['#attached']['js'][] = drupal_get_path('module', 'bibdk_autocomplete') . '/js/bibdk_autocomplete.js';
   }
-  $form['#attached']['js'][] = drupal_get_path('module', 'bibdk_autocomplete') . '/js/bibdk_autocomplete.js';
+
   return $form;
 }
 

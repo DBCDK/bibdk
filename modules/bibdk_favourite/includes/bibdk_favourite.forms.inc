@@ -123,29 +123,31 @@ function bibdk_favourite_form_view_items_from_session($favourite, $weight, $togg
   $links = bibdk_favourite_get_action_links($favourite);
   $actions = ($action_enabled) ? theme('bibdk_favourite_action_links', array('links' => $links)) : NULL;
 
-  $moreinfo = theme('ting_agency_more_info', array(
-    'branch' => $branch,
-    'openingHours' => theme('ting_agency_opening_hours', array('branch' => $branch,)),
-    'tools' => theme('ting_agency_tools', array('branch' => $branch)),
-    'address' => theme('ting_agency_address', array('branch' => $branch)),
-    'contact' => theme('ting_agency_contact', array('branch' => $branch)),
-    'toggle_enabled' => $toggle_enabled,
-  ));
+  $moreinfo = array(
+    '#theme' => 'ting_agency_more_info',
+    '#branch' => $branch,
+    '#openingHours' => theme('ting_agency_opening_hours', array('branch' => $branch,)),
+    '#tools' => array('#theme' => 'ting_agency_tools', '#branch'=>$branch),
+    '#address' => theme('ting_agency_address', array('branch' => $branch)),
+    '#contact' => theme('ting_agency_contact', array('branch' => $branch)),
+    '#toggle_enabled' => $toggle_enabled,
+  ) ;
   $classes = array();
   $classes[] = 'favourite-' . $favourite->getAgencyId();
   if ($favourite->getOrderAgency()) {
     $classes[] = 'order-agency';
   }
 
-  $form[$favourite->getAgencyId()]['library']['#markup'] = theme('ting_agency_library', array(
-    'branchName' => $branch->getBranchShortName($language->language),
-    'agencyName' => $branch->agencyName,
-    'actions' => $actions,
-    'add_classes' => $classes,
-    'moreinfo' => $moreinfo,
-    'branchid' => $branch->branchId,
-    'toggle_enabled' => $toggle_enabled
-  ));
+  $form[$favourite->getAgencyId()]['library'] = array(
+    '#theme' => 'ting_agency_library',
+    '#branchName' => $branch->getBranchShortName($language->language),
+    '#agencyName' => $branch->agencyName,
+    '#actions' => $actions,
+    '#add_classes' => $classes,
+    '#moreinfo' => $moreinfo,
+    '#branchid' => $branch->branchId,
+    '#toggle_enabled' => $toggle_enabled
+  );
 
   // place branch on top if set as order-agency
   $form[$favourite->getAgencyId()]['#weight'] = ($favourite->getOrderAgency()) ? -1 : $weight;

@@ -15,15 +15,18 @@ class BibdkActionsWebTestCase extends DrupalWebTestCase {
   }
 
   public function setUp() {
-    parent::setUp('bibdk_cart', 'bibdk_actions', 'ting_openformat', 'field_ui', 'bibdk_provider', 'bibdk_webservice');
-    //variable_set('ting_search_url', 'lakiseks.dbc.dk/openbibdk/0.5/');
-    variable_set('ting_search_url', 'http://opensearch.addi.dk/4.0.1/');
-    variable_set('ting_search_url', 'http://bibdk-prod-ws.dbc.dk/opensearch/b3.0_4.2/');
+    parent::setUp('bibdk_cart', 'bibdk_actions', 'ting_openformat','field_ui', 'bibdk_provider', 'bibdk_webservice', 'bibdk_webservice_settings_develop','features', 'strongarm');
     variable_set('bibdk_provider_webservice_url', $this->getAbsoluteUrl('bibdk_webservice'));
     variable_set('bibdk_provider_security_code', 'securityCode');
   }
 
   public function testRunner() {
+
+    debug(variable_get('ting_search_url', 'FISK'));
+
+    $this->assertTrue(module_exists('field_ui'));
+
+
     $this->_testBibdkCartHook();
     $this->_testPrintview();
     $this->_testPrintFunctions();
@@ -35,8 +38,9 @@ class BibdkActionsWebTestCase extends DrupalWebTestCase {
   }
 
   private function _login_as_admin() {
-    $admin_user = $this->drupalCreateUser(array('access content', 'administer content types'));
+    $admin_user = $this->drupalCreateUser(array('access content', 'administer content types', 'administer users','administer permissions'));
     $this->drupalLogin($admin_user);
+    $this->drupalPost('user/2/edit', array('roles[3]' => TRUE), t('Save'));
   }
 
   /**
@@ -169,13 +173,13 @@ TY  - BOOKA1  - Hvass,HansA1  - Eigener,WilhelmT1  - Fische der WeltSP  - 158 S.
     $ids = '';
     $view = bibdk_actions_print_page($ids);
     $result = drupal_render($view);
-    $this->assertTrue(preg_match('@<h4></h4>@', $result), 'No Results are generated if no pids are send');
+    $this->assertTrue(preg_match('@@', $result), 'No Results are generated if no pids are send');
 
     // invalid id
     $ids = 'not_a_manifestation';
     $view = bibdk_actions_print_page($ids);
     $result = drupal_render($view);
-    $this->assertTrue(preg_match('@<h4></h4>@', $result), 'No Results are generated if pid is invalid');
+    $this->assertTrue(preg_match('@@', $result), 'No Results are generated if pid is invalid');
 
     // function handles empty array
     $view = array();

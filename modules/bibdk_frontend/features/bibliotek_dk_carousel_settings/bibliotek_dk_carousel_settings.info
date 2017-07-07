@@ -17,4 +17,3 @@ features[variable][] = bibdk_search_carousel_description_toggle
 features[variable][] = bibdk_search_carousel_queries_max
 features[variable][] = bibdk_search_carousel_tabs_position
 features[variable][] = bibdk_search_carousel_week_search_code
-mtime = 1462961296

@@ -365,7 +365,7 @@ function _get_bibdk_subject_hierarchy_item($emnehierarki, $current_key) {
     '#breadcrumbs' => $breadcrumbs,
     '#heading' => $heading,
     '#hierarchy' => $emnehierarki_links,
-    '#current_key' => current_key,
+    '#current_key' => $current_key,
     '#search_path' => $search_path,
     '#close_button' => $close_button,
     'row' => $row,
@@ -397,7 +397,6 @@ function _bibdk_subject_hierarchy_search_info() {
   if (!empty($search_info['path']) && in_array($search_info['module'], variable_get('search_active_modules', array()))) {
     $path = $search_info['path'];
   }
-
   return $path;
 }
 
@@ -521,12 +520,7 @@ function _get_bibdk_subject_hierarchy_heading($emnehierarki, $keys, $path = 'wor
  * @return bool|array
  */
 function _bibdk_subject_hierarchy_read_data() {
-  // fallback if bibdk_yaz is not enabled
-  if (!module_exists('bibdk_yaz')) {
-    $filename = drupal_get_path('module', 'bibdk_subject_hierarchy') . '/data/emnehierarki_full.json';
-    return json_decode(file_get_contents($filename), TRUE);
-  }
-  
+  // NB: husk update hook, hvis emnehierarki xml bliver opdateret.
   $filename = drupal_get_path('module', 'bibdk_subject_hierarchy') . '/data/emnehierarki_full.xml';
   $data = _bibdk_subject_hierarchy_parse_xml($filename);
   if (!empty($data)) {
@@ -535,7 +529,6 @@ function _bibdk_subject_hierarchy_read_data() {
   else {
     watchdog('subject_hierarchy', 'No XML file found.', array(), WATCHDOG_ERROR);
   }
-
   return FALSE;
 }
 
@@ -555,9 +548,9 @@ function _bibdk_subject_hierarchy_parse_xml($filename) {
  */
 function _bibdk_subject_hierarchy_parse($terms) {
 
-  // if the key ccl exists there is only one term and wee need to wrap it in
+  // if the key 'ord' exists there is only one term, and we need to wrap it in
   // an array for the foreach loop to work correctly
-  if ( isset($terms['ccl']) ) {
+  if ( isset($terms['ord']) ) {
     $terms = array($terms);
   }
 
@@ -576,13 +569,18 @@ function _bibdk_subject_hierarchy_parse_term($term) {
   foreach ($term as $key => $item) {
     if ((string) $key != (string) (int) $key) {
       if ($key == 'term') {
-        $record[$key] = _bibdk_subject_hierarchy_parse($item);
+        $record['term'] = _bibdk_subject_hierarchy_parse($item);
       }
+      elseif ($key == 'cql' && !empty($item)) {
+        $record['cql'] = $item;
+      }
+/*
       elseif ($key == 'ccl' && !empty($item)) {
         $record['cql'] = _bibdk_subject_hierarchy_ccl_to_cql($item);
         $record[$key] = $item;
       }
-      elseif ($key == 'ord') {
+*/
+      elseif ($key == 'ord' && !empty($item)) {
         $record['note'] = 'LABEL_' . normalize_string($item);
         $record[$key] = $item;
       }
@@ -600,13 +598,24 @@ function _bibdk_subject_hierarchy_parse_term($term) {
  * @param $ccl
  * @return string|null
  */
-function _bibdk_subject_hierarchy_ccl_to_cql($ccl) {
+/*
+ function _bibdk_subject_hierarchy_ccl_to_cql($ccl) {
   if (function_exists('bibdk_yaz_convert_ccl_to_cql')) {
     $cql = bibdk_yaz_convert_ccl_to_cql($ccl);
-    return reset($cql);
+    if (isset($cql['cql'])) {
+      return $cql['cql'];
+    } else if (isset($cql['error'])) {
+      watchdog('subject_hierarchy', 'Failed to convert ccl: %ccl. Error: %error', array('%ccl' => $ccl, '%error' => $cql['error']), WATCHDOG_ERROR);
+      return $ccl;
+    } else {
+      watchdog('subject_hierarchy', 'Call to bibdk_yaz_convert_ccl_to_cql() failed.', array(), WATCHDOG_ERROR);
+      return $ccl;
+    }
   }
+  watchdog('subject_hierarchy', 'No function named bibdk_yaz_convert_ccl_to_cql() exist.', array(), WATCHDOG_ERROR);
   return NULL;
 }
+*/
 
 /** Normalize a string so that it can be compared with others without being too fussy.
  *   e.g. "?dr???l?n?" would return "adrenaline"
