@@ -560,3 +560,16 @@ function bibdk_update_7048() {
     ->condition('type', 'module')
     ->execute();
 }
+
+/**
+ * Delete {system} records for long-lost modules.
+ */
+function bibdk_update_7049() {
+  $modules = array(
+    'ting'
+  );
+  db_delete('system')
+    ->condition('name', $modules, 'IN')
+    ->condition('type', 'module')
+    ->execute();
+}
