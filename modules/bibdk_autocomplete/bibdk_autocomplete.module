@@ -64,11 +64,44 @@ function bibdk_autocomplete($p_uuid, $v_uuid, $string, $retry = false) {
     }
   }
 
+/* ex.:
+http://0.ortograf.xp.prod.mcp1.dbc.dk/solr/ortograf/suggest_title?q=har
+http://0.ortograf.xp.prod.mcp1.dbc.dk/solr/ortograf/suggest_creator?q=volt&rows=5
+http://0.ortograf.xp.prod.mcp1.dbc.dk/solr/ortograf/suggest_subject?q=spi&wt=xml
+http://0.ortograf.xp.prod.mcp1.dbc.dk/solr/ortograf/suggest_all?q=har&debug=true
+*/
+
+/* settings ex.:
+agency=190101
+maxSuggestions=10
+maxTime=
+profile=default
+highlight=0
+highlight.pre=%3Cem%3E
+highlight.post=%3C/em%3E
+*/
+
+  $options['query'] = array('q' => check_plain($search_string)) + $settings;
+
+  switch ($value_vars['id']) {
+    case 'input-forfatter':
+      $url = 'http://0.ortograf.xp.prod.mcp1.dbc.dk/solr/ortograf/suggest_creator';
+      break;
+    case 'input-titel':
+      $url = 'http://0.ortograf.xp.prod.mcp1.dbc.dk/solr/ortograf/suggest_title';
+      break;
+    case 'input-emne':
+      $url = 'http://0.ortograf.xp.prod.mcp1.dbc.dk/solr/ortograf/suggest_subject';
+      break;
+  }
+  
+  /*
   $settings['highlight'] = ($settings['highlight']) ? 'true' : null;
   $options['query'] = array('query' => check_plain($search_string)) + $value_vars + $settings;
   $options['maxTime'] = 300;
-
   $url = ($value_vars['facetIndex']) ? $url . '/facetSpell' : $url . '/terms';
+  */
+
   $url = url($url, $options);
 
   watchdog('bibdk_autocomplete', 'Autocomplete URL sent: ' . $url, array(), $severity = WATCHDOG_DEBUG);
@@ -77,23 +110,29 @@ function bibdk_autocomplete($p_uuid, $v_uuid, $string, $retry = false) {
   $result = json_decode($curl->get(array($url)));
   $curl->close();
 
-  if (!empty($result->suggestions)) {
-    foreach ($result->suggestions as $suggestion) {
-      if (strpos($suggestion->phrase, ' ')) {
+  if (!empty($result->response)) {
+    foreach ($result->response->docs as $suggestion) {
+      switch ($value_vars['id']) {
+        case 'input-forfatter':
+          $string = $suggestion->creator;
+          break;
+        case 'input-titel':
+          $string = $suggestion->title;
+          break;
+        case 'input-emne':
+          $string = $suggestion->subject;
+          break;
+      }
+      if (strpos($string, ' ')) {
         // contains blank
-        $items['"' . bibdk_autocomplete_truncate(html_entity_decode(strip_tags($suggestion->phrase)), 64) . '"'] = $suggestion->phrase;
+        $items['"' . bibdk_autocomplete_truncate(html_entity_decode(strip_tags($string)), 64) . '"'] = $string;
       } else {
-        $items[bibdk_autocomplete_truncate(html_entity_decode(strip_tags($suggestion->phrase)), 64)] = $suggestion->phrase;
+        $items[bibdk_autocomplete_truncate(html_entity_decode(strip_tags($string)), 64)] = $string;
       }
     }
-  } else {
-    if (empty($result->suggestions) && !$retry) {
-      watchdog('bibdk_autocomplete', 'AUTOCOMPLETE RETRY' . $url, array(), $severity = WATCHDOG_WARNING);
-      bibdk_autocomplete($p_uuid, $v_uuid, $string, true);
-    } else {
-      watchdog('bibdk_autocomplete', 'Autocomplete return empty set for ' . $url, array(), $severity = WATCHDOG_WARNING);
-      $items = array();
-    }
+  } else if (!empty($result->error)) {
+    watchdog('bibdk_autocomplete', 'Autocomplete return empty set for ' . $url, array(), $severity = WATCHDOG_WARNING);
+    $items = array();
   }
   // Return the result to the form in json
   drupal_json_output($items);

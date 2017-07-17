@@ -16,6 +16,8 @@ function bibdk_autocomplete_admin() {
   $base_settings['highlight.pre'] = NULL;
   $base_settings['highlight.post'] = NULL;
 
+  $base_settings['max'] = NULL;
+  $base_settings['debug'] = NULL;
   $defaults = variable_get('bibdk_autocomplete_settings', array());
 
   foreach ($base_settings as $key => $base_setting) {
@@ -44,6 +46,17 @@ function bibdk_autocomplete_admin() {
     '#collapsible' => TRUE,
   );
 
+  $form['bibdk_autocomplete_settings']['max'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Max suggestions', array(), array('context' => 'bibdk_autocomplete_admin')),
+    '#size' => 26,
+    '#return_value' => 'true',
+    '#description' => t('Maximum suggestions to return', array(), array('context' => 'bibdk_autocomplete_admin')),
+    '#default_value' => $default_settings['max'],
+  );
+  
+  
+/*
   $form['bibdk_autocomplete_settings']['agency'] = array(
     '#type' => 'textfield',
     '#title' => t('Agency', array(), array('context' => 'bibdk_autocomplete_admin')),
@@ -96,7 +109,8 @@ function bibdk_autocomplete_admin() {
     '#size' => 18,
     '#default_value' => $default_settings['highlight.post'],
   );
-
+*/
+  
   // Attach the CSS to the form
   $path = drupal_get_path('module', 'bibdk_autocomplete');
   $form['#attached'] = array(
