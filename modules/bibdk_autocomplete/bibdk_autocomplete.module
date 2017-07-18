@@ -10,11 +10,19 @@
  */
 function bibdk_autocomplete_menu() {
 
-  $items['bibdk/autocomplete/%/%'] = array(
+  $items['bibdk/autocomplete/search_block_form'] = array(
+    'title' => 'Bibliotek.dk autocomplete',
+    'description' => 'Autocomplete callback',
+    'page callback' => 'bibdk_autocomplete_search_block_form',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['bibdk/autocomplete/custom_search/%/%'] = array(
     'title' => 'Bibliotek.dk autocomplete',
     'description' => 'Autocomplete callback',
     'page callback' => 'bibdk_autocomplete',
-    'page arguments' => array(2, 3),
+    'page arguments' => array(3, 4),
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
@@ -30,6 +38,49 @@ function bibdk_autocomplete_menu() {
 
   return $items;
 }
+
+
+
+/**
+ * search_block_form callback function, used when input is entered in a search field.
+ *
+ * @param      $string
+ * @param bool $retry -- the server tends to respond with a error 500 however
+ *                       retrying once seems to fix it most of the times.
+ */
+function bibdk_autocomplete_search_block_form($string, $retry = false) {
+  $items = array();
+  $settings = variable_get('bibdk_autocomplete_settings', array());
+  $url = 'http://0.ortograf.xp.prod.mcp1.dbc.dk/solr/ortograf/suggest_all';
+
+  $options['query'] = array('q' => check_plain($string)) + $settings;
+  $url = url($url, $options);
+
+  watchdog('bibdk_autocomplete', 'Autocomplete URL sent: ' . $url, array(), $severity = WATCHDOG_DEBUG);
+
+  $curl = new MicroCURL();
+  $result = json_decode($curl->get(array($url)));
+  $curl->close();
+
+  if (!empty($result->response)) {
+    foreach ($result->response->docs as $suggestion) {
+      $string = $suggestion->all;
+      if (strpos($string, ' ')) {
+        // contains blank
+        $items['"' . bibdk_autocomplete_truncate(html_entity_decode(strip_tags($string)), 64) . '"'] = $string;
+      } else {
+        $items[bibdk_autocomplete_truncate(html_entity_decode(strip_tags($string)), 64)] = $string;
+      }
+    }
+  } else if (!empty($result->error)) {
+    watchdog('bibdk_autocomplete', 'Autocomplete return empty set for ' . $url, array(), $severity = WATCHDOG_WARNING);
+    $items = array();
+  }
+  // Return the result to the form in json
+  drupal_json_output($items);
+  drupal_exit();
+}
+
 
 /**
  * Callback function used when input is entered in a search field.
@@ -192,6 +243,9 @@ function bibdk_autocomplete_truncate($string, $width) {
  * Implements hook_form_FORM_ID_alter() for form search_block_form.
  */
 function bibdk_autocomplete_form_search_block_form_alter(&$form, &$form_state, $form_id) {
+
+  $form['search_block_form']['#autocomplete_path'] = 'bibdk/autocomplete/search_block_form';
+  
   if (!empty($form['page_id']['#value'])) {
     $page_path = $form['page_id']['#value'];
   } else {
@@ -237,7 +291,7 @@ function bibdk_autocomplete_set_path(&$form, $elements, $element_label, $values,
     foreach ($elements as $element_uuid => $element_val) {
       foreach ($element_val as $element_key => $element_var) {
         if (is_array($element_var) && isset($element_var['#id']) && $element_var['#id'] == $values['id'] && $values['autocomplete']) {
-          $form['advanced'][$region][$element_label][$element_uuid][$element_key]['#autocomplete_path'] = 'bibdk/autocomplete/' . $p_uuid . '/' . $v_uuid;
+          $form['advanced'][$region][$element_label][$element_uuid][$element_key]['#autocomplete_path'] = 'bibdk/autocomplete/custom_search/' . $p_uuid . '/' . $v_uuid;
         }
       }
     }
