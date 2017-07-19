@@ -49,6 +49,11 @@ function bibdk_autocomplete_menu() {
  *                       retrying once seems to fix it most of the times.
  */
 function bibdk_autocomplete_search_block_form($string, $retry = false) {
+  if (strlen($string) < 3) {
+    drupal_json_output(array());
+    drupal_exit();
+  }
+  
   $items = array();
   $settings = variable_get('bibdk_autocomplete_settings', array());
   $url = 'http://0.ortograf.xp.prod.mcp1.dbc.dk/solr/ortograf/suggest_all';
@@ -92,6 +97,10 @@ function bibdk_autocomplete_search_block_form($string, $retry = false) {
  *                       retrying once seems to fix it most of the times.
  */
 function bibdk_autocomplete($p_uuid, $v_uuid, $string, $retry = false) {
+  if (strlen($string) < 3) {
+    drupal_json_output(array());
+    drupal_exit();
+  }
   $items = array();
   $settings = variable_get('bibdk_autocomplete_settings', array());
   $url = variable_get('bibdk_autocomplete_rest_url', null);
