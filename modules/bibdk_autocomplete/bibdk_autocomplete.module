@@ -132,7 +132,7 @@ highlight.pre=%3Cem%3E
 highlight.post=%3C/em%3E
 */
 
-  $options['query'] = array('q' => check_plain($search_string)) + $settings;
+  $options['query'] = array('q' => check_plain($string)) + $settings;
 
   switch ($value_vars['id']) {
     case 'input-forfatter':
