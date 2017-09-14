@@ -311,7 +311,6 @@ projects[scheduler][subdir] = contrib
 projects[scheduler][type] = module
 projects[scheduler][version] = 1.3
 
-//zabbix
 projects[zabbix][subdir] = contrib
 projects[zabbix][type] = module
 projects[zabbix][version] = 1.x-dev
