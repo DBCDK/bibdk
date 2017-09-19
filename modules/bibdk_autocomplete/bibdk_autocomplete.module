@@ -74,11 +74,13 @@ function bibdk_autocomplete($p_uuid, $v_uuid, $string, $retry = false) {
   watchdog('bibdk_autocomplete', 'Autocomplete URL sent: ' . $url, array(), $severity = WATCHDOG_DEBUG);
 
   $curl = new MicroCURL();
+  $headers = array('Accept: application/json');
+  $curl->set_option(CURLOPT_HTTPHEADER, $headers);
   $result = json_decode($curl->get(array($url)));
   $curl->close();
 
-  if (!empty($result->suggestions)) {
-    foreach ($result->suggestions as $suggestion) {
+  if (!empty($result->suggestion)) {
+    foreach ($result->suggestion as $suggestion) {
       if (strpos($suggestion->phrase, ' ')) {
         // contains blank
         $items['"' . bibdk_autocomplete_truncate(html_entity_decode(strip_tags($suggestion->phrase)), 64) . '"'] = $suggestion->phrase;

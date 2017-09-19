@@ -30,7 +30,8 @@ function bibdk_favourite_shortcode_favourite_library($attributes, $default_text)
 
   if (!empty($favourites)) {
     $favourite = reset($favourites);
-    return drupal_render(bibdk_favourite_form_view_items_from_session($favourite, 0, false, false));
+    $render_array = bibdk_favourite_form_view_items_from_session($favourite, 0, false, false);
+    return drupal_render($render_array);
   }
 
   return t($default_text);
