@@ -142,11 +142,6 @@ class BibdkProviderRegistrationTestCase extends DrupalWebTestCase {
     // Test valid default settings
     $this->assertNoText('Failed to set default settings.', 'Default settings was set.');
 
-    // Test registration link when allready logged in
-    $timestamp = REQUEST_TIME;
-    $this->drupalGet("user/reset/$account->uid/$timestamp/" . user_pass_rehash($account->pass, $timestamp, $account->login, $account->uid));
-    $this->assertText('You are logged in as ' . $account->name);
-
     $this->drupalLogout();
 
     // Test double click on registration link

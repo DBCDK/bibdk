@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the DBC Zabbix configuration feature.
+ */
+
+include_once 'dbc_zabbix_configuration.features.inc';

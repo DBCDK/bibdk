@@ -15,17 +15,12 @@ class bibdkNetarchiveUnitTest extends DrupalWebTestCase {
   }
 
   public function setUp() {
-    parent::setUp('bibdk_netarchive');
+    parent::setUp('bibdk_netarchive', 'features', 'bibdk_webservice_settings_develop');
     $this->profile = 'minimal';
-
-    //search service
-    variable_set('ting_search_url',     'http://opensearch.addi.dk/b3.0_4.2/');
-    variable_set('ting_search_profile', 'default');
-    variable_set('ting_agency',         '190101');
 
     //NetArchive service
     $var = array(
-      'url' => 'http://moreinfo.addi.dk/2.1/moreinfo.wsdl',
+      'url' => 'http://moreinfo.addi.dk/2.6/moreinfo.wsdl',
       'username' => 'foo',
       'group'    => '000001',
       'password' => 'bar'
@@ -54,3 +49,4 @@ class bibdkNetarchiveUnitTest extends DrupalWebTestCase {
   }
 
 }
+

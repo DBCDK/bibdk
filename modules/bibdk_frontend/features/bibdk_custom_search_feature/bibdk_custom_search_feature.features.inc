@@ -2538,7 +2538,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '1da795ff-dcd9-0544-f5d4-94559b67aab6';
   $option->v_uuid = '8e7bda97-5430-9774-e54c-4d2b0005a06b';
-  $option->sort = -96;
+  $option->sort = -94;
   $option->label = 'danske spillefilm';
   $option->value = '"danske film"';
   $option->expand = '0';
@@ -2732,7 +2732,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->v_uuid = '7b0919f2-915d-0484-6da0-a54570056151';
   $option->sort = -99;
   $option->label = 'Tilladt fra 7 år';
-  $option->value = '"Tilladt for børn over 7 år"';
+  $option->value = '"7"';
   $option->expand = '0';
   $option->is_disabled = FALSE;
   $export['2335d70a-1b68-cde4-2d44-6ac3787e69aa'] = $option;
@@ -3258,7 +3258,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '3504a246-1dae-4b06-8895-998f43fbaead';
   $option->v_uuid = '8e7bda97-5430-9774-e54c-4d2b0005a06b';
-  $option->sort = -93;
+  $option->sort = -96;
   $option->label = 'bosniske spillefilm';
   $option->value = '"bosniske film"';
   $option->expand = '0';
@@ -3450,7 +3450,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '3a7b312c-5082-8474-a9b3-b70a3a5035c0';
   $option->v_uuid = '8e7bda97-5430-9774-e54c-4d2b0005a06b';
-  $option->sort = -87;
+  $option->sort = -86;
   $option->label = 'norske spillefilm';
   $option->value = '"norske film"';
   $option->expand = '0';
@@ -3594,7 +3594,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '3fd98de8-29af-c9d4-0576-0cd072d675d5';
   $option->v_uuid = '8e7bda97-5430-9774-e54c-4d2b0005a06b';
-  $option->sort = -84;
+  $option->sort = -83;
   $option->label = 'russiske spillefilm';
   $option->value = '"russiske film"';
   $option->expand = '0';
@@ -3630,7 +3630,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '401add77-651a-ee24-a5bc-340b15d31dab';
   $option->v_uuid = '8e7bda97-5430-9774-e54c-4d2b0005a06b';
-  $option->sort = -92;
+  $option->sort = -91;
   $option->label = 'italienske spillefilm';
   $option->value = '"italienske film"';
   $option->expand = '0';
@@ -3642,7 +3642,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '40e11f9d-2c9a-f4a4-7960-0ef9a1ad10ed';
   $option->v_uuid = '8e7bda97-5430-9774-e54c-4d2b0005a06b';
-  $option->sort = -88;
+  $option->sort = -87;
   $option->label = 'koreanske spillefilm';
   $option->value = '"koreanske film"';
   $option->expand = '0';
@@ -3738,7 +3738,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '47ecae57-cd12-d2c4-210f-c59826958d20';
   $option->v_uuid = '8e7bda97-5430-9774-e54c-4d2b0005a06b';
-  $option->sort = -90;
+  $option->sort = -89;
   $option->label = 'kinesiske spillefilm';
   $option->value = '"kinesiske film"';
   $option->expand = '0';
@@ -4050,7 +4050,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '5a9e6dc5-c05f-7a44-0152-d4c1c59cc41b';
   $option->v_uuid = '8e7bda97-5430-9774-e54c-4d2b0005a06b';
-  $option->sort = -85;
+  $option->sort = -84;
   $option->label = 'polske spillefilm';
   $option->value = '"polske film"';
   $option->expand = '0';
@@ -4182,7 +4182,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '6098c202-8a5a-4d83-8cbc-475d11e581ac';
   $option->v_uuid = '8e7bda97-5430-9774-e54c-4d2b0005a06b';
-  $option->sort = -89;
+  $option->sort = -88;
   $option->label = 'indiske (hindi) spillefilm';
   $option->value = '"indiske film"';
   $option->expand = '0';
@@ -4290,7 +4290,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '67cad172-efc3-4444-59a2-1590bb53bd83';
   $option->v_uuid = '8e7bda97-5430-9774-e54c-4d2b0005a06b';
-  $option->sort = -79;
+  $option->sort = -78;
   $option->label = 'tyske spillefilm';
   $option->value = '"tyske film"';
   $option->expand = '0';
@@ -5034,7 +5034,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '86efe6fa-d2fe-6734-6d6b-dcb9ca7cff7b';
   $option->v_uuid = '8e7bda97-5430-9774-e54c-4d2b0005a06b';
-  $option->sort = -86;
+  $option->sort = -85;
   $option->label = 'pakistanske (urdu) spillefilm';
   $option->value = '"pakistanske film"';
   $option->expand = '0';
@@ -5538,7 +5538,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '9b4d82fb-1e86-c774-61e2-0b139eab7ad8';
   $option->v_uuid = '8e7bda97-5430-9774-e54c-4d2b0005a06b';
-  $option->sort = -91;
+  $option->sort = -90;
   $option->label = 'japanske spillefilm';
   $option->value = '"japanske film"';
   $option->expand = '0';
@@ -5646,7 +5646,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = 'a180dbaa-b9db-7474-8107-156f3be0b527';
   $option->v_uuid = '8e7bda97-5430-9774-e54c-4d2b0005a06b';
-  $option->sort = -81;
+  $option->sort = -80;
   $option->label = 'svenske spillefilm';
   $option->value = '"svenske film"';
   $option->expand = '0';
@@ -6186,7 +6186,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = 'b2d97282-5b5e-11e4-198f-178112fdfbea';
   $option->v_uuid = '8e7bda97-5430-9774-e54c-4d2b0005a06b';
-  $option->sort = -82;
+  $option->sort = -81;
   $option->label = 'spanske spillefilm';
   $option->value = '"spanske film" ';
   $option->expand = '0';
@@ -6486,7 +6486,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = 'bc6289f2-553c-4e6f-aa62-e9cfff5cb8fd';
   $option->v_uuid = '8e7bda97-5430-9774-e54c-4d2b0005a06b';
-  $option->sort = -95;
+  $option->sort = -93;
   $option->label = 'engelske spillefilm';
   $option->value = '"engelske film"';
   $option->expand = '0';
@@ -6594,7 +6594,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = 'c046291c-1669-4584-8995-eb8c951a9392';
   $option->v_uuid = '8e7bda97-5430-9774-e54c-4d2b0005a06b';
-  $option->sort = -83;
+  $option->sort = -82;
   $option->label = 'serbiske spillefilm';
   $option->value = '"serbiske film"';
   $option->expand = '0';
@@ -6690,7 +6690,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = 'c60ce4e1-aca1-4bb4-c9a4-62139d9a2612';
   $option->v_uuid = '8e7bda97-5430-9774-e54c-4d2b0005a06b';
-  $option->sort = -94;
+  $option->sort = -92;
   $option->label = 'franske spillefilm';
   $option->value = '"franske film"';
   $option->expand = '0';
@@ -6720,6 +6720,18 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->expand = '0';
   $option->is_disabled = FALSE;
   $export['c71b8854-ac72-cb94-659e-5a7944ebb7ef'] = $option;
+
+  $option = new stdClass();
+  $option->disabled = FALSE; /* Edit this to true to make a default option disabled initially */
+  $option->api_version = 1;
+  $option->o_uuid = 'c7334fd1-1182-4849-b8c3-824ffb0ebd7d';
+  $option->v_uuid = '8e7bda97-5430-9774-e54c-4d2b0005a06b';
+  $option->sort = -95;
+  $option->label = 'canadiske spillefilm';
+  $option->value = '"canadiske film"';
+  $option->expand = '0';
+  $option->is_disabled = FALSE;
+  $export['c7334fd1-1182-4849-b8c3-824ffb0ebd7d'] = $option;
 
   $option = new stdClass();
   $option->disabled = FALSE; /* Edit this to true to make a default option disabled initially */
@@ -7698,7 +7710,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = 'ed56dda3-4c0b-8c64-65a9-01a041863113';
   $option->v_uuid = '8e7bda97-5430-9774-e54c-4d2b0005a06b';
-  $option->sort = -80;
+  $option->sort = -79;
   $option->label = 'tyrkiske spillefilm';
   $option->value = '"tyrkiske film"';
   $option->expand = '0';

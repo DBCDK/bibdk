@@ -21,7 +21,7 @@ libraries[ckeditor][download][url] = http://download.cksource.com/CKEditor/CKEdi
 projects[bibdk_theme][type] = theme
 projects[bibdk_theme][download][type] = git
 projects[bibdk_theme][download][url] = git@github.com:DBCDK/bibdk_theme.git
-projects[bibdk_theme][download][tag] = 7.x-0.93
+projects[bibdk_theme][download][tag] = 7.x-0.94
 
 
 ; --- Bibliotek.dk versions of Ding2 modules ---
@@ -54,7 +54,7 @@ projects[ding_provider][download][tag] = 7.x-0.13-dbc.13
 projects[ding_user][type] = module
 projects[ding_user][download][type] = git
 projects[ding_user][download][url] = git@github.com:DBCDK/ding_user.git
-projects[ding_user][download][tag] = 7.x-0.19-dbc.19
+projects[ding_user][download][tag] = 7.x-0.19-dbc.20
 
 projects[ding_wayf][type] = module
 projects[ding_wayf][download][type] = git
@@ -74,22 +74,22 @@ projects[ding_webtrends_2014][download][tag] = 7.x-0.3
 projects[ting-client][type] = module
 projects[ting-client][download][type] = git
 projects[ting-client][download][url] = git@github.com:DBCDK/ting-client.git
-projects[ting-client][download][tag] = 7.x-2.37
+projects[ting-client][download][tag] = 7.x-2.42
 
 projects[ting_agency][type] = module
 projects[ting_agency][download][type] = git
 projects[ting_agency][download][url] = git@github.com:DBCDK/ting_agency.git
-projects[ting_agency][download][tag] = 7.x-0.45
+projects[ting_agency][download][tag] = 7.x-0.47
 
 projects[ting_infomedia][type] = module
 projects[ting_infomedia][download][type] = git
 projects[ting_infomedia][download][url] = git@github.com:DBCDK/ting_infomedia.git
-projects[ting_infomedia][download][tag] = 7.x-1.31
+projects[ting_infomedia][download][tag] = 7.x-1.33
 
 projects[ting_openformat][type] = module
 projects[ting_openformat][download][type] = git
 projects[ting_openformat][download][url] = git@github.com:DBCDK/ting_openformat.git
-projects[ting_openformat][download][tag] = 7.x-0.80
+projects[ting_openformat][download][tag] = 7.x-0.82
 
 projects[ting_openuserstatus][type] = module
 projects[ting_openuserstatus][download][type] = git
@@ -110,7 +110,7 @@ projects[open_adhl][download][tag] = 7.x-0.4
 projects[open_holdingstatus][type] = module
 projects[open_holdingstatus][download][type] = git
 projects[open_holdingstatus][download][url] = git@github.com:DBCDK/open_holdingstatus.git
-projects[open_holdingstatus][download][tag] = 7.x-0.12
+projects[open_holdingstatus][download][tag] = 7.x-0.14
 
 projects[open_moreinfo][type] = module
 projects[open_moreinfo][download][type] = git
@@ -132,21 +132,25 @@ projects[cql_strict_parser][download][type] = git
 projects[cql_strict_parser][download][url] = git@github.com:DBCDK/cql_strict_parser.git
 projects[cql_strict_parser][download][tag] = 7.x-0.4
 
-
 ; THIS MODULE IS ONLY AVAILABLE WITHIN THE DBC A/S ORGANISATION
 ; PLEASE UNCOMMENT AS THE MODULE WONT BE DOWNLOADABLE OUTSIDE DBC A/S
 projects[bibdk_config][type] = module
 projects[bibdk_config][download][type] = git
 projects[bibdk_config][download][url] = git.dbc.dk:/repos/bibliotek.dk/bibdk_config.git
-projects[bibdk_config][download][tag] = 7.x-0.31
+projects[bibdk_config][download][tag] = 7.x-0.33
 
 projects[bibdk_behaviour][type] = module
 projects[bibdk_behaviour][download][type] = git
 projects[bibdk_behaviour][download][url] = git.dbc.dk:/repos/bibdk_behaviour.git
-projects[bibdk_behaviour][download][tag] = 7.x-0.8
+projects[bibdk_behaviour][download][tag] = 7.x-0.9
 
 
 ; --- Non Ding2 or Bibliotek.dk specific
+
+projects[dbc_zabbix][type] = module
+projects[dbc_zabbix][download][type] = git
+projects[dbc_zabbix][download][url] = git@github.com:DBCDK/dbc_zabbix.git
+projects[dbc_zabbix][download][tag] = 7.x-0.2
 
 projects[translatable][type] = module
 projects[translatable][subdir] = contrib
@@ -307,11 +311,11 @@ projects[scheduler][subdir] = contrib
 projects[scheduler][type] = module
 projects[scheduler][version] = 1.3
 
-//projects[simple_mobile_redirect][subdir] = contrib
-//projects[simple_mobile_redirect][type] = module
-//projects[simple_mobile_redirect][version] = 1.1
+projects[zabbix][subdir] = contrib
+projects[zabbix][type] = module
+projects[zabbix][version] = 1.x-dev
+projects[zabbix][patch][] = https://raw.githubusercontent.com/DBCDK/patches/master/zabbix_fix_pass_by_reference.patch
 
-//jquery_update
 projects[jquery_update][subdir] = contrib
 projects[jquery_update][type] = module
 projects[jquery_update][version] = 3.0-alpha2
