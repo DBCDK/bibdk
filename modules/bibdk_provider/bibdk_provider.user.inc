@@ -13,19 +13,6 @@ function bibdk_provider_user_authenticate($name, $pass) {
     'success' => FALSE,
   );
 
-  if (isset($_SESSION['heimdal_login'])) {
-    $return['creds'] = array(
-      'name' => $name,
-      'pass' => 'test',
-    );
-    $return['user'] = array(
-      'data' => array('display_name' => $name),
-      'mail' => $name,
-    );
-    $return['authname'] = $name;
-    $return['success'] = TRUE;
-  }
-
   if (BibdkUser::instance()->login($name, $pass)) {
     $return['creds'] = array(
       'name' => $name,
