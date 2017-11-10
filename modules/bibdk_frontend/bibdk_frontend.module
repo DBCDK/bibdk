@@ -33,7 +33,6 @@ function bibdk_frontend_user_login(&$edit, $account) {
   // do NOT redirect on password reset || reload the page on normal login
   elseif ((!isset($_GET['pass-reset-token']) && (isset($_POST['form_id']) && $_POST['form_id'] != 'user_pass_reset')) || !isset($_POST['form_id'])) {
     $url = '';
-    bibdk_favourite_create_favourite();
     _bibdk_frontend_login_redirect($edit, $url, $options);
   }
 }
@@ -259,7 +258,7 @@ function bibdk_frontend_form_user_login_alter(&$form, $form_state, $form_id) {
     'novalidate'=>'1',
     'formnovalidate'=>'1',
   );
-  
+
   $form['#action'] = url('user/login', array('query' => array('destination' => (isset($_SESSION['referrer'])) ? $_SESSION['referrer'] : '')));
 }
 
