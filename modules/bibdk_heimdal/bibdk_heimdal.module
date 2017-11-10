@@ -16,16 +16,50 @@
  *
  */
 
+// load cron job to renew access token
+require_once "includes/bibdk_heimdal.cron.inc";
+// load forms
+require_once 'includes/bibdk_heimdal_forms.inc';
+
 /**
  * Implements hook_menu().
  */
 function bibdk_heimdal_menu() {
   $items = array();
-
   $items['heimdal/login'] = array(
-    'title' => t('Bind user to heimdal ', array(), array('context' => 'heimdal')),
+    'title' => t('Login with heimdal', array(), array('context' => 'heimdal')),
     'description' => t('Provides heimdal login.'),
     'page callback' => 'bibdk_heimdal_redirect_login',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['heimdal/verify'] = array(
+    'title' => t('Select an email', array(), array('context' => 'heimdal')),
+    'description' => t('select an email to use'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bibdk_heimdal_select_email_form'),
+    'file'=>'includes/bibdk_heimdal_forms.inc',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['heimdal/email'] = array(
+    'title' => t('Write an email address', array(), array('context' => 'heimdal')),
+    'description' => t('Bibliotek.dk needs an email'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bibdk_heimdal_verify_email_form'),
+    'file'=>'includes/bibdk_heimdal_forms.inc',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['heimdal/loginrequest/%'] = array(
+    'title' => t('Write an email address', array(), array('context' => 'heimdal')),
+    'description' => t('Bibliotek.dk needs an email'),
+    'page callback' => 'bibdk_heimdal_handle_login_request',
+    'page arguments' => array(2),
+    'file'=>'includes/bibdk_heimdal.pages.inc',
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
@@ -34,263 +68,167 @@ function bibdk_heimdal_menu() {
 }
 
 /**
- * Redirect heimdal login
+ * Umplements hook_jnit
  *
- * @param
- * @return do direct login or present bibdk_heimdal_form acceptform for binding username/pin with borrower_id 
+ * when user is in a login flow he might be redirected to an arbitrary
+ * page, where a modal should open - this one adds appropiate javascript
+ * to run
+ */
+function bibdk_heimdal_init(){
+  if(isset($_SESSION['heimdal']['action'])){
+    $action = $_SESSION['heimdal']['action'];
+    switch ($action){
+      case 'write_email':
+        bibdk_heimdal_forms_add_email_write_js();
+        break;
+      case 'select_email':
+        bibdk_heimdal_forms_add_email_select_js();
+        break;
+      default:
+        break;
+    }
+    unset($_SESSION['heimdal']['action']);
+  }
+}
+
+
+/**
+ * Do a login or redirect to appropiate page.
  */
 function bibdk_heimdal_redirect_login() {
-  global $user;
+  // get the heimdal user
+  $heimdal_user = bibdk_heimdal_get_heimdal_user();
 
-  $borrower_id_url = bibdk_heimdal_get_login_ticket();
-  $borrower_id = bibdk_heimdal_get_userid($borrower_id_url);
+  // next step checks the user and sets SESSION and form_state parameters for further handling
+  // @see bibdk_provider/bibdk_provider.heimdal.inc::bibdk_provider_heimdal_login_creds()
+  $form_state = ding_provider_invoke('heimdal', 'login_creds', $heimdal_user);
 
-  $name = BibdkUser::instance()->verifyborrowerid($borrower_id['cpr']);
-  if ($user->uid == 0 && !empty($name) ) {
-    // user exists username and borrowerid
-    bibdk_heimdal_do_login($name);
-  } else {
-    // user do not exist - add data
-    return drupal_get_form('bibdk_heimdal_form');
+  if(bibdk_heimdal_check_formstate($form_state)) {
+    //all is good - submit login form
+    bibdk_heimdal_do_login($form_state);
   }
 
+  if(isset($_SESSION['heimdal']['action'])){
+    // page requires additional action/userinput. Javascript will be set to handle that
+    // @see bibdk_heimdal_init()
+    drupal_goto('<front>');
+  }
+  // this should not happen ...
+  bibdk_heimdal_cleanup_and_exit();
+}
+
+
+/**
+ * If an error ocuurs ..
+ */
+function bibdk_heimdal_cleanup_and_exit(){
+  drupal_set_message(t('An error occured while logging in - please try again'), 'error');
+  // log out of heimdal
+  bibdk_heimdal_do_logout();
+  // go to frontpage
+  drupal_goto('<front>');
 }
 
 /**
- * Create heimdal login link
+ * Execute the login form
  *
- * @param
- * @return string - ticket link
+ * @param string $name
+ *   Username
  */
-function bibdk_heimdal_get_login_ticket() {
-  $config = variable_get('ding_wayf', NULL);
-  $accessplatform = isset($config['heimdallogin']) ? $config['heimdallogin'] : FALSE;
-
-  $hemidal_token = $_REQUEST['token'];
-  if (empty($hemidal_token)) {
-    watchdog('security', 'Bibdk login token not set: access_token (%token) ', array('%token' => $hemidal_token,), WATCHDOG_ERROR);
-    drupal_goto('user');
-  }
-  $hemidal_id = $_REQUEST['id'];
-  if ($accessplatform) {
-    $ticket_link  = $config['hosturl'] . '/getTicket/' . $hemidal_token . '/' . $hemidal_id;
-  }
-  return $ticket_link;
-}
-
-/**
- * Get heimdal ticket
- *
- * @param heimdal url
- * @return array - borrower_info
- */
-function bibdk_heimdal_get_userid($borrower_id_url) {
-  $curl = new MicroCURL();
-  //Get login ticket
-  $heimdal_attributes = $curl->get($borrower_id_url);
-  $curl->close();
-  $result = json_decode($heimdal_attributes);
-  $favorit_links = array();
-  if (!empty($result->attributes->agencies)) {
-    foreach ($result->attributes->agencies as $id => $branch) {
-      $favorit_links[$branch->agencyId] = $branch;
-    }
-  }
-  $borrower_info = array();
-  $borrower_info['wayfId'] = NULL;
-  $borrower_info['cpr'] = '';
-  if (!empty($result->attributes->wayfId)) {
-    $borrower_info['wayfId'] = $result->attributes->wayfId;
-  }
-  if (!empty($result->attributes->cpr)) {
-    $borrower_info['cpr'] = $result->attributes->cpr;
-  }
-  if (!empty($result->attributes->userId)) {
-    $borrower_info['cpr'] = $result->attributes->userId;
-  }
-
-  bibdk_heimdal_set_session('heimdal_borrower_wayfid', $borrower_info['wayfId']);
-  bibdk_heimdal_set_session('heimdal_borrower_id', $borrower_info['cpr']);
-  bibdk_heimdal_set_session('favorit_links', $favorit_links);
-
-  return $borrower_info;
-}
-
-/**
- * Get heimdal register form for typing username/password
- *
- * @param $form, $form_state
- * @return $form
- */
-function bibdk_heimdal_form($form, $form_state) {
-
-  $form['header'] = array(
-    '#theme' => 'html_tag',
-    '#value' => t('type existing username and password for binding or create new user ...', array(), array('context' => 'heimdal')),
-    '#tag' => 'p',
-    '#attributes' => array(
-      'class' => array('bibdk-heimdal-info'),
-    ),
-  );
-
-  $form['#validate'][] ='bibdk_heimdal_validate';
-  $form['heimdal']['username_name'] = array(
-    '#type' => 'textfield',
-    '#required' => TRUE,
-    '#size' => 60,
-    '#maxlength' => 60,
-    '#attributes' => array(
-      'type' => 'email',
-      'pattern' => "[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$",
-      'class' => array('bibdk-heimdal-name'),
-    ),
-    '#title' => t('Username', array(), array('context' => 'heimdal')),
-  );
-  $form['heimdal']['username_name_password'] = array(
-    '#type' => 'password',
-    '#size' => 60,
-    '#maxlength' => 128,
-    '#required' => TRUE,
-    '#title' => t('Password', array(), array('context' => 'heimdal')),
-    '#attributes' => array(
-      'class' => array('bibdk-heimdal-password'),
-    ),
-  );
-  $form['heimdal'][] = array (
-    '#type' => 'submit',
-    '#value' => t('save', array(), array('context' => 'heimdal')),
-    '#attributes' => array(
-      'class' => array('bibdk-heimdal-save'),
-    ),
-  );
-
-  $form['heimdal'][] = array (
-    '#theme' => 'link',
-    '#text' => t('Request new password', array(), array('context' => 'heimdal')),
-    '#path' => 'bibdk_modal/forgot_password_direct',
-    '#options' => array(
-      'attributes' => array(
-        'data-reveal-id' => 'bibdk-modal',
-        'data-reveal-ajax' => 'true',
-        'alt' => t('Request new password via e-mail.', array(), array('context' => 'heimdal')),
-        'class' => array('bibdk-heimdal-forgot', 'forgot-pword-link', 'bibdk-modal-login')
-      ),
-      'html' => TRUE,
-    ),
-    '#weight' => -1,
-  );
-
-  return $form;
-}
-
-/**
- * validate heimdal register form. binding borrowerid with username/password
- *
- * @param $form, $form_state
- * @return do login or not valid username/password set as a drupal message
- */
-function bibdk_heimdal_validate($form, $form_state) {
-
-  $username = $form_state['values']['username_name'];
-  if (!valid_email_address($username)) {
-    $text = t('user name is not a valid email address', array(), array('context' => 'heimdal'));
-    drupal_set_message($text . ': ' . $username, 'status');
-  } else {
-
-    $pincode = $form_state['values']['username_name_password'];
-
-    // do username/pincode exist
-    $valid_user = BibdkUser::instance()->login($username, $pincode);
-    $borrowerid_session = bibdk_heimdal_set_session("heimdal_borrower_id");
-    if ($valid_user && $borrowerid_session != '') {
-      // bind borrower_id for username
-      bibdk_heimdal_bind_borrower_id($username, $borrowerid_session);
-    } else {
-      if ($borrowerid_session != '') {
-        // create user
-        bibdk_heimdal_create_borrower_id($username, $borrowerid_session, $pincode);
-      } else {
-        $text = t('user could not added to bibliotek.dk', array(), array('context' => 'heimdal'));
-        drupal_set_message($text . ': ' . $username, 'status');
-      }
-    }
-  }
-}
-
-/**
- * Bind heimdal borrowerid with username
- *
- * @param $username, $borrowerid_session
- */
-function bibdk_heimdal_bind_borrower_id($username, $borrowerid_session) {
-  BibdkUser::instance()->updateBorrowerId($username, $borrowerid_session);
-  $text = t('user added to existing bibliotek.dk', array(), array('context' => 'heimdal'));
-  drupal_set_message($text . ': ' . $username, 'status');
-  // do login
-  bibdk_heimdal_do_login($username);
-}
-
-/**
- * create new or bind user with heimdal borrowerid, username and pincode
- *
- * @param $username, $borrowerid_session, $pincode
- */
-function bibdk_heimdal_create_borrower_id($username, $borrowerid_session, $pincode) {
-
-  // do username exist
-  $valid_user = BibdkUser::instance()->verify($username);
-  if ($valid_user) {
-     // username exist
-     $text = t('user exist in bibliotek.dk, but password not correct', array(), array('context' => 'heimdal'));
-     drupal_set_message($text . ': ' . $username, 'warning');
-  } else {
-    // username do not exist - create new user
-    $wayfid = bibdk_heimdal_set_session('heimdal_borrower_wayfid');
-    $valid_user = BibdkUser::instance()->create($username, $pincode);
-    if ($valid_user) {
-      if (!empty($wayfid)) {
-        BibdkUser::instance()->bindWayf($username, $wayfid, $loginType = 'wayf_id');
-      }
-      // new user created
-      $text = t('user added bibliotek.dk', array(), array('context' => 'heimdal'));
-      drupal_set_message($text . ': ' . $username, 'status');
-      $valid_user = BibdkUser::instance()->login($username, $pincode);
-      $borrowerid_session = bibdk_heimdal_set_session("heimdal_borrower_id");
-      if ($valid_user && $borrowerid_session != '') {
-        // bind borrower_id for username
-        BibdkUser::instance()->updateBorrowerId($username, $borrowerid_session);
-        // do login
-        bibdk_heimdal_do_login($username);
-      }
-    } else {
-      $text = t('could not added new user to bibliotek.dk : ' . $username );
-      drupal_set_message($text,'error');
-    }
-  }
-}
-
-/**
- * Heimdal do login
- *
- * @param sting name for login
- */
-function bibdk_heimdal_do_login($name) {
-  $state = array();
-  $state['values']['name'] = $name;
-  $state['values']['mail'] = $name;
-  $state['values']['pass'] = 'pass';
-  $_SESSION['heimdal_login'] = TRUE;
-
-  //submit login form
-  drupal_form_submit('user_login_block', $state);
+function bibdk_heimdal_do_login($form_state) {
+  drupal_form_submit('user_login_block', $form_state);
   $errors = form_get_errors();
   if (!empty($errors)) {
-    watchdog('security', 'Bibdk Login failed: could not log on (%user)', array('%user' => $name,), WATCHDOG_ERROR);
-    drupal_goto('user');
+    die('FISK');
+    bibdk_heimdal_cleanup_and_exit();
   }
-  else {
-    drupal_goto('user/' . $user->uid . '/edit');
+}
+
+/**
+ * Check form state before logging in
+ *
+ * @param $form_state
+ * @return bool
+ */
+function bibdk_heimdal_check_formstate($form_state) {
+  if (isset($form_state['values']['name']) && isset($form_state['values']['pass'])) {
+    // all is okey dokey
+    return TRUE;
   }
+  return FALSE;
+}
+
+
+/**
+ * Implements hook_form_alter
+ *
+ * add custom validation for bibdk_heimdal depending on user state
+ */
+function bibdk_heimdal_form_alter(&$form, &$form_state, $form_id) {
+  switch ($form_id) {
+    case 'user_login':
+    case 'user_login_block':
+      // option to set authentication provider for ding user (@see ding_user_user_login_validate)
+      $form['authentication_provider'] = array(
+        '#type' => 'hidden',
+      );
+      // add a validation handler (if provider implements it)
+      $provider = ding_provider_get_provider_module_name('heimdal');
+      if (isset($provider)) {
+        $function = $provider . '_heimdal_validate';
+        if (function_exists($function)) {
+          array_unshift($form['#validate'], $function);
+        }
+      }
+      break;
+    default:
+      break;
+  }
+}
+
+/**
+ * Get user initialized from heimdal
+ *
+ * @return bibdkHeimdalUser
+ */
+function bibdk_heimdal_get_heimdal_user() {
+  // get attributes from heimdal
+  $heimdal_attributes = bibdk_heimdal_get_heimdal_attributes();
+  // get users defined in heimdal/culr
+  $heimdal_user = new bibdkHeimdalUser($heimdal_attributes);
+  return $heimdal_user;
+}
+
+/**
+ * Get attributes from heimdal
+ * @return array
+ */
+function bibdk_heimdal_get_heimdal_attributes() {
+  static $return_array;
+  if(!empty($return_array)){
+    return $return_array;
+  }
+  // client id for ticket request
+  $client_id = !empty($_REQUEST['id']) ? $_REQUEST['id'] : NULL;
+  if(!isset($client_id)){
+    return array();
+  }
+  // token
+  $token = !empty($_REQUEST['token']) ? $_REQUEST['token'] : NULL;
+  if(!isset($token)){
+    return array();
+  }
+
+  $curl = new bibdkHeimdalCurl();
+  $return_array = $curl->getAttributes($client_id, $token);
+  return $return_array;
+}
+
+/**
+ * Implements hook_user_logout
+ */
+function bibdk_heimdal_user_logout(){
+  bibdk_heimdal_do_logout();
 }
 
 /**
@@ -298,12 +236,10 @@ function bibdk_heimdal_do_login($name) {
  *
  */
 function bibdk_heimdal_do_logout() {
-  if (isset($_SESSION['heimdal_login'])) {
-    if ($_SESSION['heimdal_login'] ) {
-      unset($_SESSION['heimdal_login']);
-      $config = variable_get('ding_wayf', NULL);
-      drupal_goto($config['hosturl'] . '/logout');
-    }
+  if (isset($_SESSION['heimdal'])) {
+    unset($_SESSION['heimdal']);
+    $config = variable_get('ding_wayf', NULL);
+    drupal_goto($config['hosturl'] . '/logout?returnurl=/user/logout');
   }
 }
 
@@ -320,11 +256,8 @@ function bibdk_heimdal_login_link() {
     $config = variable_get('ding_wayf', NULL);
     $accessplatform = isset($config['heimdallogin']) ? $config['heimdallogin'] : FALSE;
     if ($accessplatform) {
-      $config = variable_get('ding_wayf', NULL);
-      bibdk_heimdal_check_token($config['clienttoken']);
-      // get variable again - if new token
-      $config = variable_get('ding_wayf', NULL);
-      $heimdal_link = $config['hosturl'] . $config['loginpath'] . '?token=' . $config['clienttoken'] . '&destination=heimdal/login';
+      $token = variable_get('heimdal_access_token');
+      $heimdal_link = $config['hosturl'] . $config['loginpath'] . '?token=' . $token . '&destination=heimdal/login';
       $logo_path = base_path() . drupal_get_path('theme', $GLOBALS['theme']);
       $logo_path .= '/img/in_use/bibliotekslogin_logo.png';
       $logo_alt_text_accessplatform = t('logo_alt_text_accessplatform', array(), array('context' => 'heimdal'));
@@ -357,110 +290,10 @@ function bibdk_heimdal_form_user_login_alter(&$form, &$form_state) {
 }
 
 /**
- * Check if it's time to get a new token
- * Get new token if it's first time elsewhere every 2 days
+ * Get new access token
  *
- */
-function bibdk_heimdal_check_token($excisting_token) {
-  // Look up last time and compare to 1 day ago.
-  if ((variable_get('bibdk_heimdal_function_last_run', 0) <= strtotime('-2 day')) or (empty($excisting_token))) {
-    $config = variable_get('ding_wayf', NULL);
-    $newtoken = bibdk_heimdal_get_token();
-    if (!empty($newtoken)) {
-      $config['clienttoken'] = $newtoken;
-      variable_set('ding_wayf', $config);
-      watchdog('security', 'Bibdk get new token set: access_token (%token)', array('%token' => $newtoken,), WATCHDOG_NOTICE);
-      //Store the time for last run.
-      variable_set('bibdk_heimdal_function_last_run', time());
-    } else {
-      watchdog('security', 'Bibdk get new token set: access_token (%token) could not be recieved', array('%token' => $newtoken,), WATCHDOG_CRITICAL);
-    }
-  }
-}
-
-/**
- * Get new token from smaug
- * call curl for collecting a new valid token
- *
- * @param
  * @return string token
  */
 function bibdk_heimdal_get_token() {
-
-  $config = variable_get('ding_wayf', NULL);
-
-  $token_client_secret = $config['clientsecret'];
-  $token_client_ID = $config['clientid'];
-  $token_platform = $config['clientplatform'];
-  $token_post_data = 'grant_type=password&username=@&password=@';
-
-  $curl = new MicroCURL();
-  $curl->set_authentication($token_client_ID,$token_client_secret);
-  $curl->set_post($token_post_data);
-  $curl->set_url($token_platform);
-  $curl->set_option(CURLOPT_RETURNTRANSFER, TRUE);
-  $curl->set_option(CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
-  $heimdal_token_attributes = $curl->get();
-  $curl->close();
-
-  $token =  bibdk_heimdal_get_token_item($heimdal_token_attributes, 'access_token');
-  return $token;
-
-}
-
-/**
- * Get token key from attributes
- *
- * @param $token_attributes, $attribute_name default = 'access_token'
- * @return token -  new and valid
- *
- *  * attribute example:
- * {
- * "token_type": "bearer",
- * "access_token": "40cddc1d15798122519ce435ddf65352b3a3eb8c",
- * "expires_in": 2592000
- * }
- *
- */
-function bibdk_heimdal_get_token_item($token_attributes, $attribute_name = 'access_token') {
-
-  if (!empty($token_attributes)) {
-    $result = json_decode($token_attributes);
-    if (!empty($result->access_token)) {
-      $new_token = $result->access_token;
-      return $new_token;
-    }
-  }
-  watchdog('security', 'Bibdk get new token failed: could not find access_token (%user)', array('%user' => $name,), WATCHDOG_ERROR);
-}
-
-/**
- * Keep track of session variable  - set an get
- *
- * @param
- * @return string - session variable
- */
-function bibdk_heimdal_set_session($key, $value = NULL) {
-  static $storage;
-  if ($value) {
-    $storage[$key] = $value ;
-    $_SESSION['lists'][$key] = $value;
-  }
-  else if (empty($storage[$key]) && isset($_SESSION['lists'][$key])) {
-    $storage[$key] = $_SESSION['lists'][$key];
-  }
-  if (empty($storage[$key])) {
-    return NULL;
-  }
-  return $storage[$key];
-}
-
-/**
- * Implements hook_user_logout().
- *
- * logout from heimdal
- */
-function bibdk_heimdal_user_logout($account) {
-  cache_clear_all(session_name() . '-' . $account->uid, 'cache_ding_user_credentials');
-  bibdk_heimdal_do_logout();
+  return variable_get('heimdal_access_token', FALSE);
 }
