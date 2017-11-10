@@ -561,3 +561,10 @@ function bibdk_update_7048() {
     ->condition('type', 'module')
     ->execute();
 }
+
+/**
+ * ENable bibdk_heimdal
+ */
+function bibdk_update_7049(){
+  module_enable(array('bibdk_heimdal'));
+}
