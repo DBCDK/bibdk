@@ -4,6 +4,10 @@ core = 7.x
 version = 7.x-0.1-dbc.1
 package = bibdk
 
-files[] = bibdk_heimdal.module
+files[] = includes/bibdkHeimdalCurl.inc
+files[] = includes/bibdkHeimdalUser.inc
+
+files[] = test/bibdk_heimdal_unit.test
 
 dependencies[] = microcurl
+dependencies[] = bibdk_favourite
