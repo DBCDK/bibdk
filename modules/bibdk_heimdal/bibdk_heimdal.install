@@ -1,0 +1,66 @@
+<?php
+/**
+ * Impelents hook_requirements(
+ */
+function bibdk_heimdal_requirements($phase) {
+  $requirements = array();
+  if (!(variable_get('heimdal_access_token', FALSE))) {
+    if ($phase == 'runtime') {
+      $requirements['HEIMDAL'] = array(
+        'title' => 'HEIMDAL ACCESS',
+        'value' => 'No access token is given - try to run cron',
+        'severity' => REQUIREMENT_ERROR,
+      );
+    }
+  }
+  return $requirements;
+}
+
+/**
+ * Implements hook_schema
+ */
+function bibdk_heimdal_schema() {
+  return bibdk_heimdal_schema_definition();
+}
+
+function bibdk_heimdal_schema_definition() {
+  $schema['bibdk_heimdal_email_verify'] = array(
+    'description' => 'Table holds verification info for creating a user from an email link.',
+    'fields' => array(
+      'uuid' => array(
+        'description' => 'unique id generated from uuid',
+        'type' => 'varchar',
+        'length' => 256,
+        'not null' => TRUE,
+      ),
+      'libraries' => array(
+        'description' => 'serialized libraryinfo from heimdal access platform',
+        'type' => 'text',
+        'not null' => TRUE,
+      ),
+      'email' => array(
+        'description' => 'user email',
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+      ),
+      'date' => array(
+        'description' => 'date for sending the email - php time',
+        'type' => 'int',
+        'not null' => TRUE,
+      )
+    ),
+    'unique keys' => array('email' => array('email')),
+    'primary key' => array('uuid'),
+  );
+
+  return $schema;
+}
+
+/**
+ * create tables for email verifications
+ */
+function bibdk_heimdal_update_7001() {
+  $schema = bibdk_heimdal_schema_definition();
+  db_create_table('bibdk_heimdal_email_verify', $schema['bibdk_heimdal_email_verify']);
+}
