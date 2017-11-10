@@ -84,6 +84,7 @@ class BibdkClient {
 class BibdkUser {
 
   private static $instance;
+  /** @var  DOMXPath $xpath */
   private $xpath;
 
   /**
@@ -95,7 +96,7 @@ class BibdkUser {
   /**
    * Function to get a BibdkUser object.
    *
-   * @return Singleton BibdkUser object.
+   * @return object Singleton BibdkUser object.
    */
   public static function instance() {
     if (!isset(self::$instance)) {
@@ -130,7 +131,7 @@ class BibdkUser {
    *
    * @param $action string The request type as a string.
    * @param $params array structure representing the request parameters.
-   * @return Response from BibdkClient as xml string.
+   * @return string Response from BibdkClient as xml string.
    */
   private function makeRequest($action, $params) {
     return BibdkClient::request($action, $params);
@@ -142,7 +143,7 @@ class BibdkUser {
    * @param $xmlstring string The reponse as a xml string.
    * @param $xmltag string Which XPath element should extracted from the response.
    *
-   * @return bool FALSE if the xpath can't be set otherwise value of the xmltag to be
+   * @return DOMElement|bool FALSE if the xpath can't be set otherwise value of the xmltag
    */
   private function responseExtractor($xmlstring, $xmltag) {
     if (!@$this->set_xpath($xmlstring)) {
@@ -163,6 +164,21 @@ class BibdkUser {
       return FALSE;
     }
   }
+
+  /************** CULR *********************/
+  public function insertCulr($userId, $borrowerId, $uidType){
+    $params = array(
+      'oui:userId' => $userId,
+      'oui:borrowerId' => $borrowerId,
+      'oui:uidType' => $uidType
+    );
+
+    $response = $this->makeRequest('insertCulrRequest', $params);
+    return $response;
+  }
+
+  /************* END CULR ******************/
+
 
   /************** VOXB *********************/
 
@@ -207,7 +223,7 @@ class BibdkUser {
    * @staticvar type $response
    * @param $username string
    * @param $settingtype
-   * @return type xml
+   * @return string xml
    */
   public function getUserSetting($username, $settingtype) {
     static $response;
@@ -226,7 +242,7 @@ class BibdkUser {
    * @param $username
    * @param $settingtype
    * @param $settingString
-   * @return xml
+   * @return bool
    */
   public function setUserSetting($username, $settingtype, $settingString) {
     //make setting info
@@ -252,9 +268,9 @@ class BibdkUser {
 
   /**
    * Delete an settingtype for a given user
-   * @param type $username
+   * @param string $username
    * @param $settingtype
-   * @return type xml
+   * @return bool
    */
   public function deleteSetting($username, $settingtype) {
     $params = array(
@@ -289,12 +305,10 @@ class BibdkUser {
 
   /**
    * Get all favourite agencies for a given user
-   * @staticvar type $response
-   * @param type $username
-   * @return type xml
+   * @param string $username
+   * @return string xml
    */
   public function getFavourites($username) {
-    static $response;
     $params = array('oui:userId' => $username);
     $response = $this->makeRequest('getFavouritesRequest', $params);
 
