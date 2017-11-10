@@ -97,6 +97,24 @@ function bibdk_modal_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  $items['bibdk_modal/heimdal/email'] = array(
+    'title' => t('Write an email address', array(), array('context' => 'heimdal')),
+    'description' => t('Bibliotek.dk needs an email'),
+    'page callback' => 'bibdk_modal_heimdal_write_email_form',
+    'file' => 'includes/bibdk_modal.forms.inc',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['bibdk_modal/heimdal/verify'] = array(
+    'title' => t('Write an email address', array(), array('context' => 'heimdal')),
+    'description' => t('Bibliotek.dk needs an email'),
+    'page callback' => 'bibdk_modal_heimdal_select_email_form',
+    'file' => 'includes/bibdk_modal.forms.inc',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
   return $items;
 }
 
