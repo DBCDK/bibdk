@@ -15,8 +15,8 @@ function bibdk_favourite_load_agency($xml) {
 }
 
 /**
- * @param $xml xml from request to openuserinfo (getFavourites)
- * @return array
+ * @param string $xml xml from request to openuserinfo (getFavourites)
+ * @return array|bool
  */
 function bibdk_favourite_parse_agencies($xml) {
   $xpath = bibdk_favourite_load_agency($xml);
