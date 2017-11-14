@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Authenticate the user. At this stage user has already been authenticated
+ * by heimdal access platform. Further actions NEEDS user to be created on
+ * openuserinfo, so basiccaly this is final check if all went well
+ * @param $name
+ * @param null $pass
+ * @return array
+ */
 function bibdk_provider_heimdal_authenticate($name, $pass = null) {
   $return = array(
     'success' => FALSE,
