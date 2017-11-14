@@ -1,8 +1,6 @@
 <?php
 module_load_include('inc', 'bibdk_heimdal', 'includes/heimdalDatabase');
 
-//function bibdk_heimdal_
-
 function bibdk_heimdal_verify_email_form($form, $form_state) {
   $form = array(
     'help' => array(
@@ -22,10 +20,12 @@ function bibdk_heimdal_verify_email_form($form, $form_state) {
     'actions' => array(
       'submit_but' => array(
         '#type' => 'submit',
+        '#name' => 'ok',
         '#value' => 'Ok'
       ),
       'cancel_but' => array(
         '#type' => 'submit',
+        '#name' => 'cancel',
         '#value' => t('cancel', array(), array('context' => 'heimdal'))
       ),
     ),
@@ -40,67 +40,62 @@ function bibdk_heimdal_forms_add_email_write_js() {
   drupal_add_js($path . '/js/bibdk_heimdal_email_write.js');
 }
 
-function bibdk_heimdal_forms_add_email_select_js(){
+function bibdk_heimdal_forms_add_email_select_js() {
   $path = drupal_get_path('module', 'bibdk_heimdal');
-  drupal_add_js($path . '/js/bibdk_heimdal_email_write.js');
+  drupal_add_js($path . '/js/bibdk_heimdal_email_select.js');
 }
 
-function bibdk_heimdal_verify_email_validate($form, $form_state){
+function bibdk_heimdal_verify_email_validate($form, &$form_state) {
+  $action = $form_state['clicked_button']['#name'];
+  if($action == 'cancel' ){
+    bibdk_heimdal_cleanup_and_exit();
+  }
   $email = $form_state['values']['mail'];
-  if( !BibdkUser::instance()->verify($email)){
-    // user does not exist - create
-    // make a random password
-    $pass = user_password();
-    bibdk_provider_user_create_account($email, $pass);
+  if(!valid_email_address($email)){
+    form_set_error('mail', t('Please enter a valid email address', array(), array('context'=>'heimdal')));
   }
 }
 
-function bibdk_heimdal_verify_email_form_submit($form, $form_state){
+function bibdk_heimdal_verify_email_form_submit($form, &$form_state) {
   $mail = $form_state['values']['mail'];
   $agencies = bibdkHeimdalUser::getLibraries();
   // save on database before sending email
   $key = heimdalDatabase::insert($mail, $agencies);
   $row = heimdalDatabase::get($key);
-  if(!empty($row)){
+  if (!empty($row)) {
     bibdk_heimdal_send_verification_mail($row);
   }
-  else{
+  else {
     // @TODO .. no libraries was given from heimdal - do something
     drupal_set_message('NO LIBRARIES FROM CULR', 'error');
   }
   // an email has been send or row was empty - either way start from scratch
   unset($_SESSION['heimdal']);
-  drupal_set_message(t('an_email_has_been_sent_help_txt', array(), array('context'=>'heimdal')));
-  drupal_goto('<front>');
+  drupal_set_message(t('an_email_has_been_sent_help_txt', array(), array('context' => 'heimdal')));
+  //drupal_goto('<front>');
 }
 
 
-function bibdk_heimdal_send_verification_mail(array $row){
+function bibdk_heimdal_send_verification_mail(array $row) {
   $message = drupal_mail('bibdk_heimdal', 'bibdk_heimdal_verify_mail', $row['email'], 'da', $row);
 }
+
 /**
  * Implements hook mail
  *
  * Set email text for user
  **/
-function bibdk_heimdal_mail($key, &$message, $params){
-  if($key !== 'bibdk_heimdal_verify_mail'){
+function bibdk_heimdal_mail($key, &$message, $params) {
+  if ($key !== 'bibdk_heimdal_verify_mail') {
     return;
   }
   $message['subject'] = t('bibdk_verify_email_helptxt', array(), array('context' => 'heimdal'));
-  $message['body'][] = t('bibdk_click_this_link_txt', array(), array('context'=>'heimdal'));
+  $message['body'][] = t('bibdk_click_this_link_txt', array(), array('context' => 'heimdal'));
   $message['body'][] = bibdk_heimdal_get_verification_link($params['uuid']);
 }
 
-function bibdk_heimdal_get_verification_link($uuid){
+function bibdk_heimdal_get_verification_link($uuid) {
   $verification_link = array(
-    /*'#type'  => 'link',
-    '#title' => 'fisk',
-    '#href'  => 'heimdal/email/?uuid='.$uuid,
-    '#options' => array(
-      'absolute' => TRUE,
-      'attributes' => array(),
-    ),*/
     '#theme' => 'link',
     '#text' => 'fisk',
     '#path' => 'heimdal/loginrequest/' . $uuid,
@@ -115,48 +110,51 @@ function bibdk_heimdal_get_verification_link($uuid){
   return $link;
 }
 
-function bibdk_heimdal_select_email_form($form, $form_state){
+function bibdk_heimdal_select_email_form($form, $form_state) {
   $options = isset($_SESSION['heimdal']['select_from_emails']) ?
     $_SESSION['heimdal']['select_from_emails'] : array();
   $form = array(
-    'help'=> array(
+    'help' => array(
       '#type' => 'html_tag',
       '#tag' => 'div',
       '#attributes' => array(
-        'class'=>array(
+        'class' => array(
           'heimdal_email_verify'
         )
       ),
-      '#value' => t('Select_an_email_helptext', array(), array('context'=>'heimdal')),
+      '#value' => t('Select_an_email_helptext', array(), array('context' => 'heimdal')),
     ),
     'select' => array(
       '#type' => 'select',
       '#options' => $options,
     ),
     'submit_but' => array(
+      '#name' => 'ok',
       '#type' => 'submit',
       '#value' => 'Ok'
     ),
     'cancel_but' => array(
-      '#type'=>'submit',
-      '#value'=>t('cancel', array(), array('context'=>'heimdal'))
+      '#name' => 'cancel',
+      '#type' => 'submit',
+      '#value' => t('cancel', array(), array('context' => 'heimdal'))
     ),
   );
 
   return $form;
 }
 
-function bibdk_heimdal_select_email_form_submit($form, &$form_state){
+function bibdk_heimdal_select_email_form_submit($form, &$form_state) {
+  $action = $form_state['clicked_button']['#name'];
+  if($action == 'cancel'){
+    bibdk_heimdal_cleanup_and_exit();
+  }
+
   $index = $form_state['values']['select'];
   $email = $_SESSION['heimdal']['select_from_emails'][$index];
-
-  // @TODO datacheck on email var
 
   // @TODO use COOKIE in production NOT SESSION
   $_SESSION['heimdal']['selected_email'] = $email;
   // also set a cookie - for production
   user_cookie_save(array('user_selected_email' => $email));
-
-  unset($_SESSION['heimdal']['select_from_emails']);
   drupal_goto('heimdal/login');
 }
