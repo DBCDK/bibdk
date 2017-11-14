@@ -166,6 +166,14 @@ class BibdkUser {
   }
 
   /************** CULR *********************/
+
+  /**
+   * Create an account on culr
+   * @param string $userId
+   * @param string $borrowerId
+   * @param string $uidType
+   * @return string'
+   */
   public function insertCulr($userId, $borrowerId, $uidType){
     $params = array(
       'oui:userId' => $userId,
