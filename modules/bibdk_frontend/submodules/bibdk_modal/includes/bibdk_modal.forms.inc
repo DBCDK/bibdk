@@ -186,11 +186,13 @@ function bibdk_modal_review_edit_node($pid = NULL) {
   bibdk_modal_deliver_output($commands);
 }
 
+/**
+ * Wrap bibdk_heimdal_verify_email_form for modal display
+ */
 function bibdk_modal_heimdal_write_email_form(){
   $form_state = _bibdk_modal_set_form_state();
 
   $output = bibdk_modal_form_wrapper('bibdk_heimdal_verify_email_form', $form_state);
-  //return bibdk_modal_deliver_output($output);
 
   $commands = array();
   if (empty($form_state['executed']) && empty($form_state['submitted'])) {
@@ -207,11 +209,13 @@ function bibdk_modal_heimdal_write_email_form(){
   bibdk_modal_deliver_output($commands);
 }
 
+/**
+ * Wrap bibdk_heimdal_select_email_form for modal display
+ */
 function bibdk_modal_heimdal_select_email_form(){
   $form_state = _bibdk_modal_set_form_state();
 
   $output = bibdk_modal_form_wrapper('bibdk_heimdal_select_email_form', $form_state);
-  //return bibdk_modal_deliver_output($output);
 
   $commands = array();
   if (empty($form_state['executed']) && empty($form_state['submitted'])) {
