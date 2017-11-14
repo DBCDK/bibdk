@@ -8,7 +8,10 @@
  */
 
 class heimdalDatabase {
-
+  /**
+   * Get all rows from bibdk_heimdal_email_verify table
+   * @return mixed
+   */
   public static function getAll(){
     $rows = db_select('bibdk_heimdal_email_verify', 'b')
       ->fields('b')
@@ -85,8 +88,8 @@ class heimdalDatabase {
   }
 
   /**
-   * Delete a row by email
-   * @param $email
+   * Delete a row by uuid
+   * @param string $uuid
    * @return int
    */
   public static function deleteByUUID($uuid) {
