@@ -130,26 +130,10 @@ function bibdk_provider_heimdal_favourite_check($username, $culragencies) {
 }
 
 /**
- * Keep track of session variable.
- *
- * @param
- * @return string - session variable
+ * Set a session variable
+ * @param string $key
+ * @param mixed $value
  */
 function bibdk_heimdal_provider_set_session($key, $value) {
   $_SESSION['heimdal'][$key] = $value;
-}
-
-/**
- * Custom validation for heimdal login
- *
- * @param $form
- * @param $form_state
- */
-function bibdk_provider_heimdal_validate($form, &$form_state) {
-  if ($form_state['values']['authentication_provider'] !== 'heimdal') {
-    return;
-  }
-
-  /** @var bibdkHeimdalUser $heimdalUser */
-  $heimdalUser = $form_state['build_info']['args'][0];
 }
