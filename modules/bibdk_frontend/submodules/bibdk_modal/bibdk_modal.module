@@ -223,7 +223,7 @@ function _bibdk_modal_get_login_form_links() {
   );
 
   $items = array();
-  foreach($links as $link){
+  foreach ($links as $link) {
     $items[] = drupal_render($link);
   }
 
@@ -270,6 +270,9 @@ function bibdk_modal_add_ajax_submit(&$output, $form_id) {
       break;
     case 'bibdk_facetbrowser_filter_form' :
       $output['actions2']['submit']['#attributes']['class'][] = 'use-ajax-submit';
+      break;
+    case 'bibdk_heimdal_verify_email_form':
+      $output['actions']['submit_but']['#attributes']['class'][] = 'use-ajax-submit';
       break;
   }
 }
