@@ -197,7 +197,7 @@ function bibdk_modal_heimdal_write_email_form(){
     $commands = $output;
   }
   elseif (empty($form_state['executed']) && !empty($form_state['submitted'])) {
-    $commands[] = bibdk_modal_command_replace_form($output);
+    $commands[] = bibdk_modal_command_replace_form($output, '#bibdk-heimdal-verify-email-form');
   }
   elseif (!empty($form_state['executed']) && !empty($form_state['submitted'])) {
     $commands[] = bibdk_modal_command_reload();
