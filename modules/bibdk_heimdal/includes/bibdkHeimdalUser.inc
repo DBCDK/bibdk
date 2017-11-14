@@ -1,7 +1,18 @@
 <?php
 
+/**
+ * @file  Class bibdkHeimdalUser
+ *
+ * This one has two parts. The constructor is called when accessing heimdal access
+ * platform. Libraries are set/get in SESSION with static function
+ * due to the many redirects that might occur
+ */
 class bibdkHeimdalUser {
-
+  /**
+   * Parse and set attributes from heimdal access platform
+   * bibdkHeimdalUser constructor.
+   * @param array $attributes
+   */
   public function __construct(array $attributes) {
     $culr_libraries = isset($attributes['attributes']['agencies']) ?
       $attributes['attributes']['agencies'] : array();
@@ -31,15 +42,26 @@ class bibdkHeimdalUser {
     return $usernames;
   }
 
+  /**
+   * Set libraries in SESSION
+   * @param $agencies
+   */
   public function setLibraries($agencies) {
     $_SESSION['culr_libraries'] = $agencies;
   }
 
+  /**
+   * Get libraries from SESSION
+   * @return array
+   */
   public static function getLibraries(){
     return isset($_SESSION['culr_libraries']) ?
       $_SESSION['culr_libraries'] : array();
   }
 
+  /**
+   * Unset libraries in SESSION
+   */
   public static function unset_libraries(){
     if(isset($_SESSION['culr_libraries'])) {
       unset($_SESSION['culr_libraries']);
