@@ -1,6 +1,13 @@
 <?php
+// load form definitions - we need to include them here for fetching by ajax
 module_load_include('inc', 'bibdk_heimdal', 'includes/heimdalDatabase');
 
+/**
+ * Define a form for writing an email address
+ * @param $form
+ * @param $form_state
+ * @return array
+ */
 function bibdk_heimdal_verify_email_form($form, $form_state) {
   $form = array(
     'help' => array(
@@ -35,16 +42,27 @@ function bibdk_heimdal_verify_email_form($form, $form_state) {
   return $form;
 }
 
+/**
+ * Add javascript for user to input an email address
+ */
 function bibdk_heimdal_forms_add_email_write_js() {
   $path = drupal_get_path('module', 'bibdk_heimdal');
   drupal_add_js($path . '/js/bibdk_heimdal_email_write.js');
 }
 
+/**
+ * Add javascript for selecting which email to use
+ */
 function bibdk_heimdal_forms_add_email_select_js() {
   $path = drupal_get_path('module', 'bibdk_heimdal');
   drupal_add_js($path . '/js/bibdk_heimdal_email_select.js');
 }
 
+/**
+ * Custom validating for verify_email_form
+ * @param $form
+ * @param $form_state
+ */
 function bibdk_heimdal_verify_email_validate($form, &$form_state) {
   $action = $form_state['clicked_button']['#name'];
   if($action == 'cancel' ){
@@ -56,6 +74,11 @@ function bibdk_heimdal_verify_email_validate($form, &$form_state) {
   }
 }
 
+/**
+ * Submit function form verify_email_form
+ * @param $form
+ * @param $form_state
+ */
 function bibdk_heimdal_verify_email_form_submit($form, &$form_state) {
   $mail = $form_state['values']['mail'];
   $agencies = bibdkHeimdalUser::getLibraries();
@@ -75,6 +98,12 @@ function bibdk_heimdal_verify_email_form_submit($form, &$form_state) {
   //drupal_goto('<front>');
 }
 
+
+/**
+ * Send an email
+ * @param array $row
+ *   A row from verification table
+ */
 
 function bibdk_heimdal_send_verification_mail(array $row) {
   $message = drupal_mail('bibdk_heimdal', 'bibdk_heimdal_verify_mail', $row['email'], 'da', $row);
@@ -110,6 +139,14 @@ function bibdk_heimdal_get_verification_link($uuid) {
   return $link;
 }
 
+/**
+ * Define a form for selecting between more emails
+ * @param $form
+ * @param $form_state
+ * @return array
+ *   Rnder array for drupal to render
+ */
+
 function bibdk_heimdal_select_email_form($form, $form_state) {
   $options = isset($_SESSION['heimdal']['select_from_emails']) ?
     $_SESSION['heimdal']['select_from_emails'] : array();
@@ -143,6 +180,11 @@ function bibdk_heimdal_select_email_form($form, $form_state) {
   return $form;
 }
 
+/**
+ * Submit function for select_email_form
+ * @param $form
+ * @param $form_state
+ */
 function bibdk_heimdal_select_email_form_submit($form, &$form_state) {
   $action = $form_state['clicked_button']['#name'];
   if($action == 'cancel'){
