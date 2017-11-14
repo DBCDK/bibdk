@@ -53,12 +53,40 @@ function bibdk_heimdal_handle_login_request($uuid){
     drupal_goto('<front>');
   }
 
-  // all is good - set a welcome message and redirect to heimdal access platform
-  // for another login attempt
-  $message = bibdk_heimdal_pages_welcome_message();
-  drupal_set_message($message);
-  $link = bibdk_heimdal_pages_get_login_link();
-  drupal_goto($link);
+  $email = $row['email'];
+  if(bibdk_heimdal_pages_create_bibdk_user($email)) {
+    // all is good - set a welcome message and redirect to heimdal access platform
+    // for another login attempt
+    $message = bibdk_heimdal_pages_welcome_message();
+    drupal_set_message($message);
+    $link = bibdk_heimdal_pages_get_login_link();
+    drupal_goto($link);
+  }
+
+  // user was not created on openuserinfo - set a  message and return to front
+  drupal_set_message(bibdk_heimdal_pages_something_went_wrong_message(), 'error');
+  drupal_goto('<front>');
+}
+
+/**
+ * Create a user on openuserinfo - if user doesn't already exist
+ * @param string $mail
+ *   Username
+ */
+function bibdk_heimdal_pages_create_bibdk_user($mail) {
+  if (!BibdkUser::instance()->verify($mail)) {
+    // user does not exist - create
+    // make a random password
+    $pass = user_password();
+    return bibdk_provider_user_create_account($mail, $pass);
+  }
+  return TRUE;
+}
+
+function bibdk_heimdal_pages_something_went_wrong_message(){
+  $message = t('Something went wrong - please try again. Contact administrator if problem persists',
+    array(), array('context'=>'heimdal'));
+  return $message;
 }
 
 /**
@@ -78,6 +106,8 @@ function bibdk_heimdal_pages_no_culr_message(){
   $message = t('bibdk_heimdal_no_culr_helptext', array(), array('context' => 'heimdal'));
   return $message;
 }
+
+
 
 /**
  * check response from createAccount action on culr
