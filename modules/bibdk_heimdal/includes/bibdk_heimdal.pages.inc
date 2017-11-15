@@ -124,7 +124,7 @@ function bibdk_heimcdal_pages_check_insert_response($response){
  * @param int $time
  * @return bool
  */
-function bibdk_heimdal_check_timestamp(int $time){
+function bibdk_heimdal_check_timestamp($time){
   $now = time();
   // 86400 seconds = one day
   if($now - $time > 86400){
