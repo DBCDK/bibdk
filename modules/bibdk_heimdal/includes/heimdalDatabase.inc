@@ -24,7 +24,7 @@ class heimdalDatabase {
   /**
    * Insert a row in bibdk_heimdal_email_verify table
    *
-   * @param $email
+   * @param string $email
    * @param array $agencies
    * @return mixed (string)
    *  uuid (primary key of table) to be used when generating an email link
