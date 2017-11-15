@@ -159,7 +159,7 @@ function bibdk_heimdal_do_insert_culr($row) {
 function bibdk_heimdal_pages_get_login_link() {
   $config = variable_get('ding_wayf', NULL);
   $token = variable_get('heimdal_access_token', NULL);
-  if (empty($config || empty($token))) {
+  if (empty($config) || empty($token)) {
     watchdog('heimdal', 'HEIMDAL is not configured', WATCHDOG_ERROR);
     return '';
   }
