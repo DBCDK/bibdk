@@ -174,7 +174,7 @@ class BibdkUser {
    * @param string $uidType
    * @return string'
    */
-  public function insertCulr($userId, $borrowerId, $uidType){
+  public function insertCulr($userId, $borrowerId, $uidType) {
     $params = array(
       'oui:userId' => $userId,
       'oui:borrowerId' => $borrowerId,

@@ -33,6 +33,8 @@ function bibdk_provider_heimdal_authenticate($name, $pass = null) {
  * Set and return form_state for user_login via heimdal
  *
  * @param bibdkHeimdalUser $heimdalUser
+ * @param $notify
+ *   not used here - for provider compatibility
  * @return mixed
  */
 function bibdk_provider_heimdal_login_creds($heimdalUser, $notify = null) {
@@ -87,17 +89,6 @@ function bibdk_heimdal_provider_username_from_session(array $usernames) {
   if (count($usernames) == 1) {
     return $usernames[0];
   }
-
-  // outcommented - used while developing
-  // @TODO delete
-// USE SESSION WHILE DEVELOPING TODO use cookie when done
-  /* if(isset($_SESSION['heimdal']['selected_email'])){
-     // set selected email in a cookie so user selected is saved
-     // across sessions .. @TODO is that persistent enough ??
-     $mail = $_SESSION['heimdal']['selected_email'];
-     //unset($_SESSION['heimdal']['selected_email']);
-     return $mail;
-   }*/
 
   if (isset($_COOKIE['Drupal_visitor_user_selected_email'])) {
     $mail = $_COOKIE['Drupal_visitor_user_selected_email'];

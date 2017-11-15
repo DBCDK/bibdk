@@ -100,6 +100,12 @@ function bibdk_provider_wayf_validate(&$form, &$form_state) {
 }
 
 
+/**
+ * Get login creds for logging in with wayf
+ * @param $authentication_attributes
+ * @param null $notify_by_mail
+ * @return mixed
+ */
 function bibdk_provider_wayf_login_creds($authentication_attributes, $notify_by_mail=null) {
   // set authentication provider for ding_user (@see ding_user_user_login_validate)
   $form_state['values']['authentication_provider'] = 'wayf';

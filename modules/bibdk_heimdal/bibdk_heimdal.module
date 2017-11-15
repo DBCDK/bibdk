@@ -39,7 +39,7 @@ function bibdk_heimdal_menu() {
     'description' => t('select an email to use'),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('bibdk_heimdal_select_email_form'),
-    'file'=>'includes/bibdk_heimdal_forms.inc',
+    'file' => 'includes/bibdk_heimdal_forms.inc',
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
@@ -49,7 +49,7 @@ function bibdk_heimdal_menu() {
     'description' => t('Bibliotek.dk needs an email'),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('bibdk_heimdal_verify_email_form'),
-    'file'=>'includes/bibdk_heimdal_forms.inc',
+    'file' => 'includes/bibdk_heimdal_forms.inc',
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
@@ -59,7 +59,7 @@ function bibdk_heimdal_menu() {
     'description' => t('Bibliotek.dk needs an email'),
     'page callback' => 'bibdk_heimdal_handle_login_request',
     'page arguments' => array(2),
-    'file'=>'includes/bibdk_heimdal.pages.inc',
+    'file' => 'includes/bibdk_heimdal.pages.inc',
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
@@ -74,10 +74,10 @@ function bibdk_heimdal_menu() {
  * page, where a modal should open - this one adds appropiate javascript
  * to run
  */
-function bibdk_heimdal_init(){
-  if(isset($_SESSION['heimdal']['action'])){
+function bibdk_heimdal_init() {
+  if (isset($_SESSION['heimdal']['action'])) {
     $action = $_SESSION['heimdal']['action'];
-    switch ($action){
+    switch ($action) {
       case 'write_email':
         bibdk_heimdal_forms_add_email_write_js();
         break;
@@ -103,12 +103,12 @@ function bibdk_heimdal_redirect_login() {
   // @see bibdk_provider/bibdk_provider.heimdal.inc::bibdk_provider_heimdal_login_creds()
   $form_state = ding_provider_invoke('heimdal', 'login_creds', $heimdal_user);
 
-  if(bibdk_heimdal_check_formstate($form_state)) {
+  if (bibdk_heimdal_check_formstate($form_state)) {
     //all is good - submit login form
     bibdk_heimdal_do_login($form_state);
   }
 
-  if(isset($_SESSION['heimdal']['action'])){
+  if (isset($_SESSION['heimdal']['action'])) {
     // page requires additional action/userinput. Javascript will be set to handle that
     // @see bibdk_heimdal_init()
     drupal_goto('<front>');
@@ -121,11 +121,11 @@ function bibdk_heimdal_redirect_login() {
 /**
  * If an error ocuurs ..
  */
-function bibdk_heimdal_cleanup_and_exit(){
+function bibdk_heimdal_cleanup_and_exit() {
   drupal_set_message(t('An error occured while logging in - please try again'), 'error');
 
   if (isset($_SESSION['heimdal'])) {
-    if($_SESSION['heimdal']['logged_in']){
+    if ($_SESSION['heimdal']['logged_in']) {
       bibdk_heimdal_do_logout();
     }
   }
@@ -161,6 +161,7 @@ function bibdk_heimdal_check_formstate($form_state) {
     // all is okey dokey
     return TRUE;
   }
+  // @TODO more checks
   return FALSE;
 }
 
@@ -211,17 +212,17 @@ function bibdk_heimdal_get_heimdal_user() {
  */
 function bibdk_heimdal_get_heimdal_attributes() {
   static $return_array;
-  if(!empty($return_array)){
+  if (!empty($return_array)) {
     return $return_array;
   }
   // client id for ticket request
   $client_id = !empty($_REQUEST['id']) ? $_REQUEST['id'] : NULL;
-  if(!isset($client_id)){
+  if (!isset($client_id)) {
     return array();
   }
   // token
   $token = !empty($_REQUEST['token']) ? $_REQUEST['token'] : NULL;
-  if(!isset($token)){
+  if (!isset($token)) {
     return array();
   }
 
@@ -233,7 +234,7 @@ function bibdk_heimdal_get_heimdal_attributes() {
 /**
  * Implements hook_user_logout
  */
-function bibdk_heimdal_user_logout(){
+function bibdk_heimdal_user_logout() {
   bibdk_heimdal_do_logout();
 }
 
@@ -271,9 +272,9 @@ function bibdk_heimdal_login_link() {
       $wrapper['login_link'] = array(
         '#prefix' => '<div id="block-ding-wayf-login" class="block block-ding-wayf biblogin"><div id="bibliotekslogin">',
         '#suffix' => '</div></div></div>',
-        '#type'  => 'link',
-        '#title' =>  '<img src="' . $logo_path . '" alt="' . $logo_alt_text_accessplatform . '"/>',
-        '#href'  =>  $heimdal_link,
+        '#type' => 'link',
+        '#title' => '<img src="' . $logo_path . '" alt="' . $logo_alt_text_accessplatform . '"/>',
+        '#href' => $heimdal_link,
         '#options' => array(
           'html' => TRUE,
         ),

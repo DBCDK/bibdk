@@ -26,16 +26,16 @@ class bibdkHeimdalUser {
    * @return array
    *   empty or one/more usernames found
    */
-  public function getBibdkUsers(){
+  public function getBibdkUsers() {
     $libraries = self::getLibraries();
-    if(empty($libraries)){
+    if (empty($libraries)) {
       return array();
     }
 
     $usernames = array();
-    foreach($libraries as $agency){
+    foreach ($libraries as $agency) {
       // check if provider is bibliotek.dk
-      if($agency['agencyId'] == '190101'){
+      if ($agency['agencyId'] == '190101') {
         $usernames[] = $agency['userId'];
       }
     }
@@ -54,7 +54,7 @@ class bibdkHeimdalUser {
    * Get libraries from SESSION
    * @return array
    */
-  public static function getLibraries(){
+  public static function getLibraries() {
     return isset($_SESSION['culr_libraries']) ?
       $_SESSION['culr_libraries'] : array();
   }
@@ -62,8 +62,8 @@ class bibdkHeimdalUser {
   /**
    * Unset libraries in SESSION
    */
-  public static function unset_libraries(){
-    if(isset($_SESSION['culr_libraries'])) {
+  public static function unset_libraries() {
+    if (isset($_SESSION['culr_libraries'])) {
       unset($_SESSION['culr_libraries']);
     }
   }

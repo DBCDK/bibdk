@@ -65,12 +65,12 @@ function bibdk_heimdal_forms_add_email_select_js() {
  */
 function bibdk_heimdal_verify_email_validate($form, &$form_state) {
   $action = $form_state['clicked_button']['#name'];
-  if($action == 'cancel' ){
+  if ($action == 'cancel') {
     bibdk_heimdal_cleanup_and_exit();
   }
   $email = $form_state['values']['mail'];
-  if(!valid_email_address($email)){
-    form_set_error('mail', t('Please enter a valid email address', array(), array('context'=>'heimdal')));
+  if (!valid_email_address($email)) {
+    form_set_error('mail', t('Please enter a valid email address', array(), array('context' => 'heimdal')));
   }
 }
 
@@ -84,18 +84,20 @@ function bibdk_heimdal_verify_email_form_submit($form, &$form_state) {
   $agencies = bibdkHeimdalUser::getLibraries();
   // save on database before sending email
   $key = heimdalDatabase::insert($mail, $agencies);
+  if($key === FALSE){
+    bibdk_heimdal_cleanup_and_exit();
+  }
+
   $row = heimdalDatabase::get($key);
   if (!empty($row)) {
     bibdk_heimdal_send_verification_mail($row);
   }
   else {
-    // @TODO .. no libraries was given from heimdal - do something
-    drupal_set_message('NO LIBRARIES FROM CULR', 'error');
+    bibdk_heimdal_cleanup_and_exit();
   }
-  // an email has been send or row was empty - either way start from scratch
+  // an email has been sent - start from scratch
   unset($_SESSION['heimdal']);
   drupal_set_message(t('an_email_has_been_sent_help_txt', array(), array('context' => 'heimdal')));
-  //drupal_goto('<front>');
 }
 
 
@@ -134,9 +136,7 @@ function bibdk_heimdal_get_verification_link($uuid) {
       'attributes' => array(),
     ),
   );
-  $link = drupal_render($verification_link);
-
-  return $link;
+  return drupal_render($verification_link);
 }
 
 /**
@@ -187,7 +187,7 @@ function bibdk_heimdal_select_email_form($form, $form_state) {
  */
 function bibdk_heimdal_select_email_form_submit($form, &$form_state) {
   $action = $form_state['clicked_button']['#name'];
-  if($action == 'cancel'){
+  if ($action == 'cancel') {
     bibdk_heimdal_cleanup_and_exit();
   }
 

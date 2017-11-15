@@ -15,30 +15,29 @@ module_load_include('inc', 'bibdk_heimdal', 'includes/heimdalDatabase');
  * @param $uuid
  *   unique identifier from email link
  */
-function bibdk_heimdal_handle_login_request($uuid){
+function bibdk_heimdal_handle_login_request($uuid) {
   $message = '';
   $row = array();
 
   try {
     $row = heimdalDatabase::get($uuid);
-  }
-  catch (Exception $e){
+  } catch (Exception $e) {
     watchdog('heimdal', 'DATABASE EXCEPTION: %message%', array('%message%' => $e->getMessage()), WATCHDOG_ERROR);
     $message = bibdk_heimdal_exception_message();
   }
 
-  if(empty($row)){
+  if (empty($row)) {
     // row was not found - it has probably been deleted because it was too old
     $message = bibdk_heimdal_link_deprecated_message();
   }
 
-  if(!empty($row) && !bibdk_heimdal_check_timestamp($row['date'])){
+  if (!empty($row) && !bibdk_heimdal_check_timestamp($row['date'])) {
     // message is to old
     $message = bibdk_heimdal_link_deprecated_message();
   }
 
   $response = bibdk_heimdal_do_insert_culr($row);
-  if(!bibdk_heimcdal_pages_check_insert_response($response)) {
+  if (!bibdk_heimcdal_pages_check_insert_response($response)) {
     // something went wrong when creating culr account
     $message = bibdk_heimdal_pages_no_culr_message();
   }
@@ -48,13 +47,13 @@ function bibdk_heimdal_handle_login_request($uuid){
 
   // if message is set something has gone wrong. Set a message and return to
   // fromtpage
-  if(!empty($message)){
+  if (!empty($message)) {
     drupal_set_message($message, 'warning');
     drupal_goto('<front>');
   }
 
   $email = $row['email'];
-  if(bibdk_heimdal_pages_create_bibdk_user($email)) {
+  if (bibdk_heimdal_pages_create_bibdk_user($email)) {
     // all is good - set a welcome message and redirect to heimdal access platform
     // for another login attempt
     $message = bibdk_heimdal_pages_welcome_message();
@@ -83,9 +82,9 @@ function bibdk_heimdal_pages_create_bibdk_user($mail) {
   return TRUE;
 }
 
-function bibdk_heimdal_pages_something_went_wrong_message(){
+function bibdk_heimdal_pages_something_went_wrong_message() {
   $message = t('Something went wrong - please try again. Contact administrator if problem persists',
-    array(), array('context'=>'heimdal'));
+    array(), array('context' => 'heimdal'));
   return $message;
 }
 
@@ -94,7 +93,7 @@ function bibdk_heimdal_pages_something_went_wrong_message(){
  * @return null|string
  */
 function bibdk_heimdal_pages_welcome_message() {
-  $message = t('welcome_to_single_sign_on', array(), array('context'=>'heimdal'));
+  $message = t('welcome_to_single_sign_on', array(), array('context' => 'heimdal'));
   return $message;
 }
 
@@ -102,11 +101,10 @@ function bibdk_heimdal_pages_welcome_message() {
  * Get a message
  * @return null|string
  */
-function bibdk_heimdal_pages_no_culr_message(){
+function bibdk_heimdal_pages_no_culr_message() {
   $message = t('bibdk_heimdal_no_culr_helptext', array(), array('context' => 'heimdal'));
   return $message;
 }
-
 
 
 /**
@@ -114,7 +112,7 @@ function bibdk_heimdal_pages_no_culr_message(){
  * @param $response
  * @return bool
  */
-function bibdk_heimcdal_pages_check_insert_response($response){
+function bibdk_heimcdal_pages_check_insert_response($response) {
   // @TODO implement
   return TRUE;
 }
@@ -124,10 +122,10 @@ function bibdk_heimcdal_pages_check_insert_response($response){
  * @param int $time
  * @return bool
  */
-function bibdk_heimdal_check_timestamp($time){
+function bibdk_heimdal_check_timestamp($time) {
   $now = time();
   // 86400 seconds = one day
-  if($now - $time > 86400){
+  if ($now - $time > 86400) {
     return FALSE;
   }
 
@@ -139,9 +137,9 @@ function bibdk_heimdal_check_timestamp($time){
  * @param $row
  * @return array
  */
-function bibdk_heimdal_do_insert_culr($row){
+function bibdk_heimdal_do_insert_culr($row) {
   $agencies = unserialize($row['libraries']);
-  if(empty($agencies)){
+  if (empty($agencies)) {
     $agencies = array();
   }
   $response = array();
@@ -160,7 +158,11 @@ function bibdk_heimdal_do_insert_culr($row){
  */
 function bibdk_heimdal_pages_get_login_link() {
   $config = variable_get('ding_wayf', NULL);
-  $token = variable_get('heimdal_access_token');
+  $token = variable_get('heimdal_access_token', NULL);
+  if (empty($config || empty($token))) {
+    watchdog('heimdal', 'HEIMDAL is not configured', WATCHDOG_ERROR);
+    return '';
+  }
   $heimdal_link = $config['hosturl'] . $config['loginpath'] . '?token=' . $token . '&destination=heimdal/login';
   return $heimdal_link;
 }
@@ -169,8 +171,8 @@ function bibdk_heimdal_pages_get_login_link() {
  * Get a message
  * @return null|string
  */
-function bibdk_heimdal_exception_message(){
-  $message = t('bibdk_heimdal_exception_message', array(), array('context'=>'heimdal'));
+function bibdk_heimdal_exception_message() {
+  $message = t('bibdk_heimdal_exception_message', array(), array('context' => 'heimdal'));
   return $message;
 }
 
@@ -178,7 +180,7 @@ function bibdk_heimdal_exception_message(){
  * Get a message
  * @return null|string
  */
-function bibdk_heimdal_link_deprecated_message(){
+function bibdk_heimdal_link_deprecated_message() {
   $message = t('bibdk_heimdal_old_message_link', array(), array('context' => 'heimdal'));
   return $message;
 }

@@ -1,6 +1,10 @@
 (function ($) {
   var bibdk_heimdal = {};
 
+  /**
+   * Do ajax to get email selection form
+   * @param modal
+   */
   bibdk_heimdal.getEmail = function (modal) {
     var url = Drupal.settings.basePath + Drupal.settings.pathPrefix + 'bibdk_modal/heimdal/verify';
     var request = $.ajax({
@@ -20,6 +24,10 @@
     });
   };
 
+
+  /**
+   * Get bibdk-modal and pass it for further handling
+   */
   bibdk_heimdal.openModal = function () {
     // get the modal
     var modal = $('#bibdk-modal');
@@ -29,7 +37,7 @@
 
   Drupal.behaviors.bibdk_heimdal = {
     attach: function (context, settings) {
-      $('#bibdk-modal',context).once('fisk', function(){
+      $('#bibdk-modal',context).once('bibdk-heimdal-modal', function(){
         bibdk_heimdal.openModal();
       })
     }

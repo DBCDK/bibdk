@@ -12,14 +12,14 @@ class bibdkHeimdalCurl extends MicroCURL {
    *
    * @return bool|string
    */
-  public function getAccessToken(){
+  public function getAccessToken() {
     $config = variable_get('ding_wayf', NULL);
 
     $token_client_secret = $config['clientsecret'];
     $token_client_ID = $config['clientid'];
     $token_platform = $config['clientplatform'];
     $token_post_data = 'grant_type=password&username=@&password=@';
-    $this->set_authentication($token_client_ID,$token_client_secret);
+    $this->set_authentication($token_client_ID, $token_client_secret);
     $this->set_post($token_post_data);
     $this->set_url($token_platform);
     $this->set_option(CURLOPT_RETURNTRANSFER, TRUE);
@@ -29,12 +29,12 @@ class bibdkHeimdalCurl extends MicroCURL {
     if ($this->checkMe()) {
       return $this->parseToken($heimdal_token_attributes);
     }
-    else{
+    else {
       return FALSE;
     }
   }
 
-  public function __destruct(){
+  public function __destruct() {
     $this->close();
   }
 
@@ -49,6 +49,7 @@ class bibdkHeimdalCurl extends MicroCURL {
     // @TODO some logging
     return $response;
   }
+
   /**
    * Do a request for attributes and parse response into an array
    *
@@ -58,12 +59,12 @@ class bibdkHeimdalCurl extends MicroCURL {
    *   Json response parsed into an array or empty array if
    *   something goes wrong
    */
-  public function getAttributes($clientId, $token){
+  public function getAttributes($clientId, $token) {
     $ticketLink = $this->getTicketLink($clientId, $token);
     $response = $this->get($ticketLink);
-    if($this->checkMe()) {
+    if ($this->checkMe()) {
       $attributes = json_decode($response, true);
-      if(empty($attributes)){
+      if (empty($attributes)) {
         return array();
       }
       return $attributes;
@@ -79,9 +80,9 @@ class bibdkHeimdalCurl extends MicroCURL {
    * @param $token
    * @return string
    */
-  private function getTicketLink($clientId, $token){
+  private function getTicketLink($clientId, $token) {
     $config = variable_get('ding_wayf', NULL);
-    $ticket_link  = $config['hosturl'] . '/getTicket/' . $token . '/' . $clientId;
+    $ticket_link = $config['hosturl'] . '/getTicket/' . $token . '/' . $clientId;
     return $ticket_link;
   }
 
@@ -94,7 +95,7 @@ class bibdkHeimdalCurl extends MicroCURL {
     $curlStatus = $this->get_status();
     // check for httpcode
     $flag = TRUE;
-    if($curlStatus['http_code'] !== 200){
+    if ($curlStatus['http_code'] !== 200) {
       watchdog('HEIMDAL', 'url: @url returned: @code', array('@url' => $curlStatus['url'], '@code' => $curlStatus['http_code']), WATCHDOG_ERROR);
       $flag = FALSE;
     }
@@ -106,7 +107,7 @@ class bibdkHeimdalCurl extends MicroCURL {
   /**
    * Get token key from attributes
    *
-   * @param string $token_attributes, $attribute_name default = 'access_token'
+   * @param string $token_attributes , $attribute_name default = 'access_token'
    * @return string|bool
    *
    *  * attribute example:

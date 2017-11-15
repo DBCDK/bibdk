@@ -64,29 +64,6 @@ function bibdk_modal_forgot_password() {
   bibdk_modal_deliver_output($commands);
 }
 
-function bibdk_modal_forgot_password_direct() {
-  module_load_include('pages.inc', 'user');
-
-  $form_state = _bibdk_modal_set_form_state();
-
-  $output = bibdk_modal_form_wrapper('user_pass', $form_state);
-  $commands = array();
-
-  if (empty($form_state['executed']) && empty($form_state['submitted'])) {
-    $commands = $output;
-  }
-  elseif (empty($form_state['executed']) && !empty($form_state['submitted'])) {
-    //Something went wrong. Replace the form currently displayed in the modal and let the user try again
-    $commands[] = bibdk_modal_command_replace_form($output);
-  }
-  elseif (!empty($form_state['executed']) && !empty($form_state['submitted'])) {
-    $commands[] = bibdk_modal_command_reload();
-    $commands[] = bibdk_modal_command_dismiss();
-  }
-
-  bibdk_modal_deliver_output($commands);
-}
-
 /**
  * Menu callback that returns the user register form wrapped in a modal
  * If JavaScript is disabled the normal form will be returned without the modal
@@ -189,7 +166,7 @@ function bibdk_modal_review_edit_node($pid = NULL) {
 /**
  * Wrap bibdk_heimdal_verify_email_form for modal display
  */
-function bibdk_modal_heimdal_write_email_form(){
+function bibdk_modal_heimdal_write_email_form() {
   $form_state = _bibdk_modal_set_form_state();
 
   $output = bibdk_modal_form_wrapper('bibdk_heimdal_verify_email_form', $form_state);
@@ -199,7 +176,7 @@ function bibdk_modal_heimdal_write_email_form(){
     $commands = $output;
   }
   elseif (empty($form_state['executed']) && !empty($form_state['submitted'])) {
-    $commands[] = bibdk_modal_command_replace_form($output, '#bibdk-heimdal-verify-email-form');
+    $commands[] = bibdk_modal_command_replace_form($output);
   }
   elseif (!empty($form_state['executed']) && !empty($form_state['submitted'])) {
     $commands[] = bibdk_modal_command_reload();
@@ -212,7 +189,7 @@ function bibdk_modal_heimdal_write_email_form(){
 /**
  * Wrap bibdk_heimdal_select_email_form for modal display
  */
-function bibdk_modal_heimdal_select_email_form(){
+function bibdk_modal_heimdal_select_email_form() {
   $form_state = _bibdk_modal_set_form_state();
 
   $output = bibdk_modal_form_wrapper('bibdk_heimdal_select_email_form', $form_state);
@@ -307,7 +284,7 @@ function bibdk_modal_add_to_favorites_callback() {
   bibdk_modal_deliver_output($commands);
 }
 
-function bibdk_modal_facetbrowser_filter($group){
+function bibdk_modal_facetbrowser_filter($group) {
   $form_state = _bibdk_modal_set_form_state();
   $form_state['build_info']['args'] = array($group);
   $output = bibdk_modal_form_wrapper('bibdk_facetbrowser_filter_form', $form_state);

@@ -12,13 +12,11 @@ class heimdalDatabase {
    * Get all rows from bibdk_heimdal_email_verify table
    * @return mixed
    */
-  public static function getAll(){
-    $rows = db_select('bibdk_heimdal_email_verify', 'b')
+  public static function getAll() {
+    return db_select('bibdk_heimdal_email_verify', 'b')
       ->fields('b')
       ->execute()
       ->fetchAssoc();
-
-    return $rows;
   }
 
   /**
@@ -34,21 +32,27 @@ class heimdalDatabase {
     $libraries = serialize($agencies);
     $date = time();
 
-    if(!self::checkUniqueMail($email)){
+    if (!self::checkUniqueMail($email)) {
       // email already exist - maybe user asked for another link? ..
       // anyway delete it before insert
       self::deleteByMail($email);
     }
 
-    db_insert('bibdk_heimdal_email_verify')
-      ->fields(
-        array(
-          'uuid' => $key,
-          'libraries' => $libraries,
-          'email' => $email,
-          'date' => $date,
-        )
-      )->execute();
+    try {
+      db_insert('bibdk_heimdal_email_verify')
+        ->fields(
+          array(
+            'uuid' => $key,
+            'libraries' => $libraries,
+            'email' => $email,
+            'date' => $date,
+          )
+        )->execute();
+    } catch (Exception $e) {
+      // insert failed
+      watchdog('heimdal', 'database: ' . $e->getMessage(), WATCHDOG_ERROR);
+      return FALSE;
+    }
 
     return $key;
   }
@@ -60,14 +64,14 @@ class heimdalDatabase {
    * @return bool
    *   FALSE if user already exists
    */
-  private static function checkUniqueMail($email){
+  private static function checkUniqueMail($email) {
     $rows = db_select('bibdk_heimdal_email_verify', 'b')
       ->fields('b')
-      ->condition('email',$email,'=')
+      ->condition('email', $email, '=')
       ->execute()
       ->fetchAssoc();
 
-    if(count($rows) !== 0){
+    if (count($rows) !== 0) {
       return FALSE;
     }
 
@@ -80,11 +84,9 @@ class heimdalDatabase {
    * @return int
    */
   public static function deleteByMail($email) {
-    $result = db_delete('bibdk_heimdal_email_verify')
+    return db_delete('bibdk_heimdal_email_verify')
       ->condition('email', $email, '=')
       ->execute();
-
-    return $result;
   }
 
   /**
@@ -93,11 +95,9 @@ class heimdalDatabase {
    * @return int
    */
   public static function deleteByUUID($uuid) {
-    $result = db_delete('bibdk_heimdal_email_verify')
+    return db_delete('bibdk_heimdal_email_verify')
       ->condition('uuid', $uuid, '=')
       ->execute();
-
-    return $result;
   }
 
   /**
@@ -106,14 +106,12 @@ class heimdalDatabase {
    *   primary key of row
    * @return array|bool
    */
-  public static function get($uuid){
-    $rows = db_select('bibdk_heimdal_email_verify', 'b')
+  public static function get($uuid) {
+    return db_select('bibdk_heimdal_email_verify', 'b')
       ->fields('b')
-      ->condition('uuid',$uuid,'=')
+      ->condition('uuid', $uuid, '=')
       ->execute()
       ->fetchAssoc();
-
-    return $rows;
   }
 }
 

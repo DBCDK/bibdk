@@ -170,7 +170,7 @@ function bibdk_favourite_list_link($branch_id) {
     'bibdk-favourite--add-remove-library',
   );
 
-  if($already_fav){
+  if ($already_fav) {
     $class[] = 'bibdk-favourite--library-is-favourited';
     $class[] = 'use-ajax';
   }
@@ -295,9 +295,10 @@ function bibdk_favourite_set_userdata($form, &$form_state) {
   foreach ($form_state['values'] as $key => $value) {
     if (in_array($key, $valid_fields)) {
       if (!empty($value)) {
-        if ( $key == 'cpr' or $key == 'userId' or $key == 'cardno' ) {
-          $userdata[$key] = str_replace("-","",$value);
-        } else {
+        if ($key == 'cpr' or $key == 'userId' or $key == 'cardno') {
+          $userdata[$key] = str_replace("-", "", $value);
+        }
+        else {
           $userdata[$key] = $value;
         }
       }
@@ -317,6 +318,7 @@ function bibdk_favourite_set_userdata($form, &$form_state) {
  *
  * @param $agencyid
  * @param array $userdata
+ * @param bool $show_message
  */
 function bibdk_favourite_save_userdata($agencyid, array $userdata, $show_message = TRUE) {
   global $user;
@@ -325,8 +327,7 @@ function bibdk_favourite_save_userdata($agencyid, array $userdata, $show_message
   }
   try {
     $creds = ding_user_get_creds($user);
-  }
-  catch (Exception $e) {
+  } catch (Exception $e) {
     // do nothing
     // @TODO this is probably an autologout -ACT ON IT
   }
@@ -335,11 +336,11 @@ function bibdk_favourite_save_userdata($agencyid, array $userdata, $show_message
   $response = bibdk_provider_user_save_favourite_data($creds['name'], $agencyid, $data);
   if ($response !== FALSE) {
     if ($show_message) {
-    $message_text = t('user_changes_saved', array(), array('context' => 'bibdk_favourite'));
+      $message_text = t('user_changes_saved', array(), array('context' => 'bibdk_favourite'));
     }
   }
-  else{
-   // @TODO provider returned FALSE - set a message for user
+  else {
+    // @TODO provider returned FALSE - set a message for user
   }
 }
 
@@ -369,8 +370,7 @@ function bibdk_favourite_set_favourite($branchId) {
   if (ding_user_is_provider_user($user)) {
     try {
       $creds = ding_user_get_creds($user);
-    }
-    catch (Exception $e) {
+    } catch (Exception $e) {
       // do nothing
     }
     if (empty($creds)) {
