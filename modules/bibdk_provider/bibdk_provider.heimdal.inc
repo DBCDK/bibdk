@@ -25,7 +25,6 @@ function bibdk_provider_heimdal_authenticate($name, $pass = null) {
     $return['authname'] = $name;
     $return['success'] = TRUE;
   }
-
   return $return;
 }
 
@@ -48,18 +47,20 @@ function bibdk_provider_heimdal_login_creds($heimdalUser, $notify = null) {
 
   /** @var array $usernames */
   $usernames = $heimdalUser->getBibdkUsers();
-
   $username_to_use = bibdk_heimdal_provider_username_from_session($usernames);
   // USE CASE one user is found from culr. We exported the user ouselves,
   // so we know he is on openuserinfo - log him in
   if (!empty($username_to_use)) {
-    $culr_agencies = $heimdalUser->getLibraries();
-    // do a check on favourites
-    bibdk_provider_heimdal_favourite_check($username_to_use, $culr_agencies);
-    // ONE user is found - user is already approved - log him in
-    $form_state['values']['name'] = $username_to_use;
-    $form_state['values']['mail'] = $username_to_use;
-    $form_state['values']['pass'] = 'fisk';
+    // check or create user
+    if(bibdk_provider_heimdal_create_bibdk_user($username_to_use)) {
+      $culr_agencies = $heimdalUser->getLibraries();
+      // do a check on favourites
+      bibdk_provider_heimdal_favourite_check($username_to_use, $culr_agencies);
+      // ONE user is found - user is already approved - log him in
+      $form_state['values']['name'] = $username_to_use;
+      $form_state['values']['mail'] = $username_to_use;
+      $form_state['values']['pass'] = 'fisk';
+    }
   }
   else {
     if (count($usernames) > 1) {
@@ -75,6 +76,23 @@ function bibdk_provider_heimdal_login_creds($heimdalUser, $notify = null) {
     }
   }
   return $form_state;
+}
+
+
+
+/**
+ * Create a user on openuserinfo - if user doesn't already exist
+ * @param string $mail
+ *   Username
+ */
+function bibdk_provider_heimdal_create_bibdk_user($mail) {
+  if (!BibdkUser::instance()->verify($mail)) {
+    // user does not exist - create
+    // make a random password
+    $pass = user_password();
+    return bibdk_provider_user_create_account($mail, $pass);
+  }
+  return TRUE;
 }
 
 /**
@@ -126,6 +144,10 @@ function bibdk_provider_heimdal_favourite_check($username, $culragencies) {
     }
   }
   bibdk_heimdal_provider_set_session('faveourites_to_handle', $favourites_to_add);
+}
+
+function bibdk_provider_heimdal_validate($form, &$form_state){
+  $form_state['values']['authentication_provider'] = 'heimdal';
 }
 
 /**
