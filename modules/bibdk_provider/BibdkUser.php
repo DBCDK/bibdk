@@ -602,6 +602,7 @@ class BibdkUser {
       'oui:outputType' => 'xml',
     );
     $response = $this->makeRequest('createUserRequest', $params);
+
     $xmlmessage = $this->responseExtractor($response, 'createUserResponse');
 
     if ($xmlmessage != FALSE && $xmlmessage->nodeName == 'oui:userId') {
@@ -622,8 +623,7 @@ class BibdkUser {
    *   Boolean telling if the user already exists.
    */
   public function verify($name) {
-    // only verify once - that should be enough
-    static $response;
+    $response = array();
 
     if (empty($response[$name])) {
       $params = array(
