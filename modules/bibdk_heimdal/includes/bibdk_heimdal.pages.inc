@@ -73,13 +73,7 @@ function bibdk_heimdal_handle_login_request($uuid) {
  *   Username
  */
 function bibdk_heimdal_pages_create_bibdk_user($mail) {
-  if (!BibdkUser::instance()->verify($mail)) {
-    // user does not exist - create
-    // make a random password
-    $pass = user_password();
-    return bibdk_provider_user_create_account($mail, $pass);
-  }
-  return TRUE;
+  return ding_provider_invoke('heimdal', 'create_bibdk_user', $mail);
 }
 
 function bibdk_heimdal_pages_something_went_wrong_message() {
