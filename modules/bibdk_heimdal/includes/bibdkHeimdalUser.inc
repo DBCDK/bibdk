@@ -17,7 +17,9 @@ class bibdkHeimdalUser {
     $culr_libraries = isset($attributes['attributes']['agencies']) ?
       $attributes['attributes']['agencies'] : array();
 
-    $this->setLibraries($culr_libraries);
+    if(!empty($culr_libraries)) {
+      $this->setLibraries($culr_libraries);
+    }
   }
 
   /**
