@@ -126,7 +126,8 @@ function bibdk_heimdal_cleanup_and_exit() {
 
   if (isset($_SESSION['heimdal'])) {
     if ($_SESSION['heimdal']['logged_in']) {
-      bibdk_heimdal_do_logout();
+      $url = bibdk_heimdal_get_return_url();
+      bibdk_heimdal_do_logout($url);
     }
   }
   if (isset($_SESSION['heimdal'])) {
@@ -134,6 +135,24 @@ function bibdk_heimdal_cleanup_and_exit() {
   }
   // go to frontpage
   drupal_goto('<front>');
+}
+
+/**
+ * Get an url to return to when logging out of heimdal
+ * if user is logged in bibliotek.dk make sure he is
+ * redirected to logout page - if not simply return to
+ * frontpage
+ * 
+ * @return string
+ */
+function bibdk_heimdal_get_return_url() {
+  global $user;
+  if($user->uid === 0){
+    return '/';
+  }
+  else {
+    return 'user/logout';
+  }
 }
 
 /**
@@ -242,11 +261,11 @@ function bibdk_heimdal_user_logout() {
  * Heimdal do logout
  *
  */
-function bibdk_heimdal_do_logout() {
+function bibdk_heimdal_do_logout($url = '/user/logout') {
   if (isset($_SESSION['heimdal'])) {
     unset($_SESSION['heimdal']);
     $config = variable_get('ding_wayf', NULL);
-    drupal_goto($config['hosturl'] . '/logout?returnurl=/user/logout');
+    drupal_goto($config['hosturl'] . '/logout?returnurl=' . $url);
   }
 }
 
