@@ -96,12 +96,12 @@ function bibdk_heimdal_init() {
  * Do a login or redirect to appropiate page.
  */
 function bibdk_heimdal_redirect_login() {
+  $curl = new bibdkHeimdalCurl();
   // get the heimdal user
-  $heimdal_user = bibdk_heimdal_get_heimdal_user();
-
+  $heimdal_user = bibdk_heimdal_get_heimdal_user($curl);
   // next step checks the user and sets SESSION and form_state parameters for further handling
   // @see bibdk_provider/bibdk_provider.heimdal.inc::bibdk_provider_heimdal_login_creds()
-  $form_state = ding_provider_invoke('heimdal', 'login_creds', $heimdal_user);
+  $form_state = bibdk_heimdal_get_form_state($heimdal_user);
 
   if (bibdk_heimdal_check_formstate($form_state)) {
     //all is good - submit login form
@@ -117,11 +117,19 @@ function bibdk_heimdal_redirect_login() {
   bibdk_heimdal_cleanup_and_exit();
 }
 
+/**
+ * Get form state via provicer
+ * @param $heimdal_user
+ * @return mixed
+ */
+function bibdk_heimdal_get_form_state($heimdal_user){
+  return ding_provider_invoke('heimdal', 'login_creds', $heimdal_user);
+}
 
 /**
  * If an error ocuurs ..
  */
-function bibdk_heimdal_cleanup_and_exit() {
+function bibdk_heimdal_cleanup_and_exit(){
   drupal_set_message(t('An error occured while logging in - please try again'), 'error');
 
   if (isset($_SESSION['heimdal'])) {
@@ -142,7 +150,7 @@ function bibdk_heimdal_cleanup_and_exit() {
  * if user is logged in bibliotek.dk make sure he is
  * redirected to logout page - if not simply return to
  * frontpage
- * 
+ *
  * @return string
  */
 function bibdk_heimdal_get_return_url() {

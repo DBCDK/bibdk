@@ -8,6 +8,7 @@ files[] = includes/bibdkHeimdalCurl.inc
 files[] = includes/bibdkHeimdalUser.inc
 
 files[] = test/bibdk_heimdal_unit.test
+files[] = test/bibdk_heimdal_web.test
 
 dependencies[] = microcurl
 dependencies[] = bibdk_favourite

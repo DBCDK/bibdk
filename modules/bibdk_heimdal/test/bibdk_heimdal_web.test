@@ -1,0 +1,55 @@
+<?php
+
+class BibdkHeimdalWebTestCase extends DrupalWebTestCase {
+  public static function getInfo() {
+    return array(
+      'name' => t('bibdk heimdal web test'),
+      'description' => t('Test the essential methods'),
+      'group' => t('Bibliotek.dk - Heimdal'),
+    );
+  }
+
+  public function setUp() {
+    parent::setUp(
+      array(
+        'bibdk_heimdal',
+        'bibdk_provider',
+        'bibdk_webservice_settings_develop'
+      )
+    );
+  }
+
+  public function test_modules_and_dependencies(){
+    $this->assertTrue(module_exists('bibdk_heimdal'), 'bibdk_heimdal enabled');
+    $this->assertTrue(module_exists('ding_provider'),'ding_provider enabled');
+    $this->assertTrue(module_exists('ting_agency'),'ting agency enabled');
+    $this->assertTrue(module_exists('bibdk_favourite'),'bibdk_favourite enabled');
+  }
+
+  public function test_form_state_parser(){
+    $path = drupal_get_path('module', 'bibdk_heimdal');
+    $path .= '/test/pjo.json';
+    $mock = file_get_contents($path);
+    $attributes = json_decode($mock, true);
+    $heimdalUser = new bibdkHeimdalUser($attributes);
+    $form_state = bibdk_heimdal_get_form_state($heimdalUser);
+    // assert that authentication provider is heimdal
+    $this->assertTrue($form_state['values']['authentication_provider'] === 'heimdal', 'authentication provider is heimdal');
+    // assert that an action is set in _SESSION - for this user it should be 'write_email'
+    $this->assertTrue($_SESSION['heimdal']['action'] === 'write_email', 'Action has been set in SESSION');
+    // test libraries has been set for heimdal user - even if object is dead
+    unset($heimdalUser);
+    $libs = bibdkHeimdalUser::getLibraries();
+    $this->assertTrue(is_array($libs), 'culr libraries set for heimdal user');
+  }
+
+  public function test_return_url() {
+    $testuser = $this->drupalCreateUser(array(
+      'search content',
+    ));
+    $this->drupalLogin($testuser);
+    $url = bibdk_heimdal_get_return_url();
+    // logged in user
+    $this->assertTrue($url === 'user/logout');
+  }
+}
