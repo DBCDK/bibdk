@@ -329,6 +329,7 @@ function bibdk_heimdal_get_login_link(){
     '#title' => bibdk_heimdal_get_logo(),
     '#options' => array(
       'html' => TRUE,
+      'attributes' => array('id' => array('bibdk-heimdal-login-link')),
     ),
   );
 }
