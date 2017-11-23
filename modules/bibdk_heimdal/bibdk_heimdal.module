@@ -277,6 +277,22 @@ function bibdk_heimdal_do_logout($url = '/user/logout') {
   }
 }
 
+/** Implements hook_form_FORM_ID_alter (user_login)
+ *
+ * add heimdal login link to user login form
+ */
+function bibdk_heimdal_form_user_login_alter(&$form, &$form_state) {
+  $config = variable_get('ding_wayf', NULL);
+  if(!$config['heimdallogin']){
+    return;
+  }
+
+  $form['login_methods'][] = array(
+    '#markup' => bibdk_heimdal_login_link(),
+    '#weight' => -2,
+  );
+}
+
 /**
  * Get heimdal login link from config settings
  *
@@ -285,43 +301,82 @@ function bibdk_heimdal_do_logout($url = '/user/logout') {
  */
 function bibdk_heimdal_login_link() {
   global $user;
-
   if ($user->uid == 0) {
-    $config = variable_get('ding_wayf', NULL);
-    $accessplatform = isset($config['heimdallogin']) ? $config['heimdallogin'] : FALSE;
-    if ($accessplatform) {
-      $token = variable_get('heimdal_access_token');
-      $heimdal_link = $config['hosturl'] . $config['loginpath'] . '?token=' . $token . '&destination=heimdal/login';
-      $logo_path = base_path() . drupal_get_path('theme', $GLOBALS['theme']);
-      $logo_path .= '/img/in_use/bibliotekslogin_logo.png';
-      $logo_alt_text_accessplatform = t('logo_alt_text_accessplatform', array(), array('context' => 'heimdal'));
-
-      $wrapper['login_link'] = array(
-        '#prefix' => '<div id="block-ding-wayf-login" class="block block-ding-wayf biblogin"><div id="bibliotekslogin">',
-        '#suffix' => '</div></div></div>',
-        '#type' => 'link',
-        '#title' => '<img src="' . $logo_path . '" alt="' . $logo_alt_text_accessplatform . '"/>',
-        '#href' => $heimdal_link,
-        '#options' => array(
-          'html' => TRUE,
-        ),
+    $url = bibdk_heimdal_get_login_url();
+    if (!empty($url)) {
+      $wrapper = bibdk_heimdal_login_wrapper();
+      $wrapper['helptxt'] = array(
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#value' => t('BIBLOGIN_leadtext', array(), array('options'=>array('context' => 'heimdal'))),
       );
-      return drupal_render($wrapper);
+      $wrapper['link'] = bibdk_heimdal_get_login_link();
     }
+    return drupal_render($wrapper);
   }
+
   return '';
 }
 
-/** Implements hook_form_FORM_ID_alter (user_login)
- *
- * add heimdal login block to form['actions']
+/**
+ * Get a link to render
+ * @return array
  */
-function bibdk_heimdal_form_user_login_alter(&$form, &$form_state) {
-  $form['actions']['heimdal_login'] = array(
-    '#markup' => bibdk_heimdal_login_link(),
-    '#weight' => 110,
+function bibdk_heimdal_get_login_link(){
+  return array(
+    '#type' => 'link',
+    '#href' => bibdk_heimdal_get_login_url(),
+    '#title' => bibdk_heimdal_get_logo(),
+    '#options' => array(
+      'html' => TRUE,
+    ),
   );
 }
+
+/**
+ * Get logo and alt text.
+ * @return array
+ */
+function bibdk_heimdal_get_logo(){
+  $logo_path = base_path() . drupal_get_path('theme', $GLOBALS['theme']);
+  $logo_path .= '/img/in_use/bibliotekslogin_logo.png';
+  $logo_alt_text_accessplatform = t('logo_alt_text_accessplatform', array(), array('context' => 'heimdal'));
+  return array(
+    '#theme' => 'image',
+    '#path' => $logo_path,
+    '#alt' => $logo_alt_text_accessplatform,
+    '#title' => 'Heimdal logo',
+  );
+}
+
+/**
+ * Get the url for heimdal login
+ * @return string
+ */
+function bibdk_heimdal_get_login_url(){
+  $config = variable_get('ding_wayf', NULL);
+  $accessplatform = isset($config['heimdallogin']) ? $config['heimdallogin'] : FALSE;
+  $heimdal_url = '';
+  if ($accessplatform) {
+    $token = variable_get('heimdal_access_token');
+    $heimdal_url = $config['hosturl'] . $config['loginpath'] . '?token=' . $token . '&destination=heimdal/login';
+  }
+  return $heimdal_url;
+}
+
+/**
+ * Get a wrapper for heimdal login
+ * @return array
+ */
+function bibdk_heimdal_login_wrapper(){
+  $wrapper = array(
+    '#type' => 'container',
+    '#attributes' => array('class'=>array('bibdk-login-method')),
+  );
+  return $wrapper;
+}
+
+
 
 /**
  * Get new access token
