@@ -246,11 +246,6 @@ function bibdk_frontend_menu_alter(&$items) {
  * @param string $form_id
  */
 function bibdk_frontend_form_user_login_alter(&$form, $form_state, $form_id) {
-  // check if a button has been clicked
-  if (empty($form_state['input']['op'])) {
-    drupal_set_message(t('use_bibdk_login__not_library_id', array(), array('context' => 'bibdk_frontend')), 'warning');
-  }
-
   // name is an email
   $form['name']['#type'] = "emailfield";
   //disabel client side validation
