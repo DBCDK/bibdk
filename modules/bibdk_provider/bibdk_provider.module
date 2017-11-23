@@ -20,6 +20,27 @@ function bibdk_provider_menu() {
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter (user_login_form)
+ * add a lead text form bibliotek.dk login
+ *
+ * @param $form
+ * @param $form_state
+ */
+function bibdk_provider_form_user_login_alter(&$form, $form_state){
+  $form['bibliotekdk_leadtext'] = array(
+    '#type' => 'html_tag',
+    '#tag' => 'h2',
+    '#value' => t('BIBLIOTEKDK_leadtext', array(), array('options'=>array('context' => 'bibdk_provider'))),
+    '#weight' => -1,
+    '#attributes' => array(
+      'class' => array(
+        'bibliotekdk-login-leadtxt'
+      )
+    )
+  );
+}
+
+/**
  * Implements hook_username_alter().
  * show email address instead of username when administering people
  */
