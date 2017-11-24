@@ -15,13 +15,8 @@ class bibdkNetarchiveUnitTest extends DrupalWebTestCase {
   }
 
   public function setUp() {
-    parent::setUp('bibdk_netarchive');
+    parent::setUp('bibdk_netarchive', 'features', 'bibdk_webservice_settings_develop');
     $this->profile = 'minimal';
-
-    //search service
-    variable_set('ting_search_url',     'http://opensearch.addi.dk/b3.0_4.3/');
-    variable_set('ting_search_profile', 'default');
-    variable_set('ting_agency',         '190101');
 
     //NetArchive service
     $var = array(

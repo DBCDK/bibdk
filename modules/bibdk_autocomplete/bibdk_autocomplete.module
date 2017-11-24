@@ -170,6 +170,8 @@ highlight.post=%3C/em%3E
   watchdog('bibdk_autocomplete', 'Autocomplete URL sent: ' . $url, array(), $severity = WATCHDOG_DEBUG);
 
   $curl = new MicroCURL();
+  $headers = array('Accept: application/json');
+  $curl->set_option(CURLOPT_HTTPHEADER, $headers);
   $result = json_decode($curl->get(array($url)));
   $curl->close();
 
