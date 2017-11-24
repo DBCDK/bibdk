@@ -153,7 +153,7 @@ function bibdk_heimdal_select_email_form($form, $form_state) {
   $form = array(
     'help' => array(
       '#type' => 'html_tag',
-      '#tag' => 'div',
+      '#tag' => 'p',
       '#attributes' => array(
         'class' => array(
           'heimdal_email_verify'
