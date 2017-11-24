@@ -20,6 +20,27 @@ function bibdk_provider_menu() {
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter (user_login_form)
+ * add a lead text form bibliotek.dk login
+ *
+ * @param $form
+ * @param $form_state
+ */
+function bibdk_provider_form_user_login_alter(&$form, $form_state){
+  $form['bibliotekdk_leadtext'] = array(
+    '#type' => 'html_tag',
+    '#tag' => 'h2',
+    '#value' => t('BIBLIOTEKDK_leadtext', array(), array('options'=>array('context' => 'bibdk_provider'))),
+    '#weight' => -1,
+    '#attributes' => array(
+      'class' => array(
+        'bibliotekdk-login-leadtxt'
+      )
+    )
+  );
+}
+
+/**
  * Implements hook_username_alter().
  * show email address instead of username when administering people
  */
@@ -47,6 +68,7 @@ function bibdk_provider_form_user_register_form_alter(&$form, &$form_state) {
   $form['#validate'][] = 'bibdk_provider_user_register_form_validate';
 
   // Alter form for wayf registration
+
   bibdk_provider_wayf_alter_user_register_form($form, $form_state);
 }
 
@@ -166,7 +188,7 @@ function bibdk_provider_form_user_profile_form_alter(&$form, &$form_state) {
   if (isset($form['account']['pass']['#process']) && (($position = array_search('user_form_process_password_confirm', $form['account']['pass']['#process'])) !== FALSE)) {
     unset($form['account']['pass']['#process'][$position]);
   }
- 
+
   // Move 'Cancel Account' button before 'Save'
   $form['actions']['submit'] += array(
     '#weight' => 0,
@@ -347,6 +369,10 @@ function bibdk_provider_ding_provider() {
         'prefix' => 'agency',
         'file' => drupal_get_path('module', 'bibdk_provider') . '/bibdk_provider.agency.inc',
       ),
+      'heimdal' => array(
+        'prefix' => 'heimdal',
+        'file' => drupal_get_path('module', 'bibdk_provider') . '/bibdk_provider.heimdal.inc',
+      )
     ),
   );
 }

@@ -1,0 +1,14 @@
+name = Heimdal
+description = Implementation of login with Heimdal.
+core = 7.x
+version = 7.x-0.1-dbc.1
+package = bibdk
+
+files[] = includes/bibdkHeimdalCurl.inc
+files[] = includes/bibdkHeimdalUser.inc
+
+files[] = test/bibdk_heimdal_unit.test
+files[] = test/bibdk_heimdal_web.test
+
+dependencies[] = microcurl
+dependencies[] = bibdk_favourite

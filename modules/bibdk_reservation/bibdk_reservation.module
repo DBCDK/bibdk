@@ -299,7 +299,7 @@ function bibdk_reservation_create_wizard_form($form, &$form_state) {
       '#submit' => array('bibdk_reservation_mail_form_submit'),
       '#name' => 'sendmail',
       '#value' => t('sendmail', array(), array('context' => 'bibdk_reservation')),
- 
+
     );
 
     //Add a print button
@@ -391,6 +391,7 @@ function bibdk_reservation_check_order_library(&$form_state) {
     return TRUE;
   }
 
+  // @TODO use bibdk_favourite_get_favourites() here
   $favourites = _bibdk_favourite_get_from_webservice();
   $ret = FALSE;
   if (!empty($favourites)) {

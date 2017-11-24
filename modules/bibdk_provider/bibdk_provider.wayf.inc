@@ -100,7 +100,13 @@ function bibdk_provider_wayf_validate(&$form, &$form_state) {
 }
 
 
-function bibdk_provider_wayf_login_creds($authentication_attributes, $notify_by_mail) {
+/**
+ * Get login creds for logging in with wayf
+ * @param $authentication_attributes
+ * @param null $notify_by_mail
+ * @return mixed
+ */
+function bibdk_provider_wayf_login_creds($authentication_attributes, $notify_by_mail=null) {
   // set authentication provider for ding_user (@see ding_user_user_login_validate)
   $form_state['values']['authentication_provider'] = 'wayf';
 
@@ -350,7 +356,7 @@ function bibdk_provider_accept_form_bind_and_login($account) {
       // notice for the user
       drupal_set_message(t('Sorry we could not bind your wayf_id with your account', array(), array('context' => 'ding_wayf')), 'warning');
       // error for the log
-      watchdog('wayf login', 'bibdk_provider::bind_wayf failed in binding %username with %wayf_id', array('%username' => $username, '%wayf_id' => $wayf_id), WATCHDOG_ERROR);
+      watchdog('wayf login', 'bibdk_provider::bind_wayf failed in binding %username with %wayf_id', array('%username' => $account->mail, '%wayf_id' => $wayf_id), WATCHDOG_ERROR);
     }
   }
 }
