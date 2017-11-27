@@ -54,17 +54,6 @@ function bibdk_autocomplete($p_uuid, $v_uuid, $string, $retry = false) {
   $value_vars = $vars[$p_uuid]['vars'][$v_uuid];
   unset($value_vars['autocomplete']);
 
-/* ex.:
-http://0.ortograf.xp.prod.mcp1.dbc.dk/solr/ortograf/suggest_title?q=har
-http://0.ortograf.xp.prod.mcp1.dbc.dk/solr/ortograf/suggest_creator?q=volt&rows=5
-http://0.ortograf.xp.prod.mcp1.dbc.dk/solr/ortograf/suggest_subject?q=spi&wt=xml
-http://0.ortograf.xp.prod.mcp1.dbc.dk/solr/ortograf/suggest_all?q=har&debug=true
-*/
-
-/* settings ex.:
-maxSuggestions=10
-*/
-
   $options['query'] = array('q' => check_plain($string)) + $settings;
   $options['query']['type'] = $value_vars['type'];
   $url = url($url, $options);
@@ -76,6 +65,7 @@ maxSuggestions=10
   $curl->set_option(CURLOPT_HTTPHEADER, $headers);
   $curl_get = $curl->get(array($url));
   $result = json_decode($curl->get(array($url)));
+  
   if (!is_object($result)) {
     watchdog('bibdk_autocomplete', 'Autocomplete ERROR: ' . print_r($curl_get, 1). '. Autocomplete URL: ' . $url, array(), $severity = WATCHDOG_WARNING);
     drupal_json_output(array());
@@ -152,6 +142,7 @@ function bibdk_autocomplete_form_search_block_form_alter(&$form, &$form_state, $
       $page_path = $_GET['q'];
     }
   }
+  
   $autocomplete_elements = variable_get('bibdk_autocomplete_var', array());
   foreach ($autocomplete_elements as $key => $page) {
     if ($page['page_path'] == $page_path) {
