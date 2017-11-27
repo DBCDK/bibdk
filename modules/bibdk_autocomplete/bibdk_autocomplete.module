@@ -10,11 +10,11 @@
  */
 function bibdk_autocomplete_menu() {
 
-  $items['bibdk/autocomplete/custom_search/%/%'] = array(
+  $items['bibdk/autocomplete/%/%'] = array(
     'title' => 'Bibliotek.dk autocomplete',
     'description' => 'Autocomplete callback',
     'page callback' => 'bibdk_autocomplete',
-    'page arguments' => array(3, 4),
+    'page arguments' => array(2, 3),
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
@@ -152,7 +152,7 @@ function bibdk_autocomplete_form_search_block_form_alter(&$form, &$form_state, $
   }
 
   $form['search_block_form']['#autocomplete_path'] =
-    'bibdk/autocomplete/custom_search/' . $p_uuid . '/search_block_form';
+    'bibdk/autocomplete/' . $p_uuid . '/search_block_form';
 
   if (!empty($vars)) {
     foreach ($vars as $v_uuid => $values) {
@@ -181,7 +181,7 @@ function bibdk_autocomplete_set_path(&$form, $elements, $element_label, $values,
     foreach ($elements as $element_uuid => $element_val) {
       foreach ($element_val as $element_key => $element_var) {
         if (is_array($element_var) && isset($element_var['#id']) && $element_var['#id'] == $values['id'] && $values['autocomplete']) {
-          $form['advanced'][$region][$element_label][$element_uuid][$element_key]['#autocomplete_path'] = 'bibdk/autocomplete/custom_search/' . $p_uuid . '/' . $v_uuid;
+          $form['advanced'][$region][$element_label][$element_uuid][$element_key]['#autocomplete_path'] = 'bibdk/autocomplete/' . $p_uuid . '/' . $v_uuid;
         }
       }
     }
