@@ -10,14 +10,6 @@
  */
 function bibdk_autocomplete_menu() {
 
-  $items['bibdk/autocomplete/search_block_form'] = array(
-    'title' => 'Bibliotek.dk autocomplete',
-    'description' => 'Autocomplete callback',
-    'page callback' => 'bibdk_autocomplete_search_block_form',
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
-  );
-
   $items['bibdk/autocomplete/custom_search/%/%'] = array(
     'title' => 'Bibliotek.dk autocomplete',
     'description' => 'Autocomplete callback',
@@ -40,56 +32,6 @@ function bibdk_autocomplete_menu() {
 }
 
 
-
-/**
- * search_block_form callback function, used when input is entered in a search field.
- *
- * @param      $string
- * @param bool $retry -- the server tends to respond with a error 500 however
- *                       retrying once seems to fix it most of the times.
- */
-function bibdk_autocomplete_search_block_form($string, $retry = false) {
-  if (strlen($string) < 3) {
-    drupal_json_output(array());
-    drupal_exit();
-  }
-  
-  $items = array();
-  $settings = variable_get('bibdk_autocomplete_settings', array());
-  $url = 'http://0.ortograf.xp.prod.mcp1.dbc.dk/solr/ortograf/suggest_all';
-
-  $filter_array = bibdk_autocomplete_parse_filters($string);
-  $search_string = key($filter_array);
-
-  $options['query'] = array('q' => check_plain($search_string)) + $settings;
-  $url = url($url, $options);
-
-  watchdog('bibdk_autocomplete', 'Autocomplete URL sent: ' . $url, array(), $severity = WATCHDOG_DEBUG);
-
-  $curl = new MicroCURL();
-  $result = json_decode($curl->get(array($url)));
-  $curl->close();
-
-  if (!empty($result->response)) {
-    foreach ($result->response->docs as $suggestion) {
-      $string = $suggestion->all;
-      if (strpos($string, ' ')) {
-        // contains blank
-        $items['"' . bibdk_autocomplete_truncate(html_entity_decode(strip_tags($string)), 64) . '"'] = $string;
-      } else {
-        $items[bibdk_autocomplete_truncate(html_entity_decode(strip_tags($string)), 64)] = $string;
-      }
-    }
-  } else if (!empty($result->error)) {
-    watchdog('bibdk_autocomplete', 'Autocomplete return empty set for ' . $url, array(), $severity = WATCHDOG_WARNING);
-    $items = array();
-  }
-  // Return the result to the form in json
-  drupal_json_output($items);
-  drupal_exit();
-}
-
-
 /**
  * Callback function used when input is entered in a search field.
  *
@@ -98,6 +40,7 @@ function bibdk_autocomplete_search_block_form($string, $retry = false) {
  * @param      $string
  * @param bool $retry -- the server tends to respond with a error 500 however
  *                       retrying once seems to fix it most of the times.
+ * @see: https://github.com/DBCDK/ortograf
  */
 function bibdk_autocomplete($p_uuid, $v_uuid, $string, $retry = false) {
   if (strlen($string) < 3) {
@@ -110,23 +53,7 @@ function bibdk_autocomplete($p_uuid, $v_uuid, $string, $retry = false) {
   $vars = variable_get('bibdk_autocomplete_var', array());
   $value_vars = $vars[$p_uuid]['vars'][$v_uuid];
   unset($value_vars['autocomplete']);
-  if (empty($value_vars['index'])) {
-    watchdog('bibdk_autocomplete', 'Autocomplete index not defined for value uuid ' . $v_uuid, array(), $severity = WATCHDOG_WARNING);
-    drupal_json_output(array());
-    drupal_exit();
-  }
-  $filter_array = bibdk_autocomplete_parse_filters($string);
-  $search_string = key($filter_array);
-/*
-  $filter_string = bibdk_autocomplete_set_filter_query($filter_array[$search_string]);
-  if (!empty($filter_string)) {
-    if (!empty($value_vars['filterQuery'])) {
-      $value_vars['filterQuery'] .= ' AND ' . $filter_string;
-    } else {
-      $value_vars['filterQuery'] = $filter_string;
-    }
-  }
-*/
+
 /* ex.:
 http://0.ortograf.xp.prod.mcp1.dbc.dk/solr/ortograf/suggest_title?q=har
 http://0.ortograf.xp.prod.mcp1.dbc.dk/solr/ortograf/suggest_creator?q=volt&rows=5
@@ -135,36 +62,11 @@ http://0.ortograf.xp.prod.mcp1.dbc.dk/solr/ortograf/suggest_all?q=har&debug=true
 */
 
 /* settings ex.:
-agency=190101
 maxSuggestions=10
-maxTime=
-profile=default
-highlight=0
-highlight.pre=%3Cem%3E
-highlight.post=%3C/em%3E
 */
 
-  $options['query'] = array('q' => check_plain($search_string)) + $settings;
-
-  switch ($value_vars['id']) {
-    case 'input-forfatter':
-      $url = 'http://0.ortograf.xp.prod.mcp1.dbc.dk/solr/ortograf/suggest_creator';
-      break;
-    case 'input-titel':
-      $url = 'http://0.ortograf.xp.prod.mcp1.dbc.dk/solr/ortograf/suggest_title';
-      break;
-    case 'input-emne':
-      $url = 'http://0.ortograf.xp.prod.mcp1.dbc.dk/solr/ortograf/suggest_subject';
-      break;
-  }
-  
-  /*
-  $settings['highlight'] = ($settings['highlight']) ? 'true' : null;
-  $options['query'] = array('query' => check_plain($search_string)) + $value_vars + $settings;
-  $options['maxTime'] = 300;
-  $url = ($value_vars['facetIndex']) ? $url . '/facetSpell' : $url . '/terms';
-  */
-
+  $options['query'] = array('q' => check_plain($string)) + $settings;
+  $options['query']['type'] = $value_vars['type'];
   $url = url($url, $options);
 
   watchdog('bibdk_autocomplete', 'Autocomplete URL sent: ' . $url, array(), $severity = WATCHDOG_DEBUG);
@@ -172,22 +74,32 @@ highlight.post=%3C/em%3E
   $curl = new MicroCURL();
   $headers = array('Accept: application/json');
   $curl->set_option(CURLOPT_HTTPHEADER, $headers);
+  $curl_get = $curl->get(array($url));
   $result = json_decode($curl->get(array($url)));
+  if (!is_object($result)) {
+    watchdog('bibdk_autocomplete', 'Autocomplete ERROR: ' . print_r($curl_get, 1). '. Autocomplete URL: ' . $url, array(), $severity = WATCHDOG_WARNING);
+    drupal_json_output(array());
+    drupal_exit();
+  }
   $curl->close();
 
   if (!empty($result->response)) {
     foreach ($result->response->docs as $suggestion) {
-      switch ($value_vars['id']) {
-        case 'input-forfatter':
+      switch ($value_vars['type']) {
+        case 'creator':
           $string = $suggestion->creator;
           break;
-        case 'input-titel':
+        case 'title':
           $string = $suggestion->title;
           break;
-        case 'input-emne':
+        case 'subject':
           $string = $suggestion->subject;
           break;
+        case 'all':
+          $string = $suggestion->all[0];
+          break;
       }
+
       if (strpos($string, ' ')) {
         // contains blank
         $items['"' . bibdk_autocomplete_truncate(html_entity_decode(strip_tags($string)), 64) . '"'] = $string;
@@ -196,7 +108,7 @@ highlight.post=%3C/em%3E
       }
     }
   } else if (!empty($result->error)) {
-    watchdog('bibdk_autocomplete', 'Autocomplete return empty set for ' . $url, array(), $severity = WATCHDOG_WARNING);
+    watchdog('bibdk_autocomplete', 'Autocomplete ERROR: ' . print_r($result->error, 1), array(), $severity = WATCHDOG_WARNING);
     $items = array();
   }
   // Return the result to the form in json
@@ -204,35 +116,6 @@ highlight.post=%3C/em%3E
   drupal_exit();
 }
 
-function bibdk_autocomplete_parse_filters($filter_string) {
-  $search_filter = explode('::::', $filter_string);
-  $search_string = $search_filter[0];
-  $filter_array = array();
-  for ($i = 1; $i < count($search_filter); $i++) {
-    $filter = array();
-    $elements = explode('$$', $search_filter[$i]);
-    $filter['v_uuid'] = $elements[0];
-    $filter['p_uuid'] = $elements[1];
-    $filter['term'] = $elements[2];
-    $filter_array[] = $filter;
-  }
-  return array($search_string => $filter_array);
-}
-
-function bibdk_autocomplete_set_filter_query(array $filters) {
-  $filter_query = '';
-  $vars = variable_get('bibdk_autocomplete_var', array());
-  foreach ($filters as $filter) {
-    $values = $vars[$filter['p_uuid']]['vars'][$filter['v_uuid']];
-    if (!empty($filter_query)) {
-      $filter_query .= ' AND ';
-    }
-    // trim qoutes if any
-    $term = trim($filter['term'], '"');
-    $filter_query .= $values['facetIndex'] . '=' . '"' . $term . '"';
-  }
-  return $filter_query;
-}
 
 /**
  * helper function for bibdk_autocomplete()
@@ -269,7 +152,6 @@ function bibdk_autocomplete_form_search_block_form_alter(&$form, &$form_state, $
       $page_path = $_GET['q'];
     }
   }
-
   $autocomplete_elements = variable_get('bibdk_autocomplete_var', array());
   foreach ($autocomplete_elements as $key => $page) {
     if ($page['page_path'] == $page_path) {
@@ -277,6 +159,9 @@ function bibdk_autocomplete_form_search_block_form_alter(&$form, &$form_state, $
       $p_uuid = $key;
     }
   }
+
+  $form['search_block_form']['#autocomplete_path'] =
+    'bibdk/autocomplete/custom_search/' . $p_uuid . '/search_block_form';
 
   if (!empty($vars)) {
     foreach ($vars as $v_uuid => $values) {
@@ -329,31 +214,31 @@ function bibdk_autocomplete_help($path, $arg) {
  * @return array
  *
  */
-function bibdk_autocomplete_0_hit_search($conditions) {
-
+function bibdk_autocomplete_0_hit_search($string) {
   $settings = variable_get('bibdk_autocomplete_settings', array());
   $url = variable_get('bibdk_autocomplete_rest_url', null);
 
-  $value_vars = array();
-  $value_vars['index'] = 'scanterm.default';
-  $value_vars['facetIndex'] = 'scanphrase.default';
-  $value_vars['agency'] = $settings['agency'];
-  $value_vars['profile'] = $settings['profile'];
-  $url = $url . '/facetSpell';
-  $settings['highlight'] = ($settings['highlight']) ? 'true' : null;
-  $options['query'] = array('query' => check_plain($conditions)) + $value_vars + $settings;
-  $options['maxTime'] = 300;
+  $options['query'] = array('q' => check_plain($string)) + $settings;
+  $options['query']['type'] = 'all';
   $url = url($url, $options);
+
+  watchdog('bibdk_autocomplete', 'Autocomplete URL sent: ' . $url, array(), $severity = WATCHDOG_DEBUG);
+
   $curl = new MicroCURL();
+  $headers = array('Accept: application/json');
+  $curl->set_option(CURLOPT_HTTPHEADER, $headers);
   $result = json_decode($curl->get(array($url)));
   $curl->close();
 
   $items = array();
-  if (!empty($result->suggestions)) {
-    foreach ($result->suggestions as $suggestion) {
-      $items[bibdk_autocomplete_truncate(html_entity_decode(strip_tags($suggestion->phrase)), 64)] = $suggestion->phrase;
+  if (!empty($result->response)) {
+    foreach ($result->response->docs as $suggestion) {
+      $items[] = $suggestion->all[0];
     }
-  }
+  } else if (!empty($result->error)) {
+    watchdog('bibdk_autocomplete', 'Autocomplete return empty set for ' . $url, array(), $severity = WATCHDOG_WARNING);
+  }  
+  
   $link_items = bibdk_make_item_list($items);
 
   return $link_items;
