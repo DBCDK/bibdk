@@ -75,7 +75,7 @@ function bibdk_heimdal_verify_email_validate($form, &$form_state) {
 }
 
 /**
- * Submit function form verify_email_form
+ * Submit function for verify_email_form. This is an ajax submit,
  * @param $form
  * @param $form_state
  */
@@ -85,7 +85,7 @@ function bibdk_heimdal_verify_email_form_submit($form, &$form_state) {
   // save on database before sending email
   $key = heimdalDatabase::insert($mail, $agencies);
   if($key === FALSE){
-    bibdk_heimdal_cleanup_and_exit();
+    bibdk_heimdal_cleanup_and_exit(TRUE);
   }
 
   $row = heimdalDatabase::get($key);
@@ -93,11 +93,28 @@ function bibdk_heimdal_verify_email_form_submit($form, &$form_state) {
     bibdk_heimdal_send_verification_mail($row);
   }
   else {
-    bibdk_heimdal_cleanup_and_exit();
+    // this is an ajax submit - to redirect pass ajax to method
+    bibdk_heimdal_cleanup_and_exit(TRUE);
   }
   // an email has been sent - start from scratch
   unset($_SESSION['heimdal']);
+
   drupal_set_message(t('an_email_has_been_sent_help_txt', array(), array('context' => 'heimdal')));
+  // should we log out here? user is still logged in with heimdal
+  //bibdk_heimdal_do_logout('/', TRUE);
+}
+
+/**
+ * Do an ajax redirect;
+ * @param $path
+ *   the path to redirect to
+ */
+function bibdk_heimdal_forms_ctools_redirect($path){
+  ctools_include('ajax');
+  ctools_add_js('ajax-responder');
+  $commands[] = ctools_ajax_command_redirect($path);
+  print ajax_render($commands);
+  drupal_exit();
 }
 
 
