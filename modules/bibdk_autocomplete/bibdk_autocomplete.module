@@ -42,8 +42,8 @@ function bibdk_autocomplete_menu() {
  *                       retrying once seems to fix it most of the times.
  * @see: https://github.com/DBCDK/ortograf
  */
-function bibdk_autocomplete($p_uuid, $v_uuid, $string, $retry = false) {
-  if (strlen($string) < 3) {
+function bibdk_autocomplete($p_uuid, $v_uuid, $input, $retry = false) {
+  if (strlen($input) < 3) {
     drupal_json_output(array());
     drupal_exit();
   }
@@ -54,7 +54,7 @@ function bibdk_autocomplete($p_uuid, $v_uuid, $string, $retry = false) {
   $value_vars = $vars[$p_uuid]['vars'][$v_uuid];
   unset($value_vars['autocomplete']);
 
-  $options['query'] = array('q' => check_plain($string)) + $settings;
+  $options['query'] = array('q' => check_plain($input)) + $settings;
   $options['query']['type'] = $value_vars['type'];
   $url = url($url, $options);
 
@@ -66,8 +66,9 @@ function bibdk_autocomplete($p_uuid, $v_uuid, $string, $retry = false) {
   $curl_get = $curl->get(array($url));
   $result = json_decode($curl->get(array($url)));
   
-  if (!is_object($result)) {
-    watchdog('bibdk_autocomplete', 'Autocomplete ERROR: ' . print_r($curl_get, 1). '. Autocomplete URL: ' . $url, array(), $severity = WATCHDOG_WARNING);
+  if ($curl->has_error() || !is_object($result)) {
+    $error_msg = ($curl->has_error()) ? 'cURL error: ' . $curl->has_error() : 'Response: "' . print_r($curl_get, 1) . '"';
+    watchdog('bibdk_autocomplete', 'Autocomplete ERROR: ' . $error_msg . '. Autocomplete URL: ' . $url, array(), $severity = WATCHDOG_WARNING);
     drupal_json_output(array());
     drupal_exit();
   }
@@ -126,6 +127,7 @@ function bibdk_autocomplete_truncate($string, $width) {
   return implode(array_slice($parts, 0, $last_part));
 }
 
+
 /**
  * Implements hook_form_FORM_ID_alter() for form search_block_form.
  */
@@ -173,6 +175,7 @@ function bibdk_autocomplete_form_search_block_form_alter(&$form, &$form_state, $
   return $form;
 }
 
+
 /**
  * helper function for hook_form_FORM_ID_alter()
  */
@@ -188,6 +191,7 @@ function bibdk_autocomplete_set_path(&$form, $elements, $element_label, $values,
   }
 }
 
+
 /**
  * Implements hook_help().
  */
@@ -199,6 +203,7 @@ function bibdk_autocomplete_help($path, $arg) {
       break;
   }
 }
+
 
 /**
  * Implements hook_0_hit().
@@ -234,6 +239,7 @@ function bibdk_autocomplete_0_hit_search($string) {
 
   return $link_items;
 }
+
 
 /**
  * helper function for 0_hit_search()

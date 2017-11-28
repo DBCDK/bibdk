@@ -62,17 +62,16 @@ function bibdk_autocomplete_admin() {
 
   $p_uuids = $freetext = array();
   foreach ($result as $value) {
-    if (in_array($value->p_uuid, $p_uuids)) {
-      continue;
+    if (!in_array($value->p_uuid, $p_uuids)) {
+      $p_uuids[] = $value->p_uuid;
+      $freetext[] = (object)[
+        'p_uuid' => $value->p_uuid, 
+        'v_uuid' => 'search_block_form', 
+        'menu_title' => $value->menu_title, 
+        'element_label' => 'Fritekst',
+        'page_path' => $value->page_path,
+      ];
     }
-    $p_uuids[] = $value->p_uuid;
-    $freetext[] = (object)[
-      'p_uuid' => $value->p_uuid, 
-      'v_uuid' => 'search_block_form', 
-      'menu_title' => $value->menu_title, 
-      'element_label' => 'Fritekst',
-      'page_path' => $value->page_path,
-    ];
   }
   $result = array_merge($result, $freetext);
 
