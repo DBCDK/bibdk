@@ -133,17 +133,54 @@ function bibdk_heimdal_check_timestamp($time) {
  */
 function bibdk_heimdal_do_insert_culr($row) {
   $agencies = unserialize($row['libraries']);
+
   if (empty($agencies)) {
-    $agencies = array();
+    return array();
   }
   $response = array();
   $mail = $row['email'];
-  foreach ($agencies as $agency) {
-    $borrowerId = $agency['userId'];
-    $uidType = $agency['userIdType'];
-    $response[$agency['agencyId']][] = BibdkUser::instance()->insertCulr($mail, $borrowerId, $uidType);
+  // there can be only ONE bibliotek.dk account on culr
+  // pick the first - if there are more they have the same userId
+  // that is how culr works
+  $agency = $agencies[0];
+  $borrowerId = $agency['userId'];
+  $uidType = $agency['userIdType'];
+  $xml = BibdkUser::instance()->insertCulr($mail, $borrowerId, $uidType);
+  if (bibdk_heimdal_pages_check_insert($xml)) {
+    $response[$agency['agencyId']][] = $xml;
   }
+  else {
+    bibdk_heimdal_cleanup_and_exit();
+  }
+
   return $response;
+}
+
+/**
+ * Check answer from insertCulr action.
+ * @param $xml
+ *   answer to check for errors
+ * @return bool
+ *   False if an error (oui:error) is present
+ */
+function bibdk_heimdal_pages_check_insert($xml) {
+  $dom = new DomDocument();
+  if (!@$dom->loadXML($xml)) {
+    watchdog('heimdal', 'could not load xml: %xml', array('%xml' => $xml), WATCHDOG_ERROR);
+    return FALSE;
+  }
+  $xpath = new DomXPATH($dom);
+  $xpath->registerNamespace('oui', 'http://oss.dbc.dk/ns/openuserinfo');
+
+  $query = '//' . 'oui:error';
+  $nodelist = $xpath->query($query);
+
+  if ($nodelist->length > 0) {
+    watchdog('heimdal', $nodelist->item(0)->nodeValue, array(), WATCHDOG_ERROR);
+    return FALSE;
+  }
+
+  return TRUE;
 }
 
 /**

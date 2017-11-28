@@ -127,15 +127,18 @@ function bibdk_heimdal_get_form_state($heimdal_user){
 }
 
 /**
- * If an error ocuurs ..
+ * If an error ocuurs .. set a message and do a redirect
+ *
+ * @param bool $ajax
+ *   If ajax is set to true a client side javascript will trigger the redirect
  */
-function bibdk_heimdal_cleanup_and_exit(){
+function bibdk_heimdal_cleanup_and_exit($ajax = FALSE){
   drupal_set_message(t('An error occured while logging in - please try again'), 'error');
 
   if (isset($_SESSION['heimdal'])) {
     if ($_SESSION['heimdal']['logged_in']) {
       $url = bibdk_heimdal_get_return_url();
-      bibdk_heimdal_do_logout($url);
+      bibdk_heimdal_do_logout($url, $ajax);
     }
   }
   if (isset($_SESSION['heimdal'])) {
@@ -266,14 +269,23 @@ function bibdk_heimdal_user_logout() {
 }
 
 /**
- * Heimdal do logout
- *
+ * Do a logout of heimdal.
+ * @param string $url
+ *   The url to go to after logout
+ * @param bool $ajax
+ *   Do an ajax redirect or not
  */
-function bibdk_heimdal_do_logout($url = '/user/logout') {
+function bibdk_heimdal_do_logout($url = '/user/logout', $ajax = fALSE) {
   if (isset($_SESSION['heimdal'])) {
     unset($_SESSION['heimdal']);
     $config = variable_get('ding_wayf', NULL);
-    drupal_goto($config['hosturl'] . '/logout?returnurl=' . $url);
+    $path = $config['hosturl'] . '/logout?returnurl=' . $url;
+
+    if($ajax){
+      bibdk_heimdal_forms_ctools_redirect($path);
+    }
+
+    drupal_goto($path);
   }
 }
 
