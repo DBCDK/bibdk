@@ -10,6 +10,7 @@
  * @return array
  */
 function bibdk_reservation_ting_openformat_actions($type, $entity, $view_mode, $langcode) {
+dpm(__FUNCTION__);
   $element = array();
   switch ($type) {
     case "bibdkManifestation" :
