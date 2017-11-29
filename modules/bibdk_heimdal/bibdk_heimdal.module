@@ -258,6 +258,10 @@ function bibdk_heimdal_get_heimdal_attributes() {
 
   $curl = new bibdkHeimdalCurl();
   $return_array = $curl->getAttributes($client_id, $token);
+  if($return_array === FALSE){
+    // this is a http error - abort
+    bibdk_heimdal_cleanup_and_exit();
+  }
   return $return_array;
 }
 

@@ -55,7 +55,7 @@ class bibdkHeimdalCurl extends MicroCURL {
    *
    * @param $clientId
    * @param $token
-   * @return array
+   * @return array | bool
    *   Json response parsed into an array or empty array if
    *   something goes wrong
    */
@@ -69,7 +69,7 @@ class bibdkHeimdalCurl extends MicroCURL {
       }
       return $attributes;
     }
-    return array();
+    return FALSE;
   }
 
 
