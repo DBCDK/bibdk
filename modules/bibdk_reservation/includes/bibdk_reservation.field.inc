@@ -65,7 +65,7 @@ function bibdk_reservation_field_formatter_view($entity_type, $entity, $field, $
     switch ($display['type']) {
       case "bibdk_reservation_button_default" :
         if ($entity->isReservable()) {
-          $element[$delta]['#markup'] = bibdk_reservation_link($entity->getIDs(), $entity->getSubType(), $entity_type);
+          $element[$delta]['#markup'] = bibdk_reservation_link($entity, $entity_type);
         }
         elseif ($entity->isLink()) {
           $info = $entity->getAccessInformation();
