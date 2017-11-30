@@ -74,8 +74,11 @@ function bibdk_autocomplete($p_uuid, $v_uuid, $input, $retry = false) {
   }
   $curl->close();
 
+dpm($result);
   if (!empty($result->response)) {
     foreach ($result->response->docs as $suggestion) {
+      $string = $suggestion->all[0];
+      /*
       switch ($value_vars['type']) {
         case 'creator':
           $string = $suggestion->creator;
@@ -90,6 +93,7 @@ function bibdk_autocomplete($p_uuid, $v_uuid, $input, $retry = false) {
           $string = $suggestion->all[0];
           break;
       }
+      */
 
       if (strpos($string, ' ')) {
         // contains blank
@@ -98,10 +102,13 @@ function bibdk_autocomplete($p_uuid, $v_uuid, $input, $retry = false) {
         $items[bibdk_autocomplete_truncate(html_entity_decode(strip_tags($string)), 64)] = $string;
       }
     }
-  } else if (!empty($result->error)) {
-    watchdog('bibdk_autocomplete', 'Autocomplete ERROR: ' . print_r($result->error, 1), array(), $severity = WATCHDOG_WARNING);
+  }
+  else if (!empty($result->statusCode)) {
+    // We only get a statuscode with errors atm.
+    watchdog('bibdk_autocomplete', 'Autocomplete ERROR: ' . print_r($result->value, 1), array(), $severity = WATCHDOG_WARNING);
     $items = array();
   }
+  
   // Return the result to the form in json
   drupal_json_output($items);
   drupal_exit();
