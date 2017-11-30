@@ -74,7 +74,6 @@ function bibdk_autocomplete($p_uuid, $v_uuid, $input, $retry = false) {
   }
   $curl->close();
 
-dpm($result);
   if (!empty($result->response)) {
     foreach ($result->response->docs as $suggestion) {
       $string = $suggestion->all[0];
