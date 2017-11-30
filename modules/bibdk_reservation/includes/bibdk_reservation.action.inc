@@ -13,7 +13,7 @@ function bibdk_reservation_ting_openformat_actions($type, $entity, $view_mode, $
 dpm(__FUNCTION__);
   $element = array();
   $subtype_order_ids = $entity->getSubtypeOrderIds();
-  switch ($type) {
+  switch ($type) { 
     case "bibdkManifestation" :
       if ($entity->isReservable() || ($entity->isLink() && $entity->getRestrictedExtendedUse())) {
         $element['reservation'] = array(
