@@ -96,9 +96,8 @@ function bibdk_heimdal_init() {
  * Do a login or redirect to appropiate page.
  */
 function bibdk_heimdal_redirect_login() {
-  $curl = new bibdkHeimdalCurl();
   // get the heimdal user
-  $heimdal_user = bibdk_heimdal_get_heimdal_user($curl);
+  $heimdal_user = bibdk_heimdal_get_heimdal_user();
   // next step checks the user and sets SESSION and form_state parameters for further handling
   // @see bibdk_provider/bibdk_provider.heimdal.inc::bibdk_provider_heimdal_login_creds()
   $form_state = bibdk_heimdal_get_form_state($heimdal_user);
@@ -342,7 +341,7 @@ function bibdk_heimdal_get_login_link(){
   return array(
     '#type' => 'link',
     '#href' => bibdk_heimdal_get_login_url(),
-    '#title' => bibdk_heimdal_get_logo(),
+    '#title' => bibdk_heimdal_get_logo() . bibdk_heimdal_get_nemid_logo(),
     '#options' => array(
       'html' => TRUE,
       'attributes' => array('id' => array('bibdk-heimdal-login-link')),
@@ -352,18 +351,39 @@ function bibdk_heimdal_get_login_link(){
 
 /**
  * Get logo and alt text.
- * @return array
+ * @return string
+ *   markup
  */
 function bibdk_heimdal_get_logo(){
   $logo_path = base_path() . drupal_get_path('theme', $GLOBALS['theme']);
   $logo_path .= '/img/in_use/bibliotekslogin_logo.png';
   $logo_alt_text_accessplatform = t('logo_alt_text_accessplatform', array(), array('context' => 'heimdal'));
-  return array(
+  $img = array(
     '#theme' => 'image',
     '#path' => $logo_path,
     '#alt' => $logo_alt_text_accessplatform,
     '#title' => 'Heimdal logo',
   );
+
+  return drupal_render($img);
+}
+
+/**
+ * Get the logo for nemid
+ * @return string
+ *   Markup
+ */
+function bibdk_heimdal_get_nemid_logo(){
+  $logo_path = base_path() . drupal_get_path('theme', $GLOBALS['theme']);
+  $logo_path .= '/img/in_use/nemid-logo.png';
+  $logo_alt_text_nemid = t('logo_alt_text_nemid', array(), array('context' => 'heimdal'));
+  $img = array(
+    '#theme' => 'image',
+    '#path' => $logo_path,
+    '#alt' => $logo_alt_text_nemid,
+    '#title' => 'Nemid logo',
+  );
+  return drupal_render($img);
 }
 
 /**
