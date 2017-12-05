@@ -10,6 +10,7 @@ module_load_include('inc', 'bibdk_reservation', 'includes/bibdk_reservation_form
 module_load_include('inc', 'bibdk_reservation', 'includes/bibdk_reservation_form_step_3');
 module_load_include('inc', 'bibdk_reservation', 'includes/bibdk_reservation_form_step_4');
 
+define('BIBDK_RESERVATION_STEPS', 3);
 /**
  * Implements hook_menu();
  */
@@ -146,7 +147,7 @@ function theme_bibdk_reservation_consortia_message($variables) {
  * Defines the steps in the reservation process
  * The file representing the step, should be written without .inc as it will be appended automatically
  *
- * @return Array
+ * @return array
  */
 function _bibdk_reservation_steps() {
   $steps = array(
@@ -161,23 +162,25 @@ function _bibdk_reservation_steps() {
       'form' => 'bibdk_reservation_form_step_2',
       'current_step' => 2,
       'previous_step' => 1,
+      //overriding the default "Next" text on buttons
+      'next button text' => t('Order', array(), array('context' => 'bibdk_reservation')),
       'next_step' => 3,
       'title' => t('Add Personal Data', array(), array('context' => 'bibdk_reservation')),
     ),
-    3 => array(
+    /*3 => array(
       'form' => 'bibdk_reservation_form_step_3',
       'current_step' => 3,
-      'next button text' => t('Order', array(), array('context' => 'bibdk_reservation')),
+      //'next button text' => t('Order', array(), array('context' => 'bibdk_reservation')),
       //overriding the default "Next" text on buttons
       'previous_step' => 2,
       'next_step' => 4,
       'title' => t('Review', array(), array('context' => 'bibdk_reservation')),
-    ),
-    4 => array(
-      'form' => 'bibdk_reservation_form_step_4',
+    ),*/
+    3 => array(
+      'form' => 'bibdk_reservation_form_step_3',
       'current_step' => 3,
-      'previous_step' => NULL,
-      'next_step' => 5,
+      'previous_step' => 2,
+      'next_step' => NULL,
       'title' => t('Order Complete', array(), array('context' => 'bibdk_reservation')),
     ),
   );
@@ -248,7 +251,6 @@ function bibdk_reservation_create_wizard_form($form, &$form_state) {
   // Show the Next button only if there are more steps defined.
   $next_step = $form_state['step_information'][$step]['next_step'];
   $next_step_active = FALSE;
-  $total_steps = count($form_state['step_information']);
 
     // take the save button from userdata on step2 (if set)
     $user_data_save_but = array();
@@ -261,7 +263,9 @@ function bibdk_reservation_create_wizard_form($form, &$form_state) {
       $form['navigation']['save_but'] = $user_data_save_but;
     }
 
-  if (isset($next_step) && $next_step <= $total_steps && !isset($form_state['blocked'])) {
+
+
+  if (isset($next_step) && $next_step <= BIBDK_RESERVATION_STEPS && !isset($form_state['blocked'])) {
     $next_step_active = TRUE;
 
     $but_text = isset($form_state['step_information'][$step]['next button text']) ? $form_state['step_information'][$step]['next button text'] : t('Next', array(), array('context' => 'bibdk_reservation'));
@@ -273,10 +277,10 @@ function bibdk_reservation_create_wizard_form($form, &$form_state) {
       '#submit' => array('bibdk_reservation_wizard_next_submit'),
     );
 
-    if ($next_step == 4) {
+    /*if ($next_step == BIBDK_RESERVATION_STEPS) {
       // add disable on Order button
       $form['navigation']['next']['#attached']['js'][] = drupal_get_path('module', 'bibdk_reservation') . '/js/bibdk_reservation_order_disable.js';
-    }
+    }*/
 
   }
 
@@ -291,7 +295,7 @@ function bibdk_reservation_create_wizard_form($form, &$form_state) {
     );
   }
 
-  if (!$next_step_active && isset($next_step) && $next_step > $total_steps) {
+  if (!$next_step_active && isset($next_step) && $next_step > BIBDK_RESERVATION_STEPS) {
 
     // Email submit button
     $form['navigation']['sendmail'] = array(
@@ -332,7 +336,6 @@ function bibdk_reservation_create_wizard_form($form, &$form_state) {
 
   unset($form_state['blocked']);
   }
-
   return $form;
 }
 
@@ -451,12 +454,12 @@ function bibdk_reservation_wizard_previous_submit($form, &$form_state) {
 /**
  * Submit handler for the 'next' button.
  */
-function bibdk_reservation_wizard_next_submit($form, &$form_state) {
+function bibdk_reservation_wizard_next_submit(&$form, &$form_state) {
   $current_step = $form_state['step'];
   /* Call custom submit function for current step */
   $current_submit_function = $form_state['step_information'][$current_step]['form'] . '_submit';
   if (function_exists($current_submit_function)) {
-    call_user_func_array($current_submit_function, array($form, $form_state));
+    call_user_func_array($current_submit_function, array($form, &$form_state));
   }
   /* End custom submit */
   $form_state['step_information'][$current_step]['stored_values'] = $form_state['values'];
@@ -551,19 +554,19 @@ function bibdk_reservation_step_guide($form, &$form_state, $current_step) {
     ),
   );
 
-  for ($step = 1; $step <= 4; $step++) {
+  for ($step = 1; $step <= BIBDK_RESERVATION_STEPS; $step++) {
     //Set classes
     $classes = array('inactive');
     if ($step < $current_step) {
       $classes = array('active');
     }
-    elseif ($step == $current_step || $current_step == 4) {
+    elseif ($step == $current_step || $current_step == BIBDK_RESERVATION_STEPS) {
       $classes = array('btn-grey', 'btn');
     } // These classes is just for test - should be replaced with current
     // Create step button for $step
     $form[$step] = array(
       '#type' => 'submit',
-      '#disabled' => ($step > $current_step || $current_step == 4) ? TRUE : FALSE,
+      '#disabled' => ($step > $current_step || $current_step == BIBDK_RESERVATION_STEPS) ? TRUE : FALSE,
       '#value' => t('step' . $step, array(), array('context' => 'bibdk_reservation')),
       '#attributes' => array('class' => $classes),
       '#submit' => array('bibdk_reservation_wizard_goto_step_submit'),
