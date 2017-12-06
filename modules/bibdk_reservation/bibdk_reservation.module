@@ -295,7 +295,7 @@ function bibdk_reservation_create_wizard_form($form, &$form_state) {
     );
   }
 
-  if (!$next_step_active && isset($next_step) && $next_step > BIBDK_RESERVATION_STEPS) {
+  if ($step == BIBDK_RESERVATION_STEPS) {
 
     // Email submit button
     $form['navigation']['sendmail'] = array(
@@ -336,6 +336,7 @@ function bibdk_reservation_create_wizard_form($form, &$form_state) {
 
   unset($form_state['blocked']);
   }
+
   return $form;
 }
 
