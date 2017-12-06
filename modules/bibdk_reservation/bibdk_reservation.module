@@ -300,9 +300,9 @@ function bibdk_reservation_create_wizard_form($form, &$form_state) {
     $form['navigation']['sendmail'] = array(
       '#type' => 'submit',
       '#submit' => array('bibdk_reservation_mail_form_submit'),
+      '#validate' => array('bibdk_reservation_validate_email'),
       '#name' => 'sendmail',
       '#value' => t('sendmail', array(), array('context' => 'bibdk_reservation')),
-
     );
 
     //Add a print button
@@ -322,8 +322,6 @@ function bibdk_reservation_create_wizard_form($form, &$form_state) {
       '#title' => t('recipients_email_adress', array('context' => 'bibdk_reservation')),
       '#default_value' => (empty($userdata['userMail'])) ? '' : $userdata['userMail'],
     );
-    $form['#validate'][] = 'bibdk_reservation_validate_email';
-
   }
 
   // Include each validation function defined for the different steps.
@@ -359,20 +357,84 @@ function _bibdk_reservation_set_saou_login_message() {
  * Validation handler for bibdk_reservation_validate_email;
  */
 function bibdk_reservation_validate_email(&$form, &$form_state) {
-
   // check for valid email
   if (!empty($form_state['values']['email']) && !valid_email_address($form_state['values']['email'])) {
     $form['navigation']['emailwrapper']['#attributes'] = array();
-    form_set_error('userEmail', t('Email needs to be a valid email', array(), array('context' => 'bibdk_reservation')));
+    form_set_error('email', t('Email needs to be a valid email', array(), array('context' => 'bibdk_reservation')));
   }
   // check for empty email
   if (empty($form_state['values']['email'])) {
     $form['navigation']['emailwrapper']['#attributes'] = array();
-    form_set_error('userEmail', t('Email needs to be set', array(), array('context' => 'bibdk_reservation')));
+    form_set_error('email', t('Email needs to be set', array(), array('context' => 'bibdk_reservation')));
   }
 }
 
 /**
+ * Render an agency
+ *
+ * @param $branch
+ * @param $form_state
+ * @return array
+ */
+function bibdk_reservation_render_custom_branch_view($branch, $form_state) {
+  $userOrderData = BibdkReservationOrderObject::GetObject()->getUserOrderData();
+  if (isset($userOrderData['pickUpAgencySubdivision'])) {
+    $subdivison = $userOrderData['pickUpAgencySubdivision'];
+    // strip agencyid and '-'
+    $pos = strpos($subdivison, '-');
+    $subdivison = substr($subdivison, $pos + 1);
+  }
+
+  global $language;
+  $shortname = $branch->getBranchShortName($language->language);
+  $address = $branch->postalAddress;
+  $postalCode = $branch->postalCode;
+  $city = $branch->city;
+
+  $markup = theme('bibdk_reservation_agency', array(
+    'name' => $shortname,
+    'address' => $address,
+    'postalCode' => $postalCode,
+    'city' => $city,
+    'subdivision' => isset($subdivison) ? $subdivison : NULL,
+  ));
+  $form = array(
+    '#type' => 'fieldset',
+    '#title' => t('Branch', array(), array('context' => 'bibdk_reservation')),
+  );
+
+  $form['markup'] = array(
+    '#markup' => $markup,
+    '#attributes' => array('class' => array('form-item'))
+  );
+
+  if ($form_state['step'] == 2) {
+    foreach (drupal_get_query_parameters() as $key => $value) {
+      $params[] = $key . '=' . $value;
+    }
+    $form['branchParameters']['chg_lib_link'] = array(
+      '#theme' => 'link',
+      '#text' => t('Pick another library', array(), array('context' => 'bibdk_reservation')),
+      '#path' => 'reservation/?' . implode('&', $params),
+      '#options' => array(
+        'attributes' => array(
+          'id' => drupal_html_id('chg_lib_link'),
+        ),
+        'html' => FALSE,
+      ),
+      '#prefix' => '<div class="chg-lib-link">',
+      '#suffix' => '</div>',
+    );
+
+  }
+
+  return $form;
+}
+
+/**
+ * Check if this is an order for statsbiblioteket (820010) - if so
+ * force agency to be likewise
+ *
  * @param array $form_state
  * @return bool
  */
@@ -391,8 +453,8 @@ function bibdk_reservation_check_order_library(&$form_state) {
     return TRUE;
   }
 
-  // @TODO use bibdk_favourite_get_favourites() here
-  $favourites = _bibdk_favourite_get_from_webservice();
+  // get favourite agencies
+  $favourites = bibdk_favourite_get_favourites();
   $ret = FALSE;
   if (!empty($favourites)) {
     foreach ($favourites as $bibnr => $favourite) {
@@ -400,6 +462,7 @@ function bibdk_reservation_check_order_library(&$form_state) {
     }
 
     BibdkReservationOrderObject::GetObject()->setFavourites($serialized_favs);
+    /** @var FavouriteAgency $favourite */
     foreach ($favourites as $favourite) {
       if ($favourite->getOrderAgency()) {
         BibdkReservationOrderObject::GetObject()->setFavourite($favourite);
@@ -517,6 +580,7 @@ function bibdk_reservation_new_order_object() {
 }
 
 /**
+ * Get a manifestation by pid
  * @param $id
  * @return mixed
  */
@@ -530,6 +594,7 @@ function bibdk_reservation_get_manifestation($id) {
 }
 
 /**
+ * Render a manifestation
  * @param Manifestation $manifestation
  * @return array
  */
@@ -538,6 +603,7 @@ function bibdk_reservation_manifestation_view($manifestation) {
 }
 
 /**
+ * Define the stepguide
  * @param array $form
  * @param array $form_state
  * @param int $current_step

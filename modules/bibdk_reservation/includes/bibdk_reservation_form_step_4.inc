@@ -1,7 +1,19 @@
 <?php
 
+/**
+ * @file
+ * THIS IS NOT A FORM
+ *
+ * loose functions to support bibdk_reservation_form_step_3
+ */
 
-
+/**
+ * Make a base form for bibdk_reservation_form_step_3. If orderid is set it means
+ * an order has been completed. If not something went wront
+ * @param $form
+ * @param $form_state
+ * @return mixed
+ */
 function bibdk_reservation_form_step_4_form($form, &$form_state) {
   $orderId = BibdkReservationOrderObject::GetObject()->getOrderId();
   if ( $orderId ) {
@@ -26,7 +38,7 @@ function bibdk_reservation_form_step_4_form($form, &$form_state) {
   }
 
   // Render the same fields as on step 3
-  $form = bibdk_reservation_form_step_3($form, $form_state);
+  //$form = bibdk_reservation_form_step_3($form, $form_state);
 
   return $form;
 }
