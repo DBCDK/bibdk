@@ -167,15 +167,6 @@ function _bibdk_reservation_steps() {
       'next_step' => 3,
       'title' => t('Add Personal Data', array(), array('context' => 'bibdk_reservation')),
     ),
-    /*3 => array(
-      'form' => 'bibdk_reservation_form_step_3',
-      'current_step' => 3,
-      //'next button text' => t('Order', array(), array('context' => 'bibdk_reservation')),
-      //overriding the default "Next" text on buttons
-      'previous_step' => 2,
-      'next_step' => 4,
-      'title' => t('Review', array(), array('context' => 'bibdk_reservation')),
-    ),*/
     3 => array(
       'form' => 'bibdk_reservation_form_step_3',
       'current_step' => 3,
