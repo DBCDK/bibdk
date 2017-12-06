@@ -20,6 +20,9 @@ function bibdk_reservation_form_step_3($form, &$form_state) {
   $manifestation = BibdkReservationOrderObject::GetObject()->getManifestation();
   $form['manifestation'] = bibdk_reservation_render_custom_manifestation_view($manifestation);
 
+  //render manifestation
+  $form['suborder_id_check']['#markup'] = 'bas';
+dpm($form);
   //render branch
   $branch = BibdkReservationOrderObject::GetObject()->getBranch();
   $form['branchdata'] = bibdk_reservation_render_custom_branch_view($branch, $form_state); //bibdk_reservation_step_2_order_branch_fields(array(), $form_state);
@@ -131,7 +134,6 @@ function bibdk_reservation_render_custom_branch_view($branch, $form_state) {
 }
 
 function bibdk_reservation_render_custom_manifestation_view(Manifestation $manifestation, $fieldset_title = 'Manifestation') {
-  $title = $manifestation->getTitleSpecific();
   $creators = $manifestation->getCreator();
   $author = '';
   if (isset($creators)) {
@@ -141,23 +143,37 @@ function bibdk_reservation_render_custom_manifestation_view(Manifestation $manif
       }
     }
   }
-  $type = $manifestation->getSubType();
-
-  $markup = theme('bibdk_reservation_manifestation', array(
-    'title' => $title,
-    'author' => $author,
-    'type' => $type,
-  ));
-
+  
   $form = array(
     '#type' => 'fieldset',
     '#title' => t($fieldset_title, array(), array('context' => 'bibdk_reservation')),
+    'fortit' => array(
+      '#theme' => 'bibdk_reservation_manifestation',
+      '#title' => $manifestation->getTitleSpecific(),
+      '#author' => $author,
+      '#type' => $manifestation->getSubType(),
+    ),
   );
+  
+  return $form;
+}
 
-  $form['markup'] = array(
-    '#markup' => $markup,
-  );
+function bibdk_reservation_render_subtype_order_option() {
 
+  $form = array();
+  $ids = BibdkReservationOrderObject::GetObject()->getManifestationIds();
+  $subtype_order_ids = BibdkReservationOrderObject::GetObject()->getSubtypeOrderIds();
+  $isSubset = array_diff($subtype_order_ids, $ids);
+dpm($isSubset);  
+  if (sizeof($isSubset) > 0) {
+    $form = array(
+      '#type' => 'fieldset',
+      '#title' => t('Work reservation option', array(), array('context' => 'bibdk_reservation')),
+      'subtype_order' => array(
+        '#markup' => 'fubar',
+      ),
+    );
+  }
   return $form;
 }
 

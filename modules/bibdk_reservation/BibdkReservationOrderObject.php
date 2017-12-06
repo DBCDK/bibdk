@@ -7,6 +7,7 @@ class BibdkReservationOrderObject {
   private $favourites;
   private $favourite;
   private $manifestationIds;
+  private $subtypeOrderIds;
   private $manifestation;
   private $userData;
   private $userOrderData;
@@ -57,6 +58,14 @@ class BibdkReservationOrderObject {
 
   public function getManifestationIds() {
     return $this->manifestationIds;
+  }
+
+  public function setSubtypeOrderIds($ids) {
+    $this->subtypeOrderIds = $ids;
+  }
+
+  public function getSubtypeOrderIds() {
+    return $this->subtypeOrderIds;
   }
 
   public function setManifestation($manifestation) {

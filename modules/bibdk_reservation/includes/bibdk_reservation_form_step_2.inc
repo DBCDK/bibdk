@@ -15,16 +15,21 @@ function bibdk_reservation_form_step_2($form, &$form_state) {
     $show_url = false; // don't show not owned message and link to own catalog
   }
 
-  //render manifestation
+  // Render manifestation
   $manifestation = BibdkReservationOrderObject::GetObject()->getManifestation();
+  
   $form['manifestation'] = bibdk_reservation_render_custom_manifestation_view($manifestation);
 
+  // Render 'order any edition' checkbox
+  $form['manifestation']['subtype_order_option'] = bibdk_reservation_render_subtype_order_option();
+  
   $form['branchdata'] = bibdk_reservation_render_custom_branch_view($branch, $form_state); //bibdk_reservation_step_2_order_branch_fields(array(), $form_state);
 
   $form['branchdata']['favouriteselector'] = bibdk_reservation_favourite_selector();
   $fields = bibdk_reservation_get_agency_fields();
 
   $infotxt = $fields->getAcceptOrderFromUnknownUserText($language->language);
+
   if (empty($infotxt)) {
     $infotxt = t('accept_order_from_unknown_standard_txt', array(), array('context' => 'bibdk_reservation'));
   }
