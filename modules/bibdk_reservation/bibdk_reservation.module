@@ -296,7 +296,6 @@ function bibdk_reservation_create_wizard_form($form, &$form_state) {
   }
 
   if ($step == BIBDK_RESERVATION_STEPS) {
-
     // Email submit button
     $form['navigation']['sendmail'] = array(
       '#type' => 'submit',
@@ -371,9 +370,6 @@ function bibdk_reservation_validate_email(&$form, &$form_state) {
     $form['navigation']['emailwrapper']['#attributes'] = array();
     form_set_error('userEmail', t('Email needs to be set', array(), array('context' => 'bibdk_reservation')));
   }
-
-  return TRUE;
-
 }
 
 /**
