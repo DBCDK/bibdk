@@ -121,7 +121,7 @@ function bibdk_heimdal_redirect_login() {
  * @param $heimdal_user
  * @return mixed
  */
-function bibdk_heimdal_get_form_state($heimdal_user){
+function bibdk_heimdal_get_form_state($heimdal_user) {
   return ding_provider_invoke('heimdal', 'login_creds', $heimdal_user);
 }
 
@@ -131,7 +131,7 @@ function bibdk_heimdal_get_form_state($heimdal_user){
  * @param bool $ajax
  *   If ajax is set to true a client side javascript will trigger the redirect
  */
-function bibdk_heimdal_cleanup_and_exit($ajax = FALSE){
+function bibdk_heimdal_cleanup_and_exit($ajax = FALSE) {
   drupal_set_message(t('An error occured while logging in - please try again'), 'error');
 
   if (isset($_SESSION['heimdal'])) {
@@ -157,7 +157,7 @@ function bibdk_heimdal_cleanup_and_exit($ajax = FALSE){
  */
 function bibdk_heimdal_get_return_url() {
   global $user;
-  if($user->uid === 0){
+  if ($user->uid === 0) {
     return '/';
   }
   else {
@@ -257,7 +257,7 @@ function bibdk_heimdal_get_heimdal_attributes() {
 
   $curl = new bibdkHeimdalCurl();
   $return_array = $curl->getAttributes($client_id, $token);
-  if($return_array === FALSE){
+  if ($return_array === FALSE) {
     // this is a http error - abort
     bibdk_heimdal_cleanup_and_exit();
   }
@@ -284,7 +284,7 @@ function bibdk_heimdal_do_logout($url = '/user/logout', $ajax = fALSE) {
     $config = variable_get('ding_wayf', NULL);
     $path = $config['hosturl'] . '/logout?returnurl=' . $url;
 
-    if($ajax){
+    if ($ajax) {
       bibdk_heimdal_forms_ctools_redirect($path);
     }
 
@@ -298,7 +298,7 @@ function bibdk_heimdal_do_logout($url = '/user/logout', $ajax = fALSE) {
  */
 function bibdk_heimdal_form_user_login_alter(&$form, &$form_state) {
   $config = variable_get('ding_wayf', NULL);
-  if(!$config['heimdallogin']){
+  if (!$config['heimdallogin']) {
     return;
   }
 
@@ -323,7 +323,7 @@ function bibdk_heimdal_login_link() {
       $wrapper['helptxt'] = array(
         '#type' => 'html_tag',
         '#tag' => 'h2',
-        '#value' => t('BIBLOGIN_leadtext', array(), array('options'=>array('context' => 'heimdal'))),
+        '#value' => t('BIBLOGIN_leadtext', array(), array('options' => array('context' => 'heimdal'))),
       );
       $wrapper['link'] = bibdk_heimdal_get_login_link();
     }
@@ -337,7 +337,7 @@ function bibdk_heimdal_login_link() {
  * Get a link to render
  * @return array
  */
-function bibdk_heimdal_get_login_link(){
+function bibdk_heimdal_get_login_link() {
   return array(
     '#type' => 'link',
     '#href' => bibdk_heimdal_get_login_url(),
@@ -354,7 +354,7 @@ function bibdk_heimdal_get_login_link(){
  * @return string
  *   markup
  */
-function bibdk_heimdal_get_logo(){
+function bibdk_heimdal_get_logo() {
   $logo_path = base_path() . drupal_get_path('theme', $GLOBALS['theme']);
   $logo_path .= '/img/in_use/bibliotekslogin_logo.png';
   $logo_alt_text_accessplatform = t('logo_alt_text_accessplatform', array(), array('context' => 'heimdal'));
@@ -373,7 +373,7 @@ function bibdk_heimdal_get_logo(){
  * @return string
  *   Markup
  */
-function bibdk_heimdal_get_nemid_logo(){
+function bibdk_heimdal_get_nemid_logo() {
   $logo_path = base_path() . drupal_get_path('theme', $GLOBALS['theme']);
   $logo_path .= '/img/in_use/nemid-logo.png';
   $logo_alt_text_nemid = t('logo_alt_text_nemid', array(), array('context' => 'heimdal'));
@@ -390,7 +390,7 @@ function bibdk_heimdal_get_nemid_logo(){
  * Get the url for heimdal login
  * @return string
  */
-function bibdk_heimdal_get_login_url(){
+function bibdk_heimdal_get_login_url() {
   $config = variable_get('ding_wayf', NULL);
   $accessplatform = isset($config['heimdallogin']) ? $config['heimdallogin'] : FALSE;
   $heimdal_url = '';
@@ -405,14 +405,13 @@ function bibdk_heimdal_get_login_url(){
  * Get a wrapper for heimdal login
  * @return array
  */
-function bibdk_heimdal_login_wrapper(){
+function bibdk_heimdal_login_wrapper() {
   $wrapper = array(
     '#type' => 'container',
-    '#attributes' => array('class'=>array('bibdk-login-method')),
+    '#attributes' => array('class' => array('bibdk-login-method')),
   );
   return $wrapper;
 }
-
 
 
 /**

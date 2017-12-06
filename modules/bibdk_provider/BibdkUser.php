@@ -318,7 +318,7 @@ class BibdkUser {
    */
   public function getFavourites($username) {
     static $response;
-    if(!empty($response)){
+    if (!empty($response)) {
       return $response;
     }
 
@@ -330,7 +330,7 @@ class BibdkUser {
 
   public function getCart($username) {
     static $ret;
-    if(!empty($ret)){
+    if (!empty($ret)) {
       return $ret;
     }
 

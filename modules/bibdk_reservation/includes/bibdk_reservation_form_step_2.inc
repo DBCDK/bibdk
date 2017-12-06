@@ -62,7 +62,7 @@ function bibdk_reservation_form_step_2($form, &$form_state) {
     }
 
     if ($reason = $orderpolicy->getOrderPossibleReason()) {
-      if ($reason != 'not_owned_accepted_by_consortia' and $show_url == true) {
+      if ($reason != 'not_owned_accepted_by_consortia' && $show_url == true) {
         form_set_error('bibdk_reservation_form_step_2', t($reason, array(), array('context' => 'bibdk_reservation:error')));
       }
     }
@@ -500,7 +500,7 @@ function bibdk_reservation_prepare_set_user_order_data(&$form_state) {
 
   if (isset($form_state['values']['needBeforeDate'])) {
     $input_date = $form_state['values']['needBeforeDate'];
-    $date = date("Y-m-d\TH:i:s", strtotime($input_date));
+    $date = date("c", strtotime($input_date));
     $userData['Need before Date'] = implode('/', array_reverse(explode('-', $input_date)));
   }
 

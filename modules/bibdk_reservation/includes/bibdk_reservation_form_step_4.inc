@@ -36,7 +36,7 @@ function bibdk_reservation_form_step_4_form($form, &$form_state) {
       '#attributes' => array('class' => array('bottom-space')),
     );
   }
-  
+
   return $form;
 }
 
