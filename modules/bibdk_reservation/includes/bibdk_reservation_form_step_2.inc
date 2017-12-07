@@ -516,7 +516,7 @@ function bibdk_reservation_form_step_2_submit($form, &$form_state) {
     BibdkReservationOrderObject::GetObject()->setOrderParameters($orderParameters);
   }
 
-  //Do not display allert box
+  // Do not display alert box.
   bibdk_reservation_form_step_2_already_ordered(FALSE);
 
 }
