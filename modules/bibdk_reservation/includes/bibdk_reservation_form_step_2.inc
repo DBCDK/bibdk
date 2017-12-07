@@ -21,7 +21,7 @@ function bibdk_reservation_form_step_2($form, &$form_state) {
   $form['manifestation'] = bibdk_reservation_render_custom_manifestation_view($manifestation);
 
   // Render 'order any edition' checkbox
-  // $form['manifestation']['subtype_order_option'] = bibdk_reservation_render_subtype_order_option();
+  $form['manifestation']['subtype_order_option'] = bibdk_reservation_render_subtype_order_option();
   
   $form['branchdata'] = bibdk_reservation_render_custom_branch_view($branch, $form_state); //bibdk_reservation_step_2_order_branch_fields(array(), $form_state);
 
@@ -451,8 +451,6 @@ function bibdk_reservation_validate_date($date, $buffer = 0) {
  */
 
 function bibdk_reservation_form_step_2_submit($form, &$form_state) {
-dpm($form, '$form');
-dpm($form_state, '$form_state');
   
   if (isset($form_state['values']['self_pickup'])) {
     BibdkReservationOrderObject::GetObject()->setArticleDirect($form_state['values']['self_pickup']);
@@ -505,6 +503,10 @@ dpm($form_state, '$form_state');
   // Save all user input
   BibdkReservationOrderObject::GetObject()->setUserData($userData);
   BibdkReservationOrderObject::GetObject()->setUserOrderData($userOrderData);
+
+  if ($subtype_order = $form_state['values']['subtype_order']) {
+    BibdkReservationOrderObject::GetObject()->setSubtypeOrder($subtype_order);
+  }
 
   if (isset($date)) {
     BibdkReservationOrderObject::GetObject()->setNeedBeforeDate($date);

@@ -6,8 +6,9 @@ class BibdkReservationOrderObject {
   private $branch;
   private $favourites;
   private $favourite;
-  private $manifestationIds;
-  private $subtypeOrderIds;
+  private $manifestationIds = array();
+  private $subtypeOrder;
+  private $subtypeOrderIds = array();
   private $manifestation;
   private $userData;
   private $userOrderData;
@@ -19,6 +20,7 @@ class BibdkReservationOrderObject {
   private $sbKopi;
   private $articleDirect;
   private $sbKopiUser;
+  
 
   public function getSbKopiUser() {
     return $this->sbKopiUser;
@@ -66,6 +68,14 @@ class BibdkReservationOrderObject {
 
   public function getSubtypeOrderIds() {
     return $this->subtypeOrderIds;
+  }
+
+  public function setSubtypeOrder($bool) {
+    $this->subtypeOrder = $bool;
+  }
+
+  public function getSubtypeOrder() {
+    return $this->subtypeOrder;
   }
 
   public function setManifestation($manifestation) {

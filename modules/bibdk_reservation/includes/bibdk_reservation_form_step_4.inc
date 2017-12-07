@@ -42,7 +42,7 @@ function bibdk_reservation_form_step_4_do_order() {
   $pids = BibdkReservationOrderObject::GetObject()->getManifestationIds();
   $userdata = BibdkReservationOrderObject::GetObject()->getUserOrderData();
   $orderdata = BibdkReservationOrderObject::GetObject()->getOrderParameters();
-
+  
   $articleDirect = BibdkReservationOrderObject::GetObject()->getArticleDirect();
   if ( !empty($articleDirect) ) {
     $params += array('articleDirect' => 'pickup');
@@ -56,12 +56,19 @@ function bibdk_reservation_form_step_4_do_order() {
     }
   }
 
-  if(count(BibdkReservationOrderObject::GetObject()->getManifestationIds()) > 1){
+  if (count(BibdkReservationOrderObject::GetObject()->getManifestationIds()) > 1){
     $exactEdition = 'false';
   }
-  else{
+  else {
     $exactEdition = 'true';
   }
+
+  // 'order any edition' option on manifestation.
+  if (BibdkReservationOrderObject::GetObject()->getSubtypeOrder()) {
+    $pids = BibdkReservationOrderObject::GetObject()->getSubtypeOrderIds();
+    $exactEdition = 'false';
+  }
+  
   $params += array('exactEdition' => $exactEdition);
 
   $params += (isset($userdata)) ? $userdata : array();
@@ -88,10 +95,9 @@ function bibdk_reservation_form_step_4_do_order() {
     $error = ( isset($response->placeOrderResponse->orderNotPlaced->placeOrderError->{'$'}) ) 
       ? $response->placeOrderResponse->orderNotPlaced->placeOrderError->{'$'} 
       : t('empty_orderid_error_message', array(), array('context' => 'bibdk_reservation:error'));
-    $pid = BibdkReservationOrderObject::GetObject()->getManifestationIds();
     $pickUpAgencyId = BibdkReservationOrderObject::GetObject()->getBranchId();
     watchdog('bibdk_reservation_form_step_4', 'openOrder responded with an error: ' . $error . '. pid: #pid agencyId: #agency', array(
-      '#pid' => $pid[0],
+      '#pid' => $pids[0],
       '#agency' => $pickUpAgencyId
     ), WATCHDOG_ERROR);
     $result = array('error' => t('An error happened and the order could not be completed.', array(), array('context' => 'bibdk_reservation')));
