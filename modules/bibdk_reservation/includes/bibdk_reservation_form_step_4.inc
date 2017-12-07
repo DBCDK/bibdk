@@ -199,13 +199,18 @@ function bibdk_reservation_form_step_4_handle_response($response) {
 }
 
 function bibdk_reservation_form_step_4_register_pid() {
-  $pid = BibdkReservationOrderObject::GetObject()->getManifestationIds();
+  $pids = BibdkReservationOrderObject::GetObject()->getManifestationIds();
+
+  // 'order any edition' option on manifestation.
+  if (BibdkReservationOrderObject::GetObject()->getSubtypeOrder()) {
+    $pids = BibdkReservationOrderObject::GetObject()->getSubtypeOrderIds();
+  }
 
   if (array_key_exists('orderedPids', $_SESSION)) {
-    $_SESSION['orderedPids'] = array_merge($_SESSION['orderedPids'], $pid);
+    $_SESSION['orderedPids'] = array_merge($_SESSION['orderedPids'], $pids);
   }
   else {
-    $_SESSION['orderedPids'] = $pid;
+    $_SESSION['orderedPids'] = $pids;
   }
 }
 
