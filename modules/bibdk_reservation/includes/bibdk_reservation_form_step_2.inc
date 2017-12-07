@@ -21,7 +21,7 @@ function bibdk_reservation_form_step_2($form, &$form_state) {
   $form['manifestation'] = bibdk_reservation_render_custom_manifestation_view($manifestation);
 
   // Render 'order any edition' checkbox
-  $form['manifestation']['subtype_order_option'] = bibdk_reservation_render_subtype_order_option();
+  // $form['manifestation']['subtype_order_option'] = bibdk_reservation_render_subtype_order_option();
   
   $form['branchdata'] = bibdk_reservation_render_custom_branch_view($branch, $form_state); //bibdk_reservation_step_2_order_branch_fields(array(), $form_state);
 
@@ -451,6 +451,8 @@ function bibdk_reservation_validate_date($date, $buffer = 0) {
  */
 
 function bibdk_reservation_form_step_2_submit($form, &$form_state) {
+dpm($form, '$form');
+dpm($form_state, '$form_state');
   
   if (isset($form_state['values']['self_pickup'])) {
     BibdkReservationOrderObject::GetObject()->setArticleDirect($form_state['values']['self_pickup']);
@@ -677,4 +679,34 @@ function _bibdk_reservation_set_js_settings($ordered) {
         'alert_message' => t('already_ordered', array(), array('context' => 'bibdk_reservation')),
       ),
     ), 'setting');
+}
+
+/**
+ * Add checkbox for 'order any edition' option
+ *
+ * @return array
+ */
+function bibdk_reservation_render_subtype_order_option() {
+  $form = array();
+  $ids = BibdkReservationOrderObject::GetObject()->getManifestationIds();
+  $subtype_order_ids = BibdkReservationOrderObject::GetObject()->getSubtypeOrderIds();
+  $isSubset = array_diff($subtype_order_ids, $ids);
+  if (sizeof($isSubset) > 0) {
+    $form = array(
+      '#type' => 'fieldset',
+      '#attributes' => array(
+        'class' => array('work-reservation-option'),
+      ),
+      '#title' => t('header_work_reservation_option', array(), array('context' => 'bibdk_reservation')),
+      'subtype_order' => array(
+        '#type' => 'checkbox', 
+        '#title' => t('label_work_reservation_option', array(), array('context' => 'bibdk_reservation')),
+      ),
+      'subtype_order_ids' => array(
+        '#type' => 'hidden', 
+        '#value' => implode(',', $subtype_order_ids),
+      ),
+    );
+  }
+  return $form;
 }

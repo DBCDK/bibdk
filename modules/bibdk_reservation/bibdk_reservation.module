@@ -452,8 +452,10 @@ function bibdk_reservation_wizard_previous_submit($form, &$form_state) {
  */
 function bibdk_reservation_wizard_next_submit($form, &$form_state) {
   $current_step = $form_state['step'];
+dpm($form_state);  
   /* Call custom submit function for current step */
   $current_submit_function = $form_state['step_information'][$current_step]['form'] . '_submit';
+dpm($current_submit_function, '$current_submit_function');  
   if (function_exists($current_submit_function)) {
     call_user_func_array($current_submit_function, array($form, $form_state));
   }
