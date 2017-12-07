@@ -89,8 +89,9 @@ class BibdkProviderWAYFTestCase extends DrupalWebTestCase {
 
   private function testWayfIsActivated() {
     $this->drupalGet('user/login');
-    $this->assertLinkByHref('wayf/login', 0, t('Nemlogin found'));
-    $this->assertLinkByHref('wayf/login', 1, t('wayf found'));
+    // nemlogin has been removed to heimdal access platform
+    //$this->assertLinkByHref('wayf/login', 0, t('Nemlogin found'));
+    $this->assertLinkByHref('wayf/login', 0, t('wayf found'));
   }
 
 

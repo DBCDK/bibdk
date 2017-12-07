@@ -457,7 +457,7 @@ dpm($form_state);
   $current_submit_function = $form_state['step_information'][$current_step]['form'] . '_submit';
 dpm($current_submit_function, '$current_submit_function');  
   if (function_exists($current_submit_function)) {
-    call_user_func_array($current_submit_function, array($form, $form_state));
+    call_user_func_array($current_submit_function, array($form, &$form_state));
   }
   /* End custom submit */
   $form_state['step_information'][$current_step]['stored_values'] = $form_state['values'];
