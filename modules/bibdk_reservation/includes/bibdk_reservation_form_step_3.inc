@@ -1,7 +1,21 @@
 <?php
 
+/**
+ * @file
+ *
+ * Receipt form . An order has been sent.
+ */
+
+/**
+ * Define a receipt
+ *
+ * @param $form
+ * @param $form_state
+ * @return mixed
+ */
 function bibdk_reservation_form_step_3($form, &$form_state) {
-  global $language;
+
+  $form = bibdk_reservation_form_step_4_form($form, $form_state);
 
   $orderpolicy = bibdk_reservation_form_step_2_do_policycheck();
   if ($orderpolicy->getOrderPossible()) {
@@ -45,7 +59,9 @@ function bibdk_reservation_form_step_3($form, &$form_state) {
 
 
 /**
- * Implements _form_validate().
+ * Validation
+ * This is where we do the actual ordering. @see bibdk_reservation_form_step_4_do_order()
+ *
  * Inovked when any button on step 3 is clicked. First it is checked if either
  * the breadcrumb or the 'previous' button is used. If so we return as we do
  * not want to issue an order.
@@ -74,61 +90,8 @@ function bibdk_reservation_form_step_3_validate($form, &$form_state) {
   }
 }
 
-function bibdk_reservation_render_custom_branch_view($branch, $form_state) {
 
-  $userOrderData = BibdkReservationOrderObject::GetObject()->getUserOrderData();
-  if (isset($userOrderData['pickUpAgencySubdivision'])) {
-    $subdivison = $userOrderData['pickUpAgencySubdivision'];
-    // strip agencyid and '-'
-    $pos = strpos($subdivison, '-');
-    $subdivison = substr($subdivison, $pos + 1);
-  }
 
-  global $language;
-  $shortname = $branch->getBranchShortName($language->language);
-  $address = $branch->postalAddress;
-  $postalCode = $branch->postalCode;
-  $city = $branch->city;
-
-  $markup = theme('bibdk_reservation_agency', array(
-    'name' => $shortname,
-    'address' => $address,
-    'postalCode' => $postalCode,
-    'city' => $city,
-    'subdivision' => isset($subdivison) ? $subdivison : NULL,
-  ));
-  $form = array(
-    '#type' => 'fieldset',
-    '#title' => t('Branch', array(), array('context' => 'bibdk_reservation')),
-  );
-
-  $form['markup'] = array(
-    '#markup' => $markup,
-    '#attributes' => array('class' => array('form-item'))
-  );
-
-  if ($form_state['step'] == 2) {
-    foreach (drupal_get_query_parameters() as $key => $value) {
-      $params[] = $key . '=' . $value;
-    }
-    $form['branchParameters']['chg_lib_link'] = array(
-      '#theme' => 'link',
-      '#text' => t('Pick another library', array(), array('context' => 'bibdk_reservation')),
-      '#path' => 'reservation/?' . implode('&', $params),
-      '#options' => array(
-        'attributes' => array(
-          'id' => drupal_html_id('chg_lib_link'),
-        ),
-        'html' => FALSE,
-      ),
-      '#prefix' => '<div class="chg-lib-link">',
-      '#suffix' => '</div>',
-    );
-
-  }
-
-  return $form;
-}
 
 function bibdk_reservation_render_custom_manifestation_view(Manifestation $manifestation, $fieldset_title = 'Manifestation') {
   $title = $manifestation->getTitleSpecific();

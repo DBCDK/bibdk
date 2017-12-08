@@ -171,7 +171,7 @@ class BibdkReservationOrderObject {
   }
 
   /**
-   * @return bibdkReservationAgencyFields
+   * @return AgencyFields
    */
   public function getFields() {
     return $this->fields;

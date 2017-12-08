@@ -1,16 +1,22 @@
 <?php
 
-function bibdk_reservation_form_step_4($form, &$form_state) {
+/**
+ * @file
+ * THIS IS NOT A FORM
+ *
+ * loose functions to support bibdk_reservation_form_step_3
+ */
 
+/**
+ * Make a base form for bibdk_reservation_form_step_3. If orderid is set it means
+ * an order has been completed. If not something went wront
+ * @param $form
+ * @param $form_state
+ * @return mixed
+ */
+function bibdk_reservation_form_step_4_form($form, &$form_state) {
   $orderId = BibdkReservationOrderObject::GetObject()->getOrderId();
-
-  return bibdk_reservation_form_step_4_form($form, $form_state, $orderId);
-}
-
-function bibdk_reservation_form_step_4_form($form, &$form_state, $orderId=FALSE) {
-
   if ( $orderId ) {
-  
     // render OrderID
     $form['orderId'] = array(
       '#type' => 'fieldset',
@@ -20,7 +26,7 @@ function bibdk_reservation_form_step_4_form($form, &$form_state, $orderId=FALSE)
     $form['orderId']['container']['markup'] = bibdk_reservation_convert_array_to_table(array(
       t('Your order ID', array(), array('context' => 'bibdk_reservation')) => $orderId,
     ));
-  
+
   }
   else {
     // openOrder error message
@@ -30,9 +36,6 @@ function bibdk_reservation_form_step_4_form($form, &$form_state, $orderId=FALSE)
       '#attributes' => array('class' => array('bottom-space')),
     );
   }
-
-  // Render the same fields as on step 3
-  $form = bibdk_reservation_form_step_3($form, $form_state);
 
   return $form;
 }
@@ -85,8 +88,8 @@ function bibdk_reservation_form_step_4_do_order() {
   }
 
   if ( isset($response->placeOrderResponse->orderNotPlaced) || empty($orderId) ) {
-    $error = ( isset($response->placeOrderResponse->orderNotPlaced->placeOrderError->{'$'}) ) 
-      ? $response->placeOrderResponse->orderNotPlaced->placeOrderError->{'$'} 
+    $error = ( isset($response->placeOrderResponse->orderNotPlaced->placeOrderError->{'$'}) )
+      ? $response->placeOrderResponse->orderNotPlaced->placeOrderError->{'$'}
       : t('empty_orderid_error_message', array(), array('context' => 'bibdk_reservation:error'));
     $pid = BibdkReservationOrderObject::GetObject()->getManifestationIds();
     $pickUpAgencyId = BibdkReservationOrderObject::GetObject()->getBranchId();
