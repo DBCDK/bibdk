@@ -317,6 +317,11 @@ class BibdkUser {
    * @return string xml
    */
   public function getFavourites($username) {
+    static $response;
+    if (!empty($response)) {
+      return $response;
+    }
+
     $params = array('oui:userId' => $username);
     $response = $this->makeRequest('getFavouritesRequest', $params);
 
@@ -324,6 +329,11 @@ class BibdkUser {
   }
 
   public function getCart($username) {
+    static $ret;
+    if (!empty($ret)) {
+      return $ret;
+    }
+
     $params = array('oui:userId' => $username);
     $response = $this->makeRequest('getCartRequest', $params);
 
