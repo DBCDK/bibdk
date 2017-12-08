@@ -59,7 +59,7 @@ function bibdk_reservation_form_step_4_do_order() {
     }
   }
 
-  if (count(BibdkReservationOrderObject::GetObject()->getManifestationIds()) > 1){
+  if (count(BibdkReservationOrderObject::GetObject()->getManifestationIds()) > 1) {
     $exactEdition = 'false';
   }
   else {
