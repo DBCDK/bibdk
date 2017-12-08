@@ -303,7 +303,7 @@ function bibdk_heimdal_form_user_login_alter(&$form, &$form_state) {
   }
 
   $form['login_methods'][] = array(
-    '#markup' => bibdk_heimdal_login_link(),
+    'content' => bibdk_heimdal_login_link(),
     '#weight' => -2,
   );
 }
@@ -312,7 +312,8 @@ function bibdk_heimdal_form_user_login_alter(&$form, &$form_state) {
  * Get heimdal login link from config settings
  *
  * @param
- * @return string - link to heimdal
+ * @return array
+ *   empty or link for drupal render
  */
 function bibdk_heimdal_login_link() {
   global $user;
@@ -325,12 +326,11 @@ function bibdk_heimdal_login_link() {
         '#tag' => 'h2',
         '#value' => t('BIBLOGIN_leadtext', array(), array('options' => array('context' => 'heimdal'))),
       );
-      $wrapper['link'] = bibdk_heimdal_get_login_link();
+      $wrapper['links'] = bibdk_heimdal_get_login_link();
+      return $wrapper;
     }
-    return drupal_render($wrapper);
   }
-
-  return '';
+  return array();
 }
 
 /**
@@ -338,52 +338,66 @@ function bibdk_heimdal_login_link() {
  * @return array
  */
 function bibdk_heimdal_get_login_link() {
+
   return array(
-    '#type' => 'link',
-    '#href' => bibdk_heimdal_get_login_url(),
-    '#title' => bibdk_heimdal_get_logo() . bibdk_heimdal_get_nemid_logo(),
-    '#options' => array(
-      'html' => TRUE,
-      'attributes' => array('id' => array('bibdk-heimdal-login-link')),
-    ),
+    bibdk_heimdal_get_logo(),
+    bibdk_heimdal_get_nemid_logo(),
   );
 }
 
 /**
  * Get logo and alt text.
- * @return string
- *   markup
+ * @return array
+ *   render array for drupal_render
  */
 function bibdk_heimdal_get_logo() {
   $logo_path = base_path() . drupal_get_path('theme', $GLOBALS['theme']);
   $logo_path .= '/img/in_use/bibliotekslogin_logo.png';
   $logo_alt_text_accessplatform = t('logo_alt_text_accessplatform', array(), array('context' => 'heimdal'));
-  $img = array(
-    '#theme' => 'image',
-    '#path' => $logo_path,
-    '#alt' => $logo_alt_text_accessplatform,
-    '#title' => 'Heimdal logo',
-  );
 
-  return drupal_render($img);
+  $image = array(
+    '#theme' => 'image_formatter',
+    '#item' => array(
+      'uri' => $logo_path,
+      'alt' => $logo_alt_text_accessplatform,
+    ),
+    '#path' => bibdk_heimdal_get_path(),
+  );
+  return $image;
 }
 
 /**
  * Get the logo for nemid
- * @return string
- *   Markup
+ * @return array
+ *   Markup for drupal_render
  */
 function bibdk_heimdal_get_nemid_logo() {
   $logo_path = base_path() . drupal_get_path('theme', $GLOBALS['theme']);
   $logo_path .= '/img/in_use/nemid-logo.png';
   $logo_alt_text_nemid = t('logo_alt_text_nemid', array(), array('context' => 'heimdal'));
-  $img = array(
-    '#theme' => 'image',
-    '#path' => $logo_path,
-    '#alt' => $logo_alt_text_nemid,
-    '#title' => 'Nemid logo',
+
+  $image = array(
+    '#theme' => 'image_formatter',
+    '#item' => array(
+      'uri' => $logo_path,
+      'alt' => $logo_alt_text_nemid,
+
+    ),
+    '#path' => bibdk_heimdal_get_path(),
   );
-  return drupal_render($img);
+  return $image;
+}
+
+function bibdk_heimdal_get_path() {
+  return array(
+    'path' => bibdk_heimdal_get_login_url(),
+    'options' => array(
+      'attributes' => array(
+        'title' => 'Heimdal login',
+        'id' => array('bibdk-heimdal-login-link'),
+      ),
+    ),
+  );
 }
 
 /**
