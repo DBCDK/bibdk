@@ -94,7 +94,6 @@ function bibdk_reservation_form_step_3_validate($form, &$form_state) {
 
 
 function bibdk_reservation_render_custom_manifestation_view(Manifestation $manifestation, $fieldset_title = 'Manifestation') {
-  $title = $manifestation->getTitleSpecific();
   $creators = $manifestation->getCreator();
   $author = '';
   if (isset($creators)) {
@@ -104,23 +103,18 @@ function bibdk_reservation_render_custom_manifestation_view(Manifestation $manif
       }
     }
   }
-  $type = $manifestation->getSubType();
-
-  $markup = theme('bibdk_reservation_manifestation', array(
-    'title' => $title,
-    'author' => $author,
-    'type' => $type,
-  ));
-
+  
   $form = array(
     '#type' => 'fieldset',
     '#title' => t($fieldset_title, array(), array('context' => 'bibdk_reservation')),
+    'fortit' => array(
+      '#theme' => 'bibdk_reservation_manifestation',
+      '#title' => $manifestation->getTitleSpecific(),
+      '#author' => $author,
+      '#type' => $manifestation->getSubType(),
+    ),
   );
-
-  $form['markup'] = array(
-    '#markup' => $markup,
-  );
-
+  
   return $form;
 }
 

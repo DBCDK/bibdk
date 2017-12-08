@@ -6,7 +6,9 @@ class BibdkReservationOrderObject {
   private $branch;
   private $favourites;
   private $favourite;
-  private $manifestationIds;
+  private $manifestationIds = array();
+  private $subtypeOrder;
+  private $subtypeOrderIds = array();
   private $manifestation;
   private $userData;
   private $userOrderData;
@@ -18,6 +20,7 @@ class BibdkReservationOrderObject {
   private $sbKopi;
   private $articleDirect;
   private $sbKopiUser;
+  
 
   public function getSbKopiUser() {
     return $this->sbKopiUser;
@@ -25,6 +28,7 @@ class BibdkReservationOrderObject {
 
   public function setSbKopiUser($value) {
     $this->sbKopiUser = $value;
+    return $this;
   }
 
   public function getArticleDirect() {
@@ -33,6 +37,7 @@ class BibdkReservationOrderObject {
 
   public function setArticleDirect($value) {
     $this->articleDirect = $value;
+    return $this;
   }
 
   public function getSbKopi() {
@@ -41,6 +46,7 @@ class BibdkReservationOrderObject {
 
   public function setSbKopi($value) {
     $this->sbKopi = $value;
+    return $this;
   }
 
   public function getOrderId() {
@@ -49,22 +55,44 @@ class BibdkReservationOrderObject {
 
   public function setOrderId($orderId) {
     $this->orderId = $orderId;
+    return $this;
   }
 
   public function setManifestationIds($ids) {
     $this->manifestationIds = $ids;
+    return $this;
   }
 
   public function getManifestationIds() {
     return $this->manifestationIds;
   }
 
+  public function setSubtypeOrderIds($ids) {
+    $this->subtypeOrderIds = $ids;
+    return $this;
+  }
+
+  public function getSubtypeOrderIds() {
+    return $this->subtypeOrderIds;
+  }
+
+  public function setSubtypeOrder($bool) {
+    $this->subtypeOrder = $bool;
+    return $this;
+  }
+
+  public function getSubtypeOrder() {
+    return $this->subtypeOrder;
+  }
+
   public function setManifestation($manifestation) {
     $this->manifestation = $manifestation;
+    return $this;
   }
 
   public function setWork($work) {
     $this->work = $work;
+    return $this;
   }
 
   /**
@@ -81,6 +109,7 @@ class BibdkReservationOrderObject {
 
   public function setBranchId($id) {
     $this->branchId = "DK-" . $id;
+    return $this;
   }
 
   public function getBranchId() {
@@ -91,6 +120,7 @@ class BibdkReservationOrderObject {
     $this->branch = $branch;
     $this->setBranchId($branch->branchId);
     $this->agency = new TingAgency($branch->branchId);
+    return $this;
   }
 
   public function setFavourite(FavouriteAgency $favourite) {
@@ -99,6 +129,7 @@ class BibdkReservationOrderObject {
     if($branch) {
       $this->setBranch($branch);
     }
+    return $this;
   }
 
   public function getFavourite() {
@@ -132,10 +163,12 @@ class BibdkReservationOrderObject {
 
   public function setFavourites($favourites) {
     $this->favourites = $favourites;
+    return $this;
   }
 
   public function setUserData($userData) {
     $this->userData = $userData;
+    return $this;
   }
 
   public function getUserData() {
@@ -144,6 +177,7 @@ class BibdkReservationOrderObject {
 
   public function setUserOrderData($userOrderData) {
     $this->userOrderData = $userOrderData;
+    return $this;
   }
 
   public function getUserOrderData() {
@@ -152,6 +186,7 @@ class BibdkReservationOrderObject {
 
   public function setNeedBeforeDate($needBeforeDate) {
     $this->needBeforeDate = $needBeforeDate;
+    return $this;
   }
 
   public function getNeedBeforDate() {
@@ -164,10 +199,12 @@ class BibdkReservationOrderObject {
 
   public function setOrderParameters($orderParameters) {
     $this->orderParameters = $orderParameters;
+    return $this;
   }
 
   public function setFields($fields) {
     $this->fields = $fields;
+    return $this;
   }
 
   /**

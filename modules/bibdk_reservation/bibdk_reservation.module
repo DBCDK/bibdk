@@ -92,7 +92,7 @@ function bibdk_reservation_theme() {
       'template' => 'template/bibdk_reservation_agency',
     ),
     'bibdk_reservation_manifestation' => array(
-      'variables' => array('title', 'author', 'type'),
+      'variables' => array('title' => NULL, 'author' => NULL, 'type' => NULL),
       'template' => 'template/bibdk_reservation_manifestation',
     ),
     'bibdk_reservation_resume' => array(
@@ -230,7 +230,6 @@ function bibdk_reservation_create_wizard_form($form, &$form_state) {
 
     // Get the form elements to display for this step.
     $form = $form_state['step_information'][$step]['form']($form, $form_state);
-
 
     // NAGIVATION
     $form['navigation'] = array(
@@ -553,12 +552,15 @@ function bibdk_reservation_new_order_object() {
 
   if (!isset($_REQUEST['ids'])) {
     drupal_set_message(t('No objects have been chosen', array(), array('context' => 'bibdk_reservation:error')), 'error');
-
     return NULL;
   }
-  $ids = explode(",", $_REQUEST['ids']);
 
+  $ids = explode(",", check_plain($_REQUEST['ids']));
   BibdkReservationOrderObject::GetObject()->setManifestationIds($ids);
+  if (isset($_REQUEST['subtype_order_ids'])) {
+    $subtype_order_ids = explode(",", check_plain($_REQUEST['subtype_order_ids']));
+    BibdkReservationOrderObject::GetObject()->setSubtypeOrderIds($subtype_order_ids);
+  }
 
   $work = bibdk_reservation_get_manifestation($ids);
   BibdkReservationOrderObject::GetObject()->setWork($work);

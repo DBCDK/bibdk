@@ -15,16 +15,21 @@ function bibdk_reservation_form_step_2($form, &$form_state) {
     $show_url = false; // don't show not owned message and link to own catalog
   }
 
-  //render manifestation
+  // Render manifestation
   $manifestation = BibdkReservationOrderObject::GetObject()->getManifestation();
+  
   $form['manifestation'] = bibdk_reservation_render_custom_manifestation_view($manifestation);
 
-  $form['branchdata'] = bibdk_reservation_render_custom_branch_view($branch, $form_state);
+  // Add 'order any edition' checkbox
+  $form['manifestation']['subtype_order_option'] = bibdk_reservation_render_subtype_order_option();
+  
+  $form['branchdata'] = bibdk_reservation_render_custom_branch_view($branch, $form_state); 
 
   $form['branchdata']['favouriteselector'] = bibdk_reservation_favourite_selector();
   $fields = bibdk_reservation_get_agency_fields();
 
   $infotxt = $fields->getAcceptOrderFromUnknownUserText($language->language);
+
   if (empty($infotxt)) {
     $infotxt = t('accept_order_from_unknown_standard_txt', array(), array('context' => 'bibdk_reservation'));
   }
@@ -515,6 +520,10 @@ function bibdk_reservation_prepare_set_user_order_data(&$form_state) {
   // save userOrderData
   BibdkReservationOrderObject::GetObject()->setUserOrderData($userOrderData);
 
+  if ($subtype_order = $form_state['values']['subtype_order']) {
+    BibdkReservationOrderObject::GetObject()->setSubtypeOrder($subtype_order);
+  }
+
   if (isset($date)) {
     BibdkReservationOrderObject::GetObject()->setNeedBeforeDate($date);
   }
@@ -529,7 +538,7 @@ function bibdk_reservation_form_step_2_submit($form, &$form_state) {
     BibdkReservationOrderObject::GetObject()->setArticleDirect($form_state['values']['self_pickup']);
   }
 
-  //Do not display allert box
+  // Do not display alert box.
   bibdk_reservation_form_step_2_already_ordered(FALSE);
 
   // @TODO fix med - this iw WRONG
@@ -724,4 +733,34 @@ function _bibdk_reservation_set_js_settings($ordered) {
       'alert_message' => t('already_ordered', array(), array('context' => 'bibdk_reservation')),
     ),
   ), 'setting');
+}
+
+/**
+ * Add checkbox for 'order any edition' option
+ *
+ * @return array
+ */
+function bibdk_reservation_render_subtype_order_option() {
+  $form = array();
+  $ids = BibdkReservationOrderObject::GetObject()->getManifestationIds();
+  $subtype_order_ids = BibdkReservationOrderObject::GetObject()->getSubtypeOrderIds();
+  $isSubset = array_diff($subtype_order_ids, $ids);
+  if (sizeof($isSubset) > 0) {
+    $form = array(
+      '#type' => 'fieldset',
+      '#attributes' => array(
+        'class' => array('work-reservation-option'),
+      ),
+      '#title' => t('header_work_reservation_option', array(), array('context' => 'bibdk_reservation')),
+      'subtype_order' => array(
+        '#type' => 'checkbox', 
+        '#title' => t('label_work_reservation_option', array(), array('context' => 'bibdk_reservation')),
+      ),
+      'subtype_order_ids' => array(
+        '#type' => 'hidden', 
+        '#value' => implode(',', $subtype_order_ids),
+      ),
+    );
+  }
+  return $form;
 }
