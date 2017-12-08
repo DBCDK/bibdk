@@ -30,10 +30,11 @@ class BibdkReservationWebTestCase extends DrupalWebTestCase {
   }
 
   public function testRunner() {
-    $this->_testActionHook();
-    $this->_test_bibdk_reservation_catalog_callback();
-    $this->_test_ting_openformat_render_direct_link();
-    $this->_test_bibdk_reservation_get_access_links();
+    // $this->_testActionHook();
+    // $this->_test_bibdk_reservation_catalog_callback();
+    // $this->_test_ting_openformat_render_direct_link();
+    // $this->_test_bibdk_reservation_get_access_links();
+    $this->_test_bibdk_reservation_work_reservation_option();
   }
 
   private function _test_bibdk_reservation_catalog_callback() {
@@ -141,6 +142,34 @@ class BibdkReservationWebTestCase extends DrupalWebTestCase {
 
     $this->assertTrue(($linksToCheckFor[0]['accessUrl'] == $links[0]['#openformat_field']['#path']), 'Found expected links in render array');
     $this->assertTrue(($linksToCheckFor[1]['accessUrl'] == $links[2]['#openformat_field']['#path']), 'Found expected links in render array');
+  }
+
+  private function _test_bibdk_reservation_work_reservation_option() {
+
+    debug('Testing work reservation checkbox');
+    
+    // activate reservation module
+    module_enable(array('bibdk_reservation', 'bibdk_sbkopi', 'bibdk_netarchive', 'bibdk_vejviser'));
+    menu_rebuild();
+
+    // Test url
+    $options = array(
+      'query' => array(
+        'ids' => '870970-basis:22995154',
+        'subtype_order_ids' => '870970-basis:22995154,870970-basis:53516033,870970-basis:51980220'
+      ),
+    );
+    $this->drupalGet('reservation', $options);
+
+    $edit = array();
+    $edit['anyField'] = 'dummy';
+    $this->drupalPost(NULL, $edit, 'Search');
+    $this->assertRaw('select_reservation_library');
+
+    $edit = array();
+    $this->drupalPost(NULL, $edit, 'select_reservation_library');
+    $this->assertRaw('Manifestation');
+    $this->assertRaw('label_work_reservation_option');
   }
 
 }
