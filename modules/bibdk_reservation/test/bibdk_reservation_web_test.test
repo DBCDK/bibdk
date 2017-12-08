@@ -30,10 +30,10 @@ class BibdkReservationWebTestCase extends DrupalWebTestCase {
   }
 
   public function testRunner() {
-    // $this->_testActionHook();
-    // $this->_test_bibdk_reservation_catalog_callback();
-    // $this->_test_ting_openformat_render_direct_link();
-    // $this->_test_bibdk_reservation_get_access_links();
+    $this->_testActionHook();
+    $this->_test_bibdk_reservation_catalog_callback();
+    $this->_test_ting_openformat_render_direct_link();
+    $this->_test_bibdk_reservation_get_access_links();
     $this->_test_bibdk_reservation_work_reservation_option();
   }
 
