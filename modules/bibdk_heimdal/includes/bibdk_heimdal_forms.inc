@@ -96,12 +96,12 @@ function bibdk_heimdal_verify_email_form_submit($form, &$form_state) {
     // this is an ajax submit - to redirect pass ajax to method
     bibdk_heimdal_cleanup_and_exit(TRUE);
   }
-  // an email has been sent - start from scratch
+  // an email has been sent - start from scratch .. almost
   unset($_SESSION['heimdal']);
+  // do remember that we ARE logged in with heimdal
+  $_SESSION['heimdal']['logged_in'] = TRUE;
 
   drupal_set_message(t('an_email_has_been_sent_help_txt', array(), array('context' => 'heimdal')));
-  // should we log out here? user is still logged in with heimdal
-  //bibdk_heimdal_do_logout('/', TRUE);
 }
 
 /**
