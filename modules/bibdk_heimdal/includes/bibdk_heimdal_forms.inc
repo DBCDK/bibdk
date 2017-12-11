@@ -84,7 +84,7 @@ function bibdk_heimdal_verify_email_form_submit($form, &$form_state) {
   $agencies = bibdkHeimdalUser::getLibraries();
   // save on database before sending email
   $key = heimdalDatabase::insert($mail, $agencies);
-  if($key === FALSE){
+  if ($key === FALSE) {
     bibdk_heimdal_cleanup_and_exit(TRUE);
   }
 
@@ -109,7 +109,7 @@ function bibdk_heimdal_verify_email_form_submit($form, &$form_state) {
  * @param $path
  *   the path to redirect to
  */
-function bibdk_heimdal_forms_ctools_redirect($path){
+function bibdk_heimdal_forms_ctools_redirect($path) {
   ctools_include('ajax');
   ctools_add_js('ajax-responder');
   $commands[] = ctools_ajax_command_redirect($path);
@@ -133,27 +133,30 @@ function bibdk_heimdal_send_verification_mail(array $row) {
  *
  * Set email text for user
  **/
-function bibdk_heimdal_mail($key, &$message, $params) {
+function bibdk_heimdal_mail($key, &$message, $row) {
   if ($key !== 'bibdk_heimdal_verify_mail') {
     return;
   }
+
   $message['subject'] = t('bibdk_verify_email_helptxt', array(), array('context' => 'heimdal'));
-  $message['body'][] = t('bibdk_click_this_link_txt', array(), array('context' => 'heimdal'));
-  $message['body'][] = bibdk_heimdal_get_verification_link($params['uuid']);
+
+  $body = array(
+    t('bibdk_click_this_link_txt', array(), array('context' => 'heimdal')),
+    bibdk_heimdal_get_verification_link($row['uuid']),
+  );
+
+  $message['body'] = $body;
 }
 
+/**
+ * Get a url for a loginrequest
+ * @param $uuid
+ * @return string
+ */
 function bibdk_heimdal_get_verification_link($uuid) {
-  $verification_link = array(
-    '#theme' => 'link',
-    '#text' => 'fisk',
-    '#path' => 'heimdal/loginrequest/' . $uuid,
-    '#options' => array(
-      'absolute' => TRUE,
-      'html' => TRUE,
-      'attributes' => array(),
-    ),
-  );
-  return drupal_render($verification_link);
+  return url('heimdal/loginrequest/' . $uuid, array(
+    'absolute' => TRUE,
+  ));
 }
 
 /**
