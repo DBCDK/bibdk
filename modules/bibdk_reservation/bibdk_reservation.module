@@ -187,6 +187,9 @@ function _bibdk_reservation_steps() {
  * @return array $form
  */
 function bibdk_reservation_create_wizard_form($form, &$form_state) {
+
+  dpm(func_get_args());
+
   // Initialize a description of the steps for the wizard.
   if (empty($form_state['step']) || !empty($form_state['input']['favourite_selected'])) {
     bibdk_reservation_new_order_object();
@@ -263,11 +266,10 @@ function bibdk_reservation_create_wizard_form($form, &$form_state) {
         '#submit' => array('bibdk_reservation_wizard_next_submit'),
       );
 
-      /*if ($next_step == BIBDK_RESERVATION_STEPS) {
+     /* if ($step == 2) {
         // add disable on Order button
         $form['navigation']['next']['#attached']['js'][] = drupal_get_path('module', 'bibdk_reservation') . '/js/bibdk_reservation_order_disable.js';
       }*/
-
     }
 
     // Show the 'previous' button if appropriate.
