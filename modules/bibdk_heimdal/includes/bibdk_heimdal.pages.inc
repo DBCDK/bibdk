@@ -26,6 +26,9 @@ function bibdk_heimdal_handle_login_request($uuid) {
     $message = bibdk_heimdal_exception_message();
   }
 
+  // row has been fetched - this is a one time link - delete on database
+  heimdalDatabase::deleteByUUID($uuid);
+
   if (empty($row)) {
     // row was not found - it has probably been deleted because it was too old
     $message = bibdk_heimdal_link_deprecated_message();
@@ -45,9 +48,6 @@ function bibdk_heimdal_handle_login_request($uuid) {
     // a message has been set for user @see bibdk_heimcdal_pages_check_insert_response($response)
     bibdk_heimdal_cleanup_and_exit($response['message']);
   }
-
-  // row has been fetched - this is a one time link - delete on database
-  heimdalDatabase::deleteByUUID($uuid);
 
   // if message is set something has gone wrong. Set a message and return to
   // fromtpage
