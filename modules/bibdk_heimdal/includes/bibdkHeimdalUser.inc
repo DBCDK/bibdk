@@ -14,9 +14,6 @@ class bibdkHeimdalUser {
    * @param array $attributes
    */
   public function __construct(array $attributes) {
-
-    dpm($attributes);
-
     $culr_libraries = isset($attributes['attributes']['agencies']) ?
       $attributes['attributes']['agencies'] : array();
 
