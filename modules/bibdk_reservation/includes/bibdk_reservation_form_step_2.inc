@@ -17,13 +17,13 @@ function bibdk_reservation_form_step_2($form, &$form_state) {
 
   // Render manifestation
   $manifestation = BibdkReservationOrderObject::GetObject()->getManifestation();
-  
+
   $form['manifestation'] = bibdk_reservation_render_custom_manifestation_view($manifestation);
 
   // Add 'order any edition' checkbox
   $form['manifestation']['subtype_order_option'] = bibdk_reservation_render_subtype_order_option();
-  
-  $form['branchdata'] = bibdk_reservation_render_custom_branch_view($branch, $form_state); 
+
+  $form['branchdata'] = bibdk_reservation_render_custom_branch_view($branch, $form_state);
 
   $form['branchdata']['favouriteselector'] = bibdk_reservation_favourite_selector();
   $fields = bibdk_reservation_get_agency_fields();
@@ -505,8 +505,10 @@ function bibdk_reservation_prepare_set_user_order_data(&$form_state) {
 
   if (isset($form_state['values']['needBeforeDate'])) {
     $input_date = $form_state['values']['needBeforeDate'];
-    $date = date("c", strtotime($input_date));
-    $userData['Need before Date'] = implode('/', array_reverse(explode('-', $input_date)));
+    if (is_string($input_date)) {
+      $date = date("c", strtotime($input_date));
+      $userData['Need before Date'] = implode('/', array_reverse(explode('-', $input_date)));
+    }
   }
 
   if (isset($form_state['values']['subdivision'])) {
@@ -520,7 +522,8 @@ function bibdk_reservation_prepare_set_user_order_data(&$form_state) {
   // save userOrderData
   BibdkReservationOrderObject::GetObject()->setUserOrderData($userOrderData);
 
-  if ($subtype_order = $form_state['values']['subtype_order']) {
+
+  if ($subtype_order = isset($form_state['values']['subtype_order']) ? $form_state['values']['subtype_order'] : FALSE) {
     BibdkReservationOrderObject::GetObject()->setSubtypeOrder($subtype_order);
   }
 
@@ -753,11 +756,11 @@ function bibdk_reservation_render_subtype_order_option() {
       ),
       '#title' => t('header_work_reservation_option', array(), array('context' => 'bibdk_reservation')),
       'subtype_order' => array(
-        '#type' => 'checkbox', 
+        '#type' => 'checkbox',
         '#title' => t('label_work_reservation_option', array(), array('context' => 'bibdk_reservation')),
       ),
       'subtype_order_ids' => array(
-        '#type' => 'hidden', 
+        '#type' => 'hidden',
         '#value' => implode(',', $subtype_order_ids),
       ),
     );
