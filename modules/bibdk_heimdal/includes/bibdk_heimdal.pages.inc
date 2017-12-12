@@ -26,6 +26,9 @@ function bibdk_heimdal_handle_login_request($uuid) {
     $message = bibdk_heimdal_exception_message();
   }
 
+  // row has been fetched - this is a one time link - delete on database
+  heimdalDatabase::deleteByUUID($uuid);
+
   if (empty($row)) {
     // row was not found - it has probably been deleted because it was too old
     $message = bibdk_heimdal_link_deprecated_message();
@@ -36,14 +39,15 @@ function bibdk_heimdal_handle_login_request($uuid) {
     $message = bibdk_heimdal_link_deprecated_message();
   }
 
-  $response = bibdk_heimdal_do_insert_culr($row);
-  if (!bibdk_heimcdal_pages_check_insert_response($response)) {
-    // something went wrong when creating culr account
-    $message = bibdk_heimdal_pages_no_culr_message();
+  if (!empty($message)) {
+    bibdk_heimdal_cleanup_and_exit($message);
   }
-
-  // row has been fetched - this is a one time link - delete on database
-  heimdalDatabase::deleteByUUID($uuid);
+  $response = bibdk_heimdal_do_insert_culr($row);
+  if (bibdk_heimcdal_pages_check_insert_response($response) !== TRUE) {
+    // something went wrong when creating culr account
+    // a message has been set for user @see bibdk_heimcdal_pages_check_insert_response($response)
+    bibdk_heimdal_cleanup_and_exit($response['message']);
+  }
 
   // if message is set something has gone wrong. Set a message and return to
   // fromtpage
@@ -107,8 +111,11 @@ function bibdk_heimdal_pages_no_culr_message() {
  * @return bool
  */
 function bibdk_heimcdal_pages_check_insert_response($response) {
-  // @TODO implement
-  return TRUE;
+  if ($response['status'] !== FALSE) {
+    return TRUE;
+  }
+  // Something went wront - get the error message
+  return $response['message'];
 }
 
 /**
@@ -129,7 +136,7 @@ function bibdk_heimdal_check_timestamp($time) {
 /**
  * Let openuserinfo do an insert(createAccount) on culr.
  * @param $row
- * @return array
+ * @return array|string
  */
 function bibdk_heimdal_do_insert_culr($row) {
   $agencies = unserialize($row['libraries']);
@@ -143,44 +150,12 @@ function bibdk_heimdal_do_insert_culr($row) {
   // pick the first - if there are more they have the same userId
   // that is how culr works
   $agency = $agencies[0];
+
   $borrowerId = $agency['userId'];
   $uidType = $agency['userIdType'];
   $xml = BibdkUser::instance()->insertCulr($mail, $borrowerId, $uidType);
-  if (bibdk_heimdal_pages_check_insert($xml)) {
-    $response[$agency['agencyId']][] = $xml;
-  }
-  else {
-    bibdk_heimdal_cleanup_and_exit();
-  }
 
-  return $response;
-}
-
-/**
- * Check answer from insertCulr action.
- * @param $xml
- *   answer to check for errors
- * @return bool
- *   False if an error (oui:error) is present
- */
-function bibdk_heimdal_pages_check_insert($xml) {
-  $dom = new DomDocument();
-  if (!@$dom->loadXML($xml)) {
-    watchdog('heimdal', 'could not load xml: %xml', array('%xml' => $xml), WATCHDOG_ERROR);
-    return FALSE;
-  }
-  $xpath = new DomXPATH($dom);
-  $xpath->registerNamespace('oui', 'http://oss.dbc.dk/ns/openuserinfo');
-
-  $query = '//' . 'oui:error';
-  $nodelist = $xpath->query($query);
-
-  if ($nodelist->length > 0) {
-    watchdog('heimdal', $nodelist->item(0)->nodeValue, array(), WATCHDOG_ERROR);
-    return FALSE;
-  }
-
-  return TRUE;
+  return $xml;
 }
 
 /**

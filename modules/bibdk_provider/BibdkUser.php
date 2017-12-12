@@ -172,7 +172,7 @@ class BibdkUser {
    * @param string $userId
    * @param string $borrowerId
    * @param string $uidType
-   * @return string'
+   * @return array
    */
   public function insertCulr($userId, $borrowerId, $uidType) {
     $params = array(
@@ -182,7 +182,18 @@ class BibdkUser {
     );
 
     $response = $this->makeRequest('insertCulrRequest', $params);
-    return $response;
+
+    $xmlmessage = $this->responseExtractor($response, 'insertCulrResponse');
+    $ret = array('status' => 'error', 'response' => '');
+    if ($xmlmessage->nodeName != 'oui:error') {
+      $ret['status'] = TRUE;
+      $ret['message'] = $response;
+    }
+    else {
+      $ret['status'] = FALSE;
+      $ret['message'] = $xmlmessage->nodeValue;
+    }
+    return $ret;
   }
 
   /************* END CULR ******************/
