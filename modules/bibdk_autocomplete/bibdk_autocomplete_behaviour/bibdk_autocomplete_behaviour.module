@@ -1,0 +1,34 @@
+<?php
+/**
+ * @file
+ * Code for Bibliotek.dk Autocomplete behaviour
+ */
+
+
+/**
+ * Implements hook_menu().
+ */
+function bibdk_autocomplete_behaviour_menu() {
+
+  $items['bibdk/behaviour/autocomplete/%'] = array(
+    'title' => 'Bibliotek.dk autocomplete behaviour',
+    'description' => 'Autocomplete behaviour callback',
+    'page callback' => 'bibdk_autocomplete_behaviour',
+    'page arguments' => array(3),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+
+/**
+ * Implements hook_form_FORM_ID_alter() for form search_block_form.
+ */
+function bibdk_autocomplete_behaviour_form_search_block_form_alter(&$form, &$form_state, $form_id) {
+
+  $form['#attached']['js'][] = drupal_get_path('module', 'bibdk_autocomplete_behaviour') . '/js/bibdk_autocomplete_behaviour.js';
+
+  return $form;
+}
