@@ -50,6 +50,6 @@ class BibdkHeimdalWebTestCase extends DrupalWebTestCase {
     $this->drupalLogin($testuser);
     $url = bibdk_heimdal_get_return_url();
     // logged in user
-    $this->assertTrue($url === 'user/logout');
+    $this->assertTrue($url === 'heimdal/logout');
   }
 }
