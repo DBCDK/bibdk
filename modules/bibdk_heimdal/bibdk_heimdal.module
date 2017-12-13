@@ -64,6 +64,16 @@ function bibdk_heimdal_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  $items['heimdal/logout'] = array(
+    'title' => t('Logout', array(), array('context' => 'heimdal')),
+    'description' => t('Log out of heimdal'),
+    'page callback' => 'bibdk_heimdal_custom_drupal_logout',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+
+
   return $items;
 }
 
@@ -75,6 +85,10 @@ function bibdk_heimdal_menu() {
  * to run
  */
 function bibdk_heimdal_init() {
+  if(isset($_GET['message'])){
+    drupal_set_message($_GET['message']);
+  }
+
   // check if error is et in $_GET - if so abort
   bibdk_heimdal_check_for_errors();
   if (isset($_SESSION['heimdal']['action'])) {
@@ -100,7 +114,8 @@ function bibdk_heimdal_init() {
 function bibdk_heimdal_check_for_errors() {
   $error = isset($_GET['error']) ? $_GET['error'] : '';
   if (!empty($error)) {
-    bibdk_heimdal_cleanup_and_exit();
+    $message = t($_GET['error'], array(), array('context'=>'heimdal'));
+    bibdk_heimdal_cleanup_and_exit($message);
   }
 }
 
@@ -179,7 +194,7 @@ function bibdk_heimdal_get_return_url() {
     return '/';
   }
   else {
-    return 'user/logout';
+    return 'heimdal/logout';
   }
 }
 
@@ -290,17 +305,20 @@ function bibdk_heimdal_user_logout() {
 }
 
 /**
- * Do a logout of heimdal.
+ * Do a logout of heimdal. NOTICE this one does a redirect to heimdal thus
+ * leaving drupal's logout flow. To solve this we made a custom logout in hook_menu.
+ * @see  bibdk_heimdal_custom_drupal_logout()
+ *
  * @param string $url
  *   The url to go to after logout
  * @param bool $ajax
  *   Do an ajax redirect or not
  */
-function bibdk_heimdal_do_logout($url = '/user/logout', $ajax = fALSE) {
+function bibdk_heimdal_do_logout($url = '/heimdal/logout', $ajax = fALSE) {
   if (isset($_SESSION['heimdal'])) {
     unset($_SESSION['heimdal']);
     $config = variable_get('ding_wayf', NULL);
-    $path = $config['hosturl'] . '/logout?returnurl=' . $url;
+    $path = $config['hosturl'] . '/logout?returnurl='.$url;
 
     if ($ajax) {
       bibdk_heimdal_forms_ctools_redirect($path);
@@ -309,6 +327,22 @@ function bibdk_heimdal_do_logout($url = '/user/logout', $ajax = fALSE) {
     drupal_goto($path);
   }
 }
+
+/**
+ * Custom logout. Basically a copy of user_logout_current_user(),
+ * @see user.pages.inc::user_logout_current_user()
+ */
+function bibdk_heimdal_custom_drupal_logout(){
+  module_load_include('inc', 'user', 'user.pages');
+  user_logout_current_user();
+  if(isset($_GET['message'])){
+    $message = t($_GET['message'], array(), array('context'=>'heimdal'));
+    drupal_set_message($message);
+  }
+  drupal_goto();
+}
+
+
 
 /** Implements hook_form_FORM_ID_alter (user_login)
  *
@@ -356,7 +390,6 @@ function bibdk_heimdal_login_link() {
  * @return array
  */
 function bibdk_heimdal_get_login_link() {
-
   return array(
     bibdk_heimdal_get_logo(),
     bibdk_heimdal_get_nemid_logo(),
