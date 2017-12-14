@@ -172,7 +172,7 @@ class BibdkUser {
    * @param string $userId
    * @param string $borrowerId
    * @param string $uidType
-   * @return string'
+   * @return array
    */
   public function insertCulr($userId, $borrowerId, $uidType) {
     $params = array(
@@ -182,7 +182,18 @@ class BibdkUser {
     );
 
     $response = $this->makeRequest('insertCulrRequest', $params);
-    return $response;
+
+    $xmlmessage = $this->responseExtractor($response, 'insertCulrResponse');
+    $ret = array('status' => 'error', 'response' => '');
+    if ($xmlmessage->nodeName != 'oui:error') {
+      $ret['status'] = TRUE;
+      $ret['message'] = $response;
+    }
+    else {
+      $ret['status'] = FALSE;
+      $ret['message'] = $xmlmessage->nodeValue;
+    }
+    return $ret;
   }
 
   /************* END CULR ******************/
@@ -317,6 +328,11 @@ class BibdkUser {
    * @return string xml
    */
   public function getFavourites($username) {
+    static $response;
+    if (!empty($response)) {
+      return $response;
+    }
+
     $params = array('oui:userId' => $username);
     $response = $this->makeRequest('getFavouritesRequest', $params);
 
@@ -324,6 +340,11 @@ class BibdkUser {
   }
 
   public function getCart($username) {
+    static $ret;
+    if (!empty($ret)) {
+      return $ret;
+    }
+
     $params = array('oui:userId' => $username);
     $response = $this->makeRequest('getCartRequest', $params);
 

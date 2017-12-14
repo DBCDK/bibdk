@@ -17,10 +17,24 @@ class bibdkHeimdalUser {
     $culr_libraries = isset($attributes['attributes']['agencies']) ?
       $attributes['attributes']['agencies'] : array();
 
+    if(empty($culr_libraries)){
+      $culr_libraries[] = $this->setBibliotekDkAgency($attributes['attributes']);
+    }
     if(!empty($culr_libraries)) {
       $this->setLibraries($culr_libraries);
     }
+
+    // always set a bibliotek.dk agency
+
   }
+
+  private function setBibliotekDkAgency($attributes) {
+    return array(
+      'agencyId' => '190101',
+      'cpr' => $attributes['cpr']
+    );
+  }
+
 
   /**
    * Check if User has already been found via culr
@@ -30,6 +44,7 @@ class bibdkHeimdalUser {
    */
   public function getBibdkUsers() {
     $libraries = self::getLibraries();
+
     if (empty($libraries)) {
       return array();
     }
@@ -38,7 +53,9 @@ class bibdkHeimdalUser {
     foreach ($libraries as $agency) {
       // check if provider is bibliotek.dk
       if ($agency['agencyId'] == '190101') {
-        $usernames[] = $agency['userId'];
+        if(isset($agency['userId'])) {
+          $usernames[] = $agency['userId'];
+        }
       }
     }
     return $usernames;

@@ -16,9 +16,11 @@ module_load_include('inc', 'bibdk_reservation', 'includes/bibdk_reservation.fiel
  * @param $entity_type
  * @return bool|string
  */
-function bibdk_reservation_link($entity_ids, $subtype, $entity_type) {
+function bibdk_reservation_link($entity, $entity_type) {
+  $entity_ids = $entity->getIDs();
+  $subtype = $entity->getSubType();
+  $subtype_order_ids = $entity->getSubtypeOrderIds();
   $manifestations = explode(',', implode(',', $entity_ids));
-
   if (count($manifestations) >= 2) {
     $text = t("Order", array(), array('context' => 'bibdk_reservation'));
     $button_id = 'any_edition_' . $manifestations[0];
@@ -29,7 +31,10 @@ function bibdk_reservation_link($entity_ids, $subtype, $entity_type) {
     $button_id = 'this_edition_' . current($manifestations);
   }
   $path = 'reservation';
-  $query = array('ids' => implode(',', $entity_ids));
+  $query['ids'] = (!empty($entity_ids)) ? implode(',', $entity_ids) : NULL;
+  if (!empty($subtype_order_ids)) {
+    $query['subtype_order_ids'] = implode(',', $subtype_order_ids);
+  }
 
   // This should be moved to the template
   $attributes['id'] = $button_id;

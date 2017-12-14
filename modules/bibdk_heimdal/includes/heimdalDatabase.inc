@@ -28,6 +28,7 @@ class heimdalDatabase {
    *  uuid (primary key of table) to be used when generating an email link
    */
   public static function insert($email, array $agencies) {
+    $agencies = self::checkAgencies($agencies);
     $key = uuid_generate();
     $libraries = serialize($agencies);
     $date = time();
@@ -55,6 +56,32 @@ class heimdalDatabase {
     }
 
     return $key;
+  }
+
+  /**
+   * Handle special cases.
+   *  User logs in with nemlogin, and has no libraries registred in culr
+   *
+   * @TODO there MUST be more special cases - what about wayf??
+   *
+   * @param array $agencies
+   * @return array
+   */
+  private static function checkAgencies(array $agencies) {
+    // nem login and no culr libraries
+    if (count($agencies) === 1 && $agencies[0]['agencyId'] == '190101' && isset($agencies[0]['cpr'])) {
+      $libs = array();
+      $libs[] = array(
+        'userId' => $agencies[0]['cpr'],
+        'userIdType' => 'CPR',
+      );
+      return $libs;
+    }
+
+    else {
+      return $agencies;
+    }
+
   }
 
   /**

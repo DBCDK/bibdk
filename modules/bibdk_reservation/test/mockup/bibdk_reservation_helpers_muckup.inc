@@ -1,7 +1,9 @@
 <?php
 /**
  * @file
- * Muckups of Helper functions for unittests
+ * Muckups of Helper functions for unittests.
+ * Note: If unittest and webtest are run in the same session, 
+ *       you may get "cannot redeclare function" errors.
  */
 
 /**
