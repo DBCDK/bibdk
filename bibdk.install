@@ -69,7 +69,6 @@ function _bibdk_enable_modules() {
     'open_moreinfo',
     'ding_base',
     'ding_entity',
-    'ding_persistent_login',
     'ding_popup',
     'ding_provider',
     'ding_user',
@@ -567,4 +566,12 @@ function bibdk_update_7048() {
  */
 function bibdk_update_7049() {
   module_enable(array('bibdk_heimdal'));
+}
+
+/*
+ * Turn of 'remember me'
+ */
+function bibdk_update_7050(){
+  module_disable(array('ding_persistent_login', 'persistent_login'));
+
 }
