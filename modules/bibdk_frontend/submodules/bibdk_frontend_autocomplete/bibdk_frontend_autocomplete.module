@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * Implements hook_form_FORM_ID_alter() for form search_block_form.
+ */
+function bibdk_frontend_autocomplete_form_search_block_form_alter(&$form, &$form_state, $form_id) {
+  $form['#attached']['js'][] = drupal_get_path('module', 'bibdk_frontend_autocomplete') . '/js/autocomplete.js';
+  return $form;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for form bibdk_vejviser_form.
+ */
+function bibdk_frontend_autocomplete_form_bibdk_vejviser_form_alter(&$form, &$form_state, $form_id) {
+  $form['#attached']['js'][] = drupal_get_path('module', 'bibdk_frontend_autocomplete') . '/js/autocomplete.js';
+  return $form;
+}
+

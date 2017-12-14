@@ -18,7 +18,4 @@ function bibdk_autocomplete_install() {
 /**
  * Enable module
  */
-function bibdk_autocomplete_update_7001(&$sandbox) {
-  $module_list = array('bibdk_autocomplete');
-  module_enable($module_list);
-}
+function bibdk_autocomplete_update_7001(&$sandbox) {}

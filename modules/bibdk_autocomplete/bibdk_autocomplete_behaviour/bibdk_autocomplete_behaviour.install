@@ -10,7 +10,7 @@
  */
 function bibdk_autocomplete_behaviour_install() {
   db_update('system')
-    ->fields(array('weight' => 15))
+    ->fields(array('weight' => 20))
     ->condition('name', 'bibdk_autocomplete_behaviour', '=')
     ->execute();
 }

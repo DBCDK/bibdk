@@ -152,6 +152,7 @@ function _bibdk_frontend_enable_modules() {
     'bibdk_voxb',
     'bibdk_usersettings_language',
     'custom_search_taxonomy',
+    'bibdk_frontend_autocomplete',
   );
   if (!module_enable($modules)) {
     throw new Exception('A module: ' . current($modules) . ' present in array \'$module_list\' in file \'bibdk_frontend.install\' was not found. Install process aborted.');
@@ -524,5 +525,14 @@ function bibdk_frontend_update_7030(&$sandbox) {
 function bibdk_frontend_update_7031(&$sandbox) {
   module_enable(array(
     'dbc_zabbix_configuration'
+  ));
+}
+
+/**
+ * Move autocomplete modifications from theme to frontend.
+ */
+function bibdk_frontend_update_7032(&$sandbox) {
+  module_enable(array(
+    'bibdk_frontend_autocomplete'
   ));
 }

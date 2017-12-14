@@ -1,8 +1,7 @@
 (function ($) {
  
   var BibdkAutocompleteBehavior = {};
-  BibdkAutocompleteBehavior.InputFields = {};
-  BibdkAutocompleteBehavior.InputFields.fields = [];
+  BibdkAutocompleteBehavior.fields = [];
 
   /**
    * Trigger Bibdk_behaviors AJAX call on form submit
@@ -10,6 +9,9 @@
   Drupal.behaviors.bibdk_autocomplete_behavior__search_form_submit = {
     attach: function (context, settings) {
       $('#search-block-form').submit(function( event ) {
+        var url = Drupal.settings.basePath + Drupal.settings.pathPrefix + 'bibdk/behaviour/autocomplete/'
+                  + JSON.stringify(BibdkAutocompleteBehavior);
+        $.ajax(url);
         alert( "Handler for .submit() called." );
         event.preventDefault();
       });
@@ -19,25 +21,43 @@
   /**
    * Register all autocomplete fields in search block form
    */
-  Drupal.behaviors.bibdk_autocomplete_behavior__update_fields = {
+  Drupal.behaviors.bibdk_autocomplete_behavior__register_fields = {
     attach: function (context, settings) {
       $('#search-block-form', context).find('input.autocomplete').once('register-autocomplete-fields', function (context) {
-        BibdkAutocompleteBehavior.InputFields.push(this);
+        BibdkAutocompleteBehavior.push(this);
       });
-      console.log(BibdkAutocompleteBehavior.InputFields);
     }
   };
   
   /**
-   * Register all autocomplete list items
+   * Push an item on the suggestions array
+   *
+   * @param elemId
+   * @param item
    */
-  Drupal.behaviors.bibdk_autocomplete_behavior__register_autocomplete_items = {
-    // BibdkAutocompleteBehavior.InputFields.push(this);
-    attach: function (context, settings) {
-      $('#autocomplete li.selected', context).click(function () {
-        alert($(this).value);
-      });
-    }
+  BibdkAutocompleteBehavior.addSuggestion = function (elemId, item) {
+    this.fields[elemId]['suggestions'].push(item);
+  };
+
+  /**
+   * Reset Suggestions
+   *
+   * @param elemId
+   */
+  BibdkAutocompleteBehavior.resetSuggestions = function (elemId) {
+    this.fields[elemId]['suggestions'] = [];
+  };
+
+  /**
+   * Register selected suggestion
+   *
+   * @param elemId
+   * @param item
+   */
+  BibdkAutocompleteBehavior.selectedSuggestion = function (elemId, elemValue, counter) {
+    this.fields[elemId]['selected'] = counter;
+    this.fields[elemId]['input'] = elemValue;
+    console.log(BibdkAutocompleteBehavior);
   };
 
   /**
@@ -48,9 +68,10 @@
   BibdkAutocompleteBehavior.InputField = function (elem) {
     this.id = elem.id;
     this.inputField = '#' + this.id.substr(0, this.id.length - 13);
-    var uuids = BibdkAutocompleteBehavior.InputFields.splitUrl(elem.value);
+    var uuids = BibdkAutocompleteBehavior.splitUrl(elem.value);
     this.inputUuid = uuids[0];
     this.pageUuid = uuids[1];
+    this.suggestions = [];
   };
 
   /**
@@ -58,8 +79,9 @@
    *
    * @param elem
    */
-  BibdkAutocompleteBehavior.InputFields.push = function (elem) {
+  BibdkAutocompleteBehavior.push = function (elem) {
     this.fields[elem.id] = new BibdkAutocompleteBehavior.InputField(elem);
+    console.log(typeof this.fields)
   };
 
   /**
@@ -68,7 +90,7 @@
    * @param url
    * @returns {*[]}
    */
-  BibdkAutocompleteBehavior.InputFields.splitUrl = function (url) {
+  BibdkAutocompleteBehavior.splitUrl = function (url) {
     var parts = url.split("/");
     var length = parts.length;
     // last is v_uuid
@@ -79,40 +101,51 @@
   };
 
   /**
-   * Fills the suggestion popup with any matches received.
-   * Overwrite found to add behaviour log.
-   *  copied from misc/autocomplete.js
+   * overrides Drupal.jsAC.prototype.found
+   * @see misc/autocomplete.js
    *
-   * @param matches
+   * Add behaviour logging for autocomplete.
    */
-   Drupal.jsAC.prototype.found = function (matches) {
-    alert('bas');
+  function found(matches){
     // If no value in the textfield, do not show the popup.
-    if (!this.input.value.length) {
+    if (!this.input.value.length){
       return false;
     }
 
     // Prepare matches.
     var ul = $('<ul></ul>');
     var ac = this;
+    var counter = 0;
+    var elemId = this.input.id + '-autocomplete';
+    var elemValue = this.input.value;
+    BibdkAutocompleteBehavior.resetSuggestions(elemId);
     for (key in matches) {
+      BibdkAutocompleteBehavior.addSuggestion(elemId, matches[key]);
+      // BibdkAutocompleteBehavior.register_autocomplete_items(this, matches[key]);
       $('<li></li>')
         .html($('<div></div>').html(matches[key]))
-        .mousedown(function () { ac.hidePopup(this); })
-        .mouseover(function () { ac.highlight(this); })
-        .mouseout(function () { ac.unhighlight(this); })
+        .click(function() {
+          ac.select(this);
+        })
+        .mouseover(function() {
+          ac.highlight(this);
+        })
+        .mouseout(function() {
+          ac.unhighlight(this);
+        })
         .data('autocompleteValue', key)
-        .appendTo(ul);
+        .appendTo(ul)
+        .on( "click", { counter: counter }, function( event ) {
+          BibdkAutocompleteBehavior.selectedSuggestion(elemId, elemValue, event.data.counter);
+        })
+        counter++;
     }
-    
+
     // Show popup with matches, if any.
-    if (this.popup) {
-      if (ul.children().length) {
-        $(this.popup).empty().append(ul).show().click(function () {
-          alert('foo');
-        });
+    if (this.popup){
+      if (ul.children().length){
+        $(this.popup).empty().append(ul).show();
         $(this.ariaLive).html(Drupal.t('Autocomplete popup'));
-        alert('bar');
       }
       else {
         $(this.popup).css({ visibility: 'hidden' });
@@ -120,5 +153,19 @@
       }
     }
   };
+
+  /**
+   * overrides for drupal autocomplete w/o ajax
+   */
+  if (Drupal.jsAC){
+    Drupal.jsAC.prototype.found = found;
+  }
+  Drupal.behaviors.bibdk_autocomplete = {
+    attach: function(context, settings){
+      if (Drupal.jsAC){
+        Drupal.jsAC.prototype.found = found;
+      }
+    }
+  }
 
 })(jQuery);

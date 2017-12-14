@@ -8,3 +8,7 @@ files[] = test/bibdk_autocomplete_unit_test.test
 
 dependencies[] = bibdk_custom_search
 dependencies[] = microcurl
+; We have changes to autocomplete.js that alter touch functionality and behaviour logging.
+; Used by bibdk_autocomplete and ting_agency
+; @see misc/autocomplete.js
+dependencies[] = bibdk_frontend_autocomplete
