@@ -21,7 +21,7 @@ libraries[ckeditor][download][url] = http://download.cksource.com/CKEditor/CKEdi
 projects[bibdk_theme][type] = theme
 projects[bibdk_theme][download][type] = git
 projects[bibdk_theme][download][url] = git@github.com:DBCDK/bibdk_theme.git
-projects[bibdk_theme][download][tag] = 7.x-0.95
+projects[bibdk_theme][download][tag] = 7.x-1.0
 
 
 ; --- Bibliotek.dk versions of Ding2 modules ---
@@ -89,7 +89,7 @@ projects[ting_infomedia][download][tag] = 7.x-1.34
 projects[ting_openformat][type] = module
 projects[ting_openformat][download][type] = git
 projects[ting_openformat][download][url] = git@github.com:DBCDK/ting_openformat.git
-projects[ting_openformat][download][tag] = 7.x-0.82
+projects[ting_openformat][download][tag] = 7.x-1.0
 
 projects[ting_openuserstatus][type] = module
 projects[ting_openuserstatus][download][type] = git
@@ -100,7 +100,7 @@ projects[ting_openuserstatus][download][tag] = 7.x-0.2
 projects[microcurl][type] = module
 projects[microcurl][download][type] = git
 projects[microcurl][download][url] = git@github.com:DBCDK/microcurl.git
-projects[microcurl][download][tag] = 7.x-0.2
+projects[microcurl][download][tag] = 7.x-1.0
 
 projects[open_adhl][type] = module
 projects[open_adhl][download][type] = git
@@ -110,12 +110,12 @@ projects[open_adhl][download][tag] = 7.x-0.5
 projects[open_holdingstatus][type] = module
 projects[open_holdingstatus][download][type] = git
 projects[open_holdingstatus][download][url] = git@github.com:DBCDK/open_holdingstatus.git
-projects[open_holdingstatus][download][tag] = 7.x-0.14
+projects[open_holdingstatus][download][tag] = 7.x-1.0
 
 projects[open_moreinfo][type] = module
 projects[open_moreinfo][download][type] = git
 projects[open_moreinfo][download][url] = git@github.com:DBCDK/open_moreinfo.git
-projects[open_moreinfo][download][tag] = 7.x-0.6
+projects[open_moreinfo][download][tag] = 7.x-1.0
 
 projects[open_saou][type] = module
 projects[open_saou][download][type] = git
@@ -150,7 +150,7 @@ projects[bibdk_behaviour][download][tag] = 7.x-0.9
 projects[dbc_zabbix][type] = module
 projects[dbc_zabbix][download][type] = git
 projects[dbc_zabbix][download][url] = git@github.com:DBCDK/dbc_zabbix.git
-projects[dbc_zabbix][download][tag] = 7.x-0.2
+projects[dbc_zabbix][download][tag] = 7.x-1.0
 
 projects[translatable][type] = module
 projects[translatable][subdir] = contrib
