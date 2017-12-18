@@ -59,7 +59,7 @@ projects[ding_user][download][tag] = 7.x-0.19-dbc.21
 projects[ding_wayf][type] = module
 projects[ding_wayf][download][type] = git
 projects[ding_wayf][download][url] = git@github.com:DBCDK/ding_wayf.git
-projects[ding_wayf][download][tag] = 7.x-0.6+dbc.13
+projects[ding_wayf][download][tag] = 7.x-1.0
 
 projects[ding_webtrends][type] = module
 projects[ding_webtrends][download][type] = git
