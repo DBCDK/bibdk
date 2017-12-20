@@ -139,8 +139,6 @@ function bibdk_autocomplete_truncate($string, $width) {
  */
 function bibdk_autocomplete_form_search_block_form_alter(&$form, &$form_state, $form_id) {
 
-  $form['search_block_form']['#autocomplete_path'] = 'bibdk/autocomplete/search_block_form';
-  
   if (!empty($form['page_id']['#value'])) {
     $page_path = $form['page_id']['#value'];
   } else {
@@ -150,7 +148,6 @@ function bibdk_autocomplete_form_search_block_form_alter(&$form, &$form_state, $
       $page_path = $_GET['q'];
     }
   }
-  
   $autocomplete_elements = variable_get('bibdk_autocomplete_var', array());
   foreach ($autocomplete_elements as $key => $page) {
     if ($page['page_path'] == $page_path) {
@@ -159,11 +156,12 @@ function bibdk_autocomplete_form_search_block_form_alter(&$form, &$form_state, $
     }
   }
 
-  $form['search_block_form']['#autocomplete_path'] =
-    'bibdk/autocomplete/' . $p_uuid . '/search_block_form';
-
   if (!empty($vars)) {
     foreach ($vars as $v_uuid => $values) {
+      if ($v_uuid == 'search_block_form' && $values['autocomplete'] == TRUE) {
+        $form['search_block_form']['#autocomplete_path'] =
+          'bibdk/autocomplete/' . $p_uuid . '/search_block_form';
+      }
       if (!empty($form['advanced']) && !empty($form['advanced']['main'])) {
         foreach ($form['advanced']['main'] as $element_label => $elements) {
           bibdk_autocomplete_set_path($form, $elements, $element_label, $values, $p_uuid, $v_uuid, 'main');

@@ -9,11 +9,10 @@
  * Implements hook_menu().
  */
 function bibdk_autocomplete_behaviour_menu() {
-  $items['bibdk/behaviour/autocomplete/%'] = array(
+  $items['bibdk/behaviour/autocomplete'] = array(
     'title' => 'Bibliotek.dk autocomplete behaviour',
     'description' => 'Autocomplete behaviour callback',
     'page callback' => 'bibdk_autocomplete_behaviour_callback',
-    'page arguments' => array(3),
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
@@ -29,10 +28,11 @@ function bibdk_autocomplete_behaviour_form_search_block_form_alter(&$form, &$for
   return $form;
 }
 
+
 /**
  * Callback for autocomplete behaviour.
  */
 function bibdk_autocomplete_behaviour_callback($json_data) {
-  $behaviour_data = json_decode($json_data);
+  $behaviour_data = $_POST;
   dpm($behaviour_data);
 }

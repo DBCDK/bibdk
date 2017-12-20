@@ -1,18 +1,20 @@
 (function ($) {
  
   var BibdkAutocompleteBehavior = {};
-  BibdkAutocompleteBehavior.fields = [];
-
+  BibdkAutocompleteBehavior.fields = {};
   /**
    * Trigger Bibdk_behaviors AJAX call on form submit
    */
   Drupal.behaviors.bibdk_autocomplete_behavior__search_form_submit = {
     attach: function (context, settings) {
       $('#search-block-form').submit(function( event ) {
-        var url = Drupal.settings.basePath + Drupal.settings.pathPrefix + 'bibdk/behaviour/autocomplete/'
-                  + JSON.stringify(BibdkAutocompleteBehavior);
-        $.ajax(url);
-        alert( "Handler for .submit() called." );
+        var url = Drupal.settings.basePath + Drupal.settings.pathPrefix + 'bibdk/behaviour/autocomplete/';
+        var request = $.ajax({
+          url: url,
+          method: "POST",
+          data: { behavior: BibdkAutocompleteBehavior.fields },
+          dataType: 'json'
+        });
         event.preventDefault();
       });
     }
@@ -26,9 +28,17 @@
       $('#search-block-form', context).find('input.autocomplete').once('register-autocomplete-fields', function (context) {
         BibdkAutocompleteBehavior.push(this);
       });
+      console.log(BibdkAutocompleteBehavior)
     }
   };
   
+  /**
+   * Get BibdkAutocompleteBehavior fields.
+   */
+  BibdkAutocompleteBehavior.getFields = function () {
+    return this.fields;
+  };
+
   /**
    * Push an item on the suggestions array
    *
@@ -36,7 +46,7 @@
    * @param item
    */
   BibdkAutocompleteBehavior.addSuggestion = function (elemId, item) {
-    this.fields[elemId]['suggestions'].push(item);
+    this.fields[elemId].suggestions.push(item);
   };
 
   /**
@@ -45,7 +55,7 @@
    * @param elemId
    */
   BibdkAutocompleteBehavior.resetSuggestions = function (elemId) {
-    this.fields[elemId]['suggestions'] = [];
+    this.fields[elemId].suggestions.length = 0;
   };
 
   /**
@@ -55,8 +65,8 @@
    * @param item
    */
   BibdkAutocompleteBehavior.selectedSuggestion = function (elemId, elemValue, counter) {
-    this.fields[elemId]['selected'] = counter;
-    this.fields[elemId]['input'] = elemValue;
+    this.fields[elemId].selected = counter;
+    this.fields[elemId].input = elemValue;
     console.log(BibdkAutocompleteBehavior);
   };
 
@@ -81,7 +91,6 @@
    */
   BibdkAutocompleteBehavior.push = function (elem) {
     this.fields[elem.id] = new BibdkAutocompleteBehavior.InputField(elem);
-    console.log(typeof this.fields)
   };
 
   /**

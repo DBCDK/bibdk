@@ -68,6 +68,7 @@ function bibdk_autocomplete_admin() {
         'p_uuid' => $value->p_uuid, 
         'v_uuid' => 'search_block_form', 
         'menu_title' => $value->menu_title, 
+        'value_type' => 'textfield',
         'element_label' => 'Fritekst',
         'page_path' => $value->page_path,
       ];
@@ -85,6 +86,10 @@ function bibdk_autocomplete_admin() {
 
   foreach ($result as $value) {
 
+    if ($value->value_type != 'textfield') {
+      continue;
+    }
+    
     $default_value = isset($default[$value->p_uuid]['vars'][$value->v_uuid]) ? $default[$value->p_uuid]['vars'][$value->v_uuid] : $base_vars;
 
     $form['bibdk_autocomplete_var'][$value->p_uuid]['vars'][$value->v_uuid] = array(
@@ -182,20 +187,23 @@ function _bibdk_autocomplete_get_search_fields_db() {
   $query->join('bibdk_custom_search_values', 'v', 'mv.v_uuid = v.v_uuid');
   $query->leftjoin('bibdk_custom_search_options', 'o', 'v.v_uuid = o.v_uuid');
 
-  $query->fields('s', array('menu_title', 'p_uuid', 'page_path'));
-  // $query->fields('me', array('sort'));
+  $query->fields('s', array(
+    'menu_title',
+    'p_uuid',
+    'page_path'
+  ));
+
   $query->fields('e', array(
     'e_uuid',
     'element_label',
   ));
-  // $query->fields('mv', array('sort'));
+
   $query->fields('v', array(
     'v_uuid',
     'value_title',
+    'value_type',
     'search_code',
   ));
-
-  $query ->condition('v.value_type', 'textfield', '=');
 
   $query->orderBy('me.sort', 'ASC');
   $query->orderBy('e.element_label', 'ASC');
