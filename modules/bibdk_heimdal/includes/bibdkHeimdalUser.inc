@@ -30,7 +30,7 @@ class bibdkHeimdalUser {
 
   private function setBibliotekDkAgency($attributes) {
     return array(
-      'agencyId' => '190101',
+      'agencyId' => '190110',
       'cpr' => $attributes['cpr']
     );
   }
@@ -52,7 +52,7 @@ class bibdkHeimdalUser {
     $usernames = array();
     foreach ($libraries as $agency) {
       // check if provider is bibliotek.dk
-      if ($agency['agencyId'] == '190101') {
+      if ($agency['agencyId'] == '190110') {
         if(isset($agency['userId'])) {
           $usernames[] = $agency['userId'];
         }
