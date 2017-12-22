@@ -7,15 +7,19 @@
    */
   Drupal.behaviors.bibdk_autocomplete_behavior__search_form_submit = {
     attach: function (context, settings) {
-      $('#search-block-form').submit(function( event ) {
+      $('#search-block-form').submit(function(event) {
+        $('.form-autocomplete').each(function(index) {
+          var elemId = $(this).attr('id') + '-autocomplete';
+          var elemValue = $(this).attr('value');
+          BibdkAutocompleteBehavior.submitValues(elemId, elemValue);
+        });
         var url = Drupal.settings.basePath + Drupal.settings.pathPrefix + 'bibdk/behaviour/autocomplete/';
         var request = $.ajax({
           url: url,
           method: "POST",
-          data: { behavior: BibdkAutocompleteBehavior.fields },
+          data: { behaviour: BibdkAutocompleteBehavior.fields },
           dataType: 'json'
         });
-        event.preventDefault();
       });
     }
   };
@@ -28,7 +32,6 @@
       $('#search-block-form', context).find('input.autocomplete').once('register-autocomplete-fields', function (context) {
         BibdkAutocompleteBehavior.push(this);
       });
-      console.log(BibdkAutocompleteBehavior)
     }
   };
   
@@ -62,12 +65,11 @@
    * Register selected suggestion
    *
    * @param elemId
-   * @param item
+   * @param elemValue
    */
   BibdkAutocompleteBehavior.selectedSuggestion = function (elemId, elemValue, counter) {
     this.fields[elemId].selected = counter;
-    this.fields[elemId].input = elemValue;
-    console.log(BibdkAutocompleteBehavior);
+    this.fields[elemId].query = elemValue;
   };
 
   /**
@@ -77,7 +79,7 @@
    */
   BibdkAutocompleteBehavior.InputField = function (elem) {
     this.id = elem.id;
-    this.inputField = '#' + this.id.substr(0, this.id.length - 13);
+    // this.inputField = '#' + this.id.substr(0, this.id.length - 13);
     var uuids = BibdkAutocompleteBehavior.splitUrl(elem.value);
     this.inputUuid = uuids[0];
     this.pageUuid = uuids[1];
@@ -91,6 +93,16 @@
    */
   BibdkAutocompleteBehavior.push = function (elem) {
     this.fields[elem.id] = new BibdkAutocompleteBehavior.InputField(elem);
+  };
+
+  /**
+   * Update fields with submitted string.
+   *
+   * @param elemId
+   * @param elemValue
+   */
+  BibdkAutocompleteBehavior.submitValues = function (elemId, elemValue) {
+    this.fields[elemId].submitValue = elemValue;
   };
 
   /**

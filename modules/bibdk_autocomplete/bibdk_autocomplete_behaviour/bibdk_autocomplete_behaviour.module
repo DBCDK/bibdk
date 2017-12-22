@@ -34,5 +34,17 @@ function bibdk_autocomplete_behaviour_form_search_block_form_alter(&$form, &$for
  */
 function bibdk_autocomplete_behaviour_callback($json_data) {
   $behaviour_data = $_POST;
-  dpm($behaviour_data);
+  $settings = variable_get('bibdk_autocomplete_var', array());
+  foreach ($behaviour_data['behaviour'] as $key => $fields) {
+    if (!isset($fields['suggestions'])) {
+      unset($behaviour_data['behaviour'][$key]);
+      continue;
+    }
+    $p_uuid = $fields['pageUuid'];
+    $i_uuid = $fields['inputUuid'];
+    $type = $settings[$p_uuid]['vars'][$i_uuid]['type'];
+    $behaviour_data['behaviour'][$key]['type'] = $type;
+    unset($behaviour_data['behaviour'][$key]['id']);
+  }
+  bibdk_behaviour_log($behaviour_data);
 }
