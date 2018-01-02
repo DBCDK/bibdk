@@ -24,7 +24,7 @@ class bibdkHeimdalUser {
     $culr_libraries = isset($attributes['attributes']['agencies']) ?
       $attributes['attributes']['agencies'] : array();
 
-    if(empty($culr_libraries)){
+    if(empty($culr_libraries) && empty(self::getLibraries())){
       $culr_libraries[] = $this->setBibliotekDkAgency($attributes['attributes']);
     }
     if(!empty($culr_libraries)) {
