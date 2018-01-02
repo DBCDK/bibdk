@@ -168,6 +168,8 @@ function bibdk_heimdal_get_verification_link($uuid) {
  */
 
 function bibdk_heimdal_select_email_form($form, $form_state) {
+  debug($_COOKIE);
+  debug($_SESSION);
   $options = isset($_SESSION['heimdal']['select_from_emails']) ?
     $_SESSION['heimdal']['select_from_emails'] : array();
   $form = array(

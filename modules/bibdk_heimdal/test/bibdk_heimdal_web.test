@@ -10,6 +10,7 @@ class BibdkHeimdalWebTestCase extends DrupalWebTestCase {
   }
 
   public function setUp() {
+
     parent::setUp(
       array(
         'bibdk_heimdal',
@@ -19,14 +20,22 @@ class BibdkHeimdalWebTestCase extends DrupalWebTestCase {
     );
   }
 
-  public function test_modules_and_dependencies(){
+  public function test_runner(){
+    variable_set('bibdk_provider_culr_agency', 1234567);
+    $this->modules_and_dependencies();
+    $this->form_state_parser();
+    $this->form_state_parser_multiplde_usernames();
+    $this->return_url();
+  }
+
+  public function modules_and_dependencies(){
     $this->assertTrue(module_exists('bibdk_heimdal'), 'bibdk_heimdal enabled');
     $this->assertTrue(module_exists('ding_provider'),'ding_provider enabled');
     $this->assertTrue(module_exists('ting_agency'),'ting agency enabled');
     $this->assertTrue(module_exists('bibdk_favourite'),'bibdk_favourite enabled');
   }
 
-  public function test_form_state_parser(){
+  public function form_state_parser(){
     $path = drupal_get_path('module', 'bibdk_heimdal');
     $path .= '/test/pjo.json';
     $mock = file_get_contents($path);
@@ -43,13 +52,34 @@ class BibdkHeimdalWebTestCase extends DrupalWebTestCase {
     $this->assertTrue(is_array($libs), 'culr libraries set for heimdal user');
   }
 
-  public function test_return_url() {
+  public function form_state_parser_multiplde_usernames(){
+    // delete cookie if set
+    user_cookie_delete('user_selected_email');
+    $path = drupal_get_path('module', 'bibdk_heimdal');
+    $path .= '/test/multi_pjo.json';
+    $mock = file_get_contents($path);
+    $attributes = json_decode($mock, true);
+    $heimdalUser = new bibdkHeimdalUser($attributes);
+    //$_COOKIE['Drupal_visitor_user_selected_email'] = 'fisk@dbc.dk';
+    $form_state = bibdk_heimdal_get_form_state($heimdalUser);
+    // check that corrct action is set in SESSION
+    $this->assertTrue($_SESSION['heimdal']['action'] === 'select_email', 'Action has been set in SESSION');
+    // check that there are two emails in SESSION
+    $this->assertTrue(count($_SESSION['heimdal']['select_from_emails']) == 2, 'Two email to select from');
+    // @TODO write some more test -
+    // like this
+    // $this->>drupalGet('heimdal/verify
+    // assert there are two values in dropdown
+    // I GAVE UP !!! PASSING SESSION VARIABLES WAS TOO HARD FOR ME :(
+  }
+
+  public function return_url() {
     $testuser = $this->drupalCreateUser(array(
       'search content',
     ));
     $this->drupalLogin($testuser);
     $url = bibdk_heimdal_get_return_url();
     // logged in user
-    $this->assertTrue($url === 'heimdal/logout');
+    $this->assertTrue($url === 'heimdal/logout', 'Url set to heimdal/logout');
   }
 }
