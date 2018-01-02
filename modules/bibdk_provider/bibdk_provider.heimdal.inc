@@ -48,6 +48,8 @@ function bibdk_provider_heimdal_login_creds($heimdalUser, $notify = null) {
   /** @var array $usernames */
   $usernames = $heimdalUser->getBibdkUsers();
   $username_to_use = bibdk_heimdal_provider_username_from_session($usernames);
+
+
   // USE CASE one user is found from culr. We exported the user ouselves,
   // so we know he is on openuserinfo - log him in
   if (!empty($username_to_use)) {
@@ -108,15 +110,22 @@ function bibdk_heimdal_provider_username_from_session(array $usernames) {
     return $usernames[0];
   }
 
+  // value in cookie is md5
+  $md5array = array();
+  foreach($usernames as $key=>$val){
+    $md5array[md5($val)] = $val;
+  }
+
+
   if (isset($_COOKIE['Drupal_visitor_user_selected_email'])) {
     $mail = $_COOKIE['Drupal_visitor_user_selected_email'];
     // paranoia check - on a public computer user might change
-    if (!in_array($mail, $usernames)) {
+    if (!isset($md5array[$mail])) {
       user_cookie_delete('user_selected_email');
       return '';
     }
 
-    return $mail;
+    return $md5array[$mail];
   }
 
   return '';
@@ -136,10 +145,11 @@ function bibdk_provider_heimdal_favourite_check($username, $culragencies) {
   $bibdk_favourites = bibdk_favourite_parse_agencies($bibdk_favourites_xml);
   // check if ALL culr agencies is a bibdk_favourite
   $favourites_to_add = array();
+  $culr_agency_id = variable_get('bibdk_provider_culr_agency', NULL);
   foreach ($culragencies as $agency) {
     $agencyId = $agency['agencyId'];
     // we do NOT want to add 190101 - it is agencyId for bibliotek.dk
-    if (empty($bibdk_favourites[$agencyId]) && $agencyId !== '190101') {
+    if (empty($bibdk_favourites[$agencyId]) && $agencyId !== $culr_agency_id) {
       $favourites_to_add[] = $agency;
     }
   }
