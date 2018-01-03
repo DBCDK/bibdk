@@ -79,7 +79,7 @@ projects[ting-client][download][tag] = 7.x-2.43
 projects[ting_agency][type] = module
 projects[ting_agency][download][type] = git
 projects[ting_agency][download][url] = git@github.com:DBCDK/ting_agency.git
-projects[ting_agency][download][tag] = 7.x-0.47
+projects[ting_agency][download][tag] = 7.x-1.0
 
 projects[ting_infomedia][type] = module
 projects[ting_infomedia][download][type] = git
@@ -110,7 +110,7 @@ projects[open_adhl][download][tag] = 7.x-0.5
 projects[open_holdingstatus][type] = module
 projects[open_holdingstatus][download][type] = git
 projects[open_holdingstatus][download][url] = git@github.com:DBCDK/open_holdingstatus.git
-projects[open_holdingstatus][download][tag] = 7.x-1.0
+projects[open_holdingstatus][download][tag] = 7.x-1.1
 
 projects[open_moreinfo][type] = module
 projects[open_moreinfo][download][type] = git
