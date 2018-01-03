@@ -207,6 +207,7 @@ function bibdk_heimdal_select_email_form($form, $form_state) {
  */
 function bibdk_heimdal_select_email_form_submit($form, &$form_state) {
   $action = $form_state['clicked_button']['#name'];
+  // check if 'cancel' button is clicked
   if ($action == 'cancel') {
     bibdk_heimdal_cleanup_and_exit();
   }
@@ -217,6 +218,7 @@ function bibdk_heimdal_select_email_form_submit($form, &$form_state) {
   // @TODO use COOKIE in production NOT SESSION
   $_SESSION['heimdal']['selected_email'] = $email;
   // also set a cookie - for production
+  $email = md5($email);
   user_cookie_save(array('user_selected_email' => $email));
   drupal_goto('heimdal/login');
 }

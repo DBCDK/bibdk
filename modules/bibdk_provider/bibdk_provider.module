@@ -397,6 +397,14 @@ function bibdk_provider_settings_form() {
     '#default_value' => variable_get('bibdk_provider_webservice_url', ''),
   );
 
+  $form['bibdk_provider']['bibdk_provider_culr_agency'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Culr agency identity'),
+    '#default_value' => variable_get('bibdk_provider_culr_agency', '190101'),
+    '#description' => t('Bibliotek.dk identity for culr actions',array(),array('context'=>'access_platform')),
+    '#required' => TRUE,
+  );
+
   $form['bibdk_provider']['bibdk_provider_security_code'] = array(
     '#type' => 'textfield',
     '#title' => t('Bibdk provider security code'),

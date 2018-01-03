@@ -8,29 +8,36 @@
  * due to the many redirects that might occur
  */
 class bibdkHeimdalUser {
+  private $culrAgency;
+
   /**
    * Parse and set attributes from heimdal access platform
    * bibdkHeimdalUser constructor.
    * @param array $attributes
    */
   public function __construct(array $attributes) {
+    $this->culrAgency = variable_get('bibdk_provider_culr_agency', NULL);
+    if(empty($this->culrAgency)){
+      watchdog('HEIMDAL', 'NO AGENCYID FOR CULR ACTIONS', WATCHDOG_ERROR);
+    }
+
     $culr_libraries = isset($attributes['attributes']['agencies']) ?
       $attributes['attributes']['agencies'] : array();
 
-    if(empty($culr_libraries)){
+    $libraries = self::getLibraries();
+    if(empty($culr_libraries) && empty($libraries)){
       $culr_libraries[] = $this->setBibliotekDkAgency($attributes['attributes']);
     }
     if(!empty($culr_libraries)) {
       $this->setLibraries($culr_libraries);
     }
-
     // always set a bibliotek.dk agency
 
   }
 
   private function setBibliotekDkAgency($attributes) {
     return array(
-      'agencyId' => '190110',
+      'agencyId' => $this->culrAgency,
       'cpr' => $attributes['cpr']
     );
   }
@@ -52,7 +59,7 @@ class bibdkHeimdalUser {
     $usernames = array();
     foreach ($libraries as $agency) {
       // check if provider is bibliotek.dk
-      if ($agency['agencyId'] == '190110') {
+      if ($agency['agencyId'] == $this->culrAgency) {
         if(isset($agency['userId'])) {
           $usernames[] = $agency['userId'];
         }
