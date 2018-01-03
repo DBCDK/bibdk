@@ -53,6 +53,7 @@ class BibdkHeimdalWebTestCase extends DrupalWebTestCase {
   }
 
   public function form_state_parser_multiplde_usernames(){
+    variable_set('bibdk_provider_culr_agency', 1234567);
     // delete cookie if set
     user_cookie_delete('user_selected_email');
     $path = drupal_get_path('module', 'bibdk_heimdal');
@@ -68,7 +69,13 @@ class BibdkHeimdalWebTestCase extends DrupalWebTestCase {
     $this->assertTrue(count($_SESSION['heimdal']['select_from_emails']) == 2, 'Two email to select from');
     // @TODO write some more test -
     // like this
-    // $this->>drupalGet('heimdal/verify
+    //$options['absolute'] = TRUE;
+    //$path = 'heimdal/verify';
+    //$url = url($path, $options);
+    //$header = array('Location: ' . $url);
+    //header('Location: ' . $url, TRUE, $http_response_code);
+    //$this->drupalGet($path, array(), $header);
+    //debug($_COOKIE);
     // assert there are two values in dropdown
     // I GAVE UP !!! PASSING SESSION VARIABLES WAS TOO HARD FOR ME :(
   }
