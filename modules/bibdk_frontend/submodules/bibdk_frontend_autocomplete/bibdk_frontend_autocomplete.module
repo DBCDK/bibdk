@@ -13,6 +13,5 @@ function bibdk_frontend_autocomplete_form_search_block_form_alter(&$form, &$form
  */
 function bibdk_frontend_autocomplete_form_bibdk_vejviser_form_alter(&$form, &$form_state, $form_id) {
   $form['#attached']['js'][] = drupal_get_path('module', 'bibdk_frontend_autocomplete') . '/js/autocomplete.js';
-  return $form;
 }
 

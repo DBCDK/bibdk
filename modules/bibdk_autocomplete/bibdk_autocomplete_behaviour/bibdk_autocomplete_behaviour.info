@@ -1,8 +1,0 @@
-name = Bibliotek.dk - Autocomplete behaviour
-description = Log autocomplete behaviour on search submit
-core = 7.x
-package = Bibliotek.dk
-
-dependencies[] = bibdk_autocomplete
-dependencies[] = bibdk_frontend_autocomplete
-dependencies[] = bibdk_behaviour

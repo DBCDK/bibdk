@@ -16,6 +16,15 @@ function bibdk_autocomplete_install() {
 }
 
 /**
+ * Implements hook_schema().
+ */
+function bibdk_autocomplete_schema() {
+  $schema = array();
+  $schema['cache_bibdk_autocomplete_ortograf'] = drupal_get_schema_unprocessed('system', 'cache');
+  return $schema;
+}
+
+/**
  * Enable module
  */
 function bibdk_autocomplete_update_7001(&$sandbox) {}

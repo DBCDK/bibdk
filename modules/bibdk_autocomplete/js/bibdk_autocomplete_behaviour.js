@@ -2,12 +2,13 @@
  
   var BibdkAutocompleteBehavior = {};
   BibdkAutocompleteBehavior.fields = {};
+  
   /**
    * Trigger Bibdk_behaviors AJAX call on form submit
    */
   Drupal.behaviors.bibdk_autocomplete_behavior__search_form_submit = {
     attach: function (context, settings) {
-      $('#search-block-form').submit(function(event) {
+      $('#search-block-form').unbind('submit').bind('submit',function(event) {
         $('.form-autocomplete').each(function(index) {
           var elemId = $(this).attr('id') + '-autocomplete';
           var elemValue = $(this).attr('value');
@@ -17,7 +18,7 @@
         var request = $.ajax({
           url: url,
           method: "POST",
-          data: { behaviour: BibdkAutocompleteBehavior.fields },
+          data: { ortograf: BibdkAutocompleteBehavior.fields },
           dataType: 'json'
         });
       });
@@ -79,7 +80,6 @@
    */
   BibdkAutocompleteBehavior.InputField = function (elem) {
     this.id = elem.id;
-    // this.inputField = '#' + this.id.substr(0, this.id.length - 13);
     var uuids = BibdkAutocompleteBehavior.splitUrl(elem.value);
     this.inputUuid = uuids[0];
     this.pageUuid = uuids[1];
@@ -127,7 +127,7 @@
    *
    * Add behaviour logging for autocomplete.
    */
-  function found(matches){
+  function found(matches) {
     // If no value in the textfield, do not show the popup.
     if (!this.input.value.length){
       return false;
@@ -163,8 +163,8 @@
     }
 
     // Show popup with matches, if any.
-    if (this.popup){
-      if (ul.children().length){
+    if (this.popup) {
+      if (ul.children().length) {
         $(this.popup).empty().append(ul).show();
         $(this.ariaLive).html(Drupal.t('Autocomplete popup'));
       }
@@ -182,8 +182,8 @@
     Drupal.jsAC.prototype.found = found;
   }
   Drupal.behaviors.bibdk_autocomplete = {
-    attach: function(context, settings){
-      if (Drupal.jsAC){
+    attach: function(context, settings) {
+      if (Drupal.jsAC) {
         Drupal.jsAC.prototype.found = found;
       }
     }

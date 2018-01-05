@@ -6,12 +6,12 @@
   /**
    * overrides for drupal autocomplete w/o ajax
    */
-  if (Drupal.jsAC){
+  if (Drupal.jsAC) {
     Drupal.jsAC.prototype.found = found;
     Drupal.autocompleteSubmit = autocompleteSubmit;
   }
   Drupal.behaviors.bibdk_autocomplete = {
-    attach: function(context, settings){
+    attach: function(context, settings) {
       if (Drupal.jsAC){
         Drupal.jsAC.prototype.found = found;
         Drupal.autocompleteSubmit = autocompleteSubmit;
@@ -25,7 +25,7 @@
    *
    * Fixes autocomplete for touch devices using click instead of mousedown
    */
-  function found(matches){
+  function found(matches) {
     // If no value in the textfield, do not show the popup.
     if (!this.input.value.length){
       return false;
@@ -41,13 +41,13 @@
       // BibdkAutocompleteBehavior.register_autocomplete_items(this, matches[key]);
       $('<li></li>')
         .html($('<div></div>').html(matches[key]))
-        .click(function(){
+        .click(function() {
           ac.select(this);
         })
-        .mouseover(function(){
+        .mouseover(function() {
           ac.highlight(this);
         })
-        .mouseout(function(){
+        .mouseout(function() {
           ac.unhighlight(this);
         })
         .data('autocompleteValue', key)
@@ -55,8 +55,8 @@
     }
 
     // Show popup with matches, if any.
-    if (this.popup){
-      if (ul.children().length){
+    if (this.popup) {
+      if (ul.children().length) {
         $(this.popup).empty().append(ul).show();
         $(this.ariaLive).html(Drupal.t('Autocomplete popup'));
       }
@@ -73,8 +73,8 @@
    *
    * We want to submit on enter
    */
-  function autocompleteSubmit(){
-    $('#autocomplete').each(function(){
+  function autocompleteSubmit() {
+    $('#autocomplete').each(function() {
       this.owner.hidePopup();
     });
     return true;
