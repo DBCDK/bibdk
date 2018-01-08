@@ -470,6 +470,7 @@ function bibdk_reservation_prepare_set_user_data($form_state) {
       $userData[$name] = $value;
     }
   }
+
   BibdkReservationOrderObject::GetObject()->setUserData($userData);
 }
 
@@ -481,7 +482,6 @@ function bibdk_reservation_prepare_set_user_data($form_state) {
 function bibdk_reservation_prepare_set_order_params($form_state) {
   $manifestation = BibdkReservationOrderObject::GetObject()->getManifestation();
   $fields = bibdk_reservation_get_agency_fields()->getOrderParametersForType($manifestation->getOrsOrderMaterialType());
-
   if ($fields) {
     foreach ($fields as $itemParameter) {
       $type = $itemParameter['type'];
@@ -490,6 +490,7 @@ function bibdk_reservation_prepare_set_order_params($form_state) {
       }
     }
   }
+
   if (isset($orderParameters)) {
     BibdkReservationOrderObject::GetObject()->setOrderParameters($orderParameters);
   }
@@ -515,13 +516,20 @@ function bibdk_reservation_prepare_set_user_order_data(&$form_state) {
     $userOrderData['pickUpAgencySubdivision'] = $form_state['values']['subdivision'];
   }
 
-  $id_key = BibdkReservationOrderObject::GetObject()->getFields()->getUserIdKey();
-  if (isset($form_state['values'][$id_key])) {
-    $userOrderData['userId'] = $form_state['values'][$id_key] = str_replace("-", "", $form_state['values'][$id_key]);
+  $userParameters = BibdkReservationOrderObject::GetObject()->getFields()->getUserParameters();
+  foreach ($userParameters as $key => $userParameter) {
+    $type = $userParameter['type'];
+    if (in_array($type, array('cpr', 'userId', 'cardno', 'customId'))) {
+      $userOrderData['userId'] = $form_state['values'][$type] = str_replace("-", "", $form_state['values'][$type]);
+    }
+    elseif (isset($form_state['values'][$type])) {
+      $value = (isset($userParameter['field_type']) && $userParameter['field_type'] == 'password') ?
+        preg_replace("/./", "*", $form_state['values'][$type]) : $form_state['values'][$type];
+      $userOrderData[$type] = $value;
+    }
   }
-  // save userOrderData
-  BibdkReservationOrderObject::GetObject()->setUserOrderData($userOrderData);
 
+  BibdkReservationOrderObject::GetObject()->setUserOrderData($userOrderData);
 
   if ($subtype_order = isset($form_state['values']['subtype_order']) ? $form_state['values']['subtype_order'] : FALSE) {
     BibdkReservationOrderObject::GetObject()->setSubtypeOrder($subtype_order);
