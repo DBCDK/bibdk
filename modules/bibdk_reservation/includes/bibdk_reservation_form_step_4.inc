@@ -44,8 +44,13 @@ function bibdk_reservation_form_step_4_do_order() {
   $params = array();
   $pids = BibdkReservationOrderObject::GetObject()->getManifestationIds();
   $userdata = BibdkReservationOrderObject::GetObject()->getUserOrderData();
+  // do NOT send pincode
+  if(isset($userdata['pincode'])){
+    unset($userdata['pincode']);
+  }
+
   $orderdata = BibdkReservationOrderObject::GetObject()->getOrderParameters();
-  
+
   $articleDirect = BibdkReservationOrderObject::GetObject()->getArticleDirect();
   if ( !empty($articleDirect) ) {
     $params += array('articleDirect' => 'pickup');
@@ -71,7 +76,7 @@ function bibdk_reservation_form_step_4_do_order() {
     $pids = BibdkReservationOrderObject::GetObject()->getSubtypeOrderIds();
     $exactEdition = 'false';
   }
-  
+
   $params += array('exactEdition' => $exactEdition);
 
   $params += (isset($userdata)) ? $userdata : array();
