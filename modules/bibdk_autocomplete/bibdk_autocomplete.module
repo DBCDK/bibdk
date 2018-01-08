@@ -232,6 +232,5 @@ function bibdk_autocomplete_behaviour_callback() {
     unset($behaviour_data['ortograf'][$key]['id']);
   }
   module_invoke_all('bibdk_behaviour_request', $behaviour_data);
-dpm($behaviour_data);  
   bibdk_behaviour_log($behaviour_data);
 }
