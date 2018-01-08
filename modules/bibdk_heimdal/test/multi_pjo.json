@@ -1,0 +1,31 @@
+{
+  "id": 1591,
+  "token": "b6161d3d68fdbdf348efa3afdd2d300c77eb8a975017d6cd843a816466560bfd",
+  "attributes": {
+    "cpr": "xxxxxxxxxx",
+    "gender": null,
+    "userId": "xxxxxxxxxx",
+    "wayfId": null,
+    "agencies": [
+      {
+        "userId": "fisk@dbc.dk",
+        "agencyId": "1234567",
+        "userIdType": "LOCAL"
+      },
+      {
+        "userId": "hest@dbc.dk",
+        "agencyId": "1234567",
+        "userIdType": "LOCAL"
+      },
+      {
+        "userId": "1234567890",
+        "agencyId": "xxxxxxxx",
+        "userIdType": "CPR"
+      }
+    ],
+    "birthDate": null,
+    "birthYear": null,
+    "uniloginId": null,
+    "municipality": "376"
+  }
+}

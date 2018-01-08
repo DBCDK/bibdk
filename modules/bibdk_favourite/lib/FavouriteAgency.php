@@ -7,7 +7,7 @@ class FavouriteAgency extends TingAgency {
 
   public function __construct($favourite) {
     if (!isset($favourite['oui:agencyId'])) {
-      die('no agencyid in FavouriteAgency constructor');
+      return;
     }
     parent::__construct($favourite['oui:agencyId']);
     $this->userData = isset($favourite['oui:userData']) ? unserialize($favourite['oui:userData']) : NULL;

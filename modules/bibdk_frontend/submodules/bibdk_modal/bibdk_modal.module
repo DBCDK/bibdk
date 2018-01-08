@@ -89,6 +89,24 @@ function bibdk_modal_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  $items['bibdk_modal/heimdal/email'] = array(
+    'title' => t('Write an email address', array(), array('context' => 'heimdal')),
+    'description' => t('Bibliotek.dk needs an email'),
+    'page callback' => 'bibdk_modal_heimdal_write_email_form',
+    'file' => 'includes/bibdk_modal.forms.inc',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['bibdk_modal/heimdal/verify'] = array(
+    'title' => t('Select an email address', array(), array('context' => 'heimdal')),
+    'description' => t('Bibliotek.dk needs an email'),
+    'page callback' => 'bibdk_modal_heimdal_select_email_form',
+    'file' => 'includes/bibdk_modal.forms.inc',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
   return $items;
 }
 
@@ -140,19 +158,20 @@ function bibdk_modal_form_user_login_alter(&$form, &$form_state, $form_id) {
   if (!empty($form_state['ajax'])) {
     $form['#action'] = url('bibdk_modal/login');
     $form['actions']['modal_links'] = _bibdk_modal_get_login_form_links();
+    //$form['blogpost'] = _bibdk_modal_get_blog_post_link();
   }
 }
 
 /**
- * Generates links for forgotten password and create new user forms.
- * If we get here we assume that we're in a modal and the client have JS enabled
- * in hte browser.
- *
- * @return array $links
+ * Get a link to a blogpost
+ * @return array
+ *   Render array for drupal_render
  */
-function _bibdk_modal_get_login_form_links() {
-
-  $links[] = array(
+function _bibdk_modal_get_blog_post_link(){
+  $wrapper = array(
+    '#type' => 'container',
+  );
+  $wrapper['blog_link'] = array(
     '#theme' => 'link',
     '#text' => t('blog posts placeholder', array(), array('context' => 'bibdk_modal')),
     '#path' => t('blog posts placeholder uri', array(), array('context' => 'bibdk_modal')),
@@ -163,11 +182,22 @@ function _bibdk_modal_get_login_form_links() {
         ),
         'target' => '_blank',
         'data-rel' => 'userhelp',
+        'svg' => 'svg-arrow-right',
       ),
       'html' => FALSE,
     ),
   );
+  return $wrapper;
+}
 
+/**
+ * Generates links for forgotten password and create new user forms.
+ * If we get here we assume that we're in a modal and the client have JS enabled
+ * in hte browser.
+ *
+ * @return array $links
+ */
+function _bibdk_modal_get_login_form_links() {
   $links[] = array(
     '#theme' => 'link',
     '#text' => t('Create new account', array(), array('context' => 'bibdk_modal')),
@@ -197,7 +227,7 @@ function _bibdk_modal_get_login_form_links() {
   );
 
   $items = array();
-  foreach($links as $link){
+  foreach ($links as $link) {
     $items[] = drupal_render($link);
   }
 
@@ -244,6 +274,9 @@ function bibdk_modal_add_ajax_submit(&$output, $form_id) {
       break;
     case 'bibdk_facetbrowser_filter_form' :
       $output['actions2']['submit']['#attributes']['class'][] = 'use-ajax-submit';
+      break;
+    case 'bibdk_heimdal_verify_email_form':
+      $output['actions']['submit_but']['#attributes']['class'][] = 'use-ajax-submit';
       break;
   }
 }

@@ -22,7 +22,7 @@ function bibdk_install() {
 
 //TODO instead of enabling modules as part of the install hook modules should be moved to the .info file as dependecies
 function _bibdk_enable_modules() {
-  $module_list = array (
+  $module_list = array(
     'ask_vopros',
     'views',
     'bibdk_actions',
@@ -38,6 +38,7 @@ function _bibdk_enable_modules() {
     'bibdk_favourite',
     'bibdk_frontend',
     'bibdk_furthersearch',
+    'bibdk_heimdal',
     'bibdk_help',
     'bibdk_linkme',
     'bibdk_openorder',
@@ -68,7 +69,6 @@ function _bibdk_enable_modules() {
     'open_moreinfo',
     'ding_base',
     'ding_entity',
-    'ding_persistent_login',
     'ding_popup',
     'ding_provider',
     'ding_user',
@@ -398,16 +398,16 @@ function bibdk_update_7023(&$sandbox) {
 /**
  * enable bibdk_article_view
  */
-function bibdk_update_7024(&$sandbox){
+function bibdk_update_7024(&$sandbox) {
   module_enable(array('bibdk_article_view'));
 }
 
 /**
  * enable bibdk_search_carousel & bibdk_covers
  */
-function bibdk_update_7025(&$sandbox){
+function bibdk_update_7025(&$sandbox) {
   module_disable(
-    array('ting_covers','ting_covers_field', 'ting_search_carousel')
+    array('ting_covers', 'ting_covers_field', 'ting_search_carousel')
   );
   module_enable(
     array('bibdk_search_carousel', 'bibdk_covers_field', 'bibdk_covers')
@@ -417,7 +417,7 @@ function bibdk_update_7025(&$sandbox){
 /**
  * enable ask_vopros
  */
-function bibdk_update_7036(&$sandbox){
+function bibdk_update_7036(&$sandbox) {
   module_enable(array('ask_vopros'));
 }
 
@@ -425,7 +425,7 @@ function bibdk_update_7036(&$sandbox){
 /**
  * enable elements
  */
-function bibdk_update_7026(){
+function bibdk_update_7026() {
   module_enable(array('elements'));
 }
 
@@ -439,14 +439,14 @@ function bibdk_update_7039() {
 /**
  * enable module jquery_update
  */
-function bibdk_update_7040(){
+function bibdk_update_7040() {
   module_enable(array('jquery_update'));
 }
 
 /**
  * enable module bibdk_schemaorg
  */
-function bibdk_update_7041(){
+function bibdk_update_7041() {
   module_enable(array('bibdk_schemaorg'));
 }
 
@@ -559,4 +559,19 @@ function bibdk_update_7048() {
     ->condition('name', $modules, 'IN')
     ->condition('type', 'module')
     ->execute();
+}
+
+/**
+ * ENable bibdk_heimdal
+ */
+function bibdk_update_7049() {
+  module_enable(array('bibdk_heimdal'));
+}
+
+/*
+ * Turn of 'remember me'
+ */
+function bibdk_update_7050(){
+  module_disable(array('ding_persistent_login', 'persistent_login'));
+
 }

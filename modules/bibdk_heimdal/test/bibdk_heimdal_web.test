@@ -1,0 +1,106 @@
+<?php
+
+class BibdkHeimdalWebTestCase extends DrupalWebTestCase {
+  public static function getInfo() {
+    return array(
+      'name' => t('bibdk heimdal web test'),
+      'description' => t('Test the essential methods'),
+      'group' => t('Bibliotek.dk - Heimdal'),
+    );
+  }
+
+  public function setUp() {
+
+    parent::setUp(
+      array(
+        'bibdk_heimdal',
+        'bibdk_provider',
+        'bibdk_webservice_settings_develop'
+      )
+    );
+  }
+
+  public function test_runner(){
+    variable_set('bibdk_provider_culr_agency', 1234567);
+    $this->modules_and_dependencies();
+    $this->form_state_parser();
+    $this->form_state_parser_multiplde_usernames();
+    $this->return_url();
+    $this->heimdalUser();
+  }
+
+  public function modules_and_dependencies(){
+    $this->assertTrue(module_exists('bibdk_heimdal'), 'bibdk_heimdal enabled');
+    $this->assertTrue(module_exists('ding_provider'),'ding_provider enabled');
+    $this->assertTrue(module_exists('ting_agency'),'ting agency enabled');
+    $this->assertTrue(module_exists('bibdk_favourite'),'bibdk_favourite enabled');
+  }
+
+  public function form_state_parser(){
+    $path = drupal_get_path('module', 'bibdk_heimdal');
+    $path .= '/test/pjo.json';
+    $mock = file_get_contents($path);
+    $attributes = json_decode($mock, true);
+    $heimdalUser = new bibdkHeimdalUser($attributes);
+    $form_state = bibdk_heimdal_get_form_state($heimdalUser);
+    // assert that authentication provider is heimdal
+    $this->assertTrue($form_state['values']['authentication_provider'] === 'heimdal', 'authentication provider is heimdal');
+    // assert that an action is set in _SESSION - for this user it should be 'write_email'
+    $this->assertTrue($_SESSION['heimdal']['action'] === 'write_email', 'Action has been set in SESSION');
+    // test libraries has been set for heimdal user - even if object is dead
+    unset($heimdalUser);
+    $libs = bibdkHeimdalUser::getLibraries();
+    $this->assertTrue(is_array($libs), 'culr libraries set for heimdal user');
+  }
+
+  public function form_state_parser_multiplde_usernames(){
+    $this->drupalGet('');
+    variable_set('bibdk_provider_culr_agency', 1234567);
+    // delete cookie if set
+    user_cookie_delete('user_selected_email');
+    $path = drupal_get_path('module', 'bibdk_heimdal');
+    $path .= '/test/multi_pjo.json';
+    $mock = file_get_contents($path);
+    $attributes = json_decode($mock, true);
+    $heimdalUser = new bibdkHeimdalUser($attributes);
+    //$_COOKIE['Drupal_visitor_user_selected_email'] = 'fisk@dbc.dk';
+    $form_state = bibdk_heimdal_get_form_state($heimdalUser);
+    // check that corrct action is set in SESSION
+    $this->assertTrue($_SESSION['heimdal']['action'] === 'select_email', 'Action has been set in SESSION');
+    // check that there are two emails in SESSION
+    $this->assertTrue(count($_SESSION['heimdal']['select_from_emails']) == 2, 'Two email to select from');
+    // @TODO write some more test -
+  }
+
+  public function heimdalUser() {
+    variable_set('bibdk_provider_culr_agency', 'xxxxxxxx');
+    $testdata = file_get_contents(drupal_get_path('module', 'bibdk_heimdal') . '/test/pjo.json');
+    $attributes = json_decode($testdata, true);
+    $user = new bibdkHeimdalUser($attributes);
+
+    $libs = $user::getLibraries();
+    $this->assertTrue(count($libs) == 2, 'two agencies found');
+
+    $bibdk_users = $user->getBibdkUsers();
+    $this->assertTrue(count($bibdk_users) == 1, 'Only one bibdk user out of two');
+
+    $user = new bibdkHeimdalUser(array());
+    $bibdk_users = $user->getBibdkUsers();
+    $this->assertTrue(count($bibdk_users) == 1, 'bibdk user created from empty attributes');
+  }
+
+  public function return_url() {
+    global $user;
+    $user = drupal_anonymous_user();
+    $url = bibdk_heimdal_get_return_url();
+    $this->assertTrue($url === '/', 'Url set to /');
+
+    $user = $this->drupalCreateUser(array(
+      'search content',
+    ));
+    $this->drupalLogin($user);
+    $url = bibdk_heimdal_get_return_url();
+    // logged in user
+    $this->assertTrue($url === 'heimdal/logout', 'Url set to heimdal/logout');
+  }
+}

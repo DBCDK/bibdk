@@ -23,7 +23,9 @@ function bibdk_provider_user_authenticate($name, $pass) {
       'data' => array('display_name' => $name),
       'mail' => $name,
     );
+
     $return['authname'] = $name;
+
     $return['success'] = TRUE;
   }
   else {

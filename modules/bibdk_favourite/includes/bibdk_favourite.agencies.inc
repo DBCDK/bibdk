@@ -15,8 +15,8 @@ function bibdk_favourite_load_agency($xml) {
 }
 
 /**
- * @param $xml xml from request to openuserinfo (getFavourites)
- * @return array
+ * @param string $xml xml from request to openuserinfo (getFavourites)
+ * @return array|bool
  */
 function bibdk_favourite_parse_agencies($xml) {
   $xpath = bibdk_favourite_load_agency($xml);
@@ -35,7 +35,6 @@ function bibdk_favourite_parse_agencies($xml) {
       return array();
     }
   }
-
   $agencies = array();
   foreach ($nodelist as $node) {
     if (!empty($node->childNodes)) {
@@ -43,7 +42,9 @@ function bibdk_favourite_parse_agencies($xml) {
         $agency[$child->nodeName] = $child->nodeValue;
       }
     }
-    $agencies[$agency['oui:agencyId']] = $agency;
+    if(!empty($agency)) {
+      $agencies[$agency['oui:agencyId']] = $agency;
+    }
   }
   return $agencies;
 }

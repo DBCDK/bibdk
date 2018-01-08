@@ -36,10 +36,9 @@ function bibdk_reservation_mail_form_submit($form, &$form_state) {
 
   bibdk_reservation_mail_send($params, $form_state);
 
-  //force rebuild form_state for step 4
-  $form_state['step'] = 4;
+  //force rebuild form_state for step 3
+  $form_state['step'] = 3;
   $form_state['rebuild'] = TRUE;
-
 }
 
 /**
@@ -153,7 +152,7 @@ function _bibdk_reservation_mail_get_author($manifestation) {
  * @return string
  */
 function _bibdk_reservation_mail_get_title($manifestation) {
-  
+
   $titleSpecific = $manifestation->getTitleSpecific();
   $creators = $manifestation->getCreator();
   $author = '';

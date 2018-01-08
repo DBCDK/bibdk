@@ -11,11 +11,12 @@
  */
 function bibdk_reservation_ting_openformat_actions($type, $entity, $view_mode, $langcode) {
   $element = array();
-  switch ($type) {
+  $subtype_order_ids = $entity->getSubtypeOrderIds();
+  switch ($type) { 
     case "bibdkManifestation" :
       if ($entity->isReservable() || ($entity->isLink() && $entity->getRestrictedExtendedUse())) {
         $element['reservation'] = array(
-          '#markup' => bibdk_reservation_link($entity->getIDs(), $entity->getSubType(), $type),
+          '#markup' => bibdk_reservation_link($entity, $type),
           '#weight' => -2,
         );
       }
@@ -25,6 +26,7 @@ function bibdk_reservation_ting_openformat_actions($type, $entity, $view_mode, $
           '#markup' => l(t('Order', array(), array('context' => 'bibdk_reservation')), $accessUrlContainer['accessUrl'], array(
             'attributes' => array(
               'target' => '_blank',
+              'data-subtypeOrderIds' => implode(',', $subtype_order_ids),
               'class' => array('btn btn-blue')
             )
           )),

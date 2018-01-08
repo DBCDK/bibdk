@@ -164,6 +164,52 @@ function bibdk_modal_review_edit_node($pid = NULL) {
 }
 
 /**
+ * Wrap bibdk_heimdal_verify_email_form for modal display
+ */
+function bibdk_modal_heimdal_write_email_form() {
+  $form_state = _bibdk_modal_set_form_state();
+
+  $output = bibdk_modal_form_wrapper('bibdk_heimdal_verify_email_form', $form_state);
+
+  $commands = array();
+  if (empty($form_state['executed']) && empty($form_state['submitted'])) {
+    $commands = $output;
+  }
+  elseif (empty($form_state['executed']) && !empty($form_state['submitted'])) {
+    $commands[] = bibdk_modal_command_replace_form($output);
+  }
+  elseif (!empty($form_state['executed']) && !empty($form_state['submitted'])) {
+    $commands[] = bibdk_modal_command_reload();
+    $commands[] = bibdk_modal_command_dismiss();
+  }
+
+  bibdk_modal_deliver_output($commands);
+}
+
+/**
+ * Wrap bibdk_heimdal_select_email_form for modal display
+ */
+function bibdk_modal_heimdal_select_email_form() {
+  $form_state = _bibdk_modal_set_form_state();
+
+  $output = bibdk_modal_form_wrapper('bibdk_heimdal_select_email_form', $form_state);
+
+  $commands = array();
+  if (empty($form_state['executed']) && empty($form_state['submitted'])) {
+    $commands = $output;
+  }
+  elseif (empty($form_state['executed']) && !empty($form_state['submitted'])) {
+    $commands[] = bibdk_modal_command_replace_form($output);
+  }
+  elseif (!empty($form_state['executed']) && !empty($form_state['submitted'])) {
+    $commands[] = bibdk_modal_command_reload();
+    $commands[] = bibdk_modal_command_dismiss();
+  }
+
+  bibdk_modal_deliver_output($commands);
+}
+
+/**
  * Genrate form for editing favourite userdaata
  *
  * @param string $branchid
@@ -238,7 +284,7 @@ function bibdk_modal_add_to_favorites_callback() {
   bibdk_modal_deliver_output($commands);
 }
 
-function bibdk_modal_facetbrowser_filter($group){
+function bibdk_modal_facetbrowser_filter($group) {
   $form_state = _bibdk_modal_set_form_state();
   $form_state['build_info']['args'] = array($group);
   $output = bibdk_modal_form_wrapper('bibdk_facetbrowser_filter_form', $form_state);
