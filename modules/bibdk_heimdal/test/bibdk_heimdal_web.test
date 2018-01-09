@@ -57,7 +57,7 @@ class BibdkHeimdalWebTestCase extends DrupalWebTestCase {
     $this->drupalGet('');
     variable_set('bibdk_provider_culr_agency', 1234567);
     // delete cookie if set
-    user_cookie_delete('user_selected_email');
+    //user_cookie_delete('user_selected_email');
     $path = drupal_get_path('module', 'bibdk_heimdal');
     $path .= '/test/multi_pjo.json';
     $mock = file_get_contents($path);
