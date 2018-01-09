@@ -519,8 +519,10 @@ function bibdk_reservation_prepare_set_user_order_data(&$form_state) {
   $userParameters = BibdkReservationOrderObject::GetObject()->getFields()->getUserParameters();
   foreach ($userParameters as $key => $userParameter) {
     $type = $userParameter['type'];
-    if (in_array($type, array('cpr', 'userId', 'cardno', 'customId'))) {
-      $userOrderData['userId'] = $form_state['values'][$type] = str_replace("-", "", $form_state['values'][$type]);
+    if (in_array($type, array('cpr', 'userId', 'cardno', 'customId', 'barcode'))) {
+      if(!empty($form_state['values'][$type])) {
+        $userOrderData['userId'] = $form_state['values'][$type] = str_replace("-", "", $form_state['values'][$type]);
+      }
     }
     elseif (isset($form_state['values'][$type])) {
       $value = (isset($userParameter['field_type']) && $userParameter['field_type'] == 'password') ?
