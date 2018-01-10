@@ -26,7 +26,7 @@ function bibdk_autocomplete_admin() {
     '#type' => 'textfield',
     '#title' => t('Ortograf URL', array(), array('context' => 'bibdk_autocomplete_admin')),
     '#size' => 73,
-    '#description' => t('Ortograf REST URL.)', array(), array('context' => 'bibdk_autocomplete_admin')),
+    '#description' => t('Ortograf REST URL.', array(), array('context' => 'bibdk_autocomplete_admin')),
     '#default_value' => variable_get('bibdk_autocomplete_rest_url', NULL),
   );
 
