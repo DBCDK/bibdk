@@ -25,6 +25,16 @@ function bibdk_autocomplete_schema() {
 }
 
 /**
- * Enable module
+ * Implements hook_update().
  */
-function bibdk_autocomplete_update_7001(&$sandbox) {}
+ function bibdk_autocomplete_update_7001(&$sandbox) {
+}
+
+/**
+ * Implements hook_update().
+ */
+ function bibdk_autocomplete_update_7002(&$sandbox) {
+  if (!db_table_exists('cache_bibdk_autocomplete_ortograf')) {
+    db_create_table('cache_bibdk_autocomplete_ortograf', drupal_get_schema_unprocessed('system', 'cache'));
+  }
+}
