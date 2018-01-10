@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * @file
+ * Install, update, and uninstall functions for the bibdk frontend autocomplete module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function bibdk_autocomplete_frontend_install() {
+  db_update('system')
+    ->fields(array('weight' => 10))
+    ->condition('name', 'bibdk_autocomplete_frontend', '=')
+    ->execute();
+}
