@@ -32,8 +32,6 @@ function bibdk_autocomplete($p_uuid, $v_uuid, $string = '') {
     $matches = $cache->data;
   }
   else {
-    watchdog('bibdk_autocomplete', 'Autocomplete URL sent: ' . $url, array(), $severity = WATCHDOG_DEBUG);
-
     $suggestions = bibdk_autocomplete_get_suggestions($query);
     // Maximum space in suggestions dropdown is 64 characters.
     // Maximum characters for search query string is 256 characters.
@@ -70,6 +68,7 @@ function bibdk_autocomplete_get_suggestions(array $query) {
   $url = url($rest_url, array('query' => $query));
   $headers = array('Accept' => 'application/json');
 
+  watchdog('bibdk_autocomplete', 'Autocomplete URL sent: ' . $url, array(), $severity = WATCHDOG_DEBUG);
   $result = drupal_http_request($url, $headers);
 
   if (!empty($result->error)) {
