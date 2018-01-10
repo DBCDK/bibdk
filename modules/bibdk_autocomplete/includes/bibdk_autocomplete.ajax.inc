@@ -40,7 +40,7 @@ function bibdk_autocomplete($p_uuid, $v_uuid, $string = '') {
       
       $key = truncate_utf8($suggestion, 256, TRUE, FALSE, 1);
       if (strpos(trim($suggestion), ' ')) {
-        $key = '"' . $key . '"';
+        $key = '"' . str_replace('"', '\"', $key) . '"';
       }
       $matches[$key] = $val;
     }
