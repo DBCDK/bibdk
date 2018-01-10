@@ -37,7 +37,11 @@ function bibdk_autocomplete($p_uuid, $v_uuid, $string = '') {
     // Maximum characters for search query string is 256 characters.
     foreach ($suggestions as $suggestion) {
       $val = truncate_utf8($suggestion, 64, TRUE, TRUE, 1);
+      
       $key = truncate_utf8($suggestion, 256, TRUE, FALSE, 1);
+      if (strpos(trim($suggestion), ' ')) {
+        $key = '"' . $key . '"';
+      }
       $matches[$key] = $val;
     }
 
