@@ -8,8 +8,8 @@
    */
   Drupal.behaviors.bibdk_autocomplete_behavior__search_form_submit = {
     attach: function (context, settings) {
-      $('#search-block-form').unbind('submit').bind('submit',function(event) {
-        $('.form-autocomplete').each(function(index) {
+      $('#search-block-form', context).bind('submit',function(event) {
+        $('.form-autocomplete', context).each(function(index) {
           var elemId = $(this).attr('id') + '-autocomplete';
           var elemValue = $(this).attr('value');
           BibdkAutocompleteBehavior.submitValues(elemId, elemValue);
@@ -142,12 +142,8 @@
     BibdkAutocompleteBehavior.resetSuggestions(elemId);
     for (key in matches) {
       BibdkAutocompleteBehavior.addSuggestion(elemId, matches[key]);
-      // BibdkAutocompleteBehavior.register_autocomplete_items(this, matches[key]);
       $('<li></li>')
         .html($('<div></div>').html(matches[key]))
-        .click(function() {
-          ac.select(this);
-        })
         .mouseover(function() {
           ac.highlight(this);
         })
@@ -157,6 +153,7 @@
         .data('autocompleteValue', key)
         .appendTo(ul)
         .on( "click", { counter: counter }, function( event ) {
+          ac.select(this);
           BibdkAutocompleteBehavior.selectedSuggestion(elemId, elemValue, event.data.counter);
         })
         counter++;
