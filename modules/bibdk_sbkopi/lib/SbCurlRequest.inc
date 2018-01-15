@@ -23,7 +23,7 @@ class SbCurlRequest extends MicroCURL {
    */
   public function __construct($request, $parameters, $xmlns, $url = NULL) {
     $this->url = $url;
-    parent::microcurl();
+    parent::__construct();
     $this->setRequest($request, $xmlns);
     $this->setParameters($parameters);
     $this->set_post_xml($this->getPostXml());
