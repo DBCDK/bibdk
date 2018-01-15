@@ -9,6 +9,7 @@
   Drupal.behaviors.bibdk_autocomplete_behavior__search_form_submit = {
     attach: function (context, settings) {
       $('#search-block-form', context).bind('submit',function(event) {
+        // alert('0');
         $('.form-autocomplete', context).each(function(index) {
           var elemId = $(this).attr('id') + '-autocomplete';
           var elemValue = $(this).attr('value');
@@ -19,7 +20,8 @@
           url: url,
           method: "POST",
           data: { ortograf: BibdkAutocompleteBehavior.fields },
-          dataType: 'json'
+          dataType: 'json',
+          async: false, // Or the call is not sent.
         });
       });
     }
@@ -68,8 +70,17 @@
    * @param elemId
    * @param elemValue
    */
-  BibdkAutocompleteBehavior.selectedSuggestion = function (elemId, elemValue, counter) {
+  BibdkAutocompleteBehavior.selectedSuggestion = function (elemId, counter) {
     this.fields[elemId].selected = counter;
+  };
+
+  /**
+   * Register selected suggestion
+   *
+   * @param elemId
+   * @param elemValue
+   */
+  BibdkAutocompleteBehavior.addQuery = function (elemId, elemValue) {
     this.fields[elemId].query = elemValue;
   };
 
@@ -140,6 +151,7 @@
     var elemId = this.input.id + '-autocomplete';
     var elemValue = this.input.value;
     BibdkAutocompleteBehavior.resetSuggestions(elemId);
+    BibdkAutocompleteBehavior.addQuery(elemId, elemValue);
     for (key in matches) {
       BibdkAutocompleteBehavior.addSuggestion(elemId, matches[key]);
       $('<li></li>')
@@ -154,7 +166,7 @@
         .appendTo(ul)
         .on( "click", { counter: counter }, function( event ) {
           ac.select(this);
-          BibdkAutocompleteBehavior.selectedSuggestion(elemId, elemValue, event.data.counter);
+          BibdkAutocompleteBehavior.selectedSuggestion(elemId, event.data.counter);
         })
         counter++;
     }
