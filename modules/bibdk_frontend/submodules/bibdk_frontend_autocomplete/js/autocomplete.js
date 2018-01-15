@@ -37,8 +37,6 @@
     var elemId = this.input.id + '-autocomplete';
     // BibdkAutocompleteBehavior.InputFields.resetSuggestions(elemId);
     for (key in matches) {
-      // BibdkAutocompleteBehavior.InputFields.addSuggestion(elemId, matches[key]);
-      // BibdkAutocompleteBehavior.register_autocomplete_items(this, matches[key]);
       $('<li></li>')
         .html($('<div></div>').html(matches[key]))
         .click(function() {
