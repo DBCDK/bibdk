@@ -1,35 +1,35 @@
 <?php
 /**
  * @file
- * bibliotek_dk_autocomplete.strongarm.inc
+ * bibdk_autocomplete_ortograf.strongarm.inc
  */
 
 /**
  * Implements hook_strongarm().
  */
-function bibliotek_dk_autocomplete_strongarm() {
+function bibdk_autocomplete_ortograf_strongarm() {
   $export = array();
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'bibdk_autocomplete_rest_url';
+  $strongarm->name = 'bibdk_autocomplete_ortograf_rest_url';
   $strongarm->value = 'https://ortograf.dbc.dk/ortograf/suggest';
-  $export['bibdk_autocomplete_rest_url'] = $strongarm;
+  $export['bibdk_autocomplete_ortograf_rest_url'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'bibdk_autocomplete_settings';
+  $strongarm->name = 'bibdk_autocomplete_ortograf_settings';
   $strongarm->value = array(
     'rows' => '10',
   );
-  $export['bibdk_autocomplete_settings'] = $strongarm;
+  $export['bibdk_autocomplete_ortograf_settings'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'bibdk_autocomplete_var';
+  $strongarm->name = 'bibdk_autocomplete_ortograf_var';
   $strongarm->value = array(
     '6c9427f4-c8da-e4b4-2550-4533080fc500' => array(
       'vars' => array(
@@ -217,7 +217,7 @@ function bibliotek_dk_autocomplete_strongarm() {
       'page_path' => 'bibdk_frontpage/net',
     ),
   );
-  $export['bibdk_autocomplete_var'] = $strongarm;
+  $export['bibdk_autocomplete_ortograf_var'] = $strongarm;
 
   return $export;
 }
