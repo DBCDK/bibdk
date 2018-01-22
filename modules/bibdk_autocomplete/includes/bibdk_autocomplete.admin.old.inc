@@ -33,6 +33,7 @@ function bibdk_autocomplete_admin_old() {
     '#type' => 'textfield',
     '#title' => t('bibliotek.dk autocomplete REST URL', array(), array('context' => 'bibdk_autocomplete_admin')),
     '#size' => 73,
+    '#required' => TRUE,
     '#description' => t('Autocomplete REST URL (Redo as a standard webservice client once we have a SOAP webservice.)', array(), array('context' => 'bibdk_autocomplete_admin')),
     '#default_value' => variable_get('bibdk_autocomplete_rest_url', NULL),
   );

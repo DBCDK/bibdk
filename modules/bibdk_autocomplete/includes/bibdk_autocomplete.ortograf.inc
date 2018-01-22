@@ -1,34 +1,46 @@
+<?php 
+
 /**
  * Implements hook_0_hit().
  * @return array
  *
  */
 function bibdk_autocomplete_0_hit_ortograf($string) {
-  $settings = variable_get('bibdk_autocomplete_settings', array());
-  $url = variable_get('bibdk_autocomplete_rest_url', null);
+  $matches = array();
+  $query['q'] = strtolower($string);
 
-  $options['query'] = array('q' => check_plain($string)) + $settings;
-  $options['query']['type'] = 'all';
-  $url = url($url, $options);
+  $settings = variable_get('bibdk_autocomplete_ortograf_settings', array());
+  $query = array_merge($query, $settings);
 
-  watchdog('bibdk_autocomplete', 'Autocomplete URL sent: ' . $url, array(), $severity = WATCHDOG_DEBUG);
+  $vars = variable_get('bibdk_autocomplete_ortograf_var', array());
+  $query['type'] = 'all';
 
-  $curl = new MicroCURL();
-  $headers = array('Accept: application/json');
-  $curl->set_option(CURLOPT_HTTPHEADER, $headers);
-  $result = json_decode($curl->get(array($url)));
-  $curl->close();
-
-  $items = array();
-  if (!empty($result->response)) {
-    foreach ($result->response->docs as $suggestion) {
-      $items[] = $suggestion->all[0];
+  // Try to use cache for the query.
+  $cid = md5(serialize($query));
+  if ($cache = cache_get($cid, 'cache_bibdk_autocomplete_ortograf')) {
+    $matches = $cache->data;
+  }
+  else {
+    $suggestions = bibdk_autocomplete_get_suggestions_ortograf($query);
+    // Maximum space in suggestions dropdown is 64 characters.
+    // Maximum characters for search query string is 256 characters.
+    foreach ($suggestions as $suggestion) {
+      $val = truncate_utf8($suggestion, 64, TRUE, TRUE, 1);
+      $key = truncate_utf8($suggestion, 256, TRUE, FALSE, 1);
+      $key = trim($key, " \t\n\r\0\x0B?"); // trim whitespace and question mark.
+      if (strpos($suggestion, ' ')) {
+        $key = '"' . str_replace('"', '\"', $key) . '"';
+      }
+      $matches[$key] = $val;
     }
-  } else if (!empty($result->error)) {
-    watchdog('bibdk_autocomplete', 'Autocomplete return empty set for ' . $url, array(), $severity = WATCHDOG_WARNING);
-  }  
+
+    // Store the matches in cache for faster lookup next time.
+    if (sizeof($matches) > 0) {
+      cache_set($cid, $matches, 'cache_bibdk_autocomplete_ortograf', CACHE_TEMPORARY);
+    }
+  }
   
-  $link_items = bibdk_make_item_list($items);
+  $link_items = bibdk_make_item_list($matches);
 
   return $link_items;
 }

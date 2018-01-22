@@ -26,19 +26,9 @@ function bibdk_autocomplete_admin_ortograf() {
     '#type' => 'textfield',
     '#title' => t('Ortograf URL', array(), array('context' => 'bibdk_autocomplete_admin_ortograf')),
     '#size' => 73,
+    '#required' => TRUE,
     '#description' => t('Ortograf REST URL.', array(), array('context' => 'bibdk_autocomplete_admin_ortograf')),
     '#default_value' => variable_get('bibdk_autocomplete_ortograf_rest_url', NULL),
-  );
-
-  $form['bibdk_autocomplete_ortograf_webservice']['bibdk_autocomplete_backend'] = array(
-    '#type' => 'radios',
-    '#title' => t('bibliotek.dk autocomplete backend', array(), array('context' => 'bibdk_autocomplete_admin')),
-    '#default_value' => variable_get('bibdk_autocomplete_backend', 0),
-    '#options' => array(
-      0 => t('Old', array(), array('context' => 'bibdk_autocomplete_admin')),
-      1 => t('Ortograf', array(), array('context' => 'bibdk_autocomplete_admin'))
-    ),
-    '#description' => t('Select active suggester.'),
   );
 
   $form['bibdk_autocomplete_ortograf_webservice']['bibdk_autocomplete_backend'] = array(
@@ -86,6 +76,7 @@ function bibdk_autocomplete_admin_ortograf() {
   foreach ($result as $value) {
     if (!in_array($value->p_uuid, $p_uuids)) {
       $p_uuids[] = $value->p_uuid;
+      // if !$result, then $freetext will not be set. In which case bibdk_custom_search is broken.
       $freetext[] = (object) array(
         'p_uuid' => $value->p_uuid, 
         'v_uuid' => 'search_block_form', 

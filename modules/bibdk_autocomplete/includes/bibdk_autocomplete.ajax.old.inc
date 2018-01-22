@@ -28,7 +28,8 @@ function bibdk_autocomplete_callback_old($p_uuid, $v_uuid, $string, $retry = fal
   if (!empty($filter_string)) {
     if (!empty($value_vars['filterQuery'])) {
       $value_vars['filterQuery'] .= ' AND ' . $filter_string;
-    } else {
+    }
+    else {
       $value_vars['filterQuery'] = $filter_string;
     }
   }
@@ -53,15 +54,18 @@ function bibdk_autocomplete_callback_old($p_uuid, $v_uuid, $string, $retry = fal
       if (strpos($suggestion->phrase, ' ')) {
         // contains blank
         $items['"' . bibdk_autocomplete_truncate(html_entity_decode(strip_tags($suggestion->phrase)), 64) . '"'] = $suggestion->phrase;
-      } else {
+      }
+      else {
         $items[bibdk_autocomplete_truncate(html_entity_decode(strip_tags($suggestion->phrase)), 64)] = $suggestion->phrase;
       }
     }
-  } else {
+  }
+  else {
     if (empty($result->suggestions) && !$retry) {
       watchdog('bibdk_autocomplete', 'AUTOCOMPLETE RETRY' . $url, array(), $severity = WATCHDOG_WARNING);
       bibdk_autocomplete_callback_old($p_uuid, $v_uuid, $string, true);
-    } else {
+    }
+    else {
       watchdog('bibdk_autocomplete', 'Autocomplete return empty set for ' . $url, array(), $severity = WATCHDOG_WARNING);
       $items = array();
     }
@@ -71,6 +75,9 @@ function bibdk_autocomplete_callback_old($p_uuid, $v_uuid, $string, $retry = fal
   drupal_exit();
 }
 
+/**
+ * Helper function for bibdk_autocomplete().
+ */
 function bibdk_autocomplete_parse_filters($filter_string) {
   $search_filter = explode('::::', $filter_string);
   $search_string = $search_filter[0];
@@ -86,6 +93,11 @@ function bibdk_autocomplete_parse_filters($filter_string) {
   return array($search_string => $filter_array);
 }
 
+/**
+ * Helper function for bibdk_autocomplete().
+ *
+ * @param $filters
+ */
 function bibdk_autocomplete_set_filter_query(array $filters) {
   $filter_query = '';
   $vars = variable_get('bibdk_autocomplete_var', array());
@@ -102,7 +114,10 @@ function bibdk_autocomplete_set_filter_query(array $filters) {
 }
 
 /**
- * helper function for bibdk_autocomplete()
+ * Helper function for bibdk_autocomplete().
+ *
+ * @param $string
+ * @param $width
  */
 function bibdk_autocomplete_truncate($string, $width) {
   $parts = preg_split('/([\s\n\r]+)/', $string, null, PREG_SPLIT_DELIM_CAPTURE);

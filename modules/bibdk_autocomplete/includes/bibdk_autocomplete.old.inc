@@ -1,10 +1,11 @@
+<?php
+
 /**
  * Implements hook_0_hit().
  * @return array
  *
  */
 function bibdk_autocomplete_0_hit_old($conditions) {
-
   $settings = variable_get('bibdk_autocomplete_settings', array());
   $url = variable_get('bibdk_autocomplete_rest_url', null);
 
@@ -19,15 +20,24 @@ function bibdk_autocomplete_0_hit_old($conditions) {
   $options['maxTime'] = 300;
   $url = url($url, $options);
   $curl = new MicroCURL();
+  $headers = array('Accept: application/json');
+  $curl->set_option(CURLOPT_HTTPHEADER, $headers);
   $result = json_decode($curl->get(array($url)));
   $curl->close();
 
   $items = array();
-  if (!empty($result->suggestions)) {
-    foreach ($result->suggestions as $suggestion) {
-      $items[bibdk_autocomplete_truncate(html_entity_decode(strip_tags($suggestion->phrase)), 64)] = $suggestion->phrase;
+  if (!empty($result->suggestion)) {
+    foreach ($result->suggestion as $suggestion) {
+      $val = truncate_utf8($suggestion->phrase, 124, TRUE, TRUE, 1);
+      $key = truncate_utf8($suggestion->phrase, 256, TRUE, FALSE, 1);
+      $key = trim($key, " \t\n\r\0\x0B?"); // trim whitespace and question mark.
+      if (strpos($suggestion->phrase, ' ')) {
+        $key = '"' . str_replace('"', '\"', $key) . '"';
+      }
+      $items[$key] = $val;
     }
   }
+
   $link_items = bibdk_make_item_list($items);
 
   return $link_items;
