@@ -263,10 +263,13 @@ function bibdk_reservation_create_wizard_form($form, &$form_state) {
         '#submit' => array('bibdk_reservation_wizard_next_submit'),
       );
 
-     /* if ($step == 2) {
+      if ($step == 2) {
         // add disable on Order button
-        $form['navigation']['next']['#attached']['js'][] = drupal_get_path('module', 'bibdk_reservation') . '/js/bibdk_reservation_order_disable.js';
-      }*/
+        $form['navigation']['next']['#attached']['js'][] = array(
+          'data' => drupal_get_path('module', 'bibdk_reservation') . '/js/bibdk_reservation_order_disable.js',
+          'type' => 'file',
+        );
+      }
     }
 
     // Show the 'previous' button if appropriate.
