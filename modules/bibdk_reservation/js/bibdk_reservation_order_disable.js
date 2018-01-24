@@ -11,6 +11,7 @@
           event.preventDefault();
         }
         else {
+          // NB: Do not disable the submit button, or the form will reset to step 2.
           $(this).addClass('submitted');
           $('#edit-next').parent().append('<div class="ajax-progress ajax-progress-throbber"><div class="throbber"></div></div>');
           $('#edit-navigation input[type="submit"]').css({"background-color": 'grey', 'pointer-events': 'none'});
