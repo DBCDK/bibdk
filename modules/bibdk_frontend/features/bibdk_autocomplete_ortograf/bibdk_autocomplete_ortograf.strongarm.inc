@@ -13,6 +13,13 @@ function bibdk_autocomplete_ortograf_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'bibdk_autocomplete_backend';
+  $strongarm->value = '1';
+  $export['bibdk_autocomplete_backend'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'bibdk_autocomplete_ortograf_rest_url';
   $strongarm->value = 'https://ortograf.dbc.dk/ortograf/suggest';
   $export['bibdk_autocomplete_ortograf_rest_url'] = $strongarm;
@@ -86,31 +93,6 @@ function bibdk_autocomplete_ortograf_strongarm() {
       ),
       'page_path' => 'bibdk_frontpage/film',
     ),
-    'b29c03e2-f2a9-9504-f97f-2cb529a0dad3' => array(
-      'vars' => array(
-        '1150ebb6-8e38-27d4-b929-840f71d17137' => array(
-          'autocomplete' => 0,
-          'type' => '',
-          'id' => 'input-forfatter',
-        ),
-        'd119b2ef-6c7d-0c04-a105-f1628434e336' => array(
-          'autocomplete' => 0,
-          'type' => '',
-          'id' => 'input-titel',
-        ),
-        '90655745-f61d-ac84-c54e-d7907d159271' => array(
-          'autocomplete' => 0,
-          'type' => '',
-          'id' => 'input-emne',
-        ),
-        'search_block_form' => array(
-          'autocomplete' => 0,
-          'type' => 'all',
-          'id' => 'input-fritekst',
-        ),
-      ),
-      'page_path' => 'bibdk_frontpage/bog',
-    ),
     'd3099a71-b1b6-f5c4-4170-6b8593ad446b' => array(
       'vars' => array(
         '1150ebb6-8e38-27d4-b929-840f71d17137' => array(
@@ -135,6 +117,31 @@ function bibdk_autocomplete_ortograf_strongarm() {
         ),
       ),
       'page_path' => 'bibdk_frontpage',
+    ),
+    'b29c03e2-f2a9-9504-f97f-2cb529a0dad3' => array(
+      'vars' => array(
+        '1150ebb6-8e38-27d4-b929-840f71d17137' => array(
+          'autocomplete' => 0,
+          'type' => '',
+          'id' => 'input-forfatter',
+        ),
+        'd119b2ef-6c7d-0c04-a105-f1628434e336' => array(
+          'autocomplete' => 0,
+          'type' => '',
+          'id' => 'input-titel',
+        ),
+        '90655745-f61d-ac84-c54e-d7907d159271' => array(
+          'autocomplete' => 0,
+          'type' => '',
+          'id' => 'input-emne',
+        ),
+        'search_block_form' => array(
+          'autocomplete' => 0,
+          'type' => 'all',
+          'id' => 'input-fritekst',
+        ),
+      ),
+      'page_path' => 'bibdk_frontpage/bog',
     ),
     '535c37b7-2bd4-7254-09f6-1b1285ac5761' => array(
       'vars' => array(
@@ -215,6 +222,16 @@ function bibdk_autocomplete_ortograf_strongarm() {
         ),
       ),
       'page_path' => 'bibdk_frontpage/net',
+    ),
+    '82a9e993-2160-2ac4-a577-4b3d980a815e' => array(
+      'vars' => array(
+        'search_block_form' => array(
+          'autocomplete' => 0,
+          'type' => 'all',
+          'id' => 'input-fritekst',
+        ),
+      ),
+      'page_path' => 'bibdk_frontpage/spil',
     ),
   );
   $export['bibdk_autocomplete_ortograf_var'] = $strongarm;
