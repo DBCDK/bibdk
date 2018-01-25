@@ -19,7 +19,8 @@
           url: url,
           method: "POST",
           data: { ortograf: BibdkAutocompleteBehavior.fields },
-          dataType: 'json'
+          dataType: 'json',
+          async: false, // Or the call is not sent.
         });
       });
     }
@@ -66,10 +67,19 @@
    * Register selected suggestion
    *
    * @param elemId
+   * @param counter
+   */
+  BibdkAutocompleteBehavior.selectedSuggestion = function (elemId, counter) {
+    this.fields[elemId].selected = counter;
+  };
+
+  /**
+   * Register suggestion query.
+   *
+   * @param elemId
    * @param elemValue
    */
-  BibdkAutocompleteBehavior.selectedSuggestion = function (elemId, elemValue, counter) {
-    this.fields[elemId].selected = counter;
+  BibdkAutocompleteBehavior.addQuery = function (elemId, elemValue) {
     this.fields[elemId].query = elemValue;
   };
 
@@ -140,6 +150,7 @@
     var elemId = this.input.id + '-autocomplete';
     var elemValue = this.input.value;
     BibdkAutocompleteBehavior.resetSuggestions(elemId);
+    BibdkAutocompleteBehavior.addQuery(elemId, elemValue);
     for (key in matches) {
       BibdkAutocompleteBehavior.addSuggestion(elemId, matches[key]);
       $('<li></li>')
@@ -154,7 +165,7 @@
         .appendTo(ul)
         .on( "click", { counter: counter }, function( event ) {
           ac.select(this);
-          BibdkAutocompleteBehavior.selectedSuggestion(elemId, elemValue, event.data.counter);
+          BibdkAutocompleteBehavior.selectedSuggestion(elemId, event.data.counter);
         })
         counter++;
     }
