@@ -4,7 +4,6 @@
  * Code for Bibliotek.dk Autocomplete
  */
 
-
 /**
  * Implements hook_menu().
  */
@@ -13,10 +12,9 @@ function bibdk_autocomplete_menu() {
   $items['bibdk/autocomplete/%/%'] = array(
     'title' => 'Bibliotek.dk autocomplete',
     'description' => 'Autocomplete callback',
-    'page callback' => 'bibdk_autocomplete',
+    'page callback' => 'bibdk_autocomplete_callback',
     'page arguments' => array(2, 3),
     'access arguments' => array('access content'),
-    'file' => 'includes/bibdk_autocomplete.ajax.inc',
     'type' => MENU_CALLBACK,
   );
 
@@ -26,7 +24,6 @@ function bibdk_autocomplete_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('bibdk_autocomplete_admin'),
     'access arguments' => array('administer search'),
-    'file' => 'includes/bibdk_autocomplete.admin.inc',
   );
 
   $items['bibdk/behaviour/autocomplete'] = array(
@@ -42,6 +39,44 @@ function bibdk_autocomplete_menu() {
 
 
 /**
+ * @file
+ * Admin settings for bibliotek.dk autocomplete.
+ */
+function bibdk_autocomplete_admin() {
+  $autocomplete_backend = variable_get('bibdk_autocomplete_backend', NULL);
+  switch ($autocomplete_backend) {
+    case '1':
+      module_load_include('inc', 'bibdk_autocomplete', 'includes/bibdk_autocomplete.admin.ortograf');
+      $form = bibdk_autocomplete_admin_ortograf();
+      break;
+    default:
+      module_load_include('inc', 'bibdk_autocomplete', 'includes/bibdk_autocomplete.admin.old');
+      $form = bibdk_autocomplete_admin_old();
+  }
+  return system_settings_form($form);  
+}
+  
+/**
+ * Callback function used when input is entered in a search field.
+ *
+ * @param      $p_uuid
+ * @param      $v_uuid
+ * @param      $string
+ */
+function bibdk_autocomplete_callback($p_uuid, $v_uuid, $string = '') {
+  $autocomplete_backend = variable_get('bibdk_autocomplete_backend', NULL);
+  switch ($autocomplete_backend) {
+    case '1':
+      module_load_include('inc', 'bibdk_autocomplete', 'includes/bibdk_autocomplete.ajax.ortograf');
+      bibdk_autocomplete_callback_ortograf($p_uuid, $v_uuid, $string);
+      break;
+    default:
+      module_load_include('inc', 'bibdk_autocomplete', 'includes/bibdk_autocomplete.ajax.old');
+      bibdk_autocomplete_callback_old($p_uuid, $v_uuid, $string);
+  }
+}
+
+/**
  * Implements hook_form_FORM_ID_alter() for form search_block_form.
  */
 function bibdk_autocomplete_form_search_block_form_alter(&$form, &$form_state, $form_id) {
@@ -55,7 +90,16 @@ function bibdk_autocomplete_form_search_block_form_alter(&$form, &$form_state, $
       $page_path = $_GET['q'];
     }
   }
-  $autocomplete_elements = variable_get('bibdk_autocomplete_var', array());
+  
+  $autocomplete_backend = variable_get('bibdk_autocomplete_backend', NULL);
+  switch ($autocomplete_backend) {
+    case '1':
+      $autocomplete_elements = variable_get('bibdk_autocomplete_ortograf_var', array());
+      break;
+    default:
+      $autocomplete_elements = variable_get('bibdk_autocomplete_var', array());
+  }
+  
   foreach ($autocomplete_elements as $key => $page) {
     if ($page['page_path'] == $page_path) {
       $vars = $page['vars'];
@@ -80,8 +124,14 @@ function bibdk_autocomplete_form_search_block_form_alter(&$form, &$form_state, $
         }
       }
     }
-    $form['#attached']['js'][] = drupal_get_path('module', 'bibdk_autocomplete') . '/js/bibdk_autocomplete.js';
-    $form['#attached']['js'][] = drupal_get_path('module', 'bibdk_autocomplete') . '/js/bibdk_autocomplete_behaviour.js';
+    switch ($autocomplete_backend) {
+      case '1':
+        $form['#attached']['js'][] = drupal_get_path('module', 'bibdk_autocomplete') . '/js/bibdk_autocomplete.ortograf.js';
+        $form['#attached']['js'][] = drupal_get_path('module', 'bibdk_autocomplete') . '/js/bibdk_autocomplete.behaviour.js';
+        break;
+      default:
+        $form['#attached']['js'][] = drupal_get_path('module', 'bibdk_autocomplete') . '/js/bibdk_autocomplete.old.js';
+    }
   }
 
 }
@@ -115,92 +165,25 @@ function bibdk_autocomplete_help($path, $arg) {
   }
 }
 
-
 /**
- * Implements hook_0_hit().
+ * Implements hook_0_hit_search().
  * @return array
  *
  */
 function bibdk_autocomplete_0_hit_search($string) {
-  $settings = variable_get('bibdk_autocomplete_settings', array());
-  $url = variable_get('bibdk_autocomplete_rest_url', null);
 
-  $options['query'] = array('q' => check_plain($string)) + $settings;
-  $options['query']['type'] = 'all';
-  $url = url($url, $options);
-
-  watchdog('bibdk_autocomplete', 'Autocomplete URL sent: ' . $url, array(), $severity = WATCHDOG_DEBUG);
-
-  $curl = new MicroCURL();
-  $headers = array('Accept: application/json');
-  $curl->set_option(CURLOPT_HTTPHEADER, $headers);
-  $result = json_decode($curl->get(array($url)));
-  $curl->close();
-
-  $items = array();
-  if (!empty($result->response)) {
-    foreach ($result->response->docs as $suggestion) {
-      $items[] = $suggestion->all[0];
-    }
-  } else if (!empty($result->error)) {
-    watchdog('bibdk_autocomplete', 'Autocomplete return empty set for ' . $url, array(), $severity = WATCHDOG_WARNING);
-  }  
-  
-  $link_items = bibdk_make_item_list($items);
-
-  return $link_items;
-}
-
-
-/**
- * helper function for 0_hit_search()
- */
-function bibdk_make_item_list($items) {
-
-  $links = array();
-
-  // make a list of suggesttions
-  foreach ($items as $suggest) {
-    $zero_hit_link = array(
-      '#theme' => 'link',
-      '#path' => 'search/work/' . '"' . $suggest . '"',
-      '#weight' => 0,
-      '#text' => $suggest,
-      '#options' => array(
-        'attributes' => array(
-          'class' => array(
-            'bibdk-suggest-link',
-          ),
-        ),
-        'html' => false,
-      ),
-    );
-    $links[] = drupal_render($zero_hit_link);
+  $autocomplete_backend = variable_get('bibdk_autocomplete_backend', NULL);
+  switch ($autocomplete_backend) {
+    case '1':
+      module_load_include('inc', 'bibdk_autocomplete', 'includes/bibdk_autocomplete.ortograf');
+      $link_items = bibdk_autocomplete_0_hit_ortograf($string);
+      break;
+    default:
+      module_load_include('inc', 'bibdk_autocomplete', 'includes/bibdk_autocomplete.old');
+      $link_items = bibdk_autocomplete_0_hit_old($string);
   }
 
-  // label for suggestions
-  $render['label'] = array(
-    '#type' => 'html_tag',
-    '#tag' => 'div',
-    '#value' => t('label_did_you_mean', array(), array('context' => 'bibdk_autocomplete_suggest')),
-    '#attributes' => array(
-      'class' => array('bibdk-suggest-label'),
-    ),
-  );
-
-  // render array for suggestions
-  $render['suggest_list'] = array(
-    '#theme' => 'item_list',
-    '#type' => 'ul',
-    '#attributes' => array(
-      'class' => array('links'),
-      'class' => array('bibdk-suggest-links'),
-    ),
-    '#items' => $links,
-  );
-
-  return $render;
-
+  return $link_items;
 }
 
 
@@ -233,4 +216,50 @@ function bibdk_autocomplete_behaviour_callback() {
   }
   module_invoke_all('bibdk_behaviour_request', $behaviour_data);
   bibdk_behaviour_log($behaviour_data);
+}
+
+
+/**
+ * SuggestionService - retrieve suggestions with drupal_http_request() 
+ *
+ * @param array $query
+ *   Search suggestion parameters.
+ *
+ * @return array
+ *   Search suggestion results.
+ */
+function bibdk_autocomplete_get_suggestions_ortograf(array $query) {
+  $items = array();
+  
+  $rest_url = variable_get('bibdk_autocomplete_ortograf_rest_url', '');
+  $url = url($rest_url, array('query' => $query));
+  $headers = array('Accept' => 'application/json');
+
+  watchdog('bibdk_autocomplete', 'Autocomplete URL sent: ' . $url, array(), $severity = WATCHDOG_DEBUG);
+  $result = drupal_http_request($url, $headers);
+
+  if (!empty($result->error)) {
+    watchdog(
+      'ting_search_ortograf',
+      "Autocomplete error: %error (%code)\nURL: !url",
+      array(
+        '%error' => $result->error,
+        '%code' => $result->code,
+        '!url' => $url,
+      ),
+      $severity = WATCHDOG_ERROR
+    );
+    return $items;
+  }
+
+  if (!empty($result->data)) {
+    $result_data = drupal_json_decode($result->data);
+    if (!empty($result_data['response']['docs'])) {
+      foreach ($result_data['response']['docs'] as $suggestion) {
+        $items[] = $suggestion['all'][0];
+      }
+    }
+  }
+
+  return $items;
 }
