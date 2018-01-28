@@ -22,7 +22,6 @@
           dataType: 'json',
           async: false, // Or the call is not sent.
         });
-        event.preventDefault();
       });
     }
   };
