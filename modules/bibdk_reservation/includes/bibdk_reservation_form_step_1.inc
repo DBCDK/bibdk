@@ -8,9 +8,10 @@
 function bibdk_reservation_form_step_1($form, &$form_state) {
 
   // If user is not logged in - set message
-  if (!user_is_logged_in()) {
+  // for now comment out the login link - it might be enabled later
+  /*if (!user_is_logged_in()) {
     _bibdk_reservation_set_login_message();
-  }
+  }*/
 
   // Get regular reservation step
   $form['step_info'] = array(
