@@ -141,7 +141,7 @@
    */
   function found(matches) {
     // If no value in the textfield, do not show the popup.
-    if (!this.input.value.length){
+    if (!this.input.value.length) {
       return false;
     }
 
@@ -176,7 +176,7 @@
     if (this.popup) {
       if (ul.children().length) {
         $(this.popup).empty().append(ul).show();
-        $(this.ariaLive).html(Drupal.t('Autocomplete popup'));
+        $(this.ariaLive).html(Drupal.t('Autocomplete popup', {}, {context: "bibdk_autocomplete_suggest"}));
       }
       else {
         $(this.popup).css({ visibility: 'hidden' });
