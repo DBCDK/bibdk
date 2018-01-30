@@ -80,6 +80,7 @@ function bibdk_reservation_agency_search_form($form, &$form_state) {
       'placeholder' => t('Library name, zip or city', array(), array('context' => 'bibdk_reservation')),
       'class' => array('')
     ),
+    '#autocomplete_path' => 'vejviser/autocomplete',
     '#default_value' => isset($form_state['values']['anyField']) ? $form_state['values']['anyField'] : NULL,
   );
   $form['agency_search_fieldset']['search'] = array(
