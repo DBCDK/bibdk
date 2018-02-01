@@ -255,11 +255,11 @@ projects[node_export][version] = 3.0-rc4
 
 projects[panels][subdir] = contrib
 projects[panels][type] = module
-projects[panels][version] = 3.3
+projects[panels][version] = 3.9
 
 projects[panels_breadcrumbs][subdir] = contrib
 projects[panels_breadcrumbs][type] = module
-projects[panels_breadcrumbs][version] = 1.6
+projects[panels_breadcrumbs][version] = 2.2
 
 projects[persistent_login][subdir] = contrib
 projects[persistent_login][type] = module
@@ -292,7 +292,7 @@ projects[variable][version] = 2.5
 
 projects[views][subdir] = contrib
 projects[views][type] = module
-projects[views][version] = 3.11
+projects[views][version] = 3.18
 
 projects[virtual_field][subdir] = contrib
 projects[virtual_field][type] = module

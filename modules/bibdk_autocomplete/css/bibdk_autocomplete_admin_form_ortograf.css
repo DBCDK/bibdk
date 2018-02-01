@@ -1,0 +1,44 @@
+#bibdk-autocomplete-admin .form-type-radios {
+    padding: 0px;
+    float: left;
+}
+
+#bibdk-autocomplete-admin .form-type-radio {
+    padding: 0.25rem 0.3125rem;
+    float: left;
+}
+
+#bibdk-autocomplete-admin .form-type-textfield {
+    padding: 0 0.5625rem 0;
+    float: left;
+    width: 12rem;
+}
+
+#bibdk-autocomplete-admin .form-item-bibdk-autocomplete-ortograf-rest-url {
+    width: 30rem;
+}
+#bibdk-autocomplete-admin .form-item-bibdk-autocomplete-settings-agency,
+#bibdk-autocomplete-admin .form-item-bibdk-autocomplete-settings-maxSuggestions,
+#bibdk-autocomplete-admin .form-item-bibdk-autocomplete-settings-maxTime,
+#bibdk-autocomplete-admin .form-item-bibdk-autocomplete-settings-profile {
+    width: 11.25rem;
+}
+
+#bibdk-autocomplete-admin .form-item-bibdk-autocomplete-settings-highlight\.pre,
+#bibdk-autocomplete-admin .form-item-bibdk-autocomplete-settings-highlight\.post {
+    width: 10rem;
+}
+
+#bibdk-autocomplete-admin .form-item-bibdk-autocomplete-rest-url {
+    width: 30rem;
+}
+
+#bibdk-autocomplete-admin .form-type-checkbox {
+    padding: 1.125rem 0.5625rem 0;
+    float: left;
+    clear: left;
+}
+
+#bibdk-autocomplete-admin .form-type-radios .description {
+    clear: both;
+}

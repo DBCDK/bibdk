@@ -12,4 +12,4 @@ features[features_api][] = api:1
 features[variable][] = bibdk_autocomplete_rest_url
 features[variable][] = bibdk_autocomplete_settings
 features[variable][] = bibdk_autocomplete_var
-mtime = 1510928035
+mtime = 1427271144
