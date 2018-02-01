@@ -8,9 +8,10 @@
 function bibdk_reservation_form_step_1($form, &$form_state) {
 
   // If user is not logged in - set message
-  if (!user_is_logged_in()) {
+  // for now comment out the login link - it might be enabled later
+  /*if (!user_is_logged_in()) {
     _bibdk_reservation_set_login_message();
-  }
+  }*/
 
   // Get regular reservation step
   $form['step_info'] = array(
@@ -79,6 +80,7 @@ function bibdk_reservation_agency_search_form($form, &$form_state) {
       'placeholder' => t('Library name, zip or city', array(), array('context' => 'bibdk_reservation')),
       'class' => array('')
     ),
+    '#autocomplete_path' => 'vejviser/autocomplete',
     '#default_value' => isset($form_state['values']['anyField']) ? $form_state['values']['anyField'] : NULL,
   );
   $form['agency_search_fieldset']['search'] = array(

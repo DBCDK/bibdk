@@ -73,9 +73,10 @@ function bibdk_reservation_form_step_2($form, &$form_state) {
     }
   }
 
-  if (!user_is_logged_in()) {
+  // for now comment out login link - it might come in handy later
+  /*if (!user_is_logged_in()) {
     _bibdk_reservation_set_login_message();
-  }
+  }*/
 
   return $form;
 }
