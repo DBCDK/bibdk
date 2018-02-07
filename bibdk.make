@@ -142,7 +142,7 @@ projects[bibdk_config][download][tag] = 7.x-1.0
 projects[bibdk_behaviour][type] = module
 projects[bibdk_behaviour][download][type] = git
 projects[bibdk_behaviour][download][url] = git.dbc.dk:/repos/bibdk_behaviour.git
-projects[bibdk_behaviour][download][tag] = 7.x-0.9
+projects[bibdk_behaviour][download][tag] = 7.x-0.10
 
 
 ; --- Non Ding2 or Bibliotek.dk specific
