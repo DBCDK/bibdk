@@ -201,7 +201,7 @@ function bibdk_autocomplete_flush_caches() {
  */
 function bibdk_autocomplete_behaviour_callback() {
   $behaviour_data = $_POST;
-  $settings = variable_get('bibdk_autocomplete_var', array());
+  $settings = variable_get('bibdk_autocomplete_ortograf_var', array());
   foreach ($behaviour_data['ortograf'] as $key => $fields) {
     if (!isset($fields['suggestions'])) {
       unset($behaviour_data['ortograf'][$key]);
