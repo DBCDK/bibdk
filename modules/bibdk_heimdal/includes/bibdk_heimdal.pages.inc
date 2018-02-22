@@ -24,6 +24,7 @@ function bibdk_heimdal_handle_login_request($uuid) {
   } catch (Exception $e) {
     watchdog('heimdal', 'DATABASE EXCEPTION: %message%', array('%message%' => $e->getMessage()), WATCHDOG_ERROR);
     $message = bibdk_heimdal_exception_message();
+    bibdk_heimdal_cleanup_and_exit($message);
   }
 
   // row has been fetched - this is a one time link - delete on database
@@ -146,16 +147,33 @@ function bibdk_heimdal_do_insert_culr($row) {
   }
   $response = array();
   $mail = $row['email'];
-  // there can be only ONE bibliotek.dk account on culr
-  // pick the first - if there are more they have the same userId
-  // that is how culr works
-  $agency = $agencies[0];
+
+  // get en agency for insertion in culr
+  $agency = bibdk_heimdal_get_unique_agency($agencies);
 
   $borrowerId = $agency['userId'];
   $uidType = $agency['userIdType'];
   $xml = BibdkUser::instance()->insertCulr($mail, $borrowerId, $uidType);
 
   return $xml;
+}
+
+/**
+ * Find an agency with userIdType CPR or CVR to use for global id in culr
+ * @param array $agencies
+ *   agencies from heimdal
+ * @return mixed
+ *   an agency with userIdType CPR og CVR - if no agencies has that userIdType
+ *   return first in given array
+ */
+function bibdk_heimdal_get_unique_agency(array $agencies){
+  foreach($agencies as $agency){
+    if($agency['userIdType'] === 'CPR' || $agency['userIdType'] === 'CVR' ){
+      return $agency;
+    }
+  }
+  // no agencies with cpr or cvr found - return first in array
+  return $agencies[0];
 }
 
 /**

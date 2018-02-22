@@ -27,6 +27,7 @@ class BibdkHeimdalWebTestCase extends DrupalWebTestCase {
     $this->form_state_parser_multiplde_usernames();
     $this->return_url();
     $this->heimdalUser();
+    $this->form_state_parser_unique_library();
   }
 
   public function modules_and_dependencies(){
@@ -51,6 +52,27 @@ class BibdkHeimdalWebTestCase extends DrupalWebTestCase {
     unset($heimdalUser);
     $libs = bibdkHeimdalUser::getLibraries();
     $this->assertTrue(is_array($libs), 'culr libraries set for heimdal user');
+  }
+
+  public function form_state_parser_unique_library(){
+    $this->drupalGet('');
+    variable_set('bibdk_provider_culr_agency', 1234567);
+    // delete cookie if set
+    //user_cookie_delete('user_selected_email');
+    $path = drupal_get_path('module', 'bibdk_heimdal');
+    $path .= '/test/from_real_life.json';
+    $mock = file_get_contents($path);
+    $attributes = json_decode($mock, true);
+    $heimdalUser = new bibdkHeimdalUser($attributes);
+    $form_state = bibdk_heimdal_get_form_state($heimdalUser);
+    $agencies = $heimdalUser::getLibraries();
+
+    // get a mockup
+    $path = drupal_get_path('module', 'bibdk_heimdal');
+    require_once($path . '/includes/bibdk_heimdal.pages.inc');
+
+    $unique_agency = bibdk_heimdal_get_unique_agency($agencies);
+    $this->assertTrue($unique_agency['userIdType'] === 'CPR', 'unique library foune');
   }
 
   public function form_state_parser_multiplde_usernames(){
