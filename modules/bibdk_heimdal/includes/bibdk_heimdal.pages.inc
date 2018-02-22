@@ -172,6 +172,8 @@ function bibdk_heimdal_get_unique_agency(array $agencies){
       return $agency;
     }
   }
+  // @TODO this is where we should abort. If no valid globalUid is found
+  // @TODO there is no point in going on since culr can NOT match accounts
   // no agencies with cpr or cvr found - return first in array
   return $agencies[0];
 }
