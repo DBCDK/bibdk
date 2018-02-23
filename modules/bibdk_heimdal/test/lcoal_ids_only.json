@@ -1,0 +1,27 @@
+{
+  "id": 1591,
+  "token": "b6161d3d68fdbdf348efa3afdd2d300c77eb8a975017d6cd843a816466560bfd",
+  "attributes": {
+    "cpr": "xxxxxxxxxx",
+    "gender": null,
+    "userId": "xxxxxxxxxx",
+    "wayfId": null,
+    "agencies": [
+      {
+        "userId": "1111111111",
+        "agencyId": "760700",
+        "userIdType": "LOCAL"
+      },
+      {
+        "userId": "22222222",
+        "agencyId": "715100",
+        "userIdType": "LOCAL"
+      },
+      {
+        "userId": "33333333",
+        "agencyId": "718500",
+        "userIdType": "LOCAL"
+      }
+    ]
+  }
+}

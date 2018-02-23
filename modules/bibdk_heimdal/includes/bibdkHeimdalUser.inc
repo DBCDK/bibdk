@@ -9,6 +9,7 @@
  */
 class bibdkHeimdalUser {
   private $culrAgency;
+  private $cpr;
 
   /**
    * Parse and set attributes from heimdal access platform
@@ -20,6 +21,9 @@ class bibdkHeimdalUser {
     if(empty($this->culrAgency)){
       watchdog('HEIMDAL', 'NO AGENCYID FOR CULR ACTIONS', WATCHDOG_ERROR);
     }
+
+    $this->cpr = isset($attributes['attributes']['cpr']) ?
+      $attributes['attributes']['cpr'] : NULL;
 
     $culr_libraries = isset($attributes['attributes']['agencies']) ?
       $attributes['attributes']['agencies'] : array();
