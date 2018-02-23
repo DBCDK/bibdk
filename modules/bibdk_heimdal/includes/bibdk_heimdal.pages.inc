@@ -145,11 +145,14 @@ function bibdk_heimdal_do_insert_culr($row) {
   if (empty($agencies)) {
     return array();
   }
-  $response = array();
   $mail = $row['email'];
 
   // get en agency for insertion in culr
   $agency = bibdk_heimdal_get_unique_agency($agencies);
+  if($agency === FALSE){
+    return bibdk_heimdal_get_nogo_response();
+  }
+
 
   $borrowerId = $agency['userId'];
   $uidType = $agency['userIdType'];
@@ -159,12 +162,26 @@ function bibdk_heimdal_do_insert_culr($row) {
 }
 
 /**
+ * Culr doesn't handle agencies where no globalid is given - get an
+ * abort message
+ *
+ * @return array
+ *   message to abort
+ */
+function bibdk_heimdal_get_nogo_response() {
+  return array(
+    'status' => FALSE,
+    'message' => bibdk_heimdal_pages_no_culr_message(),
+  );
+}
+
+/**
  * Find an agency with userIdType CPR or CVR to use for global id in culr
  * @param array $agencies
  *   agencies from heimdal
- * @return mixed
+ * @return array | bool
  *   an agency with userIdType CPR og CVR - if no agencies has that userIdType
- *   return first in given array
+ *   return FALSE to signal abort
  */
 function bibdk_heimdal_get_unique_agency(array $agencies){
   foreach($agencies as $agency){
@@ -174,8 +191,12 @@ function bibdk_heimdal_get_unique_agency(array $agencies){
   }
   // @TODO this is where we should abort. If no valid globalUid is found
   // @TODO there is no point in going on since culr can NOT match accounts
+  // @TODO the solution is to get globalUid from culr for ALL libraries
+
+  // no valid agencies found - abort
+  return FALSE;
   // no agencies with cpr or cvr found - return first in array
-  return $agencies[0];
+  //return $agencies[0];
 }
 
 /**

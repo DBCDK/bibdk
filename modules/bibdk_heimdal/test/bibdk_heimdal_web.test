@@ -20,7 +20,7 @@ class BibdkHeimdalWebTestCase extends DrupalWebTestCase {
     );
   }
 
-  public function test_runner(){
+  public function test_runner() {
     variable_set('bibdk_provider_culr_agency', 1234567);
     $this->modules_and_dependencies();
     $this->form_state_parser();
@@ -28,16 +28,17 @@ class BibdkHeimdalWebTestCase extends DrupalWebTestCase {
     $this->return_url();
     $this->heimdalUser();
     $this->form_state_parser_unique_library();
+    $this->local_ids_handling();
   }
 
-  public function modules_and_dependencies(){
+  public function modules_and_dependencies() {
     $this->assertTrue(module_exists('bibdk_heimdal'), 'bibdk_heimdal enabled');
-    $this->assertTrue(module_exists('ding_provider'),'ding_provider enabled');
-    $this->assertTrue(module_exists('ting_agency'),'ting agency enabled');
-    $this->assertTrue(module_exists('bibdk_favourite'),'bibdk_favourite enabled');
+    $this->assertTrue(module_exists('ding_provider'), 'ding_provider enabled');
+    $this->assertTrue(module_exists('ting_agency'), 'ting agency enabled');
+    $this->assertTrue(module_exists('bibdk_favourite'), 'bibdk_favourite enabled');
   }
 
-  public function form_state_parser(){
+  public function form_state_parser() {
     $path = drupal_get_path('module', 'bibdk_heimdal');
     $path .= '/test/pjo.json';
     $mock = file_get_contents($path);
@@ -54,7 +55,33 @@ class BibdkHeimdalWebTestCase extends DrupalWebTestCase {
     $this->assertTrue(is_array($libs), 'culr libraries set for heimdal user');
   }
 
-  public function form_state_parser_unique_library(){
+  public function local_ids_handling() {
+    $attributes = $this->get_attributes_from_mock_file('lcoal_ids_only.json');
+    $heimdalUser = new bibdkHeimdalUser($attributes);
+    $form_state = bibdk_heimdal_get_form_state($heimdalUser);
+    $agencies = $heimdalUser::getLibraries();
+    $database_mock_row = array(
+      'email' => 'fisk@hest.dk',
+      'libraries' => serialize($agencies)
+    );
+    // get the method to test
+    $path = drupal_get_path('module', 'bibdk_heimdal');
+    require_once($path . '/includes/bibdk_heimdal.pages.inc');
+
+    $response = bibdk_heimdal_do_insert_culr($database_mock_row);
+    $this->assertTrue($response['status'] === FALSE, 'abort when no global id');
+    $this->assertTrue($response['message'] === 'bibdk_heimdal_no_culr_helptext', 'correct helptext on abort');
+  }
+
+  private function get_attributes_from_mock_file($filename) {
+    $path = drupal_get_path('module', 'bibdk_heimdal');
+    $path .= '/test/' . $filename;
+    $mock = file_get_contents($path);
+    $attributes = json_decode($mock, true);
+    return $attributes;
+  }
+
+  public function form_state_parser_unique_library() {
     $this->drupalGet('');
     variable_set('bibdk_provider_culr_agency', 1234567);
     // delete cookie if set
@@ -73,9 +100,10 @@ class BibdkHeimdalWebTestCase extends DrupalWebTestCase {
 
     $unique_agency = bibdk_heimdal_get_unique_agency($agencies);
     $this->assertTrue($unique_agency['userIdType'] === 'CPR', 'unique library foune');
+    $this->assertTrue($unique_agency['userId'] === '1234567890', 'first in list returned');
   }
 
-  public function form_state_parser_multiplde_usernames(){
+  public function form_state_parser_multiplde_usernames() {
     $this->drupalGet('');
     variable_set('bibdk_provider_culr_agency', 1234567);
     // delete cookie if set
