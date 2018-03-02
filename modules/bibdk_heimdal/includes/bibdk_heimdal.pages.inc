@@ -24,6 +24,7 @@ function bibdk_heimdal_handle_login_request($uuid) {
   } catch (Exception $e) {
     watchdog('heimdal', 'DATABASE EXCEPTION: %message%', array('%message%' => $e->getMessage()), WATCHDOG_ERROR);
     $message = bibdk_heimdal_exception_message();
+    bibdk_heimdal_cleanup_and_exit($message);
   }
 
   // row has been fetched - this is a one time link - delete on database
@@ -144,18 +145,58 @@ function bibdk_heimdal_do_insert_culr($row) {
   if (empty($agencies)) {
     return array();
   }
-  $response = array();
   $mail = $row['email'];
-  // there can be only ONE bibliotek.dk account on culr
-  // pick the first - if there are more they have the same userId
-  // that is how culr works
-  $agency = $agencies[0];
+
+  // get en agency for insertion in culr
+  $agency = bibdk_heimdal_get_unique_agency($agencies);
+  if($agency === FALSE){
+    return bibdk_heimdal_get_nogo_response();
+  }
+
 
   $borrowerId = $agency['userId'];
   $uidType = $agency['userIdType'];
   $xml = BibdkUser::instance()->insertCulr($mail, $borrowerId, $uidType);
 
   return $xml;
+}
+
+/**
+ * Culr doesn't handle agencies where no globalid is given - get an
+ * abort message
+ *
+ * @return array
+ *   message to abort
+ */
+function bibdk_heimdal_get_nogo_response() {
+  return array(
+    'status' => FALSE,
+    'message' => bibdk_heimdal_pages_no_culr_message(),
+  );
+}
+
+/**
+ * Find an agency with userIdType CPR or CVR to use for global id in culr
+ * @param array $agencies
+ *   agencies from heimdal
+ * @return array | bool
+ *   an agency with userIdType CPR og CVR - if no agencies has that userIdType
+ *   return FALSE to signal abort
+ */
+function bibdk_heimdal_get_unique_agency(array $agencies){
+  foreach($agencies as $agency){
+    if($agency['userIdType'] === 'CPR' || $agency['userIdType'] === 'CVR' ){
+      return $agency;
+    }
+  }
+  // @TODO this is where we should abort. If no valid globalUid is found
+  // @TODO there is no point in going on since culr can NOT match accounts
+  // @TODO the solution is to get globalUid from culr for ALL libraries
+
+  // no valid agencies found - abort
+  return FALSE;
+  // no agencies with cpr or cvr found - return first in array
+  //return $agencies[0];
 }
 
 /**

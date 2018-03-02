@@ -127,7 +127,6 @@ function bibdk_autocomplete_form_search_block_form_alter(&$form, &$form_state, $
     switch ($autocomplete_backend) {
       case '1':
         $form['#attached']['js'][] = drupal_get_path('module', 'bibdk_autocomplete') . '/js/bibdk_autocomplete.ortograf.js';
-        $form['#attached']['js'][] = drupal_get_path('module', 'bibdk_autocomplete') . '/js/bibdk_autocomplete.behaviour.js';
         break;
       default:
         $form['#attached']['js'][] = drupal_get_path('module', 'bibdk_autocomplete') . '/js/bibdk_autocomplete.old.js';
@@ -202,7 +201,7 @@ function bibdk_autocomplete_flush_caches() {
  */
 function bibdk_autocomplete_behaviour_callback() {
   $behaviour_data = $_POST;
-  $settings = variable_get('bibdk_autocomplete_var', array());
+  $settings = variable_get('bibdk_autocomplete_ortograf_var', array());
   foreach ($behaviour_data['ortograf'] as $key => $fields) {
     if (!isset($fields['suggestions'])) {
       unset($behaviour_data['ortograf'][$key]);
@@ -215,7 +214,6 @@ function bibdk_autocomplete_behaviour_callback() {
     unset($behaviour_data['ortograf'][$key]['id']);
   }
   module_invoke_all('bibdk_behaviour_request', $behaviour_data);
-  bibdk_behaviour_log($behaviour_data);
 }
 
 
