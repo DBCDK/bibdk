@@ -34,12 +34,12 @@ function bibdk_vejviser_menu() {
  * Creates a field for adding a URL for the Ting Agency Serach webservice
  */
 function bibdk_vejviser_form_ting_admin_ting_settings_alter(&$form, &$form_state, $form_id) {
-  $form['ting']['agency_search_url'] = array(
+  $form['ting']['AgencyRequest_url'] = array(
     '#type' => 'textfield',
     '#title' => t('OpenAgency URL'),
     '#description' => t('URL to the Ting agency search webservice, e.g. http://openagency.addi.dk/1.6/'),
     '#required' => TRUE,
-    '#default_value' => variable_get('agency_search_url', ''),
+    '#default_value' => variable_get('AgencyRequest_url', ''),
   );
 }
 
@@ -49,7 +49,7 @@ function bibdk_vejviser_form_ting_admin_ting_settings_alter(&$form, &$form_state
  * @return type
  */
 function bibdk_vejviser_how_r_u() {
-  return array('Open Agency' => variable_get('agency_search_url', ''));
+  return array('Open Agency' => variable_get('AgencyRequest_url', ''));
 }
 
 /**
@@ -269,7 +269,7 @@ function bibdk_vejviser_execute_agency_search($query) {
   }
 
   $client = new ting_client_class();
-  $resp = $client->do_request('agency', array(
+  $resp = $client->do_request('AgencyRequest', array(
     'anyField' => $query,
     'sort' => $sort,
     'action' => 'findLibraryRequest'
@@ -293,7 +293,7 @@ function bibdk_vejviser_execute_pickup_agency_search($agencyId) {
   $client = new ting_client_class();
   // Call pickupAgencyListRequest service parm: agencyId
 
-  $resp = $client->do_request('agency', array(
+  $resp = $client->do_request('AgencyRequest', array(
     'agencyId' => $agencyId,
     'action' => 'pickupAgencyListRequest'
   ));

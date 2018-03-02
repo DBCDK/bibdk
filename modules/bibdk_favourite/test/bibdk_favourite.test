@@ -23,8 +23,8 @@ class bibdkFavouriteTest extends DrupalWebTestCase {
       'shortcode'
     ));
     //$this->standard_user = $this->drupalCreateUser();
-    variable_set('agency_search_xsd_url', $this->getAbsoluteUrl('/openagency_webservice/openagency.xsd'));
-    variable_set('agency_search_url', $this->getAbsoluteUrl('/openagency_webservice/'));
+    variable_set('AgencyRequest_xsd_url', $this->getAbsoluteUrl('/openagency_webservice/openagency.xsd'));
+    variable_set('AgencyRequest_url', $this->getAbsoluteUrl('/openagency_webservice/'));
   }
 
   /**

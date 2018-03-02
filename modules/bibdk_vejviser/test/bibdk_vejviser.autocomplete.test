@@ -17,8 +17,8 @@ class BibdkVejviserAutocompleteTestCase extends DrupalWebTestCase {
 
   public function setUp() {
     parent::setup(array('bibdk_vejviser', 'openagency_webservice_mockup'));
-    variable_set('agency_search_url', $this->getAbsoluteUrl('/openagency_webservice/'));
-    variable_set('agency_search_xsd_url',$this->getAbsoluteUrl('/openagency_webservice/openagency.xsd'));
+    variable_set('AgencyRequest_url', $this->getAbsoluteUrl('/openagency_webservice/'));
+    variable_set('AgencyRequest_xsd_url',$this->getAbsoluteUrl('/openagency_webservice/openagency.xsd'));
   }
 
   public function testRunner() {
