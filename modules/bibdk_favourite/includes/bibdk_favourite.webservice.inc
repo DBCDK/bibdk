@@ -101,47 +101,36 @@ function _bibdk_favourite_save_on_webservice($agencyId) {
 function _bibdk_favourite_get_from_webservice() {
   global $user;
 
-  if (ding_user_is_provider_user($user) || $user->uid == 1) {
-    if($user->uid != 1) {
-      try {
-        $creds = ding_user_get_creds($user);
-      } catch (Exception $e) {
-        // do nothing
-      }
+  if ($user->uid != 1) {
+    try {
+      $creds = ding_user_get_creds($user);
+    } catch (Exception $e) {
+      // do nothing
     }
-    else{
-      $uid = arg(1);
-      if(!empty($uid)) {
-        $account = user_load($uid);
-        $creds['name'] = $account->mail;
-      }
-    }
-    if (empty($creds)) {
-      return array();
-    }
-    // call openuserinfo webservice
-    $xml = ding_provider_invoke('user', 'get_favourites', $creds['name']);
-    module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.agencies');
-    $saved_agencies = bibdk_favourite_parse_agencies($xml);
-
-    if (!$saved_agencies) {
-      return array();
-    }
-    $agencies = array();
-    foreach ($saved_agencies as $key => $agency) {
-      $fav = new TingAgency($agency['oui:agencyId']);
-      $branch = $fav->getBranch();
-      if (isset($branch)) {
-        $branch->userdata = unserialize($saved_agencies[$key]['oui:userData']);
-        $branch->orderLibrary = $saved_agencies[$key]['oui:orderAgency'];
-        $agencies[$agency['oui:agencyId']] = $branch;
-        $saved_agencies[$key]['agencyBranch'] = $branch;
-      }
-    }
-    return bibdk_favourite_check_agencies($saved_agencies);
   }
-  // user is not ding_provider_user
-  return array();
+  if (empty($creds)) {
+    return array();
+  }
+  // call openuserinfo webservice
+  $xml = ding_provider_invoke('user', 'get_favourites', $creds['name']);
+  module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.agencies');
+  $saved_agencies = bibdk_favourite_parse_agencies($xml);
+
+  if (!$saved_agencies) {
+    return array();
+  }
+  $agencies = array();
+  foreach ($saved_agencies as $key => $agency) {
+    $fav = new TingAgency($agency['oui:agencyId']);
+    $branch = $fav->getBranch();
+    if (isset($branch)) {
+      $branch->userdata = unserialize($saved_agencies[$key]['oui:userData']);
+      $branch->orderLibrary = $saved_agencies[$key]['oui:orderAgency'];
+      $agencies[$agency['oui:agencyId']] = $branch;
+      $saved_agencies[$key]['agencyBranch'] = $branch;
+    }
+  }
+  return bibdk_favourite_check_agencies($saved_agencies);
 }
 
 /**

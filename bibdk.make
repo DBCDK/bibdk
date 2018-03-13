@@ -110,7 +110,7 @@ projects[open_adhl][download][tag] = 7.x-0.5
 projects[open_holdingstatus][type] = module
 projects[open_holdingstatus][download][type] = git
 projects[open_holdingstatus][download][url] = git@github.com:DBCDK/open_holdingstatus.git
-projects[open_holdingstatus][download][tag] = 7.x-1.1
+projects[open_holdingstatus][download][tag] = 7.x-1.2
 
 projects[open_moreinfo][type] = module
 projects[open_moreinfo][download][type] = git
@@ -137,7 +137,7 @@ projects[cql_strict_parser][download][tag] = 7.x-0.4
 projects[bibdk_config][type] = module
 projects[bibdk_config][download][type] = git
 projects[bibdk_config][download][url] = git.dbc.dk:/repos/bibliotek.dk/bibdk_config.git
-projects[bibdk_config][download][tag] = 7.x-1.0
+projects[bibdk_config][download][tag] = 7.x-1.2
 
 projects[bibdk_behaviour][type] = module
 projects[bibdk_behaviour][download][type] = git
