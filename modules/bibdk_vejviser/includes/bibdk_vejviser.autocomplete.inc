@@ -82,7 +82,7 @@ function bibdk_vejviser_autocomplete_agency_list($agencies) {
  * Set/update variable with the agency names
  */
 function bibdk_vejviser_cron() {
-  $url = variable_get('agency_search_url');
+  $url = variable_get('AgencyRequest_url');
   if(!empty($url)) {
     bibdk_vejviser_autocomplete_get_all_agency_names();
   }
