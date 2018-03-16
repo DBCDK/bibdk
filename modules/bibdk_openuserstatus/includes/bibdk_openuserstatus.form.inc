@@ -312,12 +312,13 @@ large-up')),
 
           /* Dette virker pt ikke pga. openuserstatus
            $item['library']['data'] = bibdk_openuserstatus_select($pickUpAgencies, $reservation);
-           $item['help']['data'] = array(
+          */
+          $item['help']['data'] = array(
             '#theme' => 'bibdk_openuserstatus_help_icon',
             '#label' => t('bibdk_openuserstatus_change_library', array(), array('context' => 'bibdk_userstatus')),
             '#element_id' => drupal_html_id($id),
           );
-          */
+          
           $item['library']['data'] = $named_agencies[$reservation['agencyId']];
         }
         else {
