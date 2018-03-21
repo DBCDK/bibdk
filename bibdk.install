@@ -579,5 +579,5 @@ function bibdk_update_7050() {
  * Disable bibdk_webtrends_2014
  */
 function bibdk_update_7051() {
-  module_disable(array('bibdk_webtrends_2014'));
+  module_disable(array('ding_webtrends'));
 }
