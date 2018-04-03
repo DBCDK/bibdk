@@ -685,8 +685,8 @@ function _bibdk_openuserstatus_material($material, $library = '') {
   return array(
     'data' => array(
       '#theme' => 'bibdk_openuserstatus_row_item',
-      '#author' => (!empty($material['author']) ? $material['author'] : 'foo'),
-      '#title' => (!empty($material['title']) ? $material['title'] : 'bar'),
+      '#author' => (!empty($material['author']) ? $material['author'] : ''),
+      '#title' => (!empty($material['title']) ? $material['title'] : ''),
       '#library' => $library,
     ),
   );
