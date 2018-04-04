@@ -70,7 +70,7 @@ function bibdk_openuserstatus_get_tables($form, $response) {
   $form = bibdk_openuserstatus_get_loans_table($form, $loans, $named_agencies);
   $form = bibdk_openuserstatus_get_reservations_readyforpickup_table($form, $reservations, $named_agencies);
   $form = bibdk_openuserstatus_get_reservations_inprocess_table($form, $reservations, $named_agencies);
-  $form = bibdk_openuserstatus_get_fiscal_account_table($form, $fiscals, bibdk_openuserstatus_get_fiscals_total($response));
+  $form = bibdk_openuserstatus_get_fiscal_account_table($form, $fiscals,bibdk_openuserstatus_get_fiscals_total($response));
 
   $form['#attributes'] = array('class' => array('openuserstatus'));
   $form['#attached']['js'] = array(
@@ -309,12 +309,17 @@ large-up')),
         $item['material']['class'] = array('userstatus--row-item--material-title');
 
         if (count($pickUpAgencies) > 1) {
-          $item['library']['data'] = bibdk_openuserstatus_select($pickUpAgencies, $reservation);
+
+          /* Dette virker pt ikke pga. openuserstatus
+           $item['library']['data'] = bibdk_openuserstatus_select($pickUpAgencies, $reservation);
+          */
           $item['help']['data'] = array(
             '#theme' => 'bibdk_openuserstatus_help_icon',
             '#label' => t('bibdk_openuserstatus_change_library', array(), array('context' => 'bibdk_userstatus')),
             '#element_id' => drupal_html_id($id),
           );
+          
+          $item['library']['data'] = $named_agencies[$reservation['agencyId']];
         }
         else {
           $item['library']['data'] = $named_agencies[$reservation['agencyId']];
@@ -535,7 +540,7 @@ function bibdk_openuserstatus_get_fiscal_account_table($form, $fiscals, $fiscals
       $item = array();
       $agencyId = (isset($reservation['agencyId']) ? $reservation['agencyId'] : NULL);
       $item['material'] = _bibdk_openuserstatus_material($reservation);
-      $item['type']['data'] = t($reservation['fiscalTransactionType'], array(), array('context' => 'bibdk_openuserstatus'));
+      $item['type']['data'] = ''; //t($reservation['fiscalTransactionType'], array(), array('context' => 'bibdk_openuserstatus'));
       $item['date']['data'] = date('d.m.Y', strtotime($reservation['fiscalTransactionDate']));
       $item['date']['class'] = array('show-for-large-up');
       $item['amount'] = $reservation['fiscalTransactionAmount'] . ' ' . $reservation['fiscalTransactionCurrency'];
@@ -562,6 +567,7 @@ function bibdk_openuserstatus_get_fiscal_account_table($form, $fiscals, $fiscals
         '#value_prefix' => '<h3>',
         '#value_suffix' => '</h3>',
       );
+      /* $agency['items'] has an error due to OpenUserStatus response.
       $form['fiscal'][$agencyId]['fiscal_table'] = array(
         '#theme' => 'table',
         '#header' => $agency['header'],
@@ -574,7 +580,7 @@ function bibdk_openuserstatus_get_fiscal_account_table($form, $fiscals, $fiscals
           ),
         ),
       );
-
+      */
       if (!empty($agency['paymentUrl'])) {
         $form['fiscal'][$agencyId]['fiscal_branch_link'] = array(
           '#type' => 'markup',
