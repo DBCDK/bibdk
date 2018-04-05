@@ -28,6 +28,11 @@ function bibdk_searchhistory_bibdk_gdpr_items() {
   return $items;
 }
 
+/**
+ * Collect render array for gdpr.
+ * 
+ * @return array
+ */
 function bibdk_searchhistory_gdpr_get_rows() {
   global $user;
   $ret = array();

@@ -132,13 +132,7 @@ function bibdk_gdpr_bibdk_gdpr_items() {
  * @return string
  */
 function _bibdk_gdpr_get_id($user) {
-  if (!$user->uid) {
-    $id = 'anonymous';
-  }
-  else {
-    $id = $user->mail;
-  }
-  return $id;
+  return (user_is_logged_in()) ? $user->mail : 'anonymous';
 }
 
 /**
