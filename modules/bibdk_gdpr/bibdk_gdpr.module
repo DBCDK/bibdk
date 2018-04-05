@@ -10,7 +10,7 @@ function bibdk_gdpr_menu() {
     'page callback' => 'bibdk_gdpr_callback',
     'access arguments' => array('access content'),
     'type' => MENU_LOCAL_TASK,
-    'weight' => 10,
+    'weight' => 80,
   );
   return $items;
 }
@@ -24,6 +24,9 @@ function bibdk_gdpr_callback() {
   $render_array['#intro'] = t('gdpr_intro', array(), array('context' => 'bibdk_gdpr'));
   $render_array['#extro'] = t('gdpr_extro', array(), array('context' => 'bibdk_gdpr'));
   $render_array['#values'] = $items;
+  $render_array['#print_button_value'] = t('label_gdpr_print', array(), array('context' => 'bibdk_gdpr'));
+  drupal_add_js(drupal_get_path('module', 'bibdk_gdpr') . '/js/bibdk_gdpr.js');
+  drupal_add_css(drupal_get_path('module', 'bibdk_gdpr') . '/css/bibdk_gdpr.css', array('media' => 'all'));
   return $render_array;
 }
 
@@ -35,7 +38,7 @@ function bibdk_gdpr_theme() {
   $path = drupal_get_path('module', 'bibdk_gdpr') . '/theme';
   $bibdk_gdpr_theme_array = array(
     'bibdk_gdpr_theme' => array(
-      'variables' => array('header' => NULL, 'intro' => NULL, 'values' => NULL, 'extro' => NULL),
+      'variables' => array('header' => NULL, 'intro' => NULL, 'values' => NULL, 'extro' => NULL, 'print_button_value' => NULL),
       'path' => $path,
       'template' => 'bibdk_gdpr_template',
     ),

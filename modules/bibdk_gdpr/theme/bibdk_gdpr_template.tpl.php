@@ -13,3 +13,7 @@
 <?php print drupal_render($values); ?>
 
 <div class="gdpr-extro"><?php print $extro; ?></div>
+
+<div class="gdpr-button">
+  <button type="button" id="button-gdpr-print" class="btn"><?php print $print_button_value; ?></button> 
+</div>
