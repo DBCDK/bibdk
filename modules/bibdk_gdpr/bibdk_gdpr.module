@@ -70,7 +70,7 @@ function bibdk_gdpr_bibdk_gdpr_items() {
     'value' => array(
       '#type' => 'html_tag',
       '#tag' => 'span',
-      '#value' => $user->mail
+      '#value' => _bibdk_gdpr_get_id()
     ),
   );
 
