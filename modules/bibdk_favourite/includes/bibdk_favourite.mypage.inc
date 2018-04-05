@@ -23,7 +23,7 @@ function bibdk_favourite_bibdk_mypage_tabs($max_rows = 3) {
 function bibdk_favourite_my_page_get_rows($max_rows) {
   $agencies = bibdk_favourite_get_favourites();
 
-  usort($agencies, '_favorite_sort');
+  usort($agencies, '_bibdk_favourite_sort');
   if (sizeof($agencies) > 0) {
     $agencies = array_slice($agencies, 0, $max_rows);
     foreach ($agencies as $id => $favourite) {
@@ -45,11 +45,4 @@ function bibdk_favourite_my_page_get_rows($max_rows) {
   }
 
   return $ret;
-}
-
-function _favorite_sort($a, $b) {
-  if ($a->orderAgency == $b->orderAgency) {
-    return 0;
-  }
-  return ($a->orderAgency < $b->orderAgency) ? 1 : -1;
 }

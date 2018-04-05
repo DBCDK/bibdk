@@ -3,7 +3,7 @@ module_load_include('inc', 'bibdk_searchhistory', 'bibdk_searchhistory.form');
 module_load_include('inc', 'bibdk_searchhistory', 'bibdk_searchhistory.block');
 module_load_include('inc', 'bibdk_searchhistory', 'bibdk_searchhistory.webservice');
 module_load_include('inc', 'bibdk_searchhistory', 'includes/bibdk_searchhistory.mypage');
-
+module_load_include('inc', 'bibdk_searchhistory', 'includes/bibdk_searchhistory.gdpr');
 
 /**
  * @file

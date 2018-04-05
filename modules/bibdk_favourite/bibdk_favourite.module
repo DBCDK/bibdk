@@ -5,6 +5,7 @@ require_once(drupal_get_path('module', 'bibdk_favourite') . '/includes/bibdk_fav
 require_once(drupal_get_path('module', 'bibdk_favourite') . '/includes/bibdk_favourite.borchk.inc');
 require_once(drupal_get_path('module', 'bibdk_favourite') . '/includes/bibdk_favourite.forms.inc');
 require_once(drupal_get_path('module', 'bibdk_favourite') . '/includes/bibdk_favourite.mypage.inc');
+require_once(drupal_get_path('module', 'bibdk_favourite') . '/includes/bibdk_favourite.gdpr.inc');
 require_once(drupal_get_path('module', 'bibdk_favourite') . '/includes/bibdk_favourite.no_favourites.inc');
 require_once(drupal_get_path('module', 'bibdk_favourite') . '/includes/bibdk_favourite.webservice.inc');
 require_once(drupal_get_path('module', 'bibdk_favourite') . '/includes/bibdk_favourite.shortcodes.inc');
@@ -407,5 +408,17 @@ function _bibdk_favourite_set_favourite_text() {
  */
 function _bibdk_favourite_set_delete_text() {
   return t('Favourite library has been deleted', array(), array('context' => 'bibdk_favourite'));
+}
+
+/**
+ * Sort function for agency list
+ *
+ * @return integer
+ */
+function _bibdk_favourite_sort($a, $b) {
+  if ($a->orderAgency == $b->orderAgency) {
+    return 0;
+  }
+  return ($a->orderAgency < $b->orderAgency) ? 1 : -1;
 }
 
