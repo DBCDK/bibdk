@@ -5,64 +5,47 @@
 * Webtests for bibdk_mypage.
  */
 
-class BibdkMypageTestCase extends DrupalWebTestCase {
+class BibdkGdprTestCase extends DrupalWebTestCase {
 
   public static function getInfo() {
     return array(
-      'name' => 'Bibdk : My page',
-      'description' => 'Bibdk_mypage webtests.',
+      'name' => 'Bibdk : GDPR',
+      'description' => 'Bibdk : General Data Protection Regulation webtests.',
       'group' => 'bibliotek.dk',
     );
   }
 
   public function setUp() {
 
-    // $this->profile = 'testing';
-
     // Enable any modules required for the test
-    $modules = array('bibdk_mypage', 'bibdk_mypage_api_test'); //, 'ding_user', 'bibdk_provider', 'bibdk_webservice', 'bibdk_mypage_api_test');
+    $modules = array('bibdk_gdpr'); 
     parent::setUp($modules);
     variable_set('bibdk_provider_webservice_url', $this->getAbsoluteUrl('bibdk_webservice'));
     variable_set('bibdk_provider_security_code', 'securityCode');
   }
 
   public function testRunner(){
-    $this->testMypageTabs();
-    $this->testWeight();
+    $this->testGDPR();
   }
 
-  private function testMypageTabs() {
-
+  private function testGDPR() {
     $this->privileged_user = $this->drupalCreateUser(array(
       'access user profiles',
     ));
-
     $this->drupalLogin($this->privileged_user);
-    //$this->drupalGet('user/2');
     // assert that profile tab is shown
     $this->drupalGet('user/2');
-    $this->assertText('Account','"My page" Account tab is set');
+    $this->assertText('GDPR info', '"GDPR info" Account tab is set');
 
-    // Test if hook_bibdk_mypage_tab works
-    $this->assertText('Test tab 1');
-    $this->assertLink(t('Go to test tab 1'));
-    $this->assertText('Test tab 2');
-    $this->assertLink(t('Go to test tab 2'));
-    $this->assertText('Test tab 3');
-    $this->assertLink(t('Go to test tab 3'));
-
+    $this->drupalGet('user/2/gdpr');
+    // Test if GDPR page is present
+    $this->assertText('gdpr_header');
+    $this->assertText('gdpr_intro');
+    $this->assertText('gdpr_extro');
+    
+    // Test if hook_bibdk_gdpr_items works
+    $this->assertText('label_gdpr_bibdk_gdpr');
+    $this->assertText('label_gdpr_ipaddress');
   }
 
-  private function testWeight() {
-    $form = bibdk_mypage_form(array());
-    $keys = array_keys($form);
-
-    $expected_result = array (
-      0 => 'tab_2',
-      1 => 'tab_3',
-      2 => 'tab_1',
-      3 => 'bibdk_mypage',
-    );
-    $this->assertEqual($keys, $expected_result, 'Weight is set correcty');
-  }
 }

@@ -70,7 +70,7 @@ function bibdk_gdpr_bibdk_gdpr_items() {
     'value' => array(
       '#type' => 'html_tag',
       '#tag' => 'span',
-      '#value' => _bibdk_gdpr_get_id()
+      '#value' => _bibdk_gdpr_get_id($user)
     ),
   );
 
@@ -89,22 +89,26 @@ function bibdk_gdpr_bibdk_gdpr_items() {
   );
   
   $form['#user_category'] = 'account';
-  locale_language_selector_form($form, $form_state, $user);
-  foreach ($form['locale']['language']['#options'] as $key => $val) {
-    if ($form['locale']['language']['#default_value'] == $key) {
-      $rows[] = array(
-        '#type' => 'container',
-        'label' => array(
-          '#type' => 'html_tag',
-          '#tag' => 'span',
-          '#value' => t('label_gdpr_language', array(), array('context' => 'bibdk_gdpr'))
-        ),
-        'value' => array(
-          '#type' => 'html_tag',
-          '#tag' => 'span',
-          '#value' => $val
-        ),
-      );
+  if (function_exists('language_negotiation_get')) {
+    // While running tests, locale_language_selector_form() throw an error: 
+    //   'Call to undefined function language_negotiation_get()'.
+    locale_language_selector_form($form, $form_state, $user);
+    foreach ($form['locale']['language']['#options'] as $key => $val) {
+      if ($form['locale']['language']['#default_value'] == $key) {
+        $rows[] = array(
+          '#type' => 'container',
+          'label' => array(
+            '#type' => 'html_tag',
+            '#tag' => 'span',
+            '#value' => t('label_gdpr_language', array(), array('context' => 'bibdk_gdpr'))
+          ),
+          'value' => array(
+            '#type' => 'html_tag',
+            '#tag' => 'span',
+            '#value' => $val
+          ),
+        );
+      }
     }
   }
   
