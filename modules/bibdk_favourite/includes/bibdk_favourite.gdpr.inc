@@ -51,7 +51,7 @@ function bibdk_favourite_gdpr_get_rows() {
       $userData['userdata']['label'] = array(
         '#type' => 'html_tag',
         '#tag' => 'span',
-        '#value' => $key
+        '#value' => t($key, array(), array('context' => 'bibdk_favorite'))
       );
       $userData['userdata']['value'] = array(
         '#type' => 'html_tag',
