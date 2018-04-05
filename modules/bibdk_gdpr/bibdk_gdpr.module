@@ -2,7 +2,6 @@
 
 /**
  * Implements hook_menu().
- *
  */
 function bibdk_gdpr_menu() {
   $items['user/%/gdpr'] = array(
@@ -16,6 +15,11 @@ function bibdk_gdpr_menu() {
 }
 
 
+/**
+ * Create render array for GDPR info page.
+ *
+ * @return array
+ */
 function bibdk_gdpr_callback() {
   $items = module_invoke_all('bibdk_gdpr_items');
   uasort($items, 'drupal_sort_weight');
