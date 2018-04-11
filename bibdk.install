@@ -581,3 +581,8 @@ function bibdk_update_7050() {
 function bibdk_update_7051() {
   module_disable(array('ding_webtrends'));
 }
+
+/** Disable bibdk_voxb, open_voxb and bibdk_voxb_blog_fields */
+function bibdk_update_7052() {
+  module_disable(array('bibdk_voxb', 'open_voxb', 'bibdk_voxb_blog_fields'));
+}

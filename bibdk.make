@@ -122,11 +122,6 @@ projects[open_saou][download][type] = git
 projects[open_saou][download][url] = git@github.com:DBCDK/open_saou.git
 projects[open_saou][download][tag] = 7.x-0.3
 
-projects[open_voxb][type] = module
-projects[open_voxb][download][type] = git
-projects[open_voxb][download][url] = git@github.com:DBCDK/open_voxb.git
-projects[open_voxb][download][tag] = 7.x-0.1.5
-
 projects[cql_strict_parser][type] = module
 projects[cql_strict_parser][download][type] = git
 projects[cql_strict_parser][download][url] = git@github.com:DBCDK/cql_strict_parser.git
