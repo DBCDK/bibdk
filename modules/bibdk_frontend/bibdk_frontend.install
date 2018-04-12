@@ -150,7 +150,6 @@ function _bibdk_frontend_enable_modules() {
     'bibdk_adhl',
     //Submodule
     'bibdk_modal',
-    'bibdk_voxb',
     'bibdk_usersettings_language',
     'custom_search_taxonomy',
     'bibdk_frontend_autocomplete',
