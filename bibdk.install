@@ -504,20 +504,6 @@ function bibdk_update_7044() {
 /**
  * Delete {system} records for long-lost modules.
  */
-function bibdk_update_7045() {
-  $modules = array(
-    'ting_covers_field'
-  );
-  db_delete('system')
-    ->condition('name', $modules, 'IN')
-    ->condition('type', 'module')
-    ->execute();
-
-}
-
-/**
- * Delete {system} records for long-lost modules.
- */
 function bibdk_update_7046() {
   $modules = array(
     'bibliotek_dk_user_mails',
@@ -586,3 +572,19 @@ function bibdk_update_7051() {
 function bibdk_update_7052() {
   module_disable(array('bibdk_voxb', 'open_voxb', 'bibdk_voxb_blog_fields'));
 }
+
+/**
+ * Delete {system} records for voxb modules.
+ */
+function bibdk_update_7053() {
+  $modules = array(
+    'bibdk_voxb',
+    'open_voxb',
+    'bibdk_voxb_blog_fields'
+  );
+  db_delete('system')
+    ->condition('name', $modules, 'IN')
+    ->condition('type', 'module')
+    ->execute();
+}
+
