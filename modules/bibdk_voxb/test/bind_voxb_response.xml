@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope" xmlns:oui="http://oss.dbc.dk/ns/openuserinfo">
-    <SOAP-ENV:Body>
-        <oui:bindVoxbResponse>
-            <oui:userId>pjo@dbc.dk</oui:userId>
-        </oui:bindVoxbResponse>
-    </SOAP-ENV:Body>
-</SOAP-ENV:Envelope>

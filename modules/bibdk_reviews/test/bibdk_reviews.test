@@ -90,9 +90,8 @@ class BibdkReviewsWebTestCase extends DrupalWebTestCase {
   }
 
   public function setUp() {
-    parent::setUp(array('bibdk_reviews', 'ting_openformat', 'worktabs', 'devel'));
-    variable_set('ting_search_url', 'http://bibdk-prod-ws.dbc.dk/opensearch/b3.0_4.3/');
-
+    parent::setUp(array('bibdk_reviews', 'ting_openformat', 'worktabs', 'devel', 'features', 'bibdk_webservice_settings_develop'));
+    menu_rebuild();
   }
 
   /* US1083-test : Disable failing tests
@@ -106,7 +105,7 @@ class BibdkReviewsWebTestCase extends DrupalWebTestCase {
     $this->assertTrue(strpos($view, 'Det er oplagt at prøve kræfter'), 'Third para found');
     $this->assertTrue(strpos($view, 'Lektørudtalelse'), 'Type found');
     $this->assertTrue(strpos($view, 'Helle Winther Olsen'), 'Author found');
-  
+
     // Test two reviews
     $ids = array('870976-anmeld:30390342', '870976-anmeld:30390334');
     $view = bibdk_reviews_view($ids);

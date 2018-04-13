@@ -122,11 +122,6 @@ projects[open_saou][download][type] = git
 projects[open_saou][download][url] = git@github.com:DBCDK/open_saou.git
 projects[open_saou][download][tag] = 7.x-0.3
 
-projects[open_voxb][type] = module
-projects[open_voxb][download][type] = git
-projects[open_voxb][download][url] = git@github.com:DBCDK/open_voxb.git
-projects[open_voxb][download][tag] = 7.x-0.1.5
-
 projects[cql_strict_parser][type] = module
 projects[cql_strict_parser][download][type] = git
 projects[cql_strict_parser][download][url] = git@github.com:DBCDK/cql_strict_parser.git
@@ -137,7 +132,7 @@ projects[cql_strict_parser][download][tag] = 7.x-0.4
 projects[bibdk_config][type] = module
 projects[bibdk_config][download][type] = git
 projects[bibdk_config][download][url] = git.dbc.dk:/repos/bibliotek.dk/bibdk_config.git
-projects[bibdk_config][download][tag] = 7.x-1.3
+projects[bibdk_config][download][tag] = 7.x-1.31
 
 projects[bibdk_behaviour][type] = module
 projects[bibdk_behaviour][download][type] = git
