@@ -83,8 +83,7 @@ class BibdkAutocompleteWebTestCase extends DrupalWebTestCase {
     
     $this->assertFieldChecked('edit-bibdk-autocomplete-ortograf-var-' . $_bibdk_custom_search_p_uuid . '-vars-' . $_bibdk_custom_search_v_uuid . '-autocomplete', 'Autocomplete set to TRUE');
 
-// JGN: Jeg KAN bare ikke få assertOptionSelected() til at virke! :-(
-//    $this->assertOptionSelected('edit-bibdk-autocomplete-ortograf-var-' . $_bibdk_custom_search_p_uuid . '-vars-' . $_bibdk_custom_search_v_uuid . '-type-creator', 'creator', 'Autocomplete field "type" set to "creator"');
+   $this->assertFieldChecked('edit-bibdk-autocomplete-ortograf-var-' . $_bibdk_custom_search_p_uuid . '-vars-' . $_bibdk_custom_search_v_uuid . '-type-creator', 'creator', 'Autocomplete field "type" set to "creator"');
 
   }
 
