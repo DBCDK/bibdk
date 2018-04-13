@@ -1,0 +1,155 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ */
+function bibdk_gdpr_menu() {
+  $items['user/%/gdpr'] = array(
+    'title' => 'GDPR info',
+    'page callback' => 'bibdk_gdpr_callback',
+    'access arguments' => array('access content'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 80,
+  );
+  return $items;
+}
+
+
+/**
+ * Create render array for GDPR info page.
+ *
+ * @return array
+ */
+function bibdk_gdpr_callback() {
+  $items = module_invoke_all('bibdk_gdpr_items');
+  uasort($items, 'drupal_sort_weight');
+  $render_array['#theme'] = 'bibdk_gdpr_theme';
+  $render_array['#header'] = t('gdpr_header', array(), array('context' => 'bibdk_gdpr'));
+  $render_array['#intro'] = t('gdpr_intro', array(), array('context' => 'bibdk_gdpr'));
+  $render_array['#extro'] = t('gdpr_extro', array(), array('context' => 'bibdk_gdpr'));
+  $render_array['#values'] = $items;
+  $render_array['#print_button_value'] = t('label_gdpr_print', array(), array('context' => 'bibdk_gdpr'));
+  drupal_add_js(drupal_get_path('module', 'bibdk_gdpr') . '/js/bibdk_gdpr.js');
+  drupal_add_css(drupal_get_path('module', 'bibdk_gdpr') . '/css/bibdk_gdpr.css', array('media' => 'all'));
+  return $render_array;
+}
+
+
+/**
+ * Implements hook_theme().
+ */
+function bibdk_gdpr_theme() {
+  $path = drupal_get_path('module', 'bibdk_gdpr') . '/theme';
+  $bibdk_gdpr_theme_array = array(
+    'bibdk_gdpr_theme' => array(
+      'variables' => array('header' => NULL, 'intro' => NULL, 'values' => NULL, 'extro' => NULL, 'print_button_value' => NULL),
+      'path' => $path,
+      'template' => 'bibdk_gdpr_template',
+    ),
+    'bibdk_gdpr_item_theme' => array(
+      'variables' => array('header' => NULL, 'content' => NULL),
+      'path' => $path,
+      'template' => 'bibdk_gdpr_item_template',
+    ),
+  );
+  return $bibdk_gdpr_theme_array;
+}
+
+
+/**
+ * Implements hook_bibdk_gdpr_items().
+ *
+ * @return array
+ */
+function bibdk_gdpr_bibdk_gdpr_items() {
+  global $user;
+
+  $rows[] = array(
+    '#type' => 'container',
+    'label' => array(
+      '#type' => 'html_tag',
+      '#tag' => 'span',
+      '#value' => t('label_gdpr_user_email', array(), array('context' => 'bibdk_gdpr'))
+    ),
+    'value' => array(
+      '#type' => 'html_tag',
+      '#tag' => 'span',
+      '#value' => _bibdk_gdpr_get_id($user)
+    ),
+  );
+
+  $rows[] = array(
+    '#type' => 'container',
+    'label' => array(
+      '#type' => 'html_tag',
+      '#tag' => 'span',
+      '#value' => t('label_gdpr_ipaddress', array(), array('context' => 'bibdk_gdpr'))
+    ),
+    'value' => array(
+      '#type' => 'html_tag',
+      '#tag' => 'span',
+      '#value' => _bibdk_gdpr_get_ip()
+    ),
+  );
+  
+  $form['#user_category'] = 'account';
+  if (function_exists('language_negotiation_get')) {
+    // While running tests, locale_language_selector_form() throw an error: 
+    //   'Call to undefined function language_negotiation_get()'.
+    locale_language_selector_form($form, $form_state, $user);
+    foreach ($form['locale']['language']['#options'] as $key => $val) {
+      if ($form['locale']['language']['#default_value'] == $key) {
+        $rows[] = array(
+          '#type' => 'container',
+          'label' => array(
+            '#type' => 'html_tag',
+            '#tag' => 'span',
+            '#value' => t('label_gdpr_language', array(), array('context' => 'bibdk_gdpr'))
+          ),
+          'value' => array(
+            '#type' => 'html_tag',
+            '#tag' => 'span',
+            '#value' => $val
+          ),
+        );
+      }
+    }
+  }
+  
+  $items['bibdk_gdpr']['#weight'] = 10;
+  $items['bibdk_gdpr']['#header'] = t('label_gdpr_bibdk_gdpr', array(), array('context' => 'bibdk_gdpr'));
+  $items['bibdk_gdpr']['#theme'] = 'bibdk_gdpr_item_theme';
+  $items['bibdk_gdpr']['#content'] = $rows;
+
+  return $items;
+}
+
+/**
+ * Returns the current users email if the user is logged in.
+ * Otherwise returns 'anonymous' to indicate the user isn't logged in.
+ *
+ * @param stdClass $user
+ * @return string
+ */
+function _bibdk_gdpr_get_id($user) {
+  return (user_is_logged_in()) ? $user->mail : 'anonymous';
+}
+
+/**
+ * Retrieves the users ip
+ *
+ * @return string
+ */
+function _bibdk_gdpr_get_ip() {
+  if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+    $ip = $_SERVER['HTTP_CLIENT_IP'];
+  }
+  elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+    $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+  }
+  else {
+    $ip = $_SERVER['REMOTE_ADDR'];
+  }
+  return $ip;
+}
+

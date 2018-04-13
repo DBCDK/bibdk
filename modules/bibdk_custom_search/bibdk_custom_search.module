@@ -11,6 +11,7 @@ require_once(drupal_get_path('module', 'bibdk_custom_search') . '/includes/bibdk
 require_once(drupal_get_path('module', 'bibdk_custom_search') . '/includes/bibdk_custom_search.advanced_form.inc');
 require_once(drupal_get_path('module', 'bibdk_custom_search') . '/includes/bibdk_custom_search.conditions.inc');
 require_once(drupal_get_path('module', 'bibdk_custom_search') . '/includes/bibdk_custom_search.usersettings.inc');
+require_once(drupal_get_path('module', 'bibdk_custom_search') . '/includes/bibdk_custom_search.gdpr.inc');
 
 /**
  * Implements hook_menu().

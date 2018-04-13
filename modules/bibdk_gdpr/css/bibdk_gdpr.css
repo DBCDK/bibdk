@@ -1,0 +1,57 @@
+/**
+ * @file
+ *
+ * General markup for the bibdk_gdpr module
+ */
+
+@media print {
+  .page-user-gdpr .topbar-links, .page-user-gdpr .footer-social-links, .page-user-gdpr .tabs.primary {display: none;}
+  .page-user-gdpr nav.topbar {background-color: #000;}
+}
+
+.page-user-gdpr #block-system-main {
+  outline: 1px solid #f3f3f3;
+  background-color: #fcfcfc;
+  padding: 0.5rem;
+}
+
+.gdpr-header {
+  margin-bottom: 0.5rem;
+}
+
+.gdpr-intro {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.gdpr-group {
+  margin-bottom: 0.5rem;
+}
+.gdpr-group h2 {
+  font-size: 1.2rem;
+}
+.gdpr-group span:first-child::after {
+  content: ": ";
+}
+
+.gdpr-favourite {
+  margin-bottom: 0.5rem;
+}
+.gdpr-favourite .gdpr-favourite-name {
+  font-weight: bold;
+}
+.gdpr-favourite .gdpr-favourite-data {
+  span:first-child::after {
+    content: ": ";
+  }
+}
+
+.gdpr-extro {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.gdpr-button {
+  text-align: right;
+}
+
