@@ -1,0 +1,7 @@
+name = Bibliotek.dk - GDPR
+description = Implementation of General Data Protection Regulation
+package = Bibliotek.dk
+core = 7.x
+version = 7.x-0.1
+
+files[] = test/bibdk_gdpr.test

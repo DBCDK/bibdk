@@ -6,6 +6,7 @@ module_load_include('inc', 'bibdk_actions', 'bibdk_actions.refexport');
 module_load_include('inc', 'bibdk_actions', 'bibdk_actions.default_settings');
 module_load_include('inc', 'bibdk_actions', 'bibdk_actions.mark_all_none');
 module_load_include('inc', 'bibdk_actions', 'bibdk_actions.delete_selected');
+module_load_include('inc', 'bibdk_actions', 'bibdk_actions.gdpr');
 
 /**
  * Implements hook_menu().

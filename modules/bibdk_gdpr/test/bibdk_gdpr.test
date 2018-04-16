@@ -1,0 +1,51 @@
+<?php
+
+/**
+ * @file
+* Webtests for bibdk_mypage.
+ */
+
+class BibdkGdprTestCase extends DrupalWebTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => 'Bibdk : GDPR',
+      'description' => 'Bibdk : General Data Protection Regulation webtests.',
+      'group' => 'bibliotek.dk',
+    );
+  }
+
+  public function setUp() {
+
+    // Enable any modules required for the test
+    $modules = array('bibdk_gdpr'); 
+    parent::setUp($modules);
+    variable_set('bibdk_provider_webservice_url', $this->getAbsoluteUrl('bibdk_webservice'));
+    variable_set('bibdk_provider_security_code', 'securityCode');
+  }
+
+  public function testRunner(){
+    $this->testGDPR();
+  }
+
+  private function testGDPR() {
+    $this->privileged_user = $this->drupalCreateUser(array(
+      'access user profiles',
+    ));
+    $this->drupalLogin($this->privileged_user);
+    // assert that profile tab is shown
+    $this->drupalGet('user/2');
+    $this->assertText('GDPR info', '"GDPR info" Account tab is set');
+
+    $this->drupalGet('user/2/gdpr');
+    // Test if GDPR page is present
+    $this->assertText('gdpr_header');
+    $this->assertText('gdpr_intro');
+    $this->assertText('gdpr_extro');
+    
+    // Test if hook_bibdk_gdpr_items works
+    $this->assertText('label_gdpr_bibdk_gdpr');
+    $this->assertText('label_gdpr_ipaddress');
+  }
+
+}

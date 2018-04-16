@@ -23,6 +23,7 @@ class BibdkAutocompleteWebTestCase extends DrupalWebTestCase {
       'access content',
       'search content'
     ));
+    variable_set('bibdk_autocomplete_backend', 1);
     menu_rebuild();
   }
 
@@ -38,7 +39,7 @@ class BibdkAutocompleteWebTestCase extends DrupalWebTestCase {
     $this->drupalLogin($this->privileged_user);
     $this->_testBibdkCustomSearchCreatePage();
     $this->_testBibdkAutocompleteAdmin();
-    $this->_testBibdkAutocompletePage();
+    // $this->_testBibdkAutocompletePage();
   }
 
   /*
@@ -61,26 +62,28 @@ class BibdkAutocompleteWebTestCase extends DrupalWebTestCase {
     global $_bibdk_custom_search_v_uuid;
 
     $this->drupalGet('admin/config/search/bibdk_autocomplete');
-    $this->assertField('bibdk_autocomplete_rest_url', 'bibdk_autocomplete_rest_url is present');
-    $this->assertField('bibdk_autocomplete_settings[rows]', 'Max suggestions field is present');
+    $this->assertField('bibdk_autocomplete_ortograf_rest_url', 'bibdk_autocomplete_ortograf_rest_url is present');
+    $this->assertField('bibdk_autocomplete_ortograf_settings[rows]', 'Max suggestions field is present');
+    $this->assertField('bibdk_autocomplete_backend', 'bibdk_autocomplete_backend is present');
 
-    $this->assertField('bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][autocomplete]', 'Autocomplete field "autocomplete" is present');
-    $this->assertField('bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][type]', 'Autocomplete field "type" is present');
+    $this->assertField('bibdk_autocomplete_ortograf_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][autocomplete]', 'Autocomplete field "autocomplete" is present');
+    $this->assertField('bibdk_autocomplete_ortograf_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][type]', 'Autocomplete field "type" is present');
 
     $edit = array();
-    $_bibdk_autocomplete_rest_url = $edit['bibdk_autocomplete_rest_url'] = $this->randomName(8);
-    $_bibdk_autocomplete_rows = $edit['bibdk_autocomplete_settings[rows]'] = $this->randomName(8);
+    $_bibdk_autocomplete_rest_url = $edit['bibdk_autocomplete_ortograf_rest_url'] = $this->randomName(8);
+    $_bibdk_autocomplete_rows = $edit['bibdk_autocomplete_ortograf_settings[rows]'] = $this->randomName(8);
 
-    $_bibdk_autocomplete_autocomplete = $edit['bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][autocomplete]'] = TRUE;
-    $_bibdk_autocomplete_type = $edit['bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][type]'] = 'all';
+    $_bibdk_autocomplete_autocomplete = $edit['bibdk_autocomplete_ortograf_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][autocomplete]'] = TRUE;
+    $_bibdk_autocomplete_type = $edit['bibdk_autocomplete_ortograf_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][type]'] = 'creator';
 
     $this->drupalPost('admin/config/search/bibdk_autocomplete', $edit, 'Save configuration');
 
-    $this->assertFieldByName('bibdk_autocomplete_rest_url', $_bibdk_autocomplete_rest_url, 'Webservice URL set to "' . $_bibdk_autocomplete_rest_url . '"');
-    $this->assertFieldByName('bibdk_autocomplete_settings[rows]', $_bibdk_autocomplete_rows, 'Rows set to "' . $_bibdk_autocomplete_rows . '"');
+    $this->assertFieldByName('bibdk_autocomplete_ortograf_rest_url', $_bibdk_autocomplete_rest_url, 'Webservice URL set to "' . $_bibdk_autocomplete_rest_url . '"');
+    $this->assertFieldByName('bibdk_autocomplete_ortograf_settings[rows]', $_bibdk_autocomplete_rows, 'Rows set to "' . $_bibdk_autocomplete_rows . '"');
+    
+    $this->assertFieldChecked('edit-bibdk-autocomplete-ortograf-var-' . $_bibdk_custom_search_p_uuid . '-vars-' . $_bibdk_custom_search_v_uuid . '-autocomplete', 'Autocomplete set to TRUE');
 
-    $this->assertFieldChecked('edit-bibdk-autocomplete-var-' . $_bibdk_custom_search_p_uuid . '-vars-' . $_bibdk_custom_search_v_uuid . '-autocomplete', 'Autocomplete set to TRUE');
-    $this->assertFieldByName('bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][type]', $_bibdk_autocomplete_index, 'Autocomplete field "type" set to "' . $_bibdk_autocomplete_type . '"');
+   $this->assertFieldChecked('edit-bibdk-autocomplete-ortograf-var-' . $_bibdk_custom_search_p_uuid . '-vars-' . $_bibdk_custom_search_v_uuid . '-type-creator', 'creator', 'Autocomplete field "type" set to "creator"');
 
   }
 
