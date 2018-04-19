@@ -100,7 +100,7 @@ projects[ting_openuserstatus][download][tag] = 7.x-0.2
 projects[microcurl][type] = module
 projects[microcurl][download][type] = git
 projects[microcurl][download][url] = git@github.com:DBCDK/microcurl.git
-projects[microcurl][download][tag] = 7.x-1.0
+projects[microcurl][download][tag] = 7.x-1.1
 
 projects[open_adhl][type] = module
 projects[open_adhl][download][type] = git
