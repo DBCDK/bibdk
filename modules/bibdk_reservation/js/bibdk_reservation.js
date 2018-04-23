@@ -44,7 +44,7 @@
   Drupal.behaviors.alreadyOrder = {
     attach: function() {
       $('#edit-needbeforedate').ready(function() {
-        if(typeof Drupal.settings.alreadyOrder !== undefined) {
+        if (typeof Drupal.settings.alreadyOrder !== undefined) {
           if (Drupal.settings.alreadyOrder.alert_already_showed) {
             let r = confirm(Drupal.settings.alreadyOrder.alert_message);
             if (!r) {
