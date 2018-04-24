@@ -1,0 +1,4 @@
+<?php
+
+module_load_include('inc', 'bibdk_recommender', 'bibdk_recommender.example');
+

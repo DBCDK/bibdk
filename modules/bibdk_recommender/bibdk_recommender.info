@@ -1,0 +1,9 @@
+name = bibliotek.dk recommender
+description = Frontend code for bibliotek.dk recommender
+core = 7.x
+version = 7.x-0.1
+package = Bibliotek.dk
+
+files[] = test/bibdk_recommender.test
+
+dependencies[] = open_platform
