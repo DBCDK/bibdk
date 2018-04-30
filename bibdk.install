@@ -103,7 +103,9 @@ function _bibdk_enable_modules() {
   );
 
   if (!module_enable($module_list)) {
-    die('A module (' . current($module_list) . ' ) present in array \'$module_list\' in file \'bibdk.install\' was not found. Install process aborted.');
+    $installed_module_list = array_keys(system_rebuild_module_data());
+    $modules_diff = array_diff($module_list, $installed_module_list);
+    die('A module (' . implode(', ', $module_diff) . ' ) present in array \'$module_list\' in file \'bibdk.install\' was not found. Install process aborted.');
   }
 }
 
