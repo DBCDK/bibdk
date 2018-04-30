@@ -15,6 +15,12 @@ libraries[ckeditor][directory_name] = ckeditor
 libraries[ckeditor][download][type] = get
 libraries[ckeditor][download][url] = http://download.cksource.com/CKEditor/CKEditor/CKEditor%203.6.2/ckeditor_3.6.2.zip
 
+libraries[slick][destination] = libraries
+libraries[slick][directory_name] = slick
+libraries[slick][download][type] = get
+libraries[slick][download][url] = https://github.com/kenwheeler/slick/
+libraries[slick][download][tag] = '1.8.0'
+
 
 ; --- Theming ---
 ; New bibliotek.dk theme
