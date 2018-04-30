@@ -128,6 +128,10 @@ projects[open_saou][download][type] = git
 projects[open_saou][download][url] = git@github.com:DBCDK/open_saou.git
 projects[open_saou][download][tag] = 7.x-0.3
 
+projects[open_platform_client][type] = module
+projects[open_platform_client][download][type] = git
+projects[open_platform_client][download][url] = git@github.com:DBCDK/open_platform_client.git
+
 projects[cql_strict_parser][type] = module
 projects[cql_strict_parser][download][type] = git
 projects[cql_strict_parser][download][url] = git@github.com:DBCDK/cql_strict_parser.git
