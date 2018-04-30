@@ -68,6 +68,7 @@ function _bibdk_enable_modules() {
     'ting_openuserstatus',
     'open_holdingstatus',
     'open_moreinfo',
+    'open_platform_client'
     'ding_base',
     'ding_entity',
     'ding_popup',
@@ -594,5 +595,12 @@ function bibdk_update_7053() {
  */
 function bibdk_update_7054() {
   module_enable(array('bibdk_gdpr'));
+}
+
+/**
+ * Enable bibdk_recommender & open_platform_client
+ */
+function bibdk_update_7055() {
+  module_enable(array('bibdk_recommender', 'open_platform_client'));
 }
 
