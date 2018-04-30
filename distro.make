@@ -31,4 +31,5 @@ projects[drupal][patch][] = http://drupal.org/files/1852888-sort-translations-by
 projects[bibdk][type] = profile
 projects[bibdk][download][type] = git
 projects[bibdk][download][url] = git@github.com:DBCDK/bibdk.git
-projects[bibdk][download][tag] = 7.x-1.44
+; projects[bibdk][download][tag] = 7.x-1.44
+projects[bibdk][download][branch] = 'feature/2414-recomole'
