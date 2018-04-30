@@ -68,7 +68,7 @@ function _bibdk_enable_modules() {
     'ting_openuserstatus',
     'open_holdingstatus',
     'open_moreinfo',
-    'open_platform_client'
+    'open_platform_client',
     'ding_base',
     'ding_entity',
     'ding_popup',
