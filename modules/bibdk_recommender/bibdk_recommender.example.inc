@@ -31,7 +31,7 @@ dpm(variable_get('open_platform_access_token', NULL), 'open_platform_access_toke
   
   $pids = array('870970-basis:53887945', '870970-basis:04256042', '870970-basis:51701763', '870970-basis:12345678');
   $numRecords = 10;
-  $res = open_platform_recommender_request($pids, $numRecords);
+  $res = open_platform_client_recommender_request($pids, $numRecords);
   $foo = '';
   foreach ($res as $val) {
     $foo .= $val->pid . '<br>';

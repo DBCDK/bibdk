@@ -17,7 +17,7 @@ libraries[ckeditor][download][url] = http://download.cksource.com/CKEditor/CKEdi
 
 libraries[slick][destination] = libraries
 libraries[slick][directory_name] = slick
-libraries[slick][download][type] = get
+libraries[slick][download][type] = git
 libraries[slick][download][url] = https://github.com/kenwheeler/slick/
 libraries[slick][download][tag] = '1.8.0'
 
