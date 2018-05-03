@@ -90,6 +90,7 @@ function _bibdk_enable_modules() {
     'help',
     'user_alert',
     'scheduler',
+    'slick',
     //'simple_mobile_redirect',
     'jquery_update',
     //Advanced aggregation

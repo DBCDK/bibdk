@@ -287,6 +287,10 @@ projects[shortcode][subdir] = contrib
 projects[shortcode][type] = module
 projects[shortcode][version] = 2.1
 
+projects[slick][subdir] = contrib
+projects[slick][type] = module
+projects[slick][version] = 2.0
+
 projects[strongarm][subdir] = contrib
 projects[strongarm][type] = module
 projects[strongarm][version] = 2.0
