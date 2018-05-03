@@ -11,8 +11,12 @@
 function _bibdk_searchhistory_add_element_webservice($element, $user = NULL) {
   if ($response = _bibdk_searchhistory_call_webservice('add_searchhistory', $element, $user)) {
     $xpath = bibdk_searchhistory_webservice_responce_xpath($response['response']);
+    if (is_array($xpath)) {
+      return NULL;
+    }
     $ids = bibdk_searchhistory_parse_id($xpath);
     return reset($ids);
+
   }
   return NULL;
 }
@@ -25,6 +29,9 @@ function _bibdk_searchhistory_add_element_webservice($element, $user = NULL) {
 function _bibdk_searchhistory_remove_element_webservice($element, $user = NULL) {
   if ($response = _bibdk_searchhistory_call_webservice('remove_searchhistory', $element, $user)) {
     $xpath = bibdk_searchhistory_webservice_responce_xpath($response['response']);
+    if (is_array($xpath)) {
+      return NULL;
+    }
     $ids = bibdk_searchhistory_parse_id($xpath);
     return reset($ids);
   }
@@ -39,6 +46,9 @@ function _bibdk_searchhistory_remove_element_webservice($element, $user = NULL) 
 function _bibdk_searchhistory_get_elements_webservice($user = NULL) {
   if ($response = _bibdk_searchhistory_call_webservice('get_searchhistory', NULL, $user)) {
     $xpath = bibdk_searchhistory_webservice_responce_xpath($response['response']);
+    if (is_array($xpath)) {
+      return array();
+    }
     return bibdk_searchhistory_parse_content($xpath);
   }
   return array();
