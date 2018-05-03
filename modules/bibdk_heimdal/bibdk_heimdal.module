@@ -121,7 +121,7 @@ function bibdk_heimdal_check_for_errors() {
 
 
 /**
- * Do a login or redirect to appropiate page.
+ * Do a login or redirect to appropriate page.
  */
 function bibdk_heimdal_redirect_login() {
   // get the heimdal user
@@ -154,7 +154,7 @@ function bibdk_heimdal_get_form_state($heimdal_user) {
 }
 
 /**
- * If an error ocuurs .. set a message and do a redirect
+ * If an error occurs .. set a message and do a redirect
  *
  * @param bool $ajax
  *   If ajax is set to true a client side javascript will trigger the redirect
@@ -190,12 +190,7 @@ function bibdk_heimdal_cleanup_and_exit($message = NULL, $ajax = FALSE) {
  */
 function bibdk_heimdal_get_return_url() {
   global $user;
-  if ($user->uid === 0) {
-    return '/';
-  }
-  else {
-    return 'heimdal/logout';
-  }
+  return ($user->uid === 0) ? '/' : 'heimdal/logout';
 }
 
 /**
