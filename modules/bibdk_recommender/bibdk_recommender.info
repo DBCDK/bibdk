@@ -7,3 +7,5 @@ package = Bibliotek.dk
 files[] = test/bibdk_recommender.test
 
 dependencies[] = open_platform_client
+dependencies[] = bibdk_covers
+dependencies[] = slick

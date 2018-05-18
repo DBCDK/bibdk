@@ -8,36 +8,52 @@
 /**
  * @defgroup bibdk_recommender Example: Page
  */
- 
-/**
- * Implements hook_menu().
- *
- */
-function bibdk_recommender_menu() {
-  $items['examples/bibdk_recommender'] = array(
-    'title' => 'Recommender Example',
-    'page callback' => 'bibdk_recommender_callback',
-    'access callback' => TRUE,
-    'expanded' => TRUE,
-  );
-  return $items;
-}
 
 /**
  * Constructs a recommender example page.
  */
-function bibdk_recommender_callback() {
-dpm(variable_get('open_platform_access_token', NULL), 'open_platform_access_token');
+function bibdk_recommender_example() {
+
+  // see: https://www.drupal.org/project/slick
   
-  $pids = array('870970-basis:53887945', '870970-basis:04256042', '870970-basis:51701763', '870970-basis:12345678');
+  $pids = array(
+    '870970-basis:53887945',
+    '870970-basis:04256042',
+    '870970-basis:51701763',
+    '870970-basis:12345678'
+  );
   $numRecords = 10;
+  
   $res = open_platform_client_recommender_request($pids, $numRecords);
-  $foo = '';
-  foreach ($res as $val) {
-    $foo .= $val->pid . '<br>';
+  $foo = array();
+  if (!empty($res)) {
+    foreach ($res as $val) {
+      $foo[] = $val->pid;
+    }
   }
-  return array('#markup' => '<p>' . $foo . '</p>');
+  
+  // ajax example
+  $id = drupal_clean_css_identifier("slick-recommender-" . md5(implode(',', $pids)));
+  $markup = '<div class="js-slick-recommender"
+    id="' . $id . '"
+    data-uids="' . implode(',', $pids) . '"> </div>';
+  $slick_example['bar']['#markup'] = '<p>.js-slick-recommender will be replaced by AJAX response.</p>' . htmlentities($markup) . '<hr>';
+  $slick_example['foo']['#markup'] = $markup;
+  $slick_example['bas']['#markup'] = 
+    '<hr><div>Recommender result: </div>' .
+    '<div>' . print_r(implode('; ', $foo), 1) . '</div><hr>';
+  
+  // markup example
+  $slick_example['bof'] = bibdk_recommender_carousel_markup($foo);
+  
+  drupal_add_css(drupal_get_path('module', 'bibdk_recommender') . '/css/bibdk_recommender.css');
+  drupal_add_js(drupal_get_path('module', 'bibdk_recommender') . '/js/bibdk_recommender.js');
+  drupal_add_js(drupal_get_path('module', 'bibdk_recommender') . '/js/bibdk_recommender_covers.js');
+  
+  return $slick_example;
 }
+
+
 
 /**
  * @} End of "defgroup bibdk_recommender".
