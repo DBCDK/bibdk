@@ -533,7 +533,7 @@ function bibdk_reservation_prepare_set_user_order_data(&$form_state) {
     $type = $userParameter['type'];
 
     if ($user_id === $type) {
-      if(!empty($form_state['values'][$type]) && !isset($userOrderData['userId'])) {
+      if(!empty($form_state['values'][$type])) {
 
         $userOrderData['userId'] =
           $form_state['values'][$type] =
@@ -541,7 +541,17 @@ function bibdk_reservation_prepare_set_user_order_data(&$form_state) {
       }
     }
     elseif (isset($form_state['values'][$type])) {
-      $userOrderData[$type] = $form_state['values'][$type];
+
+      $agencyFields = new AgencyFields(null);
+      $agencyFields->userParameters[$key] = $userParameter;
+      $fields = $agencyFields->getUserIdKey();
+
+      if (!is_null($fields) && !isset($userOrderData['userId'])) {
+        $userOrderData[$type] = $form_state['values'][$type];
+      }
+      else if (is_null($fields)) {
+        $userOrderData[$type] = $form_state['values'][$type];
+      }
     }
   }
 
