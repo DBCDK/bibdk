@@ -43,12 +43,13 @@ function template_preprocess_bibdk_recommender_item(&$variables) {
   );
   
   // Determine if the local id is a known negative
-  if ( cache_get('bibdk_covers:' . $local_id, FALSE) ) {
+  if ( cache_get('open_moreinfo:thumbnailUrl:' . $image_pid, 'cache') ) {
     $image_markup['#attributes']['class'][] = 'bibdk-recommender-cover-processed';
     $image_markup['#attributes']['class'][] = 'bibdk-recommender-cover-cache-none';
   }
   
   if (file_exists($file_path)) {
+    $image_markup['#attributes']['class'][] = 'bibdk-recommender-cover-processed';
     $image_markup['image_exist'] = array(
       '#theme' => 'image_style',
       '#path' => $file_path,
