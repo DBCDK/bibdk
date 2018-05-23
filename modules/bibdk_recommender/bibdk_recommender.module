@@ -4,7 +4,7 @@
  * @file
  * Bibliotek.dk recommender module main file.
  *
- * @See also: bibdk_theme/template.php, bibdk_theme_preprocess_ting_openformat_work()
+ * @See also: bibdk_theme/template.php : bibdk_theme_preprocess_ting_openformat_work()
  * @See also: ting_openformat/theme/ting_openformat_work.tpl.php
  */
 
@@ -166,19 +166,13 @@ function bibdk_recommender_carousel_markup(array $pids = array()) {
       '#work_type' => $val['workType'],
       '#style' => 'thumbnail',
     );
-    /*
-    $items[$pid]['caption'] = array(
-      'data' => $val['creator'],
-      'title' => $val['title'],
-    );
-    */
   }
   
   // Add options.
   $options = array(
     'dots'           => FALSE,
     'infinite'       => TRUE,
-    'autoplay'       => TRUE,
+    'autoplay'       => FALSE,
     'slidesToShow'   => 6,
     'slidesToScroll' => 1,
     'autoplaySpeed'  => 8000,
@@ -205,10 +199,6 @@ function bibdk_recommender_carousel_markup(array $pids = array()) {
       'class' => array('bibdk-recommender-carousel'),
     ),
   );
-  
-  $wrapper['#attached']['js'][] = drupal_get_path('module', 'bibdk_recommender') . '/js/bibdk_recommender.js';
-  $wrapper['#attached']['js'][] = drupal_get_path('module', 'bibdk_recommender') . '/js/bibdk_recommender_covers.js';
-  $wrapper['#attached']['css'][] = drupal_get_path('module', 'bibdk_recommender') . '/css/bibdk_recommender.css';
   
   $wrapper['header'] = array(
     '#type' => 'container',

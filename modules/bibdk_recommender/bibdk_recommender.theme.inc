@@ -24,13 +24,8 @@ function template_preprocess_bibdk_recommender_item(&$variables) {
 
   $variables['elements']['#id'] = drupal_html_id(md5($image_pid, TRUE));
 
-  // Set initial values required by the template, and check if there's an image available locally
-  $file_path = FALSE;
-
-  list($lok, $local_id) = array_pad(explode(':', $image_pid), 2, '');
-  
   // if there's a cover in the file system, we'll use it. Otherwise, we'll get it by AJAX
-  $file_path = _bibdk_covers_object_path($local_id, $image_style . 'Url');
+  $file_path = _bibdk_covers_object_path($image_pid, $image_style . 'Url');
 
   $image_markup = array(
     '#type' => 'container',
@@ -42,13 +37,13 @@ function template_preprocess_bibdk_recommender_item(&$variables) {
     ),
   );
   
-  // Determine if the local id is a known negative
+  // Determine if the local id is a known negative. If so, don't trigger javascript.
   if ( cache_get('open_moreinfo:thumbnailUrl:' . $image_pid, 'cache') ) {
     $image_markup['#attributes']['class'][] = 'bibdk-recommender-cover-processed';
-    $image_markup['#attributes']['class'][] = 'bibdk-recommender-cover-cache-none';
   }
   
   if (file_exists($file_path)) {
+    // Don't trigger javascript if we have an image..
     $image_markup['#attributes']['class'][] = 'bibdk-recommender-cover-processed';
     $image_markup['image_exist'] = array(
       '#theme' => 'image_style',

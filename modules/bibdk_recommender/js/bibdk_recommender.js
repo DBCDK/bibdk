@@ -29,13 +29,13 @@
       url: Drupal.settings.basePath + Drupal.settings.pathPrefix + 'bibdk_recommender/ajax/slick_carousel/' + id + '/' + pids,
       type: 'POST',
       dataType: 'json',
+      async: true,
       success: Drupal.insertSlickRecommender,
     });
   };
 
   // Insert Slick Recommender carousel on AJAX success
   Drupal.insertSlickRecommender = function(slickRecommender) {
-    console.log(slickRecommender);
     if (slickRecommender === false){
       return;
     }
