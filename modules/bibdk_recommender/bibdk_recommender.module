@@ -6,6 +6,7 @@
  *
  * @See also: bibdk_theme/template.php : bibdk_theme_preprocess_ting_openformat_work()
  * @See also: ting_openformat/theme/ting_openformat_work.tpl.php
+ * @See also: https://www.drupal.org/project/slick
  */
 
 module_load_include('inc', 'bibdk_recommender', 'bibdk_recommender.example');
