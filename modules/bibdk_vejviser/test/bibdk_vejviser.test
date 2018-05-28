@@ -61,7 +61,7 @@ class BibdkVejviserPickupAgencyListWebservice extends DrupalWebTestCase {
     ));
     // Setup agencyservice
 
-    variable_set('AgencyRequest_url', 'http://openagency.addi.dk/2.8/');
+    variable_set('AgencyRequest_url', 'http://openagency.addi.dk/2.32/');
     variable_set('AgencyRequest_xsd_url', $this->getAbsoluteUrl('/openagency_webservice/openagency.xsd'));
   }
 
