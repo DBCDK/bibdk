@@ -45,6 +45,7 @@ function _bibdk_enable_modules() {
     'bibdk_openorder',
     'bibdk_provider',
     'bibdk_reservation',
+    'bibdk_recommender',
     'bibdk_saou',
     'bibdk_sbkopi',
     'bibdk_schemaorg',
