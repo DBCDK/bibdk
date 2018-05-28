@@ -19,10 +19,7 @@ class BibdkSearchHistoryTestCase extends DrupalWebTestCase {
   }
 
   public function setUp() {
-    parent::setUp('search', 'ting_openformat', 'bibdk_searchhistory', 'ding_provider', 'bibdk_provider', 'profile2'); //, 'bibdk_webservice');
-    variable_set('ting_search_url', 'https://opensearch.addi.dk/b3.5_5.0/');
-    variable_set('bibdk_provider_webservice_url', 'http://bibliotek.dk/openuserinfo/');
-    variable_set('bibdk_provider_security_code', 'testhest');
+    parent::setUp('search', 'ting_openformat', 'bibdk_searchhistory', 'ding_provider', 'bibdk_provider', 'features', 'bibdk_webservice_settings_develop'); 
     variable_set('search_active_modules', array('ting_openformat' => 'ting_openformat'));
     variable_set('search_default_module', 'ting_openformat');
     variable_set('search_history_accepted_params', 'dkcclterm,term');
@@ -93,10 +90,10 @@ class BibdkSearchHistoryTestCase extends DrupalWebTestCase {
     $user = $this->_createProviderUser();
 
     $element = array(
-      'searchHistoryString' => 'test string',
-      'searchHistoryParams' => json_encode(array('testArr' => array())),
-      'searchHistoryTime' => 'testTime',
-      'searchHistoryCount' => 1234
+      'oui:searchHistoryString' => 'test string',
+      'oui:searchHistoryParams' => json_encode(array('testArr' => array())),
+      'oui:searchHistoryTime' => 'testTime',
+      'oui:searchHistoryCount' => 1234
     );
 
     // Test add searchhistory element
@@ -104,10 +101,10 @@ class BibdkSearchHistoryTestCase extends DrupalWebTestCase {
     $this->assertTrue(is_numeric($result), t('@result is numeric', array('@result' => $result)));
 
     $element = array(
-      'searchHistoryString' => 'test string 2',
-      'searchHistoryParams' => json_encode(array('testArr_2' => array())),
-      'searchHistoryTime' => 'testTime 2',
-      'searchHistoryCount' => 12345
+      'oui:searchHistoryString' => 'test string 2',
+      'oui:searchHistoryParams' => json_encode(array('testArr_2' => array())),
+      'oui:searchHistoryTime' => 'testTime 2',
+      'oui:searchHistoryCount' => 12345
     );
 
     // Test add searchhistory element id is incrementing
