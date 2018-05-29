@@ -37,9 +37,6 @@ function bibdk_covers_theme() {
       'file' => 'bibdk_covers.theme.inc',
       'template' => 'theme/bibdk-covers-object',
       'preprocess functions' => array('template_preprocess_bibdk_object_cover'),
-      // 'attached' => array(
-      //   'js' => array(drupal_get_path('module', 'bibdk_covers') . '/js/bibdk-object-covers.js'),
-      // ),
     ),
   );
 }

@@ -36,7 +36,7 @@
 
   // Insert Slick Recommender carousel on AJAX success
   Drupal.insertSlickRecommender = function(slickRecommender) {
-    if (slickRecommender === false){
+    if (slickRecommender === false) {
       return;
     }
     var slider = $('#' + slickRecommender.id);

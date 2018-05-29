@@ -37,12 +37,13 @@
 
   };
 
+  // AJAX callback: insert cover images on success.
   Drupal.insertCarouselCovers = function(coverData) {
-    if (coverData === false){
+    if (coverData === false) {
       return;
     }
     var style = "thumbnail";
-    if (coverData["imageStyle"] !== false){
+    if (coverData["imageStyle"] !== false) {
       style = coverData["imageStyle"];
       delete coverData["imageStyle"];
     }

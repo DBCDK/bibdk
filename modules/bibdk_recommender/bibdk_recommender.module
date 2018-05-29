@@ -162,9 +162,9 @@ function bibdk_recommender_carousel_markup(array $pids = array()) {
     $items[$pid]['slide'] = array(
       '#theme' => 'bibdk_recommender_item',
       '#pid' => $pid,
-      '#creator' => $val['creator'],
-      '#title' => $val['title'],
-      '#work_type' => $val['workType'],
+      '#creator' => (!empty($val['creator'])) ? $val['creator'] : NULL,
+      '#title' => (!empty($val['title'])) ? $val['title'] : NULL,
+      '#work_type' => (!empty($val['workType'])) ? $val['workType'] : NULL,
       '#style' => 'thumbnail',
     );
   }
