@@ -533,7 +533,7 @@ function bibdk_reservation_prepare_set_user_order_data(&$form_state) {
     $type = $userParameter['type'];
 
     if ($user_id === $type) {
-      if(!empty($form_state['values'][$type])) {
+      if (!empty($form_state['values'][$type])) {
 
         $userOrderData['userId'] =
           $form_state['values'][$type] =
