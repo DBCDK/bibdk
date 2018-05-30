@@ -45,6 +45,7 @@ function _bibdk_enable_modules() {
     'bibdk_openorder',
     'bibdk_provider',
     'bibdk_reservation',
+    'bibdk_recommender',
     'bibdk_saou',
     'bibdk_sbkopi',
     'bibdk_schemaorg',
@@ -68,6 +69,7 @@ function _bibdk_enable_modules() {
     'ting_openuserstatus',
     'open_holdingstatus',
     'open_moreinfo',
+    'open_platform_client',
     'ding_base',
     'ding_entity',
     'ding_popup',
@@ -89,6 +91,7 @@ function _bibdk_enable_modules() {
     'help',
     'user_alert',
     'scheduler',
+    'slick',
     //'simple_mobile_redirect',
     'jquery_update',
     //Advanced aggregation
@@ -102,7 +105,9 @@ function _bibdk_enable_modules() {
   );
 
   if (!module_enable($module_list)) {
-    die('A module (' . current($module_list) . ' ) present in array \'$module_list\' in file \'bibdk.install\' was not found. Install process aborted.');
+    $installed_module_list = array_keys(system_rebuild_module_data());
+    $modules_diff = array_diff($module_list, $installed_module_list);
+    die('A module (' . implode(', ', $modules_diff) . ' ) present in array \'$module_list\' in file \'bibdk.install\' was not found. Install process aborted.');
   }
 }
 
@@ -594,5 +599,12 @@ function bibdk_update_7053() {
  */
 function bibdk_update_7054() {
   module_enable(array('bibdk_gdpr'));
+}
+
+/**
+ * Enable bibdk_recommender & open_platform_client
+ */
+function bibdk_update_7055() {
+  module_enable(array('bibdk_recommender', 'open_platform_client'));
 }
 

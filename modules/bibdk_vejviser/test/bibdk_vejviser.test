@@ -57,12 +57,10 @@ class BibdkVejviserPickupAgencyListWebservice extends DrupalWebTestCase {
       'bibdk_vejviser',
       'openagency_webservice_mockup',
       'ting_agency',
-      'ding_user'
+      'ding_user',
+      'features',
+      'bibdk_webservice_settings_develop'
     ));
-    // Setup agencyservice
-
-    variable_set('AgencyRequest_url', 'http://openagency.addi.dk/2.8/');
-    variable_set('AgencyRequest_xsd_url', $this->getAbsoluteUrl('/openagency_webservice/openagency.xsd'));
   }
 
   public function testpickupAgencyListData() {

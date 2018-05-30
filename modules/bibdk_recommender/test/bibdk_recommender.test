@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * @file
+ * Test case for Bibliotek.dk Recommender.
+ */
+
+class BibdkRecommenderTestCase extends DrupalUnitTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => t('Bibliotek.dk Recommender : Unit tests'),
+      'description' => t('Check fubar'),
+      'group' => t('Bibliotek.dk'),
+    );
+  }
+
+  public function setUp() {
+    parent::setUp(array('bibdk_recommender'));
+  }
+
+  public function test_fubar() {
+    $this->assertEqual(TRUE, TRUE, 'true is true');
+}
+}

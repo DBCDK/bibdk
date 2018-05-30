@@ -15,6 +15,12 @@ libraries[ckeditor][directory_name] = ckeditor
 libraries[ckeditor][download][type] = get
 libraries[ckeditor][download][url] = http://download.cksource.com/CKEditor/CKEditor/CKEditor%203.6.2/ckeditor_3.6.2.zip
 
+libraries[slick][destination] = libraries
+libraries[slick][directory_name] = slick
+libraries[slick][download][type] = git
+libraries[slick][download][url] = https://github.com/kenwheeler/slick/
+libraries[slick][download][tag] = '1.8.0'
+
 
 ; --- Theming ---
 ; New bibliotek.dk theme
@@ -100,7 +106,7 @@ projects[ting_openuserstatus][download][tag] = 7.x-0.2
 projects[microcurl][type] = module
 projects[microcurl][download][type] = git
 projects[microcurl][download][url] = git@github.com:DBCDK/microcurl.git
-projects[microcurl][download][tag] = 7.x-1.0
+projects[microcurl][download][tag] = 7.x-1.1
 
 projects[open_adhl][type] = module
 projects[open_adhl][download][type] = git
@@ -121,6 +127,10 @@ projects[open_saou][type] = module
 projects[open_saou][download][type] = git
 projects[open_saou][download][url] = git@github.com:DBCDK/open_saou.git
 projects[open_saou][download][tag] = 7.x-0.3
+
+projects[open_platform_client][type] = module
+projects[open_platform_client][download][type] = git
+projects[open_platform_client][download][url] = git@github.com:DBCDK/open_platform_client.git
 
 projects[cql_strict_parser][type] = module
 projects[cql_strict_parser][download][type] = git
@@ -276,6 +286,10 @@ projects[securepages][version] = 1.0-beta2
 projects[shortcode][subdir] = contrib
 projects[shortcode][type] = module
 projects[shortcode][version] = 2.1
+
+projects[slick][subdir] = contrib
+projects[slick][type] = module
+projects[slick][version] = 2.0
 
 projects[strongarm][subdir] = contrib
 projects[strongarm][type] = module

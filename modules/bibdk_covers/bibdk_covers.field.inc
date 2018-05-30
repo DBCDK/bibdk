@@ -71,7 +71,7 @@ function bibdk_covers_field_formatter_view($entity_type, $entity, $field, $insta
       '#object' => $entity,
       '#image_style' => $display['settings']['image_style'],
       '#attached' => array(
-        'js' => array(drupal_get_path('module', 'bibdk_covers') . '/js/bibdk-covers.js'),
+        'js' => array(drupal_get_path('module', 'bibdk_covers') . '/js/bibdk-object-covers.js'),
       ),
     );
   }
