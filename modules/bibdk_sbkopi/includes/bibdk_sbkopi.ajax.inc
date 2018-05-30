@@ -48,13 +48,13 @@ function bibdk_sbkopi_delivery_method($pid) {
   $params = array(
     'objectFormat' => 'marcxchange',
     'objectId' => array($pid),
-    'outputType' => 'php',
+    'outputType' => 'json',
   );
 
   $tc = new ting_client_class();
   $response = $tc->do_request('object', $params);
 
-  $responsePHP = json_decode($response, FALSE);
+//  $xml = new SimpleXMLElement($response, LIBXML_PARSEHUGE, FALSE, 'marcx');
 
   $xml = 'fisk er godt';
   if ($delivery_method = bibdk_sbkopi_ajax_parse_response($xml, $issn)) {
