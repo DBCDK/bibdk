@@ -40,12 +40,24 @@ function bibdk_sbkopi_ajax_openorder_request($pid) {
 /**
  * Get sb delivery method
  *
- * @param $pid
+ * @param $issn
  * @return bool|NULL|string
  */
 function bibdk_sbkopi_delivery_method($pid) {
-  $xml = bibdk_openorder_do_checkArticleDeliveryRequest($pid);
-  if ($delivery_method = bibdk_sbkopi_ajax_parse_response($xml, $pid)) {
+
+  $params = array(
+    'objectFormat' => 'marcxchange',
+    'objectId' => array($pid),
+    'outputType' => 'php',
+  );
+
+  $tc = new ting_client_class();
+  $response = $tc->do_request('object', $params);
+
+  $responsePHP = json_decode($response, FALSE);
+
+  $xml = 'fisk er godt';
+  if ($delivery_method = bibdk_sbkopi_ajax_parse_response($xml, $issn)) {
     return $delivery_method;
   }
   else {
