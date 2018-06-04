@@ -23,17 +23,20 @@ function bibdk_sbkopi_ajax_get_options() {
   drupal_exit();
 }
 
-/**
- * Make request to openorder to check asb delivery method
- * @param $pid
- * @return array|bool|string
- */
-function bibdk_sbkopi_ajax_openorder_request($pid) {
+  /**
+   * Make request to openorder to check asb delivery method
+   *
+   * @param $pid
+   * @param bool $reservation
+   *
+   * @return array|bool
+   */
+function bibdk_sbkopi_ajax_openorder_request($pid, $reservation = FALSE) {
   if ($delivery_method = bibdk_sbkopi_delivery_method($pid)) {
     return _bibdk_sb_kopi_get_link($pid);
   }
   else {
-    return FALSE;
+    return ($reservation === TRUE) ? "error" : FALSE;
   }
 }
 
@@ -50,8 +53,13 @@ function bibdk_sbkopi_delivery_method($pid) {
   $response = bibdk_sbkopi_do_marcxchangeRequest($pid);
   $xml = bibdk_sbkopi_parse_marcx($response);
 
-  if ($delivery_method = bibdk_sbkopi_ajax_parse_response($xml)) {
-    return $delivery_method;
+  if ($xml !== FALSE) {
+    if ($delivery_method = bibdk_sbkopi_ajax_parse_response($xml)) {
+      return $delivery_method;
+    }
+    else {
+      return FALSE;
+    }
   }
   else {
     return FALSE;
