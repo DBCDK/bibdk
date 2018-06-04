@@ -20,7 +20,6 @@ class bibdkNetarchiveUnitTest extends DrupalWebTestCase {
 
     //NetArchive service
     $var = array(
-      'url' => 'http://moreinfo.addi.dk/2.6/moreinfo.wsdl',
       'username' => 'foo',
       'group'    => '000001',
       'password' => 'bar'
