@@ -19,7 +19,6 @@ class BibdkSearchHistoryTestCase extends DrupalWebTestCase {
   }
 
   public function setUp() {
-<<<<<<< HEAD
     parent::setUp(array(
       'search',
       'ting_openformat',
@@ -33,9 +32,6 @@ class BibdkSearchHistoryTestCase extends DrupalWebTestCase {
     //variable_set('ting_search_url', 'http://opensearch.addi.dk/3.1/');
     //variable_set('bibdk_provider_webservice_url', 'http://bibliotek.dk/openuserinfo/');
     variable_set('bibdk_provider_security_code', 'testhest');
-=======
-    parent::setUp('search', 'ting_openformat', 'bibdk_searchhistory', 'ding_provider', 'bibdk_provider', 'features', 'bibdk_webservice_settings_develop'); 
->>>>>>> develop
     variable_set('search_active_modules', array('ting_openformat' => 'ting_openformat'));
     variable_set('search_default_module', 'ting_openformat');
     variable_set('search_history_accepted_params', 'dkcclterm,term');
