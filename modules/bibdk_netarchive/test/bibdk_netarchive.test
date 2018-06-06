@@ -17,9 +17,11 @@ class bibdkNetarchiveUnitTest extends DrupalWebTestCase {
   public function setUp() {
     parent::setUp('bibdk_netarchive', 'features', 'bibdk_webservice_settings_develop');
     $this->profile = 'minimal';
+    $moreinfo_url = variable_get('open_moreinfo_url', 'foo');
 
     //NetArchive service
     $var = array(
+      'url' => $moreinfo_url,
       'username' => 'foo',
       'group'    => '000001',
       'password' => 'bar'

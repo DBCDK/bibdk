@@ -1,0 +1,223 @@
+<?php
+
+/**
+ * @file
+ * Bibliotek.dk recommender module main file.
+ *
+ * @See also: bibdk_theme/template.php : bibdk_theme_preprocess_ting_openformat_work()
+ * @See also: ting_openformat/theme/ting_openformat_work.tpl.php
+ * @See also: https://www.drupal.org/project/slick
+ */
+
+module_load_include('inc', 'bibdk_recommender', 'bibdk_recommender.example');
+
+/**
+ * Implements hook_menu().
+ */
+function bibdk_recommender_menu() {
+
+  $items = array();
+
+  $items['bibdk_recommender/ajax/slick_carousel/%/%'] = array(
+    'title' => 'Show recommender results',
+    'page callback' => 'bibdk_recommender_slick_carousel',
+    'access arguments' => array('access content'),
+    'page arguments' => array(3, 4),
+    'type' => MENU_CALLBACK,
+  );
+
+  // Demo page.
+  $items['examples/bibdk_recommender'] = array(
+    'title' => 'Recommender Example',
+    'page callback' => 'bibdk_recommender_example',
+    'access callback' => TRUE,
+    'expanded' => TRUE,
+  );
+  
+  return $items;
+
+}
+
+
+/**
+ * Implements hook_theme().
+ */
+function bibdk_recommender_theme() {
+  return array(
+    'bibdk_recommender_item' => array(
+      'render element' => 'elements',
+      'variables' => array(
+        'pid' => NULL,
+        'creator' => NULL,
+        'title' => NULL,
+        'work_type' => NULL,
+        'style' => NULL, // detail || thumbnail
+      ),
+      'file' => 'bibdk_recommender.theme.inc',
+      'template' => 'theme/bibdk-recommender-item',
+      'preprocess functions' => array('template_preprocess_bibdk_recommender_item'),
+    ),
+    'bibdk_recommender_svg' => array(
+      'render element' => 'elements',
+      'variables' => array(
+        'material_type' => NULL,
+      ),
+      'file' => 'bibdk_recommender.theme.inc',
+      'template' => 'theme/bibdk-recommender-svg',
+    ),
+  );
+}
+
+/**
+ * Constructs Slick carousel recommender markup.
+ * Return JSON output.
+ */
+function bibdk_recommender_slick_carousel(string $id = NULL, string $pids = NULL) {
+  $pids = explode(',',$pids);
+  drupal_add_library('slick', 'slick');
+  $markup = bibdk_recommender_carousel_markup($pids);
+  $content = drupal_render($markup);
+  drupal_json_output(array('id' => $id, 'slick' => $content));
+  drupal_exit();
+}
+
+
+/**
+ * Get bibdk manifestation title and creator.
+ *
+ * @param $ids
+ * @return array
+ */
+function _bibdk_recommender_get_bibliograhpical_data(array $ids) {
+  $params['objectId'] = $ids;
+  $params['includeHoldingsCount'] = FALSE;
+  $params['profile'] = variable_get('ting_search_profile', FALSE);
+  if (!($params['profile'])) {
+    watchdog('ting search carousel', 'search profile is not set - yields no search results', array(), WATCHDOG_ERROR, url('admin/config/ting/settings'));
+  }
+  $params['agency'] = variable_get('ting_agency');
+  if (!($params['agency'])) {
+    watchdog('ting search carousel', 'agency is not set - yields no search results', array(), WATCHDOG_ERROR, url('admin/config/ting/settings'));
+  }
+  $params['objectFormat'] = variable_get('objectFormat', 'briefDisplay');
+
+  $client = new ting_client_class();
+  $result = $client->do_request('object', $params);
+  
+  if (empty($result->collections)) {
+    return array();
+  }
+
+  foreach ($result->collections as $collection) {
+    /* @var $collection TingClientObjectCollection */
+    $manifestation = isset($collection->getFormattedCollection()->getBriefDisplay()->manifestation) ? $collection->getFormattedCollection()->getBriefDisplay()->manifestation : NULL;
+    foreach ($manifestation as $item) {
+      $id = isset($item->identifier->{'$'}) ? $item->identifier->{'$'} : NULL;
+      if ($id) {
+        $items[$id]['creator'] = isset($item->creator->{'$'}) ? $item->creator->{'$'} : NULL;
+        $items[$id]['title'] = isset($item->title->{'$'}) ? $item->title->{'$'} : NULL;
+        $items[$id]['workType'] = isset($item->workType->{'$'}) ? $item->workType->{'$'} : NULL;
+      }
+    }
+  }
+
+  return $items;
+}
+
+
+/**
+ * Constructs Slick carousel recommender markup.
+ *
+ * @see slick_build()
+ */
+function bibdk_recommender_carousel_markup(array $pids = array()) {
+  $slick = array();
+  $numRecords = 10;
+  
+  global $base_url;
+  $path = '/' . drupal_get_path('module', 'bibdk_recommender');
+
+  // Add items.
+  $items = array();
+  $res = open_platform_client_recommender_request($pids, $numRecords);
+  
+  if (empty($res)) {
+    return $wrapper['carousel'] = array(
+      '#type' => 'container',
+      '#attributes' => array(
+        'class' => array('bibdk-recommender-carousel-no-content'),
+      ),
+    );
+  }
+
+  if (!empty($res)) {
+    foreach ($res as $key => $val) {
+      $ids[] = $val->pid;
+    }
+  }
+  
+  $for_tit = _bibdk_recommender_get_bibliograhpical_data($ids);
+
+  foreach ($for_tit as $pid => $val) {
+    $items[$pid]['slide'] = array(
+      '#theme' => 'bibdk_recommender_item',
+      '#pid' => $pid,
+      '#creator' => (!empty($val['creator'])) ? $val['creator'] : NULL,
+      '#title' => (!empty($val['title'])) ? $val['title'] : NULL,
+      '#work_type' => (!empty($val['workType'])) ? $val['workType'] : NULL,
+      '#style' => 'thumbnail',
+    );
+  }
+  
+  // Add options.
+  $options = array(
+    'dots'           => FALSE,
+    'infinite'       => TRUE,
+    'autoplay'       => FALSE,
+    'slidesToShow'   => 6,
+    'slidesToScroll' => 1,
+    'autoplaySpeed'  => 8000,
+    'speed'          => 300,
+    'arrows'         => TRUE,
+    'responsive'     => array(
+      (object) array(
+        'breakpoint' => 840,
+        'settings'   => array(
+          'infinite'       => true,
+          'slidesToShow'   => 4,
+          'slidesToScroll' => 1,
+        ),
+      ),
+    ),
+  );
+
+  // Build the slick.
+  $slick = slick_build($items, $options);
+
+  $wrapper = array(
+    '#type' => 'container',
+    '#attributes' => array(
+      'class' => array('bibdk-recommender-carousel'),
+    ),
+  );
+  
+  $wrapper['header'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+      'class' => array('bibdk-recommender-carousel-header'),
+    ),
+    'span' => array(
+      '#theme' => 'html_tag',
+      '#tag' => 'span',
+      '#value' => t('LABEL_RECOMMENDER_CAROUSEL', array(), array('context' => 'bibdk_recommender')),
+    ),
+  );
+  $wrapper['carousel'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+      'class' => array('bibdk-recommender-carousel-content'),
+    ),
+    'content' => $slick,
+  );
+  return $wrapper;
+}

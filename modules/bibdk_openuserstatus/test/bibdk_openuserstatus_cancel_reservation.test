@@ -32,7 +32,7 @@ class BibdkOpenuserstatusCancelReservationTest extends DrupalWebTestCase {
     $this->baseurl = $base_url;
 /*
     variable_set('openuserstatus_url', $this->baseurl . '/openuserstatus_webservice_mockup/cancel_reservation');
-    variable_set('AgencyRequest_url', 'http://openagency.addi.dk/2.2/');
+    variable_set('AgencyRequest_url', 'http://openagency.addi.dk/2.34/');
     variable_set('AgencyRequest_xsd_url',$this->getAbsoluteUrl('/openagency_webservice/openagency.xsd'));
 */
   }
