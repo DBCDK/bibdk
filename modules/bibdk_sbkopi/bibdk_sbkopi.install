@@ -27,6 +27,12 @@ function bibdk_sbkopi_update_7001() {
   }
 }
 
+function bibdk_sbkopi_update_7002() {
+  variable_set(
+    'bibdk_sbkopi_journal_url',
+    'https://webservice.statsbiblioteket.dk/copydanws/journal'
+  );
+}
 
 
 
