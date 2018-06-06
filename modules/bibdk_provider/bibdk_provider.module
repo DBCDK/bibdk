@@ -283,17 +283,37 @@ function bibdk_provider_user_id_from_voxb_id($voxbid) {
  */
 function bibdk_provider_user_delete($account) {
   if (ding_user_is_provider_user($account)) {
-
+    // delete user on openuserinfo webservice
     try {
       bibdk_provider_user_delete_account($account->mail);
 
       if (variable_get('bibdk_provider_enable_logging')) {
-        watchdog('BIBDK user_delete', $account->mail);
+        watchdog('BIBDK_PROVIDER', 'user_delete:' . $account->mail);
       }
 
       drupal_set_message(t('Your account has been deleted', array(), array('context' => 'bibdk_provider')));
     }
     catch (Exception $e) {
+      watchdog('BIBDK_PROVIDER', 'user_delete failed:' . $e->getMessage(), array(), WATCHDOG_ERROR);
+    }
+    // delete the culr account VIA openuserinfo webservice. Culr user may or may not exist - we have no way of telling,
+    // so simple call the method and assume everything is ok. Log it anyway
+    try{
+      bibdk_provider_delete_culr_user($account->mail);
+
+      if (variable_get('bibdk_provider_enable_logging')) {
+        watchdog('BIBDK_PROVIDER', 'culr_delete:' . $account->mail);
+      }
+    }
+    catch(Exception $e){
+      // different scenarios
+      if($e->getMessage() === 'ACCOUNT_DOES_NOT_EXIST:::Account does not exist'){
+        // this is okey - as stated we hav no way of telling whether account exists in advance or not
+        watchdog('BIBDK_PROVIDER', 'delete curl - no user found:' . $e->getMessage(), array(), WATCHDOG_NOTICE);
+      }
+      else {
+        watchdog('BIBDK_PROVIDER', 'culr_delete failed:' . $e->getMessage(), array(), WATCHDOG_ERROR);
+      }
     }
   }
 }
