@@ -300,7 +300,7 @@ function bibdk_provider_user_create_account($name, $pass) {
 /**
  * @param $name
  * @param $pass
- * @return bool|void
+ * @return bool
  */
 function bibdk_provider_user_update_password($name, $pass) {
   return BibdkUser::instance()->update_password($name, $pass);
@@ -312,6 +312,15 @@ function bibdk_provider_user_update_password($name, $pass) {
  */
 function bibdk_provider_user_delete_account($name) {
   return BibdkUser::instance()->delete($name);
+}
+
+/**
+ * Delete an accoutn on culr (culr.addi.dk) via openuserinfo webservice
+ * @param $name
+ * @return bool
+ */
+function bibdk_provider_delete_culr_user($name){
+  return BibdkUser::instance()->deleteCulrUser($name);
 }
 
 /**
