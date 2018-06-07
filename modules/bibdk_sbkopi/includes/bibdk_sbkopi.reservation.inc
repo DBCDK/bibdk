@@ -117,7 +117,7 @@ function bibdk_sbkopi_user_not_logged_in() {
     '#tag' => 'p',
     '#value' => t('bibdk_sbkopi_user_needs_to_be_logged_in_information', array(), array('context' => 'bibdk_sbkopi')),
   );
-  
+
   // Return a login link
   $render_array['link'] = array(
     '#theme' => 'link',
@@ -265,9 +265,12 @@ function bibdk_sbkopi_messages($pid, TingClientAgencyBranch $branch) {
  * Returns http code 204 if request went well, else it will return http code
  * 4xx or 5xx
  *
- * @param $values
+ * @param $params
+ * @param $url
+ *
  * @return bool
- * @throws SbCurlRequestException
+ * @throws \MicroCURLException
+ * @throws \SbCurlRequestException
  */
 function bibdk_sbkopi_order_request($params, $url) {
   $curl = new SbCurlRequest('placeCopyRequest', $params, 'http://statsbiblioteket.dk/xws/elba-placecopyrequest-schema', $url);

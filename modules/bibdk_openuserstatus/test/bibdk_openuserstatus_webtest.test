@@ -27,13 +27,6 @@ class BibdkOpenuserstatusWebTest extends DrupalWebTestCase {
       'bibdk_mypage'
       )
     );
-    /*
-    variable_set('bibdk_provider_webservice_url', $this->getAbsoluteUrl('bibdk_webservice'));
-    variable_set('bibdk_provider_security_code', 'securityCode');
-    variable_set('openuserstatus_url', $this->getAbsoluteUrl('openuserstatus_webservice_mockup'));
-    variable_set('AgencyRequest_url', $this->getAbsoluteUrl('http://openagency.addi.dk/2.34/'));
-    variable_set('AgencyRequest_xsd_url',$this->getAbsoluteUrl('/openagency_webservice/openagency.xsd'));
-    */
   }
 
   public function tearDown() {

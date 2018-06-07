@@ -21,7 +21,6 @@ class BibdkCartTestCase extends DrupalWebTestCase {
       'bibdk_provider',
       'bibdk_webservice'
     ));
-    variable_set('ting_search_url', 'http://bibdk-prod-ws.dbc.dk/opensearch/3.1/');
     variable_set('bibdk_provider_webservice_url', $this->getAbsoluteUrl('bibdk_webservice'));
     variable_set('bibdk_provider_security_code', 'securityCode');
     variable_set('search_active_modules', array('ting_openformat' => 'ting_openformat'));
