@@ -315,9 +315,11 @@ function bibdk_provider_user_delete_account($name) {
 }
 
 /**
- * Delete an accoutn on culr (culr.addi.dk) via openuserinfo webservice
- * @param $name
+ * Delete an accoutn on culr (culr.addi.dk) via openuserinfo webservice.
+ * @param string $name
+ *   The username to delete
  * @return bool
+ *   True on success false if not
  */
 function bibdk_provider_delete_culr_user($name){
   return BibdkUser::instance()->deleteCulrUser($name);

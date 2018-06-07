@@ -726,7 +726,7 @@ class BibdkUser {
    *
    * @param $name
    */
-  public function deleteCulrUser($name){
+  public function deleteCulrUser($name) {
     $params = array(
       'oui:userId' => $name,
       'oui:outputType' => 'xml',
@@ -734,7 +734,7 @@ class BibdkUser {
     $response = $this->makeRequest('deleteCulrRequest', $params);
     $xmlmessage = $this->responseExtractor($response, 'deleteCulrUserResponse');
 
-    if ($xmlmessage != FALSE && $xmlmessage->nodeName == 'oui:userId') {
+    if ($xmlmessage !== FALSE && $xmlmessage->nodeName == 'oui:userId') {
       return TRUE;
     }
     else {
