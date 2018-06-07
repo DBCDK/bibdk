@@ -43,7 +43,7 @@ function bibdk_sbkopi_ajax_openorder_request($pid, $reservation = FALSE) {
 /**
  * Get sb delivery method
  *
- * @param $issn
+ * @param $pid
  * @return bool|NULL|string
  */
 function bibdk_sbkopi_delivery_method($pid) {
@@ -160,7 +160,6 @@ function bibdk_sbkopi_ajax_parse_response($xml) {
  * Create link render array for sbkopi order flow
  *
  * @param $pid
- * @param $label
  *
  * @return array
  */
