@@ -39,6 +39,7 @@ class BibdkOpenuserstatusTest extends DrupalWebTestCase {
 
     global $base_url;
     $this->baseurl = $base_url;
+    variable_set('openuserstatus_url', $this->getAbsoluteUrl('openuserstatus_webservice_mockup/renew'));
   }
 
   public function tearDown() {

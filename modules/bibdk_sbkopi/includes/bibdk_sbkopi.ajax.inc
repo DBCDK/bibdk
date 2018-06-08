@@ -29,7 +29,7 @@ function bibdk_sbkopi_ajax_get_options() {
    * @param $pid
    * @param bool $reservation
    *
-   * @return array|bool
+   * @return bool|array|string
    */
 function bibdk_sbkopi_ajax_openorder_request($pid, $reservation = FALSE) {
   if ($delivery_method = bibdk_sbkopi_delivery_method($pid)) {
@@ -135,7 +135,19 @@ function bibdk_sbkopi_parse_marcx($response) {
         $url = variable_get('bibdk_sbkopi_journal_url');
         $url .= '?issn=' . str_replace('-', '', $issn);
         $url .= "&date=" . date('Y-m-d');
-        if ($content = file_get_contents($url)) {
+
+        try {
+          $micro = new MicroCURL(array());
+        }
+        catch (\MicroCURLException $e) {
+          watchdog(
+            'bibdk_sbkopi',
+            'sb kopi fejlede %message',
+            array('%message' => $e->getMessage())
+          );
+        }
+
+        if ($content = $micro->get($url)) {
           return simplexml_load_string($content);
         }
       }
