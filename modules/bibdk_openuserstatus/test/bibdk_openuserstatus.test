@@ -32,7 +32,7 @@ class BibdkOpenuserstatusTest extends DrupalWebTestCase {
     global $base_url;
     $this->baseurl = $base_url;
     variable_set('openuserstatus_url', $this->getAbsoluteUrl('openuserstatus_webservice_mockup/renew'));
-    variable_set('AgencyRequest_url', 'http://openagency.addi.dk/2.2/');
+    variable_set('AgencyRequest_url', 'http://openagency.addi.dk/2.34/');
     variable_set('AgencyRequest_xsd_url', $this->getAbsoluteUrl('/openagency_webservice/openagency.xsd'));
   }
 
