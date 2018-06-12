@@ -23,17 +23,23 @@ class BibdkOpenuserstatusTest extends DrupalWebTestCase {
 
   public function setUp() {
     //Note that openuserstatus_webservice_mockup should be enabled in local installation when testing locally
-    module_enable(array('openuserstatus_webservice_mockup'));
     menu_rebuild();
-    parent::setUp('bibdk_openuserstatus', 'ting_agency', 'openagency_webservice_mockup', 'openuserstatus_webservice_mockup', 'ting_openuserstatus', 'ding_provider', 'bibdk_provider', 'bibdk_webservice');
-    variable_set('bibdk_provider_webservice_url', $this->getAbsoluteUrl('bibdk_webservice'));
-    variable_set('bibdk_provider_security_code', 'securityCode');
+    parent::setUp(array(
+      'bibdk_openuserstatus',
+      'ting_agency',
+      'openagency_webservice_mockup',
+      'openuserstatus_webservice_mockup',
+      'ting_openuserstatus',
+      'ding_provider',
+      'bibdk_provider',
+      'bibdk_webservice',
+      'features',
+      'bibdk_webservice_settings_develop'
+    ));
 
     global $base_url;
     $this->baseurl = $base_url;
     variable_set('openuserstatus_url', $this->getAbsoluteUrl('openuserstatus_webservice_mockup/renew'));
-    variable_set('AgencyRequest_url', 'http://openagency.addi.dk/2.34/');
-    variable_set('AgencyRequest_xsd_url', $this->getAbsoluteUrl('/openagency_webservice/openagency.xsd'));
   }
 
   public function tearDown() {

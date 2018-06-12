@@ -18,7 +18,7 @@ class BibdkOpenuserstatusUnitTest extends DrupalUnitTestCase {
 
   public function setUp() {
     module_load_include('module', 'bibdk_openuserstatus', 'bibdk_openuserstatus');
-    parent::setUp('bibdk_openuserstatus');
+    parent::setUp();
   }
   /** TESTING BIBDK_OPENUSERSTATUS.MODULE METHODS **/
   public function test_bibdk_openuserstatus_menu(){
