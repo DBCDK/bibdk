@@ -517,18 +517,36 @@ function bibdk_reservation_prepare_set_user_order_data(&$form_state) {
     $userOrderData['pickUpAgencySubdivision'] = $form_state['values']['subdivision'];
   }
 
-  $userParameters = BibdkReservationOrderObject::GetObject()->getFields()->getUserParameters();
-  foreach ($userParameters as $key => $userParameter) {
+  // bug 21614 userId was overwritten if both cpr and cardno is present.
+  $agency = new TingAgency(
+    BibdkReservationOrderObject::GetObject()->getBranchId()
+  );
+
+  $agency_fields = $agency->getAgencyFields();
+  $user_id = $agency_fields->getUserIdKey();
+
+  foreach ($agency_fields->userParameters as $key => $userParameter) {
+
     $type = $userParameter['type'];
-    if (in_array($type, array('cpr', 'userId', 'cardno', 'customId', 'barcode'))) {
-      if(!empty($form_state['values'][$type])) {
-        $userOrderData['userId'] = $form_state['values'][$type] = str_replace("-", "", $form_state['values'][$type]);
+    if ($user_id === $type) {
+      if (!empty($form_state['values'][$type])) {
+        $userOrderData['userId'] =
+          $form_state['values'][$type] =
+            str_replace("-", "", $form_state['values'][$type]);
       }
     }
-    elseif (isset($form_state['values'][$type])) {
-      $value = (isset($userParameter['field_type']) && $userParameter['field_type'] == 'password') ?
-        preg_replace("/./", "*", $form_state['values'][$type]) : $form_state['values'][$type];
-      $userOrderData[$type] = $value;
+    else if (isset($form_state['values'][$type])) {
+
+      $agencyFields = new AgencyFields(null);
+      $agencyFields->userParameters[$key] = $userParameter;
+      $fields = $agencyFields->getUserIdKey();
+
+      if (!is_null($fields) && !isset($userOrderData['userId'])) {
+        $userOrderData[$type] = $form_state['values'][$type];
+      }
+      else if (is_null($fields)) {
+        $userOrderData[$type] = $form_state['values'][$type];
+      }
     }
   }
 

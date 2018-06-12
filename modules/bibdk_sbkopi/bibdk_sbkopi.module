@@ -16,6 +16,10 @@ function bibdk_sbkopi_ting_client_webservice() {
   $ret = array();
   $ret['statsbib']['class'] = 'bibdk_statsbib';
   $ret['statsbib']['url'] = 'bibdk_statsbib_url';
+
+  $ret['statsbibjournal']['class'] = 'bibdk_sb_journal';
+  $ret['statsbibjournal']['url'] = 'bibdk_statsbibjournal_url';
+
   return $ret;
 }
 
@@ -53,6 +57,16 @@ function bibdk_sbkopi_form_ting_client_admin_webservices_settings_alter(&$form, 
     '#required' => TRUE,
     '#default_value' => variable_get('bibdk_sbkopi_request_pass', FALSE),
   );
+  $form['sbkopi']['hr'] = array(
+    '#markup' => '<hr />'
+  );
+  $form['sbkopi']['bibdk_sbkopi_journal_url'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Url to SB Journal service'),
+    '#description' => t('Url to statsbibliotekets journal service e.g., https://webservice.statsbiblioteket.dk/copydanws/journal'),
+    '#required' => TRUE,
+    '#default_value' => variable_get('bibdk_sbkopi_journal_url', FALSE),
+  );
 }
 
 /**
@@ -89,7 +103,7 @@ function bibdk_sbkopi_menu() {
 /**
  * implements hook_theme().
  */
-function bibdk_sbkopi_theme(){
+function bibdk_sbkopi_theme() {
   $items = array();
   $items['bibdk_sbkopi_button'] = array(
     'variables' => array(
@@ -110,6 +124,7 @@ function bibdk_sbkopi_ting_openformat_actions($type, $entity, $view_mode, $langc
   if ($type == 'bibdkManifestation') {
     // Check for sb link for following types
     $sb_type_list = array('Tidsskriftsartikel', 'Tidsskrift', 'Årbog', 'Periodikum', );
+
     if (in_array($entity->getSubType(), $sb_type_list)) {
       drupal_add_js(drupal_get_path('module', 'bibdk_sbkopi') . '/js/ajaxGetCopyOptions.js');
       $actions['sbkopi'] = array(
@@ -118,7 +133,7 @@ function bibdk_sbkopi_ting_openformat_actions($type, $entity, $view_mode, $langc
         '#value' => '',
         '#attributes' => array(
           'class' => 'bibdk-sb_kopi-replaceme',
-          'pid' => $entity->id
+          'pid' => $entity->id,
         ),
         '#weight' => 0.1,
       );

@@ -14,16 +14,22 @@ class SbCurlRequest extends MicroCURL {
   private $url, $request;
 
   /**
-   * Construct a new request
+   * SbCurlRequest constructor.
    *
    * @param $request
    * @param $parameters
    * @param $xmlns
-   * @param NULL $url
+   * @param null $url
+   *
+   * @throws \MicroCURLException
    */
   public function __construct($request, $parameters, $xmlns, $url = NULL) {
     $this->url = $url;
+    try {
     parent::__construct();
+    } catch (Exception $e) {
+      throw new MicroCURLException($e);
+    }
     $this->setRequest($request, $xmlns);
     $this->setParameters($parameters);
     $this->set_post_xml($this->getPostXml());

@@ -719,6 +719,38 @@ class BibdkUser {
     }
   }
 
+  /**
+   * Function to delete the user on culr. Creation of user on culr is handled from
+   * the provider (OpenUserInfo) - thus deletion of the user should be handled
+   * likewise.
+   *
+   * @param $name
+   */
+  public function deleteCulrUser($name) {
+    $params = array(
+      'oui:userId' => $name,
+      'oui:outputType' => 'xml',
+    );
+    $response = $this->makeRequest('deleteCulrRequest', $params);
+    $xmlmessage = $this->responseExtractor($response, 'deleteCulrUserResponse');
+
+    if($xmlmessage === FALSE){
+      return FALSE;
+    }
+
+    if ($xmlmessage !== FALSE && $xmlmessage->nodeName == 'oui:userId') {
+      return TRUE;
+    }
+    else {
+      if ($xmlmessage->nodeName == 'oui:error') {
+        throw new Exception($xmlmessage->nodeValue);
+      }
+      else {
+        return FALSE;
+      }
+    }
+  }
+
   /** Verify user with wayfid exists
    *
    * @param string $wayfId

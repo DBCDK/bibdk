@@ -8,9 +8,9 @@ function template_preprocess_bibdk_object_cover(&$variables) {
 
   // Quickfix to avoid notices from template_process;
   $variables['classes_array'] = array();
-  $variables['attributes_array'] = NULL;
-  $variables['title_attributes_array'] = NULL;
-  $variables['content_attributes_array'] = NULL;
+  $variables['attributes_array'] = array();
+  $variables['title_attributes_array'] = array();
+  $variables['content_attributes_array'] = array();
 
   $modal_link = array();
 
@@ -22,7 +22,6 @@ function template_preprocess_bibdk_object_cover(&$variables) {
     if ( isset($manifestation->ding_entity_id) ) {
       $local_id_exploded = explode(':', $manifestation->ding_entity_id);
       $work_local_ids[] = $local_id_exploded[1];
-
     }
   }
 
@@ -201,19 +200,5 @@ function template_preprocess_bibdk_object_cover(&$variables) {
     '#href' => '',
     '#options' => $options,
   );
-
-
-  if ( !isset($variables['classes_array']) ) {
-    $variables['classes_array'] = array();
-  }
-  if ( !isset($variables['attributes_array']) ) {
-    $variables['attributes_array'] = array();
-  }
-  if ( !isset($variables['title_attributes_array']) ) {
-    $variables['title_attributes_array'] = array();
-  }
-  if ( !isset($variables['content_attributes_array']) ) {
-    $variables['content_attributes_array'] = array();
-  }
 
 }

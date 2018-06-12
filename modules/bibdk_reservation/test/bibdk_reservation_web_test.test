@@ -94,7 +94,7 @@ class BibdkReservationWebTestCase extends DrupalWebTestCase {
     if (!function_exists('bibdk_reservation_translate')) {
       module_load_include('inc', 'bibdk_reservation', 'includes/bibdk_reservation_helpers');
     }
-    
+
     $message = _ting_openformat_render_direct_link($infocode, $singleUrlManifestation);
     $links = _bibdk_reservation_get_access_links($singleUrlManifestation);
     $this->assertTrue((strpos($message, $links[0]['#openformat_field']['#path']) !== FALSE), 'Found expected links in string');
@@ -147,9 +147,12 @@ class BibdkReservationWebTestCase extends DrupalWebTestCase {
   private function _test_bibdk_reservation_work_reservation_option() {
 
     debug('Testing work reservation checkbox');
-    
+
     // activate reservation module
-    module_enable(array('bibdk_reservation', 'bibdk_sbkopi', 'bibdk_netarchive', 'bibdk_vejviser'));
+    module_enable(array(
+      'bibdk_reservation', 'bibdk_sbkopi', 'bibdk_netarchive', 'bibdk_vejviser'
+
+    ));
     menu_rebuild();
 
     // Test url

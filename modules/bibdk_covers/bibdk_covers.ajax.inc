@@ -37,6 +37,8 @@ function bibdk_covers_objects() {
         drupal_json_output(FALSE);
         drupal_exit();
       }
+      
+      $covers['imageStyle'] = $image_style;
 
       $covers[ $local_id . ':' . 'detailUrl' ] = image_style_url('large', _bibdk_covers_object_path($local_id, 'detailUrl'));
 
