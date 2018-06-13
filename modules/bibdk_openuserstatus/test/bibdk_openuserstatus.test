@@ -23,33 +23,35 @@ class BibdkOpenuserstatusTest extends DrupalWebTestCase {
 
   public function setUp() {
     //Note that openuserstatus_webservice_mockup should be enabled in local installation when testing locally
-    menu_rebuild();
+
     parent::setUp(array(
       'bibdk_openuserstatus',
       'ting_agency',
       'openagency_webservice_mockup',
-      'openuserstatus_webservice_mockup',
+
       'ting_openuserstatus',
       'ding_provider',
       'bibdk_provider',
       'bibdk_webservice',
       'features',
-      'bibdk_webservice_settings_develop'
+      'bibdk_webservice_settings_develop',
+      'bibdk_favourite'
     ));
 
     global $base_url;
     $this->baseurl = $base_url;
+    //module_enable(array('openuserstatus_webservice_mockup'));
     variable_set('openuserstatus_url', $this->getAbsoluteUrl('openuserstatus_webservice_mockup/renew'));
+    menu_rebuild();
   }
 
   public function tearDown() {
-    module_disable(array('openuserstatus_webservice_mockup'));
+    //module_disable(array('openuserstatus_webservice_mockup'));
     parent::tearDown();
   }
 
   public function testRunner() {
     $this->response = unserialize($this->_loadFile('response.serialized'));
-
     //Testing bibdk_openuserstatus.ajax.inc -- unittest'ish
     $this->test_bibdk_openuserstatus_get_loans();
     $this->test_bibdk_openuserstatus_get_loans_table();
@@ -61,8 +63,8 @@ class BibdkOpenuserstatusTest extends DrupalWebTestCase {
     $this->_setSession();
     $this->test_bibdk_openuserstatus_request();
     $this->test_bibdk_openuserstatus_get_favourites_array();
-    //$this->test_bibdk_openuserstatus_get_pickup_agencies();
-    $this->test_bibdk_openuserstatus_renew_marked_submit();
+    $this->test_bibdk_openuserstatus_get_pickup_agencies();
+    //$this->test_bibdk_openuserstatus_renew_marked_submit();
   }
 
   /** TESTING BIBDK_OPENUSERSTATUS.AJAX.INC **/
@@ -159,7 +161,8 @@ class BibdkOpenuserstatusTest extends DrupalWebTestCase {
     $this->assertTrue(is_array($ret), 'Array was returned');
 
     $count = count($ret);
-    $this->assertEqual($count, 8, t('Array length equal 8, got %count', array('%count' => $count)));
+    $this->assertEqual($count, 7, t('Array length equal 7, got %count', array('%count' => $count)));
+
 
     $keys = array(
       '737600',
@@ -174,6 +177,10 @@ class BibdkOpenuserstatusTest extends DrupalWebTestCase {
   }
 
   private function test_bibdk_openuserstatus_renew_marked_submit() {
+
+    module_enable(array('openuserstatus_webservice_mockup'));
+    $this->assertTrue(module_exists('openuserstatus_webservice_mockup'), 'mockup enabled');
+
     $messages = drupal_get_messages();
 
     $form_state = drupal_json_decode($this->_loadFile('form_submit_renew_marked.json'));
@@ -182,6 +189,7 @@ class BibdkOpenuserstatusTest extends DrupalWebTestCase {
 
     $messages = drupal_get_messages();
 
+    debug($messages);
     $this->assertTrue(array_key_exists('error', $messages), 'Found arraykey error in messages array');
 
     $index = 0;
@@ -222,7 +230,8 @@ class BibdkOpenuserstatusTest extends DrupalWebTestCase {
    * @return bool
    */
   private function _keysExists($ret, $keys) {
-    foreach ($keys as $key) {
+    foreach ($keys as $index => $key) {
+      debug($key);
       if (!array_key_exists($key, $ret)) {
         return FALSE;
       }
