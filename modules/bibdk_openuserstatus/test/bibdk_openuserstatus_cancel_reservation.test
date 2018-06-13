@@ -27,11 +27,12 @@ class BibdkOpenuserstatusCancelReservationTest extends DrupalWebTestCase {
       'ting_client',
       'features',
       'bibdk_webservice_settings_develop');
-
     global $base_url;
     $this->baseurl = $base_url;
 
     variable_set('openuserstatus_url', $this->baseurl . '/openuserstatus_webservice_mockup/cancel_reservation');
+
+    menu_rebuild();
   }
 
   public function tearDown(){

@@ -19,8 +19,7 @@ class BibdkOpenuserstatusRenewAllTest extends DrupalWebTestCase {
 
   public function setUp() {
     module_enable(array('openuserstatus_webservice_mockup'));
-    menu_rebuild();
-    //Note that openuserstatus_webservice_mockup should be enabled in local installation when testing locally
+
     parent::setUp(array(
       'bibdk_openuserstatus',
       'ting_agency',
@@ -35,6 +34,7 @@ class BibdkOpenuserstatusRenewAllTest extends DrupalWebTestCase {
     global $base_url;
     $this->baseurl = $base_url;
     variable_set('openuserstatus_url', $this->baseurl . '/openuserstatus_webservice_mockup/renew_all');
+    menu_rebuild();
   }
 
   public function tearDown(){
