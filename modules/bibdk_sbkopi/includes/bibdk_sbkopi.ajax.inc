@@ -51,7 +51,14 @@ function bibdk_sbkopi_delivery_method($pid) {
   // These two functions below are temporary and will be replaced when
   // openformat can handle single field requests.
   $response = bibdk_sbkopi_do_marcxchangeRequest($pid);
-  $xml = bibdk_sbkopi_parse_marcx($response);
+  $issn = bibdk_sbkopi_parse_marcx($response);
+
+  if(!empty($issn)) {
+    $xml = bibdk_sb_kopi_do_article_request($issn);
+  }
+  else{
+    $xml = FALSE;
+  }
 
   if ($xml !== FALSE) {
     if ($delivery_method = bibdk_sbkopi_ajax_parse_response($xml)) {
@@ -91,7 +98,8 @@ function bibdk_sbkopi_do_marcxchangeRequest($pid) {
  *
  * @param $response
  *
- * @return bool|\SimpleXMLElement
+ * @return string
+ *   empty string if nothing found- issn of element if found
  */
 function bibdk_sbkopi_parse_marcx($response) {
   $xml = new SimpleXMLElement(
@@ -103,22 +111,16 @@ function bibdk_sbkopi_parse_marcx($response) {
     $xml->registerXPathNamespace($prefix, $namespace);
   }
 
+  $issn = "";
   if (isset($xml->result->searchResult->collection->object)) {
     $obj = $xml->result->searchResult->collection->object;
-
     $record = $obj->children($namespaces['marcx'])->collection->record;
     if (!empty($record)) {
-      $issn = "";
-
       foreach($record->datafield AS $datafield) {
-
         foreach ($datafield->attributes() AS $key => $value) {
-
           $tagv = $value->__toString();
           if ($key === "tag" && ($tagv === "022" || $tagv === "557")) {
-
             foreach($datafield->subfield AS $subfield) {
-
               if ($tagv === "022"
                 && $subfield->attributes()->code->__toString() === "a") {
                 $issn = $subfield->__toString();
@@ -131,28 +133,37 @@ function bibdk_sbkopi_parse_marcx($response) {
           }
         }
       }
-      if (!empty($issn)) {
-        $url = variable_get('bibdk_sbkopi_journal_url');
-        $url .= '?issn=' . str_replace('-', '', $issn);
-        $url .= "&date=" . date('Y-m-d');
-
-        try {
-          $micro = new MicroCURL(array());
-        }
-        catch (\MicroCURLException $e) {
-          watchdog(
-            'bibdk_sbkopi',
-            'sb kopi fejlede %message',
-            array('%message' => $e->getMessage())
-          );
-        }
-
-        if ($content = $micro->get($url)) {
-          return simplexml_load_string($content);
-        }
-      }
     }
   }
+  return $issn;
+}
+
+/**
+ * Do a request to sbkopi article service - check if given issn is deliverable.
+ *
+ * @param $issn
+ * @return bool|SimpleXMLElement
+ */
+function bibdk_sb_kopi_do_article_request($issn) {
+  $url = variable_get('bibdk_sbkopi_journal_url');
+  $url .= '?issn=' . str_replace('-', '', $issn);
+  $url .= "&date=" . date('Y-m-d');
+
+  try {
+    $micro = new MicroCURL(array());
+  } catch (\MicroCURLException $e) {
+    watchdog(
+      'bibdk_sbkopi',
+      'sb kopi fejlede %message',
+      array('%message' => $e->getMessage())
+    );
+    return FALSE;
+  }
+
+  if ($content = $micro->get($url)) {
+    return simplexml_load_string($content);
+  }
+
   return FALSE;
 }
 
