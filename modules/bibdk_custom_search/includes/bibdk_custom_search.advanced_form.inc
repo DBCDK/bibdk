@@ -87,7 +87,7 @@ function _bibdk_custom_search_add_element($element, &$field, &$default_values) {
   $value = str_replace('.', '_', $element->search_code);
   if (!isset($field[$value])) {
     $field[$value] = array(
-      '#id' => $field['#element_id'],
+      '#id' => drupal_html_id($field['#element_id']),
       '#type' => $element->value_type,
       '#title' => $field['#element_title'],
       '#title_display' => 'attribute',
