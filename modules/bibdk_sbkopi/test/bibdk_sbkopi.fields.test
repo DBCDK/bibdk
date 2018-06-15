@@ -28,6 +28,7 @@ class BibdkSbCopyFieldsUnitTestCase extends DrupalUnitTestCase {
   public function setUp() {
     parent::setUp();
     module_load_include('inc', 'bibdk_sbkopi', 'lib/SbCopyFields');
+    module_load_include('inc', 'bibdk_sbkopi','includes/bibdk_sbkopi.ajax' );
   }
 
   /**
@@ -358,6 +359,14 @@ class BibdkSbCopyFieldsUnitTestCase extends DrupalUnitTestCase {
     );
     $fields = $sb->getFields();
     $this->assertEqual($expected, $fields, 'Fields are overridden');
+  }
+
+  public function testParseMarcx(){
+    $path = drupal_get_path('module', 'bibdk_sbkopi');
+    $xml = file_get_contents($path.'/test/mockup/bid_af_barcelona.xml');
+    $result = bibdk_sbkopi_parse_marcx($xml);
+    $expected = '0047-8199';
+    $this->assertEqual($result, $expected, 'marcx parsed as expected');
   }
 
 }

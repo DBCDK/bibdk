@@ -12,6 +12,17 @@ function bibdk_sbkopi_schema() {
   return $schema;
 }
 
+function bibdk_sbkopi_install() {
+  bibdk_sbkopi_set_vars();
+}
+
+function bibdk_sbkopi_set_vars() {
+  variable_set(
+    'bibdk_sbkopi_journal_url',
+    'https://webservice.statsbiblioteket.dk/copydanws/journal'
+  );
+}
+
 /**
  * Implements hook_update_N().
  *
@@ -28,10 +39,7 @@ function bibdk_sbkopi_update_7001() {
 }
 
 function bibdk_sbkopi_update_7002() {
-  variable_set(
-    'bibdk_sbkopi_journal_url',
-    'https://webservice.statsbiblioteket.dk/copydanws/journal'
-  );
+  bibdk_sbkopi_set_vars();
 }
 
 
