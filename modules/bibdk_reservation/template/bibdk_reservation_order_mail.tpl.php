@@ -8,12 +8,6 @@
 
   print $orderidtext; print " "; print $orderid;
 
-  print "\n\n"; print $userparameter; print "\n\n";
-
-  foreach ($userinfo as $list) :
-    print $list; print "\n";
-  endforeach;
-
   print "\n\n"; print $manifestation; print "\n\n";
 
   print $subtype . "\n";

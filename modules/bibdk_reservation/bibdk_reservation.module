@@ -66,8 +66,6 @@ function bibdk_reservation_theme() {
         'orderid',
         'headertext',
         'orderidtext',
-        'userparameter',
-        'userinfo',
         'manifestation',
         'title',
         'branch',
