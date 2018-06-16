@@ -475,3 +475,29 @@ function bibdk_provider_form_user_pass_reset_alter($form, &$form_state) {
     drupal_goto("user/reset/$user_id/$timestamp/$token/login");
   }
 }
+
+/**
+ * Encrypt some data.
+ *
+ * @param string $data
+ *   The data to encrypt.
+ *
+ * @return string
+ *   Encrypted data.
+ */
+function bibdk_provider_encrypt_data($data) {
+
+}
+
+/**
+ * Decrypt some data.
+ *
+ * @param string $data
+ *   The data to decrypt.
+ *
+ * @return string
+ *   Decrypted data.
+ */
+function bibdk_provider_decrypt_data($data) {
+
+}

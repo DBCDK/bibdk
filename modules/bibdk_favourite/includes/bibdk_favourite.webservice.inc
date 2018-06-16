@@ -111,20 +111,35 @@ function _bibdk_favourite_get_from_webservice() {
   if (empty($creds)) {
     return array();
   }
-  // call openuserinfo webservice
-  $xml = ding_provider_invoke('user', 'get_favourites', $creds['name']);
+
+  // Call openuserinfo webservice encrypted, first try encrupted, then
+  // unencrypted.
+  $encrypted = TRUE;
+  $xml = ding_provider_invoke('user', 'get_favourites', $creds['name'], $encrypted);
   module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.agencies');
   $saved_agencies = bibdk_favourite_parse_agencies($xml);
 
   if (!$saved_agencies) {
+    $encrypted = FALSE;
+    $xml = ding_provider_invoke('user', 'get_favourites', $creds['name'], $encrypted);
+    module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.agencies');
+    $saved_agencies = bibdk_favourite_parse_agencies($xml);
+  }
+
+  if (!$saved_agencies) {
     return array();
   }
+
   $agencies = array();
   foreach ($saved_agencies as $key => $agency) {
     $fav = new TingAgency($agency['oui:agencyId']);
     $branch = $fav->getBranch();
     if (isset($branch)) {
-      $branch->userdata = unserialize($saved_agencies[$key]['oui:userData']);
+      $user_data = $saved_agencies[$key]['oui:userData'];
+      if ($encrypted) {
+        $user_data = bibdk_provider_decrypt_data($user_data);
+      }
+      $branch->userdata = unserialize($user_data);
       $branch->orderLibrary = $saved_agencies[$key]['oui:orderAgency'];
       $agencies[$agency['oui:agencyId']] = $branch;
       $saved_agencies[$key]['agencyBranch'] = $branch;

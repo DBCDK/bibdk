@@ -309,7 +309,12 @@ class BibdkUser {
   /*   * **************  FAVOURITES ************** */
 
   public function setFavourite($username, $agencyid) {
-    $params = array('oui:userId' => $username, 'oui:agencyId' => $agencyid);
+    // Always force encryption on save.
+    $params = array(
+      'oui:userId' => $username,
+      'oui:agencyId' => $agencyid,
+      'oui:encrypted' => 1,
+    );
     $response = $this->makeRequest('setFavouriteRequest', $params);
 
     $xmlmessage = $this->responseExtractor($response, 'setFavouriteResponse');
@@ -531,7 +536,13 @@ class BibdkUser {
    * @return type xml
    */
   public function addFavourite($username, $agencyid) {
-    $params = array('oui:userId' => $username, 'oui:agencyId' => $agencyid);
+    // Always force encryption on save.
+    $params = array(
+      'oui:userId' => $username,
+      'oui:agencyId' => $agencyid,
+      'oui:encrypted' => 1
+    );
+
     $response = $this->makeRequest('addFavouriteRequest', $params);
 
     $xmlmessage = $this->responseExtractor($response, 'addFavouriteResponse');
@@ -568,10 +579,12 @@ class BibdkUser {
   }
 
   public function saveFavouriteData($name, $agencyid, $data) {
+    // Force all data saved to be encrypted.
     $params = array(
       'oui:userId' => $name,
       'oui:agencyId' => $agencyid,
-      'oui:favouriteData' => $data
+      'oui:favouriteData' => bibdk_provider_encrupt_date($data),
+      'oui:encrypted' => 1,
     );
     $response = $this->makeRequest('setFavouriteDataRequest', $params);
 
