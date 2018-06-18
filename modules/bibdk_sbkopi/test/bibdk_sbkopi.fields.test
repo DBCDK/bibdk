@@ -28,19 +28,47 @@ class BibdkSbCopyFieldsUnitTestCase extends DrupalUnitTestCase {
   public function setUp() {
     parent::setUp();
     module_load_include('inc', 'bibdk_sbkopi', 'lib/SbCopyFields');
+    module_load_include('inc', 'bibdk_sbkopi','includes/bibdk_sbkopi.ajax' );
   }
 
   /**
    * Test Default Fields are set and default values added
    */
   public function testDefaultFields() {
-    $default_values = array('customId' => 'testId', 'userAddress' => 'testAdress', 'userMail' => 'test@test.com', 'userTelephone' => '12345678', 'pid' => '870971-tsart:36023422', 'agencyId' => '790900', 'pickupAgencyId' => '790900', 'user_loaner_id' => 'test_id',);
+    $default_values = array(
+      'customId' => 'testId', 'userAddress' => 'testAdress',
+      'userMail' => 'test@test.com', 'userTelephone' => '12345678',
+      'pid' => '870971-tsart:36023422', 'agencyId' => '790900',
+      'pickupAgencyId' => '790900', 'user_loaner_id' => 'test_id'
+    );
     $sb = new SbCopyFields();
     $sb->setDefaultValues($default_values);
 
     $sb->setDefaultFields();
 
-    $expected = array('pid' => array('name' => 'pid', 'title' => 'pid', 'required' => true, 'value' => '870971-tsart:36023422', 'type' => 'value',), 'agencyId' => array('name' => 'agencyId', 'title' => 'agencyId', 'required' => true, 'value' => '790900', 'type' => 'value',), 'pickupAgencyId' => array('name' => 'pickupAgencyId', 'title' => 'pickupAgencyId', 'required' => true, 'value' => '790900', 'type' => 'value',), 'user_loaner_id' => array('name' => 'user_loaner_id', 'title' => 'user_loaner_id', 'required' => true, 'value' => 'test_id', 'type' => 'value',), 'userName' => array('name' => 'userName', 'title' => 'userName', 'required' => true, 'value' => NULL, 'type' => 'textfield',), 'userMail' => array('name' => 'userMail', 'title' => 'userMail', 'required' => true, 'value' => 'test@test.com', 'type' => 'textfield',), 'user_interest_date' => array('name' => 'user_interest_date', 'title' => 'user_interest_date', 'required' => true, 'value' => NULL, 'type' => 'date',),);
+    $expected = array('pid' => array(
+      'name' => 'pid', 'title' => 'pid', 'required' => true,
+      'value' => '870971-tsart:36023422', 'type' => 'value'),
+      'agencyId' => array(
+        'name' => 'agencyId', 'title' => 'agencyId', 'required' => true,
+        'value' => '790900', 'type' => 'value',),
+      'pickupAgencyId' => array(
+        'name' => 'pickupAgencyId', 'title' => 'pickupAgencyId',
+        'required' => true, 'value' => '790900', 'type' => 'value'),
+      'user_loaner_id' => array(
+        'name' => 'user_loaner_id', 'title' => 'user_loaner_id',
+        'required' => true, 'value' => 'test_id', 'type' => 'value'),
+      'userName' => array(
+        'name' => 'userName', 'title' => 'userName', 'required' => true,
+        'value' => NULL, 'type' => 'textfield'),
+      'userMail' => array(
+        'name' => 'userMail', 'title' => 'userMail', 'required' => true,
+        'value' => 'test@test.com', 'type' => 'textfield'),
+      'user_interest_date' => array(
+        'name' => 'user_interest_date', 'title' => 'user_interest_date',
+        'required' => true, 'value' => NULL, 'type' => 'date'
+      )
+    );
     $fields = $sb->getFields();
 
     $this->assertEqual($expected, $fields, 'Fields are correctly set');
@@ -331,6 +359,14 @@ class BibdkSbCopyFieldsUnitTestCase extends DrupalUnitTestCase {
     );
     $fields = $sb->getFields();
     $this->assertEqual($expected, $fields, 'Fields are overridden');
+  }
+
+  public function testParseMarcx(){
+    $path = drupal_get_path('module', 'bibdk_sbkopi');
+    $xml = file_get_contents($path.'/test/mockup/bid_af_barcelona.xml');
+    $result = bibdk_sbkopi_parse_marcx($xml);
+    $expected = '0047-8199';
+    $this->assertEqual($result, $expected, 'marcx parsed as expected');
   }
 
 }

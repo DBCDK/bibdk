@@ -23,17 +23,20 @@ function bibdk_sbkopi_ajax_get_options() {
   drupal_exit();
 }
 
-/**
- * Make request to openorder to check asb delivery method
- * @param $pid
- * @return array|bool|string
- */
-function bibdk_sbkopi_ajax_openorder_request($pid) {
+  /**
+   * Make request to openorder to check asb delivery method
+   *
+   * @param $pid
+   * @param bool $reservation
+   *
+   * @return bool|array|string
+   */
+function bibdk_sbkopi_ajax_openorder_request($pid, $reservation = FALSE) {
   if ($delivery_method = bibdk_sbkopi_delivery_method($pid)) {
     return _bibdk_sb_kopi_get_link($pid);
   }
   else {
-    return FALSE;
+    return ($reservation === TRUE) ? "error" : FALSE;
   }
 }
 
@@ -44,9 +47,26 @@ function bibdk_sbkopi_ajax_openorder_request($pid) {
  * @return bool|NULL|string
  */
 function bibdk_sbkopi_delivery_method($pid) {
-  $xml = bibdk_openorder_do_checkArticleDeliveryRequest($pid);
-  if ($delivery_method = bibdk_sbkopi_ajax_parse_response($xml, $pid)) {
-    return $delivery_method;
+
+  // These two functions below are temporary and will be replaced when
+  // openformat can handle single field requests.
+  $response = bibdk_sbkopi_do_marcxchangeRequest($pid);
+  $issn = bibdk_sbkopi_parse_marcx($response);
+
+  if(!empty($issn)) {
+    $xml = bibdk_sb_kopi_do_article_request($issn);
+  }
+  else{
+    $xml = FALSE;
+  }
+
+  if ($xml !== FALSE) {
+    if ($delivery_method = bibdk_sbkopi_ajax_parse_response($xml)) {
+      return $delivery_method;
+    }
+    else {
+      return FALSE;
+    }
   }
   else {
     return FALSE;
@@ -54,40 +74,115 @@ function bibdk_sbkopi_delivery_method($pid) {
 }
 
 /**
- * Parse response from open order
+ * Parsing response from OpenSearch with marcxchange format.
+ * This is a temporary fix until OpenFormat can deliver single fields.
  *
- * @param $xml
  * @param $pid
- * @return bool|NULL|string
+ *
+ * @return bool|mixed|\stdClass|string
  */
-function bibdk_sbkopi_ajax_parse_response($xml, $pid) {
-  $xpath = _bibdk_sbkopi_set_xpath($xml);
-  if ($xpath === FALSE) {
-    return 'error';
-  }
-  // get articleDeliveryPossible
-  $query = '//ns:articleDeliveryPossible';
-  $nodelist = $xpath->query($query);
-  $possible = isset($nodelist->item(0)->nodeValue) ? $nodelist->item(0)->nodeValue : NULL;
+function bibdk_sbkopi_do_marcxchangeRequest($pid) {
+  $params = array(
+    'objectFormat' => 'marcxchange',
+    'objectId' => array($pid),
+    'outputType' => 'xml',
+  );
 
-// get articleDirect
-  $query = '//ns:articleDirect';
-  $nodelist = $xpath->query($query);
-  $deliver = isset($nodelist->item(0)->nodeValue) ? $nodelist->item(0)->nodeValue : NULL;
+  $tc = new ting_client_class();
+  return $tc->do_request('object', $params, FALSE);
+}
 
-  if ($possible) {
-    return $deliver;
+/**
+ * Parsing response from OpenSearch with marcxchange format.
+ * This is a temporary fix until OpenFormat can deliver single fields.
+ *
+ * @param $response
+ *
+ * @return string
+ *   empty string if nothing found- issn of element if found
+ */
+function bibdk_sbkopi_parse_marcx($response) {
+  $xml = new SimpleXMLElement(
+    $response
+  );
+
+  $namespaces = $xml->getNamespaces(TRUE);
+  foreach($namespaces AS $prefix => $namespace) {
+    $xml->registerXPathNamespace($prefix, $namespace);
   }
-  else {
+
+  $issn = "";
+  if (isset($xml->result->searchResult->collection->object)) {
+    $obj = $xml->result->searchResult->collection->object;
+    $record = $obj->children($namespaces['marcx'])->collection->record;
+    if (!empty($record)) {
+      foreach($record->datafield AS $datafield) {
+        foreach ($datafield->attributes() AS $key => $value) {
+          $tagv = $value->__toString();
+          if ($key === "tag" && ($tagv === "022" || $tagv === "557")) {
+            foreach($datafield->subfield AS $subfield) {
+              if ($tagv === "022"
+                && $subfield->attributes()->code->__toString() === "a") {
+                $issn = $subfield->__toString();
+              }
+              else if ($tagv === "557"
+                && $subfield->attributes()->code->__toString() === "z") {
+                $issn = $subfield->__toString();
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  return $issn;
+}
+
+/**
+ * Do a request to sbkopi article service - check if given issn is deliverable.
+ *
+ * @param $issn
+ * @return bool|SimpleXMLElement
+ */
+function bibdk_sb_kopi_do_article_request($issn) {
+  $url = variable_get('bibdk_sbkopi_journal_url');
+  $url .= '?issn=' . str_replace('-', '', $issn);
+  $url .= "&date=" . date('Y-m-d');
+
+  try {
+    $micro = new MicroCURL(array());
+  } catch (\MicroCURLException $e) {
+    watchdog(
+      'bibdk_sbkopi',
+      'sb kopi fejlede %message',
+      array('%message' => $e->getMessage())
+    );
     return FALSE;
   }
+
+  if ($content = $micro->get($url)) {
+    return simplexml_load_string($content);
+  }
+
+  return FALSE;
+}
+
+/**
+ * Parse response from open order
+ *
+ * @param \SimpleXMLElement $xml
+ *
+ * @return bool|string
+ */
+function bibdk_sbkopi_ajax_parse_response($xml) {
+  $possible = $xml->eDeliveryAllowed->__toString();
+  return ($possible === "true") ? "electronic" : FALSE;
 }
 
 /**
  * Create link render array for sbkopi order flow
  *
  * @param $pid
- * @param $label
  *
  * @return array
  */

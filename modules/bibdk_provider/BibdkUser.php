@@ -734,6 +734,10 @@ class BibdkUser {
     $response = $this->makeRequest('deleteCulrRequest', $params);
     $xmlmessage = $this->responseExtractor($response, 'deleteCulrUserResponse');
 
+    if($xmlmessage === FALSE){
+      return FALSE;
+    }
+
     if ($xmlmessage !== FALSE && $xmlmessage->nodeName == 'oui:userId') {
       return TRUE;
     }
