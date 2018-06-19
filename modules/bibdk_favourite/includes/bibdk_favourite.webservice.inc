@@ -135,11 +135,15 @@ function _bibdk_favourite_get_from_webservice() {
     $fav = new TingAgency($agency['oui:agencyId']);
     $branch = $fav->getBranch();
     if (isset($branch)) {
-      $user_data = $saved_agencies[$key]['oui:userData'];
-      if ($encrypted) {
-        $user_data = bibdk_provider_decrypt_data($user_data);
+      $saved_agencies[$key]['oui:userData'];
+      if ($saved_agencies[$key]['oui:userData'] && $encrypted) {
+        $saved_agencies[$key]['oui:userData'] = bibdk_provider_decrypt_data($saved_agencies[$key]['oui:userData']);
       }
-      $branch->userdata = unserialize($user_data);
+      $user_data = $saved_agencies[$key]['oui:userData'];
+      $branch->userdata = array();
+      if ($user_data) {
+        $branch->userdata = unserialize($user_data);
+      }
       $branch->orderLibrary = $saved_agencies[$key]['oui:orderAgency'];
       $agencies[$agency['oui:agencyId']] = $branch;
       $saved_agencies[$key]['agencyBranch'] = $branch;
@@ -171,8 +175,10 @@ function bibdk_favourite_delete_favourite_from_session($branchId) {
 function _bibdk_favourite_set_agencies() {
   // try to get from webservice
   $agencies = _bibdk_favourite_get_from_webservice();
-  if (!empty($agencies)) {
-    // add agencies to session
+  if (is_array($agencies)) {
+    // Delete old favourites stored in session.
+    $_SESSION['bibdk_favourites'] = array();
+    // Add agencies to session.
     foreach ($agencies as $favourite) {
       bibdk_favourite_add_favourite_to_session($favourite);
     }

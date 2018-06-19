@@ -330,15 +330,20 @@ class BibdkUser {
   /**
    * Get all favourite agencies for a given user
    * @param string $username
+   * @param boolean $encrypted
+   *   If we are getting encrypted data.
    * @return string xml
    */
-  public function getFavourites($username) {
+  public function getFavourites($username, $encrypted = FALSE) {
     static $response;
     if (!empty($response)) {
       return $response;
     }
 
-    $params = array('oui:userId' => $username);
+    $params = array(
+      'oui:userId' => $username,
+      'oui:encrypted' => $encrypted,
+    );
     $response = $this->makeRequest('getFavouritesRequest', $params);
 
     return $response;
@@ -352,6 +357,7 @@ class BibdkUser {
 
     $params = array('oui:userId' => $username);
     $response = $this->makeRequest('getCartRequest', $params);
+
 
     $xmlmessage = $this->responseExtractor($response, 'getCartResponse');
 
@@ -583,7 +589,7 @@ class BibdkUser {
     $params = array(
       'oui:userId' => $name,
       'oui:agencyId' => $agencyid,
-      'oui:favouriteData' => bibdk_provider_encrupt_date($data),
+      'oui:favouriteData' => bibdk_provider_encrypt_data($data),
       'oui:encrypted' => 1,
     );
     $response = $this->makeRequest('setFavouriteDataRequest', $params);
