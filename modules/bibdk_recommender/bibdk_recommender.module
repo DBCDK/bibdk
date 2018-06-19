@@ -33,7 +33,7 @@ function bibdk_recommender_menu() {
     'access callback' => TRUE,
     'expanded' => TRUE,
   );
-  
+
   return $items;
 
 }
@@ -72,7 +72,7 @@ function bibdk_recommender_theme() {
  * Constructs Slick carousel recommender markup.
  * Return JSON output.
  */
-function bibdk_recommender_slick_carousel(string $id = NULL, string $pids = NULL) {
+function bibdk_recommender_slick_carousel($id = NULL, $pids = NULL) {
   $pids = explode(',',$pids);
   drupal_add_library('slick', 'slick');
   $markup = bibdk_recommender_carousel_markup($pids);
@@ -103,7 +103,7 @@ function _bibdk_recommender_get_bibliograhpical_data(array $ids) {
 
   $client = new ting_client_class();
   $result = $client->do_request('object', $params);
-  
+
   if (empty($result->collections)) {
     return array();
   }
@@ -133,14 +133,14 @@ function _bibdk_recommender_get_bibliograhpical_data(array $ids) {
 function bibdk_recommender_carousel_markup(array $pids = array()) {
   $slick = array();
   $numRecords = 10;
-  
+
   global $base_url;
   $path = '/' . drupal_get_path('module', 'bibdk_recommender');
 
   // Add items.
   $items = array();
   $res = open_platform_client_recommender_request($pids, $numRecords);
-  
+
   if (empty($res)) {
     return $wrapper['carousel'] = array(
       '#type' => 'container',
@@ -155,7 +155,7 @@ function bibdk_recommender_carousel_markup(array $pids = array()) {
       $ids[] = $val->pid;
     }
   }
-  
+
   $for_tit = _bibdk_recommender_get_bibliograhpical_data($ids);
 
   foreach ($for_tit as $pid => $val) {
@@ -168,7 +168,7 @@ function bibdk_recommender_carousel_markup(array $pids = array()) {
       '#style' => 'thumbnail',
     );
   }
-  
+
   // Add options.
   $options = array(
     'dots'           => FALSE,
@@ -200,7 +200,7 @@ function bibdk_recommender_carousel_markup(array $pids = array()) {
       'class' => array('bibdk-recommender-carousel'),
     ),
   );
-  
+
   $wrapper['header'] = array(
     '#type' => 'container',
     '#attributes' => array(
