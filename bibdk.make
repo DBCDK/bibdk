@@ -131,7 +131,7 @@ projects[open_saou][download][tag] = 7.x-0.3
 projects[open_platform_client][type] = module
 projects[open_platform_client][download][type] = git
 projects[open_platform_client][download][url] = git@github.com:DBCDK/open_platform_client.git
-projects[open_platform_client][download][tag] = 7.x-1.5
+projects[open_platform_client][download][tag] = 7.x-1.6
 
 projects[cql_strict_parser][type] = module
 projects[cql_strict_parser][download][type] = git

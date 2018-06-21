@@ -15,6 +15,7 @@ function bibdk_heimdal_cron_get_access_token() {
 
   if ($token !== FALSE) {
     variable_set('heimdal_access_token', $token);
+    watchdog('HEIMDAL', 'Heimdal token set to : @TOKEN', array('@TOKEN'=>$token));
   }
   else {
     watchdog('HEIMDAL', 'Cron failed to get new access token', array(), WATCHDOG_ERROR);
