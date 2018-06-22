@@ -14,7 +14,6 @@ function bibdk_gdpr_menu() {
   return $items;
 }
 
-
 /**
  * Create render array for GDPR info page.
  *
@@ -33,7 +32,6 @@ function bibdk_gdpr_callback() {
   drupal_add_css(drupal_get_path('module', 'bibdk_gdpr') . '/css/bibdk_gdpr.css', array('media' => 'all'));
   return $render_array;
 }
-
 
 /**
  * Implements hook_theme().
@@ -55,6 +53,26 @@ function bibdk_gdpr_theme() {
   return $bibdk_gdpr_theme_array;
 }
 
+/**
+ * Implements hook_form_alter().
+ */
+function bibdk_gdpr_form_bibdk_reservation_create_wizard_form_alter(&$form, &$form_state) {
+  if (!empty($form_state['step']) && $form_state['step'] == 2) {
+    if (isset($form['userdata']['userParameters']['userfields']['uncheck'])) {
+      $alter_form = &$form['userdata']['userParameters']['userfields'];
+      global $user;
+      if (!ding_user_is_provider_user($user)) {
+        $alter_form['uncheck']['#weight'] = -99;
+        $alter_form['gdpr'] = array(
+          '#title' => t('Gdpr_consent', array(), array('context' => 'bibdk_gdpr')),
+          '#type' => 'checkbox',
+          '#required' => TRUE,
+          '#weight' => -100,
+        );
+      }
+    }
+  }
+}
 
 /**
  * Implements hook_bibdk_gdpr_items().
@@ -91,10 +109,10 @@ function bibdk_gdpr_bibdk_gdpr_items() {
       '#value' => _bibdk_gdpr_get_ip()
     ),
   );
-  
+
   $form['#user_category'] = 'account';
   if (function_exists('language_negotiation_get')) {
-    // While running tests, locale_language_selector_form() throw an error: 
+    // While running tests, locale_language_selector_form() throw an error:
     //   'Call to undefined function language_negotiation_get()'.
     locale_language_selector_form($form, $form_state, $user);
     foreach ($form['locale']['language']['#options'] as $key => $val) {
@@ -115,7 +133,7 @@ function bibdk_gdpr_bibdk_gdpr_items() {
       }
     }
   }
-  
+
   $items['bibdk_gdpr']['#weight'] = 10;
   $items['bibdk_gdpr']['#header'] = t('label_gdpr_bibdk_gdpr', array(), array('context' => 'bibdk_gdpr'));
   $items['bibdk_gdpr']['#theme'] = 'bibdk_gdpr_item_theme';
