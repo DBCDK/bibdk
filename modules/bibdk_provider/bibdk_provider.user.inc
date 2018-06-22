@@ -182,9 +182,13 @@ function bibdk_provider_user_delete_favourite($name, $agencyid) {
 
 /**
  * Get favourite agencies for given user
- * @param name; userId (email)
+ * @param string name
+ *   The userId (email).
+ * @param boolean $encrypted
+ *   If we are working with encrypted data from OUI.
  *
- * @return array (might be empty)
+ * @return array
+ *   List of all favourites user has.
  */
 function bibdk_provider_user_get_favourites($name, $encrypted = FALSE) {
   return BibdkUser::instance()->getFavourites($name, $encrypted);

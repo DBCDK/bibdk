@@ -112,7 +112,7 @@ function _bibdk_favourite_get_from_webservice() {
     return array();
   }
 
-  // Call openuserinfo webservice encrypted, first try encrupted, then
+  // Call openuserinfo webservice encrypted, first try encrypted, then
   // unencrypted.
   $encrypted = TRUE;
   $xml = ding_provider_invoke('user', 'get_favourites', $creds['name'], $encrypted);
