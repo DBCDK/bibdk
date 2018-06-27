@@ -120,6 +120,7 @@ function bibdk_frontend_setup_cache() {
 function _bibdk_frontend_enable_modules() {
   $modules = array(
     //Features
+    'bibdk_language_settings',
     'bibliotek_dk_administration_menu',
     'bibliotek_dk_search_region',
     'bibdk_custom_search_feature',

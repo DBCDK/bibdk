@@ -43,7 +43,16 @@ class BibdkSbCopyRequestUnitTestCase extends DrupalUnitTestCase {
     );
     $request = 'placeCopyRequest';
     $ns = 'http://statsbiblioteket.dk/xws/elba-placecopyrequest-schema';
+    try {
     $curl = new SbCurlRequest($request, $parameters, $ns);
+    } catch (MicroCURLException $e) {
+      watchdog(
+        'sbKopi',
+        'fejlen er: %fejl',
+        array('%fejl' => $e->getMessage()),
+        WATCHDOG_ERROR
+      );
+    }
 
     $expected_xml = '<?xml version="1.0"?>
 <placeCopyRequest xmlns="http://statsbiblioteket.dk/xws/elba-placecopyrequest-schema"><key>value</key><key2>value2</key2><key3>value3</key3></placeCopyRequest>
