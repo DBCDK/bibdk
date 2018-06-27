@@ -120,7 +120,6 @@ function bibdk_frontend_setup_cache() {
 function _bibdk_frontend_enable_modules() {
   $modules = array(
     //Features
-    'bibdk_language_settings',
     'bibliotek_dk_administration_menu',
     'bibliotek_dk_search_region',
     'bibdk_custom_search_feature',
@@ -147,7 +146,6 @@ function _bibdk_frontend_enable_modules() {
     'bibdk_custom_header_block',
     'bibdk_article_view',
     'bibdk_banner',
-    'bibdk_adhl',
     //Submodule
     'bibdk_modal',
     'bibdk_usersettings_language',
