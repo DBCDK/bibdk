@@ -608,3 +608,7 @@ function bibdk_update_7055() {
   module_enable(array('bibdk_recommender', 'open_platform_client'));
 }
 
+/** Removing ADHL modules */
+function bibdk_update_7056() {
+  module_disable(array('bibdk_adhl', 'open_adhl'));
+}
