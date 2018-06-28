@@ -13,11 +13,11 @@
       $( document, context).ready(function() {
         $('.js-slick-recommender', context).once('slick-recommender').each(function(index, element) {
           Drupal.getSlickRecommender($(this));
-        });        
+        });
       });
     }
   };
-  
+
   // Retrieve Slick Recommender carousel
   Drupal.getSlickRecommender = function(elem) {
     id = elem.attr("id");
@@ -30,7 +30,7 @@
       type: 'POST',
       dataType: 'json',
       async: true,
-      success: Drupal.insertSlickRecommender,
+      success: Drupal.insertSlickRecommender
     });
   };
 
@@ -41,7 +41,7 @@
     }
     var slider = $('#' + slickRecommender.id);
     slider.foundation('reflow').html(slickRecommender.slick);
-    Drupal.attachBehaviors();
+    Drupal.attachBehaviors(slider);
   };
 
 } (jQuery));

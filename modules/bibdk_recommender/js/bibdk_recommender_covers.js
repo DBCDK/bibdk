@@ -11,11 +11,11 @@
       $( document, context).ready(function() {
         $('.bibdk-recommender-cover-placeholder', context).once('bibdk-recommender-cover').each(function(index, element) {
           Drupal.getBibdkCarouselCovers($(this));
-        });        
+        });
       });
     }
   };
-  
+
   // Retrieve  Recommender images
   Drupal.getBibdkCarouselCovers = function(elem) {
     pid   = elem.attr("data-pid");
@@ -29,10 +29,10 @@
       url: Drupal.settings.basePath + Drupal.settings.pathPrefix + 'bibdk/covers',
       type: 'POST',
       data: {
-        coverData: coverData, // ex. array('28917074:detail')
+        coverData: coverData // ex. array('28917074:detail')
       },
       dataType: "json",
-      success: Drupal.insertCarouselCovers,
+      success: Drupal.insertCarouselCovers
     });
 
   };
@@ -51,11 +51,11 @@
       coverInfo = coverInfo.split(':');
       if (coverInfo[2] == style + 'Url') { // thumbnailUrl || detailUrl || backpagePdfUrl
         var img = '<img src="' + url + '" alt=""/>';
-        $('.bibdk-recommender-cover-placeholder[data-pid="' + coverInfo[0] + ':' + coverInfo[1] + '"] .bibdk-recommender-material-type').foundation('reflow').html(img);
-        $('.bibdk-recommender-cover-placeholder[data-pid="' + coverInfo[0] + ':' + coverInfo[1] + '"] .bibdk-recommender-material-type').css('opacity', 1);
+        var element = $('.bibdk-recommender-cover-placeholder[data-pid="' + coverInfo[0] + ':' + coverInfo[1] + '"] .bibdk-recommender-material-type');
+        element.foundation('reflow').html(img);
+        element.css('opacity', 1);
       }
     });
-    Drupal.attachBehaviors();
   };
 
 } (jQuery));
