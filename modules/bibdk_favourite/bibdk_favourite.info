@@ -6,7 +6,6 @@ version = 7.x-0.37
 dependencies[] = ding_provider
 dependencies[] = ting_agency
 dependencies[] = bibdk_borchk
-dependencies[] = shortcode
 
 files[] = test/bibdk_favourite.test
 files[] = test/bibdk_favourite_unit.test
