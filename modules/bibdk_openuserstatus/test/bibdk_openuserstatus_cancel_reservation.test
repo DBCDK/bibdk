@@ -18,15 +18,33 @@ class BibdkOpenuserstatusCancelReservationTest extends DrupalWebTestCase {
   public function setUp() {
     require_once drupal_get_path('module', 'bibdk_openuserstatus') . '/lib/UserStatusResponse.php';
 
+    module_enable(array('openuserstatus_webservice_mockup'));
+    //Note that openuserstatus_webservice_mockup should be enabled in local installation when testing locally
+    parent::setUp('bibdk_openuserstatus');
+    // 'bibdk_openuserstatus', 'ting_agency','openagency_webservice_mockup', 'openuserstatus_webservice_mockup', 'ting_openuserstatus', 'ting_client'
+    global $base_url;
+    $this->baseurl = $base_url;
+
+    variable_set('openuserstatus_url', $this->baseurl . '/openuserstatus_webservice_mockup/cancel_reservation');
+//  variable_set('agency_search_url', 'http://openagency.addi.dk/2.34/');
+    variable_set('agency_search_xsd_url',$this->getAbsoluteUrl('/openagency_webservice/openagency.xsd'));
+
+
+    /***
+
+    parent::setUp(array(
+      'bibdk_openuserstatus',
+    ));
+
+
+
     global $base_url;
     $this->baseurl = $base_url;
 
     variable_set('openuserstatus_url', $this->baseurl . '/openuserstatus_webservice_mockup/cancel_reservation');
 
-//    menu_rebuild();
-
-    parent::setUp();
-
+    menu_rebuild();
+     */
   }
 
   public function tearDown(){
