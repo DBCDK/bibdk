@@ -10,28 +10,25 @@ function bibdk_gdpr_menu() {
     'access arguments' => array('access content'),
     'type' => MENU_LOCAL_TASK,
     'weight' => 80,
+    'file' => 'bibdk_gdpr.pages.inc',
   );
+
+  $items['bibdk-gdpr-consent'] = array(
+    'page callback' => 'bibdk_gdpr_consent_ajax',
+    'access callback' => 'user_is_logged_in',
+    'file' => 'bibdk_gdpr.pages.inc',
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['admin/config/user-interface/bibdk-gdpr'] = array(
+    'title' => 'Bib.dk GDPR configuration',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bibdk_gdpr_settings_form'),
+    'access arguments' => array('administer site configuration'),
+    'file' => 'bibdk_gdpr.admin.inc',
+  );
+
   return $items;
-}
-
-
-/**
- * Create render array for GDPR info page.
- *
- * @return array
- */
-function bibdk_gdpr_callback() {
-  $items = module_invoke_all('bibdk_gdpr_items');
-  uasort($items, 'drupal_sort_weight');
-  $render_array['#theme'] = 'bibdk_gdpr_theme';
-  $render_array['#header'] = t('gdpr_header', array(), array('context' => 'bibdk_gdpr'));
-  $render_array['#intro'] = t('gdpr_intro', array(), array('context' => 'bibdk_gdpr'));
-  $render_array['#extro'] = t('gdpr_extro', array(), array('context' => 'bibdk_gdpr'));
-  $render_array['#values'] = $items;
-  $render_array['#print_button_value'] = t('label_gdpr_print', array(), array('context' => 'bibdk_gdpr'));
-  drupal_add_js(drupal_get_path('module', 'bibdk_gdpr') . '/js/bibdk_gdpr.js');
-  drupal_add_css(drupal_get_path('module', 'bibdk_gdpr') . '/css/bibdk_gdpr.css', array('media' => 'all'));
-  return $render_array;
 }
 
 
@@ -55,6 +52,79 @@ function bibdk_gdpr_theme() {
   return $bibdk_gdpr_theme_array;
 }
 
+/**
+ * Implements hook_user_login().
+ */
+function bibdk_gdpr_user_login(&$edit, $account) {
+  if (ding_user_is_provider_user($account)) {
+    if (empty($_SESSION['bibdk_gdpr_consent'])) {
+      $_SESSION['bibdk_gdpr_consent'] = ding_provider_invoke('user', 'get_gdpr_consent', $account->mail);
+    }
+  }
+}
+
+/**
+ * Implements hook_page_alter().
+ */
+function bibdk_gdpr_page_alter(&$page) {
+  global $user;
+  if (ding_user_is_provider_user($user)) {
+    if (empty($_SESSION['bibdk_gdpr_consent'])) {
+      $text = variable_get('bibdk_gdpr_consent_message', array());
+      if ($text) {
+        $page['content'][] = array(
+          '#attached' => array(
+            'js' => array(drupal_get_path('module', 'bibdk_gdpr') . '/js/bibdk_gdpr.consent.js'),
+          ),
+          '#type' => 'container',
+          '#attributes' => array(
+            'id' => array('bibdk-gdpr-login-modal'),
+            'class' => array('element-hidden'),
+          ),
+          'title' => array(
+            '#type' => 'container',
+            '#attributes' => array(
+              'class' => array('bibdk-modal-header'),
+            ),
+            'content' => array(
+              '#theme' => 'html_tag',
+              '#tag' => 'span',
+              '#value' => t('You have to give consent to continue', array(), array('context' => 'bibdk_gdpr')),
+              '#attributes' => array(
+                'class' => array('bibdk-modal-title'),
+              ),
+            ),
+          ),
+          'inner' => array(
+            '#type' => 'container',
+            '#attributes' => array(
+              'class' => array('bibdk-modal-content bibdk-gdpr-modal-content'),
+            ),
+            'checkbox' => array(
+              '#type' => 'checkbox',
+              '#title' => t('I give consent', array(), array('context' => 'bibdk_gdpr')) . ' ' . '<span class="see-more">' . t('See more', array(), array('context' => 'bibdk_gdpr')) . '</span>',
+              '#id' => 'bibdk-gdpr-consent',
+            ),
+            'message' => array(
+              '#type' => 'container',
+              '#attributes' => array(
+                'class' => array('message'),
+              ),
+              'value' => array(
+                '#markup' => check_markup($text['value'], $text['format']),
+              ),
+            ),
+            'button' => array(
+              '#theme' => 'html_tag',
+              '#tag' => 'button',
+              '#value' => t('Submit', array(), array('context' => 'bibdk_gdpr')),
+            ),
+          ),
+        );
+      }
+    }
+  }
+}
 
 /**
  * Implements hook_bibdk_gdpr_items().
@@ -91,10 +161,10 @@ function bibdk_gdpr_bibdk_gdpr_items() {
       '#value' => _bibdk_gdpr_get_ip()
     ),
   );
-  
+
   $form['#user_category'] = 'account';
   if (function_exists('language_negotiation_get')) {
-    // While running tests, locale_language_selector_form() throw an error: 
+    // While running tests, locale_language_selector_form() throw an error:
     //   'Call to undefined function language_negotiation_get()'.
     locale_language_selector_form($form, $form_state, $user);
     foreach ($form['locale']['language']['#options'] as $key => $val) {
@@ -115,7 +185,7 @@ function bibdk_gdpr_bibdk_gdpr_items() {
       }
     }
   }
-  
+
   $items['bibdk_gdpr']['#weight'] = 10;
   $items['bibdk_gdpr']['#header'] = t('label_gdpr_bibdk_gdpr', array(), array('context' => 'bibdk_gdpr'));
   $items['bibdk_gdpr']['#theme'] = 'bibdk_gdpr_item_theme';
