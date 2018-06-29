@@ -108,7 +108,7 @@ function bibdk_gdpr_page_alter(&$page) {
             'message' => array(
               '#type' => 'container',
               '#attributes' => array(
-                'class' => array('message'),
+                'class' => array('consent-message'),
               ),
               'value' => array(
                 '#markup' => check_markup($text['value'], $text['format']),
