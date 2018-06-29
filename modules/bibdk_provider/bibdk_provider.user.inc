@@ -334,3 +334,31 @@ function bibdk_provider_delete_culr_user($name){
 function bibdk_provider_user_save_favourite_data($name, $agencyid, $data) {
   return BibdkUser::instance()->saveFavouriteData($name, $agencyid, $data);
 }
+
+/**
+ * Get the status of the GDPR consent
+ *
+ * @param string $name
+ *   The ID of users, actually their name but we call it name for consistency.
+ *
+ * @return bool
+ *   True of user is given consent, false otherwise.
+ */
+function bibdk_provider_user_get_gdpr_consent($name) {
+  return BibdkUser::instance()->getGdprConsent($name);
+}
+
+/**
+ * Get the status of the GDPR consent
+ *
+ * @param string $name
+ *   The ID of users, actually their name but we call it name for consistency.
+ * @param boolean $consent
+ *   The consent status to set on user.
+ *
+ * @return bool
+ *   True of user is given consent, false otherwise.
+ */
+function bibdk_provider_user_set_gdpr_consent($name, $consent) {
+  return BibdkUser::instance()->setGdprConsent($name, $consent);
+}
