@@ -37,15 +37,15 @@
 
   Drupal.behaviors.bibdkGdprLoginConsent = {
     attach: function (context) {
-      $('.user-register-form .see-more', context).once().click(function (e) {
+      $('.user-register-form .see-more, .gdpr-consent-wrapper .see-more', context).once().click(function (e) {
         $(this).toggleClass('open');
         if ($(this).hasClass('open')) {
           $(this).text(Drupal.t('See less', {}, {context: 'bibdk_gdpr'}));
-          $(this).parents('.user-register-form').find('.consent-message').slideDown();
+          $(this).parents('.user-register-form, .gdpr-consent-wrapper').find('.consent-message').slideDown();
         }
         else {
           $(this).text(Drupal.t('See more', {}, {context: 'bibdk_gdpr'}));
-          $(this).parents('.user-register-form').find('.consent-message').slideUp();
+          $(this).parents('.user-register-form, .gdpr-consent-wrapper').find('.consent-message').slideUp();
         }
         return false;
       });

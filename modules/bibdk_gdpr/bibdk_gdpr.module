@@ -60,12 +60,30 @@ function bibdk_gdpr_form_bibdk_reservation_create_wizard_form_alter(&$form, &$fo
       $alter_form = &$form['userdata']['userParameters']['userfields'];
       global $user;
       if (!ding_user_is_provider_user($user)) {
+        $text = variable_get('bibdk_gdpr_consent_message', array());
         $alter_form['uncheck']['#weight'] = -99;
         $alter_form['gdpr'] = array(
-          '#title' => t('Gdpr_consent', array(), array('context' => 'bibdk_gdpr')),
-          '#type' => 'checkbox',
-          '#required' => TRUE,
+          '#attached' => array(
+            'js' => array(drupal_get_path('module', 'bibdk_gdpr') . '/js/bibdk_gdpr.consent.js'),
+          ),
+          '#type' => 'container',
+          '#attributes' => array('class' => array('gdpr-consent-wrapper')),
           '#weight' => -100,
+          'checkbox' => array(
+            '#title' => t('I give consent', array(), array('context' => 'bibdk_gdpr')) . ' ' . '<span class="see-more">' . t('See more', array(), array('context' => 'bibdk_gdpr')) . '</span>',
+            '#type' => 'checkbox',
+            '#required' => TRUE,
+          ),
+          'message' => array(
+            '#type' => 'container',
+            '#attributes' => array(
+              'class' => array('consent-message'),
+            ),
+            'value' => array(
+              '#markup' => check_markup($text['value'], $text['format']),
+            ),
+          ),
+
         );
       }
     }
