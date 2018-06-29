@@ -158,7 +158,6 @@ function bibdk_modal_form_user_login_alter(&$form, &$form_state, $form_id) {
   if (!empty($form_state['ajax'])) {
     $form['#action'] = url('bibdk_modal/login');
     $form['actions']['modal_links'] = _bibdk_modal_get_login_form_links();
-    //$form['blogpost'] = _bibdk_modal_get_blog_post_link();
   }
 }
 

@@ -345,9 +345,6 @@ function bibdk_provider_user_save_favourite_data($name, $agencyid, $data) {
  *   True of user is given consent, false otherwise.
  */
 function bibdk_provider_user_get_gdpr_consent($name) {
-  if (!(_bibdk_provider_user_check())) {
-    return FALSE;
-  }
   return BibdkUser::instance()->getGdprConsent($name);
 }
 
@@ -363,8 +360,5 @@ function bibdk_provider_user_get_gdpr_consent($name) {
  *   True of user is given consent, false otherwise.
  */
 function bibdk_provider_user_set_gdpr_consent($name, $consent) {
-  if (!(_bibdk_provider_user_check())) {
-    return FALSE;
-  }
   return BibdkUser::instance()->setGdprConsent($name, $consent);
 }

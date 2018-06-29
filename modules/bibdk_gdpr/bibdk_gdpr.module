@@ -127,6 +127,44 @@ function bibdk_gdpr_page_alter(&$page) {
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function bibdk_gdpr_form_user_register_form_alter(&$form, &$form_state) {
+  $text = variable_get('bibdk_gdpr_consent_message', array());
+  $form['#attributes']['class'][] = 'user-register-form';
+  $form['#attached'] = array(
+    'js' => array(drupal_get_path('module', 'bibdk_gdpr') . '/js/bibdk_gdpr.consent.js'),
+  );
+  $form['bibdk_gdpr_consent'] = array(
+    '#weight' => 99,
+    'bibdk_gdpr_consent' => array(
+      '#type' => 'checkbox',
+      '#title' => t('I give consent', array(), array('context' => 'bibdk_gdpr')) . ' ' . '<span class="see-more">' . t('See more', array(), array('context' => 'bibdk_gdpr')) . '</span>',
+      '#required' => TRUE,
+    ),
+    'message' => array(
+      '#type' => 'container',
+      '#attributes' => array(
+        'class' => array('consent-message'),
+      ),
+      'value' => array(
+        '#markup' => check_markup($text['value'], $text['format']),
+      ),
+    ),
+  );
+  $form['#submit'][] = 'bibdk_gdpr_user_register_submit';
+}
+
+/**
+ * Implements hook_user_insert().
+ */
+function bibdk_gdpr_user_register_submit($form, &$form_state) {
+  if ($form_state['values']['bibdk_gdpr_consent']) {
+    ding_provider_invoke('user', 'set_gdpr_consent', $form_state['values']['mail'], TRUE);
+  }
+}
+
+/**
  * Implements hook_bibdk_gdpr_items().
  *
  * @return array
