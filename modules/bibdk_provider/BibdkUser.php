@@ -600,6 +600,38 @@ class BibdkUser {
   }
 
   /**
+   * Get the status of the GDPR consent
+   *
+   * @param string $name
+   *   The ID of users, actually their name but we call it name for consistency.
+   *
+   * @return bool
+   *   True of user is given consent, false otherwise.
+   */
+  public function getGdprConsent($name) {
+    $params = array('oui:userId' => $name);
+    $response = $this->makeRequest('getGdprConsentRequest', $params);
+    $element = $this->responseExtractor($response, 'getGdprConsentResponse');
+    return (bool) $element->nodeValue;
+  }
+
+  /**
+   * Set the status of the GDPR consent
+   *
+   * @param string $name
+   *   The ID of users, actually their name but we call it name for consistency.
+   *
+   * @return bool
+   *   True if user gave consent, false otherwise.
+   */
+  public function setGdprConsent($name, $consent) {
+    $params = array('oui:userId' => $name, 'oui:consent' => $consent);
+    $response = $this->makeRequest('setGdprConsentRequest', $params);
+    $element = $this->responseExtractor($response, 'setGdprConsentResponse');
+    return (bool) $element->nodeValue;
+  }
+
+  /**
    * Function to logging in a user.
    *
    * @param $name
