@@ -337,11 +337,6 @@ class BibdkUser {
    * @return string xml
    */
   public function getFavourites($username, $encrypted = FALSE) {
-    static $response;
-    if (!empty($response)) {
-      return $response;
-    }
-
     $params = array(
       'oui:userId' => $username,
       'oui:encrypted' => $encrypted,
