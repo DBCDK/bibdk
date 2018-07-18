@@ -309,7 +309,12 @@ class BibdkUser {
   /*   * **************  FAVOURITES ************** */
 
   public function setFavourite($username, $agencyid) {
-    $params = array('oui:userId' => $username, 'oui:agencyId' => $agencyid);
+    // Always force encryption on save.
+    $params = array(
+      'oui:userId' => $username,
+      'oui:agencyId' => $agencyid,
+      'oui:encrypted' => TRUE,
+    );
     $response = $this->makeRequest('setFavouriteRequest', $params);
 
     $xmlmessage = $this->responseExtractor($response, 'setFavouriteResponse');
@@ -324,16 +329,18 @@ class BibdkUser {
 
   /**
    * Get all favourite agencies for a given user
+   *
    * @param string $username
+   * @param boolean $encrypted
+   *   If we are getting encrypted data.
+   *
    * @return string xml
    */
-  public function getFavourites($username) {
-    static $response;
-    if (!empty($response)) {
-      return $response;
-    }
-
-    $params = array('oui:userId' => $username);
+  public function getFavourites($username, $encrypted = FALSE) {
+    $params = array(
+      'oui:userId' => $username,
+      'oui:encrypted' => $encrypted,
+    );
     $response = $this->makeRequest('getFavouritesRequest', $params);
 
     return $response;
@@ -347,6 +354,7 @@ class BibdkUser {
 
     $params = array('oui:userId' => $username);
     $response = $this->makeRequest('getCartRequest', $params);
+
 
     $xmlmessage = $this->responseExtractor($response, 'getCartResponse');
 
@@ -531,7 +539,13 @@ class BibdkUser {
    * @return type xml
    */
   public function addFavourite($username, $agencyid) {
-    $params = array('oui:userId' => $username, 'oui:agencyId' => $agencyid);
+    // Always force encryption on save.
+    $params = array(
+      'oui:userId' => $username,
+      'oui:agencyId' => $agencyid,
+      'oui:encrypted' => TRUE,
+    );
+
     $response = $this->makeRequest('addFavouriteRequest', $params);
 
     $xmlmessage = $this->responseExtractor($response, 'addFavouriteResponse');
@@ -568,14 +582,48 @@ class BibdkUser {
   }
 
   public function saveFavouriteData($name, $agencyid, $data) {
+    // Force all data saved to be encrypted.
     $params = array(
       'oui:userId' => $name,
       'oui:agencyId' => $agencyid,
-      'oui:favouriteData' => $data
+      'oui:favouriteData' => bibdk_provider_encrypt_data($data),
+      'oui:encrypted' => TRUE,
     );
     $response = $this->makeRequest('setFavouriteDataRequest', $params);
 
     return $response;
+  }
+
+  /**
+   * Get the status of the GDPR consent
+   *
+   * @param string $name
+   *   The ID of users, actually their name but we call it name for consistency.
+   *
+   * @return bool
+   *   True of user is given consent, false otherwise.
+   */
+  public function getGdprConsent($name) {
+    $params = array('oui:userId' => $name);
+    $response = $this->makeRequest('getGdprConsentRequest', $params);
+    $element = $this->responseExtractor($response, 'getGdprConsentResponse');
+    return (bool) $element->nodeValue;
+  }
+
+  /**
+   * Set the status of the GDPR consent
+   *
+   * @param string $name
+   *   The ID of users, actually their name but we call it name for consistency.
+   *
+   * @return bool
+   *   True if user gave consent, false otherwise.
+   */
+  public function setGdprConsent($name, $consent) {
+    $params = array('oui:userId' => $name, 'oui:consent' => $consent);
+    $response = $this->makeRequest('setGdprConsentRequest', $params);
+    $element = $this->responseExtractor($response, 'setGdprConsentResponse');
+    return (bool) $element->nodeValue;
   }
 
   /**

@@ -475,3 +475,43 @@ function bibdk_provider_form_user_pass_reset_alter($form, &$form_state) {
     drupal_goto("user/reset/$user_id/$timestamp/$token/login");
   }
 }
+
+/**
+ * Encrypt some data.
+ *
+ * @param string $data
+ *   The data to encrypt.
+ *
+ * @return string
+ *   Encrypted data.
+ */
+function bibdk_provider_encrypt_data($data) {
+  $method = variable_get('bibdk_provider_encrypt_method', 'AES-256-CBC');
+  // Random 32 bytes, should be generated for each request for this to be
+  // secure, but we just want to not store personalized data, not make
+  // something 100% bulletproof.
+  $key = variable_get('bibdk_provider_encrypt_key', '');
+  // Random 16 bytes (based on method), should actually not be reused with same key.
+  $iv = variable_get('bibdk_provider_encrypt_key', '');
+  return openssl_encrypt($data, $method, hex2bin($key), 0, hex2bin($iv));
+}
+
+/**
+ * Decrypt some data.
+ *
+ * @param string $data
+ *   The data to decrypt.
+ *
+ * @return string
+ *   Decrypted data.
+ */
+function bibdk_provider_decrypt_data($data) {
+  $method = variable_get('bibdk_provider_encrypt_method', 'AES-256-CBC');
+  // Random 32 bytes, should be generated for each request for this to be
+  // secure, but we just want to not store personalized data, not make
+  // something 100% bulletproof.
+  $key = variable_get('bibdk_provider_encrypt_key', '');
+  // Random 16 bytes (based on method), should actually not be reused with same key.
+  $iv = variable_get('bibdk_provider_encrypt_key', '');
+  return openssl_decrypt($data, $method, hex2bin($key), 0, hex2bin($iv));
+}

@@ -101,8 +101,6 @@ function bibdk_reservation_mail($key, &$message, $params) {
       'headertext' => t('Your order is complete', array(), array('context' => 'bibdk_reservation')),
       'orderidtext' => t('Your order ID', array(), array('context' => 'bibdk_reservation')),
       'orderid' => BibdkReservationOrderObject::GetObject()->getOrderId(),
-      'userparameter' => t('User Parameters', array(), array('context' => 'bibdk_reservation')),
-      'userinfo' => bibdk_reservation_mail_user(),
       'manifestation' => t('Manifestation', array(), array('context' => 'bibdk_reservation')),
       'subtype' => $manifestation->getSubType(),
       'title' => $manifestation->getTitleSpecific(),
@@ -222,26 +220,5 @@ function bibdk_reservation_mail_title(Manifestation $manifestation) {
     'author' => $author,
     'type' => $type,
   );
-
-}
-
-/**
- * Implements userformating for email and return array with userinformation
- */
-function bibdk_reservation_mail_user() {
-
-  $user_data_array = BibdkReservationOrderObject::GetObject()->getUserData();
-  if (isset($user_data_array)) {
-    $arrycount = 0;
-    $rows[] = array();
-    foreach ($user_data_array as $key => $value) {
-      $rows[$arrycount] = $rows[$arrycount] = t($key, array(), array('context' => 'bibdk_reservation')) . "  \t" . $value;
-      $arrycount = $arrycount + 1;
-    }
-
-    return $rows;
-  }
-
-  return NULL;
 
 }

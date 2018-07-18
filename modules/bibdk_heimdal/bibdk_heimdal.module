@@ -78,11 +78,11 @@ function bibdk_heimdal_menu() {
 }
 
 /**
- * Umplements hook_jnit
+ * Umplements hook_init
  *
- * when user is in a login flow he might be redirected to an arbitrary
+ * When user is in a login flow he might be redirected to an arbitrary
  * page, where a modal should open - this one adds appropiate javascript
- * to run
+ * to run.
  */
 function bibdk_heimdal_init() {
   if(isset($_GET['message'])){

@@ -1,0 +1,35 @@
+<?php
+
+/**
+ * @file
+ * Install and update hooks for bibdk_gdpr module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function bibdk_gdpr_install() {
+  // We need bibdk_gdpr to act later than most modules.
+  db_update('system')
+    ->fields(array(
+      'weight' => 11,
+    ))
+    ->condition('type', 'module')
+    ->condition('name', 'bibdk_gdpr')
+    ->execute();
+}
+
+/**
+ * Tweak weight according to install hook.
+ */
+function bibdk_gdpr_update_7001(&$sandbox) {
+  db_update('system')
+    ->fields(array(
+      'weight' => 11,
+    ))
+    ->condition('type', 'module')
+    ->condition('name', 'bibdk_gdpr')
+    ->execute();
+}
+
+
