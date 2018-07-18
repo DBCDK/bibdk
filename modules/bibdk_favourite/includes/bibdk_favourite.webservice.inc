@@ -114,7 +114,7 @@ function _bibdk_favourite_get_from_webservice() {
 
   // Call openuserinfo webservice encrypted, first try encrypted, then
   // unencrypted.
-  $encrypted = TRUE;
+  $encrypted = FALSE;
   $xml = ding_provider_invoke('user', 'get_favourites', $creds['name'], $encrypted);
   module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.agencies');
   $saved_agencies = bibdk_favourite_parse_agencies($xml);
