@@ -582,11 +582,13 @@ class BibdkUser {
   }
 
   public function saveFavouriteData($name, $agencyid, $data, $encrypted = FALSE) {
+    if ($encrypted) {
+      $data = bibdk_provider_encrypt_data($data);
+    }
     // Force all data saved to be encrypted.
     $params = array(
       'oui:userId' => $name,
       'oui:agencyId' => $agencyid,
-      //'oui:favouriteData' => bibdk_provider_encrypt_data($data),
       'oui:favouriteData' => $data,
       'oui:encrypted' => $encrypted,
     );
