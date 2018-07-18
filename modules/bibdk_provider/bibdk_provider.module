@@ -493,7 +493,10 @@ function bibdk_provider_encrypt_data($data) {
   $key = variable_get('bibdk_provider_encrypt_key', '');
   // Random 16 bytes (based on method), should actually not be reused with same key.
   $iv = variable_get('bibdk_provider_encrypt_iv', '');
-  return openssl_encrypt($data, $method, hex2bin($key), 0, hex2bin($iv));
+  // this one is for php > 5.4
+  //return openssl_encrypt($data, $method, hex2bin($key), 0, hex2bin($iv));
+  // apparently this one works for php < 5.4
+  return openssl_encrypt($data, $method, pack("H*", $key), 0, pack("H*", $iv));
 }
 
 /**
@@ -513,5 +516,8 @@ function bibdk_provider_decrypt_data($data) {
   $key = variable_get('bibdk_provider_encrypt_key', '');
   // Random 16 bytes (based on method), should actually not be reused with same key.
   $iv = variable_get('bibdk_provider_encrypt_iv', '');
-  return openssl_decrypt($data, $method, hex2bin($key), 0, hex2bin($iv));
+  // this one is for php > 5.4
+  //return openssl_decrypt($data, $method, hex2bin($key), 0, hex2bin($iv));
+  // apparently this one works for php < 5.4
+  return openssl_decrypt($data, $method, pack("H*", $key), 0, pack("H*", $iv));
 }
