@@ -7,13 +7,11 @@
 // @codingStandardsIgnoreStart
 (function($) {
 
-  // Attach behaviour
+  // Attach Slick Recommender.
   Drupal.behaviors.initRecommenderExample = {
     attach: function(context) {
-      $( document, context).ready(function() {
-        $('.js-slick-recommender', context).once('slick-recommender').each(function(index, element) {
-          Drupal.getSlickRecommender($(this));
-        });
+      $('.js-slick-recommender', context).once('slick-recommender').each(function(index, element) {
+        Drupal.getSlickRecommender($(this));
       });
     }
   };

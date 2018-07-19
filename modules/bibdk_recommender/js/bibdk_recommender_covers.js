@@ -5,12 +5,35 @@
 */
 // ?>
 (function($) {
+  
+  var BibdkRecommenderBehavior = {};
+  // BibdkRecommenderBehavior.fields = {};
+  
   // Attach behaviour
   Drupal.behaviors.bibdkCarouselCovers = {
     attach: function(context) {
       $( document, context).ready(function() {
         $('.bibdk-recommender-cover-placeholder', context).once('bibdk-recommender-cover').each(function(index, element) {
           Drupal.getBibdkCarouselCovers($(this));
+          $(this).click(function(event) {
+            var selected = $(this).attr('data-pid');
+            BibdkRecommenderBehavior.selected = selected;
+            var pids = $(this).closest('.js-slick-recommender').attr('data-uids').split(",");
+            BibdkRecommenderBehavior.pids = pids;
+            var recommendations = [];
+            $(this).closest('.slick-track').find('.bibdk-recommender-cover-placeholder').each(function(index, element) {
+              recommendations.push($(this).attr('data-pid'));
+            });
+            BibdkRecommenderBehavior.result = unique(recommendations);
+            var url = Drupal.settings.basePath + Drupal.settings.pathPrefix + 'bibdk/behaviour/recommender/';
+            var request = $.ajax({
+              url: url,
+              method: "POST",
+              data: { recomole: BibdkRecommenderBehavior },
+              dataType: 'json',
+              async: false, // Or the call is not sent.
+            });
+          });
         });
       });
     }
@@ -57,5 +80,11 @@
       }
     });
   };
+  
+  function unique(array) {
+    return $.grep(array, function(el, index) {
+        return index === $.inArray(el, array);
+    });
+  }
 
 } (jQuery));

@@ -34,6 +34,14 @@ function bibdk_recommender_menu() {
     'expanded' => TRUE,
   );
 
+  $items['bibdk/behaviour/recommender'] = array(
+    'title' => 'Bibliotek.dk recommender behaviour',
+    'description' => 'Recommender behaviour callback',
+    'page callback' => 'bibdk_recommender_behaviour_callback',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
   return $items;
 
 }
@@ -219,5 +227,19 @@ function bibdk_recommender_carousel_markup(array $pids = array()) {
     ),
     'content' => $slick,
   );
+  
+  // For behaviour log.
+  $behaviour_data['recomole']['pids'] = $pids;
+  $behaviour_data['recomole']['result'] = $ids;
+  module_invoke_all('bibdk_behaviour_request', $behaviour_data);
+  
   return $wrapper;
+}
+
+/**
+ * Callback for recommender behaviour.
+ */
+function bibdk_recommender_behaviour_callback() {
+  $behaviour_data = $_POST;
+  module_invoke_all('bibdk_behaviour_request', $behaviour_data);
 }
