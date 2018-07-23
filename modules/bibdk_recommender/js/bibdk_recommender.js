@@ -20,13 +20,17 @@
 
   // Retrieve Slick Recommender carousel
   Drupal.getSlickRecommender = function(elem) {
-    id = elem.attr("id");
-    pids = elem.attr("data-uids");
+    var id = elem.attr("id");
+    var pids = elem.attr("data-recomole-pids");
+    var filters = elem.attr("data-recomole-types");
     if (id === undefined || pids === undefined) {
       return;
     }
+    if (filters === undefined) {
+      filters = null;
+    }
     request = $.ajax({
-      url: Drupal.settings.basePath + Drupal.settings.pathPrefix + 'bibdk_recommender/ajax/slick_carousel/' + id + '/' + pids,
+      url: Drupal.settings.basePath + Drupal.settings.pathPrefix + 'bibdk_recommender/ajax/slick_carousel/' + id + '/' + pids + '/' + filters,
       type: 'POST',
       dataType: 'json',
       async: true,

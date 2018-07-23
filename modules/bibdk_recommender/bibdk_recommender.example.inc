@@ -35,7 +35,7 @@ function bibdk_recommender_example() {
   $id = drupal_clean_css_identifier("slick-recommender-" . md5(implode(',', $pids)));
   $markup = '<div class="js-slick-recommender"
     id="' . $id . '"
-    data-uids="' . implode(',', $pids) . '"></div>';
+    data-pids="' . implode(',', $pids) . '"></div>';
   
   $slick_example['foo']['#markup'] = '<p>.js-slick-recommender will be replaced by AJAX response.</p><code>' . htmlentities($markup) . '</code><hr>';
   $slick_example['bar']['#markup'] = $markup;
