@@ -153,10 +153,10 @@ function bibdk_recommender_carousel_markup(array $pids = array(), array $types =
   // simplified parameters
   $params = array(
     'like' => $pids,
-    'limit' => 10,
+    'limit' => variable_get('bibdk_recommender_limit', 10),
     'offset' => 0,
     'filters' => array(
-      'authorFlood' => 3,
+      'authorFlood' => variable_get('bibdk_recommender_filters_authorflood', 3),
       'type' => $types,
     ),
   );
@@ -242,7 +242,15 @@ function bibdk_recommender_carousel_markup(array $pids = array(), array $types =
   );
   
   // For behaviour log.
-  $behaviour_data['recomole']['pids'] = $pids;
+  foreach ($params as $key => $param) {
+    if ($key == 'filters') {
+      foreach ($param as $key2 => $val) {
+        $behaviour_data['recomole']['filters_' . $key2] = $val;
+      }
+      continue;
+    }
+    $behaviour_data['recomole'][$key] = $param;
+  }
   $behaviour_data['recomole']['result'] = $ids;
   module_invoke_all('bibdk_behaviour_request', $behaviour_data);
   
@@ -254,5 +262,6 @@ function bibdk_recommender_carousel_markup(array $pids = array(), array $types =
  */
 function bibdk_recommender_behaviour_callback() {
   $behaviour_data = $_POST;
+dpm($behaviour_data);  
   module_invoke_all('bibdk_behaviour_request', $behaviour_data);
 }
