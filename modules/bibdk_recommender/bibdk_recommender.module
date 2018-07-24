@@ -261,6 +261,11 @@ function bibdk_recommender_carousel_markup(array $pids = array(), array $types =
  * Callback for recommender behaviour.
  */
 function bibdk_recommender_behaviour_callback() {
-  $behaviour_data = $_POST;
+  $behaviour_data = array();
+  if (array_key_exists('navigator_sendBeacon', $_POST)) {
+    $behaviour_data['recomole'] = json_decode($_POST['navigator_sendBeacon'], true);
+  } elseif (array_key_exists('ajax', $_POST)) {
+    $behaviour_data['recomole'] = $_POST['ajax'];
+  }
   module_invoke_all('bibdk_behaviour_request', $behaviour_data);
 }
