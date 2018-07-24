@@ -15,7 +15,7 @@
         $('.bibdk-recommender-cover-placeholder', context).once('bibdk-recommender-cover').each(function(index, element) {
           Drupal.getBibdkCarouselCovers($(this));
         });
-        $( ".bibdk-recommender-carousel .slick__slide" ).on( "click", "a", function() {
+        $( ".bibdk-recommender-carousel .slick__slide" ).on( "click", ".slide__content", function() {
           Drupal.setBibdkCarouselOnclick($(this));
         })
       });
@@ -41,13 +41,12 @@
     });
     BibdkRecommenderBehavior.result = unique(recommendations);
     var url = Drupal.settings.basePath + Drupal.settings.pathPrefix + 'bibdk/behaviour/recommender/';
-console.log(BibdkRecommenderBehavior);
     var request = $.ajax({
       url: url,
       method: "POST",
       data: { recomole: BibdkRecommenderBehavior },
       dataType: 'json',
-      async: true,
+      async: false, // Or page may reload before request is sent.
     });
   };
   

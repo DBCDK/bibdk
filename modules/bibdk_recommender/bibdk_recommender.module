@@ -262,6 +262,5 @@ function bibdk_recommender_carousel_markup(array $pids = array(), array $types =
  */
 function bibdk_recommender_behaviour_callback() {
   $behaviour_data = $_POST;
-dpm($behaviour_data);  
   module_invoke_all('bibdk_behaviour_request', $behaviour_data);
 }
