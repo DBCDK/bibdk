@@ -103,6 +103,7 @@
     });
   };
   
+  // Removes duplicate values from an array.
   function unique(array) {
     return $.grep(array, function(el, index) {
         return index === $.inArray(el, array);

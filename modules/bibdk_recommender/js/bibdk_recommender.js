@@ -21,10 +21,10 @@
     var id = elem.attr("id");
     var pids = elem.attr("data-recomole-pids");
     var filters = elem.attr("data-recomole-types");
-    if (id === undefined || pids === undefined) {
+    if (!id || !pids) {
       return;
     }
-    if (filters === undefined) {
+    if (!filters) {
       filters = null;
     }
     request = $.ajax({
