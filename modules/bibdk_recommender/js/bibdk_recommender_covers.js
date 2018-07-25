@@ -16,7 +16,6 @@
           Drupal.getBibdkCarouselCovers($(this));
         });
         $( ".bibdk-recommender-carousel .slick__slide" ).on( "click", ".slide__content", function(event) {
-          event.preventDefault();
           Drupal.setBibdkCarouselOnclick($(this));
         })
       });
@@ -44,7 +43,7 @@
     
     var url = Drupal.settings.basePath + Drupal.settings.pathPrefix + 'bibdk/behaviour/recommender/';
     
-    // navigator.sendBeacon is a new method introduced by browsers that solves the problem of sending data to server on document unload. 
+    // navigator.sendBeacon is a new method that solves the problem of sending data to server on document unload. 
     // Data is transmitted asynchronously without affecting loading performance of the next page
     // There are browser compatibilty issues: Firefox, Chrome, Opera & Edge support it. Safari and IE don't support it.
     if (navigator.sendBeacon) {
