@@ -18,11 +18,11 @@ function bibdk_recommender_menu() {
 
   $items = array();
 
-  $items['bibdk_recommender/ajax/slick_carousel/%/%'] = array(
+  $items['bibdk_recommender/ajax/slick_carousel/%/%/%'] = array(
     'title' => 'Show recommender results',
     'page callback' => 'bibdk_recommender_slick_carousel',
     'access arguments' => array('access content'),
-    'page arguments' => array(3, 4),
+    'page arguments' => array(3, 4, 5),
     'type' => MENU_CALLBACK,
   );
 
@@ -32,6 +32,14 @@ function bibdk_recommender_menu() {
     'page callback' => 'bibdk_recommender_example',
     'access callback' => TRUE,
     'expanded' => TRUE,
+  );
+
+  $items['bibdk/behaviour/recommender'] = array(
+    'title' => 'Bibliotek.dk recommender behaviour',
+    'description' => 'Recommender behaviour callback',
+    'page callback' => 'bibdk_recommender_behaviour_callback',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
   );
 
   return $items;
@@ -72,10 +80,15 @@ function bibdk_recommender_theme() {
  * Constructs Slick carousel recommender markup.
  * Return JSON output.
  */
-function bibdk_recommender_slick_carousel($id = NULL, $pids = NULL) {
+function bibdk_recommender_slick_carousel($id = NULL, $pids = NULL, $types = NULL ) {
+  if ($pids == NULL) {
+    drupal_json_output(array('id' => $id, 'slick' => ''));
+    drupal_exit();
+  }
   $pids = explode(',',$pids);
+  $types = ($types == NULL) ? array() : explode(',', $types);
   drupal_add_library('slick', 'slick');
-  $markup = bibdk_recommender_carousel_markup($pids);
+  $markup = bibdk_recommender_carousel_markup($pids, $types);
   $content = drupal_render($markup);
   drupal_json_output(array('id' => $id, 'slick' => $content));
   drupal_exit();
@@ -130,16 +143,24 @@ function _bibdk_recommender_get_bibliograhpical_data(array $ids) {
  *
  * @see slick_build()
  */
-function bibdk_recommender_carousel_markup(array $pids = array()) {
-  $slick = array();
-  $numRecords = 10;
-
+function bibdk_recommender_carousel_markup(array $pids = array(), array $types = array()) {
   global $base_url;
-  $path = '/' . drupal_get_path('module', 'bibdk_recommender');
 
-  // Add items.
   $items = array();
-  $res = open_platform_client_recommender_request($pids, $numRecords);
+  $slick = array();
+  $path = '/' . drupal_get_path('module', 'bibdk_recommender');
+  
+  // simplified parameters
+  $params = array(
+    'like' => $pids,
+    'limit' => variable_get('bibdk_recommender_limit', 10),
+    'offset' => 0,
+    'filters' => array(
+      'authorFlood' => variable_get('bibdk_recommender_filters_authorflood', 3),
+      'type' => $types,
+    ),
+  );
+  $res = open_platform_client_recommender_request($params);
 
   if (empty($res)) {
     return $wrapper['carousel'] = array(
@@ -219,5 +240,32 @@ function bibdk_recommender_carousel_markup(array $pids = array()) {
     ),
     'content' => $slick,
   );
+  
+  // For behaviour log.
+  foreach ($params as $key => $param) {
+    if ($key == 'filters') {
+      foreach ($param as $key2 => $val) {
+        $behaviour_data['recomole']['filters_' . $key2] = $val;
+      }
+      continue;
+    }
+    $behaviour_data['recomole'][$key] = $param;
+  }
+  $behaviour_data['recomole']['result'] = $ids;
+  module_invoke_all('bibdk_behaviour_request', $behaviour_data);
+  
   return $wrapper;
+}
+
+/**
+ * Callback for recommender behaviour.
+ */
+function bibdk_recommender_behaviour_callback() {
+  $behaviour_data = array();
+  if (array_key_exists('navigator_sendBeacon', $_POST)) {
+    $behaviour_data['recomole'] = json_decode($_POST['navigator_sendBeacon'], true);
+  } elseif (array_key_exists('ajax', $_POST)) {
+    $behaviour_data['recomole'] = $_POST['ajax'];
+  }
+  module_invoke_all('bibdk_behaviour_request', $behaviour_data);
 }
