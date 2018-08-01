@@ -73,7 +73,7 @@ function _get_bibdk_subject_hierarchy_searchresult_index($hierarchy, $searchterm
     $current_level_index[] = $key;
 
     // if item contains $searchterm
-    if ( isset($item['ord']) && strripos($item['ord'], $searchterm) !== FALSE ) {
+    if ( isset($item['ord']) && mb_strripos($item['ord'], $searchterm) !== FALSE ) {
       $hierarchy_level_index_string = implode(',', $hierarchy_level_index);
       $current_level_index_string = implode(',', $current_level_index);
       $results[$hierarchy_level_index_string][] = $current_level_index_string;
