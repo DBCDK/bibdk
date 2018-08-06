@@ -27,7 +27,7 @@ libraries[slick][download][tag] = '1.8.0'
 projects[bibdk_theme][type] = theme
 projects[bibdk_theme][download][type] = git
 projects[bibdk_theme][download][url] = git@github.com:DBCDK/bibdk_theme.git
-projects[bibdk_theme][download][tag] = 7.x-1.5
+projects[bibdk_theme][download][tag] = 7.x-1.6
 
 
 ; --- Bibliotek.dk versions of Ding2 modules ---
