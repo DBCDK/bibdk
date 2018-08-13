@@ -147,7 +147,6 @@ function _bibdk_frontend_enable_modules() {
     'bibdk_custom_header_block',
     'bibdk_article_view',
     'bibdk_banner',
-    'bibdk_adhl',
     //Submodule
     'bibdk_modal',
     'bibdk_usersettings_language',
