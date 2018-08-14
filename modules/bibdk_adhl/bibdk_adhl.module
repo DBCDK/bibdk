@@ -1,0 +1,179 @@
+<?php
+
+module_load_include('inc', 'bibdk_adhl', 'bibdk_adhl.worktabs');
+
+/**
+ * Implements hook_menu
+ */
+function bibdk_adhl_menu() {
+  $items['adhl/ajax'] = array(
+    'page callback' => 'bibdk_adhl_ajax_get_recommendations',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+    'file' => 'bibdk_adhl.ajax.inc',
+  );
+  $items['adhl/top/%'] = array(
+    'title' => 'top liste',
+    'page callback' => 'bibdk_adhl_get_toplist',
+    'access arguments' => array('access content'),
+    'page arguments' => array(2),
+    'type' => MENU_CALLBACK,
+    'file' => 'bibdk_adhl.toplist.inc',
+  );
+  return $items;
+}
+
+/*
+ * Implements hook_theme
+ */
+function bibdk_adhl_theme() {
+  $themes = array(
+    'bibdk_adhl_links' => array(
+      'variables' => array('adhl_links' => NULL),
+      'template' => 'theme/bibdk-adhl-links'
+    ),
+    'bibdk_adhl_link' => array(
+      'variables' => array('adhl_link' => NULL),
+      'template' => 'theme/bibdk-adhl-link'
+    ),
+    'bibdk_adhl_toplist' => array(
+      'variables' => array('title' => '', 'before_text' => NULL, 'list' => NULL, 'after_text' => NULL),
+      'template' => 'theme/bibdk-adhl-toplist'
+    ),
+  );
+  return $themes;
+}
+
+
+
+/** get manifestations from adhl
+ * @param $pid
+ * @return array
+ */
+function bibdk_adhl_get_adhl($pid, $number_of_results = 10) {
+  try {
+    $result = bibdk_adhl_request($pid, $number_of_results);
+  }
+  catch (Exception $e) {
+    drupal_set_message(t('The service is down, please try again later'), 'WARNING');
+  }
+
+  if (!isset($result) || empty($result) ) {
+    return array();
+  }
+
+  return bibdk_adhl_get_manifestations($result);
+}
+
+
+
+/**
+ * Execute adhl request
+ * @param int $numResults
+ * @internal param $pid
+ * @return array
+ */
+function bibdk_adhl_request($pid, $numResults = 10) {
+
+  //Split pids at delimiter
+  $id = explode(";", $pid);
+
+  //make array off pids
+  $pids = array();
+  foreach ($id as $singlepid)  {
+    $pids[] = $singlepid;
+  }
+
+  return open_adhl_adhlRequest($pids, $numResults);
+}
+
+
+
+/**
+ * Return a list of links from a list of manifestations
+ *
+ * @param $pids
+ * @return string html formatted list of links
+ */
+function bibdk_adhl_get_link_list_view($manifestations, $target = '_self') {
+
+  if ( empty($manifestations) || !is_array($manifestations) ) {
+    return array();
+  }
+
+  $render = array(
+    '#theme' => 'bibdk_adhl_links',
+    '#adhl_links' => array(
+      '#theme' => 'item_list',
+      '#type' => 'ul',
+      '#attributes' => array(
+        'class' => array('links'),
+      ),
+      '#items' => array(),
+    ),
+  );
+
+  foreach ( $manifestations as $id => $manifestation ) {
+    $creator = _ting_openformat_parse_element($manifestation->getCreator(), array(), ', ', FALSE, FALSE);
+    $creator = (empty($creator)) ? '' : $creator[0]['#openformat_field']['#markup'];
+    $abstract = _ting_openformat_parse_element($manifestation->getAbstract(), array(), ', ', FALSE, FALSE);
+    $abstract = (empty($abstract)) ? '' : $abstract[0]['#openformat_field']['#markup'];
+    $adhl_link = array(
+        '#theme' => 'bibdk_adhl_link',
+        '#adhl_link' => array(
+            '#theme' => 'link',
+            '#text' => $manifestation->getTitle(),
+            '#path' => 'search/work/',
+            '#options' => array(
+                'query' => array('search_block_form' => $id),
+                'fragment' => 'content',
+                'attributes' => array(
+                    'class' => array('adhl-link'),
+                    'target' => $target,
+                    'title' => $creator . ' : ' . $abstract,
+                ),
+                'html' => TRUE,
+            ),
+        ),
+    );
+    $render['#adhl_links']['#items'][] = drupal_render($adhl_link);
+  }
+
+  return $render;
+
+}
+
+
+
+/** Wrapper for ting_openformat_get_manifestations. Get manifestations for an
+ *  array of pid's
+ * @param $pids
+ * @return array
+ */
+function bibdk_adhl_get_manifestations($pids) {
+  /**
+   * ting_openformat_get_manifestations returns a bibdkWork as an array and all
+   * the manifestations are saved in the manifestations variable.
+   * TODO :ting_openformat should have a method to return an array of manifestations
+   */
+  $works = ting_openformat_get_manifestations($pids);
+  $work = reset($works);
+
+  if ( !isset($work->manifestations) ) {
+    return array();
+  }
+  else {
+    return $work->manifestations;
+  }
+
+}
+
+
+
+/**
+ * Translated text constants
+ */
+t('bibdk_adhl_unknown_error', array(), array('context' => 'bibdk_adhl'));
+t('bibdk_adhl_toggle_text_error', array(), array('context' => 'bibdk_about_author'));
+t('bibdk_adhl_no_recommendations', array(), array('context' => 'bibdk_adhl'));
+t('bibdk_adhl_toggle_text_empty', array(), array('context' => 'bibdk_adhl'));

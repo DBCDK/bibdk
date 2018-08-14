@@ -1,0 +1,54 @@
+<?php
+/**
+ * @file
+ * unit test for bibdk_yaz module
+ */
+
+/**
+ * Class BibdkYazTestCase
+ *
+ * unittests for the PhpYazConverter
+ */
+class BibdkYazTestCase extends DrupalUnitTestCase {
+
+  public static function getInfo() {
+    return array(
+      'name' => 'Bibdk Yaz Unit Test',
+      'description' => 'Test PhpYazConverter class',
+      'group' => 'Bibliotek.dk - Yaz',
+    );
+  }
+
+  public function setUp() {
+
+    // Enable any modules required for the test
+    parent::setUp();
+  }
+
+  public function testCclToCqlConversion() {
+    // list of ccl expressions
+    $valid_ccl = array();
+    include 'bibdk_yaz.testcases.inc';
+    module_load_include('inc', 'bibdk_yaz', 'lib/PhpYazConverter');
+
+    $yaz = new PhpYazConverter();
+
+    foreach ($valid_ccl as $ccl => $cql) {
+      $result = $this->_normalizeCcl($yaz->CclToCql($ccl));
+      $this->assertEqual($result['cql'], $cql, format_string('ccl is correctly converted to cql', array('ccl' => $ccl)));
+    }
+  }
+
+  /**
+   * apparently libyaz5 5.14.4-1.indexdata introduces a space befor and after
+   * '=' which is perfectly ok .. but makes the test fail. Remove it
+   *
+   * @param $ccl
+   */
+  private function _normalizeCcl($ccl){
+    // remove whitespaces before and after '='
+    $ret = str_replace(' = ', '=', $ccl);
+    return $ret;
+
+  }
+}
