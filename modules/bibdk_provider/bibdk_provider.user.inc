@@ -143,6 +143,8 @@ function bibdk_provider_user_delete_setting($username, $settingtype) {
 
 /************ END SETTING(S) ****************/
 
+
+/************** FAVOURITEST ********************/
 /**
  * @param $name
  * @param $agencyid
@@ -198,6 +200,20 @@ function bibdk_provider_user_get_favourites($name) {
   $encrypted = variable_get('bibdk_provider_favourite_use_encryption', FALSE);
   return BibdkUser::instance()->getFavourites($name, $encrypted);
 }
+
+/**
+ * @param $name
+ * @param $agencyid
+ * @param $data
+ * @return bool|string
+ */
+function bibdk_provider_user_save_favourite_data($name, $agencyid, $data) {
+  // Use encryption or not has to be global, so use setting to control it.
+  $encrypted = variable_get('bibdk_provider_favourite_use_encryption', FALSE);
+  return BibdkUser::instance()->saveFavouriteData($name, $agencyid, $data, $encrypted);
+}
+
+/************** END FAVOURITEST ********************/
 
 /**
  * Get cart content from provider
@@ -334,17 +350,6 @@ function bibdk_provider_delete_culr_user($name){
   return BibdkUser::instance()->deleteCulrUser($name);
 }
 
-/**
- * @param $name
- * @param $agencyid
- * @param $data
- * @return bool|string
- */
-function bibdk_provider_user_save_favourite_data($name, $agencyid, $data) {
-  // Use encryption or not has to be global, so use setting to control it.
-  $encrypted = variable_get('bibdk_provider_favourite_use_encryption', FALSE);
-  return BibdkUser::instance()->saveFavouriteData($name, $agencyid, $data, $encrypted);
-}
 
 /**
  * Get the status of the GDPR consent
