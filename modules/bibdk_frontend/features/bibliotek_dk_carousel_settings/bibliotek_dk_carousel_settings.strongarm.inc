@@ -41,7 +41,7 @@ function bibliotek_dk_carousel_settings_strongarm() {
       'subtitle' => 'musik for voksne',
       'query' => '(term.type=musik or term.workType=music) and dkcclterm.sf=v',
       'period' => '2',
-      'offset' => '5',
+      'offset' => '3',
     ),
     4 => array(
       'title' => 'Spil',
@@ -77,13 +77,6 @@ function bibliotek_dk_carousel_settings_strongarm() {
       'query' => '(term.type=musik or term.workType=music) and dkcclterm.sf=b',
       'period' => '7',
       'offset' => '5',
-    ),
-    9 => array(
-      'title' => 'Top 20',
-      'subtitle' => 'Top 20',
-      'query' => 'top20',
-      'period' => '0',
-      'offset' => '0',
     ),
   );
   $export['bibdk_carousel_search_queries'] = $strongarm;
