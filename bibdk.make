@@ -143,7 +143,7 @@ projects[cql_strict_parser][download][tag] = 7.x-0.4
 projects[bibdk_config][type] = module
 projects[bibdk_config][download][type] = git
 projects[bibdk_config][download][url] = https://git.dbc.dk:/repos/bibliotek.dk/bibdk_config.git
-projects[bibdk_config][download][tag] = 7.x-1.36
+projects[bibdk_config][download][tag] = 7.x-1.37
 
 projects[bibdk_behaviour][type] = module
 projects[bibdk_behaviour][download][type] = git
