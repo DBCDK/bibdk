@@ -7,7 +7,7 @@
 /**
  * Class BibdkSbCopyRequestUnitTestCase
  */
-class BibdkSbCopyRequestUnitTestCase extends DrupalUnitTestCase {
+class BibdkSbCopyRequestUnitTestCase extends DrupalWebTestCase {
 
   /**
    * Info for unit test
@@ -27,6 +27,7 @@ class BibdkSbCopyRequestUnitTestCase extends DrupalUnitTestCase {
    */
   public function setUp() {
     parent::setUp();
+    module_enable(array('microcurl'));
     module_load_include('inc', 'microcurl', 'microcurl');
     module_load_include('inc', 'bibdk_sbkopi', 'lib/SbCurlRequest');
     module_load_include('inc', 'bibdk_sbkopi', 'includes/bibdk_sbkopi.reservation');
@@ -45,6 +46,7 @@ class BibdkSbCopyRequestUnitTestCase extends DrupalUnitTestCase {
     $ns = 'http://statsbiblioteket.dk/xws/elba-placecopyrequest-schema';
     $curl = new SbCurlRequest($request, $parameters, $ns);
 
+    // $expected_xml MUST BE like this. Otherwise it will fail.
     $expected_xml = '<?xml version="1.0"?>
 <placeCopyRequest xmlns="http://statsbiblioteket.dk/xws/elba-placecopyrequest-schema"><key>value</key><key2>value2</key2><key3>value3</key3></placeCopyRequest>
 ';
@@ -68,7 +70,7 @@ class BibdkSbCopyRequestUnitTestCase extends DrupalUnitTestCase {
       'pickupAgencyId' => '790900',
       'agencyId' => '790900'
     );
-    $url = url(drupal_get_path('module', 'bibdk_sbkopi') . '/test/mockup/placeorderrequest.php', array('absolute' => TRUE));
+    $url = url(drupal_get_path('module', 'bibdk_sbkopi') .'/test/mockup/placeorderrequest.php', array('absolute' => TRUE));
 
     try {
       bibdk_sbkopi_order_request($parameters, $url);
@@ -76,7 +78,10 @@ class BibdkSbCopyRequestUnitTestCase extends DrupalUnitTestCase {
     }
     catch (SbCurlRequestException $e) {
       $params = $e->getParams();
-      $this->assertEqual($params['!reponse_code'], 400);
+
+      $this->assertEqual(
+        $params['!reponse_code'], 400
+      );
     }
     $parameters = array(
       'ws_user' => 'TEST_USER',
@@ -95,7 +100,10 @@ class BibdkSbCopyRequestUnitTestCase extends DrupalUnitTestCase {
       $this->assertTrue(true, 'Request went well and returned 204');
     }
     catch (SbCurlRequestException $e) {
-      $this->assertFalse(true, 'Request went bad. It should not have');
+      $this->assertFalse(
+        true,
+        'Request went bad. It should not have ' . json_encode($e->getParams())
+      );
     }
   }
 }

@@ -21,6 +21,10 @@ function template_preprocess_bibdk_recommender_item(&$variables) {
   $image_title   = truncate_utf8($variables['title'], 40, $wordsafe = TRUE, $add_ellipsis = TRUE, $min_wordsafe_length = 2);
   $image_type    = $variables['work_type'];
   $image_alt     = isset($image_creator) ? $image_title . ' : ' . $image_creator : $image_title;
+  
+  if ($image_type == 'other') {
+    $image_type = 'none';
+  }
 
   $variables['elements']['#id'] = drupal_html_id(md5($image_pid, TRUE));
 

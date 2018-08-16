@@ -116,10 +116,9 @@ function bibdk_vejviser_form_submit(&$form, &$form_state) {
  */
 function _bibdk_vejviser_vejviser_raw($agency_name = NULL) {
   $ret = drupal_get_form('bibdk_vejviser_form');
-
   if (!empty($_GET['openagency_query'])) {
     unset($ret['openagency_query']['#attributes']['placeholder']);
-    $ret['openagency_query']['#value'] = $_GET['openagency_query'];
+    $ret['openagency_query']['#value'] = html_entity_decode($_GET['openagency_query']);
   }
   else if (!empty($agency_name)) {
     $ret['openagency_query']['#value'] = $agency_name;
@@ -189,9 +188,14 @@ function bibdk_vejviser_agency_search() {
     return $raw;
   }
 
+  if (!drupal_validate_utf8($_REQUEST['openagency_query'])) {
+    drupal_set_message(t('Search string contain invalid characters.', array(), array('context' => 'bibdk_vejviser')), 'error');
+    return $raw;
+  }
+
   if (isset($_REQUEST['openagency_query'])) {
     // Agency  query search
-    $query = check_plain($_REQUEST['openagency_query']);
+    $query = $_REQUEST['openagency_query'];
     $result = bibdk_vejviser_execute_agency_search($query);
   }
 
@@ -227,9 +231,7 @@ function bibdk_vejviser_agency_search() {
   );
 
   if (!empty($branches)) {
-    $render['branches'] = array(
-      '#markup' => drupal_render($branches),
-    );
+    $render['branches'] = $branches;
   }
   return $render;
 }

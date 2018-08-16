@@ -355,7 +355,6 @@ class BibdkUser {
     $params = array('oui:userId' => $username);
     $response = $this->makeRequest('getCartRequest', $params);
 
-
     $xmlmessage = $this->responseExtractor($response, 'getCartResponse');
 
     $ret = array('status' => 'error', 'response' => '');
@@ -562,13 +561,23 @@ class BibdkUser {
   }
 
   /**
-   * \brief delete an agency on a given user
-   * @param type $username
-   * @param type $agencyid
+   * Delete an agency on a given user.
+   *
+   * @param string $username
+   *   The ID of the user to delete the agency for.
+   * @param string $agencyid
+   *   The ID of the agency to delete.
+   * @param boolean $encrypted
+   *   If deleting agency from encrypted table or not.
+   *
    * @return type xml
    */
-  public function deleteFavourite($username, $agencyid) {
-    $params = array('oui:userId' => $username, 'oui:agencyId' => $agencyid);
+  public function deleteFavourite($username, $agencyid, $encrypted = FALSE) {
+    $params = array(
+      'oui:userId' => $username,
+      'oui:agencyId' => $agencyid,
+      'oui:encrypted' => $encrypted
+    );
     $response = $this->makeRequest('deleteFavouriteRequest', $params);
 
     $xmlmessage = $this->responseExtractor($response, 'deleteFavouriteResponse');
@@ -582,11 +591,13 @@ class BibdkUser {
   }
 
   public function saveFavouriteData($name, $agencyid, $data, $encrypted = FALSE) {
+    if ($encrypted) {
+      $data = bibdk_provider_encrypt_data($data);
+    }
     // Force all data saved to be encrypted.
     $params = array(
       'oui:userId' => $name,
       'oui:agencyId' => $agencyid,
-      //'oui:favouriteData' => bibdk_provider_encrypt_data($data),
       'oui:favouriteData' => $data,
       'oui:encrypted' => $encrypted,
     );

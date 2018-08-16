@@ -7,26 +7,28 @@
 // @codingStandardsIgnoreStart
 (function($) {
 
-  // Attach behaviour
+  // Attach Slick Recommender.
   Drupal.behaviors.initRecommenderExample = {
     attach: function(context) {
-      $( document, context).ready(function() {
-        $('.js-slick-recommender', context).once('slick-recommender').each(function(index, element) {
-          Drupal.getSlickRecommender($(this));
-        });
+      $('.js-slick-recommender', context).once('slick-recommender').each(function(index, element) {
+        Drupal.getSlickRecommender($(this));
       });
     }
   };
 
   // Retrieve Slick Recommender carousel
   Drupal.getSlickRecommender = function(elem) {
-    id = elem.attr("id");
-    pids = elem.attr("data-uids");
-    if (id === undefined || pids === undefined) {
+    var id = elem.attr("id");
+    var pids = elem.attr("data-recomole-pids");
+    var filters = elem.attr("data-recomole-types");
+    if (!id || !pids) {
       return;
     }
+    if (!filters) {
+      filters = null;
+    }
     request = $.ajax({
-      url: Drupal.settings.basePath + Drupal.settings.pathPrefix + 'bibdk_recommender/ajax/slick_carousel/' + id + '/' + pids,
+      url: Drupal.settings.basePath + Drupal.settings.pathPrefix + 'bibdk_recommender/ajax/slick_carousel/' + id + '/' + pids + '/' + filters,
       type: 'POST',
       dataType: 'json',
       async: true,
