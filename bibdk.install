@@ -608,3 +608,16 @@ function bibdk_update_7055() {
   module_enable(array('bibdk_recommender', 'open_platform_client'));
 }
 
+/** Removing ADHL modules */
+function bibdk_update_7056() {
+  $modules = array('bibdk_adhl', 'open_adhl');
+  module_disable($modules);
+  drupal_uninstall_modules($modules);
+}
+
+/** Removing the bibdk_yaz module */
+function bibdk_update_7057() {
+  $modules = array('bibdk_yaz');
+  module_disable($modules);
+  drupal_uninstall_modules($modules);
+}

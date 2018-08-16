@@ -112,19 +112,10 @@ function _bibdk_favourite_get_from_webservice() {
     return array();
   }
 
-  // Call openuserinfo webservice encrypted, first try encrypted, then
-  // unencrypted.
-  $encrypted = FALSE;
-  $xml = ding_provider_invoke('user', 'get_favourites', $creds['name'], $encrypted);
+  $xml = ding_provider_invoke('user', 'get_favourites', $creds['name']);
   module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.agencies');
   $saved_agencies = bibdk_favourite_parse_agencies($xml);
 
-  if (!$saved_agencies) {
-    $encrypted = FALSE;
-    $xml = ding_provider_invoke('user', 'get_favourites', $creds['name'], $encrypted);
-    module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.agencies');
-    $saved_agencies = bibdk_favourite_parse_agencies($xml);
-  }
 
   if (!$saved_agencies) {
     return array();
@@ -136,7 +127,8 @@ function _bibdk_favourite_get_from_webservice() {
     $branch = $fav->getBranch();
     if (isset($branch)) {
       $saved_agencies[$key]['oui:userData'];
-      if ($saved_agencies[$key]['oui:userData'] && $encrypted) {
+      // Handle if data is encrypted.
+      if ($saved_agencies[$key]['oui:userData'] && variable_get('bibdk_provider_favourite_use_encryption', FALSE)) {
         $saved_agencies[$key]['oui:userData'] = bibdk_provider_decrypt_data($saved_agencies[$key]['oui:userData']);
       }
       $user_data = $saved_agencies[$key]['oui:userData'];

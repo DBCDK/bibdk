@@ -46,7 +46,7 @@
       $('#edit-needbeforedate').ready(function() {
         if (Drupal.settings.alreadyOrder !== undefined) {
           if (Drupal.settings.alreadyOrder.alert_already_showed) {
-            let r = confirm(Drupal.settings.alreadyOrder.alert_message);
+            var r = confirm(Drupal.settings.alreadyOrder.alert_message);
             if (!r) {
               window.close();
             }
