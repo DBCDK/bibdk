@@ -27,7 +27,7 @@ libraries[slick][download][tag] = '1.8.0'
 projects[bibdk_theme][type] = theme
 projects[bibdk_theme][download][type] = git
 projects[bibdk_theme][download][url] = git@github.com:DBCDK/bibdk_theme.git
-projects[bibdk_theme][download][tag] = 7.x-1.6
+projects[bibdk_theme][download][tag] = 7.x-1.7
 
 
 ; --- Bibliotek.dk versions of Ding2 modules ---
@@ -85,7 +85,7 @@ projects[ting-client][download][tag] = 7.x-2.46
 projects[ting_agency][type] = module
 projects[ting_agency][download][type] = git
 projects[ting_agency][download][url] = git@github.com:DBCDK/ting_agency.git
-projects[ting_agency][download][tag] = 7.x-1.3
+projects[ting_agency][download][tag] = 7.x-1.4
 
 projects[ting_infomedia][type] = module
 projects[ting_infomedia][download][type] = git
