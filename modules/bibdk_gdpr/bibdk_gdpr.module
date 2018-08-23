@@ -71,6 +71,10 @@ function bibdk_gdpr_form_bibdk_reservation_create_wizard_form_alter(&$form, &$fo
   }
 }
 
+/**
+ * Get gdpr text for anonymous users
+ * @return null|string
+ */
 function bibdk_gpdr_get_anonymous_txt() {
   return t('bibliotek.dk gemmer dine oplysninger indtil bestillingen er færdigbehandlet af det bibliotek materialet bestilles hos, eller den valgte interessedato er overskredet.', array(), array('context' => 'bibdk_gdpr'));
 }
