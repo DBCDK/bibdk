@@ -58,15 +58,11 @@ function bibdk_gdpr_form_bibdk_reservation_create_wizard_form_alter(&$form, &$fo
   if (!empty($form_state['step']) && $form_state['step'] == 2) {
     if (isset($form['userdata']['userParameters']['userfields']['uncheck'])) {
       $alter_form = &$form['userdata']['userParameters']['userfields'];
-      global $user;
-      if (!ding_user_is_provider_user($user)) {
-        $text = variable_get('bibdk_gdpr_consent_message', array());
-        $alter_form['uncheck']['#weight'] = -99;
-        $alter_form['gdpr'] = array(
-          '#markup' => bibdk_gpdr_get_anonymous_txt(),
-          '#weight' => -100,
-        );
-      }
+      $alter_form['uncheck']['#weight'] = -99;
+      $alter_form['gdpr'] = array(
+        '#markup' => bibdk_gpdr_get_anonymous_txt(),
+        '#weight' => -100,
+      );
     }
   }
 }
