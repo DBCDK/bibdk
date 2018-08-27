@@ -312,8 +312,9 @@ function bibdk_heimdal_user_logout() {
 function bibdk_heimdal_do_logout($url = '/heimdal/logout', $ajax = fALSE) {
   if (isset($_SESSION['heimdal'])) {
     unset($_SESSION['heimdal']);
+    $token = variable_get('heimdal_access_token');
     $config = variable_get('ding_wayf', NULL);
-    $path = $config['hosturl'] . '/logout?returnurl='.$url;
+    $path = $config['hosturl'] . '/logout?returnurl='.$url.'&token='.$token;
 
     if ($ajax) {
       bibdk_heimdal_forms_ctools_redirect($path);
