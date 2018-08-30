@@ -624,7 +624,7 @@ function bibdk_update_7057() {
 }
 
 /** Enabling the bibdk_yaz module */
-function bibdk_update_7057() {
+function bibdk_update_7058() {
   $modules = array('bibdk_yaz');
   module_enable($modules);
 }
