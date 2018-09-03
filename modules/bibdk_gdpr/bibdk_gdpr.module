@@ -58,37 +58,23 @@ function bibdk_gdpr_form_bibdk_reservation_create_wizard_form_alter(&$form, &$fo
   if (!empty($form_state['step']) && $form_state['step'] == 2) {
     if (isset($form['userdata']['userParameters']['userfields']['uncheck'])) {
       $alter_form = &$form['userdata']['userParameters']['userfields'];
-      global $user;
-      if (!ding_user_is_provider_user($user)) {
-        $text = variable_get('bibdk_gdpr_consent_message', array());
-        $alter_form['uncheck']['#weight'] = -99;
-        $alter_form['gdpr'] = array(
-          '#attached' => array(
-            'js' => array(drupal_get_path('module', 'bibdk_gdpr') . '/js/bibdk_gdpr.consent.js'),
-          ),
-          '#type' => 'container',
-          '#attributes' => array('class' => array('gdpr-consent-wrapper')),
-          '#weight' => -100,
-          'checkbox' => array(
-            '#title' => t('I give consent', array(), array('context' => 'bibdk_gdpr')) . ' ' . '<span class="see-more">' . t('See more', array(), array('context' => 'bibdk_gdpr')) . '</span>',
-            '#type' => 'checkbox',
-            '#required' => TRUE,
-          ),
-          'message' => array(
-            '#type' => 'container',
-            '#attributes' => array(
-              'class' => array('consent-message'),
-            ),
-            'value' => array(
-              '#markup' => check_markup($text['value'], $text['format']),
-            ),
-          ),
-
-        );
-      }
+      $alter_form['uncheck']['#weight'] = -99;
+      $alter_form['gdpr'] = array(
+        '#markup' => bibdk_gpdr_get_anonymous_txt(),
+        '#weight' => -100,
+      );
     }
   }
 }
+
+/**
+ * Get gdpr text for anonymous users
+ * @return null|string
+ */
+function bibdk_gpdr_get_anonymous_txt() {
+  return t('bibliotek.dk gemmer dine oplysninger indtil bestillingen er færdigbehandlet af det bibliotek materialet bestilles hos, eller den valgte interessedato er overskredet.', array(), array('context' => 'bibdk_gdpr'));
+}
+
 /**
  * Implements hook_user_login().
  */
