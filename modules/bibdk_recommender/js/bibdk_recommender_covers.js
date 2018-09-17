@@ -39,7 +39,6 @@
     elem.closest('.slick-track').find('.slick__slide').not('.slick-cloned').each(function(index, element) {
       recommendations.push($(this).find('.bibdk-recommender-cover-placeholder').attr('data-pid'));
     });
-    // BibdkRecommenderBehavior.result = unique(recommendations);
     BibdkRecommenderBehavior.result = recommendations;
     
     var url = Drupal.settings.basePath + Drupal.settings.pathPrefix + 'bibdk/behaviour/recommender/';
