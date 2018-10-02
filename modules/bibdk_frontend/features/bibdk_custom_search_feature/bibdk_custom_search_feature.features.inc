@@ -2048,7 +2048,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->v_uuid = '604357bb-a73b-65c4-11d8-cf798b7eabe1';
   $option->sort = -98;
   $option->label = 'e-musik';
-  $option->value = '("musik" and term.accessType="online")';
+  $option->value = '(term.workType=music and term.accessType="online")';
   $option->expand = '0';
   $option->is_disabled = FALSE;
   $export['04e1ad22-c09f-19c4-25f0-c8cbb3cfc80c'] = $option;
@@ -8546,7 +8546,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_value() {
   $value->value_title = 'net, materialetyper';
   $value->sort = -62;
   $value->value_type = 'checkboxes';
-  $value->search_code = '';
+  $value->search_code = 'term.accessType=online';
   $value->default_value = '';
   $value->expand = 0;
   $value->is_disabled = FALSE;
