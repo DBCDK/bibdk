@@ -36,10 +36,10 @@
     var types = recommendation.closest('.js-slick-recommender').attr('data-recomole-types').split(",");
     BibdkRecommenderBehavior.filters_type = types;
     var recommendations = [];
-    elem.closest('.slick-track').find('.bibdk-recommender-cover-placeholder').each(function(index, element) {
-      recommendations.push($(this).attr('data-pid'));
+    elem.closest('.slick-track').find('.slick__slide').not('.slick-cloned').each(function(index, element) {
+      recommendations.push($(this).find('.bibdk-recommender-cover-placeholder').attr('data-pid'));
     });
-    BibdkRecommenderBehavior.result = unique(recommendations);
+    BibdkRecommenderBehavior.result = recommendations;
     
     var url = Drupal.settings.basePath + Drupal.settings.pathPrefix + 'bibdk/behaviour/recommender/';
     
@@ -103,11 +103,4 @@
     });
   };
   
-  // Removes duplicate values from an array.
-  function unique(array) {
-    return $.grep(array, function(el, index) {
-        return index === $.inArray(el, array);
-    });
-  }
-
 } (jQuery));
