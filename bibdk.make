@@ -212,11 +212,11 @@ projects[eu-cookie-compliance][version] = 1.13
 
 projects[features][subdir] = contrib
 projects[features][type] = module
-projects[features][version] = 1.0
+projects[features][version] = 2.11
 
 projects[features_extra][subdir] = contrib
 projects[features_extra][type] = module
-projects[features_extra][version] = 1.0-alpha1
+projects[features_extra][version] = 1.0
 
 projects[i18n][subdir] = contrib
 projects[i18n][type] = module
