@@ -16,8 +16,6 @@
  *
  */
 
-// load cron job to renew access token
-require_once "includes/bibdk_heimdal.cron.inc";
 // load forms
 require_once 'includes/bibdk_heimdal_forms.inc';
 
@@ -129,7 +127,6 @@ function bibdk_heimdal_redirect_login() {
   // next step checks the user and sets SESSION and form_state parameters for further handling
   // @see bibdk_provider/bibdk_provider.heimdal.inc::bibdk_provider_heimdal_login_creds()
   $form_state = bibdk_heimdal_get_form_state($heimdal_user);
-
   if (bibdk_heimdal_check_formstate($form_state)) {
     //all is good - submit login form
     bibdk_heimdal_do_login($form_state);
@@ -205,6 +202,7 @@ function bibdk_heimdal_do_login($form_state) {
   if (!empty($errors)) {
     bibdk_heimdal_cleanup_and_exit();
   }
+
 }
 
 /**
@@ -272,23 +270,20 @@ function bibdk_heimdal_get_heimdal_attributes() {
   if (!empty($return_array)) {
     return $return_array;
   }
-  // client id for ticket request
-  $client_id = !empty($_REQUEST['id']) ? $_REQUEST['id'] : NULL;
-  if (!isset($client_id)) {
-    return array();
-  }
-  // token
-  $token = !empty($_REQUEST['token']) ? $_REQUEST['token'] : NULL;
-  if (!isset($token)) {
+  // authorization code for further requests
+  $auth_code = !empty($_REQUEST['code']) ? $_REQUEST['code'] : NULL;
+  if (!isset($auth_code)) {
     return array();
   }
 
   $curl = new bibdkHeimdalCurl();
-  $return_array = $curl->getAttributes($client_id, $token);
+  $return_array = $curl->getAttributes($auth_code);
   if ($return_array === FALSE) {
     // this is a http error - abort
     bibdk_heimdal_cleanup_and_exit();
   }
+
+
   return $return_array;
 }
 
@@ -309,12 +304,13 @@ function bibdk_heimdal_user_logout() {
  * @param bool $ajax
  *   Do an ajax redirect or not
  */
-function bibdk_heimdal_do_logout($url = '/heimdal/logout', $ajax = fALSE) {
+function bibdk_heimdal_do_logout($url = 'heimdal/logout', $ajax = fALSE) {
   if (isset($_SESSION['heimdal'])) {
+    $return_uri = bibdkHeimdalHelpers::bibdk_heimdal_get_full_url($url);
+    $access_token = $_SESSION['heimdal']['access_token'];
     unset($_SESSION['heimdal']);
-    $token = variable_get('heimdal_access_token');
     $config = variable_get('ding_wayf', NULL);
-    $path = $config['hosturl'] . '/logout?returnurl='.$url.'&token='.$token;
+    $path = $config['clientplatform'] . '/logout?redirect_uri='.$return_uri.'&access_token=' . $access_token;
 
     if ($ajax) {
       bibdk_heimdal_forms_ctools_redirect($path);
@@ -386,6 +382,7 @@ function bibdk_heimdal_login_link() {
  * @return array
  */
 function bibdk_heimdal_get_login_link() {
+
   return array(
     bibdk_heimdal_get_logo(),
     //bibdk_heimdal_get_nemid_logo(),
@@ -437,7 +434,7 @@ function bibdk_heimdal_get_nemid_logo() {
 
 function bibdk_heimdal_get_path() {
   return array(
-    'path' => bibdk_heimdal_get_login_url(),
+    'path' => bibdk_heimdal_get_login_url('heimdal/login'),
     'options' => array(
       'attributes' => array(
         'title' => 'Heimdal login',
@@ -451,16 +448,22 @@ function bibdk_heimdal_get_path() {
  * Get the url for heimdal login
  * @return string
  */
-function bibdk_heimdal_get_login_url() {
+function bibdk_heimdal_get_login_url($relative_path='') {
+  $redirect_url =  bibdkHeimdalHelpers::bibdk_heimdal_get_full_url($relative_path);
   $config = variable_get('ding_wayf', NULL);
   $accessplatform = isset($config['heimdallogin']) ? $config['heimdallogin'] : FALSE;
+
   $heimdal_url = '';
-  if ($accessplatform) {
-    $token = variable_get('heimdal_access_token');
-    $heimdal_url = $config['hosturl'] . $config['loginpath'] . '?token=' . $token . '&destination=heimdal/login';
+  if(!empty($redirect_url)){
+    $redirect = '&redirect_uri='.$redirect_url;
   }
+  if($accessplatform){
+    $heimdal_url .= $config['clientplatform'] . '/oauth/authorize?response_type=code&client_id=' . $config['clientid'] . $redirect;
+  }
+
   return $heimdal_url;
 }
+
 
 /**
  * Get a wrapper for heimdal login

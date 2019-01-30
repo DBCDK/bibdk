@@ -19,6 +19,8 @@ function bibdk_heimdal_handle_login_request($uuid) {
   $message = '';
   $row = array();
 
+
+
   try {
     $row = heimdalDatabase::get($uuid);
   } catch (Exception $e) {
@@ -29,7 +31,6 @@ function bibdk_heimdal_handle_login_request($uuid) {
 
   // row has been fetched - this is a one time link - delete on database
   heimdalDatabase::deleteByUUID($uuid);
-
   if (empty($row)) {
     // row was not found - it has probably been deleted because it was too old
     $message = bibdk_heimdal_link_deprecated_message();
@@ -64,6 +65,7 @@ function bibdk_heimdal_handle_login_request($uuid) {
     $message = bibdk_heimdal_pages_welcome_message();
     drupal_set_message($message);
     $link = bibdk_heimdal_pages_get_login_link();
+
     drupal_goto($link);
   }
 
@@ -210,7 +212,7 @@ function bibdk_heimdal_pages_get_login_link() {
     watchdog('heimdal', 'HEIMDAL is not configured', WATCHDOG_ERROR);
     return '';
   }
-  $heimdal_link = $config['hosturl'] . $config['loginpath'] . '?token=' . $token . '&destination=heimdal/login';
+  $heimdal_link = $config['clientplatform'] . $config['loginpath'] . '?token=' . $token . '&destination=heimdal/login';
   return $heimdal_link;
 }
 
