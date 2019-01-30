@@ -206,14 +206,17 @@ function bibdk_heimdal_get_unique_agency(array $agencies){
  * @return string
  */
 function bibdk_heimdal_pages_get_login_link() {
-  $config = variable_get('ding_wayf', NULL);
+
+  return bibdk_heimdal_get_login_url('heimdal/login');
+
+  /*$config = variable_get('ding_wayf', NULL);
   $token = variable_get('heimdal_access_token', NULL);
   if (empty($config) || empty($token)) {
     watchdog('heimdal', 'HEIMDAL is not configured', WATCHDOG_ERROR);
     return '';
   }
   $heimdal_link = $config['clientplatform'] . $config['loginpath'] . '?token=' . $token . '&destination=heimdal/login';
-  return $heimdal_link;
+  return $heimdal_link;*/
 }
 
 /**
