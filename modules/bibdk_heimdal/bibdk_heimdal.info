@@ -6,6 +6,7 @@ package = bibdk
 
 files[] = includes/bibdkHeimdalCurl.inc
 files[] = includes/bibdkHeimdalUser.inc
+files[] = includes/bibdkHeimdalHelpers.inc
 
 files[] = test/bibdk_heimdal_web.test
 

@@ -137,8 +137,6 @@ function bibdk_heimdal_provider_username_from_session(array $usernames) {
  * on bibdk user - if so add them to SESSION for later handling
  * @param $username
  * @param $culragencies
- * @return array
- *   The libraries that are NOT in users favourites
  */
 function bibdk_provider_heimdal_favourite_check($username, $culragencies) {
   $bibdk_favourites_xml = BibdkUser::instance()->getFavourites($username);

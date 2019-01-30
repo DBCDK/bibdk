@@ -30,17 +30,19 @@ function bibdk_favourite_bibdk_gdpr_items() {
 
 /**
  * Collect render array for gdpr.
- * 
+ *
  * @return array
  */
 function bibdk_favourite_gdpr_get_rows() {
   global $language;
+  $ret = array();
   $agencies = bibdk_favourite_get_favourites();
   usort($agencies, '_bibdk_favourite_sort');
   if (sizeof($agencies) == 0) {
-    return false;
+    return $ret;
   }
   foreach ($agencies as $id => $favourite) {
+    /** @var FavouriteAgency $favourite */
     $branch = $favourite->getBranch();
     if (empty($branch)) {
       continue;
@@ -61,7 +63,7 @@ function bibdk_favourite_gdpr_get_rows() {
       $userData['userdata']['value'] = array(
         '#type' => 'html_tag',
         '#tag' => 'span',
-        '#value' => $val
+        '#value' => bibdk_favourite_gdpr_mask_me($key,$val)
       );
       $userdata_container[] = $userData;
     }
@@ -81,4 +83,37 @@ function bibdk_favourite_gdpr_get_rows() {
     );
   }
   return $ret;
+}
+
+/**
+ * Mask (replace characters with '*') fields that should not be shown.
+ * @param $key
+ * @param $value
+ * @return string
+ */
+function bibdk_favourite_gdpr_mask_me($key, $value) {
+  if (bibdk_favourite_gdpr_masked_field($key)) {
+    $password = str_repeat("*", strlen($value));
+    return $password;
+  }
+
+  return $value;
+}
+
+/**
+ * Check if given key is to be masked or not
+ * @param $key
+ * @return bool
+ */
+function bibdk_favourite_gdpr_masked_field($key){
+  $fields_to_mask = array(
+    'pincode',
+    'cpr',
+    'userid',
+    'cardno',
+    'customid',
+    'userdateofbirth'
+  );
+
+  return in_array(strtolower($key), $fields_to_mask);
 }
