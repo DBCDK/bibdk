@@ -20,10 +20,6 @@ class bibdkHeimdalHelpers{
       $protocol = 'http:/';
     }
     $drupal_path = base_path();
-
-    // pjo hardcoded for my ip on the network and my localhost
-    $drupal_path = '/172.17.28.60/postgres/';
-
     return $protocol.$drupal_path.$relative_path;
   }
 }
