@@ -83,7 +83,7 @@ function bibdk_heimdal_verify_email_form_submit($form, &$form_state) {
   $mail = $form_state['values']['mail'];
   $agencies = bibdkHeimdalUser::getLibraries();
 
-  $access_token = $_SESSION['access_token'];
+  $access_token = $_SESSION['heimdal']['access_token'];
 
   // save on database before sending email
   $key = heimdalDatabase::insert($mail, $agencies, $access_token);
