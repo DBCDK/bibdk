@@ -308,9 +308,7 @@ function bibdk_heimdal_do_logout($url = 'heimdal/logout', $ajax = fALSE) {
   if (isset($_SESSION['heimdal'])) {
     $return_uri = bibdkHeimdalHelpers::bibdk_heimdal_get_full_url($url);
     $access_token = isset($_SESSION['heimdal']['access_token']) ? $_SESSION['heimdal']['access_token'] : FALSE;
-    if($access_token === FALSE){
-      $access_token = variable_get('heimdal_access_token', FALSE);
-    }
+
     unset($_SESSION['heimdal']);
     if($access_token) {
       $config = variable_get('ding_wayf', NULL);
@@ -324,7 +322,7 @@ function bibdk_heimdal_do_logout($url = 'heimdal/logout', $ajax = fALSE) {
     if ($ajax) {
       bibdk_heimdal_forms_ctools_redirect($path);
     }
-    drupal_goto($path);
+    drupal_goto('/heimdal/logout');
   }
 }
 

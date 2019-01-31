@@ -27,7 +27,7 @@ class heimdalDatabase {
    * @return mixed (string)
    *  uuid (primary key of table) to be used when generating an email link
    */
-  public static function insert($email, array $agencies) {
+  public static function insert($email, array $agencies, $access_token) {
     $agencies = self::checkAgencies($agencies);
     $key = uuid_generate();
     $libraries = serialize($agencies);
@@ -47,6 +47,7 @@ class heimdalDatabase {
             'libraries' => $libraries,
             'email' => $email,
             'date' => $date,
+            'access_token' => $access_token,
           )
         )->execute();
     } catch (Exception $e) {

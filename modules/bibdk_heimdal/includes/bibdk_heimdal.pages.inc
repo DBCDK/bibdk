@@ -26,6 +26,9 @@ function bibdk_heimdal_handle_login_request($uuid) {
     bibdk_heimdal_cleanup_and_exit($message);
   }
 
+  // set the access token (from the original login) retrieved from database
+  $_SESSION['heimdal']['access_token'] = $row['access_token'];
+
   // row has been fetched - this is a one time link - delete on database
   heimdalDatabase::deleteByUUID($uuid);
   if (empty($row)) {
