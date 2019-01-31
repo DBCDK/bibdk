@@ -266,12 +266,9 @@ function bibdk_heimdal_get_heimdal_user() {
 }
 
 function bibdk_heimdal_check_culr_user($attributes) {
-
-  dpm($attributes);
-
   if (empty($attributes['attributes']['agencies'])) {
     bibdk_heimdal_cleanup_and_exit(bibdk_heimdal_pages_no_culr_message());
-  } 
+  }
   return true;
 }
 
