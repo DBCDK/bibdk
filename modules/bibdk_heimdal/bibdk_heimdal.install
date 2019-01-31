@@ -52,8 +52,7 @@ function bibdk_heimdal_schema_definition() {
       'access_token' => array(
         'description' => 'The access token used for initial login',
         'type' => 'varchar',
-        'length' => 128,
-        'not null' => TRUE,
+        'length' => 128
       )
     ),
     'unique keys' => array('email' => array('email')),
