@@ -73,7 +73,7 @@ function bibdk_heimdal_update_7001() {
 /**
  * Add access token field to heimdal table (bibdk_heimdal_email_verify)
  */
-function bibdk_heimdal_update_7002(){
+function bibdk_heimdal_update_7003(){
   // Add access_token field
   $access_token = array(
     'description' => 'The access token used for initial login',
