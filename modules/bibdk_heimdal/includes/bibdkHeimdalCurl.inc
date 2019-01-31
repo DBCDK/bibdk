@@ -44,14 +44,15 @@ class bibdkHeimdalCurl extends MicroCURL {
     $token_as_json = json_decode($token);
     $bearer = $token_as_json->access_token;
 
+    // we are logged in - set access_token (bearer) in SESSION for later use
+    $_SESSION['heimdal']['access_token'] = $bearer;
+
     $attributes = $this->getUserInfo($bearer);
     if ($this->checkMe()) {
       $attributes = json_decode($attributes, true);
       if (empty($attributes)) {
         return array();
       }
-      // all is well - set access_token (bearer) in SESSION for later use
-      $_SESSION['heimdal']['access_token'] = $bearer;
       return $attributes;
     }
     return FALSE;
