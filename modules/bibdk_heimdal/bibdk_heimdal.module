@@ -18,6 +18,7 @@
 
 // load forms
 require_once 'includes/bibdk_heimdal_forms.inc';
+require_once 'includes/bibdk_heimdal.pages.inc';
 
 /**
  * Implements hook_menu().
@@ -343,7 +344,7 @@ function bibdk_heimdal_do_logout($url = 'heimdal/logout', $ajax = fALSE) {
  */
 function bibdk_heimdal_custom_drupal_logout() {
   global $user;
-  if($user->uid !== 0) {
+  if ($user->uid !== 0) {
     module_load_include('inc', 'user', 'user.pages');
     user_logout_current_user();
     if (isset($_GET['message'])) {
