@@ -71,7 +71,6 @@ function bibdk_heimdal_menu() {
   );
 
 
-
   return $items;
 }
 
@@ -83,7 +82,7 @@ function bibdk_heimdal_menu() {
  * to run.
  */
 function bibdk_heimdal_init() {
-  if(isset($_GET['message'])){
+  if (isset($_GET['message'])) {
     drupal_set_message($_GET['message']);
   }
 
@@ -112,7 +111,7 @@ function bibdk_heimdal_init() {
 function bibdk_heimdal_check_for_errors() {
   $error = isset($_GET['error']) ? $_GET['error'] : '';
   if (!empty($error)) {
-    $message = t($_GET['error'], array(), array('context'=>'heimdal'));
+    $message = t($_GET['error'], array(), array('context' => 'heimdal'));
     bibdk_heimdal_cleanup_and_exit($message);
   }
 }
@@ -174,7 +173,6 @@ function bibdk_heimdal_cleanup_and_exit($message = NULL, $ajax = FALSE) {
   }
   // go to frontpage
   drupal_goto('<front>');
-  drupal_exit();
 }
 
 /**
@@ -256,9 +254,21 @@ function bibdk_heimdal_form_alter(&$form, &$form_state, $form_id) {
 function bibdk_heimdal_get_heimdal_user() {
   // get attributes from heimdal
   $heimdal_attributes = bibdk_heimdal_get_heimdal_attributes();
-  // get users defined in heimdal/culr
-  $heimdal_user = new bibdkHeimdalUser($heimdal_attributes);
-  return $heimdal_user;
+  if (bibdk_heimdal_check_culr_user($heimdal_attributes)) {
+    // get users defined in heimdal/culr
+    $heimdal_user = new bibdkHeimdalUser($heimdal_attributes);
+    return $heimdal_user;
+  }
+
+  // there is something wrong with the attributes - abort
+  return null;
+}
+
+function bibdk_heimdal_check_culr_user($attributes) {
+  if (empty($attributes['agencies'])) {
+    bibdk_heimdal_cleanup_and_exit(bibdk_heimdal_pages_no_culr_message());
+  }
+  return true;
 }
 
 /**
@@ -310,19 +320,20 @@ function bibdk_heimdal_do_logout($url = 'heimdal/logout', $ajax = fALSE) {
     $access_token = isset($_SESSION['heimdal']['access_token']) ? $_SESSION['heimdal']['access_token'] : FALSE;
 
     unset($_SESSION['heimdal']);
-    if($access_token) {
+    if ($access_token) {
       $config = variable_get('ding_wayf', NULL);
       $path = $config['clientplatform'] . '/logout?redirect_uri=' . $return_uri . '&access_token=' . $access_token;
     }
-    else{
-      drupal_set_message(t('bibdk_heimdal_not_logged_out_of_hejmdal',array(), array('context' =>'bibdk_heimdal')));
-      $path='<front>';
+    else {
+      drupal_set_message(t('bibdk_heimdal_not_logged_out_of_hejmdal', array(), array('context' => 'bibdk_heimdal')));
+      $path = '<front>';
     }
 
     if ($ajax) {
       bibdk_heimdal_forms_ctools_redirect($path);
     }
-    drupal_goto('/heimdal/logout');
+
+    drupal_goto($path);
   }
 }
 
@@ -330,16 +341,16 @@ function bibdk_heimdal_do_logout($url = 'heimdal/logout', $ajax = fALSE) {
  * Custom logout. Basically a copy of user_logout_current_user(),
  * @see user.pages.inc::user_logout_current_user()
  */
-function bibdk_heimdal_custom_drupal_logout(){
+function bibdk_heimdal_custom_drupal_logout() {
   module_load_include('inc', 'user', 'user.pages');
   user_logout_current_user();
-  if(isset($_GET['message'])){
-    $message = t($_GET['message'], array(), array('context'=>'heimdal'));
+  if (isset($_GET['message'])) {
+    $message = t($_GET['message'], array(), array('context' => 'heimdal'));
     drupal_set_message($message);
   }
+
   drupal_goto();
 }
-
 
 
 /** Implements hook_form_FORM_ID_alter (user_login)
@@ -454,16 +465,16 @@ function bibdk_heimdal_get_path() {
  * Get the url for heimdal login
  * @return string
  */
-function bibdk_heimdal_get_login_url($relative_path='') {
-  $redirect_url =  bibdkHeimdalHelpers::bibdk_heimdal_get_full_url($relative_path);
+function bibdk_heimdal_get_login_url($relative_path = '') {
+  $redirect_url = bibdkHeimdalHelpers::bibdk_heimdal_get_full_url($relative_path);
   $config = variable_get('ding_wayf', NULL);
   $accessplatform = isset($config['heimdallogin']) ? $config['heimdallogin'] : FALSE;
 
   $heimdal_url = '';
-  if(!empty($redirect_url)){
-    $redirect = '&redirect_uri='.$redirect_url;
+  if (!empty($redirect_url)) {
+    $redirect = '&redirect_uri=' . $redirect_url;
   }
-  if($accessplatform){
+  if ($accessplatform) {
     $heimdal_url .= $config['clientplatform'] . '/oauth/authorize?response_type=code&client_id=' . $config['clientid'] . $redirect;
   }
 

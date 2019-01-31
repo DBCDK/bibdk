@@ -187,7 +187,7 @@ function bibdk_heimdal_get_nogo_response() {
  */
 function bibdk_heimdal_get_unique_agency(array $agencies){
   foreach($agencies as $agency){
-    if($agency['userIdType'] === 'CPR' || $agency['userIdType'] === 'CVR' ){
+    if(isset($agency['userIdType']) && ($agency['userIdType'] === 'CPR' || $agency['userIdType'] === 'CVR' )){
       return $agency;
     }
   }
