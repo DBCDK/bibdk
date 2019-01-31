@@ -18,9 +18,6 @@ module_load_include('inc', 'bibdk_heimdal', 'includes/heimdalDatabase');
 function bibdk_heimdal_handle_login_request($uuid) {
   $message = '';
   $row = array();
-
-
-
   try {
     $row = heimdalDatabase::get($uuid);
   } catch (Exception $e) {
