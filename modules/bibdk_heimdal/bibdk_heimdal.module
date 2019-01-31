@@ -342,11 +342,14 @@ function bibdk_heimdal_do_logout($url = 'heimdal/logout', $ajax = fALSE) {
  * @see user.pages.inc::user_logout_current_user()
  */
 function bibdk_heimdal_custom_drupal_logout() {
-  module_load_include('inc', 'user', 'user.pages');
-  user_logout_current_user();
-  if (isset($_GET['message'])) {
-    $message = t($_GET['message'], array(), array('context' => 'heimdal'));
-    drupal_set_message($message);
+  global $user;
+  if($user->uid !== 0) {
+    module_load_include('inc', 'user', 'user.pages');
+    user_logout_current_user();
+    if (isset($_GET['message'])) {
+      $message = t($_GET['message'], array(), array('context' => 'heimdal'));
+      drupal_set_message($message);
+    }
   }
 
   drupal_goto();
