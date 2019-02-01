@@ -4,35 +4,10 @@
  *
  * @file
  * define a request for heimdal library login
+ *
  */
 
 class bibdkHeimdalCurl extends MicroCURL {
-  /**
-   * Get a token from access platform
-   *
-   * @return bool|string
-   */
-  public function getAccessToken() {
-    $config = variable_get('ding_wayf', NULL);
-
-    $token_client_secret = $config['clientsecret'];
-    $token_client_ID = $config['clientid'];
-    $token_platform = $config['clientplatform'];
-    $token_post_data = 'grant_type=password&username=@&password=@';
-    $this->set_authentication($token_client_ID, $token_client_secret);
-    $this->set_post($token_post_data);
-    $this->set_url($token_platform);
-    $this->set_option(CURLOPT_RETURNTRANSFER, TRUE);
-    $this->set_option(CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
-    $heimdal_token_attributes = $this->get();
-
-    if ($this->checkMe()) {
-      return $this->parseToken($heimdal_token_attributes);
-    }
-    else {
-      return FALSE;
-    }
-  }
 
   public function __destruct() {
     $this->close();
@@ -59,11 +34,22 @@ class bibdkHeimdalCurl extends MicroCURL {
    *   Json response parsed into an array or empty array if
    *   something goes wrong
    */
-  public function getAttributes($clientId, $token) {
-    $ticketLink = $this->getTicketLink($clientId, $token);
-    $response = $this->get($ticketLink);
+  public function getAttributes($auth_code) {
+    //exchange authorization code for access token
+    $token = $this->getAccessToken($auth_code);
+    if(empty($token)){
+      return FALSE;
+    }
+
+    $token_as_json = json_decode($token);
+    $bearer = $token_as_json->access_token;
+    // we are logged in - set access_token (bearer) in SESSION for later use
+    $_SESSION['heimdal']['access_token'] = $bearer;
+    $_SESSION['heimdal']['logged_in'] = 1;
+
+    $attributes = $this->getUserInfo($bearer);
     if ($this->checkMe()) {
-      $attributes = json_decode($response, true);
+      $attributes = json_decode($attributes, true);
       if (empty($attributes)) {
         return array();
       }
@@ -72,18 +58,42 @@ class bibdkHeimdalCurl extends MicroCURL {
     return FALSE;
   }
 
+  private function getUserInfo($bearer) {
+    $config = variable_get('ding_wayf', NULL);
+    $this->set_url($config['clientplatform'] . '/userinfo/');
+    $this->set_option(CURLOPT_HTTPHEADER, array("Authorization: Bearer $bearer"));
+    $attributes = $this->get();
+
+    return $attributes;
+  }
+
 
   /**
    * Get a link to heimdal access platform to retrive attributes associated
-   * with given clientId and taken
+   * with given clientId and token
    * @param $clientId
    * @param $token
    * @return string
    */
-  private function getTicketLink($clientId, $token) {
+  private function getAccessToken($auth_code) {
     $config = variable_get('ding_wayf', NULL);
-    $ticket_link = $config['hosturl'] . '/getTicket/' . $token . '/' . $clientId;
-    return $ticket_link;
+    $client_secret = $config['clientsecret'];
+    $client_id = $config['clientid'];
+
+    $redirect_url = bibdkHeimdalHelpers::bibdk_heimdal_get_full_url('heimdal/login');
+
+    $token_post_data = "grant_type=authorization_code&code=$auth_code&client_id=$client_id&client_secret=$client_secret&redirect_uri=$redirect_url";
+    $this->set_post($token_post_data);
+    $this->set_url($config['clientplatform'] . '/oauth/token');
+
+    $this->set_option(CURLOPT_RETURNTRANSFER, TRUE);
+    $this->set_option(CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
+
+    $response = $this->get();
+    if($this->checkMe()){
+      return $response;
+    }
+    return '';
   }
 
   /**

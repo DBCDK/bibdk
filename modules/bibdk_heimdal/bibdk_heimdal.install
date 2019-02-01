@@ -48,6 +48,11 @@ function bibdk_heimdal_schema_definition() {
         'description' => 'date for sending the email - php time',
         'type' => 'int',
         'not null' => TRUE,
+      ),
+      'access_token' => array(
+        'description' => 'The access token used for initial login',
+        'type' => 'varchar',
+        'length' => 128
       )
     ),
     'unique keys' => array('email' => array('email')),
@@ -63,4 +68,18 @@ function bibdk_heimdal_schema_definition() {
 function bibdk_heimdal_update_7001() {
   $schema = bibdk_heimdal_schema_definition();
   db_create_table('bibdk_heimdal_email_verify', $schema['bibdk_heimdal_email_verify']);
+}
+
+/**
+ * Add access token field to heimdal table (bibdk_heimdal_email_verify)
+ */
+function bibdk_heimdal_update_7002(){
+  // Add access_token field
+  $access_token = array(
+    'description' => 'The access token used for initial login',
+    'type' => 'varchar',
+    'length' => 128,
+    'not null' => TRUE,
+  );
+  db_add_field('bibdk_heimdal_email_verify', 'access_token', $access_token);
 }

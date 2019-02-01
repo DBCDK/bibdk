@@ -37,8 +37,6 @@ function bibdk_provider_heimdal_authenticate($name, $pass = null) {
  * @return mixed
  */
 function bibdk_provider_heimdal_login_creds($heimdalUser, $notify = null) {
-  // we are logged in with heimdal
-  bibdk_heimdal_provider_set_session('logged_in', TRUE);
   // set authentication provider
   $form_state['values']['authentication_provider'] = 'heimdal';
   // set build_info  for further processing (see bibdk_heimdal_form_alter())
@@ -137,8 +135,6 @@ function bibdk_heimdal_provider_username_from_session(array $usernames) {
  * on bibdk user - if so add them to SESSION for later handling
  * @param $username
  * @param $culragencies
- * @return array
- *   The libraries that are NOT in users favourites
  */
 function bibdk_provider_heimdal_favourite_check($username, $culragencies) {
   $bibdk_favourites_xml = BibdkUser::instance()->getFavourites($username);

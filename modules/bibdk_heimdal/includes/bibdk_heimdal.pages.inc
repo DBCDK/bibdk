@@ -18,7 +18,6 @@ module_load_include('inc', 'bibdk_heimdal', 'includes/heimdalDatabase');
 function bibdk_heimdal_handle_login_request($uuid) {
   $message = '';
   $row = array();
-
   try {
     $row = heimdalDatabase::get($uuid);
   } catch (Exception $e) {
@@ -27,9 +26,11 @@ function bibdk_heimdal_handle_login_request($uuid) {
     bibdk_heimdal_cleanup_and_exit($message);
   }
 
+  // set the access token (from the original login) retrieved from database
+  $_SESSION['heimdal']['access_token'] = $row['access_token'];
+
   // row has been fetched - this is a one time link - delete on database
   heimdalDatabase::deleteByUUID($uuid);
-
   if (empty($row)) {
     // row was not found - it has probably been deleted because it was too old
     $message = bibdk_heimdal_link_deprecated_message();
@@ -64,6 +65,7 @@ function bibdk_heimdal_handle_login_request($uuid) {
     $message = bibdk_heimdal_pages_welcome_message();
     drupal_set_message($message);
     $link = bibdk_heimdal_pages_get_login_link();
+
     drupal_goto($link);
   }
 
@@ -185,7 +187,7 @@ function bibdk_heimdal_get_nogo_response() {
  */
 function bibdk_heimdal_get_unique_agency(array $agencies){
   foreach($agencies as $agency){
-    if($agency['userIdType'] === 'CPR' || $agency['userIdType'] === 'CVR' ){
+    if(isset($agency['userIdType']) && ($agency['userIdType'] === 'CPR' || $agency['userIdType'] === 'CVR' )){
       return $agency;
     }
   }
@@ -204,14 +206,17 @@ function bibdk_heimdal_get_unique_agency(array $agencies){
  * @return string
  */
 function bibdk_heimdal_pages_get_login_link() {
-  $config = variable_get('ding_wayf', NULL);
+
+  return bibdk_heimdal_get_login_url('heimdal/login');
+
+  /*$config = variable_get('ding_wayf', NULL);
   $token = variable_get('heimdal_access_token', NULL);
   if (empty($config) || empty($token)) {
     watchdog('heimdal', 'HEIMDAL is not configured', WATCHDOG_ERROR);
     return '';
   }
-  $heimdal_link = $config['hosturl'] . $config['loginpath'] . '?token=' . $token . '&destination=heimdal/login';
-  return $heimdal_link;
+  $heimdal_link = $config['clientplatform'] . $config['loginpath'] . '?token=' . $token . '&destination=heimdal/login';
+  return $heimdal_link;*/
 }
 
 /**

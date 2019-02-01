@@ -16,10 +16,9 @@
  *
  */
 
-// load cron job to renew access token
-require_once "includes/bibdk_heimdal.cron.inc";
 // load forms
 require_once 'includes/bibdk_heimdal_forms.inc';
+require_once 'includes/bibdk_heimdal.pages.inc';
 
 /**
  * Implements hook_menu().
@@ -73,7 +72,6 @@ function bibdk_heimdal_menu() {
   );
 
 
-
   return $items;
 }
 
@@ -85,7 +83,7 @@ function bibdk_heimdal_menu() {
  * to run.
  */
 function bibdk_heimdal_init() {
-  if(isset($_GET['message'])){
+  if (isset($_GET['message'])) {
     drupal_set_message($_GET['message']);
   }
 
@@ -114,7 +112,7 @@ function bibdk_heimdal_init() {
 function bibdk_heimdal_check_for_errors() {
   $error = isset($_GET['error']) ? $_GET['error'] : '';
   if (!empty($error)) {
-    $message = t($_GET['error'], array(), array('context'=>'heimdal'));
+    $message = t($_GET['error'], array(), array('context' => 'heimdal'));
     bibdk_heimdal_cleanup_and_exit($message);
   }
 }
@@ -129,7 +127,6 @@ function bibdk_heimdal_redirect_login() {
   // next step checks the user and sets SESSION and form_state parameters for further handling
   // @see bibdk_provider/bibdk_provider.heimdal.inc::bibdk_provider_heimdal_login_creds()
   $form_state = bibdk_heimdal_get_form_state($heimdal_user);
-
   if (bibdk_heimdal_check_formstate($form_state)) {
     //all is good - submit login form
     bibdk_heimdal_do_login($form_state);
@@ -169,7 +166,7 @@ function bibdk_heimdal_cleanup_and_exit($message = NULL, $ajax = FALSE) {
   if (isset($_SESSION['heimdal'])) {
     if ($_SESSION['heimdal']['logged_in']) {
       $url = bibdk_heimdal_get_return_url();
-      bibdk_heimdal_do_logout($url, $ajax);
+      bibdk_heimdal_do_logout('heimdal/logout', $ajax);
     }
   }
   if (isset($_SESSION['heimdal'])) {
@@ -177,7 +174,6 @@ function bibdk_heimdal_cleanup_and_exit($message = NULL, $ajax = FALSE) {
   }
   // go to frontpage
   drupal_goto('<front>');
-  drupal_exit();
 }
 
 /**
@@ -205,6 +201,7 @@ function bibdk_heimdal_do_login($form_state) {
   if (!empty($errors)) {
     bibdk_heimdal_cleanup_and_exit();
   }
+
 }
 
 /**
@@ -258,9 +255,21 @@ function bibdk_heimdal_form_alter(&$form, &$form_state, $form_id) {
 function bibdk_heimdal_get_heimdal_user() {
   // get attributes from heimdal
   $heimdal_attributes = bibdk_heimdal_get_heimdal_attributes();
-  // get users defined in heimdal/culr
-  $heimdal_user = new bibdkHeimdalUser($heimdal_attributes);
-  return $heimdal_user;
+  if (bibdk_heimdal_check_culr_user($heimdal_attributes)) {
+    // get users defined in heimdal/culr
+    $heimdal_user = new bibdkHeimdalUser($heimdal_attributes);
+    return $heimdal_user;
+  }
+
+  // there is something wrong with the attributes - abort
+  return null;
+}
+
+function bibdk_heimdal_check_culr_user($attributes) {
+  if (empty($attributes['attributes']['agencies'])) {
+    bibdk_heimdal_cleanup_and_exit(bibdk_heimdal_pages_no_culr_message());
+  }
+  return true;
 }
 
 /**
@@ -272,23 +281,20 @@ function bibdk_heimdal_get_heimdal_attributes() {
   if (!empty($return_array)) {
     return $return_array;
   }
-  // client id for ticket request
-  $client_id = !empty($_REQUEST['id']) ? $_REQUEST['id'] : NULL;
-  if (!isset($client_id)) {
-    return array();
-  }
-  // token
-  $token = !empty($_REQUEST['token']) ? $_REQUEST['token'] : NULL;
-  if (!isset($token)) {
+  // authorization code for further requests
+  $auth_code = !empty($_REQUEST['code']) ? $_REQUEST['code'] : NULL;
+  if (!isset($auth_code)) {
     return array();
   }
 
   $curl = new bibdkHeimdalCurl();
-  $return_array = $curl->getAttributes($client_id, $token);
+  $return_array = $curl->getAttributes($auth_code);
   if ($return_array === FALSE) {
     // this is a http error - abort
     bibdk_heimdal_cleanup_and_exit();
   }
+
+
   return $return_array;
 }
 
@@ -309,12 +315,20 @@ function bibdk_heimdal_user_logout() {
  * @param bool $ajax
  *   Do an ajax redirect or not
  */
-function bibdk_heimdal_do_logout($url = '/heimdal/logout', $ajax = fALSE) {
+function bibdk_heimdal_do_logout($url = 'heimdal/logout', $ajax = fALSE) {
   if (isset($_SESSION['heimdal'])) {
+    $return_uri = bibdkHeimdalHelpers::bibdk_heimdal_get_full_url($url);
+    $access_token = isset($_SESSION['heimdal']['access_token']) ? $_SESSION['heimdal']['access_token'] : FALSE;
+
     unset($_SESSION['heimdal']);
-    $token = variable_get('heimdal_access_token');
-    $config = variable_get('ding_wayf', NULL);
-    $path = $config['hosturl'] . '/logout?returnurl='.$url.'&token='.$token;
+    if ($access_token) {
+      $config = variable_get('ding_wayf', NULL);
+      $path = $config['clientplatform'] . '/logout?redirect_uri=' . $return_uri . '&access_token=' . $access_token;
+    }
+    else {
+      drupal_set_message(t('bibdk_heimdal_not_logged_out_of_hejmdal', array(), array('context' => 'bibdk_heimdal')));
+      $path = '<front>';
+    }
 
     if ($ajax) {
       bibdk_heimdal_forms_ctools_redirect($path);
@@ -328,16 +342,19 @@ function bibdk_heimdal_do_logout($url = '/heimdal/logout', $ajax = fALSE) {
  * Custom logout. Basically a copy of user_logout_current_user(),
  * @see user.pages.inc::user_logout_current_user()
  */
-function bibdk_heimdal_custom_drupal_logout(){
-  module_load_include('inc', 'user', 'user.pages');
-  user_logout_current_user();
-  if(isset($_GET['message'])){
-    $message = t($_GET['message'], array(), array('context'=>'heimdal'));
-    drupal_set_message($message);
+function bibdk_heimdal_custom_drupal_logout() {
+  global $user;
+  if ($user->uid !== 0) {
+    module_load_include('inc', 'user', 'user.pages');
+    user_logout_current_user();
+    if (isset($_GET['message'])) {
+      $message = t($_GET['message'], array(), array('context' => 'heimdal'));
+      drupal_set_message($message);
+    }
   }
+
   drupal_goto();
 }
-
 
 
 /** Implements hook_form_FORM_ID_alter (user_login)
@@ -386,6 +403,7 @@ function bibdk_heimdal_login_link() {
  * @return array
  */
 function bibdk_heimdal_get_login_link() {
+
   return array(
     bibdk_heimdal_get_logo(),
     //bibdk_heimdal_get_nemid_logo(),
@@ -437,7 +455,7 @@ function bibdk_heimdal_get_nemid_logo() {
 
 function bibdk_heimdal_get_path() {
   return array(
-    'path' => bibdk_heimdal_get_login_url(),
+    'path' => bibdk_heimdal_get_login_url('heimdal/login'),
     'options' => array(
       'attributes' => array(
         'title' => 'Heimdal login',
@@ -451,16 +469,22 @@ function bibdk_heimdal_get_path() {
  * Get the url for heimdal login
  * @return string
  */
-function bibdk_heimdal_get_login_url() {
+function bibdk_heimdal_get_login_url($relative_path = '') {
+  $redirect_url = bibdkHeimdalHelpers::bibdk_heimdal_get_full_url($relative_path);
   $config = variable_get('ding_wayf', NULL);
   $accessplatform = isset($config['heimdallogin']) ? $config['heimdallogin'] : FALSE;
+
   $heimdal_url = '';
-  if ($accessplatform) {
-    $token = variable_get('heimdal_access_token');
-    $heimdal_url = $config['hosturl'] . $config['loginpath'] . '?token=' . $token . '&destination=heimdal/login';
+  if (!empty($redirect_url)) {
+    $redirect = '&redirect_uri=' . $redirect_url;
   }
+  if ($accessplatform) {
+    $heimdal_url .= $config['clientplatform'] . '/oauth/authorize?response_type=code&client_id=' . $config['clientid'] . $redirect;
+  }
+
   return $heimdal_url;
 }
+
 
 /**
  * Get a wrapper for heimdal login
