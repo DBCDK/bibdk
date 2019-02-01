@@ -21,7 +21,6 @@ class bibdkHeimdalHelpers {
       $protocol = 'http://';
     }
     $host = $_SERVER['SERVER_NAME'];
-    //$host = '172.17.28.60';
     $drupal_path = base_path();
     return $protocol . $host . $drupal_path . $relative_path;
   }
