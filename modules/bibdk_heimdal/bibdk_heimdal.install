@@ -78,8 +78,7 @@ function bibdk_heimdal_update_7002(){
   $access_token = array(
     'description' => 'The access token used for initial login',
     'type' => 'varchar',
-    'length' => 128,
-    'not null' => TRUE,
+    'length' => 128
   );
   db_add_field('bibdk_heimdal_email_verify', 'access_token', $access_token);
 }
