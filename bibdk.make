@@ -85,7 +85,7 @@ projects[ting-client][download][tag] = 7.x-2.46
 projects[ting_agency][type] = module
 projects[ting_agency][download][type] = git
 projects[ting_agency][download][url] = git@github.com:DBCDK/ting_agency.git
-projects[ting_agency][download][tag] = 7.x-1.4
+projects[ting_agency][download][tag] = 7.x-1.5
 
 projects[ting_infomedia][type] = module
 projects[ting_infomedia][download][type] = git
@@ -95,7 +95,7 @@ projects[ting_infomedia][download][tag] = 7.x-1.36
 projects[ting_openformat][type] = module
 projects[ting_openformat][download][type] = git
 projects[ting_openformat][download][url] = git@github.com:DBCDK/ting_openformat.git
-projects[ting_openformat][download][tag] = 7.x-1.6
+projects[ting_openformat][download][tag] = 7.x-1.7
 
 projects[ting_openuserstatus][type] = module
 projects[ting_openuserstatus][download][type] = git
@@ -143,7 +143,7 @@ projects[cql_strict_parser][download][tag] = 7.x-0.4
 projects[bibdk_config][type] = module
 projects[bibdk_config][download][type] = git
 projects[bibdk_config][download][url] = https://git.dbc.dk:/repos/bibliotek.dk/bibdk_config.git
-projects[bibdk_config][download][tag] = 7.x-1.37
+projects[bibdk_config][download][tag] = 7.x-1.38
 
 projects[bibdk_behaviour][type] = module
 projects[bibdk_behaviour][download][type] = git
