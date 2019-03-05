@@ -156,7 +156,7 @@ function bibdk_recommender_carousel_markup(array $pids = array(), array $types =
     'limit' => variable_get('bibdk_recommender_limit', 10),
     'offset' => 0,
     'filters' => array(
-      'authorFlood' => variable_get('bibdk_recommender_filters_authorflood', 3),
+      'authorFlood' => variable_get('bibdk_recommender_filters_authorflood', 1),
       'type' => $types,
     ),
   );
