@@ -3617,6 +3617,18 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option = new stdClass();
   $option->disabled = FALSE; /* Edit this to true to make a default option disabled initially */
   $option->api_version = 1;
+  $option->o_uuid = '3edea420-9116-4169-aaf7-983818361e56';
+  $option->v_uuid = '819ed112-ec85-8f64-2573-a5a88f7ac3d9';
+  $option->sort = 10;
+  $option->label = 'podcasts ';
+  $option->value = 'term.type="podcast"';
+  $option->expand = '0';
+  $option->is_disabled = FALSE;
+  $export['3edea420-9116-4169-aaf7-983818361e56'] = $option;
+
+  $option = new stdClass();
+  $option->disabled = FALSE; /* Edit this to true to make a default option disabled initially */
+  $option->api_version = 1;
   $option->o_uuid = '3f2e9dd3-22a9-a7e4-6df8-bfe3514f0ed1';
   $option->v_uuid = 'da48923f-e5ba-5ef4-ad4f-c8aab6767a83';
   $option->sort = -66;
