@@ -302,7 +302,7 @@ projects[variable][version] = 2.5
 
 projects[views][subdir] = contrib
 projects[views][type] = module
-projects[views][version] = 3.18
+projects[views][version] = 3.21
 
 projects[virtual_field][subdir] = contrib
 projects[virtual_field][type] = module
