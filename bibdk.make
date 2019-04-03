@@ -121,7 +121,7 @@ projects[open_holdingstatus][download][tag] = 7.x-1.3
 projects[open_moreinfo][type] = module
 projects[open_moreinfo][download][type] = git
 projects[open_moreinfo][download][url] = git@github.com:DBCDK/open_moreinfo.git
-projects[open_moreinfo][download][tag] = 7.x-1.3
+projects[open_moreinfo][download][tag] = 7.x-1.4
 
 projects[open_saou][type] = module
 projects[open_saou][download][type] = git
