@@ -27,6 +27,7 @@ node('dscrum-is-builder-i01'){
   stage('build code'){
     sh """
 cd /
+ls -la 
 whoami
 npm --version 
 """
