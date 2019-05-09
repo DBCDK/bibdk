@@ -16,14 +16,9 @@ node('dscrum-is-builder-i01'){
   stage('cleanup old code'){
     dir(WWW_PATH){
       sh """
-          ls -la 
-        """
-      echo WWW_PATH
-      echo BRANCH
-      sh """
       if [ -d '${BRANCH}/sites/default' ]; then
-        chmod -R u+w ${BRANCH} || true
-        rm -rf ${BRANCH}
+        chmod -R u+w ${BRANCH} | true
+        rm -rf ${BRANCH} | true
       fi
       """
     }
