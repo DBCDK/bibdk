@@ -13,7 +13,7 @@ def NPM_PATH = "${WWW_PATH}${BRANCH}/profiles/bibdk/themes/bibdk_theme/.npm/"
 
 node('dscrum-is-builder-i01'){
 
-  stage('cleanup old code'){
+ /* stage('cleanup old code'){
       sh """
       if [ -d ${WWW_PATH}${BRANCH} ]; then
         chmod -R u+w ${WWW_PATH}${BRANCH} | true
@@ -21,16 +21,15 @@ node('dscrum-is-builder-i01'){
       fi
       """
 
-  }
+  }*/
 
 
   stage('build code'){
-    sh """
-npm --version
-"""
+
     dir(WWW_PATH+BRANCH){
       checkout scm
-      sh """        
+      sh """
+        npm --version        
         git checkout develop
         drush make -v --working-copy --strict=0 --dbc-modules=$BRANCH_NAME --no-gitinfofile --contrib-destination=profiles/netpunkt distro.make .
       """
