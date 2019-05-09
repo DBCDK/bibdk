@@ -37,8 +37,10 @@ node('dscrum-is-builder-i01'){
 
   stage('site install'){
     dir(WWW_PATH+BRANCH) {
+      // get secret settings for site install
       def DB_SETTINGS = readYaml('profiles/bibdk/modules/bibdk_config/environment.yml')
       echo DB_SETTINGS
+
     }
   }
 
@@ -49,9 +51,8 @@ node('dscrum-is-builder-i01'){
           drush rr
           drush updb
           drush fra -y
-        ""
+        """
     }
-    
   }
 
   stage('deploy'){
