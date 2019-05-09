@@ -8,7 +8,7 @@ def WWW_PATH = '/data/www/'
 // postgres database to use for bibliotek.dk installation
 def PG_NAME = "feature_${BRANCH}"
 // path to npm
-def NPM_PATH = "${WWW_PATH}${BRANCH}/profiles/bibdk/themes/bibdk_theme/.npm"
+def NPM_PATH = "${WWW_PATH}${BRANCH}/profiles/bibdk/themes/bibdk_theme/.npm/"
 
 
 node('dscrum-is-builder-i01'){
