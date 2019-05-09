@@ -28,7 +28,12 @@ node('dscrum-is-builder-i01'){
   }
 
   stage('build stylesheet'){
-
+    dir(WWW_PATH+BRANCH+'profiles/bibdk/themes/bibdk_theme/.npm') {
+      sh """
+          npm install
+          gulp build
+        """
+    }
   }
 
   stage('site install'){
@@ -42,7 +47,7 @@ node('dscrum-is-builder-i01'){
       sh """
         PGPASSWORD=$DB_SETTINGS.db.pg_password drush -y si $PROFILE \
         --db-url=pgsql://$DB_SETTINGS.db.pg_user:$DB_SETTINGS.db.pg_password@$DB_SETTINGS.db.pg_host/$PG_NAME \
-        --uri=$DB_SETTINGS.gui.uri --account-pass=$DB_SETTINGS.gui.gui_pass \
+        --uri=$DB_SETTINGS.gui.uri$BRANCH --account-pass=$DB_SETTINGS.gui.gui_pass \
         --site-name=bibliotek.dk
       """
 
@@ -52,17 +57,13 @@ node('dscrum-is-builder-i01'){
 
   stage ('drush: finish installation'){
     dir(WWW_PATH+BRANCH){
-      sh """"
+      sh """
           drush cc all
           drush rr
           drush updb
           drush fra -y
         """
     }
-  }
-
-  stage('deploy'){
-
   }
 
   stage('run selenium test'){
