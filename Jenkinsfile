@@ -15,7 +15,7 @@ node('dscrum-is-builder-i01'){
 
   stage('build code'){
     echo BRANCH
-    dir(WWW_PATH$BRANCH){
+    dir(WWW_PATH+BRANCH){
       checkout scm
       sh """
         git checkout develop
