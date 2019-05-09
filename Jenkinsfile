@@ -14,14 +14,13 @@ def NPM_PATH = "${WWW_PATH}${BRANCH}/profiles/bibdk/themes/bibdk_theme/.npm/"
 node('dscrum-is-builder-i01'){
 
   stage('cleanup old code'){
-    dir(WWW_PATH){
       sh """
-      if [ -d '${BRANCH}/sites/default' ]; then
+      if [ -d ${WWW_PATH}${BRANCH} ]; then
         chmod -R u+w ${BRANCH} | true
-        rm -rf ${BRANCH} | true
+        rm -rf ${WWW_PATH}${BRANCH} | true
       fi
       """
-    }
+    
   }
 
 
