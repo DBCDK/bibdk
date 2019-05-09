@@ -15,6 +15,7 @@ node('dscrum-is-builder-i01'){
 
   stage('cleanup old code'){
       sh """
+      npm --version
       if [ -d ${WWW_PATH}${BRANCH} ]; then
         chmod -R u+w ${WWW_PATH}${BRANCH} | true
         rm -rf ${WWW_PATH}${BRANCH} | true
@@ -83,6 +84,8 @@ node('dscrum-is-builder-i01'){
   stage('run selenium test'){
     git 'https://git.dbc.dk/BibdkWebdriver.git'
     sh """
+      cd BibdkWebdriver
+      git checkout $BRANCH_NAME
       export PATH=/home/isworker/bin/:$PATH
       export BIBDK_WEBDRIVER_URL=http://dscrum-is-builder-i01.dbc.dk/$WWW_PATH$BRANCH
       # start python virtual environment for deploying selenium test
