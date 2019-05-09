@@ -3,6 +3,10 @@
 def PRODUCT = 'bibliotekdk'
 // remove 'feature/' from BRANCH_NAME
 def BRANCH = BRANCH_NAME.replaceAll('feature/', '')
+// this is a static installation while we wait for the docker world
+def WWW_PATH = '/data/www/'
+// postgres database to use for bibliotek.dk installation
+def PG_NAME = "feature_${BRANCH}"
 
 node('dscrum-is-builder-i01'){
   stage('Get code') {
@@ -10,11 +14,20 @@ node('dscrum-is-builder-i01'){
   }
 
   stage('build code'){
-    echo BRANCH_NAME
+    echo BRANCH
+    dir(WWW_PATH){
+      checkout scm
+      sh """
+        git checkout develop
+        drush make -v --working-copy --strict=0 --dbc-modules=$BRANCH_NAME --no-gitinfofile --contrib-destination=profiles/netpunkt distro.make $WWW_PATH$BRANCH
+      """
+    }
   }
 
   stage('create database'){
-
+    sh """
+      createdb $PG_NAME
+    """
   }
 
   stage('build stylesheet'){
