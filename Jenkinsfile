@@ -15,7 +15,6 @@ node('dscrum-is-builder-i01'){
 
   stage('cleanup old code'){
       sh """
-      npm --version
       if [ -d ${WWW_PATH}${BRANCH} ]; then
         chmod -R u+w ${WWW_PATH}${BRANCH} | true
         rm -rf ${WWW_PATH}${BRANCH} | true
@@ -29,6 +28,7 @@ node('dscrum-is-builder-i01'){
     dir(WWW_PATH+BRANCH){
       checkout scm
       sh """
+        npm --version
         git checkout develop
         drush make -v --working-copy --strict=0 --dbc-modules=$BRANCH_NAME --no-gitinfofile --contrib-destination=profiles/netpunkt distro.make .
       """
@@ -58,6 +58,17 @@ node('dscrum-is-builder-i01'){
     }
   }
 
+  stage ('drush: finish installation'){
+    dir(WWW_PATH+BRANCH){
+      sh """
+          drush cc all
+          drush rr
+          drush updb
+          drush fra -y
+        """
+    }
+  }
+
   stage('build stylesheet'){
     dir(NPM_PATH) {
       sh """          
@@ -66,17 +77,7 @@ node('dscrum-is-builder-i01'){
           npm --version
           npm install
           gulp build
-        """
-    }
-  }
-
-  stage ('drush: finish installation'){
-    dir(WWW_PATH+BRANCH){
-      sh """
           drush cc all
-          drush rr
-          drush updb
-          drush fra -y
         """
     }
   }
