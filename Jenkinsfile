@@ -10,6 +10,7 @@ def PG_NAME = "feature_${BRANCH}"
 
 
 node('dscrum-is-builder-i01'){
+  /*
   stage('cleanup old code'){
     dir(WWW_PATH){
       sh """
@@ -18,6 +19,7 @@ node('dscrum-is-builder-i01'){
         """
     }
   }
+  */
 
   stage('delete and build code'){
     dir(WWW_PATH+BRANCH){
