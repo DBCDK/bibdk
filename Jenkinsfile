@@ -34,7 +34,7 @@ node('dscrum-is-builder-i01'){
   stage('site install'){
     dir(WWW_PATH+BRANCH) {
       // get secret settings for site install
-      def DB_SETTINGS = readYaml file: 'profiles/bibdk/modules/bibdk_config/environment.yml'
+      def DB_SETTINGS = readYaml file: 'profiles/bibdk/modules/bibdk_config/docker/environment.yml'
       echo DB_SETTINGS
 
     }
