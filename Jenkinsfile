@@ -15,14 +15,17 @@ node('dscrum-is-builder-i01'){
 
   stage('cleanup old code'){
     dir(WWW_PATH){
+      sh """
+          ls -la 
+        """
       echo WWW_PATH
       echo BRANCH
-      /*sh """
-        mkdir -p $BRANCH
-        chmod -R 777 $BRANCH
-        rm -rf $BRANCH
-        """
-        */
+      sh """
+      if [ -d '${BRANCH}/sites/default' ]; then
+        chmod -R u+w ${BRANCH} || true
+        rm -rf ${BRANCH}
+      fi
+      """
     }
   }
 
