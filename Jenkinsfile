@@ -26,6 +26,7 @@ node('dscrum-is-builder-i01'){
 
   stage('build code'){
     sh """
+whoami
 npm --version 
 """
 
@@ -46,8 +47,7 @@ npm --version
   }
 
   stage('site install'){
-    def PROFILE = 'bibdk'
-    def URI =
+    def PROFILE = "bibdk"
     dir(WWW_PATH+BRANCH) {
       // get secret settings for site install
       def DB_SETTINGS = readYaml file: 'profiles/bibdk/modules/bibdk_config/docker/environment.yml'
