@@ -25,10 +25,12 @@ node('dscrum-is-builder-i01'){
 
 
   stage('build code'){
+    sh """
+npm --version
+"""
     dir(WWW_PATH+BRANCH){
       checkout scm
-      sh """
-        npm --version
+      sh """        
         git checkout develop
         drush make -v --working-copy --strict=0 --dbc-modules=$BRANCH_NAME --no-gitinfofile --contrib-destination=profiles/netpunkt distro.make .
       """
@@ -70,6 +72,10 @@ node('dscrum-is-builder-i01'){
   }
 
   stage('build stylesheet'){
+    sh"""
+cd /
+"""
+
     dir(NPM_PATH) {
       sh """          
           ls -la 
