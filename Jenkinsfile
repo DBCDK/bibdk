@@ -12,17 +12,17 @@ def NPM_PATH = "${WWW_PATH}${BRANCH}+'profiles/bibdk/themes/bibdk_theme/.npm"
 
 
 node('dscrum-is-builder-i01'){
-
+/*
   stage('cleanup old code'){
     dir(WWW_PATH){
       sh """
-        mkdir -p $BRANCH 
+        mkdir -p $BRANCH
         chmod -R 777 $BRANCH
         rm -rf $BRANCH
         """
     }
   }
-
+*/
 
   stage('delete and build code'){
     dir(WWW_PATH+BRANCH){
