@@ -26,6 +26,7 @@ node('dscrum-is-builder-i01'){
 
   stage('create database'){
     sh """
+      dropdb $PG_NAME | true
       createdb $PG_NAME
     """
   }
@@ -39,8 +40,18 @@ node('dscrum-is-builder-i01'){
       def DB_SETTINGS = readYaml('profiles/bibdk/modules/bibdk_config/environment.yml')
       echo DB_SETTINGS
     }
+  }
 
-
+  stage ('drush: finish installation'){
+    dir(WWW_PATH+BRANCH){
+      sh """"
+          drush cc all
+          drush rr
+          drush updb
+          drush fra -y
+        ""
+    }
+    
   }
 
   stage('deploy'){
