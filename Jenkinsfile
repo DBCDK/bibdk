@@ -59,9 +59,10 @@ node('dscrum-is-builder-i01'){
 
   stage('build stylesheet'){
     dir(NPM_PATH) {
-      sh """
+      sh """          
           ls -la 
           whoami
+          npm --version
           npm install
           gulp build
         """
