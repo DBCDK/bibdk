@@ -8,9 +8,12 @@ def WWW_PATH = '/data/www/'
 // postgres database to use for bibliotek.dk installation
 def PG_NAME = "feature_${BRANCH}"
 
+
 node('dscrum-is-builder-i01'){
-  stage('build code'){
-    echo BRANCH
+  stage('delete and build code'){
+    sh """
+        rm -rf $WWW_PATH$BRANCH
+      """
     dir(WWW_PATH+BRANCH){
       checkout scm
       sh """
@@ -67,6 +70,14 @@ node('dscrum-is-builder-i01'){
   }
 
   stage('run selenium test'){
-
+    git 'https://git.dbc.dk/BibdkWebdriver.git'
+    sh """
+      export PATH=/home/isworker/bin/:$PATH
+      export BIBDK_WEBDRIVER_URL=http://dscrum-is-builder-i01.dbc.dk/$WWW_PATH$BRANCH
+      # start python virtual environment for deploying selenium test
+      # virtualenv venv
+      . /home/isworker/venv/bin/activate
+      nosetests tests/test*.py --with-xunit -v
+    """
   }
 }
