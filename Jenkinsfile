@@ -2,7 +2,7 @@
 
 def PRODUCT = 'bibliotekdk'
 
-node('master'){
+node('dscrum-is-builder-i01'){
   stage('Get code') {
     checkout scm
   }
