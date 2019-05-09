@@ -35,10 +35,19 @@ node('dscrum-is-builder-i01'){
   }
 
   stage('site install'){
+    dir(WWW_PATH+BRANCH) {
+      def DB_SETTINGS = readYaml('profiles/bibdk/modules/bibdk_config/environment.yml')
+      echo DB_SETTINGS
+    }
+
 
   }
 
   stage('deploy'){
+
+  }
+
+  stage('run selenium test'){
 
   }
 }
