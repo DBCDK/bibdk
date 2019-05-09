@@ -16,11 +16,11 @@ node('dscrum-is-builder-i01'){
   stage('cleanup old code'){
       sh """
       if [ -d ${WWW_PATH}${BRANCH} ]; then
-        chmod -R u+w ${BRANCH} | true
+        chmod -R u+w ${WWW_PATH}${BRANCH} | true
         rm -rf ${WWW_PATH}${BRANCH} | true
       fi
       """
-    
+
   }
 
 
@@ -60,6 +60,8 @@ node('dscrum-is-builder-i01'){
   stage('build stylesheet'){
     dir(NPM_PATH) {
       sh """
+          ls -la 
+          whoami
           npm install
           gulp build
         """
