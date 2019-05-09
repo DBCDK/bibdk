@@ -7,19 +7,22 @@ def BRANCH = BRANCH_NAME.replaceAll('feature/', '')
 def WWW_PATH = '/data/www/'
 // postgres database to use for bibliotek.dk installation
 def PG_NAME = "feature_${BRANCH}"
+// path to npm
+def NPM_PATH = "${WWW_PATH}${BRANCH}+'profiles/bibdk/themes/bibdk_theme/.npm"
 
 
 node('dscrum-is-builder-i01'){
-  /*
+
   stage('cleanup old code'){
     dir(WWW_PATH){
       sh """
-        chmod u+w $BRANCH | true
-        rm -rf $BRANCH | true
+        mkdir -p $BRANCH 
+        chmod -R 777 $BRANCH
+        rm -rf $BRANCH
         """
     }
   }
-  */
+
 
   stage('delete and build code'){
     dir(WWW_PATH+BRANCH){
@@ -55,7 +58,7 @@ node('dscrum-is-builder-i01'){
   }
 
   stage('build stylesheet'){
-    dir(WWW_PATH+BRANCH+'profiles/bibdk/themes/bibdk_theme/.npm') {
+    dir(NPM_PATH) {
       sh """
           npm install
           gulp build
