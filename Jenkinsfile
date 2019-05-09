@@ -11,10 +11,6 @@ def PG_NAME = "feature_${BRANCH}"
 
 node('dscrum-is-builder-i01'){
   stage('delete and build code'){
-    sh """
-        chmod -R u+w $WWW_PATH$BRANCH
-        rm -rf $WWW_PATH$BRANCH
-      """
     dir(WWW_PATH+BRANCH){
       checkout scm
       sh """
