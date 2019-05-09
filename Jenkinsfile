@@ -10,6 +10,15 @@ def PG_NAME = "feature_${BRANCH}"
 
 
 node('dscrum-is-builder-i01'){
+  stag('cleanup old code'){
+    dir(WWW_PATH){
+      sh """
+        chmod u+w $BRANCH | true
+        rm -rf $BRANCH | true
+        """
+    }
+  }
+
   stage('delete and build code'){
     dir(WWW_PATH+BRANCH){
       checkout scm
@@ -27,22 +36,12 @@ node('dscrum-is-builder-i01'){
     """
   }
 
-  stage('build stylesheet'){
-    dir(WWW_PATH+BRANCH+'profiles/bibdk/themes/bibdk_theme/.npm') {
-      sh """
-          npm install
-          gulp build
-        """
-    }
-  }
-
   stage('site install'){
     def PROFILE = 'bibdk'
     def URI =
     dir(WWW_PATH+BRANCH) {
       // get secret settings for site install
       def DB_SETTINGS = readYaml file: 'profiles/bibdk/modules/bibdk_config/docker/environment.yml'
-      echo DB_SETTINGS.db.pg_user
 
       sh """
         PGPASSWORD=$DB_SETTINGS.db.pg_password drush -y si $PROFILE \
@@ -50,8 +49,15 @@ node('dscrum-is-builder-i01'){
         --uri=$DB_SETTINGS.gui.uri$BRANCH --account-pass=$DB_SETTINGS.gui.gui_pass \
         --site-name=bibliotek.dk
       """
+    }
+  }
 
-
+  stage('build stylesheet'){
+    dir(WWW_PATH+BRANCH+'profiles/bibdk/themes/bibdk_theme/.npm') {
+      sh """
+          npm install
+          gulp build
+        """
     }
   }
 
