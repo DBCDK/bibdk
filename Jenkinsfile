@@ -26,7 +26,6 @@ node('dscrum-is-builder-i01'){
 
   stage('build code'){
     sh """
-which npm
 echo $PATH
 cd /
 ls -la 
