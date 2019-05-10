@@ -58,6 +58,7 @@ node('dscrum-is-builder-i01'){
  stage ('drush: finish installation'){
    dir(WWW_PATH+BRANCH){
      sh """
+         drush en bibdk_webservice_settings_develop
          drush dl registry_rebuild
          drush cc all
          drush rr
