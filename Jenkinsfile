@@ -22,11 +22,12 @@ node('dscrum-is-builder-i01'){
       """
   }
 
+  /*
 
   stage('build code'){
     dir(WWW_PATH+BRANCH){
       checkout scm
-      sh """   
+      sh """
         git checkout develop
         drush make -v --working-copy --strict=0 --dbc-modules=$BRANCH_NAME --no-gitinfofile --contrib-destination=profiles/bibdk distro.make .
       """
@@ -40,16 +41,16 @@ node('dscrum-is-builder-i01'){
     """
   }
 
+
   stage('site install'){
-    def PROFILE = "bibdk"
     dir(WWW_PATH+BRANCH) {
       // get secret settings for site install
       def DB_SETTINGS = readYaml file: 'profiles/bibdk/modules/bibdk_config/docker/environment.yml'
 
       sh """
-        PGPASSWORD=$DB_SETTINGS.db.pg_password drush -y si $PROFILE \
+        PGPASSWORD=$DB_SETTINGS.db.pg_password drush -y si bibdk \
         --db-url=pgsql://$DB_SETTINGS.db.pg_user:$DB_SETTINGS.db.pg_password@$DB_SETTINGS.db.pg_host/$PG_NAME \
-        --uri=$DB_SETTINGS.gui.uri$BRANCH --account-pass=$DB_SETTINGS.gui.gui_pass \
+        --uri=$DB_SETTINGS.gui.uri$BRANCH/ --account-pass=$DB_SETTINGS.gui.gui_pass \
         --site-name=bibliotek.dk
       """
     }
@@ -91,4 +92,5 @@ node('dscrum-is-builder-i01'){
       nosetests tests/test*.py --with-xunit -v
     """
   }
+  */
 }
