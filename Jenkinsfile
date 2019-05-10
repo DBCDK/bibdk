@@ -94,5 +94,6 @@ node('dscrum-is-builder-i01'){
      . /home/isworker/venv/bin/activate
      nosetests tests/test*.py --with-xunit -v
    """
+   // TODO generate junit report
  }
 }
