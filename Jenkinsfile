@@ -13,7 +13,7 @@ def NPM_PATH = "${WWW_PATH}${BRANCH}/profiles/bibdk/themes/bibdk_theme/.npm/"
 
 node('dscrum-is-builder-i01'){
 
- /* stage('cleanup old code'){
+  stage('cleanup old code'){
       sh """
       if [ -d ${WWW_PATH}${BRANCH} ]; then
         chmod -R u+w ${WWW_PATH}${BRANCH} | true
@@ -21,20 +21,10 @@ node('dscrum-is-builder-i01'){
       fi
       """
 
-  }*/
+  }
 
 
   stage('build code'){
-    sh """
-echo $PATH
-export PATH="$PATH:/home/isworker/.nvm/versions/node/v8.0.0/bin"
-cd /
-ls -la 
-whoami
-/home/isworker/.nvm/versions/node/v8.0.0/bin/npm --version
-npm --version 
-"""
-
     dir(WWW_PATH+BRANCH){
       checkout scm
       sh """   
@@ -69,6 +59,7 @@ npm --version
   stage ('drush: finish installation'){
     dir(WWW_PATH+BRANCH){
       sh """
+          drush dl registry_rebuild
           drush cc all
           drush rr
           drush updb
@@ -78,15 +69,9 @@ npm --version
   }
 
   stage('build stylesheet'){
-    sh"""
-cd /
-"""
-
     dir(NPM_PATH) {
-      sh """          
-          ls -la 
-          whoami
-          npm --version
+      sh """
+          export PATH="$PATH:/home/isworker/.nvm/versions/node/v8.0.0/bin"
           npm install
           gulp build
           drush cc all
