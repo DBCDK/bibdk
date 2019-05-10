@@ -29,6 +29,7 @@ node('dscrum-is-builder-i01'){
 cd /
 ls -la 
 whoami
+/home/isworker/.nvm/versions/node/v8.0.0/bin/npm --version
 npm --version 
 """
 
