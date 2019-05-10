@@ -26,6 +26,7 @@ node('dscrum-is-builder-i01'){
 
   stage('build code'){
     sh """
+echo $PATH
 cd /
 ls -la 
 whoami
