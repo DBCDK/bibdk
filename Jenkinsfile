@@ -17,12 +17,12 @@ node('dscrum-is-builder-i01'){
       sh """
       if [ -d ${WWW_PATH}${BRANCH} ]; then
         chmod -R u+w ${WWW_PATH}${BRANCH} | true
-        rm -rf ${WWW_PATH}${BRANCH} | true
+        rm -rf ${WWW_PATH}${BRANCH}* | true
       fi
       """
   }
 
-  /*
+
 
   stage('build code'){
     dir(WWW_PATH+BRANCH){
@@ -34,63 +34,64 @@ node('dscrum-is-builder-i01'){
     }
   }
 
-  stage('create database'){
-    sh """
-      dropdb $PG_NAME | true
-      createdb $PG_NAME
-    """
-  }
+  /*
+ stage('create database'){
+   sh """
+     dropdb $PG_NAME | true
+     createdb $PG_NAME
+   """
+ }
 
 
-  stage('site install'){
-    dir(WWW_PATH+BRANCH) {
-      // get secret settings for site install
-      def DB_SETTINGS = readYaml file: 'profiles/bibdk/modules/bibdk_config/docker/environment.yml'
+ stage('site install'){
+   dir(WWW_PATH+BRANCH) {
+     // get secret settings for site install
+     def DB_SETTINGS = readYaml file: 'profiles/bibdk/modules/bibdk_config/docker/environment.yml'
 
-      sh """
-        PGPASSWORD=$DB_SETTINGS.db.pg_password drush -y si bibdk \
-        --db-url=pgsql://$DB_SETTINGS.db.pg_user:$DB_SETTINGS.db.pg_password@$DB_SETTINGS.db.pg_host/$PG_NAME \
-        --uri=$DB_SETTINGS.gui.uri$BRANCH/ --account-pass=$DB_SETTINGS.gui.gui_pass \
-        --site-name=bibliotek.dk
-      """
-    }
-  }
+     sh """
+       PGPASSWORD=$DB_SETTINGS.db.pg_password drush -y si bibdk \
+       --db-url=pgsql://$DB_SETTINGS.db.pg_user:$DB_SETTINGS.db.pg_password@$DB_SETTINGS.db.pg_host/$PG_NAME \
+       --uri=$DB_SETTINGS.gui.uri$BRANCH/ --account-pass=$DB_SETTINGS.gui.gui_pass \
+       --site-name=bibliotek.dk
+     """
+   }
+ }
 
-  stage ('drush: finish installation'){
-    dir(WWW_PATH+BRANCH){
-      sh """
-          drush dl registry_rebuild
-          drush cc all
-          drush rr
-          drush updb
-          drush fra -y
-        """
-    }
-  }
+ stage ('drush: finish installation'){
+   dir(WWW_PATH+BRANCH){
+     sh """
+         drush dl registry_rebuild
+         drush cc all
+         drush rr
+         drush updb
+         drush fra -y
+       """
+   }
+ }
 
-  stage('build stylesheet'){
-    dir(NPM_PATH) {
-      sh """
-          export PATH="$PATH:/home/isworker/.nvm/versions/node/v8.0.0/bin"
-          npm install
-          gulp build
-          drush cc all
-        """
-    }
-  }
+ stage('build stylesheet'){
+   dir(NPM_PATH) {
+     sh """
+         export PATH="$PATH:/home/isworker/.nvm/versions/node/v8.0.0/bin"
+         npm install
+         gulp build
+         drush cc all
+       """
+   }
+ }
 
-  stage('run selenium test'){
-    git 'https://git.dbc.dk/BibdkWebdriver.git'
-    sh """
-      cd BibdkWebdriver
-      git checkout $BRANCH_NAME
-      export PATH=/home/isworker/bin/:$PATH
-      export BIBDK_WEBDRIVER_URL=http://dscrum-is-builder-i01.dbc.dk/$WWW_PATH$BRANCH
-      # start python virtual environment for deploying selenium test
-      # virtualenv venv
-      . /home/isworker/venv/bin/activate
-      nosetests tests/test*.py --with-xunit -v
-    """
-  }
-  */
+ stage('run selenium test'){
+   git 'https://git.dbc.dk/BibdkWebdriver.git'
+   sh """
+     cd BibdkWebdriver
+     git checkout $BRANCH_NAME
+     export PATH=/home/isworker/bin/:$PATH
+     export BIBDK_WEBDRIVER_URL=http://dscrum-is-builder-i01.dbc.dk/$WWW_PATH$BRANCH
+     # start python virtual environment for deploying selenium test
+     # virtualenv venv
+     . /home/isworker/venv/bin/activate
+     nosetests tests/test*.py --with-xunit -v
+   """
+ }
+ */
 }
