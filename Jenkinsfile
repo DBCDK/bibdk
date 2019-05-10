@@ -82,7 +82,6 @@ node('dscrum-is-builder-i01'){
  stage('run selenium test'){
    git 'https://git.dbc.dk/BibdkWebdriver.git'
    sh """
-     cd BibdkWebdriver
      git checkout $BRANCH_NAME
      export PATH=/home/isworker/bin/:$PATH
      export BIBDK_WEBDRIVER_URL=http://dscrum-is-builder-i01.dbc.dk/$WWW_PATH$BRANCH
@@ -92,5 +91,4 @@ node('dscrum-is-builder-i01'){
      nosetests tests/test*.py --with-xunit -v
    """
  }
-
 }
