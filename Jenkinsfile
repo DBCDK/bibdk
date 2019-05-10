@@ -20,7 +20,6 @@ node('dscrum-is-builder-i01'){
         rm -rf ${WWW_PATH}${BRANCH} | true
       fi
       """
-
   }
 
 
@@ -29,7 +28,7 @@ node('dscrum-is-builder-i01'){
       checkout scm
       sh """   
         git checkout develop
-        drush make -v --working-copy --strict=0 --dbc-modules=$BRANCH_NAME --no-gitinfofile --contrib-destination=profiles/netpunkt distro.make .
+        drush make -v --working-copy --strict=0 --dbc-modules=$BRANCH_NAME --no-gitinfofile --contrib-destination=profiles/bibdk distro.make .
       """
     }
   }
