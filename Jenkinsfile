@@ -27,7 +27,7 @@ node('dscrum-is-builder-i01'){
   stage('build code'){
     sh """
 echo $PATH
-export PATH="$PATH:/home/isworker/.nvm/versions/node/v8.0.0/bin
+export PATH="$PATH:/home/isworker/.nvm/versions/node/v8.0.0/bin"
 cd /
 ls -la 
 whoami
