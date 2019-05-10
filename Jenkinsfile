@@ -87,7 +87,7 @@ node('dscrum-is-builder-i01'){
    sh """
      git checkout develop
      export PATH=/home/isworker/bin/:$PATH
-     export BIBDK_WEBDRIVER_URL=http://dscrum-is-builder-i01.dbc.dk$WWW_PATH$BRANCH/
+     export BIBDK_WEBDRIVER_URL=http://dscrum-is-builder-i01.dbc.dk/$BRANCH/
      # start python virtual environment for deploying selenium test
      # virtualenv venv
      . /home/isworker/venv/bin/activate
