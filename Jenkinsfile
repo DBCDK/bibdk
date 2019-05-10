@@ -29,12 +29,12 @@ node('dscrum-is-builder-i01'){
       checkout scm
       sh """
         git checkout develop
-        drush make -v --working-copy --strict=0 --dbc-modules=$BRANCH_NAME --no-gitinfofile --contrib-destination=profiles/bibdk distro.make .
+        drush make -v --working-copy --strict=0 --dbc-modules=$BRANCH_NAME --no-gitinfofile --contrib-destination=profiles/bibdk https://raw.githubusercontent.com/DBCDK/bibdk/develop/distro.make .
       """
     }
   }
 
-  /*
+
  stage('create database'){
    sh """
      dropdb $PG_NAME | true
@@ -93,5 +93,5 @@ node('dscrum-is-builder-i01'){
      nosetests tests/test*.py --with-xunit -v
    """
  }
- */
+
 }
