@@ -59,7 +59,6 @@ node('dscrum-is-builder-i01'){
    dir(WWW_PATH+BRANCH){
      sh """
          drush en bibdk_webservice_settings_develop -y
-         drush dl registry_rebuild
          drush cc all
          drush rr
          drush updb
@@ -82,7 +81,7 @@ node('dscrum-is-builder-i01'){
  stage('run selenium test'){
    git 'https://git.dbc.dk/BibdkWebdriver.git'
    sh """
-     git checkout $BRANCH_NAME
+     git checkout develop
      export PATH=/home/isworker/bin/:$PATH
      export BIBDK_WEBDRIVER_URL=http://dscrum-is-builder-i01.dbc.dk/$WWW_PATH$BRANCH
      # start python virtual environment for deploying selenium test
