@@ -510,6 +510,16 @@ class bibdk_openorder extends TingClientRequest {
   }
 
   /**
+   * do NOT set default outputType in TingClientRequestAdapter - we handle
+   * response ourself - see this::parseResponse
+   * @return bool
+   */
+  public function defaultOutputType() {
+    return FALSE;
+  }
+
+
+  /**
    * Override TingClientRequest::parseResponse
    *
    * As of openorder 3.0 service returns xml only. Ting client is made for
