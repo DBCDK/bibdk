@@ -75,37 +75,19 @@ function bibdk_openorder_do_checkOrderPolicy($pickupAgencyId, $pid) {
   $params['pickUpAgencyId'] = $pickupAgencyId;
   $params['pid'] = $pid;
 
-  $client = new ting_client_class();
-  $response = $client->do_request('openorder', $params);
+  $response = new stdClass();
+  try {
+    $client = new ting_client_class();
+    $response = $client->do_request('openorder', $params);
+  }
+  catch (Exception $e){
+    watchdog('openOrder', 'CheckorderpolicyRequest failed: ' . $e->getMessage(), array(), WATCHDOG_ERROR);
+  }
+
   $orderpolicy = BibdkOpenorderPolicyResponse::SetObject();
   BibdkOpenorderPolicyResponse::GetObject()->setResponse($response);
   BibdkOpenorderPolicyResponse::GetObject()->setAgencyId($pickupAgencyId);
   return $orderpolicy;
-}
-
-/**
- * do a incrementRedirectStat
- *
- * */
-function bibdk_openorder_do_incrementRedirectStat($agencyid) {
-  $params = _bibdk_openorder_set_fixed_parameters();
-  $params['action'] = 'incrementRedirectStatRequest';
-
-  // testing
-  $params['agencyId'] = $agencyid;
-
-  $client = new ting_client_class();
-  $response = $client->do_request('openorder', $params);
-
-  if (
-    !isset($response->incrementRedirectStatResponse->incrementRedirectStatStatus->{'$'}) ||
-    $response->incrementRedirectStatResponse->incrementRedirectStatStatus->{'$'} === 'false')
-  {
-    watchdog('openOrder', 'Could not register incrementRedirectStat for agency : @agencyID', array('@agencyID' => $agencyid), WATCHDOG_ERROR);
-    return false;
-  }
-
-  return true;
 }
 
 /**
