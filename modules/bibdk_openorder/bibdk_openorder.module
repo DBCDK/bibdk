@@ -14,23 +14,22 @@ function bibdk_openorder_do_placeOrder($params) {
     return $response;
   }
   else {
-    $message = t('a required parameter is missing in placeorder request - please contact system administrator if problem persists' , array(), array('context' => 'bibdk_openorder'));
+    $message = t('a required parameter is missing in placeorder request - please contact system administrator if problem persists', array(), array('context' => 'bibdk_openorder'));
     drupal_set_message($message, 'warning');
-    watchdog('openorder', $message.'%values', array('%values'=>implode(', ',$missing)), WATCHDOG_ERROR);
+    watchdog('openorder', $message . '%values', array('%values' => implode(', ', $missing)), WATCHDOG_ERROR);
   }
 }
 
-function _bibdk_openorder_check_required_params($params){
-  $required = array('copy','needBeforeDate','orderSystem','userIdAuthenticated','userId','verificationReferenceSource','action');
+function _bibdk_openorder_check_required_params($params) {
+  $required = array('copy', 'needBeforeDate', 'orderSystem', 'userIdAuthenticated', 'userId', 'verificationReferenceSource', 'action');
   $missing = array();
-  foreach($required as $value){
-    if(!array_key_exists($value, $params)){
+  foreach ($required as $value) {
+    if (!array_key_exists($value, $params)) {
       $missing[] = $value;
     }
   }
   return $missing;
 }
-
 
 
 function _bibdk_openorder_set_fixed_placeorder_params() {
@@ -79,8 +78,7 @@ function bibdk_openorder_do_checkOrderPolicy($pickupAgencyId, $pid) {
   try {
     $client = new ting_client_class();
     $response = $client->do_request('openorder', $params);
-  }
-  catch (Exception $e){
+  } catch (Exception $e) {
     watchdog('openOrder', 'CheckorderpolicyRequest failed: ' . $e->getMessage(), array(), WATCHDOG_ERROR);
   }
 
