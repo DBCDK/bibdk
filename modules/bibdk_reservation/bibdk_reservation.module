@@ -630,7 +630,9 @@ function bibdk_reservation_step_guide($form, &$form_state, $current_step) {
   return $form;
 }
 
-/** Redirect to lookup url and update redirect statistics
+
+
+/** Redirect to lookup url
  * @return string
  */
 function bibdk_reservation_catalog_callback() {
@@ -640,9 +642,8 @@ function bibdk_reservation_catalog_callback() {
     return '';
   }
   else {
-    $agencyId = check_plain($_GET['agency_id']);
     $url = $_GET['url'];
-    bibdk_openorder_do_incrementRedirectStat($agencyId);
     drupal_goto($url);
   }
 }
+

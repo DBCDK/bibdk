@@ -509,9 +509,63 @@ class bibdk_openorder extends TingClientRequest {
     return $this->pid;
   }
 
-  // empty;
+  /**
+   * do NOT set default outputType in TingClientRequestAdapter - we handle
+   * response ourself - see this::parseResponse
+   * @return bool
+   */
+  public function defaultOutputType() {
+    return FALSE;
+  }
+
+
+  /**
+   * Override TingClientRequest::parseResponse
+   *
+   * As of openorder 3.0 service returns xml only. Ting client is made for
+   * parsing json supported by OLS webservices.
+   *
+   * Two classes from OLS are used to convert xml to json, to use same procedure as
+   * before.
+   *
+   * @see ting-client/lib/ols_convert/xmlconvert_class.php and objconvert_class.php
+   *
+   * @param $responseString
+   * @return mixed
+   */
+  public function parseResponse($responseString) {
+    $dom = new DOMDocument();
+    $dom->preserveWhiteSpace = FALSE;
+    if(@$dom->loadXML($responseString)){
+      $xmlconvert = new xmlconvert();
+      $objconvert = new objconvert();
+      $OLS_obj = $xmlconvert->xml2obj($dom);
+      $badgerfish = $objconvert->obj2json($OLS_obj);
+      return parent::parseResponse($badgerfish);
+    }
+    else{
+      throw new Exception('failed to parse response from openorder: ' . $responseString);
+    }
+  }
+
+
+  /**
+   * Override TingClientRequest::processResponse
+   *
+   * Method above (parseResponse) converts soapxml answer to json. This one
+   * does a check on SoapEnvelope and returns the body if found
+   *
+   * @param stdClass $result
+   * @return mixed
+   * @throws Exception
+   */
   public function processResponse(stdClass $result) {
-    return $result;
+    if(isset($result->Envelope->Body)) {
+      return $result->Envelope->Body;
+    }
+    else {
+      throw new Exception('No soap envelope in response from openorder: ' . json_encode($result));
+    }
   }
 
 }
