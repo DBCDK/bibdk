@@ -22,8 +22,7 @@ node('dscrum-is-builder-i01') {
   stage('cleanup old code') {
     sh """
       if [ -d ${WWW_PATH}${BRANCH} ]; then
-        chmod -R u+w ${WWW_PATH}${BRANCH} | true
-        rm -rf ${WWW_PATH}${BRANCH}* | true
+        sudo rm -rf ${WWW_PATH}${BRANCH}* | true
       fi
       """
   }
