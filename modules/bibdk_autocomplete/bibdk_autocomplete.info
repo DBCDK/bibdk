@@ -1,12 +1,10 @@
 name = Bibliotek.dk - Autocomplete
-description = Select and configure search form elements for use with Ortograf suggestions.
+description = Select and configure search form elements for use with open_autocomplete
 core = 7.x
 package = Bibliotek.dk
 
 files[] = test/bibdk_autocomplete_web_test.test
+files[] = test/bibdk_autocomplete_unit_test.test
+files[] = bibdk_autocomplete.request.inc
 
 dependencies[] = bibdk_custom_search
-; We have changes to autocomplete.js that alter touch functionality and behaviour logging.
-; Used by bibdk_autocomplete and ting_agency
-; @see misc/autocomplete.js
-dependencies[] = bibdk_frontend_autocomplete
