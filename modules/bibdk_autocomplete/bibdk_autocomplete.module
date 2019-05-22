@@ -58,13 +58,6 @@ function bibdk_autocomplete_menu() {
  *                       retrying once seems to fix it most of the times.
  */
 function bibdk_autocomplete_callback($p_uuid, $v_uuid, $string = '') {
-
-  /***
-   * @TODO this method is VERY big - split it up
-   * @TODO i (pjo) did not do it - wait for bibliotek.dk to switch to
-   * @TODO new suggester as that will make a lot of this code deleteable
-   */
-
   $items = array();
 
   if (strlen($string) < 3 ) {
@@ -84,72 +77,21 @@ function bibdk_autocomplete_callback($p_uuid, $v_uuid, $string = '') {
     drupal_exit();
   }
 
-  /**
-   * @TODO is highlightning used anywhere? not in netpunkt - if it is not
-   * used - delete this code
-   */
-  $settings['highlight'] = ($settings['highlight']) ? 'true' : null;
-  $settings['maxTime'] = ($settings['maxTime']) ? $settings['maxTime'] : 300;
-  $operation = $path = ($value_vars['operation']) ? $value_vars['operation'] : 'facetSpell';
-  unset($value_vars['operation']);
-  unset($value_vars['id']);
-
   $filter_array = bibdk_autocomplete_parse_filters($string);
   $search_string = $filter_array['search_string'];
-  $filter_string = bibdk_autocomplete_set_filter_query($filter_array['filters']);
-
-  /**
-   * @TODO for sure filterquery is not supported in new suggester - remove when
-   * bibliotek.dk uses new suggester
-   */
-  if (!empty($filter_string)) {
-    if (!empty($value_vars['filterQuery'])) {
-      $value_vars['filterQuery'] .= ' AND ' . $filter_string;
-    } else {
-      $value_vars['filterQuery'] = $filter_string;
-    }
-  }
+  $operation = $path = ($value_vars['operation']) ? $value_vars['operation'] : 'suggest';
 
   $options['query'] = array('query' => check_plain($search_string)) + $value_vars + $settings;
 
-  /**
-   * @TODO scan is not supported in new suggester - delete when bibliotek.dk is up to date
-   */
-  // The terms operation can be used to alphabetically "scan" an index from a point determined by a prefix.
-  // Make sure that "query" is empty, "sort" is set to index, and "lower" is the prefix determining the start point in the index.
-  // 'scan' don't support filterQuery. Yet, anyway...
-  if ($operation == 'scan') {
-    $path = 'terms';
-    $value_vars['sort'] = 'index';
-    $value_vars['facetIndex'] = NULL;
-    unset($value_vars['filterQuery']);
-    $options['query'] = array('lower' => check_plain($search_string)) + $value_vars + $settings;
-  }
-
-  // clean up url parameters
-  if (empty($options['query']['highlight'])) {
-    unset($options['query']['highlight.pre']);
-    unset($options['query']['highlight.post']);
-  }
-  foreach ($options['query'] as $var => $val) {
-    if (empty($options['query'][$var])) {
-      unset($options['query'][$var]);
-    }
-  }
-
-  //$client = new ting_client_class();
+  $action = 'openPlatformSuggest';
   switch ($operation) {
     case 'suggest':
       $options['requestParameters'] = bibdk_autocomplete_set_suggest_options($options);
       $action = 'openPlatformSuggest';
       break;
-    case 'terms':
-    case 'scan':
-    case 'facets':
-      $action = 'openSuggestionTerm';
+    default:
       break;
-    case 'facetSpell':
-      $action = 'openSuggestionFacetspell';
+
   }
 
   try {
@@ -158,9 +100,6 @@ function bibdk_autocomplete_callback($p_uuid, $v_uuid, $string = '') {
         $result = open_platform_client_request('suggest', $options);
         break;
       default:
-        //  @TODO this is the old way of doing it - for backwards compatibility
-        //  @TODO delete when biblitok.dk uses new suggester
-        $result = ting_client_do_request($action, $options['query']);
         break;
     }
   }
@@ -169,42 +108,7 @@ function bibdk_autocomplete_callback($p_uuid, $v_uuid, $string = '') {
     drupal_exit();
   }
 
-  if (is_string($result)) {
-    $jsonResult = json_decode($result);
-    if ($jsonResult !== FALSE) {
-      $result = $jsonResult;
-    }
-  }
-
   switch ($operation) {
-    case 'terms':
-    case 'scan':
-    case 'facets':
-      if (empty($result->suggestions)) {
-        bibdk_autocomplete_callback_error($action, $options);
-      }
-      foreach ($result->suggestions as $suggestion) {
-        if (strpos($suggestion->suggestion, ' ')) {
-          // contains blank
-          $items['"' . bibdk_autocomplete_truncate(html_entity_decode(strip_tags($suggestion->suggestion)), 64) . '"'] = $suggestion->suggestion;
-        } else {
-          $items[bibdk_autocomplete_truncate(html_entity_decode(strip_tags($suggestion->suggestion)), 64)] = $suggestion->suggestion;
-        }
-      }
-      break;
-    case 'facetSpell':
-      if (empty($result->suggestion)) {
-        bibdk_autocomplete_callback_error($action, $options);
-      }
-      foreach ($result->suggestion as $suggestion) {
-        if (strpos($suggestion->phrase, ' ')) {
-          // contains blank
-          $items['"' . bibdk_autocomplete_truncate(html_entity_decode(strip_tags($suggestion->phrase)), 64) . '"'] = $suggestion->phrase;
-        } else {
-          $items[bibdk_autocomplete_truncate(html_entity_decode(strip_tags($suggestion->phrase)), 64)] = $suggestion->phrase;
-        }
-      }
-      break;
     case 'suggest':
       if (empty($result['data'])) {
         bibdk_autocomplete_callback_error($action, $options);
@@ -218,6 +122,9 @@ function bibdk_autocomplete_callback($p_uuid, $v_uuid, $string = '') {
         }
       }
       break;
+    default:
+      // @TODO log. no operation given
+      break;
   }
 
   // Return the result to the form in json
@@ -228,12 +135,7 @@ function bibdk_autocomplete_callback($p_uuid, $v_uuid, $string = '') {
 /**
  * For openplatform suggester (https://openplatform.dbc.dk/v3/suggest) we need
  * to alter the options - it is a different api than http://opensuggestion.addi.dk/
- *
- * @TODO this module is shared bibliotek.dk/netpunkt.dk - netpunkt uses openplatform
- * @TODO while bibliotek.dk uses the old addi service. When bibliotek.dk also starts
- * @TODO using the new suggester a lot of the code in this module (and open_platform_client module)
- * @TODO can be deleted - DO IT
- *
+
  * @param $options
  */
 function bibdk_autocomplete_set_suggest_options($options){
@@ -287,24 +189,6 @@ function bibdk_autocomplete_parse_filters($filter_string) {
     $res['filters'][] = $filter;
   }
   return $res;
-}
-
-/**
- * @TODO filter query is not supported in new suggester - delete when bibdk is up to date
-  */
-function bibdk_autocomplete_set_filter_query(array $filters) {
-  $filter_query = '';
-  $vars = variable_get('bibdk_autocomplete_var', array());
-  foreach ($filters as $filter) {
-    $values = $vars[$filter['p_uuid']]['vars'][$filter['v_uuid']];
-    if (!empty($filter_query)) {
-      $filter_query .= ' AND ';
-    }
-    // trim qoutes if any
-    $term = trim($filter['term'], '"');
-    $filter_query .= $values['facetIndex'] . '=' . '"' . $term . '"';
-  }
-  return $filter_query;
 }
 
 /**
@@ -423,18 +307,12 @@ function bibdk_autocomplete_set_path(&$form, $elements, $element_label, $values,
   if (!is_array($elements)) {
     return;
   }
-  //dpm(func_get_args());
   foreach ($elements as $element_uuid => $element_val) {
     foreach ($element_val as $element_key => $element_var) {
       if (!is_array($element_var)) {
         continue;
       }
-     // dpm($values, 'VALUES');
-     // dpm($element_var, 'VAR');
       if (isset($element_var['#id']) && (strpos($element_var['#id'],$values['id']) === 0) && $values['autocomplete']) {
-
-        dpm('fisk');
-
         $form['advanced'][$region][$element_label][$element_uuid][$element_key]['#attributes']['data-autocomplete-function'] = $values['operation'];
         $form['advanced'][$region][$element_label][$element_uuid][$element_key]['#attributes']['data-autocomplete-aggregate'] = $values['aggregate'];
         $form['advanced'][$region][$element_label][$element_uuid][$element_key]['#autocomplete_path'] = 'autocomplete/' . $p_uuid . '/' . $v_uuid;
