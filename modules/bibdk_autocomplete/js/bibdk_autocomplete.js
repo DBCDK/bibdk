@@ -1,7 +1,9 @@
 (function ($) {
+
   var BibdkAutocomplete = {};
   BibdkAutocomplete.InputFields = {};
   BibdkAutocomplete.InputFields.fields = [];
+
   /**
    * Register all autocomplete fields in search block form
    */
@@ -16,23 +18,29 @@
 
   /**
    * Add customSearch method to Drupal.ADCB
-   *  @see misc/autocomplete.js
+   *  @see bibdk_autocomplete.overrides.js
    *
    * @param input
    * @param searchString
    */
   Drupal.ACDB.prototype.customSearch = function (input, searchString) {
     var fields = BibdkAutocomplete.InputFields.fields;
+    var autocomplete_aggregate = input.input.getAttribute('data-autocomplete-aggregate');
+    if (Drupal.settings.https !== undefined && Drupal.settings.https) {
+      this.uri = this.uri.replace(/^http:\/\//i, 'https://');
+    }
     for (var key in fields) {
       var obj = fields[key];
-      if (obj.id != input.input.id) {
+      if (obj.id != input.input.id && autocomplete_aggregate == "1") {
         if ($('#' + obj.id).val().length > 0) {
           var filter = obj.filter;
           searchString += '::::' + obj.filter + '$$' + $('#' + obj.id).val();
         }
       }
     }
+
     return this.search(searchString);
+
   };
 
   /**
@@ -40,7 +48,11 @@
    *  copied from misc/autocomplete.js
    */
   Drupal.jsAC.prototype.populatePopup = function () {
+    if (!this.input.value.length || this.input.value.length < 3){
+      return false;
+    }
     var $input = $(this.input);
+    // If no value in the textfield, do not show the popup.
     var position = $input.position();
     // Show popup.
     if (this.popup) {
