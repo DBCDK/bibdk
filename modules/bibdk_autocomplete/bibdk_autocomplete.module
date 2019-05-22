@@ -39,12 +39,12 @@ function bibdk_autocomplete_menu() {
 /**
  * Implements hook_ting_client_webservice (@see ting_client.module)
  * */
- function bibdk_autocomplete_ting_client_webservice() {
+function bibdk_autocomplete_ting_client_webservice() {
   $ret = array();
-  $ret['openSuggestionTerm']['class']   = 'openSuggestionTerm';
-  $ret['openSuggestionTerm']['url']     = 'openSuggestionTerm_url';
-  $ret['openSuggestionFacetspell']['class']   = 'openSuggestionFacetspell';
-  $ret['openSuggestionFacetspell']['url']     = 'openSuggestionFacetspell_url';
+  $ret['openSuggestionTerm']['class'] = 'openSuggestionTerm';
+  $ret['openSuggestionTerm']['url'] = 'openSuggestionTerm_url';
+  $ret['openSuggestionFacetspell']['class'] = 'openSuggestionFacetspell';
+  $ret['openSuggestionFacetspell']['url'] = 'openSuggestionFacetspell_url';
   return $ret;
 }
 
@@ -60,13 +60,13 @@ function bibdk_autocomplete_menu() {
 function bibdk_autocomplete_callback($p_uuid, $v_uuid, $string = '') {
   $items = array();
 
-  if (strlen($string) < 3 ) {
+  if (strlen($string) < 3) {
     drupal_json_output($items);
     drupal_exit();
   }
 
-  $settings   = variable_get('bibdk_autocomplete_settings', array());
-  $vars       = variable_get('bibdk_autocomplete_var', array());
+  $settings = variable_get('bibdk_autocomplete_settings', array());
+  $vars = variable_get('bibdk_autocomplete_var', array());
   $value_vars = $vars[$p_uuid]['vars'][$v_uuid];
 
   unset($value_vars['autocomplete']);
@@ -102,8 +102,7 @@ function bibdk_autocomplete_callback($p_uuid, $v_uuid, $string = '') {
       default:
         break;
     }
-  }
-  catch(Exception $e){
+  } catch (Exception $e) {
     drupal_json_output(array());
     drupal_exit();
   }
@@ -117,13 +116,14 @@ function bibdk_autocomplete_callback($p_uuid, $v_uuid, $string = '') {
         if (strpos($val['term'], ' ')) {
           // contains blank
           $items['"' . bibdk_autocomplete_truncate(html_entity_decode(strip_tags($val['term'])), 64) . '"'] = $val['term'];
-        } else {
+        }
+        else {
           $items[bibdk_autocomplete_truncate(html_entity_decode(strip_tags($val['term'])), 64)] = $val['term'];
         }
       }
       break;
     default:
-      // @TODO log. no operation given
+      watchdog('bibdk_autocomplete', 'No operation given in suggestrequest', array(), $severity = WATCHDOG_WARNING);
       break;
   }
 
@@ -135,10 +135,9 @@ function bibdk_autocomplete_callback($p_uuid, $v_uuid, $string = '') {
 /**
  * For openplatform suggester (https://openplatform.dbc.dk/v3/suggest) we need
  * to alter the options - it is a different api than http://opensuggestion.addi.dk/
-
  * @param $options
  */
-function bibdk_autocomplete_set_suggest_options($options){
+function bibdk_autocomplete_set_suggest_options($options) {
   /**
    * @TODO the admin page (admin/config/search/bibdk_autocomplete)
    * for bibdk autocomplete is set up for scanning in specific indexes
@@ -222,7 +221,7 @@ function bibdk_autocomplete_truncate($string, $width) {
 function bibdk_autocomplete_form_alter(&$form, &$form_state, $form_id) {
   switch ($form_id) {
     case 'search_block_form';
-    // case 'search_form';
+      // case 'search_form';
       _bibdk_autocomplete_form_search_block_form_alter($form, $form_state, $form_id);
       break;
   }
@@ -240,7 +239,7 @@ function _bibdk_autocomplete_form_search_block_form_alter(&$form, &$form_state, 
   // check if this is https or not - we need it for the autocomplete javascript
   // @see js/bibdk_autocomplete.js
   // if page is behind a proxy
-  if(!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
+  if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
     $https = ($_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https');
   }
   else {
@@ -255,10 +254,12 @@ function _bibdk_autocomplete_form_search_block_form_alter(&$form, &$form_state, 
 
   if (!empty($form['page_id']['#value'])) {
     $page_path = $form['page_id']['#value'];
-  } else {
+  }
+  else {
     if (isset($_GET['q']['page_id '])) {
       $page_path = $_GET['q']['page_id '];
-    } else {
+    }
+    else {
       $page_path = $_GET['q'];
     }
   }
@@ -312,10 +313,10 @@ function bibdk_autocomplete_set_path(&$form, $elements, $element_label, $values,
       if (!is_array($element_var)) {
         continue;
       }
-      if (isset($element_var['#id']) && (strpos($element_var['#id'],$values['id']) === 0) && $values['autocomplete']) {
+      if (isset($element_var['#id']) && (strpos($element_var['#id'], $values['id']) === 0) && $values['autocomplete']) {
         $form['advanced'][$region][$element_label][$element_uuid][$element_key]['#attributes']['data-autocomplete-function'] = $values['operation'];
         $form['advanced'][$region][$element_label][$element_uuid][$element_key]['#autocomplete_path'] = 'autocomplete/' . $p_uuid . '/' . $v_uuid;
-		}
+      }
     }
   }
 }

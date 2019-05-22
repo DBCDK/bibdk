@@ -61,60 +61,23 @@ class BibdkAutocompleteWebTestCase extends DrupalWebTestCase {
     global $_bibdk_custom_search_v_uuid;
 
     $this->drupalGet('admin/config/search/bibdk_autocomplete');
-    $this->assertField('bibdk_autocomplete_rest_url', 'bibdk_autocomplete_rest_url is present');
-    $this->assertField('bibdk_autocomplete_settings[agency]', 'Agency field is present');
-    $this->assertField('bibdk_autocomplete_settings[maxSuggestions]', 'Max suggestions field is present');
-    $this->assertField('bibdk_autocomplete_settings[maxTime]', 'Max request time field is present');
-    $this->assertField('bibdk_autocomplete_settings[profile]', 'Profile  field is present');
-    $this->assertField('bibdk_autocomplete_settings[highlight]', ' Highlight field is present');
-    $this->assertField('bibdk_autocomplete_settings[highlight.pre]', 'Highlight prefix field is present');
-    $this->assertField('bibdk_autocomplete_settings[highlight.post]', 'Highlight suffix field is present');
 
     $this->assertField('bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][autocomplete]', 'Autocomplete field "autocomplete" is present');
     $this->assertField('bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][index]', 'Autocomplete field "index" is present');
-    $this->assertField('bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][facetIndex]', 'Autocomplete field "facetIndex" is present');
-    $this->assertField('bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][filterQuery]', 'Autocomplete field "filterQuery" is present');
-    $this->assertField('bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][sort]', 'Autocomplete field "sort" is present');
 
     $edit = array();
-    $_bibdk_autocomplete_rest_url = $edit['bibdk_autocomplete_rest_url'] = $this->randomName(8);
-    $_bibdk_autocomplete_agency = $edit['bibdk_autocomplete_settings[agency]'] = $this->randomName(8);
-    $_bibdk_autocomplete_maxSuggestions = $edit['bibdk_autocomplete_settings[maxSuggestions]'] = $this->randomName(8);
-    $_bibdk_autocomplete_maxTime = $edit['bibdk_autocomplete_settings[maxTime]'] = $this->randomName(8);
-    $_bibdk_autocomplete_profile = $edit['bibdk_autocomplete_settings[profile]'] = $this->randomName(8);
-    $_bibdk_autocomplete_highlight = $edit['bibdk_autocomplete_settings[highlight]'] = TRUE;
-    $_bibdk_autocomplete_highlight_pre = $edit['bibdk_autocomplete_settings[highlight.pre]'] = $this->randomName(8);
-    $_bibdk_autocomplete_highlight_post = $edit['bibdk_autocomplete_settings[highlight.post]'] = $this->randomName(8);
 
     $_bibdk_autocomplete_autocomplete = $edit['bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][autocomplete]'] = TRUE;
-    $_bibdk_autocomplete_index = $edit['bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][index]'] = $this->randomName(8);
-    $_bibdk_autocomplete_facetIndex = $edit['bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][facetIndex]'] = $this->randomName(8);
-    $_bibdk_autocomplete_filterQuery = $edit['bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][filterQuery]'] = $this->randomName(8);
-    $_bibdk_autocomplete_sort = $edit['bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][sort]'] = 'count';
+    $_bibdk_autocomplete_index = $edit['bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][index]'] = 'subject';
+
 
     $this->assertField('bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][autocomplete]', 'Autocomplete field "autocomplete" is present');
     $this->assertField('bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][index]', 'Autocomplete field "index" is present');
-    $this->assertField('bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][facetIndex]', 'Autocomplete field "facetIndex" is present');
-    $this->assertField('bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][filterQuery]', 'Autocomplete field "filterQuery" is present');
-    $this->assertField('bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][sort]', 'Autocomplete field "sort" is present');
 
     $this->drupalPost('admin/config/search/bibdk_autocomplete', $edit, 'Save configuration');
 
-    $this->assertFieldByName('bibdk_autocomplete_rest_url', $_bibdk_autocomplete_rest_url, 'Webservice URL set to "' . $_bibdk_autocomplete_rest_url . '"');
-    $this->assertFieldByName('bibdk_autocomplete_settings[agency]', $_bibdk_autocomplete_agency, 'Agency set to "' . $_bibdk_autocomplete_agency . '"');
-    $this->assertFieldByName('bibdk_autocomplete_settings[maxSuggestions]', $_bibdk_autocomplete_maxSuggestions, 'Max suggestions set to "' . $_bibdk_autocomplete_maxSuggestions . '"');
-    $this->assertFieldByName('bibdk_autocomplete_settings[maxTime]', $_bibdk_autocomplete_maxTime, 'maxTime set to "' . $_bibdk_autocomplete_maxTime . '"');
-    $this->assertFieldByName('bibdk_autocomplete_settings[profile]', $_bibdk_autocomplete_profile, 'Profile set to "' . $_bibdk_autocomplete_profile . '"');
-    $this->assertFieldChecked('edit-bibdk-autocomplete-settings-highlight', 'Highlight set to TRUE');
-    $this->assertFieldByName('bibdk_autocomplete_settings[highlight.pre]', $_bibdk_autocomplete_highlight_pre, 'Highlight prefix set to "' . $_bibdk_autocomplete_highlight_pre . '"');
-    $this->assertFieldByName('bibdk_autocomplete_settings[highlight.post]', $_bibdk_autocomplete_highlight_post, 'Highlight suffix set to "' . $_bibdk_autocomplete_highlight_post . '"');
-
     $this->assertFieldChecked('edit-bibdk-autocomplete-var-' . $_bibdk_custom_search_p_uuid . '-vars-' . $_bibdk_custom_search_v_uuid . '-autocomplete', 'Autocomplete set to TRUE');
     $this->assertFieldByName('bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][index]', $_bibdk_autocomplete_index, 'Autocomplete field "index" set to "' . $_bibdk_autocomplete_index . '"');
-    $this->assertFieldByName('bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][facetIndex]', $_bibdk_autocomplete_facetIndex, 'Autocomplete field "facetIndex" set to "' . $_bibdk_autocomplete_facetIndex . '"');
-    $this->assertFieldByName('bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][filterQuery]', $_bibdk_autocomplete_filterQuery, 'Autocomplete field "filterQuery" set to "' . $_bibdk_autocomplete_filterQuery . '"');
-    $this->assertFieldByName('bibdk_autocomplete_var[' . $_bibdk_custom_search_p_uuid . '][vars][' . $_bibdk_custom_search_v_uuid . '][sort]', $_bibdk_autocomplete_sort, 'Autocomplete field "sort" set to "' . $_bibdk_autocomplete_sort . '"');
-
   }
 
   private function _testBibdkCustomSearchCreatePage() {

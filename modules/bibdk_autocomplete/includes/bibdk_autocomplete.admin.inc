@@ -55,33 +55,33 @@ function bibdk_autocomplete_admin() {
       '#title' => $value->menu_title . ' > ' . $value->element_label,
       '#tree' => TRUE,
       '#collapsible' => TRUE,
-      '#attributes' => array('class'=>array('bibdk-autocomplete-admin-fieldset')),
+      '#attributes' => array('class' => array('bibdk-autocomplete-admin-fieldset')),
     );
 
     $form['bibdk_autocomplete_var'][$value->p_uuid]['page_path'] = array(
       '#type' => 'hidden',
       '#default_value' => $value->page_path,
-      '#attributes' => array('class'=>array('bibdk-autocomplete-admin-page-path')),
+      '#attributes' => array('class' => array('bibdk-autocomplete-admin-page-path')),
     );
 
     $form['bibdk_autocomplete_var'][$value->p_uuid]['vars'][$value->v_uuid]['autocomplete'] = array(
       '#type' => 'checkbox',
       '#title' => t('Autocomplete', array(), array('context' => 'bibdk_autocomplete_admin')),
       '#default_value' => (!empty($default_value['autocomplete'])) ? $default_value['autocomplete'] : FALSE,
-      '#attributes' => array('class'=>array('bibdk-autocomplete-admin-autocomplete')),
+      '#attributes' => array('class' => array('bibdk-autocomplete-admin-autocomplete')),
     );
 
     $form['bibdk_autocomplete_var'][$value->p_uuid]['vars'][$value->v_uuid]['index'] = array(
       '#type' => 'select',
       '#options' => array(
-        'creator'=> 'creator',
+        'creator' => 'creator',
         'title' => 'title',
-        'subject' => 'subejct'
+        'subject' => 'subject'
       ),
       '#title' => t('Type', array(), array('context' => 'bibdk_autocomplete_admin')),
 
       '#default_value' => isset($default_value['index']) ? $default_value['index'] : 'creator',
-      '#attributes' => array('class'=>array('bibdk-autocomplete-admin-index')),
+      '#attributes' => array('class' => array('bibdk-autocomplete-admin-index')),
     );
 
 
@@ -89,10 +89,10 @@ function bibdk_autocomplete_admin() {
       '#type' => 'select',
       '#title' => t('Function', array(), array('context' => 'bibdk_autocomplete_admin')),
       '#options' => array(
-        'suggest'=> t('Suggest', array(), array('context' => 'bibdk_autocomplete_admin'))
+        'suggest' => t('Suggest', array(), array('context' => 'bibdk_autocomplete_admin'))
       ),
       '#default_value' => (!empty($default_value['operation'])) ? $default_value['operation'] : '',
-      '#attributes' => array('class'=>array('bibdk-autocomplete-admin-operation')),
+      '#attributes' => array('class' => array('bibdk-autocomplete-admin-operation')),
     );
 
     // see also drupal_html_id
@@ -176,7 +176,7 @@ function _bibdk_autocomplete_get_search_fields_db() {
     'search_code',
   ));
 
-  $query ->condition('v.value_type', 'textfield', '=');
+  $query->condition('v.value_type', 'textfield', '=');
 
   $query->orderBy('me.sort', 'ASC');
   $query->orderBy('e.element_label', 'ASC');

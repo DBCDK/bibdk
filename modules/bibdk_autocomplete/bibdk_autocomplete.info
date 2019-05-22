@@ -5,6 +5,5 @@ package = Bibliotek.dk
 
 files[] = test/bibdk_autocomplete_web_test.test
 files[] = test/bibdk_autocomplete_unit_test.test
-files[] = bibdk_autocomplete.request.inc
 
 dependencies[] = bibdk_custom_search
