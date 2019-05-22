@@ -132,7 +132,6 @@ function _bibdk_frontend_enable_modules() {
     'bibliotek_dk_captcha',
     'bibdk_role_redakteur',
     'bibliotek_dk_autocomplete',
-    'bibdk_autocomplete_ortograf',
     'bibliotek_dk_advanced_aggregate',
     'bibliotek_dk_work_entity_feature',
     'bibdk_ie6nomore_settings',
