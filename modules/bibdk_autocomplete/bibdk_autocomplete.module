@@ -153,7 +153,7 @@ function bibdk_autocomplete_set_suggest_options($options){
   );
 
   $term_index = $options['query']['index'];
-  $type = isset($phrase_convert[$term_index]) ? $phrase_convert[$term_index] : 'all';
+  $type = isset($phrase_convert[$term_index]) ? $phrase_convert[$term_index] : $term_index;
 
   $q = $options['query']['query'];
 
@@ -314,7 +314,6 @@ function bibdk_autocomplete_set_path(&$form, $elements, $element_label, $values,
       }
       if (isset($element_var['#id']) && (strpos($element_var['#id'],$values['id']) === 0) && $values['autocomplete']) {
         $form['advanced'][$region][$element_label][$element_uuid][$element_key]['#attributes']['data-autocomplete-function'] = $values['operation'];
-        $form['advanced'][$region][$element_label][$element_uuid][$element_key]['#attributes']['data-autocomplete-aggregate'] = $values['aggregate'];
         $form['advanced'][$region][$element_label][$element_uuid][$element_key]['#autocomplete_path'] = 'autocomplete/' . $p_uuid . '/' . $v_uuid;
 		}
     }
