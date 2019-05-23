@@ -5,3 +5,4 @@ core = 7.x
 version = 7.x-0.1
 
 files[] = test/bibdk_gdpr.test
+dependencies[] = ding_user
