@@ -272,10 +272,13 @@ function _bibdk_autocomplete_form_search_block_form_alter(&$form, &$form_state, 
       $p_uuid = $key;
     }
   }
-
   if (!empty($vars)) {
-
     foreach ($vars as $v_uuid => $values) {
+      // handle search block form as a special case
+      if($v_uuid === 'search_block_form' && $values['autocomplete']){
+        $form[$v_uuid]['#attributes']['data-autocomplete-function'] = $values['operation'];
+        $form[$v_uuid]['#autocomplete_path'] = 'autocomplete/' . $p_uuid . '/' . $v_uuid;
+      }
       if (!empty($form['advanced']) && !empty($form['advanced']['main'])) {
         foreach ($form['advanced']['main'] as $element_label => $elements) {
           bibdk_autocomplete_set_path($form, $elements, $element_label, $values, $p_uuid, $v_uuid, 'main');

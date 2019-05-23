@@ -32,8 +32,27 @@ function bibdk_autocomplete_admin() {
   );
 
   $result = _bibdk_autocomplete_get_search_fields_db();
-
   $default = variable_get('bibdk_autocomplete_var', array());
+
+  // merge in search block form for each of the searchpages to be able
+  // to set autocomplete for the BIG search field
+  $p_uuids = $freetext = array();
+  foreach ($result as $value) {
+    if (!in_array($value->p_uuid, $p_uuids)) {
+      $p_uuids[] = $value->p_uuid;
+      // if !$result, then $freetext will not be set. In which case bibdk_custom_search is broken.
+      $freetext[] = (object) array(
+        'p_uuid' => $value->p_uuid,
+        'v_uuid' => 'search_block_form',
+        'menu_title' => $value->menu_title,
+        'value_type' => 'textfield',
+        'element_label' => 'Fritekst',
+        'page_path' => $value->page_path,
+      );
+    }
+  }
+  $result = array_merge($freetext,$result);
+
 
   $form['bibdk_autocomplete_var'] = array(
     '#type' => 'fieldset',
@@ -74,6 +93,7 @@ function bibdk_autocomplete_admin() {
     $form['bibdk_autocomplete_var'][$value->p_uuid]['vars'][$value->v_uuid]['index'] = array(
       '#type' => 'select',
       '#options' => array(
+        'all' => 'all',
         'creator' => 'creator',
         'title' => 'title',
         'subject' => 'subject'
