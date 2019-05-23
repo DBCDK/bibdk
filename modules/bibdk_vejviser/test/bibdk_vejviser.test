@@ -80,12 +80,12 @@ class BibdkVejviserPickupAgencyListWebservice extends DrupalWebTestCase {
     $this->assertRaw('33 66 30 00', 'Ok - 33663000 is a part of search result');
 
     // Check for returntext -  ting_agency_librarydk_contact
-    $this->assertRaw('ting_agency_librarydk_contact', 'Ok - ting_agency_librarydk_contact is a part of search result');
+    $this->assertRaw('ting_agency_contact', 'Ok - contact is a part of search result');
 
     // Check for returntext -  librarydkSupportPhone
-    $this->assertRaw('librarydkSupportPhone', 'Ok - ting_agency_librarydk_contact is a part of search result');
+    $this->assertRaw('branchPhone', 'Ok - phone is a part of search result');
 
     // Check for returntext -  librarydkSupportEmail
-    $this->assertRaw('librarydkSupportEmail', 'Ok - ting_agency_librarydk_contact is a part of search result');
+    $this->assertRaw('branchEmail', 'Ok - email is a part of search result');
   }
 }
