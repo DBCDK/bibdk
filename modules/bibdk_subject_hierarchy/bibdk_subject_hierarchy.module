@@ -156,7 +156,7 @@ function bibdk_subject_hierarchy_get_block_content($row_to_show = array()) {
   $hierarchy = _get_bibdk_subject_hierarchy();
 
   $rows = _bibdk_subject_hierarchy_get_rows($hierarchy, $row_to_show);
-  
+
   $searchfield_link = array(
     '#theme' => 'link_with_svg',
     '#text' => t('search subject hierarchy', array(), array('context' => 'bibdk_subject_hierarchy')),
@@ -444,7 +444,7 @@ function _get_bibdk_subject_hierarchy_breadcrumbs($emnehierarki, $keys, $search_
     );
     $breadcrumbs[] = $breadcrumb;
   }
-  
+
   // replace content of last breadcrumb
   $breadcrumbs[ sizeof($breadcrumbs)-1 ] = array(
     '#type' => 'container',
@@ -478,7 +478,7 @@ function _get_bibdk_subject_hierarchy_heading($emnehierarki, $keys, $path = 'wor
   foreach ($keys as $key) {
     $current_level = ( empty($current_level) ) ? $emnehierarki[$key] : $current_level['term'][$key];
   }
-  
+
   $search_path = _bibdk_subject_hierarchy_search_info();
 
   if ( !empty($current_level['cql']) ) {
@@ -537,7 +537,7 @@ function _bibdk_subject_hierarchy_read_data() {
  *
  */
 function _bibdk_subject_hierarchy_parse_xml($filename) {
-  $xml = simplexml_load_file($filename);
+  $xml = @simplexml_load_file($filename);
   // Simple trick to convert xml to php array
   $data = drupal_json_decode(drupal_json_encode($xml));
   return (isset($data['term'])) ? $data['term'] : array();
