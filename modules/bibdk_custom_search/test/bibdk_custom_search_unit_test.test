@@ -16,31 +16,23 @@ class BibdkCustomSearchUnitTestCase extends DrupalUnitTestCase {
     parent::setUp();
   }
 
-  public function test_bibdk_custom_search_is_advanced_search_expanded() {
-    // Test default query
-    $get = array(
-      'qe' => array(
-        'year.op' => array('year_eq'),
-      ),
-      'q' => 'bibdk_frontpage',
-    );
-
-    $result = _bibdk_custom_search_is_advanced_search_expanded($get);
-    $this->assertFalse($result, 'Do not expand when on frontpage and default search');
-
-    // Test advanced query
-    $get = array(
-      'qe' => array(
-        'year.op' => array('year_eq'),
-        'work' => 'test',
-      ),
-      'q' => 'bibdk_frontpage',
-    );
-    $result = _bibdk_custom_search_is_advanced_search_expanded($get);
-    $this->assertTrue($result, 'Expand if advanced elements have been set');
+  public function test_hest(){
+    $this->assertTrue(TRUE);
   }
 
-  public function test_bibdk_custom_search_get_advanced_values() {
+  public function test_runner(){
+
+    $this->bibdk_custom_search_get_advanced_values();
+    $this->bibdk_custom_search_list_options();
+    $this->bibdk_custom_search_usersettings_set_default_values();
+    $this->bibdk_custom_search_usersettings_set_subelements();
+    $this->bibdk_custom_search_usersettings_machinename_exists();
+
+  }
+
+
+
+  public function bibdk_custom_search_get_advanced_values() {
     $extended_fields = array (
       'term.genre' =>
         array (
@@ -177,7 +169,7 @@ class BibdkCustomSearchUnitTestCase extends DrupalUnitTestCase {
     $this->assertEqual($expected_result, $result, 'page_id is returned');
   }
 
-  public function test_bibdk_custom_search_list_options() {
+  public function bibdk_custom_search_list_options() {
     $term_type = 'term.type';
     $ignore_values = array();
     $result = array();
@@ -211,7 +203,7 @@ class BibdkCustomSearchUnitTestCase extends DrupalUnitTestCase {
     //$this->assertEqual($options, $expected_results, 'Ignore values are removed');
   }
 
-  public function test_bibdk_custom_search_usersettings_set_default_values() {
+  public function bibdk_custom_search_usersettings_set_default_values() {
 
     // Test empty default
     $elements = array();
@@ -237,7 +229,7 @@ class BibdkCustomSearchUnitTestCase extends DrupalUnitTestCase {
 
   }
 
-  public function test_bibdk_custom_search_usersettings_set_subelements() {
+  public function bibdk_custom_search_usersettings_set_subelements() {
 
     // Test empty default
     $elements = array();
@@ -257,7 +249,7 @@ class BibdkCustomSearchUnitTestCase extends DrupalUnitTestCase {
 
   }
 
-  public function test_bibdk_custom_search_usersettings_machinename_exists() {
+  public function bibdk_custom_search_usersettings_machinename_exists() {
     $existing_names = array(
       'hest' => 'hest',
       'fisk' => 'fisk',
