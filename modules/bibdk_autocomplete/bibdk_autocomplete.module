@@ -2,116 +2,282 @@
 /**
  * @file
  * Code for Bibliotek.dk Autocomplete
+ *
+ *
+ *
  */
+
+
+require_once 'includes/bibdk_autocomplete_service_settings_form.inc';
 
 /**
  * Implements hook_menu().
  */
 function bibdk_autocomplete_menu() {
 
-  $items['bibdk/autocomplete/%/%'] = array(
-    'title' => 'Bibliotek.dk autocomplete',
+  $items['autocomplete/%/%'] = array(
+    'title' => 'Custom search autocomplete',
     'description' => 'Autocomplete callback',
     'page callback' => 'bibdk_autocomplete_callback',
-    'page arguments' => array(2, 3),
+    'page arguments' => array(1, 2),
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
 
   $items['admin/config/search/bibdk_autocomplete'] = array(
-    'title' => 'Bibliotek.dk autocomplete settings',
+    'title' => 'Custom search autocomplete',
     'description' => 'Settings for bibliotek.dk autocomplete',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('bibdk_autocomplete_admin'),
     'access arguments' => array('administer search'),
-  );
-
-  $items['bibdk/behaviour/autocomplete'] = array(
-    'title' => 'Bibliotek.dk autocomplete behaviour',
-    'description' => 'Autocomplete behaviour callback',
-    'page callback' => 'bibdk_autocomplete_behaviour_callback',
-    'access arguments' => array('access content'),
-    'type' => MENU_CALLBACK,
+    'file' => 'includes/bibdk_autocomplete.admin.inc',
   );
 
   return $items;
 }
 
-
 /**
- * @file
- * Admin settings for bibliotek.dk autocomplete.
- */
-function bibdk_autocomplete_admin() {
-  $autocomplete_backend = variable_get('bibdk_autocomplete_backend', NULL);
-  switch ($autocomplete_backend) {
-    case '1':
-      module_load_include('inc', 'bibdk_autocomplete', 'includes/bibdk_autocomplete.admin.ortograf');
-      $form = bibdk_autocomplete_admin_ortograf();
-      break;
-    default:
-      module_load_include('inc', 'bibdk_autocomplete', 'includes/bibdk_autocomplete.admin.old');
-      $form = bibdk_autocomplete_admin_old();
-  }
-  return system_settings_form($form);  
+ * Implements hook_ting_client_webservice (@see ting_client.module)
+ * */
+function bibdk_autocomplete_ting_client_webservice() {
+  $ret = array();
+  $ret['openSuggestionTerm']['class'] = 'openSuggestionTerm';
+  $ret['openSuggestionTerm']['url'] = 'openSuggestionTerm_url';
+  $ret['openSuggestionFacetspell']['class'] = 'openSuggestionFacetspell';
+  $ret['openSuggestionFacetspell']['url'] = 'openSuggestionFacetspell_url';
+  return $ret;
 }
-  
+
 /**
  * Callback function used when input is entered in a search field.
  *
  * @param      $p_uuid
  * @param      $v_uuid
  * @param      $string
+ * @param bool $retry -- the server tends to respond with a error 500 however
+ *                       retrying once seems to fix it most of the times.
  */
 function bibdk_autocomplete_callback($p_uuid, $v_uuid, $string = '') {
-  $autocomplete_backend = variable_get('bibdk_autocomplete_backend', NULL);
-  switch ($autocomplete_backend) {
-    case '1':
-      module_load_include('inc', 'bibdk_autocomplete', 'includes/bibdk_autocomplete.ajax.ortograf');
-      bibdk_autocomplete_callback_ortograf($p_uuid, $v_uuid, $string);
+  $items = array();
+
+  if (strlen($string) < 3) {
+    drupal_json_output($items);
+    drupal_exit();
+  }
+
+  $settings = variable_get('bibdk_autocomplete_settings', array());
+  $vars = variable_get('bibdk_autocomplete_var', array());
+  $value_vars = $vars[$p_uuid]['vars'][$v_uuid];
+
+  unset($value_vars['autocomplete']);
+
+  if (empty($value_vars['index'])) {
+    watchdog('bibdk_autocomplete', 'Autocomplete index not defined for value uuid ' . $v_uuid, array(), $severity = WATCHDOG_WARNING);
+    drupal_json_output(array());
+    drupal_exit();
+  }
+
+  $filter_array = bibdk_autocomplete_parse_filters($string);
+  $search_string = $filter_array['search_string'];
+  $operation = $path = ($value_vars['operation']) ? $value_vars['operation'] : 'suggest';
+
+  $options['query'] = array('query' => check_plain($search_string)) + $value_vars + $settings;
+
+  $action = 'openPlatformSuggest';
+  switch ($operation) {
+    case 'suggest':
+      $options['requestParameters'] = bibdk_autocomplete_set_suggest_options($options);
+      $action = 'openPlatformSuggest';
       break;
     default:
-      module_load_include('inc', 'bibdk_autocomplete', 'includes/bibdk_autocomplete.ajax.old');
-      bibdk_autocomplete_callback_old($p_uuid, $v_uuid, $string);
+      break;
+
   }
+
+  try {
+    switch ($operation) {
+      case 'suggest':
+        $result = open_platform_client_request('suggest', $options);
+        break;
+      default:
+        break;
+    }
+  } catch (Exception $e) {
+    drupal_json_output(array());
+    drupal_exit();
+  }
+
+  switch ($operation) {
+    case 'suggest':
+      if (empty($result['data'])) {
+        bibdk_autocomplete_callback_error($action, $options);
+      }
+      foreach ($result['data'] as $kay => $val) {
+        if (strpos($val['term'], ' ')) {
+          // contains blank
+          $items['"' . bibdk_autocomplete_truncate(html_entity_decode(strip_tags($val['term'])), 64) . '"'] = $val['term'];
+        }
+        else {
+          $items[bibdk_autocomplete_truncate(html_entity_decode(strip_tags($val['term'])), 64)] = $val['term'];
+        }
+      }
+      break;
+    default:
+      watchdog('bibdk_autocomplete', 'No operation given in suggestrequest', array(), $severity = WATCHDOG_WARNING);
+      break;
+  }
+
+  // Return the result to the form in json
+  drupal_json_output($items);
+  drupal_exit();
 }
 
 /**
- * Implements hook_form_FORM_ID_alter() for form search_block_form.
+ * For openplatform suggester (https://openplatform.dbc.dk/v3/suggest) we need
+ * to alter the options - it is a different api than http://opensuggestion.addi.dk/
+ * @param $options
  */
-function bibdk_autocomplete_form_search_block_form_alter(&$form, &$form_state, $form_id) {
+function bibdk_autocomplete_set_suggest_options($options) {
+  /**
+   * @TODO the admin page (admin/config/search/bibdk_autocomplete)
+   * for bibdk autocomplete is set up for scanning in specific indexes
+   * new suggester does not do that - convert.
+   *
+   * @TODO configure admin page
+   */
+  $phrase_convert = array(
+    'scanphrase.mainCreator' => 'creator',
+    'scanphrase.mainTitle' => 'title',
+    'scanphrase.subject' => 'subject'
+  );
+
+  $term_index = $options['query']['index'];
+  $type = isset($phrase_convert[$term_index]) ? $phrase_convert[$term_index] : $term_index;
+
+  $q = $options['query']['query'];
+
+  return array(
+    'q' => $q,
+    "type" => $type,
+  );
+}
+
+/**
+ * Log error.
+ *
+ * @param $action
+ * @param $options
+ */
+function bibdk_autocomplete_callback_error($action, $options) {
+  watchdog('bibdk_autocomplete', 'Autocomplete return empty set for ' . ': ' . $action . ' : ' . http_build_query($options['query']), array(), WATCHDOG_WARNING);
+  drupal_json_output(array());
+  drupal_exit();
+}
+
+function bibdk_autocomplete_parse_filters($filter_string) {
+  $res = array();
+  $search_filter = explode('::::', $filter_string);
+  $res['search_string'] = trim($search_filter[0], " \t\n\r\0\x0B\"");
+  $res['filters'] = array();
+  for ($i = 1; $i < count($search_filter); $i++) {
+    $filter = array();
+    $elements = explode('$$', $search_filter[$i]);
+    $filter['v_uuid'] = $elements[0];
+    $filter['p_uuid'] = $elements[1];
+    $filter['term'] = trim($elements[2], " \t\n\r\0\x0B\"");
+    $res['filters'][] = $filter;
+  }
+  return $res;
+}
+
+/**
+ * helper function for bibdk_autocomplete()
+ */
+function bibdk_autocomplete_truncate($string, $width) {
+  $parts = preg_split('/([\s\n\r]+)/', $string, null, PREG_SPLIT_DELIM_CAPTURE);
+  $parts_count = count($parts);
+
+  $length = 0;
+  $last_part = 0;
+  for (; $last_part < $parts_count; ++$last_part) {
+    $length += strlen($parts[$last_part]);
+    if ($length > $width) {
+      break;
+    }
+  }
+
+  return implode(array_slice($parts, 0, $last_part));
+}
+
+
+/**
+ * Implements hook_form_alter().
+ *
+ * @param $form
+ * @param $form_state
+ * @param $form_id
+ * @return mixed
+ */
+function bibdk_autocomplete_form_alter(&$form, &$form_state, $form_id) {
+  switch ($form_id) {
+    case 'search_block_form';
+      // case 'search_form';
+      _bibdk_autocomplete_form_search_block_form_alter($form, $form_state, $form_id);
+      break;
+  }
+}
+
+
+/**
+ * Implements hook_form_FORM_ID_alter() for form search_block_form and search_form.
+ * - no it does not - it is called from above
+ * @TODO update comment
+ */
+function _bibdk_autocomplete_form_search_block_form_alter(&$form, &$form_state, $form_id) {
+  $vars = NULL;
+
+  // check if this is https or not - we need it for the autocomplete javascript
+  // @see js/bibdk_autocomplete.js
+  // if page is behind a proxy
+  if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
+    $https = ($_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https');
+  }
+  else {
+    $https = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443;
+  }
+
+  $settings = array(
+    'https' => $https,
+  );
+
+  drupal_add_js($settings, 'setting');
 
   if (!empty($form['page_id']['#value'])) {
     $page_path = $form['page_id']['#value'];
-  } else {
-    if ($_GET['q']['page_id ']) {
+  }
+  else {
+    if (isset($_GET['q']['page_id '])) {
       $page_path = $_GET['q']['page_id '];
-    } else {
+    }
+    else {
       $page_path = $_GET['q'];
     }
   }
-  
-  $autocomplete_backend = variable_get('bibdk_autocomplete_backend', NULL);
-  switch ($autocomplete_backend) {
-    case '1':
-      $autocomplete_elements = variable_get('bibdk_autocomplete_ortograf_var', array());
-      break;
-    default:
-      $autocomplete_elements = variable_get('bibdk_autocomplete_var', array());
-  }
-  
+
+  $autocomplete_elements = variable_get('bibdk_autocomplete_var', array());
+
   foreach ($autocomplete_elements as $key => $page) {
     if ($page['page_path'] == $page_path) {
       $vars = $page['vars'];
       $p_uuid = $key;
     }
   }
-
   if (!empty($vars)) {
     foreach ($vars as $v_uuid => $values) {
-      if ($v_uuid == 'search_block_form' && $values['autocomplete'] == TRUE) {
-        $form['search_block_form']['#autocomplete_path'] =
-          'bibdk/autocomplete/' . $p_uuid . '/search_block_form';
+      // handle search block form as a special case
+      if($v_uuid === 'search_block_form' && $values['autocomplete']){
+        $form[$v_uuid]['#attributes']['data-autocomplete-function'] = $values['operation'];
+        $form[$v_uuid]['#autocomplete_path'] = 'autocomplete/' . $p_uuid . '/' . $v_uuid;
       }
       if (!empty($form['advanced']) && !empty($form['advanced']['main'])) {
         foreach ($form['advanced']['main'] as $element_label => $elements) {
@@ -124,33 +290,39 @@ function bibdk_autocomplete_form_search_block_form_alter(&$form, &$form_state, $
         }
       }
     }
-    switch ($autocomplete_backend) {
-      case '1':
-        $form['#attached']['js'][] = drupal_get_path('module', 'bibdk_autocomplete') . '/js/bibdk_autocomplete.ortograf.js';
-        break;
-      default:
-        $form['#attached']['js'][] = drupal_get_path('module', 'bibdk_autocomplete') . '/js/bibdk_autocomplete.old.js';
-    }
+
+    // Ensure autocomplete alters never gets loaded before autocomplete JS.
+    $form['#attached']['js'][] = array(
+      'data' => drupal_get_path('module', 'bibdk_autocomplete') . '/js/bibdk_autocomplete.js',
+      'weight' => 10
+    );
+    $form['#attached']['js'][] = array(
+      'data' => drupal_get_path('module', 'bibdk_autocomplete') . '/js/bibdk_autocomplete.overrides.js',
+      'weight' => 10,
+    );
   }
 
 }
-
 
 /**
  * helper function for hook_form_FORM_ID_alter()
  */
 function bibdk_autocomplete_set_path(&$form, $elements, $element_label, $values, $p_uuid, $v_uuid, $region = 'main') {
-  if (is_array($elements)) {
-    foreach ($elements as $element_uuid => $element_val) {
-      foreach ($element_val as $element_key => $element_var) {
-        if (is_array($element_var) && isset($element_var['#id']) && $element_var['#id'] == $values['id'] && $values['autocomplete']) {
-          $form['advanced'][$region][$element_label][$element_uuid][$element_key]['#autocomplete_path'] = 'bibdk/autocomplete/' . $p_uuid . '/' . $v_uuid;
-        }
+  if (!is_array($elements)) {
+    return;
+  }
+  foreach ($elements as $element_uuid => $element_val) {
+    foreach ($element_val as $element_key => $element_var) {
+      if (!is_array($element_var)) {
+        continue;
+      }
+      if (isset($element_var['#id']) && (strpos($element_var['#id'], $values['id']) === 0) && $values['autocomplete']) {
+        $form['advanced'][$region][$element_label][$element_uuid][$element_key]['#attributes']['data-autocomplete-function'] = $values['operation'];
+        $form['advanced'][$region][$element_label][$element_uuid][$element_key]['#autocomplete_path'] = 'autocomplete/' . $p_uuid . '/' . $v_uuid;
       }
     }
   }
 }
-
 
 /**
  * Implements hook_help().
@@ -165,99 +337,86 @@ function bibdk_autocomplete_help($path, $arg) {
 }
 
 /**
- * Implements hook_0_hit_search().
+ * Implements hook_0_hit().
  * @return array
  *
  */
-function bibdk_autocomplete_0_hit_search($string) {
+function bibdk_autocomplete_0_hit_search($conditions) {
 
-  $autocomplete_backend = variable_get('bibdk_autocomplete_backend', NULL);
-  switch ($autocomplete_backend) {
-    case '1':
-      module_load_include('inc', 'bibdk_autocomplete', 'includes/bibdk_autocomplete.ortograf');
-      $link_items = bibdk_autocomplete_0_hit_ortograf($string);
-      break;
-    default:
-      module_load_include('inc', 'bibdk_autocomplete', 'includes/bibdk_autocomplete.old');
-      $link_items = bibdk_autocomplete_0_hit_old($string);
+  $settings = variable_get('bibdk_autocomplete_settings', array());
+  $url = variable_get('bibdk_autocomplete_rest_url', null);
+
+  $value_vars = array();
+  $value_vars['index'] = 'scanterm.default';
+  $value_vars['facetIndex'] = 'scanphrase.default';
+
+  $url = $url . '/facetSpell';
+  $settings['highlight'] = ($settings['highlight']) ? 'true' : null;
+  $options['query'] = array('query' => check_plain($conditions)) + $value_vars + $settings;
+  $options['maxTime'] = 300;
+  $url = url($url, $options);
+
+  $curl = new MicroCURL();
+  $result = json_decode($curl->get(array($url)));
+  $curl->close();
+
+  $items = array();
+  if (!empty($result->suggestions)) {
+    foreach ($result->suggestions as $suggestion) {
+      $items[bibdk_autocomplete_truncate(html_entity_decode(strip_tags($suggestion->phrase)), 64)] = $suggestion->phrase;
+    }
   }
+  $link_items = bibdk_make_item_list($items);
 
   return $link_items;
 }
 
-
 /**
- * Implements hook_flush_caches().
- *
- * Defines the cache table to store autocomplete data from the webservice.
+ * helper function for 0_hit_search()
  */
-function bibdk_autocomplete_flush_caches() {
-  return array('cache_bibdk_autocomplete_ortograf');
-}
+function bibdk_make_item_list($items) {
 
+  $links = array();
 
-/**
- * Callback for autocomplete behaviour.
- */
-function bibdk_autocomplete_behaviour_callback() {
-  $behaviour_data = $_POST;
-  $settings = variable_get('bibdk_autocomplete_ortograf_var', array());
-  foreach ($behaviour_data['ortograf'] as $key => $fields) {
-    if (!isset($fields['suggestions'])) {
-      unset($behaviour_data['ortograf'][$key]);
-      continue;
-    }
-    $p_uuid = $fields['pageUuid'];
-    $i_uuid = $fields['inputUuid'];
-    $type = $settings[$p_uuid]['vars'][$i_uuid]['type'];
-    $behaviour_data['ortograf'][$key]['type'] = $type;
-    unset($behaviour_data['ortograf'][$key]['id']);
-  }
-  module_invoke_all('bibdk_behaviour_request', $behaviour_data);
-}
-
-
-/**
- * SuggestionService - retrieve suggestions with drupal_http_request() 
- *
- * @param array $query
- *   Search suggestion parameters.
- *
- * @return array
- *   Search suggestion results.
- */
-function bibdk_autocomplete_get_suggestions_ortograf(array $query) {
-  $items = array();
-  
-  $rest_url = variable_get('bibdk_autocomplete_ortograf_rest_url', '');
-  $url = url($rest_url, array('query' => $query));
-  $headers = array('Accept' => 'application/json');
-
-  watchdog('bibdk_autocomplete', 'Autocomplete URL sent: ' . $url, array(), $severity = WATCHDOG_DEBUG);
-  $result = drupal_http_request($url, $headers);
-
-  if (!empty($result->error)) {
-    watchdog(
-      'ting_search_ortograf',
-      "Autocomplete error: %error (%code)\nURL: !url",
-      array(
-        '%error' => $result->error,
-        '%code' => $result->code,
-        '!url' => $url,
+  // make a list of suggesttions
+  foreach ($items as $suggest) {
+    $zero_hit_link = array(
+      '#theme' => 'link',
+      '#path' => 'search/work/' . '"' . $suggest . '"',
+      '#weight' => 0,
+      '#text' => $suggest,
+      '#options' => array(
+        'attributes' => array(
+          'class' => array(
+            'bibdk-suggest-link',
+          ),
+        ),
+        'html' => false,
       ),
-      $severity = WATCHDOG_ERROR
     );
-    return $items;
+    $links[] = drupal_render($zero_hit_link);
   }
 
-  if (!empty($result->data)) {
-    $result_data = drupal_json_decode($result->data);
-    if (!empty($result_data['response']['docs'])) {
-      foreach ($result_data['response']['docs'] as $suggestion) {
-        $items[] = $suggestion['all'][0];
-      }
-    }
-  }
+  // label for suggestions
+  $render['label'] = array(
+    '#type' => 'html_tag',
+    '#tag' => 'div',
+    '#value' => t('label_did_you_mean', array(), array('context' => 'bibdk_autocomplete_suggest')),
+    '#attributes' => array(
+      'class' => array('bibdk-suggest-label'),
+    ),
+  );
 
-  return $items;
+  // render array for suggestions
+  $render['suggest_list'] = array(
+    '#theme' => 'item_list',
+    '#type' => 'ul',
+    '#attributes' => array(
+      'class' => array('links', 'bibdk-suggest-links'),
+    ),
+    '#items' => $links,
+  );
+
+  return $render;
+
 }

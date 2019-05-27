@@ -4,14 +4,20 @@
 }
 
 #bibdk-autocomplete-admin .form-type-radio {
-    padding: 0.25rem 0.3125rem;
+    padding: 4px 5px;
     float: left;
 }
 
 #bibdk-autocomplete-admin .form-type-textfield {
-    padding: 0 0.5625rem 0;
+    padding: 0 9px 0;
     float: left;
-    width: 12rem;
+    width: 16em;
+}
+
+#bibdk-autocomplete-admin .form-type-select {
+    padding: 0 9px 0;
+    float: left;
+    width: 9em;
 }
 
 #bibdk-autocomplete-admin .form-item-bibdk-autocomplete-settings-agency,
@@ -31,11 +37,11 @@
 }
 
 #bibdk-autocomplete-admin .form-type-checkbox {
-    padding: 1.125rem 0.5625rem 0;
+    padding: 18px 9px 0;
     float: left;
-    clear: left;
 }
 
-#bibdk-autocomplete-admin .form-type-radios .description {
-    clear: both;
+#bibdk-autocomplete-admin .disabled, #bibdk-autocomplete-admin input:disabled {
+    color: #ccc;
 }
+
