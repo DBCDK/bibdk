@@ -80,7 +80,7 @@ projects[ding_webtrends_2014][download][tag] = 7.x-0.3
 projects[ting-client][type] = module
 projects[ting-client][download][type] = git
 projects[ting-client][download][url] = git@github.com:DBCDK/ting-client.git
-projects[ting-client][download][tag] = 7.x-2.47
+projects[ting-client][download][tag] = 7.x-2.48
 
 projects[ting_agency][type] = module
 projects[ting_agency][download][type] = git
@@ -95,7 +95,7 @@ projects[ting_infomedia][download][tag] = 7.x-1.36
 projects[ting_openformat][type] = module
 projects[ting_openformat][download][type] = git
 projects[ting_openformat][download][url] = git@github.com:DBCDK/ting_openformat.git
-projects[ting_openformat][download][tag] = 7.x-1.8
+projects[ting_openformat][download][tag] = 7.x-1.9
 
 projects[ting_openuserstatus][type] = module
 projects[ting_openuserstatus][download][type] = git
@@ -121,7 +121,7 @@ projects[open_holdingstatus][download][tag] = 7.x-1.3
 projects[open_moreinfo][type] = module
 projects[open_moreinfo][download][type] = git
 projects[open_moreinfo][download][url] = git@github.com:DBCDK/open_moreinfo.git
-projects[open_moreinfo][download][tag] = 7.x-1.5
+projects[open_moreinfo][download][tag] = 7.x-1.6
 
 projects[open_saou][type] = module
 projects[open_saou][download][type] = git
@@ -131,7 +131,7 @@ projects[open_saou][download][tag] = 7.x-0.3
 projects[open_platform_client][type] = module
 projects[open_platform_client][download][type] = git
 projects[open_platform_client][download][url] = git@github.com:DBCDK/open_platform_client.git
-projects[open_platform_client][download][tag] = 7.x-1.7
+projects[open_platform_client][download][tag] = 7.x-1.8
 
 projects[cql_strict_parser][type] = module
 projects[cql_strict_parser][download][type] = git
@@ -143,7 +143,7 @@ projects[cql_strict_parser][download][tag] = 7.x-0.4
 projects[bibdk_config][type] = module
 projects[bibdk_config][download][type] = git
 projects[bibdk_config][download][url] = https://git.dbc.dk:/repos/bibliotek.dk/bibdk_config.git
-projects[bibdk_config][download][tag] = 7.x-1.39
+projects[bibdk_config][download][tag] = 7.x-1.40
 
 projects[bibdk_behaviour][type] = module
 projects[bibdk_behaviour][download][type] = git
