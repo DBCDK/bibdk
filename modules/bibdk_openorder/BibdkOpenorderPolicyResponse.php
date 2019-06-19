@@ -18,7 +18,11 @@ class BibdkOpenorderPolicyResponse {
   public function getLookUpUrl() {
     $urls = array();
     if (isset($this->response->checkOrderPolicyResponse->lookUpUrl)) {
-      foreach($this->response->checkOrderPolicyResponse->lookUpUrl as $lookup_url){
+      $lookup_urls = $this->response->checkOrderPolicyResponse->lookUpUrl;
+      if (!is_array($lookup_urls)) {
+        $lookup_urls = array($lookup_urls);
+      };
+      foreach ($lookup_urls as $lookup_url) {
         $urls[] = array(
           'url' => isset($lookup_url->{'$'}) ? $lookup_url->{'$'} : NULL,
           'agencyId' => isset($lookup_url->{'@agencyId'}->{'$'}) ? $lookup_url->{'@agencyId'}->{'$'} : NULL,
