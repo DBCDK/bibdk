@@ -1,0 +1,8 @@
+<?php
+
+/**
+ * @file
+ * Code for the Bibliotek.dk - Subject hierarchy feature.
+ */
+
+include_once 'bibliotek_dk_subject_hierarchy.features.inc';

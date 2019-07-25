@@ -1,0 +1,11 @@
+name = Bibliotek.dk - Subject hierarchy
+description = Email settings for subject suggestions
+core = 7.x
+package = Bibliotek.dk
+version = 7.x-1.0
+dependencies[] = ctools
+dependencies[] = strongarm
+features[ctools][] = strongarm:strongarm:1
+features[features_api][] = api:2
+features[variable][] = bibdk_subject_hierarchy_email_from
+features[variable][] = bibdk_subject_hierarchy_email_to

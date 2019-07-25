@@ -142,6 +142,7 @@ function _bibdk_frontend_enable_modules() {
     'bibliotek_dk_schema_org_settings',
     'bibliotek_dk_custom_search_filters',
     'dbc_zabbix_configuration',
+    'bibliotek_dk_subject_hierarchy',
     //Content
     'bibdk_custom_header_block',
     'bibdk_article_view',
@@ -557,3 +558,9 @@ function bibdk_frontend_update_7034() {
     ->execute();
 }
 
+/**
+ * Enable bibliotek_dk_subject_hierarchy settings.
+ */
+function bibdk_frontend_update_7035(&$sandbox) {
+  _bibdk_frontend_enable_modules();
+}
