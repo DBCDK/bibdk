@@ -1,16 +1,6 @@
 <?php
 
 $databases = array();
-$databases['default']['lkh'] = array(
-     'driver' => 'mysql',
-     'database' => 'bibdk',
-     'username' => 'root',
-     'password' => 'content',
-     'host' => 'mariadb',
-     'prefix' => '',
-);
-
-/*
 $databases['default']['default']=array(
      'driver' => 'pgsql',
      'database' => 'bibdk-35',
@@ -19,7 +9,6 @@ $databases['default']['default']=array(
      'host' => 'bibdkfe-p-postgres.dbc.dk',
      'prefix' => '',
 );
-*/
 /**
  * Salt for one-time login links and cancel links, form tokens, etc.
  *
