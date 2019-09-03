@@ -12,6 +12,8 @@ def BUILDNAME = 'Bibliotek.dk :: ' + BRANCH
 def ARTYSERVER = Artifactory.server 'arty'
 def ARTYDOCKER
 
+def DISTROPATH = "https://raw.github.com/DBCDK/bibdk/develop/distro.make"
+
 pipeline {
   agent {
     node { label 'dscrum-is-builder-i01' }
@@ -47,9 +49,6 @@ pipeline {
         }
       }
       steps {
-        script {
-          def DISTROPATH = "https://raw.github.com/DBCDK/bibdk/develop/distro.make"
-        }
         dir('docker/www') {
           sh """
           drush make -v --strict=0 --dbc-modules=master --concurrency=30 --no-gitinfofile --contrib-destination=profiles/bibdk $DISTROPATH www"
