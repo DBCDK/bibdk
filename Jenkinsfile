@@ -46,11 +46,10 @@ pipeline {
           label "master"
         }
       }
-
-      script {
-        def DISTROPATH = "https://raw.github.com/DBCDK/bibdk/develop/distro.make"
-      }
       steps {
+        script {
+          def DISTROPATH = "https://raw.github.com/DBCDK/bibdk/develop/distro.make"
+        }
         dir('docker/www') {
           sh """
           drush make -v --strict=0 --dbc-modules=master --concurrency=30 --no-gitinfofile --contrib-destination=profiles/bibdk $DISTROPATH www"
