@@ -51,7 +51,7 @@ pipeline {
       steps {
         dir('docker/www') {
           sh """
-          drush make -v --strict=0 --dbc-modules=master --concurrency=30 --no-gitinfofile --contrib-destination=profiles/bibdk $DISTROPATH www"
+          drush make -v --strict=0 --dbc-modules=master --concurrency=30 --no-gitinfofile --contrib-destination=profiles/bibdk $DISTROPATH www
           """
         }
       }
