@@ -45,7 +45,7 @@ pipeline {
         docker {
           image "docker-dscrum.dbc.dk/d7-php7-builder:latest"
           alwaysPull true
-          label "devel9-head"
+          label "dscrum-is-builder-i01"
         }
       }
       steps {
