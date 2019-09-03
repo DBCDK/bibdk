@@ -38,21 +38,21 @@ pipeline {
         }
       }
     }
+    stage('build bibdk') {
+      agent {
+        docker {
+          image "docker-dscrum.dbc.dk/d7-php7-builder:latest"
+          alwaysPull true
+          label "master"
+        }
+      }
 
-    agent{
-      docker {
-        image "docker-dscrum.dbc.dk/d7-php7-builder:latest"
-        alwaysPull true
-        label "master"
+      script {
+        def DISTROPATH = "https://raw.github.com/DBCDK/bibdk/develop/distro.make"
       }
-    }
-    stage('build bibdk'){
-      script{
-        def DISTROPATH="https://raw.github.com/DBCDK/bibdk/develop/distro.make"
-      }
-      steps{
-        dir('docker/www'){
-          sh"""
+      steps {
+        dir('docker/www') {
+          sh """
           drush make -v --strict=0 --dbc-modules=master --concurrency=30 --no-gitinfofile --contrib-destination=profiles/bibdk $DISTROPATH www"
           """
         }
