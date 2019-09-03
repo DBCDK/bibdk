@@ -43,7 +43,7 @@ pipeline {
         docker {
           image "docker-dscrum.dbc.dk/d7-php7-builder:latest"
           alwaysPull true
-          label "master"
+          label "devev9-head"
         }
       }
       steps {
