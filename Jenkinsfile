@@ -44,15 +44,15 @@ pipeline {
         sh """
             pwd
             ls -la
-            
+            drush make -v --strict=0 --dbc-modules=master --concurrency=30 --no-gitinfofile --contrib-destination=profiles/bibdk $DISTROPATH www
         """
-        script {
+        /*script {
           withCredentials([sshUserPrivateKey(credentialsId: "frontend-github", keyFileVariable: 'keyfile')]) {
             sh """
             drush make -v --strict=0 --dbc-modules=master --concurrency=30 --no-gitinfofile --contrib-destination=profiles/bibdk $DISTROPATH www
             """
           }
-        }
+        }*/
       }
     }
   }
