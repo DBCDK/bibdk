@@ -52,7 +52,13 @@ pipeline {
         script {
           withCredentials([sshUserPrivateKey(credentialsId: "frontend-github", keyFileVariable: 'keyfile')]) {
             sh """
-            GIT_SSH_COMMAND="ssh -i ${keyfile}"
+            
+            pwd
+            ls -la
+            mkdir .ssh
+            cp ${keyfile} id_rsa_github
+            chmod 400 id_rsa_github           
+            GIT_SSH_COMMAND="ssh -i id_rsa_github"
             drush make -v --strict=0 --dbc-modules=master --concurrency=30 --no-gitinfofile --contrib-destination=profiles/bibdk $DISTROPATH www
             """
           }
