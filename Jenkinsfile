@@ -52,6 +52,7 @@ pipeline {
         script {
           withCredentials([sshUserPrivateKey(credentialsId: "frontend-github", keyFileVariable: 'keyfile')]) {
             sh """
+            la -la
             mkdir .ssh
             cp ${keyfile} .ssh/id_rsa
             chmod 400 .ssh/id_rsa            
