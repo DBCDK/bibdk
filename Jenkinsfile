@@ -49,9 +49,13 @@ pipeline {
         }
       }
       steps {
-          sh """
-          drush make -v --strict=0 --dbc-modules=master --concurrency=30 --no-gitinfofile --contrib-destination=profiles/bibdk $DISTROPATH www
-          """
+        script {
+          withCredentials([sshUserPrivateKey(credentialsId: "frontend-dbc", keyFileVariable: 'keyfile')]) {
+            sh """
+            drush make -v --strict=0 --dbc-modules=master --concurrency=30 --no-gitinfofile --contrib-destination=profiles/bibdk $DISTROPATH www
+            """
+          }
+        }
       }
     }
   }
