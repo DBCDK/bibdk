@@ -44,13 +44,11 @@ pipeline {
         sh """
             pwd
             ls -la
+            
         """
         script {
           withCredentials([sshUserPrivateKey(credentialsId: "frontend-github", keyFileVariable: 'keyfile')]) {
             sh """
-            pwd
-            ls -la    
-            git config core.sshCommand "ssh -i id_rsa_github -F /dev/null"
             drush make -v --strict=0 --dbc-modules=master --concurrency=30 --no-gitinfofile --contrib-destination=profiles/bibdk $DISTROPATH www
             """
           }
