@@ -52,6 +52,7 @@ pipeline {
         script {
           withCredentials([sshUserPrivateKey(credentialsId: "frontend-github", keyFileVariable: 'keyfile')]) {
             sh """
+            mkdir .ssh
             cp ${keyfile} .ssh/id_rsa
             chmod 400 .ssh/id_rsa            
             drush make -v --strict=0 --dbc-modules=master --concurrency=30 --no-gitinfofile --contrib-destination=profiles/bibdk $DISTROPATH www
