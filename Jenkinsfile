@@ -56,7 +56,7 @@ pipeline {
             ls -la
             cp ${keyfile} id_rsa_github
             chmod 400 id_rsa_github           
-            GIT_SSH_COMMAND="ssh -i id_rsa_github"
+            git config core.sshCommand "ssh -i id_rsa_github -F /dev/null"
             drush make -v --strict=0 --dbc-modules=master --concurrency=30 --no-gitinfofile --contrib-destination=profiles/bibdk $DISTROPATH www
             """
           }
