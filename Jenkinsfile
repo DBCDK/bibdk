@@ -33,19 +33,11 @@ pipeline {
         }
       }
     }
-    stage('checkout git') {
-      steps {
-        script {
-          checkout scm
-        }
-      }
-    }
     stage('build bibdk') {
       agent {
         docker {
           image "docker-dscrum.dbc.dk/d7-php7-builder:latest"
           alwaysPull true
-          label "devel8-head"
         }
       }
       steps {
