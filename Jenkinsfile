@@ -49,6 +49,10 @@ pipeline {
         }
       }
       steps {
+        sh """
+            pwd
+            ls -la
+        """
         script {
           withCredentials([sshUserPrivateKey(credentialsId: "frontend-github", keyFileVariable: 'keyfile')]) {
             sh """
