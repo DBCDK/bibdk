@@ -45,7 +45,7 @@ pipeline {
             whoami
             pwd
             ls -la
-             drush make -v --working-copy --strict=0 --dbc-modules=$BRANCH --no-gitinfofile --contrib-destination=profiles/bibdk $DISTRO_PATH www
+             drush make -v --working-copy --strict=0 --dbc-modules=$BRANCH --no-gitinfofile --contrib-destination=profiles/bibdk $DISTROPATH www
         """
       }
     }
