@@ -142,7 +142,7 @@ projects[cql_strict_parser][download][tag] = 7.x-0.4
 ; PLEASE UNCOMMENT AS THE MODULE WONT BE DOWNLOADABLE OUTSIDE DBC A/S
 projects[bibdk_config][type] = module
 projects[bibdk_config][download][type] = git
-projects[bibdk_config][download][url] = https://git.dbc.dk:/repos/bibliotek.dk/bibdk_config.git
+projects[bibdk_config][download][url] = gitlab@gitlab.dbc.dk:d-scrum/d7/bibliotek-dk/bibdk_config.git
 projects[bibdk_config][download][tag] = 7.x-1.40
 
 projects[bibdk_behaviour][type] = module
