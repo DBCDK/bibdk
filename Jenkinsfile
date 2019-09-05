@@ -45,14 +45,8 @@ pipeline {
             whoami
             pwd
             ls -la
+             drush make -v --working-copy --strict=0 --dbc-modules=$BRANCH_NAME --no-gitinfofile --contrib-destination=profiles/bibdk $DISTRO_PATH www
         """
-        script {
-          withCredentials([sshUserPrivateKey(credentialsId: "frontend-github", keyFileVariable: 'keyfile')]) {
-            sh """
-            cp $keyfile .
-            """
-          }
-        }
       }
     }
   }
