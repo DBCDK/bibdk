@@ -52,7 +52,7 @@ COPY --chown=root:www-data www $APACHE_ROOT
 COPY 000-default.conf /etc/apache2/sites-enabled
 COPY entry.sh /
 COPY healthcheck.sh /
-COPY settings.php $APACHE_ROOT/sites/default
+COPY www/profiles/bibdk/modules/bibdk_config/docker/settings.php $APACHE_ROOT/sites/default
 ADD fqdn.conf /etc/apache2/conf-available
 COPY apache_security.conf /etc/apache2/conf-enabled/
 COPY run-tests-jenkins.sh $APACHE_ROOT/scripts
