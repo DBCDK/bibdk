@@ -56,8 +56,7 @@ pipeline {
       steps {
         dir('docker/www') {
           unstash "www"
-          sh
-          """
+          sh """
           tar -xf www.tar
           """
           script {
@@ -66,22 +65,22 @@ pipeline {
         }
 
       }
-      stage('Push to artifactory ') {
-        steps {
-          // we only push to artifactory if we are handling develop or master branch
-          if (BRANCH == 'master' || BRANCH == 'develop') {
-            script {
-              def artyServer = Artifactory.server 'arty'
-              def artyDocker = Artifactory.docker server: artyServer, host: env.DOCKER_HOST
-              def buildInfo = Artifactory.newBuildInfo()
-              buildInfo.name = Buildname
-              buildInfo.env.capture = true
-              buildInfo.env.collect()
-              buildInfo = artyDocker.push("${DOCKER_REPO}/${PRODUCT}-${BRANCH}:${currentBuild.number}", 'docker-dscrum', buildInfo)
+    }
+    stage('Push to artifactory ') {
+      steps {
+        // we only push to artifactory if we are handling develop or master branch
+        if (BRANCH == 'master' || BRANCH == 'develop') {
+          script {
+            def artyServer = Artifactory.server 'arty'
+            def artyDocker = Artifactory.docker server: artyServer, host: env.DOCKER_HOST
+            def buildInfo = Artifactory.newBuildInfo()
+            buildInfo.name = Buildname
+            buildInfo.env.capture = true
+            buildInfo.env.collect()
+            buildInfo = artyDocker.push("${DOCKER_REPO}/${PRODUCT}-${BRANCH}:${currentBuild.number}", 'docker-dscrum', buildInfo)
 
-              buildInfo.append mvnBuildInfo
-              artyServer.publishBuildInfo buildInfo
-            }
+            buildInfo.append mvnBuildInfo
+            artyServer.publishBuildInfo buildInfo
           }
         }
       }
