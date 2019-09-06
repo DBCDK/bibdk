@@ -35,6 +35,10 @@ pipeline {
       }
       steps {
         sh """
+            pwd
+          """
+
+        sh """
              drush make -v --working-copy --strict=0 --dbc-modules=$BRANCH --no-gitinfofile --contrib-destination=profiles/bibdk $DISTROPATH www
         """
         // make it a tar
@@ -50,6 +54,9 @@ pipeline {
         node { label 'devel8-head' }
       }
       steps {
+        sh """
+            pwd
+          """
         dir('docker/www') {
           unstash "www"
           sh """
