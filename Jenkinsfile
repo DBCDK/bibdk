@@ -26,6 +26,13 @@ pipeline {
     disableConcurrentBuilds()
   }
   stages {
+    stage('jenkins cleanup') {
+      steps {
+        script {
+          cleanWs()
+        }
+      }
+    }
     stage('build and stash bibdk code') {
       agent {
         docker {
@@ -84,13 +91,6 @@ pipeline {
 
             artyServer.publishBuildInfo buildInfo
           }
-        }
-      }
-    }
-    stage('jenkins cleanup') {
-      steps {
-        script {
-          cleanWs()
         }
       }
     }
