@@ -99,6 +99,15 @@ pipeline {
   post{
     always{
       cleanWs()
+      dir("${env.WORKSPACE}@2") {
+        deleteDir()
+      }
+      dir("${env.WORKSPACE}@2@tmp") {
+        deleteDir()
+      }
+      dir("${env.WORKSPACE}@tmp") {
+        deleteDir()
+      }
       sh """
       echo WORKSPACE: ${env.WORKSPACE}
       """
