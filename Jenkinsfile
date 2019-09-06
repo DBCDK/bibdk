@@ -16,7 +16,7 @@ def DISTROPATH = "https://raw.github.com/DBCDK/bibdk/develop/distro.make"
 
 pipeline {
   agent {
-    node { label 'dscrum-is-builder-i01' }
+    node { label 'devel8-head' }
   }
   options {
     buildDiscarder(logRotator(artifactDaysToKeepStr: "", artifactNumToKeepStr: "", daysToKeepStr: "", numToKeepStr: "5"))
@@ -74,7 +74,7 @@ pipeline {
             def artyServer = Artifactory.server 'arty'
             def artyDocker = Artifactory.docker server: artyServer, host: env.DOCKER_HOST
             def buildInfo = Artifactory.newBuildInfo()
-            buildInfo.name = Buildname
+            buildInfo.name = BUILDNAME
             buildInfo.env.capture = true
             buildInfo.env.collect()
             buildInfo = artyDocker.push("${DOCKER_REPO}/${PRODUCT}-${BRANCH}:${currentBuild.number}", 'docker-dscrum', buildInfo)
