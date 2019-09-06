@@ -1,14 +1,14 @@
 #! groovy
 // general vars
 def DOCKER_REPO = "docker-dscrum.dbc.dk"
-def PRODUCT = 'bibliotek.dk'
+def PRODUCT = 'bibliotek_dk'
 def BRANCH = 'master'
 // var for kubernetes
 def NAMESPACE = 'frontend-prod'
 
 def TARFILE
 // artifactory vars
-def BUILDNAME = 'Bibliotek.dk :: ' + BRANCH
+def BUILDNAME = 'Bibliotek_dk :: ' + BRANCH
 def ARTYSERVER = Artifactory.server 'arty'
 def ARTYDOCKER
 
@@ -33,7 +33,7 @@ pipeline {
         }
       }
     }
-    stage('build bibdk') {
+    stage('build and stash bibdk code') {
       agent {
         docker {
           image "docker-dscrum.dbc.dk/d7-php7-builder:latest"
@@ -42,11 +42,46 @@ pipeline {
       }
       steps {
         sh """
-            whoami
-            pwd
-            ls -la
              drush make -v --working-copy --strict=0 --dbc-modules=$BRANCH --no-gitinfofile --contrib-destination=profiles/bibdk $DISTROPATH www
         """
+        // make it a tar
+        sh """
+        tar -czf www.tar www
+        """
+        stash name: "www", includes: "www.tar"
+      }
+    }
+
+    stage('build docker') {
+      steps {
+        dir('docker/www') {
+          unstash "www"
+          sh
+          """
+          tar -xf www.tar
+          """
+          docker.build("${DOCKER_REPO}/${PRODUCT}-${BRANCH}:${currentBuild.number}")
+        }
+
+      }
+      stage('Push to artifactory ') {
+        steps {
+          // we only push to artifactory if we are handling develop or master branch
+          if (BRANCH == 'master' || BRANCH == 'develop') {
+            script {
+              def artyServer = Artifactory.server 'arty'
+              def artyDocker = Artifactory.docker server: artyServer, host: env.DOCKER_HOST
+              def buildInfo = Artifactory.newBuildInfo()
+              buildInfo.name = Buildname
+              buildInfo.env.capture = true
+              buildInfo.env.collect()
+              buildInfo = artyDocker.push("${DOCKER_REPO}/${PRODUCT}-${BRANCH}:${currentBuild.number}", 'docker-dscrum', buildInfo)
+
+              buildInfo.append mvnBuildInfo
+              artyServer.publishBuildInfo buildInfo
+            }
+          }
+        }
       }
     }
   }

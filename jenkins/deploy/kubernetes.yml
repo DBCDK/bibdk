@@ -1,0 +1,77 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: TEMPLATE
+  namespace: TEMPLATE
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: TEMPLATE
+      version: latest
+  template:
+    metadata:
+      labels:
+        app: TEMPLATE
+        version: latest
+        gatewayf-master-service-egress: "yes"
+        gatewayf-master-service-ingress: "yes"
+    spec:
+      containers:
+        - image: TEMPLATE
+          imagePullPolicy: Always
+          name: TEMPLATE
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 1.0
+              memory: 2000Mi
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+          volumeMounts:
+            - mountPath: "/var/www/html/sites/default/files"
+              name: bibliotekdk-files
+              readOnly: false
+
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      schedulerName: default-scheduler
+      securityContext: {}
+      volumes:
+        - name: bibliotekdk-files
+          persistentVolumeClaim:
+            claimName: bibliotekdk-files-volume-claim
+
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: TEMPLATE
+  namespace: frontend-staging
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    app: TEMPLATE
+---
+# this app needs to update metadata from wayf - do it in a persistent volume (ceph-fs)
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: metadata-volume-master-claim
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: cephfs

@@ -1,0 +1,60 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: bibliotekdk-memcached
+  namespace: frontend-prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bibliotekdk-memcached
+      version: latest
+  template:
+    metadata:
+      labels:
+        app: bibliotekdk-memcached
+        version: latest
+        gatewayf-master-service-egress: "yes"
+        gatewayf-master-service-ingress: "yes"
+    spec:
+      containers:
+        - image: docker-dscrum.dbc.dk/memcached
+          imagePullPolicy: Always
+          name: memcached
+          ports:
+            - containerPort: 11211
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 1.0
+              memory: 10000Mi
+          livenessProbe:
+            initialDelaySeconds: 5
+            tcpSocket:
+              port: 11211
+          readinessProbe:
+            initialDelaySeconds: 5
+            tcpSocket:
+              port: 11211
+            timeoutSeconds: 1
+
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      schedulerName: default-scheduler
+      securityContext: {}
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bibliotekdk-memcached-11211
+  namespace: frontend-prod
+spec:
+  ports:
+    - port: 11211
+      protocol: TCP
+      targetPort: 11211
+  selector:
+    app: bibliotekdk-memcached
