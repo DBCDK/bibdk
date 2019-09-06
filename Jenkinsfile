@@ -82,7 +82,6 @@ pipeline {
             buildInfo.env.collect()
             buildInfo = artyDocker.push("${DOCKER_REPO}/${PRODUCT}-${BRANCH}:${currentBuild.number}", 'docker-dscrum', buildInfo)
 
-            buildInfo.append mvnBuildInfo
             artyServer.publishBuildInfo buildInfo
           }
         }
