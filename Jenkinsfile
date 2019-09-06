@@ -43,6 +43,7 @@ pipeline {
       steps {
         sh """
             pwd
+            echo ${env.WORKSPACE}
           """
 
         sh """
@@ -93,6 +94,14 @@ pipeline {
           }
         }
       }
+    }
+  }
+  post{
+    always{
+      cleanWs()
+      sh """
+      echo WORKSPACE: ${env.WORKSPACE}
+      """
     }
   }
 }
