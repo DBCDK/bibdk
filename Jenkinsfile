@@ -1,10 +1,4 @@
 #! groovy
-
-properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '5')),
-            pipelineTriggers([]),
-            disableConcurrentBuilds()])
-
-
 // general vars
 def DOCKER_REPO = "docker-dscrum.dbc.dk"
 def PRODUCT = 'bibliotek_dk'
