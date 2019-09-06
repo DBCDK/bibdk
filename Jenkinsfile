@@ -53,6 +53,9 @@ pipeline {
     }
 
     stage('build docker') {
+      agent {
+        node { label 'devel8-head' }
+      }
       steps {
         dir('docker/www') {
           unstash "www"
