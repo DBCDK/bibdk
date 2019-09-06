@@ -61,7 +61,6 @@ COPY update-exim4.conf.conf /etc/exim4/
 
 RUN mkdir -p $APACHE_ROOT/private && \
 	sudo chown www-data:www-data $APACHE_ROOT/private && \
-	sudo chown -R www-data:www-data $APACHE_ROOT/sites/default/files && \
 	chmod 755 /entry.sh && \
 	chmod 755 /healthcheck.sh && \
 	a2enmod rewrite && \
