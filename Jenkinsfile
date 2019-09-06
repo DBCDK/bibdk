@@ -60,7 +60,9 @@ pipeline {
           """
           tar -xf www.tar
           """
-          docker.build("${DOCKER_REPO}/${PRODUCT}-${BRANCH}:${currentBuild.number}")
+          script {
+            docker.build("${DOCKER_REPO}/${PRODUCT}-${BRANCH}:${currentBuild.number}")
+          }
         }
 
       }
