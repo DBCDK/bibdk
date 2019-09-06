@@ -98,6 +98,9 @@ pipeline {
   }
   post{
     always{
+      sh """
+      echo WORKSPACE: ${env.WORKSPACE}
+      """
       cleanWs()
       dir("${env.WORKSPACE}@2") {
         deleteDir()
@@ -108,9 +111,6 @@ pipeline {
       dir("${env.WORKSPACE}@tmp") {
         deleteDir()
       }
-      sh """
-      echo WORKSPACE: ${env.WORKSPACE}
-      """
     }
   }
 }
