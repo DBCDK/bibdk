@@ -31,7 +31,7 @@ spec:
           livenessProbe:
             httpGet:
               path: /
-              port: 8080
+              port: 80
           volumeMounts:
             - mountPath: "/var/www/html/sites/default/files"
               name: bibliotekdk-files
@@ -73,5 +73,5 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 1Gi
+      storage: 20Gi
   storageClassName: cephfs

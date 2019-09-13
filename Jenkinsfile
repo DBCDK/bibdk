@@ -2,7 +2,7 @@
 // general vars
 def DOCKER_REPO = "docker-dscrum.dbc.dk"
 def PRODUCT = 'bibliotek_dk'
-def BRANCH = 'develop'
+def BRANCH = BRANCH_NAME
 // var for kubernetes
 def NAMESPACE = 'frontend-prod'
 
@@ -26,13 +26,6 @@ pipeline {
     disableConcurrentBuilds()
   }
   stages {
-    stage('jenkins cleanup') {
-      steps {
-        script {
-          cleanWs()
-        }
-      }
-    }
     stage('build and stash bibdk code') {
       agent {
         docker {
@@ -49,6 +42,7 @@ pipeline {
         sh """
              drush make -v --working-copy --strict=0 --dbc-modules=$BRANCH --no-gitinfofile --contrib-destination=profiles/bibdk $DISTROPATH www
         """
+        // @TODO build css
         // make it a tar
         sh """
         tar -czf www.tar www
@@ -56,6 +50,8 @@ pipeline {
         stash name: "www", includes: "www.tar"
       }
     }
+
+    // @TODO NOT NOW only build develop and master switch on branch - if feature call feature build job
 
     stage('build docker') {
       agent {
@@ -95,6 +91,7 @@ pipeline {
         }
       }
     }
+    // @TODO cleanup - delete docker image
   }
   post{
     always{
