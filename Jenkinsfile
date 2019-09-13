@@ -47,7 +47,7 @@ pipeline {
         dir('www/profiles/bibdk/themes/bibdk_theme/.npm') {
           sh """
             npm install
-            sudo npm install -g bower grunt-cli
+            npm install -g bower grunt-cli
             bower update
             gulp build
             drush cc all
