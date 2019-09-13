@@ -46,7 +46,6 @@ pipeline {
         // Building CSS
         sh """
           npm install
-          npm install -g bower gulp
           bower update
           gulp build
           drush cc all
