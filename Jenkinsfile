@@ -104,7 +104,7 @@ pipeline {
     }
     // @TODO cleanup - delete docker image
   }
-  post{
+  /*post{
     always{
       sh """
       echo WORKSPACE: ${env.WORKSPACE}
@@ -120,5 +120,5 @@ pipeline {
         deleteDir()
       }
     }
-  }
+  }*/
 }
