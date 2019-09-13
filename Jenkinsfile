@@ -44,15 +44,17 @@ pipeline {
           drush make -v --working-copy --strict=0 --dbc-modules=$BRANCH --no-gitinfofile --contrib-destination=profiles/bibdk $DISTROPATH www
         """
         // Building CSS
-        sh """
-          cd www/profiles/bibkdk/themes/bibdk_theme/.npm
-          npm install
-          npm install -g bower grunt-cli
-          bower update
-          gulp build
-          drush cc all
-          cd ../../../../../../
-        """
+//        dir('www/profiles/bibkdk/themes/bibdk_theme/.npm') {
+          sh """
+            cd www
+            ls -hal
+            npm install
+            npm install -g bower grunt-cli
+            bower update
+            gulp build
+            drush cc all
+          """
+//        }
         // Stuffing a tar with the code.
         sh """
         tar -czf www.tar www
