@@ -8,7 +8,7 @@ def NAMESPACE = 'frontend-prod'
 
 def TARFILE
 // artifactory vars
-def BUILDNAME = 'Bibliotek_dk :: ' + BRANCH
+def BUILDNAME = 'Bibliotek-dk :: ' + BRANCH
 def ARTYSERVER = Artifactory.server 'arty'
 def ARTYDOCKER
 
