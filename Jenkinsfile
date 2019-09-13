@@ -46,7 +46,7 @@ pipeline {
         // Building CSS
         sh """
           npm install
-          sudo npm install -g bower grunt-cli
+          npm install -g bower grunt-cli
           bower update
           gulp build
           drush cc all
