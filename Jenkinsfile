@@ -44,8 +44,9 @@ pipeline {
           drush make -v --working-copy --strict=0 --dbc-modules=$BRANCH --no-gitinfofile --contrib-destination=profiles/bibdk $DISTROPATH www
         """
         // Building CSS
-        dir('www/profiles/bibkdk/themes/bibdk_theme/.npm') {
+        dir('www') {
           sh """
+            ls -hal
             npm install
             sudo npm install -g bower grunt-cli
             bower update
