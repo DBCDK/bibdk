@@ -47,7 +47,7 @@ pipeline {
         dir('www/profiles/bibdk/themes/bibdk_theme/.npm') {
           sh """
             npm install
-            gulp build --production
+            ./node_modules/gulp/bin/gulp.js build --production
           """
         }
         // Stuffing a tar with the code.
