@@ -44,9 +44,8 @@ pipeline {
           drush make -v --working-copy --strict=0 --dbc-modules=$BRANCH --no-gitinfofile --contrib-destination=profiles/bibdk $DISTROPATH www
         """
         // Building CSS
-        dir('www/themes') {
+        dir('www/profiles/bibdk/themes/bibdk_theme/.npm') {
           sh """
-            ls -hal
             npm install
             sudo npm install -g bower grunt-cli
             bower update
@@ -104,7 +103,7 @@ pipeline {
     }
     // @TODO cleanup - delete docker image
   }
-  /*post{
+  post{
     always{
       sh """
       echo WORKSPACE: ${env.WORKSPACE}
@@ -120,5 +119,5 @@ pipeline {
         deleteDir()
       }
     }
-  }*/
+  }
 }
