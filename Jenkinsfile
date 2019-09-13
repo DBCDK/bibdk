@@ -47,10 +47,7 @@ pipeline {
         dir('www/profiles/bibdk/themes/bibdk_theme/.npm') {
           sh """
             npm install
-            npm install -g bower grunt-cli
-            bower update
-            gulp build
-            drush cc all
+            gulp build --production
           """
         }
         // Stuffing a tar with the code.
