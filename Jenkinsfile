@@ -1,7 +1,7 @@
 #! groovy
 // general vars
 def DOCKER_REPO = "docker-dscrum.dbc.dk"
-def PRODUCT = 'bibliotek_dk'
+def PRODUCT = 'bibliotek-dk'
 def BRANCH = BRANCH_NAME
 // var for kubernetes
 def NAMESPACE = 'frontend-prod'
