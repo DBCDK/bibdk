@@ -44,7 +44,7 @@ pipeline {
           drush make -v --working-copy --strict=0 --dbc-modules=$BRANCH --no-gitinfofile --contrib-destination=profiles/bibdk $DISTROPATH www
         """
         // Building CSS
-        dir('www') {
+        dir('www/themes') {
           sh """
             ls -hal
             npm install
