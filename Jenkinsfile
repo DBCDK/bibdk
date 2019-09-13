@@ -45,11 +45,15 @@ pipeline {
         """
         // Building CSS
         sh """
+          cd profiles/bibdk/themes/bibdk_theme/.npm
+          pwd
           npm install
           npm install -g bower grunt-cli
           bower update
           gulp build
           drush cc all
+          cd ../../../../../
+          pwd
         """
         // Stuffing a tar with the code.
         sh """
