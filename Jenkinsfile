@@ -34,16 +34,23 @@ pipeline {
         }
       }
       steps {
+        // Where the heck are we?
         sh """
-            pwd
-            echo ${env.WORKSPACE}
-          """
-
-        sh """
-             drush make -v --working-copy --strict=0 --dbc-modules=$BRANCH --no-gitinfofile --contrib-destination=profiles/bibdk $DISTROPATH www
+          pwd
+          echo ${env.WORKSPACE}
         """
-        // @TODO build css
-        // make it a tar
+        // Drush Make
+        sh """
+          drush make -v --working-copy --strict=0 --dbc-modules=$BRANCH --no-gitinfofile --contrib-destination=profiles/bibdk $DISTROPATH www
+        """
+        // Building CSS
+        sh """
+          export PATH="$PATH:/home/isworker/.nvm/versions/node/v8.0.0/bin"
+          npm install
+          gulp build
+          drush cc all
+        """
+        // Stuffing a tar with the code.
         sh """
         tar -czf www.tar www
         """
