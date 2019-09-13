@@ -45,7 +45,6 @@ pipeline {
         """
         // Building CSS
         sh """
-          export PATH="$PATH:/home/isworker/.nvm/versions/node/v8.0.0/bin"
           npm install
           gulp build
           drush cc all
