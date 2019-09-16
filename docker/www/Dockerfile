@@ -44,8 +44,7 @@ RUN apt-get update && \
 	php drush.phar core-status && \
 	chmod +x drush.phar && \
 	mv drush.phar /usr/local/bin/drush && \
-	drush dl -y registry_rebuild-7.x-2.5 && \
-	drush cc all
+	drush dl -y registry_rebuild-7.x-2.5
 
 COPY crontab /etc/crontab
 COPY data-vol /etc/logrotate.d

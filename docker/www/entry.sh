@@ -49,7 +49,7 @@ MAILCONF=/etc/exim4/update-exim4.conf.conf
     	echo "$name $value"
 	    sed -i "s|\$export\['${name}|\$strongarm->value = '${value}';\n    &|" $CONFIG
 	done < <(env)
-	
+
 	if [ -d '/data/log' ]; then
 		echo "local0.* /data/log/watchdog.log" >> /etc/rsyslog.conf
 		touch /data/log/watchdog.log
@@ -59,6 +59,8 @@ MAILCONF=/etc/exim4/update-exim4.conf.conf
 
 # make a symbolic link to netpunkt modules - for simpletest to run
 	/bin/sh -c "cd $APACHE_ROOT/sites/default && ln -sf $APACHE_ROOT/profiles/bibdk/modules"
+
+  /bin/sh -c "cd $APACHE_ROOT && drush cc all"
 
 	# Start Apache
 	/bin/sh -c ". /etc/apache2/envvars && /usr/sbin/apache2 -D FOREGROUND"
