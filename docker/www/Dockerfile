@@ -37,7 +37,7 @@ ENV AgencyRequest_url=http://openagency.addi.dk/2.35/ \
     voxb_xsd_url=https://voxb.addi.dk/1.3.1/voxb.xsd
 
 RUN apt-get update && \
-	apt-get -q -y install cron logrotate php-gd php-mbstring php-soap php-yaml php-yaz rsyslog sudo wget exim4 postgresql-client && \
+	apt-get -q -y install cron logrotate php-gd php-mbstring php-soap php-yaml rsyslog sudo wget exim4 postgresql-client && \
 	rm -rf /var/lib/apt/lists/* && \
 	apt-get autoremove -y && \
 	wget -q https://github.com/drush-ops/drush/releases/download/8.2.3/drush.phar && \
