@@ -57,7 +57,7 @@ MAILCONF=/etc/exim4/update-exim4.conf.conf
 	fi
 	service rsyslog start
 
-# make a symbolic link to netpunkt modules - for simpletest to run
+# Make a symbolic link to netpunkt modules - for simpletest to run.
 	/bin/sh -c "cd $APACHE_ROOT/sites/default && ln -sf $APACHE_ROOT/profiles/bibdk/modules"
 
 	# Start Apache
