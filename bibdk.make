@@ -270,10 +270,6 @@ projects[persistent_login][subdir] = contrib
 projects[persistent_login][type] = module
 projects[persistent_login][version] = 1.0-beta1
 
-projects[profile2][subdir] = contrib
-projects[profile2][type] = module
-projects[profile2][version] = 1.2
-
 projects[rules][subdir] = contrib
 projects[rules][type] = module
 projects[rules][version] = 2.2
