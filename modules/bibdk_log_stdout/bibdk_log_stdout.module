@@ -1,0 +1,34 @@
+<?php
+
+/**
+ * Implements hook_watchdog
+ * @param array $log_entry
+ */
+function bibdk_log_stdout_watchdog(array $log_entry)
+{
+  if ($log_entry['severity'] < WATCHDOG_WARNING) {
+    $output = fopen('php://stderr', 'w');
+  } else {
+    $output = fopen('php://stdout', 'w');
+  }
+  $severity = strtoupper(watchdog_severity_levels()[$log_entry['severity']]);
+
+  $user = $log_entry['user']->uid ? $log_entry['user']->name : 'anonymous';
+  $request_uri = $log_entry['request_uri'];
+  $referer_uri = $log_entry['referer'];
+  $variables = $log_entry['variables'] ? $log_entry['variables'] : array();
+
+  $log_array = array(
+    'severity' => $severity,
+    'type' => $log_entry['type'],
+    'message' => strip_tags(t($log_entry['message'], $variables)),
+    'user' => $user,
+    'request_uri' => $request_uri,
+    'referer_uri' => $referer_uri,
+  );
+
+  $log_message = json_encode($log_array) . \PHP_EOL;
+
+  fwrite($output, $log_message);
+  fclose($output);
+}
