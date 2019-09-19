@@ -37,7 +37,7 @@ ENV AgencyRequest_url=http://openagency.addi.dk/2.35/ \
     voxb_xsd_url=https://voxb.addi.dk/1.3.1/voxb.xsd
 
 RUN apt-get update && \
-	apt-get -q -y install cron logrotate php-gd php-mbstring php-pear php-soap php-yaml rsyslog sudo wget exim4 postgresql-client yaz && \
+	apt-get -q -y install cron logrotate php-gd php-mbstring php-pear php-soap php-yaml php-dev rsyslog sudo wget exim4 postgresql-client yaz && \
 	rm -rf /var/lib/apt/lists/* && \
 	apt-get autoremove -y && \
   wget https://pecl.php.net/get/yaz-1.2.3.tgz && \
