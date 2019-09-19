@@ -42,7 +42,6 @@ function _bibdk_enable_modules() {
     'bibdk_heimdal',
     'bibdk_help',
     'bibdk_linkme',
-    'bibdk_log_stdout',
     'bibdk_openorder',
     'bibdk_provider',
     'bibdk_reservation',
