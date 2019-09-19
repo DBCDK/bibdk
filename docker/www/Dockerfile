@@ -70,9 +70,7 @@ RUN mkdir -p $APACHE_ROOT/private && \
 	mkdir /data && \
 	sudo chown www-data:www-data /data && \
 	update-exim4.conf
-
-RUN ln -sf /proc/self/fd/1 /var/log/apache2/access.log && ln -sf /proc/self/fd/1 /var/log/apache2/error.log
-
+	
 EXPOSE 80
 
 HEALTHCHECK CMD ["/healthcheck.sh"]
