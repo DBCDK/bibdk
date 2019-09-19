@@ -6,7 +6,17 @@
  */
 function bibdk_log_stdout_watchdog(array $log_entry)
 {
-  $severity = strtoupper(watchdog_severity_levels()[$log_entry['severity']]);
+  $levels = array(
+    WATCHDOG_EMERGENCY => 'emergency',
+    WATCHDOG_ALERT     => 'alert',
+    WATCHDOG_CRITICAL  => 'critical',
+    WATCHDOG_ERROR     => 'error',
+    WATCHDOG_WARNING   => 'warning',
+    WATCHDOG_NOTICE    => 'notice',
+    WATCHDOG_INFO      => 'info',
+    WATCHDOG_DEBUG     => 'debug',
+  );
+  $severity = strtoupper($levels[$log_entry['severity']]);
   $user = $log_entry['user']->uid ? $log_entry['user']->name : 'anonymous';
   $request_uri = $log_entry['request_uri'];
   $referer_uri = $log_entry['referer'];
@@ -15,7 +25,7 @@ function bibdk_log_stdout_watchdog(array $log_entry)
   $log_array = array(
     'severity' => $severity,
     'type' => $log_entry['type'],
-    'message' => strip_tags(t($log_entry['message'], $variables)),
+    'message' => strip_tags($log_entry['message'], $variables),
     'user' => $user,
     'request_uri' => $request_uri,
     'referer_uri' => $referer_uri,
