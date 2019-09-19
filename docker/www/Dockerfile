@@ -40,7 +40,7 @@ RUN apt-get update && \
 	apt-get -q -y install cron logrotate php-gd php-mbstring php-pear php-soap php-yaml rsyslog sudo wget exim4 postgresql-client yaz && \
 	rm -rf /var/lib/apt/lists/* && \
 	apt-get autoremove -y && \
-  pecl --ignore-errors install yaz && \
+  pear --ignore-errors install yaz && \
 	wget -q https://github.com/drush-ops/drush/releases/download/8.2.3/drush.phar && \
 	php drush.phar core-status && \
 	chmod +x drush.phar && \
