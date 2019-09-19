@@ -40,12 +40,12 @@ RUN apt-get update && \
 	apt-get -q -y install cron logrotate php-gd php-mbstring php-pear php-soap php-yaml rsyslog sudo wget exim4 postgresql-client && \
 	rm -rf /var/lib/apt/lists/* && \
 	apt-get autoremove -y && \
+  pecl install yaz && \
 	wget -q https://github.com/drush-ops/drush/releases/download/8.2.3/drush.phar && \
 	php drush.phar core-status && \
 	chmod +x drush.phar && \
 	mv drush.phar /usr/local/bin/drush && \
-	drush dl -y registry_rebuild-7.x-2.5 && \
-  pecl install yaz
+	drush dl -y registry_rebuild-7.x-2.5
 
 COPY crontab /etc/crontab
 COPY data-vol /etc/logrotate.d
