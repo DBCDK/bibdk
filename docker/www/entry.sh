@@ -23,16 +23,16 @@ if [ "$1" == '' ]; then
 	trap stop SIGINT SIGTERM
 
 	# Check if external storage is mounted
-	if [ -d '/data/files' ]; then
-		rm -rf $APACHE_ROOT/sites/default/files
-		ln -s /data/files $APACHE_ROOT/sites/default/files
-		chown -R www-data:www-data /data/files
-	fi
+	#if [ -d '/data/files' ]; then
+#		rm -rf $APACHE_ROOT/sites/default/files
+#		ln -s /data/files $APACHE_ROOT/sites/default/files
+#		chown -R www-data:www-data /data/files
+#	fi
 
-	if [ -d '/data/log' ]; then
-		rm -rf /var/log/apache2
-		ln -s /data/log /var/log/apache2
-	fi
+#	if [ -d '/data/log' ]; then
+#		rm -rf /var/log/apache2
+#		ln -s /data/log /var/log/apache2
+#	fi
 # set mailhost
 MAILCONF=/etc/exim4/update-exim4.conf.conf
 	sed -i "s/mailhost\.dbc\.dk/$smarthost/" $MAILCONF
@@ -50,12 +50,12 @@ MAILCONF=/etc/exim4/update-exim4.conf.conf
 	    sed -i "s|\$export\['${name}|\$strongarm->value = '${value}';\n    &|" $CONFIG
 	done < <(env)
 
-	if [ -d '/data/log' ]; then
-		echo "local0.* /data/log/watchdog.log" >> /etc/rsyslog.conf
-		touch /data/log/watchdog.log
-		chmod 644 /data/log/watchdog.log
-	fi
-	service rsyslog start
+#	if [ -d '/data/log' ]; then
+#		echo "local0.* /data/log/watchdog.log" >> /etc/rsyslog.conf
+#		touch /data/log/watchdog.log
+#		chmod 644 /data/log/watchdog.log
+#	fi
+#	service rsyslog start
 
 # Make a symbolic link to netpunkt modules - for simpletest to run.
 	/bin/sh -c "cd $APACHE_ROOT/sites/default && ln -sf $APACHE_ROOT/profiles/bibdk/modules"
