@@ -25,7 +25,7 @@ function bibdk_log_stdout_watchdog(array $log_entry)
   $log_array = array(
     'severity' => $severity,
     'type' => $log_entry['type'],
-    'message' => strip_tags($log_entry['message'], $variables),
+    'message' => strip_tags(strtr($log_entry['message'], $variables)),
     'user' => $user,
     'request_uri' => $request_uri,
     'referer_uri' => $referer_uri,
