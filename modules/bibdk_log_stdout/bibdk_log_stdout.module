@@ -6,13 +6,7 @@
  */
 function bibdk_log_stdout_watchdog(array $log_entry)
 {
-  if ($log_entry['severity'] < WATCHDOG_WARNING) {
-    $output = fopen('php://stderr', 'w');
-  } else {
-    $output = fopen('php://stdout', 'w');
-  }
   $severity = strtoupper(watchdog_severity_levels()[$log_entry['severity']]);
-
   $user = $log_entry['user']->uid ? $log_entry['user']->name : 'anonymous';
   $request_uri = $log_entry['request_uri'];
   $referer_uri = $log_entry['referer'];
@@ -29,6 +23,7 @@ function bibdk_log_stdout_watchdog(array $log_entry)
 
   $log_message = json_encode($log_array) . \PHP_EOL;
 
+  $output = fopen('php://stdout', 'w');
   fwrite($output, $log_message);
   fclose($output);
 }
