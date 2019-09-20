@@ -61,7 +61,6 @@ COPY run-tests-xunit.sh $APACHE_ROOT/scripts
 COPY update-exim4.conf.conf /etc/exim4/
 #COPY yaz/yaz.ini /etc/php/7.0/apache2/conf.d/
 #COPY yaz/yaz-1.2.3.tgz /tmp/
-COPY php.ini /etc/php/7.0/apache2/
 
 #RUN pear install /tmp/yaz-1.2.3.tgz && \
 #    apt-get -q -y remove php-dev php-pear make && \

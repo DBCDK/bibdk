@@ -50,6 +50,18 @@ MAILCONF=/etc/exim4/update-exim4.conf.conf
 	    sed -i "s|\$export\['${name}|\$strongarm->value = '${value}';\n    &|" $CONFIG
 	done < <(env)
 
+  ### OPCACHE IN PHP.INI FILE::::::
+  # Enable Opcache settings
+  sed -i 's/;opcache\.enable=0/opcache\.enable=1/' /etc/php/7.0/apache2/php.ini
+  # Memory consumption
+  sed -i 's/;opcache.memory_consumption=64/opcache.memory_consumption=192/' /etc/php/7.0/apache2/php.ini
+  # Memory for interned strings
+  sed -i 's/;opcache.interned_strings_buffer=4/opcache.interned_strings_buffer=16/' /etc/php/7.0/apache2/php.ini
+  # Max accelerated files
+  sed -i 's/;opcache.max_accelerated_files=2000/opcache.max_accelerated_files=7963/' /etc/php/7.0/apache2/php.ini
+  # revalidate frequence.
+  sed -i 's/;opcache.revalidate_freq=2/opcache.revalidate_freq=0/' /etc/php/7.0/apache2/php.ini
+
 #	if [ -d '/data/log' ]; then
 #		echo "local0.* /data/log/watchdog.log" >> /etc/rsyslog.conf
 #		touch /data/log/watchdog.log
