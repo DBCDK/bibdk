@@ -37,7 +37,7 @@ ENV AgencyRequest_url=http://openagency.addi.dk/2.35/ \
     voxb_xsd_url=https://voxb.addi.dk/1.3.1/voxb.xsd
 
 RUN apt-get update && \
-	apt-get -q -y install cron logrotate php-gd php-mbstring php-pear php-soap php-yaml php-dev rsyslog sudo wget exim4 postgresql-client && \
+	apt-get -q -y install cron logrotate php-gd php-mbstring php-pear php-soap php-yaml php-dev rsyslog sudo wget exim4 postgresql-client && \ #yaz libyaz4-dev make
 	rm -rf /var/lib/apt/lists/* && \
 	apt-get autoremove -y && \
 	wget -q https://github.com/drush-ops/drush/releases/download/8.2.3/drush.phar && \
@@ -59,6 +59,14 @@ COPY apache_security.conf /etc/apache2/conf-enabled/
 COPY run-tests-jenkins.sh $APACHE_ROOT/scripts
 COPY run-tests-xunit.sh $APACHE_ROOT/scripts
 COPY update-exim4.conf.conf /etc/exim4/
+#COPY yaz/yaz.ini /etc/php/7.0/apache2/conf.d/
+#COPY yaz/yaz-1.2.3.tgz /tmp/
+COPY php.ini /etc/php/7.0/apache2/
+
+#RUN pear install /tmp/yaz-1.2.3.tgz && \
+#    apt-get -q -y remove php-dev php-pear make && \
+#    rm -rf /var/lib/apt/lists/* && \
+#    apt-get autoremove -y
 
 RUN mkdir -p $APACHE_ROOT/private && \
 	sudo chown www-data:www-data $APACHE_ROOT/private && \
@@ -70,7 +78,7 @@ RUN mkdir -p $APACHE_ROOT/private && \
 	mkdir /data && \
 	sudo chown www-data:www-data /data && \
 	update-exim4.conf
-	
+
 EXPOSE 80
 
 HEALTHCHECK CMD ["/healthcheck.sh"]
