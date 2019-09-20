@@ -62,6 +62,14 @@ MAILCONF=/etc/exim4/update-exim4.conf.conf
   # revalidate frequence.
   sed -i 's/;opcache.revalidate_freq=2/opcache.revalidate_freq=0/' /etc/php/7.0/apache2/php.ini
 
+  ### APACHE2.CONF FILE::::::
+  # MaxKeepAliveRequests
+  sed -i 's/MaxKeepAliveRequests 100/MaxKeepAliveRequests 500/' /etc/apache2/apache2.conf
+  # KeepAliveTimeout
+  sed -i 's/KeepAliveTimeout 5/KeepAliveTimeout 3/' /etc/apache2/apache2.conf
+  # KeepAlive
+  sed -i 's/KeepAlive On/KeepAlive Off/' /etc/apache2/apache.conf
+
 #	if [ -d '/data/log' ]; then
 #		echo "local0.* /data/log/watchdog.log" >> /etc/rsyslog.conf
 #		touch /data/log/watchdog.log
