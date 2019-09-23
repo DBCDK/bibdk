@@ -38,7 +38,6 @@ ENV AgencyRequest_url=http://openagency.addi.dk/2.35/ \
 
 RUN apt-get update && \
 	apt-get -q -y install cron logrotate php-gd php-mbstring php-pear php-soap php-yaml php-dev rsyslog sudo wget exim4 postgresql-client && \
-	apt-get -q -y remove memcached && \
 	rm -rf /var/lib/apt/lists/* && \
 	apt-get autoremove -y && \
 	wget -q https://github.com/drush-ops/drush/releases/download/8.2.3/drush.phar && \
