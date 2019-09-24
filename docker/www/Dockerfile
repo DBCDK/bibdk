@@ -36,9 +36,9 @@ ENV AgencyRequest_url=http://openagency.addi.dk/2.35/ \
     ting_spell_url=http://openspell.addi.dk/1.2/ \
     voxb_xsd_url=https://voxb.addi.dk/1.3.1/voxb.xsd
 
-ENV POSTGRES_DB=bibdk_develop \
-    POSTGRES_USER=bibdk_develop \
-    POSTGRES_PASSWORD=bibdk_develop \
+ENV POSTGRES_DB=filestore \
+    POSTGRES_USER=filestore \
+    POSTGRES_PASSWORD=filestore \
     POSTGRES_HOST=localhost
 
 RUN apt-get update && \
