@@ -39,7 +39,7 @@ ENV AgencyRequest_url=http://openagency.addi.dk/2.35/ \
 ENV POSTGRES_DB=bibdk_develop \
     POSTGRES_USER=bibdk_develop \
     POSTGRES_PASSWORD=bibdk_develop \
-    POSTGRES_HOST=bibdk_develop
+    POSTGRES_HOST=localhost
 
 RUN apt-get update && \
 	apt-get -q -y install cron logrotate php-gd php-mbstring php-pear php-soap php-yaml php-dev rsyslog sudo wget exim4 postgresql-client && \
