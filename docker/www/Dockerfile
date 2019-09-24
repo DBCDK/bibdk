@@ -1,4 +1,4 @@
-FROM docker.dbc.dk/dbc-apache-php7
+FROM docker.dbc.dk/dbc-apache-php7:no_php_ini
 MAINTAINER D-scrum <d-scrum@dbc.dk>
 
 # mailhost for exim4
