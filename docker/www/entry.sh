@@ -72,13 +72,13 @@ MAILCONF=/etc/exim4/update-exim4.conf.conf
 
   ### SETTINGS.PHP FILE::::::
   # POSTGRES_DB
-  sed -i "s/'database' => '',/'database' => '$POSTGRES_DB',/" /var/www/html/sites/default/settings.php
+  sed -i "s/'database' => '',/'database' => '$PGDATABASE',/" /var/www/html/sites/default/settings.php
   # POSTGRES_USER
-  sed -i "s/'username' => '',/'username' => '$POSTGRES_USER',/" /var/www/html/sites/default/settings.php
+  sed -i "s/'username' => '',/'username' => '$PGUSERNAME',/" /var/www/html/sites/default/settings.php
   # POSTGRES_PASSWORD
-  sed -i "s/'password' => '',/'password' => '$POSTGRES_PASSWORD',/" /var/www/html/sites/default/settings.php
+  sed -i "s/'password' => '',/'password' => '$PGPASSWORD',/" /var/www/html/sites/default/settings.php
   # POSTGRES_HOST
-  sed -i "s/'host' => '',/'host' => '$POSTGRES_HOST',/" /var/www/html/sites/default/settings.php
+  sed -i "s/'host' => '',/'host' => '$PGHOST',/" /var/www/html/sites/default/settings.php
 
 #	if [ -d '/data/log' ]; then
 #		echo "local0.* /data/log/watchdog.log" >> /etc/rsyslog.conf
