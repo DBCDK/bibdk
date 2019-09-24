@@ -80,7 +80,7 @@ MAILCONF=/etc/exim4/update-exim4.conf.conf
   # POSTGRES_HOST
   sed -i "s/'host' => '',/'host' => '$POSTGRES_HOST',/" /var/www/html/sites/default/settings.php
   # CONVENIENCY_NAME
-  sed -i "s/\$conveniency_name='bibliotek-dk-develop.frontend-staging.svc.cloud.dbc.dk'/\$conveniency_name='$CONVENIENCY_NAME'/" /var/www/html/sites/default/settings.php
+  sed -i "s/\.frontend-staging\./$CONVENIENCY_NAME/" /var/www/html/sites/default/settings.php
 
 #	if [ -d '/data/log' ]; then
 #		echo "local0.* /data/log/watchdog.log" >> /etc/rsyslog.conf

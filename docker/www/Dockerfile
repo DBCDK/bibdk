@@ -40,7 +40,7 @@ ENV POSTGRES_DB=filestore \
     POSTGRES_USER=filestore \
     POSTGRES_PASSWORD=filestore \
     POSTGRES_HOST=bibliotekdk-postgres-5432.frontend-features.svc.cloud.dbc.dk \
-    CONVENIENCY_NAME=bibliotek-dk-develop.frontend-features.svc.cloud.dbc.dk
+    CONVENIENCY_NAME=.frontend-features.
 
 RUN apt-get update && \
 	apt-get -q -y install cron logrotate php-gd php-mbstring php-pear php-soap php-yaml php-dev rsyslog sudo wget exim4 postgresql-client && \
