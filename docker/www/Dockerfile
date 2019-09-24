@@ -39,7 +39,8 @@ ENV AgencyRequest_url=http://openagency.addi.dk/2.35/ \
 ENV POSTGRES_DB=filestore \
     POSTGRES_USER=filestore \
     POSTGRES_PASSWORD=filestore \
-    POSTGRES_HOST=bibliotekdk-postgres-5432.frontend-features.svc.cloud.dbc.dk
+    POSTGRES_HOST=bibliotekdk-postgres-5432.frontend-features.svc.cloud.dbc.dk \
+    CONVENIENCY_NAME=bibliotek-dk-develop.frontend-staging.svc.cloud.dbc.dk
 
 RUN apt-get update && \
 	apt-get -q -y install cron logrotate php-gd php-mbstring php-pear php-soap php-yaml php-dev rsyslog sudo wget exim4 postgresql-client && \
