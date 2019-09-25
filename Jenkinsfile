@@ -74,7 +74,7 @@ pipeline {
           tar -xf www.tar
           """
           script {
-            docker.build("${DOCKER_REPO}/${PRODUCT}-${BRANCH}:${currentBuild.number}")
+            docker.build("${DOCKER_REPO}/${PRODUCT}-www${BRANCH}:${currentBuild.number}")
           }
         }
 
