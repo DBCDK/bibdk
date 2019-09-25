@@ -74,7 +74,7 @@ pipeline {
           tar -xf www.tar
           """
           script {
-            docker.build("${DOCKER_REPO}/${PRODUCT}-www${BRANCH}:${currentBuild.number}")
+            docker.build("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:${currentBuild.number}")
           }
         }
 
@@ -92,7 +92,7 @@ pipeline {
             mv bibdk_db.sql docker-entrypoint.d/
           """
           script {
-            docker.build("${DOCKER_REPO}/${PRODUCT}-db${BRANCH}:${currentBuild.number}")
+            docker.build("${DOCKER_REPO}/${PRODUCT}-db-${BRANCH}:${currentBuild.number}")
           }
         }
       }
@@ -102,26 +102,24 @@ pipeline {
         script {
           // we only push to artifactory if we are handling develop or master branch
           if (BRANCH == 'master' || BRANCH == 'develop') {
-
-            def artyServer = Artifactory.server 'arty'
             def artyDocker = Artifactory.docker server: artyServer, host: env.DOCKER_HOST
-            def buildInfo_www = Artifactory.newBuildInfo()
-            buildInfo_www.name = BUILDNAME
-            buildInfo_www.env.capture = true
-            buildInfo_www.env.collect()
-            buildInfo_www = artyDocker.push("${DOCKER_REPO}/${PRODUCT}-www${BRANCH}:${currentBuild.number}", 'docker-dscrum', buildInfo_www)
-
             def buildInfo_db = Artifactory.newBuildInfo()
             buildInfo_db.name = BUILDNAME
-            buildInfo_db = artyDocker.push("${DOCKER_REPO}/${PRODUCT}-db${branchname}:${currentBuild.number}", 'docker-dscrum', buildInfo_db)
+            buildInfo_db = artyDocker.push("${DOCKER_REPO}/${PRODUCT}-db-${branchname}:${currentBuild.number}", 'docker-dscrum', buildInfo_db)
+            buildInfo_db.env.capture = true
+            buildInfo_db.env.collect()
 
-            buildInfo_www.append buildInfo_db
+            def buildInfo_www = Artifactory.newBuildInfo()
+            buildInfo_www.name = BUILDNAME
+            buildInfo_www = artyDocker.push("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:${currentBuild.number}", 'docker-dscrum', buildInfo_www)
 
-            artyServer.publishBuildInfo buildInfo_www
+            buildInfo_db.append buildInfo_www
+
+            artyServer.publishBuildInfo buildInfo_db
 
             sh """
-            	docker rmi ${DOCKER_REPO}/${PRODUCT}-www${branchname}:${currentBuild.number}
-            	docker rmi ${DOCKER_REPO}/${PRODUCT}-db${branchname}:${currentBuild.number}
+            	docker rmi ${DOCKER_REPO}/${PRODUCT}-www-${branchname}:${currentBuild.number}
+            	docker rmi ${DOCKER_REPO}/${PRODUCT}-db-${branchname}:${currentBuild.number}
             """
           }
         }
