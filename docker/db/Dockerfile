@@ -6,4 +6,4 @@ ENV POSTGRES_DB=filestore \
     POSTGRES_HOST=bibliotekdk-postgres-5432.frontend-features.svc.cloud.dbc.dk \
     CONVENIENCY_NAME=.frontend-features.
 
-COPY bibdk_db.sql /docker-entrypoint.d
+ADD bibdk_db.sql /docker-entrypoint.d/bibdk_db.sql
