@@ -84,11 +84,14 @@ pipeline {
       agent {
         node { label 'devel8-head' }
       }
-      dir('docker/db') {
-        sh """
-    		  wget https://is.dbc.dk/view/Bibliotek.dk/job/dscrum-is-bibdk_dump_prod_db/lastSuccessfulBuild/artifact/bibdk_db.sql
-    			"""
-          docker.build("${DOCKER_REPO}/${PRODUCT}-db${branchname}:${currentBuild.number}")
+      steps {
+
+        dir('docker/db') {
+          sh """
+            wget https://is.dbc.dk/view/Bibliotek.dk/job/dscrum-is-bibdk_dump_prod_db/lastSuccessfulBuild/artifact/bibdk_db.sql
+            """
+            docker.build("${DOCKER_REPO}/${PRODUCT}-db${branchname}:${currentBuild.number}")
+        }
       }
     }
     stage('Push to artifactory ') {
