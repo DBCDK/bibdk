@@ -102,6 +102,7 @@ pipeline {
         script {
           // we only push to artifactory if we are handling develop or master branch
           if (BRANCH == 'master' || BRANCH == 'develop') {
+            def artyServer = Artifactory.server 'arty'
             def artyDocker = Artifactory.docker server: artyServer, host: env.DOCKER_HOST
             def buildInfo_db = Artifactory.newBuildInfo()
             buildInfo_db.name = BUILDNAME
