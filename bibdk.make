@@ -147,9 +147,8 @@ projects[bibdk_config][download][tag] = 7.x-1.40
 
 projects[bibdk_behaviour][type] = module
 projects[bibdk_behaviour][download][type] = git
-projects[bibdk_behaviour][download][url] = https://git.dbc.dk:/repos/bibdk_behaviour.git
+projects[bibdk_behaviour][download][url] = gitlab@gitlab.dbc.dk:d-scrum/d7/bibliotek-dk/bibdk_behaviour.git
 projects[bibdk_behaviour][download][tag] = 7.x-0.10
-
 
 ; --- Non Ding2 or Bibliotek.dk specific
 
@@ -270,10 +269,6 @@ projects[panels_breadcrumbs][version] = 2.2
 projects[persistent_login][subdir] = contrib
 projects[persistent_login][type] = module
 projects[persistent_login][version] = 1.0-beta1
-
-projects[profile2][subdir] = contrib
-projects[profile2][type] = module
-projects[profile2][version] = 1.2
 
 projects[rules][subdir] = contrib
 projects[rules][type] = module

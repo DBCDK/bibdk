@@ -22,7 +22,7 @@ function bibliotek_dk_subject_hierarchy_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'bibdk_subject_hierarchy_email_to';
-  $strongarm->value = 'lho@dbc.dk';
+  $strongarm->value = 'bibdkemneforslag@dbc.dk';
   $export['bibdk_subject_hierarchy_email_to'] = $strongarm;
 
   return $export;
