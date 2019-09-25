@@ -108,7 +108,7 @@ pipeline {
             buildInfo_www.name = BUILDNAME
             buildInfo_www.env.capture = true
             buildInfo_www.env.collect()
-            buildInfo_www = artyDocker.push("${DOCKER_REPO}/${PRODUCT}-${BRANCH}:${currentBuild.number}", 'docker-dscrum', buildInfo)
+            buildInfo_www = artyDocker.push("${DOCKER_REPO}/${PRODUCT}-www${BRANCH}:${currentBuild.number}", 'docker-dscrum', buildInfo)
 
             def buildInfo_db = Artifactory.newBuildInfo()
             buildInfo_db.name = BUILDNAME
