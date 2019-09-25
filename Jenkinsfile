@@ -60,7 +60,7 @@ pipeline {
 
     // @TODO NOT NOW only build develop and master switch on branch - if feature call feature build job
 
-    stage('build docker') {
+    stage('Docker: Drupal Site') {
       agent {
         node { label 'devel8-head' }
       }
@@ -80,25 +80,47 @@ pipeline {
 
       }
     }
+    stage('Docker: Drupal database') {
+      agent {
+        node { label 'devel8-head' }
+      }
+      dir('docker/db') {
+        sh """
+    		  wget https://is.dbc.dk/view/Bibliotek.dk/job/dscrum-is-bibdk_dump_prod_db/lastSuccessfulBuild/artifact/bibdk_db.sql
+    			"""
+          docker.build("${DOCKER_REPO}/${PRODUCT}-db${branchname}:${currentBuild.number}")
+      }
+    }
     stage('Push to artifactory ') {
       steps {
         script {
           // we only push to artifactory if we are handling develop or master branch
           if (BRANCH == 'master' || BRANCH == 'develop') {
+
             def artyServer = Artifactory.server 'arty'
             def artyDocker = Artifactory.docker server: artyServer, host: env.DOCKER_HOST
-            def buildInfo = Artifactory.newBuildInfo()
-            buildInfo.name = BUILDNAME
-            buildInfo.env.capture = true
-            buildInfo.env.collect()
-            buildInfo = artyDocker.push("${DOCKER_REPO}/${PRODUCT}-${BRANCH}:${currentBuild.number}", 'docker-dscrum', buildInfo)
+            def buildInfo_www = Artifactory.newBuildInfo()
+            buildInfo_www.name = BUILDNAME
+            buildInfo_www.env.capture = true
+            buildInfo_www.env.collect()
+            buildInfo_www = artyDocker.push("${DOCKER_REPO}/${PRODUCT}-${BRANCH}:${currentBuild.number}", 'docker-dscrum', buildInfo)
 
-            artyServer.publishBuildInfo buildInfo
+            def buildInfo_db = Artifactory.newBuildInfo()
+            buildInfo_db.name = BUILDNAME
+            buildInfo_db = artyDocker.push("${DOCKER_REPO}/${PRODUCT}-db${branchname}:${currentBuild.number}", 'docker-dscrum', buildInfo_db)
+
+            buildInfo_www.append buildInfo_db
+
+            artyServer.publishBuildInfo buildInfo_www
+
+            sh """
+            	docker rmi ${DOCKER_REPO}/${PRODUCT}-www${branchname}:${currentBuild.number}
+            	docker rmi ${DOCKER_REPO}/${PRODUCT}-db${branchname}:${currentBuild.number}
+            """
           }
         }
       }
     }
-    // @TODO cleanup - delete docker image
   }
   post{
     always{
