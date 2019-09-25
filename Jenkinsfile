@@ -88,6 +88,7 @@ pipeline {
         dir('docker/db') {
           sh """
             wget https://is.dbc.dk/view/Bibliotek.dk/job/dscrum-is-bibdk_dump_prod_db/lastSuccessfulBuild/artifact/bibdk_db.sql
+            mkdir docker-entrypoint.d
             mv bibdk_db.sql docker-entrypoint.d/
           """
           script {
