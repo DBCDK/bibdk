@@ -88,6 +88,8 @@ pipeline {
         dir('docker/db') {
           sh """
             wget https://is.dbc.dk/view/Bibliotek.dk/job/dscrum-is-bibdk_dump_prod_db/lastSuccessfulBuild/artifact/bibdk_db.sql
+            pwd
+            ls -hal
           """
           script {
             docker.build("${DOCKER_REPO}/${PRODUCT}-db${BRANCH}:${currentBuild.number}")
