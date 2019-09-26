@@ -36,6 +36,12 @@ ENV AgencyRequest_url=http://openagency.addi.dk/2.35/ \
     ting_spell_url=http://openspell.addi.dk/1.2/ \
     voxb_xsd_url=https://voxb.addi.dk/1.3.1/voxb.xsd
 
+ENV POSTGRES_DB=filestore \
+    POSTGRES_USER=filestore \
+    POSTGRES_PASSWORD=filestore \
+    POSTGRES_HOST=bibliotek-dk-db-develop.frontend-features.svc.cloud.dbc.dk \
+    CONVENIENCY_NAME=.frontend-features.
+
 RUN apt-get update && \
 	apt-get -q -y install cron logrotate php-gd php-mbstring php-pear php-soap php-yaml php-dev rsyslog sudo wget exim4 postgresql-client && \
 	rm -rf /var/lib/apt/lists/* && \
