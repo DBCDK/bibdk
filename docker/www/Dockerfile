@@ -39,7 +39,7 @@ ENV AgencyRequest_url=http://openagency.addi.dk/2.35/ \
 ENV POSTGRES_DB=filestore \
     POSTGRES_USER=filestore \
     POSTGRES_PASSWORD=filestore \
-    POSTGRES_HOST=bibliotek-dk-db-develop.frontend-features.svc.cloud.local \
+    POSTGRES_HOST=bibliotek-dk-db-develop \
     CONVENIENCY_NAME=.frontend-features.
 
 RUN apt-get update && \
