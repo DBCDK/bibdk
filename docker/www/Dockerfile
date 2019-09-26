@@ -86,6 +86,6 @@ RUN mkdir -p $APACHE_ROOT/private && \
 
 EXPOSE 80
 
-HEALTHCHECK CMD ["/healthcheck.sh"]
+#HEALTHCHECK CMD ["/healthcheck.sh"]
 
 ENTRYPOINT ["/entry.sh"]
