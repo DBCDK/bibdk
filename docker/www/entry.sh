@@ -80,7 +80,8 @@ MAILCONF=/etc/exim4/update-exim4.conf.conf
   # POSTGRES_HOST
   sed -i "s/'host' => '',/'host' => '$POSTGRES_HOST',/" $SETTINGS
   # CONVENIENCY_NAME
-  # sed -i "s/\.frontend-staging\./$CONVENIENCY_NAME/" /var/www/html/sites/default/settings.php
+  sed -i "s/'bibliotek-dk-develop'/'$CONVENIENCY_NAME'/" $SETTINGS
+  # replace all frontend-staging with frontend-prod (memcache mainly)
   sed -i 's/frontend-staging/frontend-prod/g' $SETTINGS
   # MEMCACHE1
   # MEMCACHE2
