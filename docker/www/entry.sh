@@ -81,7 +81,7 @@ MAILCONF=/etc/exim4/update-exim4.conf.conf
   sed -i "s/'host' => '',/'host' => '$POSTGRES_HOST',/" $SETTINGS
   # CONVENIENCY_NAME
   # sed -i "s/\.frontend-staging\./$CONVENIENCY_NAME/" /var/www/html/sites/default/settings.php
-  sed -i 's/\.frontend-staging\./frontend-prod/g' $SETTINGS
+  sed -i 's/frontend-staging/frontend-prod/g' $SETTINGS
   # MEMCACHE1
   # MEMCACHE2
 
