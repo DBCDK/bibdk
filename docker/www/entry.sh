@@ -79,12 +79,8 @@ MAILCONF=/etc/exim4/update-exim4.conf.conf
   sed -i "s/'password' => '',/'password' => '$POSTGRES_PASSWORD',/" $SETTINGS
   # POSTGRES_HOST
   sed -i "s/'host' => '',/'host' => '$POSTGRES_HOST',/" $SETTINGS
-  # CONVENIENCY_NAME
-  sed -i "s/'bibliotek-dk-develop'/'$CONVENIENCY_NAME'/" $SETTINGS
-  # replace all frontend-staging with frontend-prod (memcache mainly)
-  sed -i 's/frontend-staging/frontend-prod/g' $SETTINGS
-  # MEMCACHE1
-  # MEMCACHE2
+  # NAMESPACE_NAME
+  sed -i "s/frontend-features/$NAMESPACE_NAME/" $SETTINGS
 
 #	if [ -d '/data/log' ]; then
 #		echo "local0.* /data/log/watchdog.log" >> /etc/rsyslog.conf
