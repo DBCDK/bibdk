@@ -88,6 +88,7 @@ pipeline {
             tar -xf bibdk_db.tar
             find . -type f ! -iname "*.sql" -delete
             chmod 775 *.sql
+            chown postgres *.sql
           """
           script {
             docker.build("${DOCKER_REPO}/${PRODUCT}-db-${BRANCH}:${currentBuild.number}")
