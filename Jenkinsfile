@@ -36,7 +36,6 @@ pipeline {
       steps {
         // Where the heck are we?
         sh """
-          pwd
           echo ${env.WORKSPACE}
         """
         // Drush Make
@@ -65,9 +64,6 @@ pipeline {
         node { label 'devel8-head' }
       }
       steps {
-        sh """
-            pwd
-          """
         dir('docker/www') {
           unstash "www"
           sh """
@@ -87,9 +83,7 @@ pipeline {
       steps {
         dir('docker/db') {
           sh """
-            wget https://is.dbc.dk/view/Bibliotek.dk/job/dscrum-is-bibdk_dump_prod_db/lastSuccessfulBuild/artifact/bibdk_db.sql
-            mkdir docker-entrypoint.d
-            mv bibdk_db.sql docker-entrypoint.d/
+            wget -P docker-entrypoint.d https://is.dbc.dk/view/Bibliotek.dk/job/dscrum-is-bibdk_dump_prod_db/lastSuccessfulBuild/artifact/bibdk_db.sql
           """
           script {
             docker.build("${DOCKER_REPO}/${PRODUCT}-db-${BRANCH}:${currentBuild.number}")

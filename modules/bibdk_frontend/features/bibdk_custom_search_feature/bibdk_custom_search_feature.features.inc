@@ -2129,6 +2129,18 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option = new stdClass();
   $option->disabled = FALSE; /* Edit this to true to make a default option disabled initially */
   $option->api_version = 1;
+  $option->o_uuid = '07f728f5-2087-4d5f-aadf-c10c6cd19df0';
+  $option->v_uuid = 'e1bf5870-5dec-51d4-a968-5a9c01b08d89';
+  $option->sort = -93;
+  $option->label = 'e-bøger NOTA';
+  $option->value = 'term.type="ebog" and (fl="nota" or fl="blindebibliotek")';
+  $option->expand = '0';
+  $option->is_disabled = FALSE;
+  $export['07f728f5-2087-4d5f-aadf-c10c6cd19df0'] = $option;
+
+  $option = new stdClass();
+  $option->disabled = FALSE; /* Edit this to true to make a default option disabled initially */
+  $option->api_version = 1;
   $option->o_uuid = '096f7b5b-6695-476b-aad7-526a761dd035';
   $option->v_uuid = 'e8258795-3bbe-5e34-fda2-04a8b420d93f';
   $option->sort = -73;
@@ -2167,7 +2179,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '0b497f31-3758-474f-bb2d-fb71c83b2dbe';
   $option->v_uuid = '819ed112-ec85-8f64-2573-a5a88f7ac3d9';
-  $option->sort = -86;
+  $option->sort = -85;
   $option->label = 'film på Filmstriben';
   $option->value = 'term.acSource="filmstriben"';
   $option->expand = '0';
@@ -2203,7 +2215,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '0bebddf4-1d90-0e14-e1ea-98948056f902';
   $option->v_uuid = '819ed112-ec85-8f64-2573-a5a88f7ac3d9';
-  $option->sort = -88;
+  $option->sort = -87;
   $option->label = 'e-spil';
   $option->value = 'term.type="pc-spil"';
   $option->expand = '0';
@@ -2957,6 +2969,18 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option = new stdClass();
   $option->disabled = FALSE; /* Edit this to true to make a default option disabled initially */
   $option->api_version = 1;
+  $option->o_uuid = '29893f3f-8988-4322-94b0-c94e11fcab6d';
+  $option->v_uuid = '819ed112-ec85-8f64-2573-a5a88f7ac3d9';
+  $option->sort = -98;
+  $option->label = 'e-bøger Nota';
+  $option->value = '(term.type="ebog" and (fl="nota" or fl="blindebibliotek"))';
+  $option->expand = '0';
+  $option->is_disabled = FALSE;
+  $export['29893f3f-8988-4322-94b0-c94e11fcab6d'] = $option;
+
+  $option = new stdClass();
+  $option->disabled = FALSE; /* Edit this to true to make a default option disabled initially */
+  $option->api_version = 1;
   $option->o_uuid = '29d5c60a-73a9-50e4-dd83-38b9e28f9cf1';
   $option->v_uuid = 'da48923f-e5ba-5ef4-ad4f-c8aab6767a83';
   $option->sort = -66;
@@ -3271,7 +3295,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '34c605ba-e1b2-4518-a59a-a31cc3166bb2';
   $option->v_uuid = '819ed112-ec85-8f64-2573-a5a88f7ac3d9';
-  $option->sort = -95;
+  $option->sort = -94;
   $option->label = 'e-tidsskriftartikler';
   $option->value = 'term.type="tidsskriftsartikel"';
   $option->expand = '0';
@@ -4123,7 +4147,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '5ac6a51b-9f40-429e-bb9a-9a4c2e8e5ee4';
   $option->v_uuid = 'e1bf5870-5dec-51d4-a968-5a9c01b08d89';
-  $option->sort = -92;
+  $option->sort = -91;
   $option->label = 'børnebøger';
   $option->value = 'ma="bø" or ka="b"';
   $option->expand = '0';
@@ -4279,7 +4303,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '61bc3514-f377-409a-ba69-1f8d07ac8fe3';
   $option->v_uuid = '819ed112-ec85-8f64-2573-a5a88f7ac3d9';
-  $option->sort = -96;
+  $option->sort = -95;
   $option->label = 'e-avisartikler';
   $option->value = 'term.type="avisartikel"';
   $option->expand = '0';
@@ -4879,7 +4903,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '7c16db30-ece8-aff4-895b-a29c47adf457';
   $option->v_uuid = '819ed112-ec85-8f64-2573-a5a88f7ac3d9';
-  $option->sort = -90;
+  $option->sort = -89;
   $option->label = 'e-musik';
   $option->value = 'term.type="musik"';
   $option->expand = '0';
@@ -4915,7 +4939,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '7d9ddc21-de30-48d4-999e-28be1c16b3ec';
   $option->v_uuid = '819ed112-ec85-8f64-2573-a5a88f7ac3d9';
-  $option->sort = -94;
+  $option->sort = -93;
   $option->label = 'e-dokumenter frit tilgængelige';
   $option->value = 'term.type="netdokument" and ma="ou"';
   $option->expand = '0';
@@ -4927,7 +4951,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '7e5e55cf-039c-11e4-89e6-dee2f54d82b0';
   $option->v_uuid = '819ed112-ec85-8f64-2573-a5a88f7ac3d9';
-  $option->sort = -89;
+  $option->sort = -88;
   $option->label = 'e-noder';
   $option->value = 'term.type="node"';
   $option->expand = '0';
@@ -5167,7 +5191,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '878e3b15-2eca-4f08-ae82-d688f2686565';
   $option->v_uuid = '819ed112-ec85-8f64-2573-a5a88f7ac3d9';
-  $option->sort = 10;
+  $option->sort = -84;
   $option->label = 'podcasts';
   $option->value = 'term.type="podcast"';
   $option->expand = '0';
@@ -6319,7 +6343,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = 'b34f8a5e-2c4e-3664-0128-434ec4777a9e';
   $option->v_uuid = '819ed112-ec85-8f64-2573-a5a88f7ac3d9';
-  $option->sort = -93;
+  $option->sort = -92;
   $option->label = 'e-lydbøger';
   $option->value = 'term.type="lydbog"';
   $option->expand = '0';
@@ -6763,7 +6787,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = 'c305d70d-2803-d4f4-3d03-82161b29cfe8';
   $option->v_uuid = '819ed112-ec85-8f64-2573-a5a88f7ac3d9';
-  $option->sort = -92;
+  $option->sort = -91;
   $option->label = 'e-lydbøger NOTA';
   $option->value = '(term.type="lydbog" and (fl="nota" or fl="blindebibliotek"))';
   $option->expand = '0';
@@ -6895,7 +6919,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = 'ca3b0cba-e9c6-5ee4-45b1-e67097be1ef5';
   $option->v_uuid = '819ed112-ec85-8f64-2573-a5a88f7ac3d9';
-  $option->sort = -98;
+  $option->sort = -97;
   $option->label = 'e-dokumenter';
   $option->value = 'term.type="netdokument"';
   $option->expand = '0';
@@ -7639,7 +7663,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = 'e34857a0-60fa-4e14-81be-3c010f5026db';
   $option->v_uuid = 'e1bf5870-5dec-51d4-a968-5a9c01b08d89';
-  $option->sort = -91;
+  $option->sort = -90;
   $option->label = 'skolematerialer';
   $option->value = 'ma="bs" or ka="s"';
   $option->expand = '0';
@@ -8011,7 +8035,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = 'f41b6a91-d6fd-4587-8f43-d3e084f5730c';
   $option->v_uuid = 'e1bf5870-5dec-51d4-a968-5a9c01b08d89';
-  $option->sort = -93;
+  $option->sort = -92;
   $option->label = 'billedbøger';
   $option->value = 'term.type="billedbog"';
   $option->expand = '0';
@@ -8215,7 +8239,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = 'fd68aaf3-4782-9aa4-e178-1ce51442eaa5';
   $option->v_uuid = '819ed112-ec85-8f64-2573-a5a88f7ac3d9';
-  $option->sort = -87;
+  $option->sort = -86;
   $option->label = 'film på nettet';
   $option->value = 'term.type="film"';
   $option->expand = '0';
@@ -8263,7 +8287,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = 'fe863004-ece4-4344-8de5-8f9599315686';
   $option->v_uuid = '819ed112-ec85-8f64-2573-a5a88f7ac3d9';
-  $option->sort = -97;
+  $option->sort = -96;
   $option->label = 'e-artikler';
   $option->value = 'term.type=("avisartikel" or "tidsskriftsartikel" or "artikel")';
   $option->expand = '0';
@@ -8275,7 +8299,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = 'fef19cdf-8e6c-4c31-b230-40c1087dd3be';
   $option->v_uuid = '819ed112-ec85-8f64-2573-a5a88f7ac3d9';
-  $option->sort = -91;
+  $option->sort = -90;
   $option->label = 'e-lydbøger eReolen';
   $option->value = 'term.acSource="netlydbog"';
   $option->expand = '0';
