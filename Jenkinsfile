@@ -84,11 +84,9 @@ pipeline {
         dir('docker/db') {
           sh """
             wget -P docker-entrypoint.d https://is.dbc.dk/view/Bibliotek.dk/job/dscrum-is-bibdk_dump_prod_db/lastSuccessfulBuild/artifact/bibdk_db.tar -o -
-            chown postgres:postgres docker-entrypoint.d
             cd docker-entrypoint.d
             tar -xf bibdk_db.tar
             find . -type f ! -iname "*.sql" -delete
-            chmod 775 *.sql
           """
           script {
             docker.build("${DOCKER_REPO}/${PRODUCT}-db-${BRANCH}:${currentBuild.number}")
