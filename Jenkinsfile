@@ -4,14 +4,8 @@ def DOCKER_REPO = "docker-dscrum.dbc.dk"
 def PRODUCT = 'bibliotek-dk'
 def BRANCH = BRANCH_NAME.replaceAll('feature/', '')
 
-// var for kubernetes
-def NAMESPACE = 'frontend-prod'
-
-def TARFILE
-// artifactory vars
+// artifactory buildname
 def BUILDNAME = 'Bibliotek-dk :: ' + BRANCH
-def ARTYSERVER = Artifactory.server 'arty'
-def ARTYDOCKER
 
 def DISTROPATH = "https://raw.github.com/DBCDK/bibdk/develop/distro.make"
 
