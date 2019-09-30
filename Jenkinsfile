@@ -2,7 +2,9 @@
 // general vars
 def DOCKER_REPO = "docker-dscrum.dbc.dk"
 def PRODUCT = 'bibliotek-dk'
-def BRANCH = BRANCH_NAME.replaceAll('feature/', '')
+def BRANCH
+BRANCH = BRANCH_NAME.replaceAll('feature/', '')
+BRANCH = BRANCH.replaceAll('_', '-')
 
 // artifactory buildname
 def BUILDNAME = 'Bibliotek-dk :: ' + BRANCH
@@ -35,7 +37,7 @@ pipeline {
         """
         // Drush Make
         sh """
-          drush make -v --working-copy --strict=0 --dbc-modules=$BRANCH --no-gitinfofile --contrib-destination=profiles/bibdk $DISTROPATH www
+          drush make -v --working-copy --strict=0 --dbc-modules=$BRANCH_NAME --no-gitinfofile --contrib-destination=profiles/bibdk $DISTROPATH www
         """
         // Building CSS
         dir('www/profiles/bibdk/themes/bibdk_theme/.npm') {
