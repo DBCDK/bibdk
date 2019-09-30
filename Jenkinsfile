@@ -2,7 +2,8 @@
 // general vars
 def DOCKER_REPO = "docker-dscrum.dbc.dk"
 def PRODUCT = 'bibliotek-dk'
-def BRANCH = BRANCH_NAME
+def BRANCH = BRANCH_NAME.replaceAll('feature/', '')
+
 // var for kubernetes
 def NAMESPACE = 'frontend-prod'
 
@@ -95,34 +96,34 @@ pipeline {
       steps {
         script {
           // we only push to artifactory if we are handling develop or master branch
-          if (BRANCH == 'master' || BRANCH == 'develop') {
-            def artyServer = Artifactory.server 'arty'
-            def artyDocker = Artifactory.docker server: artyServer, host: env.DOCKER_HOST
-            def buildInfo_db = Artifactory.newBuildInfo()
-            buildInfo_db.name = BUILDNAME
-            buildInfo_db = artyDocker.push("${DOCKER_REPO}/${PRODUCT}-db-${BRANCH}:${currentBuild.number}", 'docker-dscrum', buildInfo_db)
-            buildInfo_db.env.capture = true
-            buildInfo_db.env.collect()
+          //if (BRANCH == 'master' || BRANCH == 'develop') {
+          def artyServer = Artifactory.server 'arty'
+          def artyDocker = Artifactory.docker server: artyServer, host: env.DOCKER_HOST
+          def buildInfo_db = Artifactory.newBuildInfo()
+          buildInfo_db.name = BUILDNAME
+          buildInfo_db = artyDocker.push("${DOCKER_REPO}/${PRODUCT}-db-${BRANCH}:${currentBuild.number}", 'docker-dscrum', buildInfo_db)
+          buildInfo_db.env.capture = true
+          buildInfo_db.env.collect()
 
-            def buildInfo_www = Artifactory.newBuildInfo()
-            buildInfo_www.name = BUILDNAME
-            buildInfo_www = artyDocker.push("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:${currentBuild.number}", 'docker-dscrum', buildInfo_www)
+          def buildInfo_www = Artifactory.newBuildInfo()
+          buildInfo_www.name = BUILDNAME
+          buildInfo_www = artyDocker.push("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:${currentBuild.number}", 'docker-dscrum', buildInfo_www)
 
-            buildInfo_db.append buildInfo_www
+          buildInfo_db.append buildInfo_www
 
-            artyServer.publishBuildInfo buildInfo_db
+          artyServer.publishBuildInfo buildInfo_db
 
-            sh """
+          sh """
             	docker rmi ${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:${currentBuild.number}
             	docker rmi ${DOCKER_REPO}/${PRODUCT}-db-${BRANCH}:${currentBuild.number}
             """
-          }
+          // }
         }
       }
     }
   }
-  post{
-    always{
+  post {
+    always {
       sh """
       echo WORKSPACE: ${env.WORKSPACE}
       """
