@@ -1,4 +1,4 @@
-FROM docker.dbc.dk/dbc-apache-php7:no_php_ini
+FROM docker.dbc.dk/dbc-apache-php7
 MAINTAINER D-scrum <d-scrum@dbc.dk>
 
 # mailhost for exim4
@@ -40,7 +40,7 @@ ENV POSTGRES_DB=filestore \
     POSTGRES_USER=filestore \
     POSTGRES_PASSWORD=filestore \
     POSTGRES_HOST=bibliotek-dk-db-develop.frontend-features.svc.cloud.dbc.dk \
-    CONVENIENCY_NAME=.frontend-features.
+    NAMESPACE_NAME=frontend-features
 
 RUN apt-get update && \
 	apt-get -q -y install cron logrotate php-gd php-mbstring php-pear php-soap php-yaml php-dev rsyslog sudo wget exim4 postgresql-client && \
