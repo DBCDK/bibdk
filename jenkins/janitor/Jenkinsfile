@@ -41,7 +41,7 @@ pipeline {
       steps {
         unstash "deploys"
         script {
-          def fisk = readYaml file: "deploys.yml"
+          def fisk = readYaml file: "deploys.yaml"
           print(fisk)
         }
         checkout scm
