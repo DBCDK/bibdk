@@ -1,5 +1,7 @@
 #! groovy
 def NAMESPACE = 'frontend-features'
+def DEPLOYS
+def GITREPOS
 
 pipeline {
   agent {
@@ -25,19 +27,26 @@ pipeline {
 
       steps {
         script{
-          def deploys
-          def gitrepos
-          withCredentials([file(credentialsId: 'kubecert-frontend', variable: 'KUBECONFIG')]) {
-            deploys = sh(returnStdout: true, script: "kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' get deployments").trim()
-          }
-          print (deploys)
-          checkout scm
-          dir('jenkins/janitor') {
-            gitrepos = sh(returnStdout: true, script: "./parse_git_repos.sh".trim())
-          }
-          print (gitrepos)
 
+          withCredentials([file(credentialsId: 'kubecert-frontend', variable: 'KUBECONFIG')]) {
+            DEPLOYS = sh(returnStdout: true, script: "kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' get deployments").trim()
+          }
+          print (DEPLOYS)
         }
+      }
+    }
+    stage ('get repo list'){
+      agent {
+        node { label 'devel8-head' }
+      }
+      steps{
+        checkout scm
+        dir('jenkins/janitor') {
+          script {
+            GITREPOS = sh(returnStdout: true, script: "./parse_git_repos.sh".trim())
+          }
+        }
+        print (GITREPOS)
       }
     }
   }
