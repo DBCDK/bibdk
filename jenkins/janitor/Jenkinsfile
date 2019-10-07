@@ -40,8 +40,10 @@ pipeline {
       }
       steps {
         unstash "deploys"
-        def fisk = readYaml file: "deploys.yml"
-        print(fisk)
+        script {
+          def fisk = readYaml file: "deploys.yml"
+          print(fisk)
+        }
         checkout scm
         script {
           dir('jenkins/janitor') {
