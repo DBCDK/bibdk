@@ -31,6 +31,7 @@ pipeline {
             deploys = sh(returnStdout: true, script: "kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' get deployments").trim()
           }
           print (deploys)
+          checkout scm
           dir('jenkins/janitor') {
             gitrepos = sh(returnStdout: true, script: "./parse_git_repos".trim())
           }
