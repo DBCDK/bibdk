@@ -47,9 +47,9 @@ pipeline {
           dir('jenkins/janitor') {
 
             GITREPOS = sh(returnStdout: true, script: "./parse_git_repos.sh".trim())
-            def fisk = GITREPOS.split(' ')
+            def hest = GITREPOS.split(' ')
 
-            for (String item : fisk) {
+            for (String item : hest) {
               print("FISK")
               println item
             }
