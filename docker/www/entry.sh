@@ -82,7 +82,7 @@ MAILCONF=/etc/exim4/update-exim4.conf.conf
   # NAMESPACE_NAME
   sed -i "s/frontend-staging/$NAMESPACE_NAME/" $SETTINGS
   # MEMCACHE_SERVER
-  sed -i "s/@MEMCACHE_SERVER@/$MEMCACHE_SERVER/g" $SETTINGS
+  sed -i "s/@MEMCACHE_SERVER@/$MEMCACHE_SERVER/" $SETTINGS
 
 
 
