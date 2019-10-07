@@ -25,11 +25,15 @@ pipeline {
 
       steps {
         script{
-          def deploys;
+          def deploys
+          def gitrepos
           withCredentials([file(credentialsId: 'kubecert-frontend', variable: 'KUBECONFIG')]) {
             deploys = sh(returnStdout: true, script: "kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' get deployments").trim()
           }
           print (deploys)
+          gitrepos = sh(returnStdout: true, script: "./parse_git_repos".trim())
+          print (gitrepos)
+
         }
       }
     }

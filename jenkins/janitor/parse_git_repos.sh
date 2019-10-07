@@ -17,14 +17,10 @@ do
 if is_feature $word
 then
 featurename=$(echo $word | cut -d/ -f4)
-features=("${features[@]}" ${featurename/_/-})
+features=("${features[@]}" ${featurename//_/-})
 fi
 done
-echo ${features[2]}
-}
-
-get_kubelist(){
-
+echo ${features[@]}
 }
 
 get_revlist
