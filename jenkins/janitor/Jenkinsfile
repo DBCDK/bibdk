@@ -28,7 +28,7 @@ pipeline {
       steps {
         script{
           withCredentials([file(credentialsId: 'kubecert-frontend', variable: 'KUBECONFIG')]) {
-            DEPLOYS = sh(returnStdout: true, script: "kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' get deployments").trim()
+            DEPLOYS = sh(returnStdout: true, script: "kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' get deployments -o yaml").trim()
           }
           print (DEPLOYS)
         }
