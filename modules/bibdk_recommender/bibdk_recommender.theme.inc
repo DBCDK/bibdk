@@ -14,14 +14,14 @@ function template_preprocess_bibdk_recommender_item(&$variables) {
   $variables['attributes_array'] = array();
   $variables['title_attributes_array'] = array();
   $variables['content_attributes_array'] = array();
-  
+
   $image_style   = isset($variables['style']) ? $variables['style'] : 'thumbnail';
   $image_pid     = $variables['pid'];
   $image_creator = truncate_utf8($variables['creator'], 30, $wordsafe = TRUE, $add_ellipsis = TRUE, $min_wordsafe_length = 2);
   $image_title   = truncate_utf8($variables['title'], 40, $wordsafe = TRUE, $add_ellipsis = TRUE, $min_wordsafe_length = 2);
   $image_type    = $variables['work_type'];
   $image_alt     = isset($image_creator) ? $image_title . ' : ' . $image_creator : $image_title;
-  
+
   if ($image_type == 'other') {
     $image_type = 'none';
   }
@@ -40,12 +40,12 @@ function template_preprocess_bibdk_recommender_item(&$variables) {
       'data-style' => $image_style,
     ),
   );
-  
+
   // Determine if the local id is a known negative. If so, don't trigger javascript.
   if ( cache_get('open_moreinfo:thumbnailUrl:' . $image_pid, 'cache') ) {
     $image_markup['#attributes']['class'][] = 'bibdk-recommender-cover-processed';
   }
-  
+
   if (file_exists($file_path)) {
     // Don't trigger javascript if we have an image..
     $image_markup['#attributes']['class'][] = 'bibdk-recommender-cover-processed';
@@ -71,13 +71,22 @@ function template_preprocess_bibdk_recommender_item(&$variables) {
       ),
     );
   }
-  
-  $image_markup['material_biblio_wrapper'] = array(
-    'material_biblio_wrapper' => array(
-      '#type' => 'container',
-      '#attributes' => array(
-        'class' => array('bibdk-recommender-biblio-wrapper'),
+
+  // front cover image with link to search
+  $variables['elements']['#image'] = array(
+    '#type' => 'link',
+    '#title' => drupal_render($image_markup),
+    '#href' => 'work/' . $image_pid,
+    '#options' => array(
+      'html' => TRUE,
+      'attributes' => array(
+        'title' => t("Search for %work", array('%work' => $image_alt), array('context' => 'bibdk_recommender')),
+        'aria-title' => t("Search %work", array('%work' => $image_alt), array('context' => 'bibdk_recommender')),
       ),
+    ),
+  );
+
+  $variables['elements']['#biblio'] = array(
       'material_biblio' => array(
         '#type' => 'container',
         '#attributes' => array(
@@ -96,21 +105,6 @@ function template_preprocess_bibdk_recommender_item(&$variables) {
           '#value' => $image_creator,
         ),
       ),
-    )
-  );
-    
-  // front cover image with link to search
-  $variables['elements']['#image'] = array(
-    '#type' => 'link',
-    '#title' => drupal_render($image_markup),
-    '#href' => 'work/' . $image_pid,
-    '#options' => array(
-      'html' => TRUE,
-      'attributes' => array(
-        'title' => t("Search for %work", array('%work' => $image_alt), array('context' => 'bibdk_recommender')),
-        'aria-title' => t("Search %work", array('%work' => $image_alt), array('context' => 'bibdk_recommender')),
-      ),
-    ),
   );
 
 }
