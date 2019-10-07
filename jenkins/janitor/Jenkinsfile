@@ -33,7 +33,7 @@ pipeline {
           print (deploys)
           checkout scm
           dir('jenkins/janitor') {
-            gitrepos = sh(returnStdout: true, script: "./parse_git_repos".trim())
+            gitrepos = sh(returnStdout: true, script: "./parse_git_repos.sh".trim())
           }
           print (gitrepos)
 
