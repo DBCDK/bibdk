@@ -26,26 +26,30 @@ pipeline {
       }
 
       steps {
-        script{
+        script {
           withCredentials([file(credentialsId: 'kubecert-frontend', variable: 'KUBECONFIG')]) {
             DEPLOYS = sh(returnStdout: true, script: "kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' get deployments -o yaml").trim()
           }
-          print (DEPLOYS)
+          stash name: "deploys", file: "deploys.yaml"
         }
       }
     }
-    stage ('get repo list'){
+    stage('get repo list') {
       agent {
         node { label 'devel8-head' }
       }
-      steps{
+      steps {
         checkout scm
-        dir('jenkins/janitor') {
-          script {
+        script {
+          unstash "deploys"
+          def fisk = readYaml file: "deploys.yml"
+          print(fisk)
+          dir('jenkins/janitor') {
+
             GITREPOS = sh(returnStdout: true, script: "./parse_git_repos.sh".trim())
             def fisk = GITREPOS.split(' ')
 
-            for(String item: fisk) {
+            for (String item : fisk) {
               print("FISK")
               println item
             }
