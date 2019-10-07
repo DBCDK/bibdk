@@ -43,10 +43,13 @@ pipeline {
         dir('jenkins/janitor') {
           script {
             GITREPOS = sh(returnStdout: true, script: "./parse_git_repos.sh".trim())
+
+            for(String item: GITREPOS) {
+              print("FISK")
+              println item
+            }
           }
         }
-        print("FISK")
-        print (GITREPOS)
       }
     }
   }
