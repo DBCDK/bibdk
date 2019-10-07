@@ -4,6 +4,14 @@
  * Theme functions for Bibliotek.dk recommender
  */
 
+ function log_to_file($text, $header = null) {
+   $file = '/home/jgn/public/bibdk/profiles/bibdk/drupal_debug.txt';
+   $header = !empty($header) ? $header . ' -> ' : null;
+   $f = fopen($file, 'a');
+   fwrite($f, date('Ymd H:i:s - ') . $header . print_r($text, 1) . "\n");
+   fclose($f);
+ }
+
 /*
  * Preprocess function for bibdk_carousel_cover.
  */
@@ -15,7 +23,7 @@ function template_preprocess_bibdk_recommender_item(&$variables) {
   $variables['title_attributes_array'] = array();
   $variables['content_attributes_array'] = array();
 
-  $image_style   = isset($variables['style']) ? $variables['style'] : 'thumbnail';
+  $image_style   = isset($variables['style']) ? $variables['style'] : 'detail';
   $image_pid     = $variables['pid'];
   $image_creator = truncate_utf8($variables['creator'], 30, $wordsafe = TRUE, $add_ellipsis = TRUE, $min_wordsafe_length = 2);
   $image_title   = truncate_utf8($variables['title'], 40, $wordsafe = TRUE, $add_ellipsis = TRUE, $min_wordsafe_length = 2);
@@ -30,7 +38,6 @@ function template_preprocess_bibdk_recommender_item(&$variables) {
 
   // if there's a cover in the file system, we'll use it. Otherwise, we'll get it by AJAX
   $file_path = _bibdk_covers_object_path($image_pid, $image_style . 'Url');
-
   $image_markup = array(
     '#type' => 'container',
     '#attributes' => array(
@@ -45,14 +52,13 @@ function template_preprocess_bibdk_recommender_item(&$variables) {
   if ( cache_get('open_moreinfo:thumbnailUrl:' . $image_pid, 'cache') ) {
     $image_markup['#attributes']['class'][] = 'bibdk-recommender-cover-processed';
   }
-
   if (file_exists($file_path)) {
     // Don't trigger javascript if we have an image..
     $image_markup['#attributes']['class'][] = 'bibdk-recommender-cover-processed';
     $image_markup['image_exist'] = array(
       '#theme' => 'image_style',
       '#path' => $file_path,
-      '#style_name' => $image_style,
+      '#style_name' => 'large',
       '#alt' => $image_alt,
       '#attributes' => array(
         'title' => $image_alt,
