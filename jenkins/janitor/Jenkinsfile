@@ -45,6 +45,7 @@ pipeline {
             GITREPOS = sh(returnStdout: true, script: "./parse_git_repos.sh".trim())
           }
         }
+        print("FISK")
         print (GITREPOS)
       }
     }
