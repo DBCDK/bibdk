@@ -29,8 +29,9 @@ pipeline {
         script {
           withCredentials([file(credentialsId: 'kubecert-frontend', variable: 'KUBECONFIG')]) {
             DEPLOYS = sh(returnStdout: true, script: "kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' get deployments -o yaml").trim()
+            writeYaml file:"deploys.yml", data:DEPLOYS
           }
-          stash name: "deploys", file: "deploys.yaml"
+          stash name: "deploys", includes: "deploys.yml"
         }
       }
     }
@@ -41,7 +42,7 @@ pipeline {
       steps {
         unstash "deploys"
         script {
-          def fisk = readYaml file: "deploys.yaml"
+          def fisk = readYaml file: "deploys.yml"
           print(fisk)
         }
         checkout scm
