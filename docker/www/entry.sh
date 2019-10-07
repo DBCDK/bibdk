@@ -81,6 +81,10 @@ MAILCONF=/etc/exim4/update-exim4.conf.conf
   sed -i "s/'host' => '',/'host' => '$POSTGRES_HOST',/" $SETTINGS
   # NAMESPACE_NAME
   sed -i "s/frontend-staging/$NAMESPACE_NAME/" $SETTINGS
+  # MEMCACHE_SERVER
+  sed -i "s/@MEMCACHE_SERVER@/$MEMCACHE_SERVER/" $SETTINGS
+
+
 
 #	if [ -d '/data/log' ]; then
 #		echo "local0.* /data/log/watchdog.log" >> /etc/rsyslog.conf
