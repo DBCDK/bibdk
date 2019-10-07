@@ -17,10 +17,10 @@ do
 if is_feature $word
 then
 featurename=$(echo $word | cut -d/ -f4)
+echo featurename
 features=("${features[@]}" ${featurename//_/-})
 fi
 done
-echo ${features[@]}
 }
 
 get_revlist
