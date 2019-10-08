@@ -4,14 +4,6 @@
  * Theme functions for Bibliotek.dk recommender
  */
 
- function log_to_file($text, $header = null) {
-   $file = '/home/jgn/public/bibdk/profiles/bibdk/drupal_debug.txt';
-   $header = !empty($header) ? $header . ' -> ' : null;
-   $f = fopen($file, 'a');
-   fwrite($f, date('Ymd H:i:s - ') . $header . print_r($text, 1) . "\n");
-   fclose($f);
- }
-
 /*
  * Preprocess function for bibdk_carousel_cover.
  */
