@@ -325,3 +325,7 @@ projects[zabbix][patch][] = https://raw.githubusercontent.com/DBCDK/patches/mast
 projects[jquery_update][subdir] = contrib
 projects[jquery_update][type] = module
 projects[jquery_update][version] = 3.0-alpha2
+
+projects[me][subdir] = contrib
+projects[me][type] = module
+projects[me][version] = 1.5
