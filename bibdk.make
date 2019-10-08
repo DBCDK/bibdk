@@ -329,3 +329,7 @@ projects[jquery_update][version] = 3.0-alpha2
 projects[me][subdir] = contrib
 projects[me][type] = module
 projects[me][version] = 1.5
+
+projects[token][subdir] = contrib
+projects[token][type] = module
+projects[token][version] = 1.7
