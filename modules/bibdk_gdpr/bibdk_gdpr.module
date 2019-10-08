@@ -32,6 +32,25 @@ function bibdk_gdpr_menu() {
 }
 
 /**
+ * Implements HOOK_mypage_link().
+ *
+ * @return array
+ */
+function bibdk_gdpr_mypage_link() {
+
+  $items['user/%user/gdpr'] = array(
+    'title' => t('GDPR info'),
+    'description' => 'Status for user\'s gdpr information',
+    'page callback' => 'bibdk_gdpr_callback',
+    'access callback' => TRUE,
+    'access arguments' => 'user_edit_access',
+    'weight' => 40,
+  );
+
+  return $items;
+}
+
+/**
  * Implements hook_theme().
  */
 function bibdk_gdpr_theme() {
