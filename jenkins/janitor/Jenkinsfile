@@ -1,0 +1,64 @@
+#! groovy
+def NAMESPACE = 'frontend-features'
+def DEPLOYS
+def GITREPOS
+
+pipeline {
+  agent {
+    node { label 'devel8-head' }
+  }
+  options {
+    buildDiscarder(logRotator(artifactDaysToKeepStr: "", artifactNumToKeepStr: "", daysToKeepStr: "", numToKeepStr: "5"))
+    timestamps()
+    gitLabConnection('gitlab.dbc.dk')
+    // Limit concurrent builds to one pr. branch.
+    disableConcurrentBuilds()
+  }
+  stages {
+    stage('get deploy list') {
+      // use k8s-deploy-env docker agent - so we do not need to install kubectl
+      agent {
+        docker {
+          image "docker.dbc.dk/k8s-deploy-env:latest"
+          alwaysPull true
+          label "devel8-head"
+        }
+      }
+
+      steps {
+        script {
+          withCredentials([file(credentialsId: 'kubecert-frontend', variable: 'KUBECONFIG')]) {
+            DEPLOYS = sh(returnStdout: true, script: "kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' get deployments -o yaml").trim()
+            writeYaml file:"deploys.yml", data:DEPLOYS
+          }
+          stash name: "deploys", includes: "deploys.yml"
+        }
+      }
+    }
+    stage('get repo list') {
+      agent {
+        node { label 'devel8-head' }
+      }
+      steps {
+        unstash "deploys"
+        script {
+          def fisk = readYaml file: "deploys.yml"
+          print(fisk)
+        }
+        checkout scm
+        script {
+          dir('jenkins/janitor') {
+
+            GITREPOS = sh(returnStdout: true, script: "./parse_git_repos.sh".trim())
+            def hest = GITREPOS.split(' ')
+
+            for (String item : hest) {
+              print("FISK")
+              println item
+            }
+          }
+        }
+      }
+    }
+  }
+}
