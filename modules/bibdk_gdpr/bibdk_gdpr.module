@@ -1,5 +1,7 @@
 <?php
 
+include_once 'bibdk_gdpr.pages.inc';
+
 /**
  * Implements hook_menu().
  */
