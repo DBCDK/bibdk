@@ -44,8 +44,8 @@ function bibdk_gdpr_mypage_link() {
     'title' => t('GDPR info'),
     'description' => 'Status for user\'s gdpr information',
     'page callback' => 'bibdk_gdpr_callback',
-    'access callback' => TRUE,
-    'access arguments' => 'user_edit_access',
+    'access callback' => 'user_edit_access',
+    'access arguments'=> array(1),
     'weight' => 40,
   );
 
