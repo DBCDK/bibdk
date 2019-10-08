@@ -17,7 +17,7 @@ ENV AgencyRequest_url=http://openagency.addi.dk/2.35/ \
     bibdk_openorder_url=https://openorder.addi.dk/3.0 \
     bibdk_openorder_xsd_url=https://openorder.addi.dk/3.0?xsd=1 \
     bibdk_openquestion_url=https://openorder.addi.dk/3.0?xsd=1 \
-    bibdk_provider_webservice_url=http://openuserinfo-prod.mcp1-proxy.dbc.dk/server.php \
+    bibdk_provider_webservice_url=http://openuserinfo-prod.frontend-prod.svc.cloud.dbc.dk/server.php \
     bibdk_statsbib_url=https://webservice.statsbiblioteket.dk/ws-create-user1/CreateUser \
     openHoldingStatus_url=http://openholdingstatus.addi.dk/3.0.4/ \
     openHoldingStatus_xsd_url=http://openholdingstatus.addi.dk/3.0/openholdingstatus.xsd \
@@ -26,7 +26,7 @@ ENV AgencyRequest_url=http://openagency.addi.dk/2.35/ \
     openplatform_token_url=https://auth.dbc.dk/oauth/token \
     openplatform_url=https://openplatform.dbc.dk/v3/ \
     open_saou_url=https://saou.addi.dk/2.0/SaouWebService?wsdl \
-    openuserstatus_url=https://openuserstatus.addi.dk/1.6.1/ \
+    openuserstatus_url=https://openuserstatus.addi.dk/1.8/ \
     open_voxb_url=https://voxb.addi.dk/1.3.1/ \
     ting_infomedia_url=http://infomedia.mcp1-proxy.dbc.dk/server.php \
     ting_recommendation_url=http://openadhl.addi.dk/3.0/ \
