@@ -182,7 +182,7 @@ projects[node_export][version] = 3.0
 
 projects[admin_menu][subdir] = contrib
 projects[admin_menu][type] = module
-projects[admin_menu][version] = 3.0-rc4
+projects[admin_menu][version] = 3.0-rc6
 
 projects[advagg][subdir] = contrib
 projects[advagg][type] = module
@@ -194,7 +194,7 @@ projects[captcha][version] = 1.6
 
 projects[ctools][subdir] = contrib
 projects[ctools][type] = module
-projects[ctools][version] = 1.12
+projects[ctools][version] = 1.15
 projects[ctools][patch][] = https://raw.github.com/DBCDK/drush-features-export-page-variant/master/ctools-page_manager_load_task_handlers_alter.patch
 
 projects[date][subdir] = contrib
@@ -203,7 +203,7 @@ projects[date][version] = 2.10
 
 projects[entity][subdir] = contrib
 projects[entity][type] = module
-projects[entity][version] = 1.6
+projects[entity][version] = 1.9
 
 projects[eu-cookie-compliance][subdir] = contrib
 projects[eu-cookie-compliance][type] = module
@@ -232,7 +232,7 @@ projects[l10n_client][patch][] = https://raw.github.com/DBCDK/patches/master/dbc
 
 projects[l10n_update][subdir] = contrib
 projects[l10n_update][type] = module
-projects[l10n_update][version] = 1.0-beta3
+projects[l10n_update][version] = 1.2
 projects[l10n_update][patch][] = http://drupal.org/files/l10n_update-drush_l10n_update_specify_modules-1982580-3.patch
 
 projects[libraries][subdir] = contrib
@@ -297,12 +297,12 @@ projects[variable][version] = 2.5
 
 projects[views][subdir] = contrib
 projects[views][type] = module
-projects[views][version] = 3.21
+projects[views][version] = 3.23
 projects[views][patch][] = https://www.drupal.org/files/issues/2019-03-13/3039953-25.patch
 
 projects[virtual_field][subdir] = contrib
 projects[virtual_field][type] = module
-projects[virtual_field][version] = 1.0
+projects[virtual_field][version] = 1.2
 
 projects[wysiwyg][subdir] = contrib
 projects[wysiwyg][type] = module
@@ -324,4 +324,4 @@ projects[zabbix][patch][] = https://raw.githubusercontent.com/DBCDK/patches/mast
 
 projects[jquery_update][subdir] = contrib
 projects[jquery_update][type] = module
-projects[jquery_update][version] = 3.0-alpha2
+projects[jquery_update][version] = 3.0-alpha5
