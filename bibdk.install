@@ -172,8 +172,6 @@ function _bibdk_set_variables() {
   variable_set('configurable_timezones', 0);
   variable_set('ding_user_creds_lifetime', 7200);
   variable_set('cron_safe_threshold', 3600);
-  // override drupal_http_request
-  variable_set('chr_override_drupal_http_request', 1);
 }
 
 /**
@@ -635,11 +633,5 @@ function bibdk_update_7058() {
 /** enable bibdk_log_stdout  */
 function bibdk_update_7059(){
   $modules = array('bibdk_log_stdout');
-  module_enable($modules);
-}
-
-/** enable chr module  */
-function bibdk_update_7060(){
-  $modules = array('chr');
   module_enable($modules);
 }
