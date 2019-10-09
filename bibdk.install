@@ -629,3 +629,9 @@ function bibdk_update_7058() {
   $modules = array('bibdk_yaz');
   module_enable($modules);
 }
+
+/** enable bibdk_log_stdout  */
+function bibdk_update_7059(){
+  $modules = array('bibdk_log_stdout');
+  module_enable($modules);
+}
