@@ -298,7 +298,7 @@ projects[variable][version] = 2.5
 projects[views][subdir] = contrib
 projects[views][type] = module
 projects[views][version] = 3.23
-projects[views][patch][] = https://www.drupal.org/files/issues/2019-03-13/3039953-25.patch
+;projects[views][patch][] = https://www.drupal.org/files/issues/2019-03-13/3039953-25.patch
 
 projects[virtual_field][subdir] = contrib
 projects[virtual_field][type] = module
