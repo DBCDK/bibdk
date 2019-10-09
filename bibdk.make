@@ -163,6 +163,10 @@ projects[translatable][download][url] = git@github.com:DBCDK/translatable.git
 projects[translatable][download][tag] = 7.x-1.1
 
 ; --- Contrib modules ---
+projects[chr][type] = module
+projects[chr][subdir] = contrib
+projects[chr][version] = 1.9
+
 projects[ask_vopros][type] = module
 projects[ask_vopros][subdir] = contrib
 projects[ask_vopros][download][url] = https://github.com/Biblioteksvagten/ask_vopros.git
