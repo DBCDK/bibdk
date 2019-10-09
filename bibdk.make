@@ -232,7 +232,7 @@ projects[l10n_client][patch][] = https://raw.github.com/DBCDK/patches/master/dbc
 
 projects[l10n_update][subdir] = contrib
 projects[l10n_update][type] = module
-projects[l10n_update][version] = 1.2
+projects[l10n_update][version] = 1.0-beta3
 projects[l10n_update][patch][] = http://drupal.org/files/l10n_update-drush_l10n_update_specify_modules-1982580-3.patch
 
 projects[libraries][subdir] = contrib
