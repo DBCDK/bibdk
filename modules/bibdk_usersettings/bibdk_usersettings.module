@@ -61,7 +61,7 @@ function bibdk_usersettings_user_settings_form($form, $form_state) {
     ),
   );
 
-  if (empty($tabs)){
+  if (empty($tabs)) {
     $form['wrapper']['empty_default']['#markup'] = t('No settings can be set');
     return $form;
   }
@@ -141,7 +141,7 @@ function bibdk_usersettings_user_settings_form_submit($form, &$form_state) {
   if (user_is_logged_in()) {
     bibdk_usersettings_user_settings_set('bibdk_custom_search_start_expand_moved', 'found_yes');
   }
-  
+
   $groups = $form_state['values']['elements'];
   foreach($groups as $group) {
     foreach($group as $key => $value) {

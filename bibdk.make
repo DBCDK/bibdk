@@ -186,7 +186,7 @@ projects[admin_menu][version] = 3.0-rc4
 
 projects[advagg][subdir] = contrib
 projects[advagg][type] = module
-projects[advagg][version] = 2.7
+projects[advagg][version] = 2.33
 
 projects[captcha][subdir] = contrib
 projects[captcha][type] = module
