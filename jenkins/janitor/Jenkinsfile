@@ -43,13 +43,15 @@ pipeline {
         unstash "deploys"
         script {
           def fisk = readYaml file: "deploys.yml"
-          sh """
+          dir('jenkins/janitor') {
+            sh """
             virtualenv --system-site-packages venv
             . venv/bin/activate
             
             python fetch_git_branches.py -u https://github.com/DBCDK/bibdk
           """
-          //print(fisk)
+            //print(fisk)
+          }
         }
 //        checkout scm
 //        script {
