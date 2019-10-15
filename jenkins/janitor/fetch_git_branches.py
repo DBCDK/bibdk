@@ -12,6 +12,7 @@ def lsremote(url):
   g = git.cmd.Git()
   for ref in g.ls_remote(url).split('\n'):
     hash_ref_list = ref.split('\t')
+    print hash_ref_list[1]
     if hash_ref_list[1] != 'HEAD':
       remote_refs[hash_ref_list[1]] = hash_ref_list[0]
   return remote_refs
@@ -65,7 +66,7 @@ if __name__ == "__main__":
   vars = parse_args(sys.argv[1:])
   remotes = lsremote(vars['url'])
   branches = list_branches(remotes)
-  print(branches)
+  #print(branches)
 
 
 
