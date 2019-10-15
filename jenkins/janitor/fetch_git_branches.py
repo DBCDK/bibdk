@@ -5,8 +5,6 @@
 import git
 import sys
 import getopt
-import argparse
-import yaml
 
 # Fetch the remote repositories
 def lsremote(url):
@@ -14,7 +12,8 @@ def lsremote(url):
   g = git.cmd.Git()
   for ref in g.ls_remote(url).split('\n'):
     hash_ref_list = ref.split('\t')
-    remote_refs[hash_ref_list[1]] = hash_ref_list[0]
+    if hash_ref_list[1] != 'HEAD':
+      remote_refs[hash_ref_list[1]] = hash_ref_list[0]
   return remote_refs
 
 
