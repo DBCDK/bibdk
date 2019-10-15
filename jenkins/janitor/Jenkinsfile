@@ -43,20 +43,19 @@ pipeline {
         unstash "deploys"
         script {
           def fisk = readYaml file: "deploys.yml"
-          def deploys = fisk["kind"]["deploy"]
           print(fisk)
         }
-        checkout scm
-        script {
-          dir('jenkins/janitor') {
-            GITREPOS = sh(returnStdout: true, script: "./parse_git_repos.sh".trim())
-            def hest = GITREPOS.split(' ')
-            for (String item : hest) {
-              print("FISK")
-              println item
-            }
-          }
-        }
+//        checkout scm
+//        script {
+//          dir('jenkins/janitor') {
+//            GITREPOS = sh(returnStdout: true, script: "./parse_git_repos.sh".trim())
+//            def hest = GITREPOS.split(' ')
+//            for (String item : hest) {
+//              print("FISK")
+//              println item
+//            }
+//          }
+//        }
       }
     }
   }
