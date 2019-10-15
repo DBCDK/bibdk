@@ -61,6 +61,8 @@ MAILCONF=/etc/exim4/update-exim4.conf.conf
   sed -i 's/;opcache.max_accelerated_files=2000/opcache.max_accelerated_files=7963/' /etc/php/7.0/apache2/php.ini
   # revalidate frequence.
   sed -i 's/;opcache.revalidate_freq=2/opcache.revalidate_freq=0/' /etc/php/7.0/apache2/php.ini
+  # allow url include
+  sed -i 's/allow_url_include = Off/allow_url_include = On/' /etc/php/7.0/apache2/php.ini
 
   ### APACHE2.CONF FILE::::::
   # MaxKeepAliveRequests
