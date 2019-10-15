@@ -43,7 +43,12 @@ pipeline {
         unstash "deploys"
         script {
           def fisk = readYaml file: "deploys.yml"
-          print(fisk)
+          sh """
+            'virtualenv --system-site-packages venv'
+            . venv/bin/activate
+            python fetch_git_branches.py -u https://github.com/DBCDK/bibdk
+          """
+          //print(fisk)
         }
 //        checkout scm
 //        script {
