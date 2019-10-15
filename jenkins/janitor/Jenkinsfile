@@ -44,8 +44,9 @@ pipeline {
         script {
           def fisk = readYaml file: "deploys.yml"
           sh """
-            'virtualenv --system-site-packages venv'
+            virtualenv --system-site-packages venv
             . venv/bin/activate
+            
             python fetch_git_branches.py -u https://github.com/DBCDK/bibdk
           """
           //print(fisk)
