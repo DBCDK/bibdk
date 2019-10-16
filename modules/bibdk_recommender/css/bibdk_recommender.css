@@ -70,7 +70,7 @@
 }
 
 .bibdk-recommender-carousel .slide__content .bibdk-recommender-biblio span {
-  display: inline-block;
+  display: block;
 }
 
 .page-work .bibdk-recommender-carousel .bibdk-recommender-cover-placeholder {
