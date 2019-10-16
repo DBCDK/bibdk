@@ -28,6 +28,9 @@ pipeline {
       steps {
         script {
           withCredentials([file(credentialsId: 'kubecert-frontend', variable: 'KUBECONFIG')]) {
+            sh """
+            cp ${KUBECONFIG} fisk.txt
+            """
             DEPLOYS = sh(returnStdout: true, script: "kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' get deployments -o yaml").trim()
             writeYaml file:"deploys.yml", data:DEPLOYS
           }
@@ -42,22 +45,31 @@ pipeline {
       steps {
         unstash "deploys"
         script {
-          def fisk = readYaml file: "deploys.yml"
-          print(fisk)
-        }
-        checkout scm
-        script {
-          dir('jenkins/janitor') {
-
-            GITREPOS = sh(returnStdout: true, script: "./parse_git_repos.sh".trim())
-            def hest = GITREPOS.split(' ')
-
-            for (String item : hest) {
-              print("FISK")
-              println item
+          withCredentials([file(credentialsId: 'kubecert-frontend', variable: 'KUBECONFIG')]) {
+            def fisk = readYaml file: "deploys.yml"
+            dir('jenkins/janitor') {
+              sh """
+            virtualenv --system-site-packages venv
+            . venv/bin/activate
+            pip install kubernetes
+            
+            python fetch_git_branches.py -u https://github.com/DBCDK/bibdk -c ${KUBECONFIG}
+          """
+              //print(fisk)
             }
           }
         }
+//        checkout scm
+//        script {
+//          dir('jenkins/janitor') {
+//            GITREPOS = sh(returnStdout: true, script: "./parse_git_repos.sh".trim())
+//            def hest = GITREPOS.split(' ')
+//            for (String item : hest) {
+//              print("FISK")
+//              println item
+//            }
+//          }
+//        }
       }
     }
   }

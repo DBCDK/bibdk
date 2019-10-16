@@ -170,11 +170,11 @@ projects[ask_vopros][patch][] = https://raw.githubusercontent.com/DBCDK/patches/
 
 projects[elements][subdir] = contrib
 projects[elements][type] = module
-projects[elements][version] = 1.4
+projects[elements][version] = 1.5
 
 projects[uuid][subdir] = contrib
 projects[uuid][type] = module
-projects[uuid][version] = 1.0-alpha6
+projects[uuid][version] = 1.3
 
 projects[node_export][subdir] = contrib
 projects[node_export][type] = module
@@ -182,28 +182,28 @@ projects[node_export][version] = 3.0
 
 projects[admin_menu][subdir] = contrib
 projects[admin_menu][type] = module
-projects[admin_menu][version] = 3.0-rc4
+projects[admin_menu][version] = 3.0-rc6
 
 projects[advagg][subdir] = contrib
 projects[advagg][type] = module
-projects[advagg][version] = 2.7
+projects[advagg][version] = 2.33
 
 projects[captcha][subdir] = contrib
 projects[captcha][type] = module
-projects[captcha][version] = 1.0-beta2
+projects[captcha][version] = 1.6
 
 projects[ctools][subdir] = contrib
 projects[ctools][type] = module
-projects[ctools][version] = 1.12
+projects[ctools][version] = 1.15
 projects[ctools][patch][] = https://raw.github.com/DBCDK/drush-features-export-page-variant/master/ctools-page_manager_load_task_handlers_alter.patch
 
 projects[date][subdir] = contrib
 projects[date][type] = module
-projects[date][version] = 2.8
+projects[date][version] = 2.10
 
 projects[entity][subdir] = contrib
 projects[entity][type] = module
-projects[entity][version] = 1.6
+projects[entity][version] = 1.9
 
 projects[eu-cookie-compliance][subdir] = contrib
 projects[eu-cookie-compliance][type] = module
@@ -241,7 +241,7 @@ projects[libraries][version] = 2.1
 
 projects[memcache][subdir] = contrib
 projects[memcache][type] = module
-projects[memcache][version] = 1.0
+projects[memcache][version] = 1.6
 
 projects[menu_attributes][subdir] = contrib
 projects[menu_attributes][type] = module
@@ -281,11 +281,11 @@ projects[securepages][version] = 1.0-beta2
 
 projects[shortcode][subdir] = contrib
 projects[shortcode][type] = module
-projects[shortcode][version] = 2.1
+projects[shortcode][version] = 2.27
 
 projects[slick][subdir] = contrib
 projects[slick][type] = module
-projects[slick][version] = 2.0
+projects[slick][version] = 2.1
 
 projects[strongarm][subdir] = contrib
 projects[strongarm][type] = module
@@ -297,12 +297,12 @@ projects[variable][version] = 2.5
 
 projects[views][subdir] = contrib
 projects[views][type] = module
-projects[views][version] = 3.21
-projects[views][patch][] = https://www.drupal.org/files/issues/2019-03-13/3039953-25.patch
+projects[views][version] = 3.23
+;projects[views][patch][] = https://www.drupal.org/files/issues/2019-03-13/3039953-25.patch
 
 projects[virtual_field][subdir] = contrib
 projects[virtual_field][type] = module
-projects[virtual_field][version] = 1.0
+projects[virtual_field][version] = 1.2
 
 projects[wysiwyg][subdir] = contrib
 projects[wysiwyg][type] = module
@@ -315,7 +315,7 @@ projects[user_alert][patch][] = https://raw.githubusercontent.com/DBCDK/patches/
 
 projects[scheduler][subdir] = contrib
 projects[scheduler][type] = module
-projects[scheduler][version] = 1.3
+projects[scheduler][version] = 1.5
 
 projects[zabbix][subdir] = contrib
 projects[zabbix][type] = module
@@ -324,4 +324,4 @@ projects[zabbix][patch][] = https://raw.githubusercontent.com/DBCDK/patches/mast
 
 projects[jquery_update][subdir] = contrib
 projects[jquery_update][type] = module
-projects[jquery_update][version] = 3.0-alpha2
+projects[jquery_update][version] = 3.0-alpha5

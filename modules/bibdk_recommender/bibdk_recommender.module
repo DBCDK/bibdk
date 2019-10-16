@@ -149,7 +149,7 @@ function bibdk_recommender_carousel_markup(array $pids = array(), array $types =
   $items = array();
   $slick = array();
   $path = '/' . drupal_get_path('module', 'bibdk_recommender');
-  
+
   // simplified parameters
   $params = array(
     'like' => $pids,
@@ -186,7 +186,7 @@ function bibdk_recommender_carousel_markup(array $pids = array(), array $types =
       '#creator' => (!empty($val['creator'])) ? $val['creator'] : NULL,
       '#title' => (!empty($val['title'])) ? $val['title'] : NULL,
       '#work_type' => (!empty($val['workType'])) ? $val['workType'] : NULL,
-      '#style' => 'thumbnail',
+      '#style' => 'detail',
     );
   }
 
@@ -195,7 +195,7 @@ function bibdk_recommender_carousel_markup(array $pids = array(), array $types =
     'dots'           => FALSE,
     'infinite'       => TRUE,
     'autoplay'       => FALSE,
-    'slidesToShow'   => 6,
+    'slidesToShow'   => 5,
     'slidesToScroll' => 1,
     'autoplaySpeed'  => 8000,
     'speed'          => 300,
@@ -240,7 +240,7 @@ function bibdk_recommender_carousel_markup(array $pids = array(), array $types =
     ),
     'content' => $slick,
   );
-  
+
   // For behaviour log.
   foreach ($params as $key => $param) {
     if ($key == 'filters') {
@@ -253,7 +253,7 @@ function bibdk_recommender_carousel_markup(array $pids = array(), array $types =
   }
   $behaviour_data['recomole']['result'] = $ids;
   module_invoke_all('bibdk_behaviour_request', $behaviour_data);
-  
+
   return $wrapper;
 }
 

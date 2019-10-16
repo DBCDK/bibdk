@@ -42,6 +42,7 @@ function _bibdk_enable_modules() {
     'bibdk_heimdal',
     'bibdk_help',
     'bibdk_linkme',
+    'bibdk_log_stdout',
     'bibdk_openorder',
     'bibdk_provider',
     'bibdk_reservation',
@@ -626,5 +627,11 @@ function bibdk_update_7057() {
 /** Enabling the bibdk_yaz module */
 function bibdk_update_7058() {
   $modules = array('bibdk_yaz');
+  module_enable($modules);
+}
+
+/** enable bibdk_log_stdout  */
+function bibdk_update_7059(){
+  $modules = array('bibdk_log_stdout');
   module_enable($modules);
 }
