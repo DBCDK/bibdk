@@ -5,6 +5,8 @@
 import git
 import sys
 import getopt
+from kubernetes import client, config
+
 
 # Fetch the remote repositories
 def lsremote(url):
@@ -34,12 +36,21 @@ def list_branches(remotes):
 
   return normalized_branches
 
+def get_deploys(config):
+  config.load_kube_config(config_file='fisk.txt')
+  v1 = client.CoreV1Api()
+  print("Listing pods with their IPs:")
+  ret = v1.list_pod_for_all_namespaces(watch=False)
+  for i in ret.items:
+    print("%s\t%s\t%s" % (i.status.pod_ip, i.metadata.namespace, i.metadata.name))
+  return 'fisk'
+
 def parse_args(argv):
   deploy_vars = {
     'url': ''
   }
   try:
-    opts, args = getopt.getopt(argv, "u:")
+    opts, args = getopt.getopt(argv, "u:c:")
   except getopt.GetoptError:
     sys.exit(2)
 
@@ -47,6 +58,8 @@ def parse_args(argv):
   for opt, arg in opts:
     if opt == '-u':
       deploy_vars['url'] = arg
+    if opt == '-c':
+      deploy_vars['config'] = arg
 
   return deploy_vars
 
@@ -55,6 +68,7 @@ if __name__ == "__main__":
   vars = parse_args(sys.argv[1:])
   remotes = lsremote(vars['url'])
   branches = list_branches(remotes)
+  deploys = get_deploys(vars['config'])
   print(branches)
 
 

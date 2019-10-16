@@ -45,15 +45,18 @@ pipeline {
       steps {
         unstash "deploys"
         script {
-          def fisk = readYaml file: "deploys.yml"
-          dir('jenkins/janitor') {
-            sh """
+          withCredentials([file(credentialsId: 'kubecert-frontend', variable: 'KUBECONFIG')]) {
+            def fisk = readYaml file: "deploys.yml"
+            dir('jenkins/janitor') {
+              sh """
             virtualenv --system-site-packages venv
             . venv/bin/activate
+            pip install kubernetes
             
-            python fetch_git_branches.py -u https://github.com/DBCDK/bibdk
+            python fetch_git_branches.py -u https://github.com/DBCDK/bibdk -c ${KUBECONFIG}
           """
-            //print(fisk)
+              //print(fisk)
+            }
           }
         }
 //        checkout scm
