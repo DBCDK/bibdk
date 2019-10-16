@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * bibliotek_dk_carousel_settings.strongarm.inc
@@ -18,7 +19,7 @@ function bibliotek_dk_carousel_settings_strongarm() {
     0 => array(
       'title' => 'Skønlitteratur',
       'subtitle' => 'Skønlitteratur for voksne',
-      'query' => 'dkcclterm.sf=v and dkcclterm.uu=nt and term.literaryForm=fiktion and (term.type=bog) not (term.type=skrift)',
+      'query' => 'sf=v and uu=nt and term.literaryForm=fiktion and (term.type=bog) not (term.type=skrift) not ma=di',
       'period' => '3',
       'offset' => '4',
     ),
@@ -32,46 +33,53 @@ function bibliotek_dk_carousel_settings_strongarm() {
     2 => array(
       'title' => 'Film',
       'subtitle' => 'Spillefilm for voksne (ikke det samme som voksenfilm :))',
-      'query' => '(term.type=dvd) and dkcclterm.cl=77.7',
+      'query' => '(term.type=dvd) and dkcclterm.cl=77.7 not term.genre=tv-serier',
       'period' => '10',
       'offset' => '5',
     ),
     3 => array(
+      'title' => 'TV-serier',
+      'subtitle' => '',
+      'query' => 'term.genre=tv-serier',
+      'period' => '10',
+      'offset' => '5',
+    ),
+    4 => array(
       'title' => 'Musik',
       'subtitle' => 'musik for voksne',
       'query' => '(term.type=musik or term.workType=music) and dkcclterm.sf=v',
       'period' => '2',
       'offset' => '3',
     ),
-    4 => array(
+    5 => array(
       'title' => 'Spil',
       'subtitle' => 'spil for voksne',
       'query' => '(term.workType=game) and dkcclterm.sf=v',
       'period' => '12',
       'offset' => '8',
     ),
-    5 => array(
+    6 => array(
       'title' => 'Børnebøger',
       'subtitle' => 'bøger for børn',
       'query' => '(dkcclterm.sf=b or dkcclterm.sf=s) and dkcclterm.uu=nt and (term.type=bog)',
       'period' => '3',
       'offset' => '4',
     ),
-    6 => array(
+    7 => array(
       'title' => 'Børnefilm',
       'subtitle' => 'spillefilm for børn',
       'query' => '(term.type=dvd) and dkcclterm.cl=77.74',
       'period' => '12',
       'offset' => '8',
     ),
-    7 => array(
+    8 => array(
       'title' => 'Børnespil',
       'subtitle' => 'spil for børn ',
       'query' => '(term.workType=game) and dkcclterm.sf=b',
       'period' => '12',
       'offset' => '8',
     ),
-    8 => array(
+    9 => array(
       'title' => 'Børnemusik',
       'subtitle' => 'musik for børn',
       'query' => '(term.type=musik or term.workType=music) and dkcclterm.sf=b',
