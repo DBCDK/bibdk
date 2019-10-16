@@ -5,9 +5,9 @@
 */
 // ?>
 (function($) {
-  
+
   var BibdkRecommenderBehavior = {};
-  
+
   // Attach behaviour
   Drupal.behaviors.bibdkCarouselCovers = {
     attach: function(context) {
@@ -40,10 +40,10 @@
       recommendations.push($(this).find('.bibdk-recommender-cover-placeholder').attr('data-pid'));
     });
     BibdkRecommenderBehavior.result = recommendations;
-    
+
     var url = Drupal.settings.basePath + Drupal.settings.pathPrefix + 'bibdk/behaviour/recommender/';
-    
-    // navigator.sendBeacon is a new method that solves the problem of sending data to server on document unload. 
+
+    // navigator.sendBeacon is a new method that solves the problem of sending data to server on document unload.
     // Data is transmitted asynchronously without affecting loading performance of the next page
     // There are browser compatibilty issues: Firefox, Chrome, Opera & Edge support it. Safari and IE don't support it.
     if (navigator.sendBeacon) {
@@ -60,7 +60,7 @@
       });
     }
   };
-  
+
   // Retrieve Recommender images
   Drupal.getBibdkCarouselCovers = function(elem) {
     pid   = elem.attr("data-pid");
@@ -87,7 +87,7 @@
     if (coverData === false) {
       return;
     }
-    var style = "thumbnail";
+    var style = "detail";
     if (coverData["imageStyle"] !== false) {
       style = coverData["imageStyle"];
       delete coverData["imageStyle"];
@@ -102,5 +102,5 @@
       }
     });
   };
-  
+
 } (jQuery));
