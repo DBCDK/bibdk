@@ -12,7 +12,6 @@ def lsremote(url):
   g = git.cmd.Git()
   for ref in g.ls_remote(url).split('\n'):
     hash_ref_list = ref.split('\t')
-    print hash_ref_list[1]
     if hash_ref_list[1] != 'HEAD':
       if hash_ref_list[1].startswith('refs/heads') :
         remote_refs[hash_ref_list[1]] = hash_ref_list[0]
@@ -36,17 +35,6 @@ def list_branches(remotes):
   return normalized_branches
 
 def parse_args(argv):
-  """
-      for now we take 5 arguments :
-          -n, the namespace
-          -i, the docker image tagname
-          -a, the name of the app
-          -o, the file we are opening
-          -s, the file we are saving
-      :param argv:
-      :return:
-  """
-
   deploy_vars = {
     'url': ''
   }
