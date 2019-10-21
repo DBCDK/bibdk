@@ -68,7 +68,7 @@ if __name__ == "__main__":
   vars = parse_args(sys.argv[1:])
   remotes = lsremote(vars['url'])
   branches = list_branches(remotes)
-  deploys = get_deploys(vars['config'])
+  deploys = get_deploys()
   print(branches)
 
 
