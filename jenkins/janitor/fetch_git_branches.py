@@ -36,7 +36,7 @@ def list_branches(remotes):
 
   return normalized_branches
 
-def get_deploys(config):
+def get_deploys():
   config.load_kube_config(config_file='fisk.txt')
   v1 = client.CoreV1Api()
   print("Listing pods with their IPs:")
