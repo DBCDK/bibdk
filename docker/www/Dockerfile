@@ -51,7 +51,7 @@ RUN apt-get update && \
 	chmod +x drush.phar && \
 	mv drush.phar /usr/local/bin/drush && \
 	drush dl -y registry_rebuild-7.x-2.5 && \
-        pear install yaz
+        pecl install yaz
 
 COPY crontab /etc/crontab
 COPY data-vol /etc/logrotate.d
