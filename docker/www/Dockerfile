@@ -50,7 +50,8 @@ RUN apt-get update && \
 	php drush.phar core-status && \
 	chmod +x drush.phar && \
 	mv drush.phar /usr/local/bin/drush && \
-	drush dl -y registry_rebuild-7.x-2.5
+	drush dl -y registry_rebuild-7.x-2.5 && \
+        pear install yaz
 
 COPY crontab /etc/crontab
 COPY data-vol /etc/logrotate.d
@@ -66,13 +67,6 @@ COPY apache_security.conf /etc/apache2/conf-enabled/
 COPY run-tests-jenkins.sh $APACHE_ROOT/scripts
 COPY run-tests-xunit.sh $APACHE_ROOT/scripts
 COPY update-exim4.conf.conf /etc/exim4/
-COPY yaz/yaz.ini /etc/php/7.0/apache2/conf.d/
-COPY yaz/yaz-1.2.3.tgz /tmp/
-
-RUN pear install /tmp/yaz-1.2.3.tgz && \
-    apt-get -q -y remove php-dev php-pear make && \
-    rm -rf /var/lib/apt/lists/* && \
-    apt-get autoremove -y
 
 RUN mkdir -p $APACHE_ROOT/private && \
 	sudo chown www-data:www-data $APACHE_ROOT/private && \
