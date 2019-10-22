@@ -46,7 +46,7 @@ COPY yaz.list /etc/apt/sources.list.d/
 RUN wget http://ftp.indexdata.dk/debian/indexdata.asc && apt-key add indexdata.asc
 
 RUN apt-get update && \
-  apt-get -q -y --allow-unauthenticated install cron logrotate php-gd php-pear make php-soap php-yaml php-dev rsyslog sudo wget exim4 postgresql-client yaz libyaz5-dev && \
+  apt-get -q -y install cron logrotate php-gd php-pear make php-soap php-yaml php-dev rsyslog sudo wget exim4 postgresql-client yaz libyaz5-dev && \
   pecl channel-update pecl.php.net && \
   pecl install yaz && \
 	rm -rf /var/lib/apt/lists/* && \
