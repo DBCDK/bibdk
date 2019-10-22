@@ -67,11 +67,13 @@ COPY apache_security.conf /etc/apache2/conf-enabled/
 COPY run-tests-jenkins.sh $APACHE_ROOT/scripts
 COPY run-tests-xunit.sh $APACHE_ROOT/scripts
 COPY update-exim4.conf.conf /etc/exim4/
+COPY 20-yaz.ini /etc/php/7.0/apache2/conf.d/
 
 RUN mkdir -p $APACHE_ROOT/private && \
 	sudo chown www-data:www-data $APACHE_ROOT/private && \
 	chmod 755 /entry.sh && \
 	chmod 755 /healthcheck.sh && \
+        chmod 777 /etc/php/7.0/apache2/conf.d/20-yaz.ini && \
 	a2enmod rewrite && \
 	a2enmod headers && \
 	a2enconf fqdn && \
