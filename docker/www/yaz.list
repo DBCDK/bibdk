@@ -1,2 +1,2 @@
-deb http://ftp.indexdata.dk/debian stretch restricted
-deb-src http://ftp.indexdata.dk/debian stretch restricted
+deb http://ftp.indexdata.dk/debian jessie restricted
+deb-src http://ftp.indexdata.dk/debian jessie restricted
