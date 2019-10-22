@@ -42,7 +42,7 @@ ENV POSTGRES_DB=filestore \
     POSTGRES_HOST=bibliotek-dk-db-develop.frontend-features.svc.cloud.dbc.dk \
     NAMESPACE_NAME=frontend-features
 
-COPY yaz.list /etc/apt/
+COPY yaz.list /etc/apt/sources.list.d/
 
 RUN apt-get update && \
   apt-get -q -y install cron logrotate php-gd php-pear make php-soap php-yaml php-dev rsyslog sudo wget exim4 postgresql-client yaz libyaz5-dev && \
