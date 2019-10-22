@@ -45,7 +45,7 @@ ENV POSTGRES_DB=filestore \
 COPY yaz.list /etc/apt/
 
 RUN apt-get update && \
-  apt-get -q -y install cron logrotate php-gd php-pear make php-soap php-yaml php-dev rsyslog sudo wget exim4 postgresql-client yaz libyaz-dev && \
+  apt-get -q -y install cron logrotate php-gd php-pear make php-soap php-yaml php-dev rsyslog sudo wget exim4 postgresql-client yaz libyaz5-dev && \
   pecl channel-update pecl.php.net && \
   pecl install yaz && \
 	rm -rf /var/lib/apt/lists/* && \
