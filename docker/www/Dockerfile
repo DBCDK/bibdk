@@ -42,8 +42,8 @@ ENV POSTGRES_DB=filestore \
     POSTGRES_HOST=bibliotek-dk-db-develop.frontend-features.svc.cloud.dbc.dk \
     NAMESPACE_NAME=frontend-features
 
-RUN apt-get update && \
-	apt-get -q -y install cron logrotate php-gd php-mbstring php-pear make php-soap php-yaml php-dev rsyslog sudo wget exim4 postgresql-client yaz && \
+RUN apt-get update
+RUN apt-get -q -y install cron logrotate php-gd php-mbstring php-pear make php-soap php-yaml php-dev rsyslog sudo wget exim4 postgresql-client yaz && \
 	rm -rf /var/lib/apt/lists/* && \
 	apt-get autoremove -y && \
 	wget -q https://github.com/drush-ops/drush/releases/download/8.2.3/drush.phar && \
