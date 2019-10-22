@@ -219,7 +219,7 @@ projects[features_extra][version] = 1.0
 
 projects[i18n][subdir] = contrib
 projects[i18n][type] = module
-projects[i18n][version] = 1.12
+projects[i18n][version] = 1.26
 
 projects[ie6nomore][subdir] = contrib
 projects[ie6nomore][type] = module
@@ -227,7 +227,7 @@ projects[ie6nomore][version] = 1.0-beta4
 
 projects[l10n_client][subdir] = contrib
 projects[l10n_client][type] = module
-projects[l10n_client][version] = 1.1
+projects[l10n_client][version] = 1.3
 projects[l10n_client][patch][] = https://raw.github.com/DBCDK/patches/master/dbc_l10n_client/dbc_l10n_client_patch.patch
 
 projects[l10n_update][subdir] = contrib
@@ -237,7 +237,7 @@ projects[l10n_update][version] = 2.3
 
 projects[libraries][subdir] = contrib
 projects[libraries][type] = module
-projects[libraries][version] = 2.1
+projects[libraries][version] = 2.5
 
 projects[memcache][subdir] = contrib
 projects[memcache][type] = module
