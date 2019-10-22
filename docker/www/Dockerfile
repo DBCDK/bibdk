@@ -42,8 +42,10 @@ ENV POSTGRES_DB=filestore \
     POSTGRES_HOST=bibliotek-dk-db-develop.frontend-features.svc.cloud.dbc.dk \
     NAMESPACE_NAME=frontend-features
 
-COPY yaz.list /etc/apt/sources.list.d/
+RUN apt-get update && \
+  apt-get -q -y install wget
 RUN wget http://ftp.indexdata.dk/debian/indexdata.asc && apt-key add indexdata.asc
+COPY yaz.list /etc/apt/sources.list.d/
 
 RUN apt-get update && \
   apt-get -q -y install cron logrotate php-gd php-pear make wget php-soap php-yaml php-dev rsyslog sudo wget exim4 postgresql-client yaz libyaz5-dev && \
