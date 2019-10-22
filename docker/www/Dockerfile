@@ -43,7 +43,7 @@ ENV POSTGRES_DB=filestore \
     NAMESPACE_NAME=frontend-features
 
 RUN apt-get update && \
-  apt-get -q -y install cron logrotate php-gd php-pear make php-soap php-yaml php-dev rsyslog sudo wget exim4 postgresql-client yaz sudo apt-get install yaz && \
+  apt-get -q -y install cron logrotate php-gd php-pear make php-soap php-yaml php-dev rsyslog sudo wget exim4 postgresql-client yaz && \
   pecl install yaz && \
 	rm -rf /var/lib/apt/lists/* && \
 	apt-get autoremove -y && \
