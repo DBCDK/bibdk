@@ -43,16 +43,17 @@ ENV POSTGRES_DB=filestore \
     NAMESPACE_NAME=frontend-features
 
 RUN apt-get update && \
-	apt-get -q -y install cron logrotate php-gd php-mbstring php-pear make php-soap php-yaml php-dev rsyslog sudo wget exim4 postgresql-client yaz libyaz4-dev && \
+	apt-get -q -y install cron logrotate php-gd php-mbstring php-pear  php-soap php-yaml php-dev rsyslog sudo wget exim4 postgresql-client yaz && \
 	rm -rf /var/lib/apt/lists/* && \
 	apt-get autoremove -y && \
 	wget -q https://github.com/drush-ops/drush/releases/download/8.2.3/drush.phar && \
 	php drush.phar core-status && \
 	chmod +x drush.phar && \
 	mv drush.phar /usr/local/bin/drush && \
-	drush dl -y registry_rebuild-7.x-2.5 
-RUN pear install /tmp/yaz-1.2.3.tgz && \
-  apt-get -q -y remove php-dev php-pear make && \
+	drush dl -y registry_rebuild-7.x-2.5 && \
+	wget https://pecl.php.net/get/yaz-1.2.3.tgz && \
+  pecl install yaz-1.2.3.tgz && \
+  apt-get -q -y remove php-dev php-pear && \
   rm -rf /var/lib/apt/lists/* && \
   apt-get autoremove -y
 
