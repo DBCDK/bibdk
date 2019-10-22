@@ -103,6 +103,10 @@ projects[ting_openuserstatus][download][url] = git@github.com:DBCDK/ting_openuse
 projects[ting_openuserstatus][download][tag] = 7.x-0.2
 
 ; --- Bibliotek.dk ---
+projects[bibdk_yaz][type] = module
+projects[bibdk_yaz][download][type] = git
+projects[bibdk_yaz][download][url] = git@github.com:DBCDK/bibdk_yaz.git
+
 projects[microcurl][type] = module
 projects[microcurl][download][type] = git
 projects[microcurl][download][url] = git@github.com:DBCDK/microcurl.git
