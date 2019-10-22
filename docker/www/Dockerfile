@@ -50,7 +50,7 @@ RUN apt-get update && \
 	php drush.phar core-status && \
 	chmod +x drush.phar && \
 	mv drush.phar /usr/local/bin/drush && \
-	drush dl -y registry_rebuild-7.x-2.5 && \
+	drush dl -y registry_rebuild-7.x-2.5 
 RUN pear install /tmp/yaz-1.2.3.tgz && \
   apt-get -q -y remove php-dev php-pear make && \
   rm -rf /var/lib/apt/lists/* && \
