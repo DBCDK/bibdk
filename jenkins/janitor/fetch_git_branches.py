@@ -6,6 +6,10 @@ import git
 import sys
 import getopt
 from kubernetes import client, config
+import json
+import yaml
+
+
 
 
 # Fetch the remote repositories
@@ -37,13 +41,30 @@ def list_branches(remotes):
   return normalized_branches
 
 def get_deploys():
-  config.load_kube_config(config_file='fisk.txt')
-  v1 = client.CoreV1Api()
-  print("Listing pods with their IPs:")
-  ret = v1.list_pod_for_all_namespaces(watch=False)
-  for i in ret.items:
-    print("%s\t%s\t%s" % (i.status.pod_ip, i.metadata.namespace, i.metadata.name))
-  return 'fisk'
+  '''
+  hund = json.loads(open('kubeconfig.json').read())
+  hest = yaml.load(json.dumps(hund))
+
+  with open('kube_invalid.yaml', 'w') as f:
+    data = yaml.dump(hest, f, default_flow_style=False)
+  '''
+  conf = config.load_kube_config(config_file='kubeconfig.yaml')
+  api_instance = client.AppsV1beta1Api(client.ApiClient(conf))
+  api_response = api_instance.list_namespaced_deployment("frontend-features")
+
+  delete_me=[]
+  print(type(api_response))
+  for item in api_response.items:
+    name = item.metadata.name
+    if(name.startswith('bibliotek-dk')):
+      delete_me.append(name)
+
+  return delete_me
+
+def branch_name_from_deploy(deploy_name):
+  if deploy_name.startswith('bibliotek-dk-www-'):
+    branch_name = deploy_name.replace('bibliotek-dk-www-', '')
+    return branch_name
 
 def parse_args(argv):
   deploy_vars = {
@@ -63,13 +84,22 @@ def parse_args(argv):
 
   return deploy_vars
 
+def delete_on_kubernetes(deploy):
+  print(deploy)
+
 
 if __name__ == "__main__":
   vars = parse_args(sys.argv[1:])
   remotes = lsremote(vars['url'])
   branches = list_branches(remotes)
-  deploys = get_deploys()
   print(branches)
+  deploys = get_deploys()
+  for deploy in deploys:
+    branch_name = branch_name_from_deploy(deploy)
+    if branch_name and branch_name not in branches:
+      delete_on_kubernetes(deploy)
+
+
 
 
 
