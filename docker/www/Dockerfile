@@ -43,7 +43,7 @@ ENV POSTGRES_DB=filestore \
     NAMESPACE_NAME=frontend-features
 
 RUN apt-get update && \
-  apt-get -q -y install wget
+    apt-get -q -y install wget
 RUN wget http://ftp.indexdata.dk/debian/indexdata.asc && apt-key add indexdata.asc
 COPY yaz.list /etc/apt/sources.list.d/
 
@@ -51,13 +51,12 @@ RUN apt-get update && \
   apt-get -q -y install cron logrotate php-gd php-pear make wget php-soap php-yaml php-dev rsyslog sudo wget exim4 postgresql-client yaz libyaz5-dev && \
   pecl channel-update pecl.php.net && \
   pecl install yaz && \
-	rm -rf /var/lib/apt/lists/* && \
-	wget -q https://github.com/drush-ops/drush/releases/download/8.2.3/drush.phar && \
-	php drush.phar core-status && \
-	chmod +x drush.phar && \
-	mv drush.phar /usr/local/bin/drush && \
-	drush dl -y registry_rebuild-7.x-2.5 && \
-
+  rm -rf /var/lib/apt/lists/* && \
+  wget -q https://github.com/drush-ops/drush/releases/download/8.2.3/drush.phar && \
+  php drush.phar core-status && \
+  chmod +x drush.phar && \
+  mv drush.phar /usr/local/bin/drush && \
+  drush dl -y registry_rebuild-7.x-2.5 && \
   apt-get -q -y remove php-dev php-pear && \
   rm -rf /var/lib/apt/lists/* && \
   apt-get autoremove -y
