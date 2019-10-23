@@ -43,6 +43,7 @@ ENV POSTGRES_DB=filestore \
     NAMESPACE_NAME=frontend-features
 
 
+COPY indexdata.asc /
 RUN apt-key add indexdata.asc
 COPY yaz.list /etc/apt/sources.list.d/
 
