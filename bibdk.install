@@ -638,7 +638,7 @@ function bibdk_update_7060() {
 }
 
 /** Enabling the me contrib module */
-function bibdk_update_7059() {
+function bibdk_update_7061() {
   $modules = array('me', 'token');
   module_enable($modules);
 }
