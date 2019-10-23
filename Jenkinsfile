@@ -66,6 +66,13 @@ pipeline {
           sh """
           tar -xf www.tar
           """
+          // get pgp key to use debian packages from indexdata ( for installing yaz )
+          // see also yaz.list which is added in Dockerfile
+          // REMOVE when yaz is no longer used
+          sh """
+          wget http://ftp.indexdata.dk/debian/indexdata.asc
+          """
+
           script {
             docker.build("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:${currentBuild.number}")
           }
