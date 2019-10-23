@@ -338,8 +338,10 @@ function bibdk_frontend_menu_link_alter(&$item) {
  */
 function bibdk_frontend_exit() {
   $path = $_GET['q'];
-  if ((strpos($path, 'search/') === 0 || strpos($path, 'vejviser') === 0) || (strpos($path, 'user/') === 0 && $path != 'user/login' && $path != 'user/logout')) {
-    $_SESSION['referrer'] = $path . '?' . drupal_http_build_query($_GET);
+  if(function_exists('drupal_http_build_query')) {
+    if ((strpos($path, 'search/') === 0 || strpos($path, 'vejviser') === 0) || (strpos($path, 'user/') === 0 && $path != 'user/login' && $path != 'user/logout')) {
+      $_SESSION['referrer'] = $path . '?' . drupal_http_build_query($_GET);
+    }
   }
 }
 

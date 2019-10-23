@@ -42,15 +42,24 @@ ENV POSTGRES_DB=filestore \
     POSTGRES_HOST=bibliotek-dk-db-develop.frontend-features.svc.cloud.dbc.dk \
     NAMESPACE_NAME=frontend-features
 
+
+COPY indexdata.asc /
+RUN apt-key add indexdata.asc
+COPY yaz.list /etc/apt/sources.list.d/
+
 RUN apt-get update && \
-	apt-get -q -y install cron logrotate php-gd php-pear php-soap php-yaml php-dev rsyslog sudo wget exim4 postgresql-client && \
+  apt-get -q -y install cron logrotate php-gd php-pear make wget php-soap php-yaml php-dev rsyslog sudo wget exim4 postgresql-client yaz libyaz5-dev && \
+  pecl channel-update pecl.php.net && \
+  pecl install yaz && \
 	rm -rf /var/lib/apt/lists/* && \
-	apt-get autoremove -y && \
 	wget -q https://github.com/drush-ops/drush/releases/download/8.2.3/drush.phar && \
 	php drush.phar core-status && \
 	chmod +x drush.phar && \
 	mv drush.phar /usr/local/bin/drush && \
-	drush dl -y registry_rebuild-7.x-2.5
+	drush dl -y registry_rebuild-7.x-2.5 && \
+  apt-get -q -y remove php-dev php-pear && \
+  rm -rf /var/lib/apt/lists/* && \
+  apt-get autoremove -y
 
 COPY crontab /etc/crontab
 COPY data-vol /etc/logrotate.d
@@ -66,18 +75,13 @@ COPY apache_security.conf /etc/apache2/conf-enabled/
 COPY run-tests-jenkins.sh $APACHE_ROOT/scripts
 COPY run-tests-xunit.sh $APACHE_ROOT/scripts
 COPY update-exim4.conf.conf /etc/exim4/
-#COPY yaz/yaz.ini /etc/php/7.0/apache2/conf.d/
-#COPY yaz/yaz-1.2.3.tgz /tmp/
-
-#RUN pear install /tmp/yaz-1.2.3.tgz && \
-#    apt-get -q -y remove php-dev php-pear make && \
-#    rm -rf /var/lib/apt/lists/* && \
-#    apt-get autoremove -y
+COPY 20-yaz.ini /etc/php/7.0/apache2/conf.d/
 
 RUN mkdir -p $APACHE_ROOT/private && \
 	sudo chown www-data:www-data $APACHE_ROOT/private && \
 	chmod 755 /entry.sh && \
 	chmod 755 /healthcheck.sh && \
+  chmod 777 /etc/php/7.0/apache2/conf.d/20-yaz.ini && \
 	a2enmod rewrite && \
 	a2enmod headers && \
 	a2enconf fqdn && \
