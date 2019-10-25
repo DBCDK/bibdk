@@ -24,7 +24,7 @@ function bibdk_mypage_menu() {
  *
  * @return array
  */
-function bibdk_mypage_get_mypage_sidebar_links(){
+function bibdk_mypage_get_mypage_sidebar_links() {
   $items = module_invoke_all('mypage_link');
 
   foreach($items as &$item){
@@ -78,7 +78,9 @@ function bibdk_mypage_page() {
 /**
  * Collect a fieldset from each module that implement hook_bibdk_mypage_tabs.
  *
- * @param type $form
+ * @param $form
+ *
+ * @return mixed
  */
 function bibdk_mypage_form($form) {
 
@@ -88,13 +90,17 @@ function bibdk_mypage_form($form) {
   uasort($my_pages, 'drupal_sort_weight');
 
   foreach ($my_pages as $key => $my_page) {
-    $form[$key] = bibdk_my_page_customize_form_elements($my_page);
+    $form[$key] = bibdk_mypage_customize_form_elements($my_page);
   }
   return $form;
 }
 
-
-function bibdk_my_page_customize_form_elements($my_page) {
+/**
+ * @param $my_page
+ *
+ * @return array
+ */
+function bibdk_mypage_customize_form_elements($my_page) {
   $form = array(
     '#type' => 'fieldset',
     '#attributes' => array(
@@ -124,7 +130,7 @@ function bibdk_my_page_customize_form_elements($my_page) {
     $form['rows']['#attributes'] = $my_page['rows']['attributes'];
   }
 
-  if (is_Array($my_page['rows']['values'])) {
+  if (is_array($my_page['rows']['values'])) {
     foreach ($my_page['rows']['values'] as $values) {
       foreach ($values as $key => $val) {
         $row[$key] = array(
@@ -143,6 +149,13 @@ function bibdk_my_page_customize_form_elements($my_page) {
     $form['link'] = array(
       '#prefix' => '<span class="bibdk-mypage-link" >',
       '#suffix' => '</span>');
+
+    // If the ME module exists, we need to change the href so we hide the uid.
+    if (module_exists('me')) {
+      $my_page['link']['href'] = bibdk_mypage_modify_href(
+        $my_page['link']['href']
+      );
+    }
 
     $form['link']['link_profile2_tab'] = array(
       '#type' => 'link',
@@ -282,4 +295,29 @@ function bibdk_mypage_my_page_get_rows($max_rows) {
  * */
 function bibdk_mypage_user_help_list() {
   return array('account_mypage_help_key' => 'account_mypage_help_label');
+}
+
+/**
+ * Change the links for the user stuff. /user/5400/settings becomes /user/me/settings
+ *
+ * @param string $link
+ *
+ * @return string string
+ */
+function bibdk_mypage_modify_href($link) {
+
+  $new_link = "";
+
+  $alias = me_variable_get('me_alias');
+
+  if ($alias !== FALSE && strpos($link, "/") !== FALSE) {
+    $components = explode("/", $link);
+    // We only want to handle user links and unmodified links.
+    if ($components[0] === "user" && is_numeric($components[1])) {
+      $components[1] = $alias;
+      $new_link = implode("/", $components);
+    }
+  }
+
+  return (!empty($new_link)) ? $new_link : $link;
 }

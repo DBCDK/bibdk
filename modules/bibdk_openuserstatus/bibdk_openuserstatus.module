@@ -46,7 +46,7 @@ function bibdk_openuserstatus_menu() {
  *
  * @return array
  */
-function preview_openuserstatus(){
+function preview_openuserstatus() {
   $user_container['openuserstatus_info'] = array(
     '#type' => 'container',
     '#attached' => array('js' => array(drupal_get_path('module', 'bibdk_openuserstatus') . '/js/bibdk_openuserstatus_ajax.js'),

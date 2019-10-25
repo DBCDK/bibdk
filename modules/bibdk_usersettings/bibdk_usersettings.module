@@ -299,10 +299,12 @@ function bibdk_usersettings_get_cache($key) {
   return FALSE;
 }
 
-/** Set cache ($key,$data) in bin:cache_bibkd_usersettings
+/**
+ * Set cache ($key,$data) in bin:cache_bibkd_usersettings
  *
- * @param type $key
- * @param type $data
+ * @param $key
+ * @param $name
+ * @param $value
  */
 function bibdk_usersettings_set_cache($key, $name, $value) {
   $data = bibdk_usersettings_get_cache($key);
