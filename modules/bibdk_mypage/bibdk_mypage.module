@@ -299,6 +299,7 @@ function bibdk_mypage_user_help_list() {
 
 /**
  * Change the links for the user stuff. /user/5400/settings becomes /user/me/settings
+ * GDPR (and DDB) demands that we hide the user id.
  *
  * @param string $link
  *
