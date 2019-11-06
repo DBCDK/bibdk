@@ -147,9 +147,10 @@ function bibdk_sb_kopi_do_article_request($issn) {
 
   try {
     $micro = new MicroCURL(array());
+    $micro->set_proxy("dmzproxy.dbc.dk:3128");
   }
   catch (\MicroCURLException $e) {
-    watchdog('bibdk_sbkopi', 'sb kopi fejlede %message', array('%message' => $e->getMessage()));
+    watchdog('bibdk_sbkopi', 'sb kopi fejlede %message', array('%message' => $e->getMessage()), WATCHDOG_ERROR);
     return FALSE;
   }
 
