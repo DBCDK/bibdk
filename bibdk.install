@@ -66,6 +66,7 @@ function _bibdk_enable_modules() {
     'bibdk_autocomplete',
     'bibdk_facetbrowser',
     'bibdk_yaz',
+    'chr',
     'cql_strict_parser',
     'dbc_zabbix',
     'ting_openuserstatus',
@@ -632,5 +633,11 @@ function bibdk_update_7059(){
 /** Enabling the bibdk_yaz module */
 function bibdk_update_7060() {
   $modules = array('bibdk_yaz');
+  module_enable($modules);
+}
+
+/** Enabling the curl http request module */
+function bibdk_update_7061() {
+  $modules = array('chr');
   module_enable($modules);
 }
