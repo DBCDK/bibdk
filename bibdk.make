@@ -164,9 +164,6 @@ projects[translatable][download][url] = git@github.com:DBCDK/translatable.git
 projects[translatable][download][tag] = 7.x-1.1
 
 ; --- Contrib modules ---
-projects[chr][subdir] = contrib
-projects[chr][type] = module
-projects[chr][version] = 1.9
 
 projects[ask_vopros][type] = module
 projects[ask_vopros][subdir] = contrib
