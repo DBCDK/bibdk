@@ -62,15 +62,15 @@ MAILCONF=/etc/exim4/update-exim4.conf.conf
   # revalidate frequence.
   sed -i 's/;opcache.revalidate_freq=2/opcache.revalidate_freq=0/' /etc/php/7.0/apache2/php.ini
   # allow url include
-  sed -i 's/allow_url_include = Off/allow_url_include = On/' /etc/php/7.0/apache2/php.ini
+  # sed -i 's/allow_url_include = Off/allow_url_include = On/' /etc/php/7.0/apache2/php.ini
 
   ### APACHE2.CONF FILE::::::
   # MaxKeepAliveRequests
-  sed -i 's/MaxKeepAliveRequests 100/MaxKeepAliveRequests 500/' /etc/apache2/apache2.conf
+  # sed -i 's/MaxKeepAliveRequests 100/MaxKeepAliveRequests 500/' /etc/apache2/apache2.conf
   # KeepAliveTimeout
-  sed -i 's/KeepAliveTimeout 5/KeepAliveTimeout 3/' /etc/apache2/apache2.conf
+  # sed -i 's/KeepAliveTimeout 5/KeepAliveTimeout 3/' /etc/apache2/apache2.conf
   # KeepAlive
-  sed -i 's/KeepAlive On/KeepAlive Off/' /etc/apache2/apache2.conf
+  # sed -i 's/KeepAlive On/KeepAlive Off/' /etc/apache2/apache2.conf
 
   ### SETTINGS.PHP FILE::::::
   # POSTGRES_DB
