@@ -88,12 +88,12 @@ MAILCONF=/etc/exim4/update-exim4.conf.conf
 
 
 
-#	if [ -d '/data/log' ]; then
-#		echo "local0.* /data/log/watchdog.log" >> /etc/rsyslog.conf
-#		touch /data/log/watchdog.log
-#		chmod 644 /data/log/watchdog.log
-#	fi
-#	service rsyslog start
+	if [ -d '/data/log' ]; then
+		echo "local0.* /data/log/watchdog.log" >> /etc/rsyslog.conf
+		touch /data/log/watchdog.log
+		chmod 644 /data/log/watchdog.log
+	fi
+	service rsyslog start
 
 # Make a symbolic link to netpunkt modules - for simpletest to run.
 	/bin/sh -c "cd $APACHE_ROOT/sites/default && ln -sf $APACHE_ROOT/profiles/bibdk/modules"
