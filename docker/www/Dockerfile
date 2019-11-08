@@ -48,7 +48,7 @@ RUN apt-key add indexdata.asc
 COPY yaz.list /etc/apt/sources.list.d/
 
 RUN apt-get update && \
-  apt-get -q -y install cron logrotate php-gd php-pear wget php-soap php-yaml php-dev rsyslog sudo wget exim4 postgresql-client yaz libyaz5-dev && \
+  apt-get -q -y install cron logrotate php-gd php-pear wget php-soap php-yaml php-dev rsyslog sudo wget ssmtp postgresql-client yaz libyaz5-dev && \
   pecl channel-update pecl.php.net && \
   pecl install yaz && \
 	rm -rf /var/lib/apt/lists/* && \
@@ -74,7 +74,7 @@ ADD fqdn.conf /etc/apache2/conf-available
 COPY apache_security.conf /etc/apache2/conf-enabled/
 COPY run-tests-jenkins.sh $APACHE_ROOT/scripts
 COPY run-tests-xunit.sh $APACHE_ROOT/scripts
-COPY update-exim4.conf.conf /etc/exim4/
+COPY ssmtp.conf /etc/ssmtp/
 COPY 20-yaz.ini /etc/php/7.0/apache2/conf.d/
 
 RUN mkdir -p $APACHE_ROOT/private && \

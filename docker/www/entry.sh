@@ -50,7 +50,9 @@ MAILCONF=/etc/exim4/update-exim4.conf.conf
 	    sed -i "s|\$export\['${name}|\$strongarm->value = '${value}';\n    &|" $CONFIG
 	done < <(env)
 
-  ### OPCACHE IN PHP.INI FILE::::::
+  ### PHP.INI FILE::::::
+  # sendmail
+  sed -i 's/;sendmail_path =/sendmail_path = /usr/sbin/ssmtp -t' /etc/php/7.0/apache2/php.ini
   # Enable Opcache settings
   sed -i 's/;opcache\.enable=0/opcache\.enable=1/' /etc/php/7.0/apache2/php.ini
   # Memory consumption
