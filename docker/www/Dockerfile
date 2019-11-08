@@ -51,7 +51,6 @@ RUN apt-get update && \
   apt-get -q -y install cron logrotate php-gd php-pear make wget php-soap php-yaml php-dev rsyslog sudo wget exim4 postgresql-client yaz libyaz5-dev && \
   pecl channel-update pecl.php.net && \
   pecl install yaz && \
-	rm -rf /var/lib/apt/lists/* && \
 	wget -q https://github.com/drush-ops/drush/releases/download/8.2.3/drush.phar && \
 	php drush.phar core-status && \
 	chmod +x drush.phar && \
@@ -81,7 +80,7 @@ RUN mkdir -p $APACHE_ROOT/private && \
 	sudo chown www-data:www-data $APACHE_ROOT/private && \
 	chmod 755 /entry.sh && \
 	chmod 755 /healthcheck.sh && \
-        chmod 777 /etc/php/7.0/apache2/conf.d/20-yaz.ini && \
+	chmod 777 /etc/php/7.0/apache2/conf.d/20-yaz.ini && \
 	a2enmod rewrite && \
 	a2enmod headers && \
 	a2enconf fqdn && \
