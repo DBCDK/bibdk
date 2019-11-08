@@ -48,7 +48,7 @@ RUN apt-key add indexdata.asc
 COPY yaz.list /etc/apt/sources.list.d/
 
 RUN apt-get update && \
-  apt-get -q -y install cron logrotate php-gd php-pear make wget php-soap php-yaml php-dev rsyslog sudo wget exim4 postgresql-client yaz libyaz5-dev && \
+  apt-get -q -y install cron logrotate php-gd php-pear wget php-soap php-yaml php-dev rsyslog sudo wget exim4 postgresql-client yaz libyaz5-dev && \
   pecl channel-update pecl.php.net && \
   pecl install yaz && \
 	rm -rf /var/lib/apt/lists/* && \
@@ -85,8 +85,6 @@ RUN mkdir -p $APACHE_ROOT/private && \
 	a2enmod rewrite && \
 	a2enmod headers && \
 	a2enconf fqdn && \
-	mkdir /data && \
-	sudo chown www-data:www-data /data && \
 	update-exim4.conf
 
 EXPOSE 80

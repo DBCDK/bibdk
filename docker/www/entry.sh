@@ -86,13 +86,6 @@ MAILCONF=/etc/exim4/update-exim4.conf.conf
   # MEMCACHE_SERVER
   sed -i "s/@MEMCACHE_SERVER@/$MEMCACHE_SERVER/" $SETTINGS
 
-
-
-	if [ -d '/data/log' ]; then
-		echo "local0.* /data/log/watchdog.log" >> /etc/rsyslog.conf
-		touch /data/log/watchdog.log
-		chmod 644 /data/log/watchdog.log
-	fi
 	service rsyslog start
 
 # Make a symbolic link to netpunkt modules - for simpletest to run.
