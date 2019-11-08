@@ -33,10 +33,6 @@ if [ "$1" == '' ]; then
 #		rm -rf /var/log/apache2
 #		ln -s /data/log /var/log/apache2
 #	fi
-# set mailhost
-MAILCONF=/etc/exim4/update-exim4.conf.conf
-	sed -i "s/mailhost\.dbc\.dk/$smarthost/" $MAILCONF
-
 	# Prepare Drupal
 # location of settings.php
 	SETTINGS=/var/www/html/sites/default/settings.php
