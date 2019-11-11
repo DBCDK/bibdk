@@ -14,7 +14,3 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 52 6    1 * *   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.monthly )
 
 5 *  * * *   root    cd /var/www/html && drush core-cron > /proc/1/fd/1 2>/proc/1/fd/2
-
-# The following job is to populate the develop and features sites. Made by LKH
-19 23 * * * root cd /var/www/html/sites/default && mkdir -p files/tar && tar zcvf ~/files_in_files_folder.tar.gz files/*.*
-23 23 * * * root cd ~ && mv files_in_files_folder.tar.gz /var/www/html/sites/default/files/tar

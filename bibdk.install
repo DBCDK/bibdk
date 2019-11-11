@@ -104,6 +104,8 @@ function _bibdk_enable_modules() {
     'shortcode',
     'ie6nomore',
     'uuid',
+    'me',
+    'token',
   );
 
   if (!module_enable($module_list)) {
@@ -632,5 +634,11 @@ function bibdk_update_7059(){
 /** Enabling the bibdk_yaz module */
 function bibdk_update_7060() {
   $modules = array('bibdk_yaz');
+  module_enable($modules);
+}
+
+/** Enabling the me contrib module */
+function bibdk_update_7061() {
+  $modules = array('me', 'token');
   module_enable($modules);
 }

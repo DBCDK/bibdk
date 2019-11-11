@@ -5,6 +5,11 @@
  * Implements hook_bibdk_mypage_tabs().
  */
 
+/**
+ * @param int $max_rows
+ *
+ * @return array
+ */
 function bibdk_searchhistory_bibdk_mypage_tabs($max_rows = 3) {
   global $user;
 
@@ -17,7 +22,7 @@ function bibdk_searchhistory_bibdk_mypage_tabs($max_rows = 3) {
   );
   $ret['bibdk_searchhistory']['weight'] = 15;
   $ret['bibdk_searchhistory']['help_text_key'] = 'search_history_mypage_help_key';
- 
+
   return $ret;
 }
 

@@ -17,7 +17,7 @@ ENV AgencyRequest_url=http://openagency.addi.dk/2.35/ \
     bibdk_openorder_url=https://openorder.addi.dk/3.0 \
     bibdk_openorder_xsd_url=https://openorder.addi.dk/3.0?xsd=1 \
     bibdk_openquestion_url=https://openorder.addi.dk/3.0?xsd=1 \
-    bibdk_provider_webservice_url=http://openuserinfo-prod.mcp1-proxy.dbc.dk/server.php \
+    bibdk_provider_webservice_url=http://openuserinfo-prod.frontend-prod.svc.cloud.dbc.dk/server.php \
     bibdk_statsbib_url=https://webservice.statsbiblioteket.dk/ws-create-user1/CreateUser \
     openHoldingStatus_url=http://openholdingstatus.addi.dk/3.0.4/ \
     openHoldingStatus_xsd_url=http://openholdingstatus.addi.dk/3.0/openholdingstatus.xsd \
@@ -26,7 +26,7 @@ ENV AgencyRequest_url=http://openagency.addi.dk/2.35/ \
     openplatform_token_url=https://auth.dbc.dk/oauth/token \
     openplatform_url=https://openplatform.dbc.dk/v3/ \
     open_saou_url=https://saou.addi.dk/2.0/SaouWebService?wsdl \
-    openuserstatus_url=https://openuserstatus.addi.dk/1.6.1/ \
+    openuserstatus_url=https://openuserstatus.addi.dk/1.9/ \
     open_voxb_url=https://voxb.addi.dk/1.3.1/ \
     ting_infomedia_url=http://infomedia.mcp1-proxy.dbc.dk/server.php \
     ting_recommendation_url=http://openadhl.addi.dk/3.0/ \
@@ -48,15 +48,15 @@ RUN apt-key add indexdata.asc
 COPY yaz.list /etc/apt/sources.list.d/
 
 RUN apt-get update && \
-  apt-get -q -y install cron logrotate php-gd php-pear make wget php-soap php-yaml php-dev rsyslog sudo wget exim4 postgresql-client yaz libyaz5-dev && \
+  apt-get -q -y install cron logrotate php-gd php-pear wget php-soap php-yaml php-dev rsyslog sudo wget ssmtp postgresql-client yaz libyaz5-dev && \
   pecl channel-update pecl.php.net && \
   pecl install yaz && \
-	rm -rf /var/lib/apt/lists/* && \
-	wget -q https://github.com/drush-ops/drush/releases/download/8.2.3/drush.phar && \
-	php drush.phar core-status && \
-	chmod +x drush.phar && \
-	mv drush.phar /usr/local/bin/drush && \
-	drush dl -y registry_rebuild-7.x-2.5 && \
+  rm -rf /var/lib/apt/lists/* && \
+  wget -q https://github.com/drush-ops/drush/releases/download/8.2.3/drush.phar && \
+  php drush.phar core-status && \
+  chmod +x drush.phar && \
+  mv drush.phar /usr/local/bin/drush && \
+  drush dl -y registry_rebuild-7.x-2.5 && \
   apt-get -q -y remove php-dev php-pear && \
   rm -rf /var/lib/apt/lists/* && \
   apt-get autoremove -y
@@ -74,20 +74,17 @@ ADD fqdn.conf /etc/apache2/conf-available
 COPY apache_security.conf /etc/apache2/conf-enabled/
 COPY run-tests-jenkins.sh $APACHE_ROOT/scripts
 COPY run-tests-xunit.sh $APACHE_ROOT/scripts
-COPY update-exim4.conf.conf /etc/exim4/
+COPY ssmtp.conf /etc/ssmtp/
 COPY 20-yaz.ini /etc/php/7.0/apache2/conf.d/
 
 RUN mkdir -p $APACHE_ROOT/private && \
-	sudo chown www-data:www-data $APACHE_ROOT/private && \
-	chmod 755 /entry.sh && \
-	chmod 755 /healthcheck.sh && \
-        chmod 777 /etc/php/7.0/apache2/conf.d/20-yaz.ini && \
-	a2enmod rewrite && \
-	a2enmod headers && \
-	a2enconf fqdn && \
-	mkdir /data && \
-	sudo chown www-data:www-data /data && \
-	update-exim4.conf
+  sudo chown www-data:www-data $APACHE_ROOT/private && \
+  chmod 755 /entry.sh && \
+  chmod 755 /healthcheck.sh && \
+  chmod 777 /etc/php/7.0/apache2/conf.d/20-yaz.ini && \
+  a2enmod rewrite && \
+  a2enmod headers && \
+  a2enconf fqdn
 
 EXPOSE 80
 

@@ -46,7 +46,7 @@ function bibdk_openuserstatus_menu() {
  *
  * @return array
  */
-function preview_openuserstatus(){
+function preview_openuserstatus() {
   $user_container['openuserstatus_info'] = array(
     '#type' => 'container',
     '#attached' => array('js' => array(drupal_get_path('module', 'bibdk_openuserstatus') . '/js/bibdk_openuserstatus_ajax.js'),
@@ -69,8 +69,8 @@ function bibdk_openuserstatus_mypage_link() {
     'title' => t('Userstatus'),
     'description' => 'Status for user\'s loans and reservations',
     'page callback' => 'preview_openuserstatus',
-    'access callback' => TRUE,
-    'access arguments' => 'user_edit_access',
+    'access callback' => 'user_edit_access',
+    'access arguments'=> array(1),
     'weight' => 10,
   );
 
