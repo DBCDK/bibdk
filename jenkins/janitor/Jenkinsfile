@@ -28,11 +28,11 @@ pipeline {
       steps {
         script {
           withCredentials([file(credentialsId: 'kubecert-frontend', variable: 'KUBECONFIG')]) {
-            dir('jenkins/janitor') {
-              sh """
-              cp ${KUBECONFIG} fisk.txt
-              """
-            }
+//            dir('jenkins/janitor') {
+//              sh """
+//              cp ${KUBECONFIG} fisk.txt
+//              """
+//            }
             DEPLOYS = sh(returnStdout: true, script: "kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' get deployments -o yaml").trim()
             writeYaml file:"deploys.yml", data:DEPLOYS
           }
