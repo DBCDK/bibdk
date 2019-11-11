@@ -64,11 +64,11 @@ if [ "$1" == '' ]; then
 
   ### APACHE2.CONF FILE::::::
   # MaxKeepAliveRequests
-  # sed -i 's/MaxKeepAliveRequests 100/MaxKeepAliveRequests 500/' /etc/apache2/apache2.conf
+  sed -i 's/MaxKeepAliveRequests 100/MaxKeepAliveRequests 500/' /etc/apache2/apache2.conf
   # KeepAliveTimeout
-  # sed -i 's/KeepAliveTimeout 5/KeepAliveTimeout 3/' /etc/apache2/apache2.conf
+  sed -i 's/KeepAliveTimeout 5/KeepAliveTimeout 3/' /etc/apache2/apache2.conf
   # KeepAlive
-  # sed -i 's/KeepAlive On/KeepAlive Off/' /etc/apache2/apache2.conf
+  sed -i 's/KeepAlive On/KeepAlive Off/' /etc/apache2/apache2.conf
 
   ### SETTINGS.PHP FILE::::::
   # POSTGRES_DB
