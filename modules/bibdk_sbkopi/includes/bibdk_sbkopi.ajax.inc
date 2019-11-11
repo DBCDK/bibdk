@@ -23,14 +23,14 @@ function bibdk_sbkopi_ajax_get_options() {
   drupal_exit();
 }
 
-  /**
-   * Make request to openorder to check asb delivery method
-   *
-   * @param $pid
-   * @param bool $reservation
-   *
-   * @return bool|array|string
-   */
+/**
+ * Make request to openorder to check asb delivery method
+ *
+ * @param $pid
+ * @param bool $reservation
+ *
+ * @return bool|array|string
+ */
 function bibdk_sbkopi_ajax_openorder_request($pid, $reservation = FALSE) {
   if ($delivery_method = bibdk_sbkopi_delivery_method($pid)) {
     return _bibdk_sb_kopi_get_link($pid);
@@ -53,10 +53,10 @@ function bibdk_sbkopi_delivery_method($pid) {
   $response = bibdk_sbkopi_do_marcxchangeRequest($pid);
   $issn = bibdk_sbkopi_parse_marcx($response);
 
-  if(!empty($issn)) {
+  if (!empty($issn)) {
     $xml = bibdk_sb_kopi_do_article_request($issn);
   }
-  else{
+  else {
     $xml = FALSE;
   }
 
@@ -102,12 +102,10 @@ function bibdk_sbkopi_do_marcxchangeRequest($pid) {
  *   empty string if nothing found- issn of element if found
  */
 function bibdk_sbkopi_parse_marcx($response) {
-  $xml = new SimpleXMLElement(
-    $response
-  );
+  $xml = new SimpleXMLElement($response);
 
   $namespaces = $xml->getNamespaces(TRUE);
-  foreach($namespaces AS $prefix => $namespace) {
+  foreach ($namespaces AS $prefix => $namespace) {
     $xml->registerXPathNamespace($prefix, $namespace);
   }
 
@@ -116,17 +114,15 @@ function bibdk_sbkopi_parse_marcx($response) {
     $obj = $xml->result->searchResult->collection->object;
     $record = $obj->children($namespaces['marcx'])->collection->record;
     if (!empty($record)) {
-      foreach($record->datafield AS $datafield) {
+      foreach ($record->datafield AS $datafield) {
         foreach ($datafield->attributes() AS $key => $value) {
           $tagv = $value->__toString();
           if ($key === "tag" && ($tagv === "022" || $tagv === "557")) {
-            foreach($datafield->subfield AS $subfield) {
-              if ($tagv === "022"
-                && $subfield->attributes()->code->__toString() === "a") {
+            foreach ($datafield->subfield AS $subfield) {
+              if ($tagv === "022" && $subfield->attributes()->code->__toString() === "a") {
                 $issn = $subfield->__toString();
               }
-              else if ($tagv === "557"
-                && $subfield->attributes()->code->__toString() === "z") {
+              else if ($tagv === "557" && $subfield->attributes()->code->__toString() === "z") {
                 $issn = $subfield->__toString();
               }
             }
@@ -151,18 +147,18 @@ function bibdk_sb_kopi_do_article_request($issn) {
 
   try {
     $micro = new MicroCURL(array());
-  } catch (\MicroCURLException $e) {
-    watchdog(
-      'bibdk_sbkopi',
-      'sb kopi fejlede %message',
-      array('%message' => $e->getMessage())
-    );
+    $micro->set_proxy("dmzproxy.dbc.dk:3128");
+  }
+  catch (\MicroCURLException $e) {
+    watchdog('bibdk_sbkopi', 'sb kopi fejlede %message', array('%message' => $e->getMessage()), WATCHDOG_ERROR);
     return FALSE;
   }
 
   if ($content = $micro->get($url)) {
     return simplexml_load_string($content);
   }
+
+  watchdog('bibdk_sbkopi', 'sb kopi fejlede med url %url', array('%url' => $url));
 
   return FALSE;
 }
