@@ -79,13 +79,13 @@ function bibdk_autocomplete_callback($p_uuid, $v_uuid, $string = '') {
 
   $filter_array = bibdk_autocomplete_parse_filters($string);
   $search_string = $filter_array['search_string'];
-  $operation = $path = ($value_vars['operation']) ? $value_vars['operation'] : 'Suggest';
+  $operation = $path = ($value_vars['operation']) ? $value_vars['operation'] : 'suggest';
 
   $options['query'] = array('query' => check_plain($search_string)) + $value_vars + $settings;
 
   $action = 'OpenPlatformSuggestRequest';
   switch ($operation) {
-    case 'Suggest':
+    case 'suggest':
       $options['requestParameters'] = bibdk_autocomplete_set_suggest_options($options);
       $action = 'OpenPlatformSuggestRequest';
       break;
@@ -96,7 +96,7 @@ function bibdk_autocomplete_callback($p_uuid, $v_uuid, $string = '') {
 
   try {
     switch ($operation) {
-      case 'Suggest':
+      case 'suggest':
         $result = open_platform_client_request('Suggest', $options);
         break;
       default:
@@ -108,7 +108,7 @@ function bibdk_autocomplete_callback($p_uuid, $v_uuid, $string = '') {
   }
 
   switch ($operation) {
-    case 'Suggest':
+    case 'suggest':
       if (empty($result['data'])) {
         bibdk_autocomplete_callback_error($action, $options);
       }
