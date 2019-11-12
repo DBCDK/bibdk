@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * bibliotek_dk_captcha.strongarm.inc
@@ -41,6 +42,13 @@ function bibliotek_dk_captcha_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'captcha_default_challenge_on_nonlisted_forms';
+  $strongarm->value = 0;
+  $export['captcha_default_challenge_on_nonlisted_forms'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'captcha_default_validation';
   $strongarm->value = '1';
   $export['captcha_default_validation'] = $strongarm;
@@ -69,6 +77,27 @@ function bibliotek_dk_captcha_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'captcha_enable_stats';
+  $strongarm->value = 0;
+  $export['captcha_enable_stats'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'captcha_error_message_da';
+  $strongarm->value = 'Svaret du tastede ind for CAPTCHA var ikke korrekt.';
+  $export['captcha_error_message_da'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'captcha_error_message_en-gb';
+  $strongarm->value = 'The answer you entered for the CAPTCHA was not correct.';
+  $export['captcha_error_message_en-gb'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'captcha_log_wrong_responses';
   $strongarm->value = 0;
   $export['captcha_log_wrong_responses'] = $strongarm;
@@ -79,6 +108,21 @@ function bibliotek_dk_captcha_strongarm() {
   $strongarm->name = 'captcha_persistence';
   $strongarm->value = '1';
   $export['captcha_persistence'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'captcha_placement_map_cache';
+  $strongarm->value = array(
+    'bibdk_subject_hierarchy_suggestion_form' => array(
+      'path' => array(
+        0 => 'bibdk_subject_hierarchy',
+      ),
+      'key' => 'subject_hierarchy_submit_suggestion',
+      'weight' => NULL,
+    ),
+  );
+  $export['captcha_placement_map_cache'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
