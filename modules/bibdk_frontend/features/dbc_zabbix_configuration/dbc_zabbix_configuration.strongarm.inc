@@ -21,7 +21,7 @@ function dbc_zabbix_configuration_strongarm() {
     ),
     1 => array(
       'label' => 'Infomedia',
-      'url' => 'ting_infomedia_url',
+      'url' => 'TingClientInfomediaArticleRequest_url',
     ),
     2 => array(
       'label' => 'Autocomplete',
