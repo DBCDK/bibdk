@@ -192,7 +192,7 @@ projects[advagg][version] = 2.33
 
 projects[captcha][subdir] = contrib
 projects[captcha][type] = module
-projects[captcha][version] = 1.6
+projects[captcha][version] = 1.3
 
 projects[ctools][subdir] = contrib
 projects[ctools][type] = module
