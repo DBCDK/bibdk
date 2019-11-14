@@ -121,6 +121,11 @@ function bibliotek_dk_captcha_strongarm() {
       'key' => 'subject_hierarchy_submit_suggestion',
       'weight' => NULL,
     ),
+    'user_login' => array(
+      'path' => array(),
+      'key' => 'actions',
+      'weight' => 99,
+    ),
   );
   $export['captcha_placement_map_cache'] = $strongarm;
 
