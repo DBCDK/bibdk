@@ -1,3 +1,4 @@
+
 <?xml version="1.0" encoding="UTF-8"?>
 <emnehierarki version="1.1"
               xmlns="http://biblstandard.dk/emnehierarki/namespace/"
@@ -20984,7 +20985,7 @@ ok=7? og ke=motiver ikke em=?teknik
     </term>
   </term>
   <term>
-    <ord>Skønlitteratjavascript: document.pressed='1921'; document.forms[0].parentPath.value='0,22,1921'; toggleFolder('folderOpen1921'); document.forms[0].submit();ur og biografier</ord>
+    <ord>Skønlitteratur og biografier</ord>
     <cql></cql>
     <kommentar>ingen ccl laves</kommentar>
     <hjaelpetekst></hjaelpetekst>
@@ -29005,5 +29006,3 @@ Prøv at skrive personens navn og ordet "erindringer" i Emne-boksen på den almi
     </term>
   </term>
 </emnehierarki>
-<h3>Kan ikke gemme XML data.</h3>
-

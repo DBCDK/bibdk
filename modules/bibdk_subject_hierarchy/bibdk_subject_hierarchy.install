@@ -123,3 +123,10 @@ function bibdk_subject_hierarchy_update_7015(&$sandbox) {
 function bibdk_subject_hierarchy_update_7016(&$sandbox) {
   _update_bibdk_subject_hierarchy();
 }
+
+/**
+ * update hierarchy november 2019
+ */
+function bibdk_subject_hierarchy_update_7017(&$sandbox) {
+  _update_bibdk_subject_hierarchy();
+}
