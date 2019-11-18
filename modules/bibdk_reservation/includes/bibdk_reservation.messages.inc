@@ -107,8 +107,11 @@ function bibdk_reservation_article_infomedia_link(Manifestation $manifestation) 
  * @return array|null|string
  */
 function bibdk_reservation_get_sbkopi_link($ids) {
-  $result = bibdk_sbkopi_ajax_openorder_request($ids, TRUE);
-  if ($result !== 'error') {
+  $result = FALSE;
+  if(module_exists('bibdk_sbkopi')) {
+    $result = bibdk_sbkopi_ajax_openorder_request($ids, TRUE);
+  }
+  if ($result && $result !== 'error') {
     return $result;
   }
   return null;
