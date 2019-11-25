@@ -1,0 +1,90 @@
+<?php
+
+/**
+ * Implements hook_menu();
+ */
+function bibdk_mockup_menu() {
+  $items['admin/config/serviceclient/bibdk_mockup'] = array(
+    'title' => 'Bibdk Mockup',
+    'description' => 'Module to record & replay webservice responses
+                      that are queried through TingClient.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('bibdk_mockup_admin'),
+    'access arguments' => array('administer site configuration'),
+  );
+  return $items;
+}
+
+
+function bibdk_mockup_admin($form, &$form_state) {
+  $mockup = new BibdkMockup();
+  $form['description'] =  array(
+    '#type' => 'container',
+  );
+  $form['description']['heading'] =  array(
+    '#theme' => 'html_tag',
+    '#tag' => 'h3',
+    '#value' => 'Bibdk Mockup'
+  );
+  $form['bibdk_mockup_recording'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable recording.'),
+    '#default_value' => variable_get('bibdk_mockup_recording', FALSE),
+    '#description' => t('Record webservice responses from TingClient in:<br/><code>' . $mockup->getCacheFolder() . '</code><br/>(Needs file permissions to be set).'),
+  );
+  $form['bibdk_mockup_log'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Log cache calls.'),
+    '#default_value' => variable_get('bibdk_mockup_log', FALSE),
+    '#description' => t('Log Netpunkt Mockup function calls in <code>' . sys_get_temp_dir() . '/bibdk_mockup_log.txt</code>'),
+  );
+  return system_settings_form($form);
+}
+
+
+/**
+ * Implements hook_ting_client_mockup_cache_get().
+ *
+ * @param string                  $cache_key
+ *   TingClient cache key.
+ *
+ * @see ting_client_class->do_request()
+ * @return array
+ */
+function bibdk_mockup_ting_client_mockup_cache_get($cache_key) {
+  $return['status'] = FALSE;
+  $recording = variable_get('bibdk_mockup_recording', FALSE);
+  if ($recording) {
+    return $return;
+  }
+  $mockup = new BibdkMockup();
+  if ($mockup->hasKey($cache_key)) {
+    $return['status'] = TRUE;
+    $return['record'] = $mockup->get($cache_key);
+  }
+  return $return;
+}
+
+/**
+ * Implements hook_ting_client_mockup_cache_set().
+ *
+ * @param string                  $cache_key
+ *   TingClient cache key.
+ * @param object                  $result
+ *   TingClient result.
+ *
+ * @see ting_client_class->do_request()
+ * @return array
+ */
+function bibdk_mockup_ting_client_mockup_cache_set($cache_key, $result) {
+
+  $mockup = new BibdkMockup();
+  $recording = variable_get('bibdk_mockup_recording', FALSE);
+  if ($recording) {
+    try {
+      $mockup->record($cache_key, $result);
+    } catch (Exception $e) {
+      drupal_set_message('Caught exception: ' . $e->getMessage(), 'status', FALSE);
+    }
+  }
+}
