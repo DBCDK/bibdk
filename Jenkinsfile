@@ -80,6 +80,9 @@ pipeline {
 
       }
     }
+    // if sessions table grows to big - delete sessions more than a day old
+    // select count(*) from sessions where to_timestamp(timestamp) < now() - INTERVAL '1 DAY';
+    // delete from sessions where to_timestamp(timestamp) < now() - INTERVAL '1 DAY';
     stage('Docker: Drupal database') {
       agent {
         node { label 'devel8-head' }
