@@ -87,12 +87,13 @@ pipeline {
       steps {
         dir('docker/db') {
           sh """
-              wget -P docker-entrypoint.d https://is.dbc.dk/view/Bibliotek.dk/job/dscrum-is-bibdk_dump_prod_db/lastSuccessfulBuild/artifact/bibdk_db_sql.tar.gz
+                wget -P docker-entrypoint.d https://is.dbc.dk/view/Bibliotek.dk/job/dscrum-is-bibdk_dump_prod_db/lastSuccessfulBuild/artifact/bibdk_db_sql.tar.gz
           """
         }
         dir('docker/db/docker-entrypoint.d') {
           sh """
             tar -xf bibdk_db_sql.tar.gz
+            rm -rf bibdk_db_sql.tar.gz
           """
         }
         dir('docker/db') {
@@ -132,7 +133,7 @@ pipeline {
       }
     }
   }
-  /*post {
+  post {
     always {
       sh """
       echo WORKSPACE: ${env.WORKSPACE}
@@ -148,5 +149,5 @@ pipeline {
         deleteDir()
       }
     }
-  }*/
+  }
 }
