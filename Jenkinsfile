@@ -80,6 +80,9 @@ pipeline {
 
       }
     }
+    // if sessions table grows to big - delete sessions more than a day old
+    // select count(*) from sessions where to_timestamp(timestamp) < now() - INTERVAL '1 DAY';
+    // delete  from sessions where to_timestamp(timestamp) < now() - INTERVAL '1 DAY';
     stage('Docker: Drupal database') {
       agent {
         node { label 'devel8-head' }
@@ -87,8 +90,16 @@ pipeline {
       steps {
         dir('docker/db') {
           sh """
-            wget -P docker-entrypoint.d https://is.dbc.dk/view/Bibliotek.dk/job/dscrum-is-bibdk_dump_prod_db/lastSuccessfulBuild/artifact/bibdk_db.sql
+                wget -P docker-entrypoint.d https://is.dbc.dk/view/Bibliotek.dk/job/dscrum-is-bibdk_dump_prod_db/lastSuccessfulBuild/artifact/bibdk_db_sql.tar.gz
           """
+        }
+        dir('docker/db/docker-entrypoint.d') {
+          sh """
+            tar -xf bibdk_db_sql.tar.gz
+            rm -rf bibdk_db_sql.tar.gz
+          """
+        }
+        dir('docker/db') {
           script {
             docker.build("${DOCKER_REPO}/${PRODUCT}-db-${BRANCH}:${currentBuild.number}")
           }
