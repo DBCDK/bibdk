@@ -132,7 +132,7 @@ pipeline {
       }
     }
   }
-  post {
+  /*post {
     always {
       sh """
       echo WORKSPACE: ${env.WORKSPACE}
@@ -148,5 +148,5 @@ pipeline {
         deleteDir()
       }
     }
-  }
+  }*/
 }
