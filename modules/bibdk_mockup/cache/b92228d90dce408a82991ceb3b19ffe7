@@ -1,1 +1,1 @@
-O:25:"TingClientInfomediaResult":4:{s:6:"length";i:0;s:5:"error";s:18:"borrower_not_found";s:4:"type";s:10:"getArticle";s:5:"parts";a:0:{}}
+s:186:"<?xml version="1.0" encoding="UTF-8"?><uaim:getArticleResponse xmlns:uaim="http://oss.dbc.dk/ns/useraccessinfomedia"><uaim:error>borrower_not_found</uaim:error></uaim:getArticleResponse>";

@@ -1,4 +1,4 @@
-O:25:"TingClientInfomediaResult":4:{s:6:"length";i:1;s:5:"error";s:0:"";s:4:"type";s:10:"getArticle";s:5:"parts";a:1:{i:0;a:3:{s:10:"identifier";s:8:"e0b692db";s:8:"verified";b:1;s:7:"article";s:10862:"<div class="infomedia_HeadLine">Afghanistan: Afghanistan-koalitionen er ved at smuldre</div>
+s:11221:"<?xml version="1.0" encoding="UTF-8"?><uaim:getArticleResponse xmlns:uaim="http://oss.dbc.dk/ns/useraccessinfomedia"><uaim:getArticleResponseDetails><uaim:articleVerified>true</uaim:articleVerified><uaim:articleIdentifier>e0b692db</uaim:articleIdentifier><uaim:imArticle><![CDATA[<div class="infomedia_HeadLine">Afghanistan: Afghanistan-koalitionen er ved at smuldre</div>
 <div class="infomedia_SubHeadLine">Afghanistan: Afghanistan-koalitionen er ved at smuldre</div>
 <div class="infomedia_ByLine">Charlotte Aagaard</div>
 <div class="infomedia_DateLine">26. September 2007</div>
@@ -8,4 +8,4 @@ O:25:"TingClientInfomediaResult":4:{s:6:"length";i:1;s:5:"error";s:0:"";s:4:"typ
 <div class="infomedia_logo">
 <img src="infomedia_logo.gif" alt="logo"/>
 <p>Alt materiale i Infomedia er omfattet af lov om ophavsret og må ikke kopieres uden særlig tilladelse.</p>
-</div>";}}}
+</div>]]></uaim:imArticle></uaim:getArticleResponseDetails></uaim:getArticleResponse>";
