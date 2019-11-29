@@ -52,6 +52,7 @@ def get_deploys():
   api_instance = client.AppsV1beta1Api(client.ApiClient(conf))
   api_response = api_instance.list_namespaced_deployment("frontend-features")
 
+  print(api_response)
   delete_me=[]
   print(type(api_response))
   for item in api_response.items:
@@ -94,6 +95,7 @@ if __name__ == "__main__":
   branches = list_branches(remotes)
   print(branches)
   deploys = get_deploys()
+  ''''''
   for deploy in deploys:
     branch_name = branch_name_from_deploy(deploy)
     if branch_name and branch_name not in branches:
