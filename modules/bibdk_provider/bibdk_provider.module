@@ -189,17 +189,14 @@ function bibdk_provider_form_user_profile_form_alter(&$form, &$form_state) {
     unset($form['account']['pass']['#process'][$position]);
   }
 
-  // Move 'Cancel Account' button before 'Save'
-  $form['actions']['submit'] += array(
-    '#weight' => 0,
-  );
-  $form['actions']['cancel'] += array(
-    '#weight' => 1,
-  );
+  // Move 'Cancel Account' button after 'Save', or users might delete their
+  // account on enter.
+  $form['actions']['submit']['#weight'] = 10;
+  $form['actions']['cancel']['#weight'] = 20;
 }
 
 /**
- * impletements hook_form_validate()
+ * implements hook_form_validate()
  *
  * Check if password has minimum length
  *
