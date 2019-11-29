@@ -2,7 +2,7 @@
   <a id="selid_custom_search_expand" class="text-darkgrey" href="#">
     <span class="toggle-text <?php print $form['#expand_hidden']; ?>">
       <svg class="custom-search--advanced-toggle-icon">
-        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-plus-circle"></use>
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-blue-plus-circle"></use>
       </svg>
       <span class="custom-search--advanced-toggle-text">
         <?php print t('Expand search options'); ?>
@@ -11,7 +11,7 @@
 
     <span class="toggle-text <?php print $form['#collaps_hidden']; ?>">
       <svg class="custom-search--advanced-toggle-icon">
-        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-minus-circle"></use>
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-blue-minus-circle"></use>
       </svg>
       <span class="custom-search--advanced-toggle-text">
         <?php print t('Collapse search options'); ?>
