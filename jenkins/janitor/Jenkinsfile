@@ -40,7 +40,7 @@ pipeline {
         }
         dir('bibdk_config'){
           git branch: 'develop',
-            credentialsId: 'isworker',
+            credentialsId: 'gitlab-deploy-key',
             url: 'gitlab.dbc.dk:d-scrum/d7/bibliotek-dk/bibdk_config.git'
         }
         sh """
