@@ -20,6 +20,13 @@ pipeline {
         node { label 'devel8-head' }
       }
       steps{
+        script{
+          withCredentials([file(credentialsId: 'gitlab-isworker', variable: 'GITLABKEY')]) {
+            sh """
+            cp ${GITLABKEY} gitkey.txt
+            """
+          }
+        }
         dir('bibdk_config'){
           git branch: 'develop',
             credentialsId: 'gitlab-isworker',
