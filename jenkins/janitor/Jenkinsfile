@@ -17,7 +17,7 @@ pipeline {
   stages {
     stage('get config'){
       agent {
-        node { label 'dscrum-i01' }
+        node { label 'dscrum-is-builder-i01' }
       }
       steps{
         script{
