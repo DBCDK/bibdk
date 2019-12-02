@@ -28,16 +28,24 @@ pipeline {
       steps {
         script {
           withCredentials([file(credentialsId: 'kubecert-frontend', variable: 'KUBECONFIG')]) {
-            dir('jenkins/janitor') {
-              sh """
-              cp ${KUBECONFIG} fisk.txt
-              """
-            }
+//            dir('jenkins/janitor') {
+//              sh """
+//              cp ${KUBECONFIG} fisk.txt
+//              """
+//            }
             DEPLOYS = sh(returnStdout: true, script: "kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' get deployments -o yaml").trim()
             writeYaml file:"deploys.yml", data:DEPLOYS
           }
           stash name: "deploys", includes: "deploys.yml"
         }
+        dir('bibdk_config'){
+          git branch: 'develop',
+            credentialsId: 'jenkins (dscrum-is SSH key)',
+            url: 'gitlab.dbc.dk:d-scrum/d7/bibliotek-dk/bibdk_config.git'
+        }
+        sh """
+        cp bibdk_config/jenkins/kubeconfig.yaml jenkins/janitor/
+        """
       }
     }
     stage('get repo list') {
