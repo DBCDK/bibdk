@@ -276,7 +276,7 @@
         </term>
         <term>
           <ord>Kvinders rettigheder</ord>
-          <cql>(em=kvinder and em="borgerlige rettigheder") or term.default adj "kvinders rettigheder"</cql>
+          <cql>(em=kvinder and em="borgerlige rettigheder")</cql>
           <kommentar>179 poster</kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
@@ -1270,7 +1270,7 @@ ke=samtaleteknik gir for meget terapi, ledelse m.v.</kommentar>
       </term>
       <term>
         <ord>Bæredygtige byer</ord>
-        <cql>em adj "bæredygtige byer"</cql>
+        <cql>lem="bæredygtige byer"</cql>
         <kommentar>22 hits</kommentar>
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>
@@ -10806,7 +10806,7 @@ Enkelte præsidenter trækkes ikke ud for sig, men findes samlet i søgesættet<
         </term>
         <term>
           <ord>Donald Trump</ord>
-          <cql>em adj "trump donald j"</cql>
+          <cql>lem="trump donald j"</cql>
           <kommentar></kommentar>
           <hjaelpetekst></hjaelpetekst>
           <visundermenu>1</visundermenu>
@@ -13755,7 +13755,7 @@ Android og IOS se under "Computere - styresystemer"</hjaelpetekst>
       </term>
       <term>
         <ord>Public service</ord>
-        <cql>ti adj "public service"</cql>
+        <cql>em=medier and lem="public service"</cql>
         <kommentar></kommentar>
         <hjaelpetekst></hjaelpetekst>
         <visundermenu>1</visundermenu>

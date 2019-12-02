@@ -38,6 +38,13 @@ pipeline {
           }
           stash name: "deploys", includes: "deploys.yml"
         }
+        dir('bibdk_config'){
+          git branch: 'develop',
+            url: 'gitlab.dbc.dk:d-scrum/d7/bibliotek-dk/bibdk_config.git'
+        }
+        sh """
+        cp bibdk_config/jenkins/kubeconfig.yaml jenkins/janitor/
+        """
       }
     }
     stage('get repo list') {
