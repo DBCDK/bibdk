@@ -21,11 +21,10 @@ pipeline {
       }
       steps{
         script{
-          withCredentials([file(credentialsId: 'gitlab-isworker', variable: 'GITLABKEY')]) {
-            sh """
-            cp ${GITLABKEY} gitkey.txt
-            """
+          withCredentials([sshUserPrivateKey(credentialsId: 'gitlab-isworker', keyFileVariable: 'GITLABKEY')]) {
+            sh """cp ${GITLABKEY} gitkey.txt"""
           }
+
         }
         dir('bibdk_config'){
           git branch: 'develop',
