@@ -17,18 +17,17 @@ pipeline {
   stages {
     stage('get config'){
       agent {
-        node { label 'devel8-head' }
+        node { label 'dscrum-i01' }
       }
       steps{
         script{
-          withCredentials([sshUserPrivateKey(credentialsId: 'gitlab-deploy-key', keyFileVariable: 'GITLABKEY')]) {
+          withCredentials([sshUserPrivateKey(credentialsId: 'dscrum-is_gitlab_token', keyFileVariable: 'GITLABKEY')]) {
             sh """cp ${GITLABKEY} gitkey.txt"""
           }
-
         }
         dir('bibdk_config'){
           git branch: 'develop',
-            credentialsId: 'gitlab-isworker',
+            credentialsId: 'dscrum-is_gitlab_token',
             url: 'gitlab.dbc.dk:d-scrum/d7/bibliotek-dk/bibdk_config.git'
           stash name: "kube-config", includes: "jenkins/kubeconfig.yaml"
         }
