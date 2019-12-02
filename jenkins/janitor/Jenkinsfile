@@ -15,6 +15,21 @@ pipeline {
     disableConcurrentBuilds()
   }
   stages {
+    stage('get config'){
+      agent {
+        docker {
+          image "docker-dscrum.dbc.dk/d7-php7-builder:latest"
+          alwaysPull true
+        }
+      }
+      steps{
+        dir('bibdk_config'){
+          git branch: 'develop',
+            url: 'gitlab.dbc.dk:d-scrum/d7/bibliotek-dk/bibdk_config.git'
+          stash name: "kube-config", includes: "jenkins/kubeconfig.yaml"
+        }
+      }
+    }
     stage('get deploy list') {
       // use k8s-deploy-env docker agent - so we do not need to install kubectl
       agent {
@@ -38,13 +53,8 @@ pipeline {
           }
           stash name: "deploys", includes: "deploys.yml"
         }
-        dir('bibdk_config'){
-          git branch: 'develop',
-            url: 'gitlab.dbc.dk:d-scrum/d7/bibliotek-dk/bibdk_config.git'
-        }
-        sh """
-        cp bibdk_config/jenkins/kubeconfig.yaml jenkins/janitor/
-        """
+
+
       }
     }
     stage('get repo list') {
@@ -57,12 +67,13 @@ pipeline {
           withCredentials([file(credentialsId: 'kubecert-frontend', variable: 'KUBECONFIG')]) {
             def fisk = readYaml file: "deploys.yml"
             dir('jenkins/janitor') {
+              unstash "kube-config"
               sh """
             virtualenv --system-site-packages venv
             . venv/bin/activate
             pip install kubernetes
             
-            python fetch_git_branches.py -u https://github.com/DBCDK/bibdk -c ${KUBECONFIG}
+            python fetch_git_branches.py -u https://github.com/DBCDK/bibdk
           """
               //print(fisk)
             }
