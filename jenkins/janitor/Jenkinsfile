@@ -40,7 +40,7 @@ pipeline {
         }
         dir('bibdk_config'){
           git branch: 'develop',
-            credentialsId: 'jenkins (dscrum-is SSH key)',
+            credentialsId: 'isworker (gitlab-isworker ssh key)',
             url: 'gitlab.dbc.dk:d-scrum/d7/bibliotek-dk/bibdk_config.git'
         }
         sh """
