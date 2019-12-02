@@ -21,7 +21,7 @@ pipeline {
       }
       steps{
         script{
-          withCredentials([sshUserPrivateKey(credentialsId: 'gitlab-isworker', keyFileVariable: 'GITLABKEY')]) {
+          withCredentials([sshUserPrivateKey(credentialsId: 'gitlab-deploy-key', keyFileVariable: 'GITLABKEY')]) {
             sh """cp ${GITLABKEY} gitkey.txt"""
           }
 
