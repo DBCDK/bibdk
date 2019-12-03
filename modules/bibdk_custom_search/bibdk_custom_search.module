@@ -542,12 +542,6 @@ function bibdk_custom_search_searchpage_button_link($text, $path, $class = '') {
     ),
   );
 
-  if (isset($_GET['search_block_form']) && !empty($_GET['search_block_form'])) {
-    foreach($_GET as $key => $value) {
-      $link['#options']['query'][$key] = check_plain($value);
-    }
-  }
-
   if (!empty($class)) {
     $link['#options']['attributes']['class'][] = $class;
   }
