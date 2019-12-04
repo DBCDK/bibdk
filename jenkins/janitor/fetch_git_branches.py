@@ -10,8 +10,6 @@ import json
 import yaml
 
 
-
-
 # Fetch the remote repositories
 def lsremote(url):
   remote_refs = {}
@@ -40,13 +38,12 @@ def list_branches(remotes):
 
   return normalized_branches
 
+# fet a list of deployments on kubernetes
 def get_deploys():
   '''
-  hund = json.loads(open('kubeconfig.json').read())
-  hest = yaml.load(json.dumps(hund))
-
-  with open('kube_invalid.yaml', 'w') as f:
-    data = yaml.dump(hest, f, default_flow_style=False)
+  @TODO use the config set in jenkins - there is an error in the kubeconfig
+  @TODO delivered by platform. A valid (handmade) kubeconfig is stored in
+  @TODO bibdk_config/jenkins/kubeconfig.yaml which is used here
   '''
   conf = config.load_kube_config(config_file='kubeconfig.yaml')
   api_instance = client.AppsV1beta1Api(client.ApiClient(conf))
@@ -58,6 +55,7 @@ def get_deploys():
     if(name.startswith('bibliotek-dk')):
       delete_me.append(name)
 
+  print(delete_me)
   return delete_me
 
 def branch_name_from_deploy(deploy_name):
