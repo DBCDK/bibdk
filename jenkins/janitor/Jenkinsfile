@@ -5,7 +5,7 @@ def GITREPOS
 
 pipeline {
   agent {
-    node { label 'devel8-head' }
+    node { label 'master' }
   }
   options {
     buildDiscarder(logRotator(artifactDaysToKeepStr: "", artifactNumToKeepStr: "", daysToKeepStr: "", numToKeepStr: "5"))
@@ -17,12 +17,12 @@ pipeline {
   stages {
     stage('get config'){
       agent {
-        node { label 'devel8' }
+        node { label 'master' }
       }
       steps{
         dir('bibdk_config'){
           git branch: 'develop',
-            credentialsId: 'dscrum_ssh_gitlab',
+            credentialsId: 'jenkins (dscrum-is SSH key)',
             url: 'gitlab.dbc.dk:d-scrum/d7/bibliotek-dk/bibdk_config.git'
           stash name: "kube-config", includes: "jenkins/kubeconfig.yaml"
         }
@@ -34,7 +34,7 @@ pipeline {
         docker {
           image "docker.dbc.dk/k8s-deploy-env:latest"
           alwaysPull true
-          label "devel8-head"
+          label "master"
         }
       }
 
@@ -57,12 +57,12 @@ pipeline {
     }
     stage('get repo list') {
       agent {
-        node { label 'devel8-head' }
+        node { label 'master' }
       }
       steps {
         unstash "deploys"
         script {
-          withCredentials([file(credentialsId: 'kubecert-frontend', variable: 'KUBECONFIG')]) {
+
             def fisk = readYaml file: "deploys.yml"
             dir('jenkins/janitor') {
               unstash "kube-config"
@@ -75,7 +75,7 @@ pipeline {
           """
               //print(fisk)
             }
-          }
+
         }
 //        checkout scm
 //        script {
