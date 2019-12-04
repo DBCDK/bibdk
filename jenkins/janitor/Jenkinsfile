@@ -74,9 +74,11 @@ pipeline {
         }
       }
       steps {
-        script{
-          def file = readFile("delete_me.txt")
-          print(file)
+        dir('jenkins/janitor') {
+          script {
+            def file = readFile("delete_me.txt")
+            print(file)
+          }
         }
       }
     }
