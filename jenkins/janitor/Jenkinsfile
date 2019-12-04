@@ -45,11 +45,8 @@ pipeline {
             pip install kubernetes
             
             python fetch_git_branches.py -u https://github.com/DBCDK/bibdk
-          """
-              //print(fisk)
-              // @TODO stash a file to be used later
+            """
             }
-
         }
 //        checkout scm
 //        script {

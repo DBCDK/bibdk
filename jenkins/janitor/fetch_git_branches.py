@@ -59,9 +59,11 @@ def get_deploys():
   return delete_me
 
 def branch_name_from_deploy(deploy_name):
-  if deploy_name.startswith('bibliotek-dk-www-'):
-    branch_name = deploy_name.replace('bibliotek-dk-www-', '')
-    return branch_name
+  prefixes = ['bibliotek-dk-www-', 'bibliotek-dk-memcached-', 'bibliotek-dk-db-']
+  for prefix in prefixes:
+    if deploy_name.startswith(prefix):
+      branch_name = deploy_name.replace(prefix, '')
+      return branch_name
 
 def parse_args(argv):
   deploy_vars = {
