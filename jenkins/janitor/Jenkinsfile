@@ -17,12 +17,12 @@ pipeline {
   stages {
     stage('get config'){
       agent {
-        node { label 'devel8' }
+        node { label 'devel9' }
       }
       steps{
         dir('bibdk_config'){
           git branch: 'develop',
-            credentialsId: 'dscrum_ssh_gitlab',
+            credentialsId: 'gitlab-deploy-key',
             url: 'gitlab.dbc.dk:d-scrum/d7/bibliotek-dk/bibdk_config.git'
           stash name: "kube-config", includes: "jenkins/kubeconfig.yaml"
         }
