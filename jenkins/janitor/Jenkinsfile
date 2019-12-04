@@ -5,7 +5,7 @@ def GITREPOS
 
 pipeline {
   agent {
-    node { label 'master' }
+    node { label 'devel8' }
   }
   options {
     buildDiscarder(logRotator(artifactDaysToKeepStr: "", artifactNumToKeepStr: "", daysToKeepStr: "", numToKeepStr: "5"))
@@ -17,12 +17,12 @@ pipeline {
   stages {
     stage('get config'){
       agent {
-        node { label 'master' }
+        node { label 'devel8' }
       }
       steps{
         dir('bibdk_config'){
           git branch: 'develop',
-            credentialsId: 'jenkins (dscrum-is SSH key)',
+            credentialsId: 'isworker',
             url: 'gitlab@gitlab.dbc.dk:d-scrum/d7/bibliotek-dk/bibdk_config.git'
           stash name: "kube-config", includes: "jenkins/kubeconfig.yaml"
         }
@@ -57,7 +57,7 @@ pipeline {
     }
     stage('get repo list') {
       agent {
-        node { label 'master' }
+        node { label 'devel8' }
       }
       steps {
         unstash "deploys"
