@@ -52,9 +52,7 @@ def get_deploys():
   api_instance = client.AppsV1beta1Api(client.ApiClient(conf))
   api_response = api_instance.list_namespaced_deployment("frontend-features")
 
-  print(api_response)
   delete_me=[]
-  print(type(api_response))
   for item in api_response.items:
     name = item.metadata.name
     if(name.startswith('bibliotek-dk')):
