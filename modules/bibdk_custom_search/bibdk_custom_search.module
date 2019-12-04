@@ -532,7 +532,7 @@ function bibdk_custom_search_searchpage_button_link($text, $path, $class = '') {
   $link = array(
     '#theme' => 'link',
     '#text' => $text,
-    '#path' => $path,
+    '#path' => 'search/work',
     '#options' => array(
       'attributes' => array(
         'id' => 'custom-search-page-link-' . _bibdk_custom_search_trim_string($text),
@@ -541,6 +541,13 @@ function bibdk_custom_search_searchpage_button_link($text, $path, $class = '') {
       'html' => FALSE,
     ),
   );
+
+  // This is used for the selection of material type below the search field.
+  // It will transfer the searched text to the other search page.
+  if (isset($_GET['search_block_form']) && !empty($_GET['search_block_form'])) {
+    $link['#options']['query']['search_block_form'] = check_plain($_GET['search_block_form']);
+    $link['#options']['query']['select_material_type'] = $path;
+  }
 
   if (!empty($class)) {
     $link['#options']['attributes']['class'][] = $class;
