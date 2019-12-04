@@ -82,8 +82,8 @@ def parse_args(argv):
   return deploy_vars
 
 def delete_on_kubernetes(deploy):
-  print(deploy)
-
+  file = open("delete_me.txt","a+")
+  file.write(deploy + " ")
 
 if __name__ == "__main__":
   vars = parse_args(sys.argv[1:])
@@ -91,7 +91,6 @@ if __name__ == "__main__":
   branches = list_branches(remotes)
   print(branches)
   deploys = get_deploys()
-  ''''''
   for deploy in deploys:
     branch_name = branch_name_from_deploy(deploy)
     if branch_name and branch_name not in branches:

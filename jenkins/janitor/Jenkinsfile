@@ -30,42 +30,13 @@ pipeline {
         }
       }
     }
-    stage('get deploy list') {
-      // use k8s-deploy-env docker agent - so we do not need to install kubectl
-      agent {
-        docker {
-          image "docker.dbc.dk/k8s-deploy-env:latest"
-          alwaysPull true
-          label "devel8"
-        }
-      }
 
-      steps {
-        script {
-          withCredentials([file(credentialsId: 'kubecert-frontend', variable: 'KUBECONFIG')]) {
-//            dir('jenkins/janitor') {
-//              sh """
-//              cp ${KUBECONFIG} fisk.txt
-//              """
-//            }
-            DEPLOYS = sh(returnStdout: true, script: "kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' get deployments -o yaml").trim()
-            writeYaml file:"deploys.yml", data:DEPLOYS
-          }
-          stash name: "deploys", includes: "deploys.yml"
-        }
-
-
-      }
-    }
     stage('get repo list') {
       agent {
         node { label 'devel8' }
       }
       steps {
-        unstash "deploys"
         script {
-
-            def fisk = readYaml file: "deploys.yml"
             dir('jenkins/janitor') {
               unstash "kube-config"
               sh """
@@ -76,6 +47,7 @@ pipeline {
             python fetch_git_branches.py -u https://github.com/DBCDK/bibdk
           """
               //print(fisk)
+              // @TODO stash a file to be used later
             }
 
         }
@@ -91,6 +63,21 @@ pipeline {
 //          }
 //        }
       }
+    }
+    stage('clean up') {
+      // use k8s-deploy-env docker agent - so we do not need to install kubectl
+      agent {
+        docker {
+          image "docker.dbc.dk/k8s-deploy-env:latest"
+          alwaysPull true
+          label "devel8"
+        }
+      }
+    }
+
+    steps {
+
+
     }
   }
 }
