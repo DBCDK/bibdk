@@ -73,11 +73,13 @@ pipeline {
           label "devel8"
         }
       }
+      steps {
+        script{
+          def file = readFile("delete_me.txt")
+          print(file)
+        }
+      }
     }
-
-    steps {
-
-
-    }
+    // @TODO delete workspace
   }
 }
