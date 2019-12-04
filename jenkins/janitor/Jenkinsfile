@@ -77,7 +77,9 @@ pipeline {
         dir('jenkins/janitor') {
           script {
             def file = readFile("delete_me.txt")
-            print(file)
+            sh """
+            echo ${file}
+            """
           }
         }
       }
