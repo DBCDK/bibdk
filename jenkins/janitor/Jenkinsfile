@@ -24,7 +24,9 @@ pipeline {
           git branch: 'develop',
             credentialsId: 'dscrum_ssh_gitlab',
             url: 'gitlab@gitlab.dbc.dk:d-scrum/d7/bibliotek-dk/bibdk_config.git'
-          stash name: "kube-config", includes: "jenkins/kubeconfig.yaml"
+        }
+        dir('bibdk_config/jenkins'){
+          stash name: "kube-config", includes: "kubeconfig.yaml"
         }
       }
     }
