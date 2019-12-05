@@ -529,10 +529,13 @@ function _bibdk_custom_search_get_searchpage_buttons($req, $pages) {
  * @return array render array
  */
 function bibdk_custom_search_searchpage_button_link($text, $path, $class = '') {
+
+  $link_path = ((isset($_GET['search_block_form']) && !empty($_GET['search_block_form']))) ? 'search/work' : $path;
+
   $link = array(
     '#theme' => 'link',
     '#text' => $text,
-    '#path' => 'search/work',
+    '#path' => $link_path,
     '#options' => array(
       'attributes' => array(
         'id' => 'custom-search-page-link-' . _bibdk_custom_search_trim_string($text),
