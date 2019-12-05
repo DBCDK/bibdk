@@ -77,6 +77,7 @@ pipeline {
               String configmapbase = 'bibliotekdk-config-'
               String branchname
               String config
+              def working = true
 
               try {
                 def file = readFile("delete_me.txt")
@@ -84,6 +85,7 @@ pipeline {
                 echo err.getMessage()
                 echo "Nothing to delete"
                 currentBuild.result = 'SUCCESS'
+                working = false
                 return
               }
 
@@ -104,11 +106,13 @@ pipeline {
                 print("FISK")
                 println item
               }
+              if (working) {
+                sh """
+                rm delete_me.txt
+                """
+              }
+              }
             }
-          }
-          sh """
-          rm delete_me.txt
-          """
         }
       }
     }
