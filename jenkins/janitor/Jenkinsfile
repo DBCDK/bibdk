@@ -81,7 +81,6 @@ pipeline {
                 sh """
                         kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' delete service $item
                         kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' delete deployment $item
-                        kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' delete configmap $configmapbase + $item
               """
 
                 print("FISK")
