@@ -73,7 +73,7 @@ pipeline {
       steps {
         dir('jenkins/janitor') {
           script {
-            withCredentials([file(credentialsId: 'frontend-kubecert', variable: 'KUBECONFIG')]) {
+            withCredentials([file(credentialsId: 'kubecert-frontend', variable: 'KUBECONFIG')]) {
               String configmapbase = 'bibliotekdk-config-'
               def file = readFile("delete_me.txt")
               def repos = file.split(' ')
