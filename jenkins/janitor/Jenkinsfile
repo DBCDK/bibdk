@@ -77,7 +77,16 @@ pipeline {
               String configmapbase = 'bibliotekdk-config-'
               String branchname
               String config
-              def file = readFile("delete_me.txt")
+
+              try {
+                def file = readFile("delete_me.txt")
+              } catch (err) {
+                echo err.getMessage()
+                echo "Nothing to delete"
+                currentBuild.result = 'SUCCESS'
+                return
+              }
+
               def repos = file.split(' ')
               for (String item : repos) {
                 sh """
@@ -97,9 +106,11 @@ pipeline {
               }
             }
           }
+          sh """
+          rm delete_me.txt
+          """
         }
       }
     }
-    // @TODO delete workspace
   }
 }
