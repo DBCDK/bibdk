@@ -15,17 +15,17 @@ pipeline {
     disableConcurrentBuilds()
   }
   stages {
-    stage('get config'){
+    stage('get config') {
       agent {
         node { label 'devel8' }
       }
-      steps{
-        dir('bibdk_config'){
+      steps {
+        dir('bibdk_config') {
           git branch: 'develop',
             credentialsId: 'dscrum_ssh_gitlab',
             url: 'gitlab@gitlab.dbc.dk:d-scrum/d7/bibliotek-dk/bibdk_config.git'
         }
-        dir('bibdk_config/jenkins'){
+        dir('bibdk_config/jenkins') {
           stash name: "kube-config", includes: "kubeconfig.yaml"
         }
       }
@@ -37,82 +37,77 @@ pipeline {
       }
       steps {
         script {
-            dir('jenkins/janitor') {
-              unstash "kube-config"
-              sh """
+          dir('jenkins/janitor') {
+            unstash "kube-config"
+            sh """
             virtualenv --system-site-packages venv
             . venv/bin/activate
             pip install kubernetes
             
             python fetch_git_branches.py -u https://github.com/DBCDK/bibdk
             """
-            }
-        }
-//        checkout scm
-//        script {
-//          dir('jenkins/janitor') {
-//            GITREPOS = sh(returnStdout: true, script: "./parse_git_repos.sh".trim())
-//            def hest = GITREPOS.split(' ')
-//            for (String item : hest) {
-//              print("FISK")
-//              println item
-//            }
-//          }
-//        }
-      }
-    }
-    stage('clean up') {
-      // use k8s-deploy-env docker agent - so we do not need to install kubectl
-      agent {
-        docker {
-          image "docker.dbc.dk/k8s-deploy-env:latest"
-          alwaysPull true
-          label "devel8"
+          }
         }
       }
-      steps {
-        dir('jenkins/janitor') {
-          script {
-            withCredentials([file(credentialsId: 'kubecert-frontend', variable: 'KUBECONFIG')]) {
-              String configmapbase = 'bibliotekdk-config-'
-              String branchname
-              String config
-              def working = true
+      stage('clean up') {
+        // use k8s-deploy-env docker agent - so we do not need to install kubectl
+        agent {
+          docker {
+            image "docker.dbc.dk/k8s-deploy-env:latest"
+            alwaysPull true
+            label "devel8"
+          }
+        }
+        steps {
+          dir('jenkins/janitor') {
+            script {
+              withCredentials([file(credentialsId: 'kubecert-frontend', variable: 'KUBECONFIG')]) {
+                String configmapbase = 'bibliotekdk-config-'
+                String branchname
+                String config
+                def working = true
 
-              try {
-                def file = readFile("delete_me.txt")
-              } catch (err) {
-                echo err.getMessage()
-                echo "Nothing to delete"
-                currentBuild.result = 'SUCCESS'
-                working = false
-                return
-              }
-
-              def repos = file.split(' ')
-              for (String item : repos) {
-                sh """
-                        kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' delete service $item
-                        kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' delete deployment $item
-                  """
-                if (item.startsWith("bibliotek-dk-www-")) {
-                  branchname = item.replace("bibliotek-dk-www-",'')
-                  config = configmapbase + branchname
-                  sh """
-                        kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' delete configmap $config
-                  """
+                try {
+                  def file = readFile("delete_me.txt")
+                } catch (err) {
+                  echo err.getMessage()
+                  echo "Nothing to delete"
+                  currentBuild.result = 'SUCCESS'
+                  working = false
+                  return
                 }
 
-                print("FISK")
-                println item
-              }
-              if (working) {
-                sh """
-                rm delete_me.txt
-                """
-              }
+                def repos = file.split(' ')
+                for (String item : repos) {
+                  sh """
+                        kubectl -n $NAMESPACE --kubeconfig '${
+                    KUBECONFIG
+                  }' delete service $item
+                        kubectl -n $NAMESPACE --kubeconfig '${
+                    KUBECONFIG
+                  }' delete deployment $item
+                  """
+                  if (item.startsWith("bibliotek-dk-www-")) {
+                    branchname = item.replace("bibliotek-dk-www-", '')
+                    config = configmapbase + branchname
+                    sh """
+                        kubectl -n $NAMESPACE --kubeconfig '${
+                      KUBECONFIG
+                    }' delete configmap $config
+                  """
+                  }
+
+                  print("FISK")
+                  println item
+                }
+                if (working) {
+                  sh """
+                  rm delete_me.txt
+                  """
+                }
               }
             }
+          }
         }
       }
     }

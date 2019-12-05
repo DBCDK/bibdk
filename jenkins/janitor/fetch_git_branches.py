@@ -38,7 +38,7 @@ def list_branches(remotes):
 
   return normalized_branches
 
-# fet a list of deployments on kubernetes
+# fetch a list of deployments on kubernetes
 def get_deploys():
   '''
   @TODO use the config set in jenkins - there is an error in the kubeconfig
@@ -58,6 +58,7 @@ def get_deploys():
   print(delete_me)
   return delete_me
 
+# parse raw branch name from given deploy name
 def branch_name_from_deploy(deploy_name):
   prefixes = ['bibliotek-dk-www-', 'bibliotek-dk-memcached-', 'bibliotek-dk-db-']
   for prefix in prefixes:
@@ -65,6 +66,7 @@ def branch_name_from_deploy(deploy_name):
       branch_name = deploy_name.replace(prefix, '')
       return branch_name
 
+# parse arguments passed to script
 def parse_args(argv):
   deploy_vars = {
     'url': ''
@@ -83,10 +85,13 @@ def parse_args(argv):
 
   return deploy_vars
 
+# append deploy to be deleted to text file
+# text file is used in Jenkinsfile::stage(clean up)
 def delete_on_kubernetes(deploy):
   file = open("delete_me.txt","a+")
   file.write(deploy + " ")
 
+# main
 if __name__ == "__main__":
   vars = parse_args(sys.argv[1:])
   remotes = lsremote(vars['url'])
