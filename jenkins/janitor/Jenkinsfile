@@ -73,17 +73,20 @@ pipeline {
       steps {
         dir('jenkins/janitor') {
           script {
-            def configmapbase = 'bibliotekdk-config-'
-            def file = readFile("delete_me.txt")
-            def repos = file.split(' ')
-            for (String item : repos) {
-              sh """
+            withCredentials([file(credentialsId: 'frontend-kubecert', variable: 'KUBECONFIG')]) {
+              def configmapbase = 'bibliotekdk-config-'
+              def file = readFile("delete_me.txt")
+              def repos = file.split(' ')
+              for (String item : repos) {
+                sh """
+                        kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' delete service $item
                         kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' delete deployment $item
                         kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' delete configmap $configmapbase + $item
               """
 
-              print("FISK")
-              println item
+                print("FISK")
+                println item
+              }
             }
           }
         }
