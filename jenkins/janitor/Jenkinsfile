@@ -74,7 +74,7 @@ pipeline {
         dir('jenkins/janitor') {
           script {
             withCredentials([file(credentialsId: 'frontend-kubecert', variable: 'KUBECONFIG')]) {
-              def configmapbase = 'bibliotekdk-config-'
+              String configmapbase = 'bibliotekdk-config-'
               def file = readFile("delete_me.txt")
               def repos = file.split(' ')
               for (String item : repos) {
