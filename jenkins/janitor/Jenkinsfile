@@ -5,7 +5,7 @@ def GITREPOS
 
 pipeline {
   agent {
-    node { label 'devel8' }
+    node { label 'devel8-head' }
   }
   options {
     buildDiscarder(logRotator(artifactDaysToKeepStr: "", artifactNumToKeepStr: "", daysToKeepStr: "", numToKeepStr: "5"))
@@ -17,7 +17,7 @@ pipeline {
   stages {
     stage('get config') {
       agent {
-        node { label 'devel8' }
+        node { label 'devel8-head' }
       }
       steps {
         dir('bibdk_config') {
@@ -33,7 +33,7 @@ pipeline {
 
     stage('get repo list') {
       agent {
-        node { label 'devel8' }
+        node { label 'devel8-head' }
       }
       steps {
         script {
@@ -55,7 +55,7 @@ pipeline {
           docker {
             image "docker.dbc.dk/k8s-deploy-env:latest"
             alwaysPull true
-            label "devel8"
+            label "devel8-head"
           }
         }
         steps {
