@@ -28,6 +28,23 @@ function bibdk_covers_menu() {
 
 
 /**
+ * Implements hook_form_FORM_ID_alter (ting_client_admin_webservices_settings)
+ * Add fields to webservice client settings
+ * NB: Defining a webservice in Bibdk TingClient don't automagically add a URL
+ *   config field to webservice client settings (as opposed to Netpunkt.)
+ *   bibdk_netarchive, bibdk_search_carousel also use open_moreinfo.
+ * */
+function bibdk_covers_form_ting_client_admin_webservices_settings_alter(&$form, &$form_state) {
+  $form['open_moreinfo']['open_moreinfo_url'] = array(
+    '#type' => 'textfield',
+    '#title' => t('URL'),
+    '#description' => t('URL to the Additional information webservice'),
+    '#required' => TRUE,
+    '#default_value' => variable_get('open_moreinfo_url', ''),
+  );
+}
+
+/**
  * Implementation of hook_theme().
  */
 function bibdk_covers_theme() {
