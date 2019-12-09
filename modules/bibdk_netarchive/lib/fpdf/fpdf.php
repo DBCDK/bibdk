@@ -12,7 +12,7 @@
 * catch (SystemExit $e) { [ ... do something] ... }                            *
 *                                                                              *
 * Date:    2014-06-02                                                          *
-* Author:  Jørgen G. Nielsen                                                   *
+* Author:  Jï¿½rgen G. Nielsen                                                   *
 *******************************************************************************/
 class fpdfSystemExit extends Exception {}
 
@@ -91,7 +91,7 @@ var $PDFVersion;         // PDF version number
 *                               Public methods                                 *
 *                                                                              *
 *******************************************************************************/
-function FPDF($orientation='P', $unit='mm', $size='A4')
+function __construct($orientation='P', $unit='mm', $size='A4')
 {
   // Some checks
   $this->_dochecks();
