@@ -66,10 +66,11 @@ pipeline {
               String configmapbase = 'bibliotekdk-config-'
               String branchname
               String config
+              def file
               def working = true
 
               try {
-                def file = readFile("delete_me.txt")
+                file = readFile("delete_me.txt")
               } catch (err) {
                 echo err.getMessage()
                 echo "Nothing to delete"
