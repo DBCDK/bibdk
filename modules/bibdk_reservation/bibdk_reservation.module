@@ -193,6 +193,7 @@ function bibdk_reservation_create_wizard_form($form, &$form_state) {
     // datacheck - if for some reason entity is empty it makes no sense to continue
     if(empty($bibdk_work_entity)){
       drupal_set_message(t('manifestation_not_found_try_again', array(), array('context' => 'bibdk_reservation')),'error');
+      watchdog('bibdk_reservation', 'reservation aborted - no id in request', array(), WATCHDOG_ERROR);
       return array();
     }
 
