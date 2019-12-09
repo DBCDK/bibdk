@@ -67,15 +67,12 @@ pipeline {
               String branchname
               String config
               def file
-              def working = true
-
               try {
                 file = readFile("delete_me.txt")
               } catch (err) {
                 echo err.getMessage()
                 echo "Nothing to delete"
                 currentBuild.result = 'SUCCESS'
-                working = false
                 return
               }
 
@@ -98,19 +95,37 @@ pipeline {
                   }' delete configmap $config
                   """
                 }
-
-                print("FISK")
                 println item
-              }
-              if (working) {
-                sh """
-                  rm delete_me.txt
-                  """
               }
             }
           }
         }
       }
+    }
+  }
+  post {
+    always {
+      dir('jenkins/janitor'){
+        script{
+          def exists = fileExists 'delete_me.txt'
+          if(exists){
+            sh 'rm delete_me.txt'
+          }
+        }
+      }
+      echo 'One way or another, I have finished'
+    }
+    success {
+      echo 'I succeeeded!'
+    }
+    unstable {
+      echo 'I am unstable :/'
+    }
+    failure {
+      echo 'I failed :('
+    }
+    changed {
+      echo 'Things were different before...'
     }
   }
 }
