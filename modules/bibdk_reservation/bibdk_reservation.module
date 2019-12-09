@@ -190,6 +190,11 @@ function bibdk_reservation_create_wizard_form($form, &$form_state) {
     bibdk_reservation_new_order_object();
     /** @var $bibdk_work_entity BibdkWork */
     $bibdk_work_entity = BibdkReservationOrderObject::GetObject()->getwork();
+    // datacheck - if for some reason entity is empty it makes no sense to continue
+    if(empty($bibdk_work_entity)){
+      drupal_set_message(t('manifestation_not_found_try_again', array(), array('context' => 'bibdk_reservation')),'error');
+      return array();
+    }
 
     if (!isset($_GET['bestil_kopi'])) {
       $links = bibdk_reservation_get_actions($_REQUEST['ids'], $bibdk_work_entity);
@@ -550,7 +555,7 @@ function bibdk_reservation_wizard_goto_step_submit($form, &$form_state) {
 function bibdk_reservation_new_order_object() {
   BibdkReservationOrderObject::reset();
 
-  if (!isset($_REQUEST['ids'])) {
+  if (empty($_REQUEST['ids'])) {
     drupal_set_message(t('No objects have been chosen', array(), array('context' => 'bibdk_reservation:error')), 'error');
     return NULL;
   }
