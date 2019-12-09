@@ -49,62 +49,62 @@ pipeline {
           }
         }
       }
-      stage('clean up') {
-        // use k8s-deploy-env docker agent - so we do not need to install kubectl
-        agent {
-          docker {
-            image "docker.dbc.dk/k8s-deploy-env:latest"
-            alwaysPull true
-            label "devel8-head"
-          }
+    }
+    stage('clean up') {
+      // use k8s-deploy-env docker agent - so we do not need to install kubectl
+      agent {
+        docker {
+          image "docker.dbc.dk/k8s-deploy-env:latest"
+          alwaysPull true
+          label "devel8-head"
         }
-        steps {
-          dir('jenkins/janitor') {
-            script {
-              withCredentials([file(credentialsId: 'kubecert-frontend', variable: 'KUBECONFIG')]) {
-                String configmapbase = 'bibliotekdk-config-'
-                String branchname
-                String config
-                def working = true
+      }
+      steps {
+        dir('jenkins/janitor') {
+          script {
+            withCredentials([file(credentialsId: 'kubecert-frontend', variable: 'KUBECONFIG')]) {
+              String configmapbase = 'bibliotekdk-config-'
+              String branchname
+              String config
+              def working = true
 
-                try {
-                  def file = readFile("delete_me.txt")
-                } catch (err) {
-                  echo err.getMessage()
-                  echo "Nothing to delete"
-                  currentBuild.result = 'SUCCESS'
-                  working = false
-                  return
-                }
+              try {
+                def file = readFile("delete_me.txt")
+              } catch (err) {
+                echo err.getMessage()
+                echo "Nothing to delete"
+                currentBuild.result = 'SUCCESS'
+                working = false
+                return
+              }
 
-                def repos = file.split(' ')
-                for (String item : repos) {
+              def repos = file.split(' ')
+              for (String item : repos) {
+                sh """
+                        kubectl -n $NAMESPACE --kubeconfig '${
+                  KUBECONFIG
+                }' delete service $item
+                        kubectl -n $NAMESPACE --kubeconfig '${
+                  KUBECONFIG
+                }' delete deployment $item
+                  """
+                if (item.startsWith("bibliotek-dk-www-")) {
+                  branchname = item.replace("bibliotek-dk-www-", '')
+                  config = configmapbase + branchname
                   sh """
                         kubectl -n $NAMESPACE --kubeconfig '${
                     KUBECONFIG
-                  }' delete service $item
-                        kubectl -n $NAMESPACE --kubeconfig '${
-                    KUBECONFIG
-                  }' delete deployment $item
+                  }' delete configmap $config
                   """
-                  if (item.startsWith("bibliotek-dk-www-")) {
-                    branchname = item.replace("bibliotek-dk-www-", '')
-                    config = configmapbase + branchname
-                    sh """
-                        kubectl -n $NAMESPACE --kubeconfig '${
-                      KUBECONFIG
-                    }' delete configmap $config
-                  """
-                  }
-
-                  print("FISK")
-                  println item
                 }
-                if (working) {
-                  sh """
+
+                print("FISK")
+                println item
+              }
+              if (working) {
+                sh """
                   rm delete_me.txt
                   """
-                }
               }
             }
           }
@@ -113,3 +113,4 @@ pipeline {
     }
   }
 }
+
