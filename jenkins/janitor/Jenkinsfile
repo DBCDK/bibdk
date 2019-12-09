@@ -106,12 +106,15 @@ pipeline {
   post {
     always {
       script {
-        def exists = fileExists 'delete_me.txt'
-        if (exists) {
-          dir("${env.WORKSPACE}/jenkins/janitor") {
+        dir("${env.WORKSPACE}@2/jenkins/janitor") {
+          def exists = fileExists 'delete_me.txt'
+          if (exists) {
             sh 'rm delete_me.txt'
           }
-          dir("${env.WORKSPACE}@2/jenkins/janitor") {
+        }
+        dir("${env.WORKSPACE}/jenkins/janitor") {
+          def exists = fileExists 'delete_me.txt'
+          if (exists) {
             sh 'rm delete_me.txt'
           }
         }
