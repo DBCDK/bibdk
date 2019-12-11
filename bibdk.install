@@ -26,6 +26,7 @@ function _bibdk_enable_modules() {
     'ask_vopros',
     'views',
     'bibdk_actions',
+    'bibdk_ajax_error_behavior',
     'bibdk_cart',
     'bibdkcaptcha',
     'bibdk_borchk',
@@ -640,5 +641,11 @@ function bibdk_update_7060() {
 /** Enabling the me contrib module */
 function bibdk_update_7061() {
   $modules = array('me', 'token');
+  module_enable($modules);
+}
+
+/** Enable the ajax error handler module */
+function bibdk_update_7062() {
+  $modules = array('bibdk_ajax_error_behavior');
   module_enable($modules);
 }
