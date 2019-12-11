@@ -127,7 +127,15 @@ function bibdk_autocomplete_callback($p_uuid, $v_uuid, $string = '') {
       break;
   }
 
+  // datacheck - log if unexpected result
+  $json_result = drupal_json_encode($items);
+  if(!$json_result){
+    bibdk_autocomplete_callback_error($action, $options);
+  }
+
   // Return the result to the form in json
+  // this might return an error, it is suppressed with javascript.
+  // @see bibdk_ajax_error_behavior
   drupal_json_output($items);
   drupal_exit();
 }
