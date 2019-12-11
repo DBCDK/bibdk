@@ -16,6 +16,11 @@
     }
   };
 
+  // datacheck - if ACDB is not defined there is no point in going on
+  if(!Drupal.ACDB){
+    return;
+  }
+
   /**
    * Add customSearch method to Drupal.ADCB
    *  @see bibdk_autocomplete.overrides.js
