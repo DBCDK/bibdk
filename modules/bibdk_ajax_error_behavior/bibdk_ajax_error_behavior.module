@@ -21,12 +21,15 @@ function bibdk_ajax_error_behavior_menu() {
   return $items;
 }
 
+/**
+ * Landing page for logging to watchdog from javascript
+ */
 function bibdk_ajax_error_behavior_log() {
   $threshold = variable_get('bibdk_ajax_error_behavior_watchdog_threshold', 10);
   $time_window = variable_get('bibdk_ajax_error_behavior_watchdog_window', 3600);
   flood_register_event('bibdk_ajax_error_behavior_watchdog', $time_window);
   if (flood_is_allowed('bibdk_ajax_error_behavior_watchdog', $threshold, $time_window)) {
-    watchdog('bibdk_ajax_error_behavior', 'AJAX Error: %error', array('%error' => $_POST['message']));
+    watchdog('bibdk_ajax_error_behavior', 'AJAX Error: %error', array('%error' => check_plain($_POST['message'])));
   }
   drupal_exit();
 }
@@ -53,10 +56,10 @@ function bibdk_ajax_error_behavior_form_system_logging_settings_alter(&$form, &$
     '#title' => t('JavaScript behavior for Ajax errors'),
     '#default_value' => variable_get('bibdk_ajax_error_behavior', 'core'),
     '#options' => array(
-       'core' => t('Core'),
-       'alert' => t('Alert'),
-       'watchdog' => t('Custom alert + watchdog'),
-       'console' => t('Console'),
+      'core' => t('Core'),
+      'alert' => t('Alert'),
+      'watchdog' => t('Custom alert + watchdog'),
+      'console' => t('Console'),
     ),
     '#description' => t('The default behavior is to show an alert except if the error is triggered after browsing away from the page. The other behaviors affect every Ajax error messages.'),
   );

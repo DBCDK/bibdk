@@ -17,7 +17,7 @@
   };
 
   // datacheck - if ACDB is not defined there is no point in going on
-  if(!Drupal.ACDB){
+  if (!Drupal.ACDB) {
     return;
   }
 
@@ -53,7 +53,7 @@
    *  copied from misc/autocomplete.js
    */
   Drupal.jsAC.prototype.populatePopup = function () {
-    if (!this.input.value.length || this.input.value.length < 3){
+    if (!this.input.value.length || this.input.value.length < 3) {
       return false;
     }
     var $input = $(this.input);
