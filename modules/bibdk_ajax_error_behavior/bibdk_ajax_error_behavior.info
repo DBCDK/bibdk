@@ -1,0 +1,7 @@
+name = bibdk_ajax alert handler
+description = This is a temporary module untill javascript alert errors are detected and fixed
+core = 7.x
+scripts[] = bibdk_ajax_error_behavior.js
+configure = admin/config/development/logging
+
+

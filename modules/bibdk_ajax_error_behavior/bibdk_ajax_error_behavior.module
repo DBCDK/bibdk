@@ -1,0 +1,79 @@
+<?php
+/**
+ * @file
+ * Code to provide configuration for different ajax error behaviors.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function bibdk_ajax_error_behavior_menu() {
+  $items = array();
+
+  $items['bibdk_ajax_error_behavior/watchdog'] = array(
+    'title' => 'Save to watchdog',
+    'description' => 'Save AJAX error to the watchdog.',
+    'access callback' => TRUE,
+    'page callback' => 'bibdk_ajax_error_behavior_log',
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
+ * Landing page for logging to watchdog from javascript
+ */
+function bibdk_ajax_error_behavior_log() {
+  $threshold = variable_get('bibdk_ajax_error_behavior_watchdog_threshold', 10);
+  $time_window = variable_get('bibdk_ajax_error_behavior_watchdog_window', 3600);
+  flood_register_event('bibdk_ajax_error_behavior_watchdog', $time_window);
+  if (flood_is_allowed('bibdk_ajax_error_behavior_watchdog', $threshold, $time_window)) {
+    watchdog('bibdk_ajax_error_behavior', 'AJAX Error: %error', array('%error' => check_plain($_POST['message'])));
+  }
+  drupal_exit();
+}
+
+/**
+ * Implements hook_init().
+ */
+function bibdk_ajax_error_behavior_init() {
+  $settings = array(
+    'behavior' => variable_get('bibdk_ajax_error_behavior', 'core'),
+    'error' => variable_get('bibdk_ajax_error_behavior_error', t('There was some error in the user interface, please contact the site administrator.')),
+    'watchdog_url' => url('bibdk_ajax_error_behavior/watchdog', array('absolute' => TRUE)),
+  );
+
+  drupal_add_js(array('ajaxErrorBehavior' => $settings), 'setting');
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function bibdk_ajax_error_behavior_form_system_logging_settings_alter(&$form, &$form_state, $form_id) {
+  $form['bibdk_ajax_error_behavior'] = array(
+    '#type' => 'radios',
+    '#title' => t('JavaScript behavior for Ajax errors'),
+    '#default_value' => variable_get('bibdk_ajax_error_behavior', 'core'),
+    '#options' => array(
+      'core' => t('Core'),
+      'alert' => t('Alert'),
+      'watchdog' => t('Custom alert + watchdog'),
+      'console' => t('Console'),
+    ),
+    '#description' => t('The default behavior is to show an alert except if the error is triggered after browsing away from the page. The other behaviors affect every Ajax error messages.'),
+  );
+
+  $form['bibdk_ajax_error_behavior_error'] = array(
+    '#type' => 'textarea',
+    '#rows' => 1,
+    '#title' => t('Custom alert'),
+    '#default_value' => variable_get('bibdk_ajax_error_behavior_error', t('There was some error in the user interface, please contact the site administrator.')),
+    '#description' => t('The default behavior is to show an alert except if the error is triggered after browsing away from the page. The other behaviors affect every Ajax error messages.'),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="bibdk_ajax_error_behavior"]' => array('value' => 'watchdog'),
+      ),
+    ),
+  );
+}

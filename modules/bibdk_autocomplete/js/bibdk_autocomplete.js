@@ -16,6 +16,11 @@
     }
   };
 
+  // datacheck - if ACDB is not defined there is no point in going on
+  if (!Drupal.ACDB) {
+    return;
+  }
+
   /**
    * Add customSearch method to Drupal.ADCB
    *  @see bibdk_autocomplete.overrides.js
@@ -48,7 +53,7 @@
    *  copied from misc/autocomplete.js
    */
   Drupal.jsAC.prototype.populatePopup = function () {
-    if (!this.input.value.length || this.input.value.length < 3){
+    if (!this.input.value.length || this.input.value.length < 3) {
       return false;
     }
     var $input = $(this.input);

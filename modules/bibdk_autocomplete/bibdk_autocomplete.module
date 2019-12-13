@@ -127,14 +127,24 @@ function bibdk_autocomplete_callback($p_uuid, $v_uuid, $string = '') {
       break;
   }
 
+  // datacheck - log if unexpected result
+  $json_result = drupal_json_encode($items);
+  if (!$json_result) {
+    bibdk_autocomplete_callback_error($action, $options);
+  }
+
   // Return the result to the form in json
+  // this might return an error, it is suppressed with javascript.
+  // @see bibdk_ajax_error_behavior
   drupal_json_output($items);
   drupal_exit();
 }
 
 /**
  * For openplatform suggester (https://openplatform.dbc.dk/v3/suggest) we need
- * to alter the options - it is a different api than http://opensuggestion.addi.dk/
+ * to alter the options - it is a different api than
+ * http://opensuggestion.addi.dk/
+ *
  * @param $options
  */
 function bibdk_autocomplete_set_suggest_options($options) {
@@ -148,7 +158,7 @@ function bibdk_autocomplete_set_suggest_options($options) {
   $phrase_convert = array(
     'scanphrase.mainCreator' => 'creator',
     'scanphrase.mainTitle' => 'title',
-    'scanphrase.subject' => 'subject'
+    'scanphrase.subject' => 'subject',
   );
 
   $term_index = $options['query']['index'];
@@ -194,7 +204,7 @@ function bibdk_autocomplete_parse_filters($filter_string) {
  * helper function for bibdk_autocomplete()
  */
 function bibdk_autocomplete_truncate($string, $width) {
-  $parts = preg_split('/([\s\n\r]+)/', $string, null, PREG_SPLIT_DELIM_CAPTURE);
+  $parts = preg_split('/([\s\n\r]+)/', $string, NULL, PREG_SPLIT_DELIM_CAPTURE);
   $parts_count = count($parts);
 
   $length = 0;
@@ -216,6 +226,7 @@ function bibdk_autocomplete_truncate($string, $width) {
  * @param $form
  * @param $form_state
  * @param $form_id
+ *
  * @return mixed
  */
 function bibdk_autocomplete_form_alter(&$form, &$form_state, $form_id) {
@@ -229,8 +240,10 @@ function bibdk_autocomplete_form_alter(&$form, &$form_state, $form_id) {
 
 
 /**
- * Implements hook_form_FORM_ID_alter() for form search_block_form and search_form.
+ * Implements hook_form_FORM_ID_alter() for form search_block_form and
+ * search_form.
  * - no it does not - it is called from above
+ *
  * @TODO update comment
  */
 function _bibdk_autocomplete_form_search_block_form_alter(&$form, &$form_state, $form_id) {
@@ -275,7 +288,7 @@ function _bibdk_autocomplete_form_search_block_form_alter(&$form, &$form_state, 
   if (!empty($vars)) {
     foreach ($vars as $v_uuid => $values) {
       // handle search block form as a special case
-      if($v_uuid === 'search_block_form' && $values['autocomplete']){
+      if ($v_uuid === 'search_block_form' && $values['autocomplete']) {
         $form[$v_uuid]['#attributes']['data-autocomplete-function'] = $values['operation'];
         $form[$v_uuid]['#autocomplete_path'] = 'autocomplete/' . $p_uuid . '/' . $v_uuid;
       }
@@ -294,7 +307,7 @@ function _bibdk_autocomplete_form_search_block_form_alter(&$form, &$form_state, 
     // Ensure autocomplete alters never gets loaded before autocomplete JS.
     $form['#attached']['js'][] = array(
       'data' => drupal_get_path('module', 'bibdk_autocomplete') . '/js/bibdk_autocomplete.js',
-      'weight' => 10
+      'weight' => 10,
     );
     $form['#attached']['js'][] = array(
       'data' => drupal_get_path('module', 'bibdk_autocomplete') . '/js/bibdk_autocomplete.overrides.js',
@@ -338,20 +351,21 @@ function bibdk_autocomplete_help($path, $arg) {
 
 /**
  * Implements hook_0_hit().
+ *
  * @return array
  *
  */
 function bibdk_autocomplete_0_hit_search($conditions) {
 
   $settings = variable_get('bibdk_autocomplete_settings', array());
-  $url = variable_get('bibdk_autocomplete_rest_url', null);
+  $url = variable_get('bibdk_autocomplete_rest_url', NULL);
 
   $value_vars = array();
   $value_vars['index'] = 'scanterm.default';
   $value_vars['facetIndex'] = 'scanphrase.default';
 
   $url = $url . '/facetSpell';
-  $settings['highlight'] = ($settings['highlight']) ? 'true' : null;
+  $settings['highlight'] = ($settings['highlight']) ? 'true' : NULL;
   $options['query'] = array('query' => check_plain($conditions)) + $value_vars + $settings;
   $options['maxTime'] = 300;
   $url = url($url, $options);
@@ -391,7 +405,7 @@ function bibdk_make_item_list($items) {
             'bibdk-suggest-link',
           ),
         ),
-        'html' => false,
+        'html' => FALSE,
       ),
     );
     $links[] = drupal_render($zero_hit_link);
