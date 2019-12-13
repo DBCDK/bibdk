@@ -5,7 +5,7 @@
  */
 
 /**
- * Implements hook_init().
+ * Implements hook_menu().
  */
 function bibdk_ajax_error_behavior_menu() {
   $items = array();
