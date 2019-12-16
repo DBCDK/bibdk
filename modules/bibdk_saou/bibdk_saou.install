@@ -44,9 +44,9 @@ function bibdk_saou_ding_entity_fields() {
 function bibdk_saou_requirements($phase) {
   $requirements = array();
   if ($phase == 'runtime') {
-    $url = variable_get('open_saou_url');
+    $url = variable_get('OpenSaou_url');
     if (!isset($url)) {
-      $requirements['open_saou_url'] = array(
+      $requirements['OpenSaou_url'] = array(
         'title' => t('SAOU settings'),
         'value' => l(t('Url to soau webservice must be set in admin'), 'admin/config/serviceclient/settings'),
         'severity' => REQUIREMENT_ERROR
