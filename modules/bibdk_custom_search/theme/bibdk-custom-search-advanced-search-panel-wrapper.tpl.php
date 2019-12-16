@@ -19,7 +19,7 @@
 
   </a>
 </div>
-<div id="search-advanced" class="hidden <?php print $form['#collaps_hidden']; ?> show-for-large-up">
+<div id="search-advanced" class="<?php print $form['#collaps_hidden']; ?> show-for-large-up">
   <div id="search-advanced-panel">
     <!-- ADVANCED SEARCH-->
     <?php print drupal_render_children($form); ?>
