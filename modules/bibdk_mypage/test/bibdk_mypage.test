@@ -20,7 +20,7 @@ class BibdkMypageTestCase extends DrupalWebTestCase {
     // $this->profile = 'testing';
 
     // Enable any modules required for the test
-    $modules = array('bibdk_mypage', 'bibdk_mypage_api_test'); //, 'ding_user', 'bibdk_provider', 'bibdk_webservice', 'bibdk_mypage_api_test');
+    $modules = array('me', 'token', 'bibdk_mypage', 'bibdk_mypage_api_test'); //, 'ding_user', 'bibdk_provider', 'bibdk_webservice', 'bibdk_mypage_api_test');
     parent::setUp($modules);
     variable_set('bibdk_provider_webservice_url', $this->getAbsoluteUrl('bibdk_webservice'));
     variable_set('bibdk_provider_security_code', 'securityCode');
@@ -40,7 +40,7 @@ class BibdkMypageTestCase extends DrupalWebTestCase {
     $this->drupalLogin($this->privileged_user);
     //$this->drupalGet('user/2');
     // assert that profile tab is shown
-    $this->drupalGet('user/2');
+    $this->drupalGet('user/me');
     $this->assertText('Account','"My page" Account tab is set');
 
     // Test if hook_bibdk_mypage_tab works

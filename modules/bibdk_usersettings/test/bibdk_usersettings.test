@@ -77,5 +77,4 @@ class BibdkUserSettingsWebTestCase extends DrupalWebTestCase {
     $data = bibdk_usersettings_get_cache(1);
     $this->assertTrue(is_array($data), 'Cache set and get successfully via provider methods');
   }
-
 }
