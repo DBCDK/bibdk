@@ -5,7 +5,7 @@ class BibdkBorchkWebserviceTestCase extends DrupalWebTestCase {
     return array (
       'name' => t('Borchk test'),
       'description' => t('check if borchk webservice is alive'),
-      'group' => t('bibliotek.dk'),
+      'group' => t('FIX ME')//t('bibliotek.dk'),
     );
   }
 

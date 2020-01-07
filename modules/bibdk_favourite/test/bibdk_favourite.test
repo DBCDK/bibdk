@@ -34,7 +34,7 @@ class bibdkFavouriteTest extends DrupalWebTestCase {
     return array(
       'name' => 'Bibdk favourite',
       'description' => t('Test favourites tab and no library message'),
-      'group' => 'Bibliotek.dk - Favourites',
+      'group' => 'FIX ME',//'Bibliotek.dk - Favourites',
     );
   }
 

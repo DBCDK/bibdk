@@ -6,7 +6,7 @@ class BibdkCartTestCase extends DrupalWebTestCase {
     return array(
       'name' => t('Bibdk Cart test'),
       'description' => t('Test Cart functionality'),
-      'group' => t('Bibliotek.dk - Cart'),
+      'group' => t('FIX ME'),//t('Bibliotek.dk - Cart'),
     );
   }
 

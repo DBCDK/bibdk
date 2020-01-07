@@ -10,7 +10,7 @@ class BibdkUserSettingsWebTestCase extends DrupalWebTestCase {
     return array(
       'name' => t('Bibdk Usersettings Test'),
       'description' => t('Webtest of bibdk usersettings functionality'),
-      'group' => t('Bibliotek.dk - Usersettings'),
+      'group' => t('FIX ME')//t('Bibliotek.dk - Usersettings'),
     );
   }
 

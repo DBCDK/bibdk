@@ -10,7 +10,7 @@ class bibdkNetarchiveUnitTest extends DrupalWebTestCase {
     return array(
       'name' => t('NetArchive test'),
       'description' => t('Test NetArchive functionality'),
-      'group' => t('Bibliotek.dk - NetArchive'),
+      'group' => t('FIX ME'),//t('Bibliotek.dk - NetArchive'),
     );
   }
 

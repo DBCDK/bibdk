@@ -5,7 +5,7 @@ class BibdkCaptchaRequirementsTestCase extends DrupalWebTestCase {
     return array(
       'name' => 'Bibdkcaptcha requirements test',
       'description' => 'Test bibdkcaptcha requirements.',
-      'group' => 'Bibliotek.dk - captcha',
+      'group' => 'FIX ME' //'Bibliotek.dk - captcha',
     );
   }
 

@@ -13,7 +13,7 @@ class BibdkHoldingstatusBibdkHoldingsWebTestCase extends DrupalWebTestCase {
     return array(
       'name' => t('Test bibdk_holdingstatus module'),
       'description' => t('Test the essential methods'),
-      'group' => t('Bibliotek.dk - Holdingstatus'),
+      'group' => t('FIX ME'), // t('Bibliotek.dk - Holdingstatus'),
     );
   }
 
@@ -50,9 +50,9 @@ class BibdkHoldingstatusBibdkHoldingsWebTestCase extends DrupalWebTestCase {
     //Check if localisations are shown
     $this->assertText('There are 45 localisations');
     $this->assertText('Københavns Biblioteker');
-    // don't show email address unless a WorldCat holdings window 
+    // don't show email address unless a WorldCat holdings window
     $this->assertNoText('hovinf@kff.kk.dk');
-    
+
     // Check if holdingstatus is shown
     $this->assertRaw('<div id="710100" class="localisation-agency">');
     $this->loginAsProviderUser();
@@ -75,7 +75,7 @@ class BibdkHoldingstatusBibdkHoldingsWebTestCase extends DrupalWebTestCase {
     $this->assertText('Københavns Biblioteker');
     $this->assertText('sdub@bib.sdu.dk');
     $this->assertText('hovinf@kff.kk.dk');
-     
+
   }
 
   private function loginAsProviderUser() {
