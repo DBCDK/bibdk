@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * This script runs Drupal tests from command line.
@@ -92,8 +93,6 @@ simpletest_log_read($test_id, $last_prefix, $last_test_class);
 
 // Stop the timer.
 simpletest_script_reporter_timer_stop();
-
-db_query('SET wait_timeout = 1200');
 
 // Display results before database is cleared.
 simpletest_script_reporter_display_results();

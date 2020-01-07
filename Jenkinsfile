@@ -124,7 +124,6 @@ pipeline {
           buildInfo_www = artyDocker.push("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:${currentBuild.number}", 'docker-dscrum', buildInfo_www)
 
           buildInfo_db.append buildInfo_www
-
           artyServer.publishBuildInfo buildInfo_db
 
           sh """
