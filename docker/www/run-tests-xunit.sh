@@ -613,7 +613,7 @@ function simpletest_script_reporter_write_xml_results() {
         if (isset($classes[$case][$func]['text'])) {
           $classes[$case][$func]['text'] .= $result->status . ' [' . $result->message_group . '] ' . strip_tags($result->message) . "\n";
         } else {
-          $classes[$case][$func]['text'] .= $result->status . ' [' . $result->message_group . '] ' . strip_tags($result->message) . "\n";
+          $classes[$case][$func]['text'] = $result->status . ' [' . $result->message_group . '] ' . strip_tags($result->message) . "\n";
         }
       }
 
