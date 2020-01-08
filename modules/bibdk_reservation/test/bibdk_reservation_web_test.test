@@ -10,7 +10,7 @@ class BibdkReservationWebTestCase extends DrupalWebTestCase {
     return array(
       'name' => t('Bibdk Reservation Web Tests'),
       'description' => t('Test Reservation functionality'),
-      'group' => t('Bibliotek.dk - Reservation'),
+      'group' => t('FIX ME'),//t('Bibliotek.dk - Reservation'),
     );
   }
 

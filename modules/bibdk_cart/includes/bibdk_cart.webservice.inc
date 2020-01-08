@@ -132,7 +132,7 @@ function bibdk_cart_webservice_responce_xpath($xml) {
 /**
  * get element id from request from openuserinfo
  *
- * @param $xpath xpath object
+ * @param $xpath \DOMXPath object
  * @return array
  */
 function bibdk_cart_parse_cart_content_id($xpath) {
@@ -141,18 +141,18 @@ function bibdk_cart_parse_cart_content_id($xpath) {
   }
   // grap agencies
   $query = '//oui:cartContentId';
-  $nodelist = $xpath->query($query);
-  foreach ($nodelist as $delta => $node) {
+  $node_list = $xpath->query($query);
+  $return = array();
+  foreach ($node_list as $delta => $node) {
     $return[] = $node->nodeValue;
   }
-
   return $return;
 }
 
 /**
  * get elements from request from openuserinfo
  *
- * @param $xpath xpath object
+ * @param $xpath \DOMXPath object
  * @return array
  */
 function bibdk_cart_parse_cart_content($xpath) {

@@ -12,7 +12,7 @@ class BibdkOpenuserstatusFormUnitTest extends DrupalUnitTestCase {
     return array(
       'name' => t('Bibdk OpenUserstatus Form Unit Test'),
       'description' => t('Unittest Bibdk OpenUserstatus form'),
-      'group' => t('Bibliotek.dk - OpenUserstatus'),
+      'group' => t('FIX ME'),//t('Bibliotek.dk - OpenUserstatus'),
     );
   }
 

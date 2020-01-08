@@ -13,7 +13,7 @@ class BibdkReservationUnitTestCase extends DrupalUnitTestCase {
     return array(
       'name' => t('Bibdk Reservation Unit Tests'),
       'description' => t('Tests methods in bibdk_reservation module that doesn\'t require any db'),
-      'group' => t('Bibliotek.dk - Reservation'),
+      'group' => t('FIX ME'),//t('Bibliotek.dk - Reservation'),
     );
   }
 
@@ -269,7 +269,7 @@ class BibdkReservationUnitTestCase extends DrupalUnitTestCase {
 
   public function test__bibdk_reservation_infotext_order_any_edition_create_link() {
     module_load_include('inc', 'bibdk_reservation', 'includes/bibdk_reservation_button');
-    
+
     $testvalue = 'a:2:{s:9:"lead_text";a:3:{s:5:"#type";s:12:"translatable";s:10:"#translate";s:45:"placeholder_infotext_on_order_any_edition_btn";s:8:"#options";a:1:{s:7:"context";s:17:"bibdk_reservation";}}s:4:"link";a:5:{s:6:"#theme";s:4:"link";s:5:"#text";a:3:{s:5:"#type";s:12:"translatable";s:10:"#translate";s:9:"More info";s:8:"#options";a:1:{s:7:"context";s:17:"bibdk_reservation";}}s:5:"#path";s:0:"";s:7:"#weight";i:10;s:8:"#options";a:4:{s:8:"fragment";s:19:"870970basis51174151";s:8:"external";b:1;s:10:"attributes";a:2:{s:5:"class";a:1:{i:0;s:31:"infotext-order-any-edition-link";}s:2:"id";s:51:"infotext-order-any-edition-link-870970basis51174151";}s:4:"html";b:0;}}}';
     $input = '870970basis51174151';
 

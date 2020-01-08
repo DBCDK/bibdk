@@ -15,7 +15,7 @@ class BibdkUserProviderImplementationTestCase extends DrupalWebTestCase {
     return array(
       'name' => 'bibdk provider webtest',
       'description' => 'Test bibdk user provider functionality.',
-      'group' => 'Bibliotek.dk - Provider',
+      'group' => 'FIX ME',//'Bibliotek.dk - Provider',
     );
   }
 

@@ -10,7 +10,7 @@ class BibdkAboutAuthorTest extends DrupalWebTestCase {
     return array(
       'name' => t('About Author web test'),
       'description' => t('Test About Author functionality'),
-      'group' => t('Bibliotek.dk - About Author'),
+      'group' => t('FIX ME'),//t('Bibliotek.dk - About Author'),
     );
   }
 

@@ -6,7 +6,7 @@ class BibdkHelpdeskWebserviceTestCast extends DrupalUnitTestCase {
     return array (
       'name' => t('OpenQuestion webservice test'),
       'description' => t('Test the methods used to make openQuestion webservice requests'),
-      'group' => t('Bibliotek.dk - Helpdesk'),
+      'group' => t('FIX ME'),//t('Bibliotek.dk - Helpdesk'),
     );
   }
 

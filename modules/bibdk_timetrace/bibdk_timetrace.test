@@ -11,7 +11,7 @@ class BibdkTimeTraceTestCase extends DrupalWebTestCase {
     return array(
       'name' => t('time trace test'),
       'description' => t('Test time trace functionality'),
-      'group' => t('Bibliotek.dk - time_trace'),
+      'group' => t('FIX ME'),//t('Bibliotek.dk - time_trace'),
     );
   }
 
@@ -30,17 +30,17 @@ class BibdkTimeTraceTestCase extends DrupalWebTestCase {
   public function testSearch() {
     // do a search
     $this->drupalGet('search/work/hest');
-    
+
     // get last log entries from watchdog
     $result = db_query("SELECT message FROM {watchdog} WHERE type='TRACKING' order by timestamp desc limit 4");
     $data = $result->fetchAll();
-        
+
     // assert that results were found (there must be at least 2)
     $this->assertTrue(count($data)>=2,'found two or more TRACKING log-entries in watchdog');
     // get the last 2 results
     $no1 = $data[0]->message;
     $no2 = $data[1]->message;
-    
+
     // get the clock - it is from char -15 to char -7 in message
     $time1 = substr($no1, -15, 8);
     $time2 = substr($no2, -15, 8);

@@ -10,7 +10,7 @@ class BibdkAdhlUnitTest extends DrupalWebTestCase {
     return array(
       'name' => t('ADHL test'),
       'description' => t('Test ADHL functionality'),
-      'group' => t('Bibliotek.dk - ADHL'),
+      'group' => t('FIX ME'), // t('Bibliotek.dk - ADHL'),
     );
   }
 

@@ -10,7 +10,7 @@ class BibdkUserSettingsWebTestCase extends DrupalWebTestCase {
     return array(
       'name' => t('Bibdk Usersettings Test'),
       'description' => t('Webtest of bibdk usersettings functionality'),
-      'group' => t('Bibliotek.dk - Usersettings'),
+      'group' => t('FIX ME')//t('Bibliotek.dk - Usersettings'),
     );
   }
 
@@ -77,5 +77,4 @@ class BibdkUserSettingsWebTestCase extends DrupalWebTestCase {
     $data = bibdk_usersettings_get_cache(1);
     $this->assertTrue(is_array($data), 'Cache set and get successfully via provider methods');
   }
-
 }

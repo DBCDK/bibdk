@@ -18,7 +18,7 @@ class BibdkGdprTestCase extends DrupalWebTestCase {
   public function setUp() {
 
     // Enable any modules required for the test
-    $modules = array('bibdk_gdpr'); 
+    $modules = array('bibdk_gdpr', 'me', 'token');
     parent::setUp($modules);
     variable_set('bibdk_provider_webservice_url', $this->getAbsoluteUrl('bibdk_webservice'));
     variable_set('bibdk_provider_security_code', 'securityCode');
@@ -34,18 +34,12 @@ class BibdkGdprTestCase extends DrupalWebTestCase {
     ));
     $this->drupalLogin($this->privileged_user);
     // assert that profile tab is shown
-    $this->drupalGet('user/2');
-    $this->assertText('GDPR info', '"GDPR info" Account tab is set');
+    $this->drupalGet('user/me');
+    $this->assertText('GDPR', '"GDPR info" Account tab is set');
 
-    $this->drupalGet('user/2/gdpr');
+    $this->drupalGet('user/me/gdpr');
     // Test if GDPR page is present
     $this->assertText('gdpr_header');
-    $this->assertText('gdpr_intro');
-    $this->assertText('gdpr_extro');
-    
-    // Test if hook_bibdk_gdpr_items works
-    $this->assertText('label_gdpr_bibdk_gdpr');
-    $this->assertText('label_gdpr_ipaddress');
   }
 
 }
