@@ -584,7 +584,7 @@ function simpletest_script_reporter_init() {
  * Display jUnit XML test results.
  */
 function simpletest_script_reporter_write_xml_results() {
-  global $args, $test_id, $results_map;
+  global $group, $args, $test_id, $results_map, $time;
 
   $results_map = array(
     'pass' => 'Pass',
@@ -610,7 +610,11 @@ function simpletest_script_reporter_write_xml_results() {
       if ($result->status == 'pass' || $result->status == 'fail') {
         $classes[$case][$func]['classname'] = $classname;
         $classes[$case][$func]['status'] = $result->status;
-        $classes[$case][$func]['text'] .= $result->status . ' [' . $result->message_group . '] ' . strip_tags($result->message) . "\n";
+        if (isset($classes[$case][$func]['text'])) {
+          $classes[$case][$func]['text'] .= $result->status . ' [' . $result->message_group . '] ' . strip_tags($result->message) . "\n";
+        } else {
+          $classes[$case][$func]['text'] .= $result->status . ' [' . $result->message_group . '] ' . strip_tags($result->message) . "\n";
+        }
       }
 
       if ($result->status == 'fail') {
