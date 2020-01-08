@@ -13,7 +13,7 @@ class bibdkBannerWebtestCase extends DrupalWebTestCase {
     return array(
       'name' => t('bibdk_banner - Webtest'),
       'description' => t('Testing the bibdk banners functionality'),
-      'group' => t('Bibliotek.dk - Frontend'),
+      'group' => t('FIX ME'),//t('Bibliotek.dk - Frontend'),
     );
   }
 

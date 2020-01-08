@@ -11,7 +11,7 @@ class BibdkMypageTestCase extends DrupalWebTestCase {
     return array(
       'name' => 'Bibdk : My page',
       'description' => 'Bibdk_mypage webtests.',
-      'group' => 'bibliotek.dk',
+      'group' => 'FIX ME',//'bibliotek.dk',
     );
   }
 

@@ -10,7 +10,7 @@ class BibdkActionsWebTestCase extends DrupalWebTestCase {
     return array(
       'name' => 'Bibdk Action',
       'description' => 'test bibdk_actions functionality',
-      'group' => 'Bibliotek.dk - Actions',
+      'group' => 'FIX ME',//'Bibliotek.dk - Actions',
     );
   }
 
