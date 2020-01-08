@@ -116,8 +116,10 @@ TY  - BOOKA1  - Hvass,HansA1  - Eigener,WilhelmT1  - Fische der WeltSP  - 158 S.
     $this->drupalGet('user/cart');
     $link =  $this->xpath('//a[normalize-space(text())=:label]', array(':label' => 'Udskriv markerede'));
     if (!is_null($link)) {
-      $classes = $link[0]->attributes()->class;
-      $this->assertTrue(strpos($classes[0],'inactive') !== FALSE, 'print link is inactive when empty cart');
+      if (isset($link[0]->attributes()->class)) {
+        $classes = $link[0]->attributes()->class;
+        $this->assertTrue(strpos($classes[0],'inactive') !== FALSE, 'print link is inactive when empty cart');
+      }
     } else { // The link is not found.
       $this->assert(FALSE);
     }
