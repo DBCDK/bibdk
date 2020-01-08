@@ -6,7 +6,7 @@ class BibdkProviderWAYFTestCase extends DrupalWebTestCase {
     return array(
       'name' => 'bibdk provider wayf test',
       'description' => 'Test bibdk provider wayf functionality.',
-      'group' => 'Bibliotek.dk - Provider',
+      'group' => 'FIX ME',//'Bibliotek.dk - Provider',
     );
   }
 
