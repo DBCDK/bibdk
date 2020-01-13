@@ -176,7 +176,7 @@ projects[elements][version] = 1.5
 
 projects[uuid][subdir] = contrib
 projects[uuid][type] = module
-projects[uuid][version] = 1.3
+projects[uuid][version] = 1.2
 
 projects[node_export][subdir] = contrib
 projects[node_export][type] = module
