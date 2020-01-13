@@ -15,7 +15,7 @@ class BibdkBorchkWebserviceTestCase extends DrupalWebTestCase {
         'ting_client',
         'bibdk_borchk',
         'features',
-        'bibdk_webservice_settings_develop'
+        'bibdk_webservice_settings_operational'
       )
     );
     variable_set('bibdk_borchk_servicerequester','bibliotek.dk');

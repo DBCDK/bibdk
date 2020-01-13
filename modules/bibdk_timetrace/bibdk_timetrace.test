@@ -16,7 +16,7 @@ class BibdkTimeTraceTestCase extends DrupalWebTestCase {
   }
 
   public function setUp() {
-    parent::setUp('ting_openformat','bibdk_timetrace', 'bibdk_webservice_settings_develop', 'features');
+    parent::setUp('ting_openformat','bibdk_timetrace', 'bibdk_webservice_settings_operational', 'features');
     variable_set('search_active_modules', array('ting_openformat' => 'ting_openformat'));
     variable_set('search_default_module', 'ting_openformat');
     user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array('access content', 'search content'));
