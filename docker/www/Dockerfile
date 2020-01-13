@@ -1,47 +1,16 @@
   FROM docker.dbc.dk/dbc-apache-php7
 MAINTAINER D-scrum <d-scrum@dbc.dk>
 
+# set environment variables
 # mailhost for exim4
 ENV smarthost=mailhost.dbc.dk
 ENV cookie_domain=.bibliotek.dk
-# set environment variables
-# NOTICE vars are used to alter configuration feature, so names MUST be mapped from
-# configuration file. see entry.sh for details
-# All environment variables below should be production settings.
-ENV AgencyRequest_url=http://openagency.addi.dk/2.35/ \
-    AgencyRequest_xsd_url=http://openagency.addi.dk/2.35/openagency.xsd \
-    bibdk_sbkopi_place_copy_request_url=https://webservice.statsbiblioteket.dk/copydanws/journal \
-    bibdk_behaviour_url=http://miner-p01.dbc.dk/ \
-    bibdk_borchk_url=https://borchk.addi.dk/2.5/ \
-    bibdk_forsrights_url=http://forsrights.addi.dk/1.2/ \
-    bibdk_openorder_url=https://openorder.addi.dk/3.0 \
-    bibdk_openorder_xsd_url=https://openorder.addi.dk/3.0?xsd=1 \
-    bibdk_openquestion_url=https://openorder.addi.dk/3.0?xsd=1 \
-    bibdk_provider_webservice_url=http://openuserinfo-prod.frontend-prod.svc.cloud.dbc.dk/server.php \
-    bibdk_statsbib_url=https://webservice.statsbiblioteket.dk/ws-create-user1/CreateUser \
-    openHoldingStatus_url=http://openholdingstatus.addi.dk/3.0.4/ \
-    openHoldingStatus_xsd_url=http://openholdingstatus.addi.dk/3.0/openholdingstatus.xsd \
-    moreInfo_url=http://moreinfo.addi.dk/2.11/?wsdl \
-    OpenPlatformSuggestRequest_url=https://openplatform.dbc.dk/v3/suggest \
-    OpenPlatformTokenRequest_url=https://auth.dbc.dk/oauth/token \
-    OpenPlatformRequest_url=https://openplatform.dbc.dk/v3/ \
-    OpenSaou_url=https://saou.addi.dk/2.0/SaouWebService?wsdl \
-    OpenUserstatusRequest_url=https://openuserstatus.addi.dk/1.9/ \
-    open_voxb_url=https://voxb.addi.dk/1.3.1/ \
-    TingClientInfomediaArticleRequest_url=http://infomedia.mcp1-proxy.dbc.dk/server.php \
-    ting_recommendation_url=http://openadhl.addi.dk/3.0/ \
-    ting_recommendation_xsd=http://openadhl.addi.dk/3.0/adhl.xsd \
-    ting_scan_url=http://openscan.addi.dk/2.0/ \
-    ting_search_url=https://opensearch.addi.dk/b3.5_5.0/ \
-    ting_spell_url=http://openspell.addi.dk/1.2/ \
-    voxb_xsd_url=https://voxb.addi.dk/1.3.1/voxb.xsd
-
+# database settings
 ENV POSTGRES_DB=filestore \
     POSTGRES_USER=filestore \
     POSTGRES_PASSWORD=filestore \
     POSTGRES_HOST=bibliotek-dk-db-develop.frontend-features.svc.cloud.dbc.dk \
     NAMESPACE_NAME=frontend-features
-
 
 COPY indexdata.asc /
 RUN apt-key add indexdata.asc
