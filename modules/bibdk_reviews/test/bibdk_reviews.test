@@ -90,7 +90,7 @@ class BibdkReviewsWebTestCase extends DrupalWebTestCase {
   }
 
   public function setUp() {
-    parent::setUp(array('bibdk_reviews', 'ting_openformat', 'worktabs', 'devel', 'features', 'bibdk_webservice_settings_develop'));
+    parent::setUp(array('bibdk_reviews', 'ting_openformat', 'worktabs', 'devel', 'features', 'bibdk_webservice_settings_operational'));
     menu_rebuild();
   }
 

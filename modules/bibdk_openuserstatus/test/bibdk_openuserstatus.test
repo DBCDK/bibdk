@@ -34,7 +34,7 @@ class BibdkOpenuserstatusTest extends DrupalWebTestCase {
       'bibdk_provider',
       'bibdk_webservice',
       'features',
-      'bibdk_webservice_settings_develop',
+      'bibdk_webservice_settings_operational',
       'bibdk_favourite'
     ));
 

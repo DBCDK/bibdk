@@ -16,7 +16,7 @@ class BibdkLinkmeTestCase extends DrupalWebTestCase {
         'ting_openformat',
         'bibdk_linkme_webservice_mockup',
         'microcurl',
-        'bibdk_webservice_settings_develop',
+        'bibdk_webservice_settings_operational',
         'features',
       )
     );

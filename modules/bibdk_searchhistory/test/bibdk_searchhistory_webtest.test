@@ -27,7 +27,7 @@ class BibdkSearchHistoryTestCase extends DrupalWebTestCase {
       'bibdk_provider',
       'profile2',
       'features',
-      'bibdk_webservice_settings_develop'
+      'bibdk_webservice_settings_operational'
     )); //, 'bibdk_webservice');
     variable_set('bibdk_provider_security_code', 'testhest');
     variable_set('search_active_modules', array('ting_openformat' => 'ting_openformat'));

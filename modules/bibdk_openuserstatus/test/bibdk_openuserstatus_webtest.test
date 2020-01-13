@@ -20,7 +20,7 @@ class BibdkOpenuserstatusWebTest extends DrupalWebTestCase {
     parent::setUp(array(
       'bibdk_openuserstatus',
       'features',
-      'bibdk_webservice_settings_develop',
+      'bibdk_webservice_settings_operational',
       'openuserstatus_webservice_mockup',
       'openagency_webservice_mockup',
       'bibdk_provider',

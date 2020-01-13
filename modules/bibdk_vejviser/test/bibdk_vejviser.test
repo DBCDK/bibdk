@@ -59,7 +59,7 @@ class BibdkVejviserPickupAgencyListWebservice extends DrupalWebTestCase {
       'ting_agency',
       'ding_user',
       'features',
-      'bibdk_webservice_settings_develop'
+      'bibdk_webservice_settings_operational'
     ));
     // Setup agencyservice
   }

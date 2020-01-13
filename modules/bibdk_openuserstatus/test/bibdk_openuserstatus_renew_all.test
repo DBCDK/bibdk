@@ -28,7 +28,7 @@ class BibdkOpenuserstatusRenewAllTest extends DrupalWebTestCase {
       'ting_openuserstatus',
       'ting_client',
       'features',
-      'bibdk_webservice_settings_develop'
+      'bibdk_webservice_settings_operational'
     ));
 
     global $base_url;
