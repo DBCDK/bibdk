@@ -130,3 +130,17 @@ function bibdk_subject_hierarchy_update_7016(&$sandbox) {
 function bibdk_subject_hierarchy_update_7017(&$sandbox) {
   _update_bibdk_subject_hierarchy();
 }
+
+/**
+ * update hierarchy december 2019
+ */
+function bibdk_subject_hierarchy_update_7018(&$sandbox) {
+  _update_bibdk_subject_hierarchy();
+}
+
+/**
+ * update hierarchy december 2019.2
+ */
+function bibdk_subject_hierarchy_update_7019(&$sandbox) {
+  _update_bibdk_subject_hierarchy();
+}

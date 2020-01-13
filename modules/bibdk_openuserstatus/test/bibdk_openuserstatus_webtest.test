@@ -28,7 +28,7 @@ class BibdkOpenuserstatusWebTest extends DrupalWebTestCase {
       )
     );
 
-    variable_set('openuserstatus_url', $this->getAbsoluteUrl('openuserstatus_webservice_mockup'));
+    variable_set('OpenUserstatusRequest_url', $this->getAbsoluteUrl('openuserstatus_webservice_mockup'));
 
   }
 

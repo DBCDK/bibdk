@@ -90,7 +90,7 @@ projects[ting_agency][download][tag] = 7.x-1.7
 projects[ting_infomedia][type] = module
 projects[ting_infomedia][download][type] = git
 projects[ting_infomedia][download][url] = git@github.com:DBCDK/ting_infomedia.git
-projects[ting_infomedia][download][tag] = 7.x-1.36
+projects[ting_infomedia][download][tag] = 7.x-1.37
 
 projects[ting_openformat][type] = module
 projects[ting_openformat][download][type] = git
@@ -100,7 +100,7 @@ projects[ting_openformat][download][tag] = 7.x-1.10
 projects[ting_openuserstatus][type] = module
 projects[ting_openuserstatus][download][type] = git
 projects[ting_openuserstatus][download][url] = git@github.com:DBCDK/ting_openuserstatus.git
-projects[ting_openuserstatus][download][tag] = 7.x-0.2
+projects[ting_openuserstatus][download][tag] = 7.x-1.0
 
 ; --- Bibliotek.dk ---
 
@@ -117,22 +117,22 @@ projects[open_adhl][download][tag] = 7.x-0.5
 projects[open_holdingstatus][type] = module
 projects[open_holdingstatus][download][type] = git
 projects[open_holdingstatus][download][url] = git@github.com:DBCDK/open_holdingstatus.git
-projects[open_holdingstatus][download][tag] = 7.x-1.3
+projects[open_holdingstatus][download][tag] = 7.x-1.4
 
 projects[open_moreinfo][type] = module
 projects[open_moreinfo][download][type] = git
 projects[open_moreinfo][download][url] = git@github.com:DBCDK/open_moreinfo.git
-projects[open_moreinfo][download][tag] = 7.x-1.7
+projects[open_moreinfo][download][tag] = 7.x-1.8
 
 projects[open_saou][type] = module
 projects[open_saou][download][type] = git
 projects[open_saou][download][url] = git@github.com:DBCDK/open_saou.git
-projects[open_saou][download][tag] = 7.x-0.3
+projects[open_saou][download][tag] = 7.x-1.0
 
 projects[open_platform_client][type] = module
 projects[open_platform_client][download][type] = git
 projects[open_platform_client][download][url] = git@github.com:DBCDK/open_platform_client.git
-projects[open_platform_client][download][tag] = 7.x-1.8
+projects[open_platform_client][download][tag] = 7.x-1.9
 
 projects[cql_strict_parser][type] = module
 projects[cql_strict_parser][download][type] = git
@@ -144,7 +144,7 @@ projects[cql_strict_parser][download][tag] = 7.x-0.4
 projects[bibdk_config][type] = module
 projects[bibdk_config][download][type] = git
 projects[bibdk_config][download][url] = gitlab@gitlab.dbc.dk:d-scrum/d7/bibliotek-dk/bibdk_config.git
-projects[bibdk_config][download][tag] = 7.x-1.40
+projects[bibdk_config][download][tag] = 7.x-1.41
 
 projects[bibdk_behaviour][type] = module
 projects[bibdk_behaviour][download][type] = git

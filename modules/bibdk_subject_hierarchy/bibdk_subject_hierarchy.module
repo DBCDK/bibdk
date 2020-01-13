@@ -329,7 +329,7 @@ function _get_bibdk_subject_hierarchy_item($emnehierarki, $current_key) {
         '#theme' => 'link',
         '#text' => $item['ord'],
         '#path' => NULL,
-        '#options' => array('attributes' => array()),
+        '#options' => array('attributes' => array(), 'html'=>TRUE),
         '#prefix' => '<li>',
         '#suffix' => '</li>'
     );
@@ -337,7 +337,7 @@ function _get_bibdk_subject_hierarchy_item($emnehierarki, $current_key) {
       $link['#path'] = 'search/' . $search_path;
       $link['#options']['query'] = array('search_block_form' => trim($item['cql']));
       $link['#options']['fragment'] = 'content';
-      $link['#options']['html'] = TRUE;
+      //$link['#options']['html'] = TRUE;
     } else {
       $link['#path'] = 'bibdk_subject_hierarchy/nojs/' . $current_key . ',' . $key2;
       $link['#options']['attributes']['class'] = array('use-ajax', 'nesting');

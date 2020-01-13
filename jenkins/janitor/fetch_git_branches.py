@@ -10,8 +10,6 @@ import json
 import yaml
 
 
-
-
 # Fetch the remote repositories
 def lsremote(url):
   remote_refs = {}
@@ -40,32 +38,35 @@ def list_branches(remotes):
 
   return normalized_branches
 
+# fetch a list of deployments on kubernetes
 def get_deploys():
   '''
-  hund = json.loads(open('kubeconfig.json').read())
-  hest = yaml.load(json.dumps(hund))
-
-  with open('kube_invalid.yaml', 'w') as f:
-    data = yaml.dump(hest, f, default_flow_style=False)
+  @TODO use the config set in jenkins - there is an error in the kubeconfig
+  @TODO delivered by platform. A valid (handmade) kubeconfig is stored in
+  @TODO bibdk_config/jenkins/kubeconfig.yaml which is used here
   '''
   conf = config.load_kube_config(config_file='kubeconfig.yaml')
   api_instance = client.AppsV1beta1Api(client.ApiClient(conf))
   api_response = api_instance.list_namespaced_deployment("frontend-features")
 
   delete_me=[]
-  print(type(api_response))
   for item in api_response.items:
     name = item.metadata.name
     if(name.startswith('bibliotek-dk')):
       delete_me.append(name)
 
+  print(delete_me)
   return delete_me
 
+# parse raw branch name from given deploy name
 def branch_name_from_deploy(deploy_name):
-  if deploy_name.startswith('bibliotek-dk-www-'):
-    branch_name = deploy_name.replace('bibliotek-dk-www-', '')
-    return branch_name
+  prefixes = ['bibliotek-dk-www-', 'bibliotek-dk-memcached-', 'bibliotek-dk-db-']
+  for prefix in prefixes:
+    if deploy_name.startswith(prefix):
+      branch_name = deploy_name.replace(prefix, '')
+      return branch_name
 
+# parse arguments passed to script
 def parse_args(argv):
   deploy_vars = {
     'url': ''
@@ -84,10 +85,13 @@ def parse_args(argv):
 
   return deploy_vars
 
+# append deploy to be deleted to text file
+# text file is used in Jenkinsfile::stage(clean up)
 def delete_on_kubernetes(deploy):
-  print(deploy)
+  file = open("delete_me.txt","a+")
+  file.write(deploy + " ")
 
-
+# main
 if __name__ == "__main__":
   vars = parse_args(sys.argv[1:])
   remotes = lsremote(vars['url'])

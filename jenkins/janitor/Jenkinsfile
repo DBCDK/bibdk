@@ -15,7 +15,42 @@ pipeline {
     disableConcurrentBuilds()
   }
   stages {
-    stage('get deploy list') {
+    stage('get config') {
+      agent {
+        node { label 'devel8-head' }
+      }
+      steps {
+        dir('bibdk_config') {
+          git branch: 'develop',
+            credentialsId: 'dscrum_ssh_gitlab',
+            url: 'gitlab@gitlab.dbc.dk:d-scrum/d7/bibliotek-dk/bibdk_config.git'
+        }
+        dir('bibdk_config/jenkins') {
+          stash name: "kube-config", includes: "kubeconfig.yaml"
+        }
+      }
+    }
+
+    stage('get repo list') {
+      agent {
+        node { label 'devel8-head' }
+      }
+      steps {
+        script {
+          dir('jenkins/janitor') {
+            unstash "kube-config"
+            sh """
+            virtualenv --system-site-packages venv
+            . venv/bin/activate
+            pip install kubernetes
+            
+            python fetch_git_branches.py -u https://github.com/DBCDK/bibdk
+            """
+          }
+        }
+      }
+    }
+    stage('clean up') {
       // use k8s-deploy-env docker agent - so we do not need to install kubectl
       agent {
         docker {
@@ -24,55 +59,80 @@ pipeline {
           label "devel8-head"
         }
       }
+      steps {
+        dir('jenkins/janitor') {
+          script {
+            withCredentials([file(credentialsId: 'kubecert-frontend', variable: 'KUBECONFIG')]) {
+              String configmapbase = 'bibliotekdk-config-'
+              String branchname
+              String config
+              def file
+              try {
+                file = readFile("delete_me.txt")
+              } catch (err) {
+                echo err.getMessage()
+                echo "Nothing to delete"
+                currentBuild.result = 'SUCCESS'
+                return
+              }
 
-      steps {
-        script {
-          withCredentials([file(credentialsId: 'kubecert-frontend', variable: 'KUBECONFIG')]) {
-//            dir('jenkins/janitor') {
-//              sh """
-//              cp ${KUBECONFIG} fisk.txt
-//              """
-//            }
-            DEPLOYS = sh(returnStdout: true, script: "kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' get deployments -o yaml").trim()
-            writeYaml file:"deploys.yml", data:DEPLOYS
-          }
-          stash name: "deploys", includes: "deploys.yml"
-        }
-      }
-    }
-    stage('get repo list') {
-      agent {
-        node { label 'devel8-head' }
-      }
-      steps {
-        unstash "deploys"
-        script {
-          withCredentials([file(credentialsId: 'kubecert-frontend', variable: 'KUBECONFIG')]) {
-            def fisk = readYaml file: "deploys.yml"
-            dir('jenkins/janitor') {
-              sh """
-            virtualenv --system-site-packages venv
-            . venv/bin/activate
-            pip install kubernetes
-            
-            python fetch_git_branches.py -u https://github.com/DBCDK/bibdk -c ${KUBECONFIG}
-          """
-              //print(fisk)
+              def repos = file.split(' ')
+              for (String item : repos) {
+                sh """
+                        kubectl -n $NAMESPACE --kubeconfig '${
+                  KUBECONFIG
+                }' delete service $item
+                        kubectl -n $NAMESPACE --kubeconfig '${
+                  KUBECONFIG
+                }' delete deployment $item
+                  """
+                if (item.startsWith("bibliotek-dk-www-")) {
+                  branchname = item.replace("bibliotek-dk-www-", '')
+                  config = configmapbase + branchname
+                  sh """
+                        kubectl -n $NAMESPACE --kubeconfig '${
+                    KUBECONFIG
+                  }' delete configmap $config
+                  """
+                }
+                println item
+              }
             }
           }
         }
-//        checkout scm
-//        script {
-//          dir('jenkins/janitor') {
-//            GITREPOS = sh(returnStdout: true, script: "./parse_git_repos.sh".trim())
-//            def hest = GITREPOS.split(' ')
-//            for (String item : hest) {
-//              print("FISK")
-//              println item
-//            }
-//          }
-//        }
       }
     }
   }
+  post {
+    always {
+      script {
+        dir("${env.WORKSPACE}@2/jenkins/janitor") {
+          def exists = fileExists 'delete_me.txt'
+          if (exists) {
+            sh 'rm delete_me.txt'
+          }
+        }
+        dir("${env.WORKSPACE}/jenkins/janitor") {
+          def exists = fileExists 'delete_me.txt'
+          if (exists) {
+            sh 'rm delete_me.txt'
+          }
+        }
+      }
+      echo 'One way or another, I have finished'
+    }
+    success {
+      echo 'I succeeeded!'
+    }
+    unstable {
+      echo 'I am unstable :/'
+    }
+    failure {
+      echo 'I failed :('
+    }
+    changed {
+      echo 'Things were different before...'
+    }
+  }
 }
+

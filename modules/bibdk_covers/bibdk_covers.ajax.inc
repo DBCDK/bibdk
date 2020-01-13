@@ -37,7 +37,7 @@ function bibdk_covers_objects() {
         drupal_json_output(FALSE);
         drupal_exit();
       }
-      
+
       $covers['imageStyle'] = $image_style;
 
       $covers[ $local_id . ':' . 'detailUrl' ] = image_style_url('large', _bibdk_covers_object_path($local_id, 'detailUrl'));
@@ -60,7 +60,7 @@ function bibdk_covers_objects() {
     }
     else {
       // No cover image. Cache this for future reference to avoid unnecessary requests
-      cache_set('bibdk_covers:' . $local_id['id'], 1, 'cache', $_SERVER['REQUEST_TIME'] + variable_get('open_moreinfo_cache_lifetime', 604800));
+      cache_set('bibdk_covers:' . $local_id['id'], 1, 'cache', $_SERVER['REQUEST_TIME'] + variable_get('moreInfo_cache_lifetime', 604800));
     }
 
   }
