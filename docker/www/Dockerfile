@@ -39,6 +39,7 @@ COPY healthcheck.sh /
 COPY apache_ready.sh /
 COPY run_environment.sh /
 COPY www/profiles/bibdk/modules/bibdk_config/docker/settings.php $APACHE_ROOT/sites/default
+COPY robots.txt $APACHE_ROOT
 ADD fqdn.conf /etc/apache2/conf-available
 COPY apache_security.conf /etc/apache2/conf-enabled/
 COPY run-tests-jenkins.sh $APACHE_ROOT/scripts
