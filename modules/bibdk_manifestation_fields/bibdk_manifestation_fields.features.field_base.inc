@@ -1124,5 +1124,26 @@ function bibdk_manifestation_fields_field_default_field_bases() {
     'type' => 'bibdk_mani_volume',
   );
 
+  // Exported field_base: 'bibdk_saou_link'.
+  $field_bases['bibdk_saou_link'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'bibdk_saou_link',
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'bibdk_saou_field',
+    'settings' => array(),
+    'storage' => array(
+      'active' => 1,
+      'module' => 'virtual_field',
+      'settings' => array(),
+      'type' => 'virtual_field',
+    ),
+    'translatable' => 0,
+    'type' => 'bibdk_saou_link',
+  );
+
   return $field_bases;
 }
