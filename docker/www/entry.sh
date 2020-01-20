@@ -43,7 +43,14 @@ if [ "$1" == '' ]; then
 # set configuration from environment vars
 	while IFS='=' read -r name value ; do
     	echo "$name $value"
-	    sed -i "s|\$export\['${name}|\$strongarm->value = '${value}';\n    &|" $CONFIG
+    	#old expression - overwrite value by adding a line with new value
+	    #sed -i "s|\$export\['${name}|\$strongarm->value = '${value}';\n    &|" $CONFIG
+	    #new expression - replace line holding the value (it must be JUST AFTER the $strongarm->name AND BE A SINGLE LINE for this to work)
+	    #sed -i "/\$strongarm->name = '${name}'/{n;s/.*/  \$strongarm->value = '${value}';/;}" $CONFIG
+	    #sed -i "s|\$strongarm->name = '${name}'/{n;s/.*|\$strongarm->value = '${value}';|;}" $CONFIG
+	    sed -i "/\$strongarm->name = '${name}'/{n;s|.*|  \$strongarm->value = '${value}';|;}" $CONFIG
+
+
 	done < <(env)
 
   ### PHP.INI FILE::::::

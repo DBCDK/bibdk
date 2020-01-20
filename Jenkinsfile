@@ -75,6 +75,10 @@ pipeline {
 
           script {
             docker.build("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:${currentBuild.number}")
+            // we need a latest tag for development setup
+            if (BRANCH == 'develop') {
+              docker.build("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:latest")
+            }
           }
         }
 
@@ -102,6 +106,10 @@ pipeline {
         dir('docker/db') {
           script {
             docker.build("${DOCKER_REPO}/${PRODUCT}-db-${BRANCH}:${currentBuild.number}")
+            // we need a latest tag for development setup
+            if (BRANCH == 'develop') {
+              docker.build("${DOCKER_REPO}/${PRODUCT}-db-${BRANCH}:latest")
+            }
           }
         }
       }
@@ -110,7 +118,7 @@ pipeline {
       steps {
         script {
           // we only push to artifactory if we are handling develop or master branch
-          //if (BRANCH == 'master' || BRANCH == 'develop') {
+          //
           def artyServer = Artifactory.server 'arty'
           def artyDocker = Artifactory.docker server: artyServer, host: env.DOCKER_HOST
           def buildInfo_db = Artifactory.newBuildInfo()
@@ -124,13 +132,35 @@ pipeline {
           buildInfo_www = artyDocker.push("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:${currentBuild.number}", 'docker-dscrum', buildInfo_www)
 
           buildInfo_db.append buildInfo_www
-
           artyServer.publishBuildInfo buildInfo_db
+
+          // we need a latest tag for development setup
+          if (BRANCH == 'develop') {
+            def buildInfo_www_latest = Artifactory.newBuildInfo()
+            buildInfo_www_latest.name = BUILDNAME
+            buildInfo_www_latest = artyDocker.push("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:latest", 'docker-dscrum', buildInfo_www_latest)
+            buildInfo_www_latest.env.capture = true
+            buildInfo_www_latest.env.collect()
+
+            def buildInfo_db_latest = Artifactory.newBuildInfo()
+            buildInfo_db_latest.name = BUILDNAME
+            buildInfo_db_latest = artyDocker.push("${DOCKER_REPO}/${PRODUCT}-db-${BRANCH}:latest", 'docker-dscrum', buildInfo_db_latest)
+
+            buildInfo_www_latest.append buildInfo_db_latest
+            artyServer.publishBuildInfo buildInfo_www_latest
+          }
 
           sh """
             	docker rmi ${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:${currentBuild.number}
             	docker rmi ${DOCKER_REPO}/${PRODUCT}-db-${BRANCH}:${currentBuild.number}
             """
+          // we need a latest tag for development setup
+          if (BRANCH == 'develop') {
+             sh """
+                docker rmi ${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:latest
+                docker rmi ${DOCKER_REPO}/${PRODUCT}-db-${BRANCH}:latest
+               """
+           }
           // }
         }
       }

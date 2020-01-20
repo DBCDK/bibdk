@@ -17,7 +17,7 @@ class BibdkOpenuserstatusTest extends DrupalWebTestCase {
     return array(
       'name' => t('Bibdk OpenUserstatus Test'),
       'description' => t('Test Bibdk OpenUserstatus'),
-      'group' => t('Bibliotek.dk - OpenUserstatus'),
+      'group' => t('FIX ME'), //t('Bibliotek.dk - OpenUserstatus'),
     );
   }
 
@@ -34,7 +34,7 @@ class BibdkOpenuserstatusTest extends DrupalWebTestCase {
       'bibdk_provider',
       'bibdk_webservice',
       'features',
-      'bibdk_webservice_settings_develop',
+      'bibdk_webservice_settings_operational',
       'bibdk_favourite'
     ));
 

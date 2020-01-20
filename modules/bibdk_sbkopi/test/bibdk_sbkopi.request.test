@@ -18,7 +18,7 @@ class BibdkSbCopyRequestUnitTestCase extends DrupalWebTestCase {
     return array(
       'name' => 'bibliotek.dk - sb request unit test',
       'description' => 'Unit Test request methods in bibdk_sbkopi',
-      'group' => 'Bibliotek.dk - SB Kopi',
+      'group' => 'FIX ME',//'Bibliotek.dk - SB Kopi',
     );
   }
 

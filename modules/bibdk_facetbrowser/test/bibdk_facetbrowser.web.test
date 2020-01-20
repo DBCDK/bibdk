@@ -18,7 +18,7 @@ class BibdkFacetbrowserWeb extends DrupalWebTestCase {
     parent::setUp(
       'bibdk_facetbrowser',
       'ting_openformat',
-      'bibdk_webservice_settings_develop',
+      'bibdk_webservice_settings_operational',
       'features'
     );
 

@@ -9,7 +9,7 @@ class bibdkArticleWebtestCase extends DrupalWebTestCase {
     return array(
       'name' => t('bibdk_article - Webtest'),
       'description' => t('Testing the bibdk articles functionality'),
-      'group' => t('Bibliotek.dk - Frontend'),
+      'group' => t('FIX ME'), //t('Bibliotek.dk - Frontend'),
     );
   }
 

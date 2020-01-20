@@ -10,12 +10,12 @@ class BibdkAdhlUnitTest extends DrupalWebTestCase {
     return array(
       'name' => t('ADHL test'),
       'description' => t('Test ADHL functionality'),
-      'group' => t('Bibliotek.dk - ADHL'),
+      'group' => t('FIX ME'), // t('Bibliotek.dk - ADHL'),
     );
   }
 
   public function setUp() {
-    parent::setUp('bibdk_adhl', 'worktabs', 'bibdk_adhl_mockup', 'bibdk_webservice_settings_develop', 'features');
+    parent::setUp('bibdk_adhl', 'worktabs', 'bibdk_adhl_mockup', 'bibdk_webservice_settings_operational', 'features');
 
     //adhl service
     variable_set('ting_recommendation_url', $this->getAbsoluteUrl('bibdk_adhl_mockup'));

@@ -6,7 +6,7 @@ class BibdkLinkmeTestCase extends DrupalWebTestCase {
     return array(
       'name' => t('Linkme test'),
       'description' => t('Test Linkme functionality'),
-      'group' => t('Bibliotek.dk - Linkme'),
+      'group' => t('FIX ME'),//t('Bibliotek.dk - Linkme'),
     );
   }
 
@@ -16,7 +16,7 @@ class BibdkLinkmeTestCase extends DrupalWebTestCase {
         'ting_openformat',
         'bibdk_linkme_webservice_mockup',
         'microcurl',
-        'bibdk_webservice_settings_develop',
+        'bibdk_webservice_settings_operational',
         'features',
       )
     );

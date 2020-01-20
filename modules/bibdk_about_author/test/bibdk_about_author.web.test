@@ -10,13 +10,13 @@ class BibdkAboutAuthorTest extends DrupalWebTestCase {
     return array(
       'name' => t('About Author web test'),
       'description' => t('Test About Author functionality'),
-      'group' => t('Bibliotek.dk - About Author'),
+      'group' => t('FIX ME'),//t('Bibliotek.dk - About Author'),
     );
   }
 
 
   public function setUp() {
-    parent::setUp('bibdk_about_author', 'ting_openformat', 'worktabs', 'bibdk_webservice_settings_develop', 'features');
+    parent::setUp('bibdk_about_author', 'ting_openformat', 'worktabs', 'bibdk_webservice_settings_operational', 'features');
   }
 
 

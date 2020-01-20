@@ -15,7 +15,7 @@ class BibdkHeimdalWebTestCase extends DrupalWebTestCase {
       array(
         'bibdk_heimdal',
         'bibdk_provider',
-        'bibdk_webservice_settings_develop'
+        'bibdk_webservice_settings_operational'
       )
     );
   }

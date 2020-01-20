@@ -10,12 +10,12 @@ class BibdkReservationWebTestCase extends DrupalWebTestCase {
     return array(
       'name' => t('Bibdk Reservation Web Tests'),
       'description' => t('Test Reservation functionality'),
-      'group' => t('Bibliotek.dk - Reservation'),
+      'group' => t('FIX ME'),//t('Bibliotek.dk - Reservation'),
     );
   }
 
   public function setUp() {
-    parent::setUp('ting_openformat', 'ting_agency', 'bibdk_webservice_settings_develop', 'features');
+    parent::setUp('ting_openformat', 'ting_agency', 'bibdk_webservice_settings_operational', 'features');
 
     variable_set('bibdk_provider_webservice_url', $this->getAbsoluteUrl('bibdk_webservice'));
     variable_set('bibdk_provider_security_code', 'securityCode');

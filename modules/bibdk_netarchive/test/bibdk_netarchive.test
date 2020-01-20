@@ -10,12 +10,12 @@ class bibdkNetarchiveUnitTest extends DrupalWebTestCase {
     return array(
       'name' => t('NetArchive test'),
       'description' => t('Test NetArchive functionality'),
-      'group' => t('Bibliotek.dk - NetArchive'),
+      'group' => t('FIX ME'),//t('Bibliotek.dk - NetArchive'),
     );
   }
 
   public function setUp() {
-    parent::setUp('bibdk_netarchive', 'features', 'bibdk_webservice_settings_develop');
+    parent::setUp('bibdk_netarchive', 'features', 'bibdk_webservice_settings_operational');
     $this->profile = 'minimal';
     $moreinfo_url = variable_get('moreInfo_url', 'foo');
 

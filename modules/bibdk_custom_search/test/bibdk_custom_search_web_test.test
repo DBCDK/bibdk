@@ -19,7 +19,7 @@ class BibdkCustomSearchWebTestCase extends DrupalWebTestCase {
   public function setUp() {
     parent::setUp(
       'bibdk_custom_search', 'search', 'uuid', 'ting_openformat', 'features',
-      'bibdk_webservice_settings_develop'
+      'bibdk_webservice_settings_operational'
     );
     variable_set(
       'search_active_modules',

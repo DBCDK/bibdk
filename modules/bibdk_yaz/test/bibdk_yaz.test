@@ -15,7 +15,7 @@ class BibdkYazTestCase extends DrupalUnitTestCase {
     return array(
       'name' => 'Bibdk Yaz Unit Test',
       'description' => 'Test PhpYazConverter class',
-      'group' => 'Bibliotek.dk - Yaz',
+      'group' => 'FIX ME',//'Bibliotek.dk - Yaz',
     );
   }
 

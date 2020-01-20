@@ -27,7 +27,9 @@ function bibdk_covers_objects() {
     list($local_id, $image_style) = array_reverse(array_map('strrev', explode(':', strrev($cover_info), 2)));
 
     // Determine if the local id is a known negative
-    if ( cache_get('bibdk_covers:' . $local_id, FALSE) ) {
+    // pjo outcommented this - check with jgn
+    //if ( cache_get('bibdk_covers:' . $local_id, FALSE) ) {
+    if ( cache_get('bibdk_covers:' . $local_id) ) {
       break;
     }
 
