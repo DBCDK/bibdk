@@ -44,6 +44,7 @@ function _bibdk_enable_modules() {
     'bibdk_help',
     'bibdk_linkme',
     'bibdk_log_stdout',
+    'bibdk_manifestation_fields',
     'bibdk_openorder',
     'bibdk_provider',
     'bibdk_reservation',
@@ -647,5 +648,11 @@ function bibdk_update_7061() {
 /** Enable the ajax error handler module */
 function bibdk_update_7062() {
   $modules = array('bibdk_ajax_error_behavior');
+  module_enable($modules);
+}
+
+/** Enable manifestation display fields */
+function bibdk_update_7063() {
+  $modules = array('bibdk_manifestation_fields');
   module_enable($modules);
 }
