@@ -18,10 +18,10 @@
 }
 
 .bibdk-recommender-carousel .bibdk-recommender-cover-placeholder {
-  height: 14rem;
   padding: 0.2rem;
   background-color: #f6f7f8;
   overflow: hidden;
+  min-height: 12rem;
 }
 
 .bibdk-recommender-carousel .slick__slide img {
@@ -59,7 +59,7 @@
   height: 100%;
 }
 
-.bibdk-recommender-carousel .slide__content .bibdk-recommender-material-type {
+.bibdk-recommender-carousel .slide__content .bibdk-recommender-material-type .svg-icon {
   opacity: 0.2;
 }
 
@@ -73,6 +73,3 @@
   display: block;
 }
 
-.page-work .bibdk-recommender-carousel .bibdk-recommender-cover-placeholder {
-  height: 18rem;
-}

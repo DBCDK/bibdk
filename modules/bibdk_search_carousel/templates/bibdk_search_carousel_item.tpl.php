@@ -20,7 +20,7 @@
     </div>
     <div class="carousel-item-creator">
       <a href="<?php echo $url; ?>">
-        <?php print check_plain($creator); ?>
+        <?php print check_plain($creator). 'FISK'; ?>
       </a>
     </div>
   </div>

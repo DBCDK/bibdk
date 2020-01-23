@@ -66,6 +66,26 @@ function template_preprocess_bibdk_recommender_item(&$variables) {
       'material_type_image' => array(
         '#theme' => 'bibdk_recommender_svg',
         '#material_type' => $image_type,
+        '#fisk' => array(
+          'material_biblio' => array(
+            '#type' => 'container',
+            '#attributes' => array(
+              'class' => array('bibdk-recommender-biblio'),
+            ),
+            'image_title' => array(
+              '#type' => 'html_tag',
+              '#tag' => 'span',
+              '#attributes' => array('class' => 'bibdk-recommender-biblio-title'),
+              '#value' => $image_title,
+            ),
+            'image_creator' => array(
+              '#type' => 'html_tag',
+              '#tag' => 'span',
+              '#attributes' => array('class' => 'bibdk-recommender-biblio-creator'),
+              '#value' => $image_creator,
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -93,13 +113,13 @@ function template_preprocess_bibdk_recommender_item(&$variables) {
         'image_title' => array(
           '#type' => 'html_tag',
           '#tag' => 'span',
-          '#attributes' => array('class' => 'bibdk-recommender-biblio-title'),
+          '#attributes' => array('class' => array('bibdk-recommender-biblio-title'), 'style'=>'color:black'),
           '#value' => $image_title,
         ),
         'image_creator' => array(
           '#type' => 'html_tag',
           '#tag' => 'span',
-          '#attributes' => array('class' => 'bibdk-recommender-biblio-creator'),
+          '#attributes' => array('class' => array('bibdk-recommender-biblio-creator')),
           '#value' => $image_creator,
         ),
       ),

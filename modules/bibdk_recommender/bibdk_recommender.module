@@ -68,7 +68,10 @@ function bibdk_recommender_theme() {
     'bibdk_recommender_svg' => array(
       'render element' => 'elements',
       'variables' => array(
+        'creator' => NULL,
+        'title' => NULL,
         'material_type' => NULL,
+        'fisk' => '',
       ),
       'file' => 'bibdk_recommender.theme.inc',
       'template' => 'theme/bibdk-recommender-svg',
