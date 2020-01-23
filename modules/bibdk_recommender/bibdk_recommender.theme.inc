@@ -40,6 +40,28 @@ function template_preprocess_bibdk_recommender_item(&$variables) {
     ),
   );
 
+  // biblio metadata - creator and title as render array
+  $biblio = array(
+    'material_biblio' => array(
+      '#type' => 'container',
+      '#attributes' => array(
+        'class' => array('bibdk-recommender-biblio'),
+      ),
+      'image_title' => array(
+        '#type' => 'html_tag',
+        '#tag' => 'span',
+        '#attributes' => array('class' => 'bibdk-recommender-biblio-title'),
+        '#value' => $image_title,
+      ),
+      'image_creator' => array(
+        '#type' => 'html_tag',
+        '#tag' => 'span',
+        '#attributes' => array('class' => 'bibdk-recommender-biblio-creator'),
+        '#value' => $image_creator,
+      ),
+    ),
+  );
+
   // Determine if the local id is a known negative. If so, don't trigger javascript.
   if ( cache_get('open_moreinfo:thumbnailUrl:' . $image_pid, 'cache') ) {
     $image_markup['#attributes']['class'][] = 'bibdk-recommender-cover-processed';
@@ -66,26 +88,7 @@ function template_preprocess_bibdk_recommender_item(&$variables) {
       'material_type_image' => array(
         '#theme' => 'bibdk_recommender_svg',
         '#material_type' => $image_type,
-        '#fisk' => array(
-          'material_biblio' => array(
-            '#type' => 'container',
-            '#attributes' => array(
-              'class' => array('bibdk-recommender-biblio'),
-            ),
-            'image_title' => array(
-              '#type' => 'html_tag',
-              '#tag' => 'span',
-              '#attributes' => array('class' => 'bibdk-recommender-biblio-title'),
-              '#value' => $image_title,
-            ),
-            'image_creator' => array(
-              '#type' => 'html_tag',
-              '#tag' => 'span',
-              '#attributes' => array('class' => 'bibdk-recommender-biblio-creator'),
-              '#value' => $image_creator,
-            ),
-          ),
-        ),
+        '#fisk' => $biblio,
       ),
     );
   }
@@ -105,24 +108,7 @@ function template_preprocess_bibdk_recommender_item(&$variables) {
   );
 
   $variables['elements']['#biblio'] = array(
-      'material_biblio' => array(
-        '#type' => 'container',
-        '#attributes' => array(
-          'class' => array('bibdk-recommender-biblio'),
-        ),
-        'image_title' => array(
-          '#type' => 'html_tag',
-          '#tag' => 'span',
-          '#attributes' => array('class' => array('bibdk-recommender-biblio-title'), 'style'=>'color:black'),
-          '#value' => $image_title,
-        ),
-        'image_creator' => array(
-          '#type' => 'html_tag',
-          '#tag' => 'span',
-          '#attributes' => array('class' => array('bibdk-recommender-biblio-creator')),
-          '#value' => $image_creator,
-        ),
-      ),
+      'material_biblio' => $biblio,
   );
 
 }
