@@ -71,7 +71,7 @@ function bibdk_recommender_theme() {
         'creator' => NULL,
         'title' => NULL,
         'material_type' => NULL,
-        'fisk' => '',
+        'title_creator' => '',
       ),
       'file' => 'bibdk_recommender.theme.inc',
       'template' => 'theme/bibdk-recommender-svg',

@@ -88,7 +88,7 @@ function template_preprocess_bibdk_recommender_item(&$variables) {
       'material_type_image' => array(
         '#theme' => 'bibdk_recommender_svg',
         '#material_type' => $image_type,
-        '#fisk' => $biblio,
+        '#title_creator' => $biblio,
       ),
     );
   }
