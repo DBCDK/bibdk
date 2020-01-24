@@ -17,11 +17,21 @@
   margin: 0.2rem;
 }
 
-.bibdk-recommender-carousel .bibdk-recommender-cover-placeholder {
-  height: 14rem;
-  padding: 0.2rem;
-  background-color: #f6f7f8;
-  overflow: hidden;
+@media screen and (max-width: 62.5em) {
+  .bibdk-recommender-carousel .bibdk-recommender-cover-placeholder {
+    padding: 0.2rem;
+    background-color: #f6f7f8;
+    overflow: hidden;
+    min-height: 9rem;
+  }
+}
+@media screen and (min-width: 62.5em) {
+  .bibdk-recommender-carousel .bibdk-recommender-cover-placeholder {
+    padding: 0.2rem;
+    background-color: #f6f7f8;
+    overflow: hidden;
+    min-height: 11rem;
+  }
 }
 
 .bibdk-recommender-carousel .slick__slide img {
@@ -59,8 +69,11 @@
   height: 100%;
 }
 
-.bibdk-recommender-carousel .slide__content .bibdk-recommender-material-type {
+.bibdk-recommender-carousel .slide__content .bibdk-recommender-material-type .svg-icon {
   opacity: 0.2;
+  position: absolute;
+  top:30%;
+  left:20%;
 }
 
 .bibdk-recommender-carousel .slide__content .bibdk-recommender-biblio {
@@ -73,6 +86,3 @@
   display: block;
 }
 
-.page-work .bibdk-recommender-carousel .bibdk-recommender-cover-placeholder {
-  height: 18rem;
-}
