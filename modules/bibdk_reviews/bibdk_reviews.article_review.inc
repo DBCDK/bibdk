@@ -112,7 +112,7 @@ function bibdk_reviews_article_view($manifestation) {
 
   $creator[] = array('#markup' => t('reviewed by !creator', array('!creator' => ''), array('context' => 'bibdk_reviews')));
   $display_version = variable_get('ting_search_openformat', 'bibliotekdkWorkDisplay');
-  $creator[] = ($display_version === 'bibdkWorkDisplay') ?
+  $creator[] = ($display_version === 'bibliotekdkWorkDisplay') ?
      _ting_openformat_parse_element($manifestation->getCreator()) :
      _ting_openformat_parse_element($manifestation->getContributorsNoFunction());
 
