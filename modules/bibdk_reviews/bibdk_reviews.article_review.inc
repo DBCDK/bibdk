@@ -96,7 +96,7 @@ function bibdk_reviews_article_view($manifestation) {
   }
 
   $rating = $manifestation->getReviewRatings();
-  $title_array = _ting_openformat_parse_element($manifestation->getTitle());
+  $title_array = _ting_openformat_parse_element($manifestation->getTitleSpecific());
   $title = drupal_render($title_array);
   $title_url = array(
     '#theme' => 'link',
@@ -111,7 +111,11 @@ function bibdk_reviews_article_view($manifestation) {
   );
 
   $creator[] = array('#markup' => t('reviewed by !creator', array('!creator' => ''), array('context' => 'bibdk_reviews')));
-  $creator[] = _ting_openformat_parse_element($manifestation->getCreator());
+  $display_version = variable_get('ting_search_openformat', 'bibliotekdkWorkDisplay');
+  $creator[] = ($display_version === 'bibdkWorkDisplay') ?
+     _ting_openformat_parse_element($manifestation->getCreator()) :
+     _ting_openformat_parse_element($manifestation->getContributorsNoFunction());
+
   $host_publication = $manifestation->getHostPublication();
   $publisher[] = array('#markup' => t('in !publisher', array('!publisher' => ''), array('context' => 'bibdk_reviews')));
   $publisher[] = isset($host_publication) ? _ting_openformat_parse_element($host_publication) : _ting_openformat_parse_element($manifestation->getPublisher());
@@ -135,7 +139,7 @@ function bibdk_reviews_article_view($manifestation) {
       ),
     );
   }
- 
+
   return array(
     '#theme' => 'bibdk_review_article_review',
     '#title' => $title_url,
