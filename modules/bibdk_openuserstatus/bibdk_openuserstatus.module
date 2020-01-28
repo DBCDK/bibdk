@@ -49,7 +49,8 @@ function bibdk_openuserstatus_menu() {
 function preview_openuserstatus() {
   $user_container['openuserstatus_info'] = array(
     '#type' => 'container',
-    '#attached' => array('js' => array(drupal_get_path('module', 'bibdk_openuserstatus') . '/js/bibdk_openuserstatus_ajax.js'),
+    '#attached' => array(
+      'js' => array(drupal_get_path('module', 'bibdk_openuserstatus') . '/js/bibdk_openuserstatus_ajax.js'),
     ),
   );
   $user_container['openuserstatus_info']['infotext'] =
@@ -64,13 +65,19 @@ function preview_openuserstatus() {
  * @return array
  */
 function bibdk_openuserstatus_mypage_link() {
+  if (module_exists('me')) {
+    $path = 'user/me/bibdk_openuserstatus';
+  }
+  else {
+    $path = 'user/%user/bibdk_openuserstatus';
+  }
 
-  $items['user/%user/bibdk_openuserstatus'] = array(
+  $items[$path] = array(
     'title' => t('Userstatus'),
     'description' => 'Status for user\'s loans and reservations',
     'page callback' => 'preview_openuserstatus',
     'access callback' => 'user_edit_access',
-    'access arguments'=> array(1),
+    'access arguments' => array(1),
     'weight' => 10,
   );
 
@@ -155,7 +162,7 @@ function bibdk_openuserstatus_request() {
     // if user has main branch AND local branch in favorites, use only main branch.
     $agency_main_id = $favourite->getAgencyMainId();
     if (
-         array_key_exists($agency_main_id, $favourites)
+      array_key_exists($agency_main_id, $favourites)
       && $agency_main_id != $agency_id
       && $favourites[$agency_main_id]->userData !== FALSE
     ) {
@@ -163,10 +170,10 @@ function bibdk_openuserstatus_request() {
     }
 
     // if user favorite branch mainlibrary allready exist in list continiue
-    if (!in_array($agency_main_id, $array_main_id))
-    {
+    if (!in_array($agency_main_id, $array_main_id)) {
       $array_main_id[] = $agency_main_id;
-    } else {
+    }
+    else {
       continue;
     }
 
@@ -213,8 +220,8 @@ function bibdk_openuserstatus_bibdk_reservation_complete($pids, $result) {
 /**
  * Returns favourite libraries
  *
- * @internal TingAgency $fav
  * @return mixed
+ * @internal TingAgency $fav
  */
 function bibdk_openuserstatus_get_favourites() {
   return bibdk_favourite_get_favourites();
@@ -222,6 +229,7 @@ function bibdk_openuserstatus_get_favourites() {
 
 /**
  * @param $agencyId
+ *
  * @return null|string
  */
 function bibdk_openuserstatus_get_agencyname($agencyId) {
@@ -236,6 +244,7 @@ function bibdk_openuserstatus_get_agencyname($agencyId) {
 
 /**
  * @param $agencyId
+ *
  * @return null|string
  */
 function bibdk_openuserstatus_get_agency_branch_name($agencyId) {
@@ -247,6 +256,7 @@ function bibdk_openuserstatus_get_agency_branch_name($agencyId) {
 
 /**
  * @param $agencyId
+ *
  * @return null|string
  */
 function bibdk_openuserstatus_get_agencyname_main($agencyId) {
@@ -269,7 +279,8 @@ function bibdk_openuserstatus_get_favourites_array() {
   $favourites = bibdk_favourite_get_favourites();
   $arr = array();
   foreach ($favourites as $favourite) {
-    $arr[$favourite->getBranch()->branchId] = $favourite->getBranch()->getBranchShortName($language->language);
+    $arr[$favourite->getBranch()->branchId] = $favourite->getBranch()
+      ->getBranchShortName($language->language);
   }
   return $arr;
 }
@@ -279,6 +290,7 @@ function bibdk_openuserstatus_get_favourites_array() {
  * Returns empty array if zero libraries are found
  *
  * @param string $agencyId
+ *
  * @return array
  */
 function bibdk_openuserstatus_get_pickup_agencies($agencyId) {
@@ -375,8 +387,10 @@ function bibdk_openuserstatus_parse_response($response) {
     if (isset($item['renewLoanError'])) {
       $error[$item['renewLoanError']][] = $material['author'] . ': ' . $material['title'];
     }
-    else if (isset($item['dateDue'])) {
-      $succes[] = $material['author'] . ': ' . $material['title'];
+    else {
+      if (isset($item['dateDue'])) {
+        $succes[] = $material['author'] . ': ' . $material['title'];
+      }
     }
   }
   bibdk_openuserstatus_renew_request_complete_set_messages($error, $succes);
@@ -387,6 +401,7 @@ function bibdk_openuserstatus_parse_response($response) {
  *
  * @param String $loanId
  * @param array $loanedItems
+ *
  * @return array
  */
 function bibdk_openuserstatus_get_material($loanId, $loanedItems) {
@@ -407,17 +422,21 @@ function bibdk_openuserstatus_get_material($loanId, $loanedItems) {
 function bibdk_openuserstatus_renew_request_complete_set_messages($error, $succes) {
   foreach ($error as $reason => $err) {
     if ($reason == 'Item not renewable') {
-      drupal_set_message(t('The following items are not renewable: %materials', array('%materials' => implode(', ', $err)), array('context' =>
-'bibdk_openuserstatus:error')), 'error');
+      drupal_set_message(t('The following items are not renewable: %materials', array('%materials' => implode(', ', $err)), array(
+        'context' =>
+          'bibdk_openuserstatus:error'
+      )), 'error');
     }
     else {
       drupal_set_message(t($reason . ' : %materials', array('%materials' => implode(', ', $err)), array('context' => 'bibdk_openuserstatus:error')),
-'error');
+        'error');
     }
   }
   if (count($succes) >= 1) {
     drupal_set_message(t('The following materials was sucessfully renewed: %materials', array('%materials' => implode(', ', $succes)), array
-('context' => 'bibdk_openuserstatus')), 'status');
+    (
+      'context' => 'bibdk_openuserstatus'
+    )), 'status');
   }
 }
 
@@ -456,6 +475,7 @@ function bibdk_openuserstatus_cancel_selected_submit($form, &$form_state) {
  *
  * @param $orderId
  * @param $reservations
+ *
  * @return array
  */
 function bibdk_openuserstatus_get_reservation($orderId, $reservations) {
@@ -478,8 +498,10 @@ function bibdk_openuserstatus_cancel_reservations($cancellations) {
     if (array_key_exists($agencyId, $favourites)) {
       $resp = $favourites[$agencyId]->cancelOrder($orderIds);
       if (isset($resp['error']) && !empty($resp['error'])) {
-        drupal_set_message(t('An error occured and your request could not be completed. Please try again later.', array(), array('context' =>
-'bibdk_openuserstatus:error')), 'error');
+        drupal_set_message(t('An error occured and your request could not be completed. Please try again later.', array(), array(
+          'context' =>
+            'bibdk_openuserstatus:error'
+        )), 'error');
       }
       else {
         drupal_set_message(t('Your order(s) was successfully canceled', array(), array('context' => 'bibdk_openuserstatus')), 'status');
@@ -496,6 +518,15 @@ function bibdk_openuserstatus_validate_user() {
   global $user;
   $userid = $user->uid;
   if ($userid > 1) {
-    drupal_goto( 'user/' . $userid . '/bibdk_openuserstatus');
+    $options = array();
+    if (!empty($_GET['page'])) {
+      $options['query'] = array('page' => $_GET['page']);
+    }
+    if (module_exists('me')) {
+      drupal_goto('user/me/bibdk_openuserstatus', $options);
+    }
+    else {
+      drupal_goto('user/' . $userid . '/bibdk_openuserstatus', $options);
+    }
   }
 }
