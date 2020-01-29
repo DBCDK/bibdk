@@ -274,7 +274,7 @@ function _bibdk_cart_pager_get_links($info) {
   if ($first_page > 1) {
     array_shift($links);
     array_unshift($links, '...');
-    array_unshift($links, l('10000', 'user/cart', array('query' => array('page' => 1))));
+    array_unshift($links, l('1', 'user/cart', array('query' => array('page' => 1))));
     array_unshift($links, l(t('< previous', array(), array('context' => 'bibdk_cart')), 'user/cart', array('query' => array('page' => $current_page - 1))));
   }
 
