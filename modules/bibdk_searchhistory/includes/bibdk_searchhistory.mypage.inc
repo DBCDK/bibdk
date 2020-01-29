@@ -18,7 +18,7 @@ function bibdk_searchhistory_bibdk_mypage_tabs($max_rows = 3) {
   $ret['bibdk_searchhistory']['rows']['values'] = bibdk_searchhistory_my_page_get_rows($max_rows);
   $ret['bibdk_searchhistory']['link'] = array(
     'title' => t('Go to search history'),
-    'href' => 'user/' . $user->uid . '/searchhistory',
+    'href' => module_exists('me') ? 'user/me/searchhistory' : 'user/' . $user->uid . '/searchhistory',
   );
   $ret['bibdk_searchhistory']['weight'] = 15;
   $ret['bibdk_searchhistory']['help_text_key'] = 'search_history_mypage_help_key';
