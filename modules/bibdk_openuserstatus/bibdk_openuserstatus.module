@@ -65,12 +65,7 @@ function preview_openuserstatus() {
  * @return array
  */
 function bibdk_openuserstatus_mypage_link() {
-  if (module_exists('me')) {
-    $path = 'user/me/bibdk_openuserstatus';
-  }
-  else {
-    $path = 'user/%user/bibdk_openuserstatus';
-  }
+  $path = 'user/%user/bibdk_openuserstatus';
 
   $items[$path] = array(
     'title' => t('Userstatus'),
