@@ -1,0 +1,1 @@
+O:8:"stdClass":3:{s:24:"checkOrderPolicyResponse";O:8:"stdClass":3:{s:13:"orderPossible";O:8:"stdClass":2:{s:1:"$";s:4:"true";s:1:"@";s:3:"ns1";}s:19:"orderPossibleReason";O:8:"stdClass":2:{s:1:"$";s:17:"not_owned_ILL_loc";s:1:"@";s:3:"ns1";}s:1:"@";s:3:"ns1";}s:1:"@";s:3:"ns2";s:8:"cacheKey";s:32:"5a553611f09b407e881060a65554b1dd";}
