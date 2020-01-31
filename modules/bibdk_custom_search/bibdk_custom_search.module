@@ -515,7 +515,8 @@ function _bibdk_custom_search_machine_readable($string) {
 
 /**
  * Renders a form button for each page in pages array
- * Obsolete in Bibliotek.dk
+ * Obsolete in Bibliotek.dk. Still used in Netpunkt, so let's keep it, in case
+ * we merge to a common module.
  *
  * @param string $req
  * @param array $pages
