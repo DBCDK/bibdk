@@ -48,7 +48,7 @@ function bibdk_provider_heimdal_login_creds($heimdalUser, $notify = null) {
   $username_to_use = bibdk_heimdal_provider_username_from_session($usernames);
 
 
-  // USE CASE one user is found from culr. We exported the user ouselves,
+  // USE CASE one user is found from culr. We exported the user ourselves,
   // so we know he is on openuserinfo - log him in
   if (!empty($username_to_use)) {
     // check or create user
