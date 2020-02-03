@@ -415,6 +415,7 @@ function _bibdk_custom_search_get_search_panel($page, $result, $default_values) 
       ),
       'data-type' => array($_GET['q']),
     ),
+    '#page' => $page['page_path'],
   );
 
   if ($is_visible) {

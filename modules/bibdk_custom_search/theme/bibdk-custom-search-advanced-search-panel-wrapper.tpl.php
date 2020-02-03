@@ -20,7 +20,7 @@
   </a>
 </div>
 <div id="search-advanced" class="<?php print $form['#collaps_hidden']; ?> show-for-large-up">
-  <div id="search-advanced-panel">
+  <div id="search-advanced-panel" data-selenium-page-id="<?php print $form['#page']; ?>" >
     <!-- ADVANCED SEARCH-->
     <?php print drupal_render_children($form); ?>
     <!-- END ADVANCED SEARCH-->
