@@ -249,7 +249,12 @@ function bibdk_modal_add_to_favorites_callback() {
     global $user;
     $url = "";
     if ($user->uid) {
-      $url = "user/$user->uid/bibdk_favourite_list";
+      if(module_exists('me')) {
+        $url = "user/me/bibdk_favourite_list";
+      }
+      else{
+        $url = "user/$user->uid/bibdk_favourite_list";
+      }
     }
     drupal_goto($url);
   }
@@ -272,7 +277,12 @@ function bibdk_modal_add_to_favorites_callback() {
   elseif (!empty($form_state['executed']) && !empty($form_state['submitted'])) {
     global $user;
     if ($user->uid) {
-      $url = "user/$user->uid/bibdk_favourite_list";
+      if(module_exists('me')) {
+        $url = "user/me/bibdk_favourite_list";
+      }
+      else{
+        $url = "user/$user->uid/bibdk_favourite_list";
+      }
       $commands[] = bibdk_modal_command_redirect($url, array());
     }
     else {

@@ -88,7 +88,7 @@ function bibdk_heimdal_verify_email_form_submit($form, &$form_state) {
   // save on database before sending email
   $key = heimdalDatabase::insert($mail, $agencies, $access_token);
   if ($key === FALSE) {
-    bibdk_heimdal_cleanup_and_exit(TRUE);
+    bibdk_heimdal_cleanup_and_exit(NULL,TRUE);
   }
 
   $row = heimdalDatabase::get($key);
@@ -97,7 +97,7 @@ function bibdk_heimdal_verify_email_form_submit($form, &$form_state) {
   }
   else {
     // this is an ajax submit - to redirect pass ajax to method
-    bibdk_heimdal_cleanup_and_exit(TRUE);
+    bibdk_heimdal_cleanup_and_exit(NULL,TRUE);
   }
   // an email has been sent - start from scratch .. almost
   unset($_SESSION['heimdal']);

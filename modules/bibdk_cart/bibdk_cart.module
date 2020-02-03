@@ -38,6 +38,7 @@ function bibdk_cart_menu() {
 
 /**
  * Implements hook_mypage_link().
+ *
  * @return array
  *
  * @see bibdk_mypage.api.php
@@ -72,9 +73,9 @@ function bibdk_cart_theme() {
         'fields' => array(),
         'pid' => '',
         'several_editions' => '',
-        'type_translated' => ''
+        'type_translated' => '',
       ),
-      'render_element' => 'elements'
+      'render_element' => 'elements',
     ),
   );
 }
@@ -84,6 +85,7 @@ function bibdk_cart_theme() {
  *
  * @param $form
  * @param $form_state
+ *
  * @return array
  */
 function bibdk_cart_view_form($form, &$form_state) {
@@ -95,7 +97,12 @@ function bibdk_cart_view_form($form, &$form_state) {
     if (!empty($_GET['page'])) {
       $options['query'] = array('page' => $_GET['page']);
     }
-    drupal_goto('user/' . $user->uid . '/cart', $options);
+    if (module_exists('me')) {
+      drupal_goto('user/me/cart', $options);
+    }
+    else {
+      drupal_goto('user/' . $user->uid . '/cart', $options);
+    }
   }
 
   //set titel
@@ -111,6 +118,7 @@ function bibdk_cart_view_form($form, &$form_state) {
  *
  * @param $form
  * @param $form_state
+ *
  * @return array
  */
 function bibdk_cart_get_form($form, &$form_state) {
@@ -144,7 +152,10 @@ function bibdk_cart_get_form($form, &$form_state) {
 
   $header = array(
     'manifestation' => t('bibdk_cart_header', array(), array('context' => 'bibdk_cart')),
-    'status' => array('data' => t('bibdk_cart_status', array(), array('context' => 'bibdk_cart')), 'class' => array('show-for-large-up')),
+    'status' => array(
+      'data' => t('bibdk_cart_status', array(), array('context' => 'bibdk_cart')),
+      'class' => array('show-for-large-up'),
+    ),
     'actions' => t('bibdk_cart_actions', array(), array('context' => 'bibdk_cart')),
   );
 
@@ -155,6 +166,8 @@ function bibdk_cart_get_form($form, &$form_state) {
     $pager['#value'] = $links = _bibdk_cart_pager_get_links($pager['#value']);
     $form['pager'] = $pager;
   }
+
+
   return $form;
 }
 
@@ -165,8 +178,9 @@ function bibdk_cart_get_form($form, &$form_state) {
  *
  * @param $total_num_pages
  * @param $current_page
- * @internal param int $cartcount
+ *
  * @return array
+ * @internal param int $cartcount
  */
 function _bibdk_cart_get_pager($total_num_pages, $current_page) {
 
@@ -234,6 +248,7 @@ function _bibdk_cart_get_pager($total_num_pages, $current_page) {
  * previous/next page buttons.
  *
  * @param $info
+ *
  * @return array
  */
 function _bibdk_cart_pager_get_links($info) {
@@ -247,12 +262,12 @@ function _bibdk_cart_pager_get_links($info) {
     $attributes = array();
     if ($i == $current_page) {
       $attributes['class'] = array(
-        'bold'
+        'bold',
       );
     }
-    $links[] = l($i, 'user/cart', array(
+    $links[] = l($i, "user/cart", array(
       'query' => array('page' => $i),
-      'attributes' => $attributes
+      'attributes' => $attributes,
     ));
   }
 
@@ -281,6 +296,7 @@ function _bibdk_cart_pager_get_links($info) {
  * @param $cart array
  * @param $items_per_page
  * @param $page
+ *
  * @return array
  */
 function bibdk_cart_get_items($cart, $items_per_page, $page) {
@@ -309,7 +325,9 @@ function bibdk_cart_get_items($cart, $items_per_page, $page) {
 
 /**
  * Add's all invoks of 'cart_actions' to primary an secondary action arrays
+ *
  * @param array $form
+ *
  * @return array $form
  */
 function bibdk_cart_get_actions($form) {
@@ -321,10 +339,10 @@ function bibdk_cart_get_actions($form) {
     $items_primary = array();
     $items_secondary = array();
     foreach ($actions as $action) {
-      if ($action['#action_type'] == 'primary' ) {
+      if ($action['#action_type'] == 'primary') {
         $items_primary[] = drupal_render($action);
       }
-      if ($action['#action_type'] == 'secondary' ) {
+      if ($action['#action_type'] == 'secondary') {
         $items_secondary[] = drupal_render($action);
       }
     }
@@ -334,7 +352,7 @@ function bibdk_cart_get_actions($form) {
       '#items' => $items_primary,
       '#type' => 'ul',
       '#attributes' => array(
-        'class' => array('cart-view-secondary-actions', 'cart-actions')
+        'class' => array('cart-view-secondary-actions', 'cart-actions'),
       ),
       '#attached' => array(
         'js' => array(
@@ -348,13 +366,13 @@ function bibdk_cart_get_actions($form) {
       '#items' => $items_secondary,
       '#type' => 'ul',
       '#attributes' => array(
-        'class' => array('cart-view-secondary-actions', 'cart-actions')
+        'class' => array('cart-view-secondary-actions', 'cart-actions'),
       ),
     );
 
   } // end empty actions
 
- return $form;
+  return $form;
 }
 
 /** Implements hook_ting_openformat_actions
@@ -364,6 +382,7 @@ function bibdk_cart_get_actions($form) {
  * @param $entity
  * @param $view_mode
  * @param $langcode
+ *
  * @return array
  */
 function bibdk_cart_ting_openformat_actions($type, $entity, $view_mode, $langcode) {
@@ -378,6 +397,7 @@ function bibdk_cart_ting_openformat_actions($type, $entity, $view_mode, $langcod
  * @param array $header
  * @param array $items
  * @param array $form
+ *
  * @return array $form
  */
 function _bibdk_cart_get_cart_table($header, $items, $form) {
@@ -445,6 +465,7 @@ function bibdk_cart_set_manifestations(&$cart) {
  * Get manifestations
  *
  * @param $pids array
+ *
  * @return array manifestations
  */
 function bibdk_cart_get_manifestations($pids) {
@@ -463,6 +484,7 @@ function bibdk_cart_get_manifestations($pids) {
  *
  * @param Manifestation $manifestation
  * @param $pids
+ *
  * @return array
  */
 function bibdk_cart_manifestation_view($manifestation, $pids) {
@@ -474,12 +496,14 @@ function bibdk_cart_manifestation_view($manifestation, $pids) {
     $view['action'] = $view['#actions']['reservation']['#markup'];
     unset($view['#fields']['bibdk_mani_reservation_button']);
   }
-  else if (isset($view['#fields']['bibdk_reservation_info'][0]['#markup'])) {
-    $view['action'] = $view['#fields']['bibdk_reservation_info'][0]['#markup'];
-    unset($view['#fields']['bibdk_reservation_info']);
-  }
   else {
-    $view['action'] = t('cannot_reservate');
+    if (isset($view['#fields']['bibdk_reservation_info'][0]['#markup'])) {
+      $view['action'] = $view['#fields']['bibdk_reservation_info'][0]['#markup'];
+      unset($view['#fields']['bibdk_reservation_info']);
+    }
+    else {
+      $view['action'] = t('cannot_reservate');
+    }
   }
 
   $sub_type = $manifestation->getSubType();
@@ -505,7 +529,7 @@ function _bibdk_cart_no_manifestation_view($pids) {
       'bibdk_mani_title' => array(
         0 => array(
           '#markup' => t('manifestation_is_not_on_service'),
-        )
+        ),
 
       ),
     ),
@@ -513,7 +537,6 @@ function _bibdk_cart_no_manifestation_view($pids) {
   );
 
 }
-
 
 
 /**
@@ -581,6 +604,7 @@ function bibdk_cart_reservation_update_status($status, $pids) {
  *
  * @param $type string
  * @param $ids array
+ *
  * @return array
  */
 function bibdk_cart_order_any_btn_lists($type, $ids) {
@@ -590,7 +614,7 @@ function bibdk_cart_order_any_btn_lists($type, $ids) {
   $link['#options']['attributes']['aria-label'] = $material_type;
 
   $item = array(
-    'cart' => $link
+    'cart' => $link,
   );
   return $item;
 }

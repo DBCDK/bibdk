@@ -315,7 +315,7 @@ function bibdk_heimdal_user_logout() {
  * @param bool $ajax
  *   Do an ajax redirect or not
  */
-function bibdk_heimdal_do_logout($url = 'heimdal/logout', $ajax = fALSE) {
+function bibdk_heimdal_do_logout($url = 'heimdal/logout', $ajax = FALSE) {
   if (isset($_SESSION['heimdal'])) {
     $return_uri = bibdkHeimdalHelpers::bibdk_heimdal_get_full_url($url);
     $access_token = isset($_SESSION['heimdal']['access_token']) ? $_SESSION['heimdal']['access_token'] : FALSE;
@@ -331,9 +331,10 @@ function bibdk_heimdal_do_logout($url = 'heimdal/logout', $ajax = fALSE) {
     }
 
     if ($ajax) {
+      // this one is called on errors - see bibdk_heimdal_cleanup_and_exit
       bibdk_heimdal_forms_ctools_redirect($path);
     }
-
+    // all is well - redirect to heimdal for logout
     drupal_goto($path);
   }
 }
