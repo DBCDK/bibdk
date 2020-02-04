@@ -39,7 +39,7 @@ function bibdk_heimdal_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('bibdk_heimdal_select_email_form'),
     'file' => 'includes/bibdk_heimdal_forms.inc',
-    'access callback' => 'user_is_logged_in',
+    'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
 
@@ -67,7 +67,7 @@ function bibdk_heimdal_menu() {
     'title' => t('Logout', array(), array('context' => 'heimdal')),
     'description' => t('Log out of heimdal'),
     'page callback' => 'bibdk_heimdal_custom_drupal_logout',
-    'access callback' => 'user_is_logged_in',
+    'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
 
@@ -75,7 +75,7 @@ function bibdk_heimdal_menu() {
     'title' => t('Logout', array(), array('context' => 'heimdal')),
     'description' => t('Log out of heimdal'),
     'page callback' => 'bibdk_heimdal_single_logout',
-    'access callback' => 'user_is_logged_in',
+    'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
 
