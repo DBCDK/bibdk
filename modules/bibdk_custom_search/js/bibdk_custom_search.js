@@ -36,12 +36,14 @@
         // Move to first input field in expanded search, if activated.
         if($("#custom-search--advanced-toggle").hasClass("toggled") === true) {
           $("#edit-advanced").removeClass("is-visible");
+          $("#search-panel").addClass("show-advanced-toggled");
           $("form#search-block-form input[name=\"search_block_form\"]")
             .not('.page-search form#search-block-form input[name="search_block_form"], .page-vejviser form#search-block-form input[name="search_block_form"]')
             .focus();
         }
         else {
           $("#edit-advanced").addClass("is-visible");
+          $("#search-panel").removeClass("show-advanced-toggled");
           $("form#search-block-form").find(".bibdk-custom-search-element input[type=text], .bibdk-custom-search-element textarea").filter(":visible:first").focus();
         }
       });
