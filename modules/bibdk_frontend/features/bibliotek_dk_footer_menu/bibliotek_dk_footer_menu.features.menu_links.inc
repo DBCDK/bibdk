@@ -247,10 +247,10 @@ function bibliotek_dk_footer_menu_menu_default_menu_links() {
     'external' => 1,
     'has_children' => 0,
     'expanded' => 0,
-    'weight' => -47,
-    'customized' => 0,
+    'weight' => -46,
+    'customized' => 1,
     'language' => 'und',
-    'menu_links_customized' => 0,
+    'menu_links_customized' => 1,
   );
   // Exported menu link: menu-footer-menu-eng_help:overlay/help.
   $menu_links['menu-footer-menu-eng_help:overlay/help'] = array(
@@ -278,6 +278,36 @@ function bibliotek_dk_footer_menu_menu_default_menu_links() {
     'language' => 'und',
     'menu_links_customized' => 0,
   );
+  // Exported menu link: menu-footer-menu-eng_privacy-policy:overlay/help/33.
+  $menu_links['menu-footer-menu-eng_privacy-policy:overlay/help/33'] = array(
+    'menu_name' => 'menu-footer-menu-eng',
+    'link_path' => 'overlay/help/33',
+    'router_path' => 'overlay/help',
+    'link_title' => 'Privacy policy',
+    'options' => array(
+      'fragment' => 'bestil',
+      'attributes' => array(
+        'title' => '',
+      ),
+      'devicetypes' => array(
+        'devicesize_small' => 1,
+        'devicesize_medium' => 1,
+        'devicesize_large' => 1,
+        'devicesize_xlarge' => 1,
+        'devicesize_xxlarge' => 1,
+      ),
+      'identifier' => 'menu-footer-menu-eng_privacy-policy:overlay/help/33',
+    ),
+    'module' => 'menu',
+    'hidden' => 0,
+    'external' => 0,
+    'has_children' => 0,
+    'expanded' => 0,
+    'weight' => -47,
+    'customized' => 1,
+    'language' => 'und',
+    'menu_links_customized' => 1,
+  );
 
   // Translatables
   // Included for use with string extractors like potx.
@@ -290,6 +320,7 @@ function bibliotek_dk_footer_menu_menu_default_menu_links() {
   t('Kontakt');
   t('Om bibliotek.dk');
   t('Presserum');
+  t('Privacy policy');
   t('Privatlivspolitik');
 
   return $menu_links;

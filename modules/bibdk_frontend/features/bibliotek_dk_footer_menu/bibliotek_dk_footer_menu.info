@@ -19,3 +19,4 @@ features[menu_links][] = menu-footer-menu-eng_about-bibliotekdk:overlay/help/29
 features[menu_links][] = menu-footer-menu-eng_contact:overlay/help/14
 features[menu_links][] = menu-footer-menu-eng_dansk:<front>
 features[menu_links][] = menu-footer-menu-eng_help:overlay/help
+features[menu_links][] = menu-footer-menu-eng_privacy-policy:overlay/help/33
