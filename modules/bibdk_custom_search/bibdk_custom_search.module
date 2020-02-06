@@ -270,13 +270,28 @@ function bibdk_custom_search_form_search_block_form_alter(&$form, &$form_state, 
   // form_build_id and form_token
   $form['#method'] = 'get';
   $search_info = search_get_default_module_info();
-  $form['#action'] = url('search/' . $search_info['path'], array('fragment' => 'content'));
+  $form['#action'] = url('search/' . $search_info['path']);
 
   // Set default value of main search field
   $default_value = (isset($_REQUEST['search_block_form'])) ? $_REQUEST['search_block_form'] : $form['search_block_form']['#default_value'];
   $form['search_block_form']['#default_value'] = $default_value;
   $form['search_block_form']['#attributes']['placeholder'] = t('placeholder_text', array(), array('context' => 'bibdk_custom_search'));
   $form['search_block_form']['#attributes']['class'][] = 'search-block-form';
+  // $form['search_block_label'] = t('Søg,&nbsp;find&nbsp;og&nbsp;lån fra&nbsp;alle&nbsp;Danmarks&nbsp;biblioteker', array(), array('context' => 'bibdk_custom_search'));
+  $form['search_block_label'] = array(
+    'first' => array(
+      '#type' => 'html_tag',
+      '#tag' => 'span',
+      '#attributes' => array('class' => 'search-block-label-inner'),
+      '#value' => t('search_block_label_first', array(), array('context' => 'bibdk_custom_search')),
+    ),
+    'second' => array(
+      '#type' => 'html_tag',
+      '#tag' => 'span',
+      '#attributes' => array('class' => 'search-block-label-inner'),
+      '#value' => t('search_block_label_second', array(), array('context' => 'bibdk_custom_search')),
+    ),
+  );
 
   // Define page_id
   $page_id = (isset($_GET['page_id'])) ? $_GET['page_id'] : ((isset($_GET['q'])) ? $_GET['q'] : NULL);
@@ -289,8 +304,7 @@ function bibdk_custom_search_form_search_block_form_alter(&$form, &$form_state, 
   $pages = _bibdk_custom_search_get_pages_db();
   // Gets the searchpages navigationbar if pages exists
   if ($pages) {
-    $form['searchpages'] = _bibdk_custom_search_get_searchpage_buttons($page_id, $pages);
-    $form['select_material_type'] = _bibdk_custom_search_get_mobile_material_selector($page_id, $pages);
+    $form['select_material_type'] = _bibdk_custom_search_get_page_selector($page_id, $pages);
   }
 
   // Gets the advances search fields if they exists
@@ -309,24 +323,27 @@ function bibdk_custom_search_form_search_block_form_alter(&$form, &$form_state, 
 }
 
 /**
- * Generates a select dropdown form element to contain materials. To be shown
- * on smaller devices only.
+ * Generates a select dropdown form element to contain materials.
  *
  * @param $page_id
  * @param $pages
  * @return array
  */
-function _bibdk_custom_search_get_mobile_material_selector($page_id, $pages) {
+function _bibdk_custom_search_get_page_selector($page_id, $pages) {
   $options = array();
 
   foreach ($pages as $page) {
     $key = $page['href'];
-    $value = $page['title'];
-    $options[$key] = $value;
+    $options[$key] = $page['title'];
   }
 
   $select = array(
     '#type' => 'select',
+    '#attributes' => array(
+      'id' => 'edit-select-material-type',
+      'data-js-id' => 'js-select-material-type',
+      'class' => array('select-material-type')
+    ),
     '#options' => $options,
     '#default_value' => $page_id,
   );
@@ -398,6 +415,7 @@ function _bibdk_custom_search_get_search_panel($page, $result, $default_values) 
       ),
       'data-type' => array($_GET['q']),
     ),
+    '#page' => $page['page_path'],
   );
 
   if ($is_visible) {
@@ -465,7 +483,7 @@ function _bibdk_custom_search_is_advanced_search_expanded($get) {
 }
 
 /**
- * Strips a string for spaces and lowersaces it
+ * Strips a string for spaces and lower space it
  *
  * @param string $string
  * @return string
@@ -498,6 +516,8 @@ function _bibdk_custom_search_machine_readable($string) {
 
 /**
  * Renders a form button for each page in pages array
+ * Obsolete in Bibliotek.dk. Still used in Netpunkt, so let's keep it, in case
+ * we merge to a common module.
  *
  * @param string $req
  * @param array $pages
@@ -529,10 +549,13 @@ function _bibdk_custom_search_get_searchpage_buttons($req, $pages) {
  * @return array render array
  */
 function bibdk_custom_search_searchpage_button_link($text, $path, $class = '') {
+
+  $link_path = ((isset($_GET['search_block_form']) && !empty($_GET['search_block_form']))) ? 'search/work' : $path;
+
   $link = array(
     '#theme' => 'link',
     '#text' => $text,
-    '#path' => $path,
+    '#path' => $link_path,
     '#options' => array(
       'attributes' => array(
         'id' => 'custom-search-page-link-' . _bibdk_custom_search_trim_string($text),
@@ -542,10 +565,16 @@ function bibdk_custom_search_searchpage_button_link($text, $path, $class = '') {
     ),
   );
 
+  // This is used for the selection of material type below the search field.
+  // It will transfer the searched text to the other search page.
+  if (isset($_GET['search_block_form']) && !empty($_GET['search_block_form'])) {
+    $link['#options']['query']['search_block_form'] = check_plain($_GET['search_block_form']);
+    $link['#options']['query']['select_material_type'] = $path;
+  }
+
   if (!empty($class)) {
     $link['#options']['attributes']['class'][] = $class;
   }
-
   return $link;
 }
 
