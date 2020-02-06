@@ -130,12 +130,8 @@ function bibdk_custom_search_user_settings($tab) {
     }
     return bibdk_usersettings_user_settings_get($key_search, NULL);
   }
-  else
-  {
-    if ($tab == 'bibdk_frontpage') {
-       return NULL;
-    }
-    return $tab;
+  else {
+    return NULL;
   }
 }
 

@@ -178,7 +178,12 @@ function _bibdk_reservation_get_userstatus_link($pickUpAgency) {
     }
   } else if(bibdk_reservation_user_is_logged_in()){
     global $user;
-    $url = 'user/' . $user->uid . '/bibdk_openuserstatus';
+    if(module_exists('me')){
+      $url = 'user/me/bibdk_openuserstatus';
+    }
+    else {
+      $url = 'user/' . $user->uid . '/bibdk_openuserstatus';
+    }
   } else {
     return $msg;
   }
