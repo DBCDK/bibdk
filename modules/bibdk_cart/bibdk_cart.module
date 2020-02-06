@@ -433,14 +433,11 @@ function bibdk_cart_set_manifestations(&$cart) {
   $manifestations = array();
   /**
    * We get all manifestations, in order to check if one of the manifestations is reservable
-   * TODO: refactor to make this a cleaner solution
    */
-  foreach ($ids as $id) {
-    $manifestation = bibdk_cart_get_manifestations(array($id));
-    if (is_array($manifestation) && count($manifestation)) {
-      foreach ($manifestation as $key => $val) {
-        $manifestations[$key] = $val;
-      }
+  $manifestations = bibdk_cart_get_manifestations($ids);
+  foreach ($manifestations as $key => $manifestation) {
+    if (empty($manifestation) || empty($key)) {
+      unset($manifestations[$key]);
     }
   }
 
@@ -625,4 +622,3 @@ function bibdk_cart_order_any_btn_lists($type, $ids) {
 function bibdk_cart_user_help_list() {
   return array('cart_mypage_help_key' => 'cart_mypage_help_label');
 }
-
