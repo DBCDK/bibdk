@@ -155,7 +155,6 @@ function bibdk_heimdal_do_insert_culr($row) {
     return bibdk_heimdal_get_nogo_response();
   }
 
-
   $borrowerId = $agency['userId'];
   $uidType = $agency['userIdType'];
   $xml = BibdkUser::instance()->insertCulr($mail, $borrowerId, $uidType);
@@ -187,7 +186,7 @@ function bibdk_heimdal_get_nogo_response() {
  */
 function bibdk_heimdal_get_unique_agency(array $agencies){
   foreach($agencies as $agency){
-    if(isset($agency['userIdType']) && ($agency['userIdType'] === 'CPR' || $agency['userIdType'] === 'CVR' )){
+    if(isset($agency['userIdType']) && ($agency['userIdType'] === 'CPR' || $agency['userIdType'] === 'CVR')){
       return $agency;
     }
   }

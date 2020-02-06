@@ -276,11 +276,39 @@ function bibdk_heimdal_get_heimdal_user() {
   return NULL;
 }
 
+/**
+ * Check attributes from culr
+ *
+ * @param $attributes
+ *
+ * @return bool
+ *  whether or not to continue login flow
+ */
 function bibdk_heimdal_check_culr_user($attributes) {
   if (empty($attributes['attributes']['agencies'])) {
     bibdk_heimdal_cleanup_and_exit(bibdk_heimdal_pages_no_culr_message());
   }
+  // check if we can handle this user
+  if(!bibdk_heimdal_check_culr_agencies($attributes['attributes']['agencies'])){
+    bibdk_heimdal_cleanup_and_exit(bibdk_heimdal_pages_no_culr_message());
+  }
   return TRUE;
+}
+
+/**
+ * Check if one of given agencies holds a valid userIdType
+ *
+ * @param array $agencies
+ *
+ * @return bool
+ */
+function bibdk_heimdal_check_culr_agencies($agencies){
+  foreach($agencies as $agency){
+    if(isset($agency['userIdType']) && ($agency['userIdType'] === 'CPR' || $agency['userIdType'] === 'CVR')){
+      return TRUE;
+    }
+  }
+  return FALSE;
 }
 
 /**
