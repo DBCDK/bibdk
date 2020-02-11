@@ -11,7 +11,7 @@ class BibdkGdprTestCase extends DrupalWebTestCase {
     return array(
       'name' => 'Bibdk : GDPR',
       'description' => 'Bibdk : General Data Protection Regulation webtests.',
-      'group' => 'bibliotek.dk',
+      'group' => 'Bibliotek.dk',
     );
   }
 

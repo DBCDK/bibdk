@@ -1,0 +1,8 @@
+<?php
+/**
+ * @file
+ * Drupal needs this blank file.
+ */
+function bibliotek_dk_offcanvas_menu_update_7001() {
+  menu_link_delete(NULL, 'http://statsbiblioteket.dk/videnskabeligeartikler/');
+}
