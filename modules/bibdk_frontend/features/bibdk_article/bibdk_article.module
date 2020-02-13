@@ -7,6 +7,23 @@
 include_once 'bibdk_article.features.inc';
 
 /**
+ * Implements hook_menu().
+ */
+ /*
+function bibdk_article_menu() {
+  $items['bibdk_article/searchpage_callback'] = array(
+    'title' => 'Get the article view by AJAX',
+    'type' => MENU_CALLBACK,
+    'page callback' => 'bibdk_article_get_view',
+    'file' => 'bibdk_article.ajax.inc',
+    'delivery callback' => 'drupal_json_output',
+    'access arguments' => array('access content'),
+  );
+  return $items;
+}
+*/
+
+/**
  * Implement hook_form _FORM_ID_alter (bibdk-article-node-form)
  *
  * hide deprecated fields

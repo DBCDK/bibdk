@@ -11,6 +11,7 @@ dependencies[] = list
 dependencies[] = strongarm
 dependencies[] = taxonomy
 dependencies[] = entity
+scripts[] = js/bibdk_article_get_articles.js
 features[ctools][] = strongarm:strongarm:1
 features[features_api][] = api:1
 features[field][] = node-bibdk_article-body

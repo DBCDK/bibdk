@@ -35,6 +35,7 @@ function bibliotek_dk_offcanvas_menu_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-50',
   );
+  /*
   // Exported menu link: menu-offcanvas-menu-da:http://statsbiblioteket.dk/videnskabeligeartikler/
   $menu_links['menu-offcanvas-menu-da:http://statsbiblioteket.dk/videnskabeligeartikler/'] = array(
     'menu_name' => 'menu-offcanvas-menu-da',
@@ -60,6 +61,7 @@ function bibliotek_dk_offcanvas_menu_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-44',
   );
+  */
   // Exported menu link: menu-offcanvas-menu-da:overlay/help
   $menu_links['menu-offcanvas-menu-da:overlay/help'] = array(
     'menu_name' => 'menu-offcanvas-menu-da',
@@ -235,6 +237,7 @@ function bibliotek_dk_offcanvas_menu_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-50',
   );
+  /*
   // Exported menu link: menu-offcanvas-menu-eng:http://statsbiblioteket.dk/videnskabeligeartikler/
   $menu_links['menu-offcanvas-menu-eng:http://statsbiblioteket.dk/videnskabeligeartikler/'] = array(
     'menu_name' => 'menu-offcanvas-menu-eng',
@@ -260,6 +263,7 @@ function bibliotek_dk_offcanvas_menu_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-44',
   );
+  */
   // Exported menu link: menu-offcanvas-menu-eng:overlay/help
   $menu_links['menu-offcanvas-menu-eng:overlay/help'] = array(
     'menu_name' => 'menu-offcanvas-menu-eng',
