@@ -13,7 +13,7 @@ def DISTROPATH = "https://raw.github.com/DBCDK/bibdk/develop/distro.make"
 
 pipeline {
   agent {
-    node { label 'devel8-head' }
+    node { label 'devel9-head' }
   }
   options {
     buildDiscarder(logRotator(artifactDaysToKeepStr: "", artifactNumToKeepStr: "", daysToKeepStr: "", numToKeepStr: "5"))
@@ -26,6 +26,7 @@ pipeline {
     stage('build and stash bibdk code') {
       agent {
         docker {
+          label "devel9-head"
           image "docker-dscrum.dbc.dk/d7-php7-builder:latest"
           alwaysPull true
         }
@@ -58,7 +59,7 @@ pipeline {
 
     stage('Docker: Drupal Site') {
       agent {
-        node { label 'devel8-head' }
+        node { label 'devel9-head' }
       }
       steps {
         dir('docker/www') {
@@ -89,7 +90,7 @@ pipeline {
     // delete from sessions where to_timestamp(timestamp) < now() - INTERVAL '1 DAY';
     stage('Docker: Drupal database') {
       agent {
-        node { label 'devel8-head' }
+        node { label 'devel9-head' }
       }
       steps {
         dir('docker/db') {
