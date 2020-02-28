@@ -128,7 +128,8 @@ function bibdk_reservation_order_any_edition_link($collection, $work_types, $uid
             '#markup' => $mat_type,
           ),
           '#attributes' => array(),
-          '#svg' => $svg,
+          '#svg' => isset($svg) ? $svg : '',
+          '#title' => $mat_type,
         ),
       );
       $row['order_mat']['data'] = array(
@@ -147,6 +148,7 @@ function bibdk_reservation_order_any_edition_link($collection, $work_types, $uid
         ),
         '#attributes' => array('class'=>array('mat-type')),
         '#svg' => $svg,
+        '#title' => $mat_type,
       );
       $row['order_mat']['data'] = _bibdk_reservation_create_type_button($mat_type, $ids, $uid);
     }
