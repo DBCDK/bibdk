@@ -359,6 +359,12 @@ function _bibdk_custom_search_get_page_selector($page_id, $pages) {
  */
 function _bibdk_custom_search_get_advanced_fields_form($destination = FALSE) {
 
+  // Set advanced dropdown on work landing pages.
+  $position = strpos($destination, 'work/');
+  if ($position !== false) {
+    $destination = 'bibdk_frontpage';
+  }
+
   // get search page
   $page = _bibdk_custom_search_get_page_db($destination);
   if (empty($page)) {
