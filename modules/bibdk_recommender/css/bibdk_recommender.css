@@ -52,8 +52,8 @@
 }
 
 .bibdk-recommender-carousel .slide__content svg {
-  width: 50%;
-  height: 6.667rem;
+  width: 150%;
+  height: auto;
 }
 
 /* needs to have a higher weight than .work .svg-icon */
