@@ -52,7 +52,7 @@
 }
 
 .bibdk-recommender-carousel .slide__content svg {
-  width: 150%;
+  width: 50%;
   height: auto;
 }
 
@@ -72,7 +72,7 @@
 .bibdk-recommender-carousel .slide__content .bibdk-recommender-material-type .svg-icon {
   opacity: 0.2;
   position: absolute;
-  top:30%;
+  top:20%;
   left:20%;
 }
 
