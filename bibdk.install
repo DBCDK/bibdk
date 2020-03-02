@@ -661,3 +661,9 @@ function bibdk_update_7064() {
   $modules = array('bibdk_gdpr');
   module_disable($modules);
 }
+
+/** Disable biblioteksvagten embed popup (temporarily) */
+function bibdk_update_7065() {
+  $modules = array('ask_vopros');
+  module_disable($modules);
+}
