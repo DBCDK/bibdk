@@ -46,7 +46,7 @@ def get_deploys():
   @TODO bibdk_config/jenkins/kubeconfig.yaml which is used here
   '''
   conf = config.load_kube_config(config_file='kubeconfig.yaml')
-  api_instance = client.AppsV1beta1Api(client.ApiClient(conf))
+  api_instance = client.AppsV1Api(client.ApiClient(conf))
   api_response = api_instance.list_namespaced_deployment("frontend-features")
 
   delete_me=[]

@@ -237,7 +237,7 @@ function bibdk_facetbrowser_get_facet_link($facet, $name, $count, $hidden = FALS
   $link = array(
     '#theme' => 'link',
     '#text' => $term_name_short . ' <span class="count">' . $hit_txt . '</span>',
-    '#path' => $base_root . _bibdk_facetbrowser_parseSelectionUri($uri, $facets_string),
+    '#path' => $base_root . _bibdk_facetbrowser_parseSelectionUri($uri, $facets_string) . '#content',
     '#options' => array(
       'attributes' => array(
         'title' => $term_name_title,
@@ -756,7 +756,6 @@ function bibdk_facetbrowser_facets_by_ajax() {
  * @return array
  */
 function bibdk_facetbrowser_get_actions_unfold($facet, $title) {
-
   $field_set = array(
     '#type' => 'fieldset',
     '#title' => t($title, array(), array('context' => 'facet_titles')),
