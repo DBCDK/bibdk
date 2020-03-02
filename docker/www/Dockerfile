@@ -17,10 +17,9 @@ RUN apt-key add indexdata.asc
 COPY yaz.list /etc/apt/sources.list.d/
 
 RUN apt-get update && \
-  #apt-get -q -y install cron logrotate php-gd php-pear wget php-soap php-yaml make php-dev rsyslog sudo wget msmtp postgresql-client libyaz yaz libyaz5-dev && \
-  apt-get -q -y install cron logrotate php-gd php-pear wget php-soap php-yaml make php-dev rsyslog sudo wget msmtp postgresql-client  && \
+  apt-get -q -y install cron logrotate php-gd php-pear wget php-soap php-yaml make php-dev rsyslog sudo wget msmtp postgresql-client libyaz yaz libyaz5-dev && \
   pecl channel-update pecl.php.net && \
-  #pecl install yaz && \
+  pecl install yaz && \
   rm -rf /var/lib/apt/lists/* && \
   wget -q https://github.com/drush-ops/drush/releases/download/8.2.3/drush.phar && \
   php drush.phar core-status && \
