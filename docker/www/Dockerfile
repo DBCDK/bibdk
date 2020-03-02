@@ -1,4 +1,4 @@
-FROM docker.dbc.dk/dbc-apache-php7:old-202006
+FROM docker.dbc.dk/dbc-apache-php7
 MAINTAINER D-scrum <d-scrum@dbc.dk>
 
 # set environment variables
@@ -17,7 +17,7 @@ RUN apt-key add indexdata.asc
 COPY yaz.list /etc/apt/sources.list.d/
 
 RUN apt-get update && \
-  apt-get -q -y install cron logrotate php-gd php-pear wget php-soap php-yaml make php-dev rsyslog sudo wget ssmtp postgresql-client yaz libyaz5-dev && \
+  apt-get -q -y install cron logrotate php-gd php-pear wget php-soap php-yaml make php-dev rsyslog sudo wget msmtp postgresql-client yaz libyaz5-dev && \
   pecl channel-update pecl.php.net && \
   pecl install yaz && \
   rm -rf /var/lib/apt/lists/* && \
