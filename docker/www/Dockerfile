@@ -44,7 +44,7 @@ ADD fqdn.conf /etc/apache2/conf-available
 COPY apache_security.conf /etc/apache2/conf-enabled/
 COPY run-tests-jenkins.sh $APACHE_ROOT/scripts
 COPY run-tests-xunit.sh $APACHE_ROOT/scripts
-COPY ssmtp.conf /etc/ssmtp/
+COPY msmtprc /etc/
 COPY 20-yaz.ini /etc/php/7.0/apache2/conf.d/
 
 RUN mkdir -p $APACHE_ROOT/private && \
