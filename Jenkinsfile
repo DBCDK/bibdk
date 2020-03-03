@@ -118,8 +118,6 @@ pipeline {
     stage('Push to artifactory ') {
       steps {
         script {
-          // we only push to artifactory if we are handling develop or master branch
-          //
           def artyServer = Artifactory.server 'arty'
           def artyDocker = Artifactory.docker server: artyServer, host: env.DOCKER_HOST
           def buildInfo_db = Artifactory.newBuildInfo()
@@ -155,14 +153,13 @@ pipeline {
             	docker rmi ${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:${currentBuild.number}
             	docker rmi ${DOCKER_REPO}/${PRODUCT}-db-${BRANCH}:${currentBuild.number}
             """
-          // we need a latest tag for development setup
+          // cleanup development setup
           if (BRANCH == 'develop') {
              sh """
                 docker rmi ${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:latest
                 docker rmi ${DOCKER_REPO}/${PRODUCT}-db-${BRANCH}:latest
                """
            }
-          // }
         }
       }
     }

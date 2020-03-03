@@ -1,4 +1,4 @@
-FROM docker.dbc.dk/dbc-apache-php7
+FROM docker.dbc.dk/dbc-apache-php7:old-202006
 MAINTAINER D-scrum <d-scrum@dbc.dk>
 
 # set environment variables
