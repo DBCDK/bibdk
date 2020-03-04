@@ -20,7 +20,7 @@ class bibdkHeimdalHelpers {
     else {
       $protocol = 'http://';
     }
-    $host = $_SERVER['SERVER_NAME'];
+    $host = $_SERVER['HTTP_HOST'];
     $drupal_path = base_path();
     return $protocol . $host . $drupal_path . $relative_path;
   }

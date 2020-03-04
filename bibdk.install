@@ -39,7 +39,6 @@ function _bibdk_enable_modules() {
     'bibdk_favourite',
     'bibdk_frontend',
     'bibdk_furthersearch',
-    'bibdk_gdpr',
     'bibdk_heimdal',
     'bibdk_help',
     'bibdk_linkme',
@@ -655,4 +654,16 @@ function bibdk_update_7062() {
 function bibdk_update_7063() {
   $modules = array('bibdk_manifestation_fields');
   module_enable($modules);
+}
+
+/** Enable manifestation display fields */
+function bibdk_update_7064() {
+  $modules = array('bibdk_gdpr');
+  module_disable($modules);
+}
+
+/** Disable biblioteksvagten embed popup (temporarily) */
+function bibdk_update_7065() {
+  $modules = array('ask_vopros');
+  module_disable($modules);
 }

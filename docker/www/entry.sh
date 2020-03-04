@@ -54,20 +54,23 @@ if [ "$1" == '' ]; then
 	done < <(env)
 
   ### PHP.INI FILE::::::
+  PHPINI=/etc/php/7.3/apache2/php.ini
   # sendmail
-  sed -i 's:;sendmail_path =:sendmail_path = /usr/sbin/ssmtp -t:' /etc/php/7.0/apache2/php.ini
+  sed -i 's:;sendmail_path =:sendmail_path = /usr/sbin/ssmtp -t:' $PHPINI
   # Enable Opcache settings
-  sed -i 's/;opcache\.enable=0/opcache\.enable=1/' /etc/php/7.0/apache2/php.ini
+  sed -i 's/;opcache\.enable=0/opcache\.enable=1/' $PHPINI
   # Memory consumption
-  sed -i 's/;opcache.memory_consumption=64/opcache.memory_consumption=192/' /etc/php/7.0/apache2/php.ini
+  sed -i 's/;opcache.memory_consumption=64/opcache.memory_consumption=192/' $PHPINI
   # Memory for interned strings
-  sed -i 's/;opcache.interned_strings_buffer=4/opcache.interned_strings_buffer=16/' /etc/php/7.0/apache2/php.ini
+  sed -i 's/;opcache.interned_strings_buffer=4/opcache.interned_strings_buffer=16/' $PHPINI
   # Max accelerated files
-  sed -i 's/;opcache.max_accelerated_files=2000/opcache.max_accelerated_files=7963/' /etc/php/7.0/apache2/php.ini
+  sed -i 's/;opcache.max_accelerated_files=2000/opcache.max_accelerated_files=7963/' $PHPINI
   # revalidate frequence.
-  sed -i 's/;opcache.revalidate_freq=2/opcache.revalidate_freq=0/' /etc/php/7.0/apache2/php.ini
+  sed -i 's/;opcache.revalidate_freq=2/opcache.revalidate_freq=0/' $PHPINI
   # allow url include
-  # sed -i 's/allow_url_include = Off/allow_url_include = On/' /etc/php/7.0/apache2/php.ini
+  # sed -i 's/allow_url_include = Off/allow_url_include = On/' $PHPINI
+  echo "sendmail_path = /usr/bin/msmtp -t" >> $PHPINI
+  echo "sendmail_path = /usr/bin/msmtp -t" >> $PHPINI
 
   ### APACHE2.CONF FILE::::::
   # MaxKeepAliveRequests
