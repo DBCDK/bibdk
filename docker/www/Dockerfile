@@ -51,7 +51,7 @@ RUN mkdir -p $APACHE_ROOT/private && \
   sudo chown www-data:www-data $APACHE_ROOT/private && \
   chmod 755 /entry.sh && \
   chmod 755 /healthcheck.sh && \
-  chmod 777 /etc/php/7.0/apache2/conf.d/20-yaz.ini && \
+  chmod 777 /etc/php/7.3/apache2/conf.d/20-yaz.ini && \
   a2enmod rewrite && \
   a2enmod headers && \
   a2enconf fqdn
