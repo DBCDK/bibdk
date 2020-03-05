@@ -1,4 +1,4 @@
-FROM docker.dbc.dk/dbc-apache-php7:old-202006
+FROM docker.dbc.dk/dbc-apache-php7
 MAINTAINER D-scrum <d-scrum@dbc.dk>
 
 # set environment variables
@@ -17,7 +17,7 @@ RUN apt-key add indexdata.asc
 COPY yaz.list /etc/apt/sources.list.d/
 
 RUN apt-get update && \
-  apt-get -q -y install cron logrotate php-gd php-pear wget php-soap php-yaml make php-dev rsyslog sudo wget ssmtp postgresql-client yaz libyaz5-dev && \
+  apt-get -q -y install cron logrotate php-gd php-pear wget php-soap php-yaml make php-dev rsyslog sudo wget msmtp postgresql-client libyaz5 yaz libyaz5-dev && \
   pecl channel-update pecl.php.net && \
   pecl install yaz && \
   rm -rf /var/lib/apt/lists/* && \
@@ -44,14 +44,14 @@ ADD fqdn.conf /etc/apache2/conf-available
 COPY apache_security.conf /etc/apache2/conf-enabled/
 COPY run-tests-jenkins.sh $APACHE_ROOT/scripts
 COPY run-tests-xunit.sh $APACHE_ROOT/scripts
-COPY ssmtp.conf /etc/ssmtp/
-COPY 20-yaz.ini /etc/php/7.0/apache2/conf.d/
+COPY msmtprc /etc/
+COPY 20-yaz.ini /etc/php/7.3/apache2/conf.d/
 
 RUN mkdir -p $APACHE_ROOT/private && \
   sudo chown www-data:www-data $APACHE_ROOT/private && \
   chmod 755 /entry.sh && \
   chmod 755 /healthcheck.sh && \
-  chmod 777 /etc/php/7.0/apache2/conf.d/20-yaz.ini && \
+  chmod 777 /etc/php/7.3/apache2/conf.d/20-yaz.ini && \
   a2enmod rewrite && \
   a2enmod headers && \
   a2enconf fqdn

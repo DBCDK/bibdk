@@ -69,7 +69,7 @@ class BibdkClient {
 
     $ret = $nano->call('oui:' . $action, $params);
     if (self::$enable_logging) {
-      watchdog('bibdk_provider', t('BIBDK client completed request: %xml', array('%xml' => $nano->requestBodyString)), array());
+      watchdog('bibdk_provider', 'BIBDK client completed request: %xml', array('%xml' => $nano->requestBodyString), WATCHDOG_INFO);
     }
     return $ret;
   }
