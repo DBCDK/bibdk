@@ -8,11 +8,11 @@ function bibdk_reservation_form_step_2($form, &$form_state) {
 
   //render branch
   $branch = BibdkReservationOrderObject::GetObject()->getBranch();
-  $show_url = true;
+  $show_url = TRUE;
   if ($branch->getTemporarilyClosedReason($language->language) != 'ting_agency_no_temporarilyClosedReason') {
     //set closed information
     drupal_set_message($branch->getTemporarilyClosedReason($language->language), 'warning');
-    $show_url = false; // don't show not owned message and link to own catalog
+    $show_url = FALSE; // don't show not owned message and link to own catalog
   }
 
   // Render manifestation
@@ -67,7 +67,7 @@ function bibdk_reservation_form_step_2($form, &$form_state) {
     }
 
     if ($reason = $orderpolicy->getOrderPossibleReason()) {
-      if ($reason != 'not_owned_accepted_by_consortia' && $show_url == true) {
+      if ($reason != 'not_owned_accepted_by_consortia' && $show_url == TRUE) {
         form_set_error('bibdk_reservation_form_step_2', t($reason, array(), array('context' => 'bibdk_reservation:error')));
       }
     }
@@ -82,7 +82,8 @@ function bibdk_reservation_form_step_2($form, &$form_state) {
 }
 
 /**
- * Helper function for bibdk_reservation_form_step_2() & bibdk_reservation_form_step_3()
+ * Helper function for bibdk_reservation_form_step_2() &
+ * bibdk_reservation_form_step_3()
  *
  * @return array; form
  */
@@ -129,13 +130,16 @@ function bibdk_reservation_hidden_favourite() {
  * Array for AcceptOrderFromUnknownUserText
  *
  * @param $AcceptOrderFromUnknownUserText
+ *
  * @return array; form element
  */
 function bibdk_reservation_accept_order_from_unknown($AcceptOrderFromUnknownUserText) {
   $form['infotext_wrapper'] = array(
     '#type' => 'container',
-    '#attributes' => array('class' => array('bibdk_reservation_infotekst_wrapper'),
-    ));
+    '#attributes' => array(
+      'class' => array('bibdk_reservation_infotekst_wrapper'),
+    )
+  );
   $form['infotext_wrapper']['info_text'] = array(
     '#markup' => $AcceptOrderFromUnknownUserText,
   );
@@ -187,19 +191,20 @@ function bibdk_reservation_get_favourites_for_selector() {
 /**
  * Get policy messages
  *
- * If users try to order at a consordia library, a custom message on how to order
- * at an consortia library are generated
+ * If users try to order at a consordia library, a custom message on how to
+ * order at an consortia library are generated
  *
  * else if there is a lookup url return link to that url
  *
  * else if there is an url to the catalog return that url
  *
  * @param $policy_response
+ *
  * @return array
  */
 function _bibdk_reservation_generate_policy_messages($policy_response, $show_url) {
   $msgs = array();
-  if ($show_url == false) {
+  if ($show_url == FALSE) {
     return $msgs;
   }
   $lookup_url = current($policy_response->getLookUpUrl());
@@ -230,12 +235,14 @@ function _bibdk_reservation_generate_policy_messages($policy_response, $show_url
  * Returns a translated message with the following format
  *
  * [Agency] does not have the material but is in a consortia with [Consortia],
- * which has the material. Therefore, you must order it at [link to consortia catalog].
- * Use your usual card (health insurance or library card) to [Agency] when you order.
+ * which has the material. Therefore, you must order it at [link to consortia
+ * catalog]. Use your usual card (health insurance or library card) to [Agency]
+ * when you order.
  *
  * @param $url
  * @param $consortiaId
  * @param $branchId
+ *
  * @return array
  */
 function bibdk_reservation_get_consortia_message($url, $consortiaId, $branchId) {
@@ -254,9 +261,11 @@ function bibdk_reservation_get_consortia_message($url, $consortiaId, $branchId) 
 
 /**
  * Generates a lookup url link
+ *
  * @param $path
  * @param $link_text
  * @param array $query
+ *
  * @return array
  */
 function bibdk_reservation_get_lookup_url_link_element($path, $link_text, $query = array()) {
@@ -356,6 +365,7 @@ function bibdk_reservation_step_2_order_form_fields($form, $form_state) {
 
 /**
  * Get fields to shown for ALL agencies (for now only 'needBeforeDate')
+ *
  * @return mixed
  */
 function bibdk_reservation_step_2_permanent_fields() {
@@ -376,8 +386,9 @@ function bibdk_reservation_step_2_permanent_fields() {
 }
 
 /**
- * Do a checkOrderPolicyRequest @see bibdk_openorder::checkOrderPolicyRequest
- * @return BibdkOpenorderPolicyResponse
+ * Do a checkOrderPolicyRequest @return BibdkOpenorderPolicyResponse
+ *
+ * @see bibdk_openorder::checkOrderPolicyRequest
  */
 function bibdk_reservation_form_step_2_do_policycheck() {
   $pickUpAgencyId = BibdkReservationOrderObject::GetObject()->getBranchId();
@@ -453,11 +464,14 @@ function bibdk_reservation_prepare_for_order(&$form_state) {
 
 /**
  * Set userdata to be used for a reservation
+ *
  * @param array $form_state
  *   state of submitted form
  */
 function bibdk_reservation_prepare_set_user_data($form_state) {
-  $userParameters = BibdkReservationOrderObject::GetObject()->getFields()->getUserParameters();
+  $userParameters = BibdkReservationOrderObject::GetObject()
+    ->getFields()
+    ->getUserParameters();
   // Parse userParameters
   $userData = array();
   foreach ($userParameters as $key => $userParameter) {
@@ -476,9 +490,10 @@ function bibdk_reservation_prepare_set_user_data($form_state) {
 }
 
 /**
- * Set parameters for a reservation. @see bibdk_openorder::placeOrderRequest
- * @param array $form_state
+ * Set parameters for a reservation. @param array $form_state
  *   state of submitted form
+ *
+ * @see bibdk_openorder::placeOrderRequest
  */
 function bibdk_reservation_prepare_set_order_params($form_state) {
   $manifestation = BibdkReservationOrderObject::GetObject()->getManifestation();
@@ -493,14 +508,16 @@ function bibdk_reservation_prepare_set_order_params($form_state) {
   }
 
   if (isset($orderParameters)) {
-    BibdkReservationOrderObject::GetObject()->setOrderParameters($orderParameters);
+    BibdkReservationOrderObject::GetObject()
+      ->setOrderParameters($orderParameters);
   }
 }
 
 /**
- * More paramters for a reservation. @see bibdk_openorder::placeOrderRequest
- * @param array $form_state
+ * More paramters for a reservation. @param array $form_state
  *   state of submitted form
+ *
+ * @see bibdk_openorder::placeOrderRequest
  */
 function bibdk_reservation_prepare_set_user_order_data(&$form_state) {
   $userOrderData = array();
@@ -531,21 +548,25 @@ function bibdk_reservation_prepare_set_user_order_data(&$form_state) {
     if ($user_id === $type) {
       if (!empty($form_state['values'][$type])) {
         $userOrderData['userId'] =
-          $form_state['values'][$type] =
-            str_replace("-", "", $form_state['values'][$type]);
+        $form_state['values'][$type] =
+          str_replace("-", "", $form_state['values'][$type]);
       }
     }
-    else if (isset($form_state['values'][$type])) {
+    else {
+      if (isset($form_state['values'][$type])) {
 
-      $agencyFields = new AgencyFields(null);
-      $agencyFields->userParameters[$key] = $userParameter;
-      $fields = $agencyFields->getUserIdKey();
+        $agencyFields = new AgencyFields(NULL);
+        $agencyFields->userParameters[$key] = $userParameter;
+        $fields = $agencyFields->getUserIdKey();
 
-      if (!is_null($fields) && !isset($userOrderData['userId'])) {
-        $userOrderData[$type] = $form_state['values'][$type];
-      }
-      else if (is_null($fields)) {
-        $userOrderData[$type] = $form_state['values'][$type];
+        if (!is_null($fields) && !isset($userOrderData['userId'])) {
+          $userOrderData[$type] = $form_state['values'][$type];
+        }
+        else {
+          if (is_null($fields)) {
+            $userOrderData[$type] = $form_state['values'][$type];
+          }
+        }
       }
     }
   }
@@ -567,7 +588,8 @@ function bibdk_reservation_prepare_set_user_order_data(&$form_state) {
 
 function bibdk_reservation_form_step_2_submit($form, &$form_state) {
   if (isset($form_state['values']['self_pickup'])) {
-    BibdkReservationOrderObject::GetObject()->setArticleDirect($form_state['values']['self_pickup']);
+    BibdkReservationOrderObject::GetObject()
+      ->setArticleDirect($form_state['values']['self_pickup']);
   }
 
   // Do not display alert box.
@@ -582,6 +604,7 @@ function bibdk_reservation_form_step_2_submit($form, &$form_state) {
  * Returns TRUE if validate is possible and not in the past.
  *
  * @param $date
+ *
  * @return bool
  */
 function bibdk_reservation_validate_date($date, $buffer = 0) {
@@ -593,7 +616,7 @@ function bibdk_reservation_validate_date($date, $buffer = 0) {
     $needBeforeDate = new DateTime($date);
     $currentDate = new DateTime();
     if ($buffer) {
-      $currentDate->add(new DateInterval('P' . (int)$buffer . 'D'));
+      $currentDate->add(new DateInterval('P' . (int) $buffer . 'D'));
     }
     if ($needBeforeDate > $currentDate) {
       return TRUE;
@@ -607,10 +630,19 @@ function bibdk_reservation_validate_date($date, $buffer = 0) {
  */
 function bibdk_reservation_borchk_validate($form_state) {
   if ($form_state['clicked_button']['#name'] == 'next' && empty($form_state['input']['favourite_selected'])) {
-    // @TODO check that object is set
     $agencySettings = BibdkReservationOrderObject::GetObject()->getFields();
+    $messages = array();
+    if (empty($agencySettings)) {
+      watchdog('bibdk_reservation', 'no fields for agency', array(), WATCHDOG_ERROR);
+      $messages = array(
+        'error' => t('Service Unavailable. We can not make reservation right know', array(), array('context' => 'bibdk_reservation')),
+        'status' => NULL
+      );
+    }
 
-    $messages = bibdk_reservation_borchk_execute($form_state, $agencySettings);
+    if (empty($messages)) {
+      $messages = bibdk_reservation_borchk_execute($form_state, $agencySettings);
+    }
     if (!isset($messages)) {
       return;
     }
@@ -625,8 +657,10 @@ function bibdk_reservation_borchk_validate($form_state) {
 
 /**
  * Execute service request to borchk
+ *
  * @param array $form_state
  * @param AgencyFields $agencySettings
+ *
  * @return array
  *   messages to display (if any)
  */
@@ -647,7 +681,9 @@ function bibdk_reservation_borchk_execute($form_state, $agencySettings) {
   }
   else {
     $libraryCode = BibdkReservationOrderObject::GetObject()->getBranchId();
-    $userIdKey = BibdkReservationOrderObject::GetObject()->getFields()->getUserIdKey();
+    $userIdKey = BibdkReservationOrderObject::GetObject()
+      ->getFields()
+      ->getUserIdKey();
     $userId = isset($form_state['values'][$userIdKey]) ? $form_state['values'][$userIdKey] : NULL;
     $userPincode = isset($form_state['values']['pincode']) ? $form_state['values']['pincode'] : NULL;
     $response = bibdk_borchk_request($userId, $userPincode, $libraryCode, 'json', 'bibliotek.dk');
@@ -664,6 +700,7 @@ function bibdk_reservation_borchk_execute($form_state, $agencySettings) {
  * @param string $response
  * @param string $acceptOrderFromUnknownUser
  * @param string $acceptOrderAgencyOffline
+ *
  * @return array
  */
 function bibdk_reservation_borchk_parse_response($response, $acceptOrderFromUnknownUser, $acceptOrderAgencyOffline) {
@@ -722,6 +759,7 @@ function bibdk_reservation_get_agency_fields() {
  * Array for registrationUrl and text
  *
  * @param $branch
+ *
  * @return array; link element
  */
 function bibdk_reservation_registrationUrl($branch) {
@@ -740,7 +778,8 @@ function bibdk_reservation_registrationUrl($branch) {
   }
 
   //create link array
-  return array('#type' => 'link',
+  return array(
+    '#type' => 'link',
     '#title' => $linkUrlText,
     '#href' => $branch->getRegistrationFormUrl(),
     '#options' => array(
@@ -756,7 +795,8 @@ function bibdk_reservation_registrationUrl($branch) {
 }
 
 /**
- * Setting the JavaScript object Drupal.settings.alreadyOrder for bibdk_reservation.js
+ * Setting the JavaScript object Drupal.settings.alreadyOrder for
+ * bibdk_reservation.js
  */
 function _bibdk_reservation_set_js_settings($ordered) {
   drupal_add_js(array(
@@ -775,7 +815,8 @@ function _bibdk_reservation_set_js_settings($ordered) {
 function bibdk_reservation_render_subtype_order_option() {
   $form = array();
   $ids = BibdkReservationOrderObject::GetObject()->getManifestationIds();
-  $subtype_order_ids = BibdkReservationOrderObject::GetObject()->getSubtypeOrderIds();
+  $subtype_order_ids = BibdkReservationOrderObject::GetObject()
+    ->getSubtypeOrderIds();
   $isSubset = array_diff($subtype_order_ids, $ids);
   if (sizeof($isSubset) > 0) {
     $form = array(
