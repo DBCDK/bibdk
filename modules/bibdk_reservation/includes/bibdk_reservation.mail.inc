@@ -191,7 +191,7 @@ function bibdk_reservation_mail_order_parameters() {
     $rows[] = array();
     $arrycount = 0;
     foreach ($orderParamWithLabel as $key => $value) {
-      $rows[$arrycount] = t($key, array(), array('context' => 'material_type')) . " \t" . check_plain($value);
+      $rows[$arrycount] = $key . " \t" . check_plain($value);
       $arrycount = $arrycount + 1;
     }
 
