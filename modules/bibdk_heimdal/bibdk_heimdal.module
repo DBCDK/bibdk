@@ -289,7 +289,7 @@ function bibdk_heimdal_check_culr_user($attributes) {
     bibdk_heimdal_cleanup_and_exit(bibdk_heimdal_pages_no_culr_message());
   }
   // check if we can handle this user
-  if(!bibdk_heimdal_check_culr_agencies($attributes['attributes']['agencies'])){
+  if (!bibdk_heimdal_check_culr_agencies($attributes['attributes']['agencies'])) {
     bibdk_heimdal_cleanup_and_exit(bibdk_heimdal_pages_no_culr_message());
   }
   return TRUE;
@@ -302,9 +302,9 @@ function bibdk_heimdal_check_culr_user($attributes) {
  *
  * @return bool
  */
-function bibdk_heimdal_check_culr_agencies($agencies){
-  foreach($agencies as $agency){
-    if(isset($agency['userIdType']) && ($agency['userIdType'] === 'CPR' || $agency['userIdType'] === 'CVR')){
+function bibdk_heimdal_check_culr_agencies($agencies) {
+  foreach ($agencies as $agency) {
+    if (isset($agency['userIdType']) && ($agency['userIdType'] === 'CPR' || $agency['userIdType'] === 'CVR')) {
       return TRUE;
     }
   }
@@ -359,7 +359,8 @@ function bibdk_heimdal_user_logout() {
  *
  */
 function bibdk_heimdal_do_logout($url = 'heimdal/logout', $ajax = FALSE) {
-  if (isset($_SESSION['heimdal'])) {
+  // check if user is logged in via heimdal AND if this is an api call from access platform
+  if (isset($_SESSION['heimdal']) && !($_SESSION['heimdal']['singlelogout'])) {
     $return_uri = bibdkHeimdalHelpers::bibdk_heimdal_get_full_url($url);
     $access_token = isset($_SESSION['heimdal']['access_token']) ? $_SESSION['heimdal']['access_token'] : FALSE;
 
@@ -387,6 +388,11 @@ function bibdk_heimdal_do_logout($url = 'heimdal/logout', $ajax = FALSE) {
  * and return an exit code
  */
 function bibdk_heimdal_single_logout() {
+  // set session variable so we know this is a api call for later
+  // when we hook into user_logout; @see bibdk_heimdal_do_logout()
+  if (isset($_SESSION['heimdal'])) {
+    $_SESSION['heimdal']['single_logout'] = TRUE;
+  }
   bibdk_heimdal_drupal_logout();
   $status = array(
     "statusCode" => 200
@@ -400,7 +406,7 @@ function bibdk_heimdal_single_logout() {
  * Logout drupal user - Basically a copy of user_logout_current_user(),
  *
  * @return bool
- *  is user was logged out or not
+ *  user was logged out or not
  */
 function bibdk_heimdal_drupal_logout() {
   global $user;
