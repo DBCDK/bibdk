@@ -103,7 +103,7 @@ function bibdk_reservation_render_custom_manifestation_view(Manifestation $manif
       }
     }
   }
-  
+
   $form = array(
     '#type' => 'fieldset',
     '#title' => t($fieldset_title, array(), array('context' => 'bibdk_reservation')),
@@ -114,7 +114,7 @@ function bibdk_reservation_render_custom_manifestation_view(Manifestation $manif
       '#type' => $manifestation->getSubType(),
     ),
   );
-  
+
   return $form;
 }
 
@@ -122,7 +122,7 @@ function bibdk_reservation_convert_array_to_table($array) {
   foreach ($array as $key => $value) {
     $rows[]['data'] = array(
       array(
-        'data' => t($key, array(), array('context' => 'bibdk_reservation')),
+        'data' => $key,
         'class' => array(''),
         'header' => TRUE
       ),

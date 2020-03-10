@@ -26,7 +26,7 @@ function bibdk_reservation_link($entity, $entity_type) {
     $button_id = 'any_edition_' . $manifestations[0];
   }
   else {
-    $translated_sub = t($subtype, array(), array('context' => 'bibdk_reservation'));
+    $translated_sub = $subtype;
     $text = ($entity_type == "bibdkSubwork") ? $translated_sub : t("Order", array('context' => 'bibdk_reservation'));
     $button_id = 'this_edition_' . current($manifestations);
   }
@@ -106,7 +106,7 @@ function bibdk_reservation_order_any_edition_link($collection, $work_types, $uid
 
   foreach ($collection as $type => $ids) {
     $row = array();
-    $mat_type = t($type, array(), array('context' => 'material_type'));
+    $mat_type = $type;
 
     foreach ( $work_types as $svg_key => $work_type ) {
       if ( in_array($ids[0], $work_type) ) {
