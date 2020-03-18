@@ -10,3 +10,5 @@ modules/cql_strict_parser
 modules/microcurl
 modules/dbc_zabbix
 themes/bibdk_theme
+tests/helpers.py
+tests/__pycache__
