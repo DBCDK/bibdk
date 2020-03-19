@@ -107,7 +107,8 @@ function bibdk_custom_search_list_select_form($facet_type, $facet_term, $term_ty
     return array();
   }
 
-  $options = bibdk_custom_search_list_options_translate($options);
+  // try without translations
+  //$options = bibdk_custom_search_list_options_translate($options);
 
   // Create form
   return bibdk_custom_search_get_list_popup_form($options, $facet_type, $term_type);

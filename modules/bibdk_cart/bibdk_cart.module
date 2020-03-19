@@ -388,7 +388,7 @@ function bibdk_cart_get_actions($form) {
 function bibdk_cart_ting_openformat_actions($type, $entity, $view_mode, $langcode) {
   $element = array();
   if ($type == 'bibdkManifestation') {
-    $element['cart'] = bibdk_cart_get_link($entity->id, 'add-item-to-cart', 'cart-single');
+      $element['cart'] = bibdk_cart_get_link($entity->id, 'add-item-to-cart', 'cart-single');
   }
   return $element;
 }
@@ -605,7 +605,7 @@ function bibdk_cart_reservation_update_status($status, $pids) {
  * @return array
  */
 function bibdk_cart_order_any_btn_lists($type, $ids) {
-  $material_type = t($type, array(), array('context' => 'material_type'));
+  $material_type = $type;
 
   $link = bibdk_cart_get_link($ids, 'cart', 'cart-any');
   $link['#options']['attributes']['aria-label'] = $material_type;
