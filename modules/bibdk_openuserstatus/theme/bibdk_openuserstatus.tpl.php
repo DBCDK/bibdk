@@ -8,6 +8,7 @@
   <p class="userstatus-menu-item">
     <a href="#loans">
       <svg class="svg-icon">
+        <title><?php print t('label_userstatus_loans', array(), array('context' => 'bibdk_openuserstatus')); ?></title>
         <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-arrow-right"></use>
       </svg>
       <span><?php print t('label_userstatus_loans', array(), array('context' => 'bibdk_openuserstatus')) ?></span>
@@ -17,6 +18,7 @@
   <p class="userstatus-menu-item">
     <a href="#reservations">
       <svg class="svg-icon">
+        <title><?php print t('label_userstatus_reservations', array(), array('context' => 'bibdk_openuserstatus')); ?></title>
         <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-arrow-right"></use>
       </svg>
       <span><?php print t('label_userstatus_reservations', array(), array('context' => 'bibdk_openuserstatus')) ?></span>
@@ -26,6 +28,7 @@
   <p class="userstatus-menu-item">
     <a href="#fiscal">
       <svg class="svg-icon">
+        <title><?php print t('label_userstatus_fiscal', array(), array('context' => 'bibdk_openuserstatus')); ?></title>
         <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-arrow-right"></use>
       </svg>
       <span><?php print t('label_userstatus_fiscal', array(), array('context' => 'bibdk_openuserstatus')) ?></span>

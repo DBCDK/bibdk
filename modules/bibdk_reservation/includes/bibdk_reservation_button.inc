@@ -235,7 +235,7 @@ function _bibdk_reservation_create_type_button($type, $ids, $uid) {
       'attributes' => array(
         'id' => 'any_edtion_order_' . strtolower(preg_replace('/[^a-zA-Z0-9]+/', '', $ids[0])),
         'aria-label' => $text . ' ' . $type,
-        'alt' => $text . ' ' . $type,
+        'title' => $text . ' ' . $type,
         'data-rel' => array(
           'reservation'
         ),
