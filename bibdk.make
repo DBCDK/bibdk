@@ -243,7 +243,7 @@ projects[libraries][version] = 2.5
 
 projects[memcache][subdir] = contrib
 projects[memcache][type] = module
-projects[memcache][version] = 1.6
+projects[memcache][version] = 1.7
 
 projects[menu_attributes][subdir] = contrib
 projects[menu_attributes][type] = module
