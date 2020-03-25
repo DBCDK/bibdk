@@ -179,7 +179,7 @@ pipeline {
             docker {
                 image "docker.dbc.dk/k8s-deploy-env:latest"
                 alwaysPull true
-                label "master"
+                label "devel9"
             }
         }
 
