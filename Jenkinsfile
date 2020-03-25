@@ -95,7 +95,7 @@ pipeline {
       steps {
         dir('docker/db') {
           sh """
-                wget -P docker-entrypoint.d https://is.dbc.dk/view/Bibliotek.dk/job/dscrum-is-bibdk_dump_prod_db/lastSuccessfulBuild/artifact/bibdk_db_sql.tar.gz
+                wget -P docker-entrypoint.d https://is.dbc.dk/job/Bibliotek%20DK/job/Tools/job/Fetch%20Bibliotek%20DK%20database/lastSuccessfulBuild/artifact/bibdk_db_sql.tar.gz
           """
         }
         dir('docker/db/docker-entrypoint.d') {
