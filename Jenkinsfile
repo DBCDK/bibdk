@@ -170,6 +170,7 @@ pipeline {
         script {
           if (BRANCH == 'master') {
             build job: 'Bibliotek DK/Deploy jobs for Bibliotek DK/Deploy Bibliotek DK staging'
+            $NAMESPACE = 'frontend-staging'
           } else {
             build job: 'Bibliotek DK/Deploy jobs for Bibliotek DK/Deploy Bibliotek DK develop', parameters: [string(name: 'deploybranch', value: BRANCH)]
           }
