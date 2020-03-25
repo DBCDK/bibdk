@@ -6,7 +6,7 @@ def BRANCH = 'develop'
 BRANCH = BRANCH_NAME.replaceAll('feature/', '')
 BRANCH = BRANCH.replaceAll('_', '-')
 
-NAMESPACE = 'frontend-features'
+def NAMESPACE = 'frontend-features'
 
 // artifactory buildname
 def BUILDNAME = 'Bibliotek-dk :: ' + BRANCH
