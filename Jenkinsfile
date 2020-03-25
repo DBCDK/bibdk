@@ -2,7 +2,7 @@
 // general vars
 def DOCKER_REPO = "docker-dscrum.dbc.dk"
 def PRODUCT = 'bibliotek-dk'
-def BRANCH
+def BRANCH = 'develop'
 BRANCH = BRANCH_NAME.replaceAll('feature/', '')
 BRANCH = BRANCH.replaceAll('_', '-')
 
@@ -162,6 +162,117 @@ pipeline {
            }
         }
       }
+    }
+    stage('Deploy') {
+      steps {
+        script {
+          if (BRANCH == 'master') {
+            build job: 'Bibliotek DK/Deploy jobs for Bibliotek DK/Deploy Bibliotek DK staging'
+          } else {
+            build job: 'Bibliotek DK/Deploy jobs for Bibliotek DK/Deploy Bibliotek DK develop', parameters: [string(name: 'deploybranch', value: BRANCH)]
+          }
+        }
+      }
+    }
+    stage('run simpletest tests') {
+        agent {
+            docker {
+                image "docker.dbc.dk/k8s-deploy-env:latest"
+                alwaysPull true
+                label "devel9"
+            }
+        }
+
+        steps {
+            script {
+                testURL = "http://bibliotek-dk-www-${BRANCH}.frontend-features.svc.cloud.dbc.dk"
+                sh """
+                rm -rf simpletest
+                rm -f simpletest*.xml
+                POD=\$(kubectl -n $NAMESPACE get pod -l app=bibliotek-dk-www-$BRANCH -o jsonpath="{.items[0].metadata.name}")
+                kubectl -n $NAMESPACE exec -it \${POD} -- /bin/bash -c "cd /tmp && rm -rf simpletest"
+                kubectl -n $NAMESPACE exec -it \${POD} -- /bin/bash -c "cd /var/www/html && drush en -y simpletest"
+                kubectl -n $NAMESPACE exec -it \${POD} -- /bin/bash -c "php /var/www/html/scripts/run-tests-xunit.sh --clean"
+                kubectl -n $NAMESPACE exec -it \${POD} -- /bin/bash -c 'php /var/www/html/scripts/run-tests-xunit.sh --php /usr/bin/php --xml /tmp/simpletest-bibdk.xml --url ${testURL} --concurrency 20 "Ting Client","Netpunkt / Bibliotek.dk","Ding! - WAYF","Bibliotek.dk - ADHL","Bibliotek.dk - Bibdk Behaviour","Bibliotek.dk - captcha","Bibliotek.dk - Cart","Bibliotek.dk - Facetbrowser","Bibliotek.dk - Favourites","Bibliotek.dk - Frontend","Bibliotek.dk - Further Search","Bibliotek.dk - Heimdal","Bibliotek.dk - Helpdesk","Bibliotek.dk - Holdingstatus","Bibliotek.dk - OpenOrder","Bibliotek.dk - Open Platform Client","Bibliotek.dk - OpenUserstatus","Bibliotek.dk - Provider",bibliotek.dk,Bibliotek.dk,"Bibliotek.dk - SB Kopi","Bibliotek.dk - Provider" || true'
+                kubectl cp $NAMESPACE/\${POD}:/tmp/simpletest-bibdk.xml ./simpletest-bibdk.xml
+                kubectl -n $NAMESPACE exec -it \${POD} -- /bin/bash -c "cd /var/www/html && drush dis -y simpletest"
+                """
+
+
+                step([
+                    $class: 'XUnitBuilder', testTimeMargin: '3000', thresholdMode: 1,
+                    thresholds: [
+                        [$class: 'FailedThreshold', failureNewThreshold: '', failureThreshold: '0', unstableNewThreshold: '', unstableThreshold: ''],
+                        [$class: 'SkippedThreshold', failureNewThreshold: '', failureThreshold: '', unstableNewThreshold: '', unstableThreshold: '']
+                    ],
+                    tools: [
+                        [$class: 'JUnitType', deleteOutputFiles: true, failIfNotNew: true, pattern: 'simpletest*.xml', skipNoTestFiles: false, stopProcessingIfError: false]
+                    ]
+                ])
+            }
+        }
+    }
+
+    stage('run selenium test') {
+        agent {
+            docker {
+                image "docker-dscrum.dbc.dk/selenium-tester:latest"
+                alwaysPull true
+                label "devel9"
+            }
+        }
+        steps {
+            git branch: 'develop',
+                credentialsId: 'dscrum_ssh_gitlab',
+                url: 'gitlab@gitlab.dbc.dk:d-scrum/d7/BibdkWebdriver.git'
+
+            dir('bibdk'){
+                git branch: params.deploybranch,
+                        url: 'https://github.com/DBCDK/bibdk'
+                dir('xunit-transforms') {
+                    git 'https://git.dbc.dk/common/xunit-transforms'
+                }
+            }
+            sh """
+            mv helpers.py bibdk/tests
+            """
+            dir('bibdk') {
+                script {
+                    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'netpunkt-user', usernameVariable: 'NETPUNKT_USER', passwordVariable: 'NETPUNKT_PASS']]) {
+                        sh """
+                    export FEATURE_BUILD_URL=${URL}
+                    export BIBDK_WEBDRIVER_URL=${URL}/
+                    export BIBDK_OPENUSERINFO_URL="http://openuserinfo-prod.frontend-prod.svc.cloud.dbc.dk/server.php"
+                    py.test --junitxml=selenium.xml --driver Remote --host selenium.dbc.dk --port 4444 --capability browserName chrome -v tests/ -o base_url=${URL} || true
+                    xsltproc xunit-transforms/pytest-selenium.xsl selenium.xml > selenium-result.xml
+                    """
+                    }
+
+                    step([$class    : 'XUnitBuilder', testTimeMargin: '3000', thresholdMode: 1,
+                          thresholds: [
+                                  [$class: 'FailedThreshold', failureNewThreshold: '', failureThreshold: '0', unstableNewThreshold: '', unstableThreshold: ''],
+                                  [$class: 'SkippedThreshold', failureNewThreshold: '', failureThreshold: '', unstableNewThreshold: '', unstableThreshold: '']],
+                          tools     : [
+                                  [$class: 'JUnitType', deleteOutputFiles: true, failIfNotNew: true, pattern: 'selenium-result.xml', skipNoTestFiles: false, stopProcessingIfError: false]]
+                    ])
+                }
+            }
+        }
+    }
+
+    stage('disabling mockup module') {
+    // No need for mockup module after tests are run.
+
+        steps {
+            script {
+                withCredentials([file(credentialsId: 'frontend-kubecert', variable: 'KUBECONFIG')]) {
+                    sh """
+                        POD=\$(kubectl -n $NAMESPACE get pod -l app=bibliotek-dk-www-$BRANCH -o jsonpath="{.items[0].metadata.name}")
+                        kubectl -n $NAMESPACE exec -it \${POD} -- /bin/bash -c "cd /var/www/html && drush -y dis bibdk_mockup"
+                    """
+                }
+            }
+        }
     }
   }
   post {
