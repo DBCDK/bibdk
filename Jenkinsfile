@@ -180,7 +180,7 @@ pipeline {
     stage('run simpletest tests') {
         agent {
             docker {
-                image "docker.dbc.dk/k8s-deploy-env:${k8sDeployEnvId}"
+                image "docker.dbc.dk/k8s-deploy-env:latest"
                 label 'devel9'
                 args '-u 0:0'
             }
