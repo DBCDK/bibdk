@@ -6,6 +6,8 @@ def BRANCH = 'develop'
 BRANCH = BRANCH_NAME.replaceAll('feature/', '')
 BRANCH = BRANCH.replaceAll('_', '-')
 
+def NAMESPACE = 'frontend-features'
+
 // artifactory buildname
 def BUILDNAME = 'Bibliotek-dk :: ' + BRANCH
 
@@ -168,6 +170,7 @@ pipeline {
         script {
           if (BRANCH == 'master') {
             build job: 'Bibliotek DK/Deploy jobs for Bibliotek DK/Deploy Bibliotek DK staging'
+            $NAMESPACE = 'frontend-staging'
           } else {
             build job: 'Bibliotek DK/Deploy jobs for Bibliotek DK/Deploy Bibliotek DK develop', parameters: [string(name: 'deploybranch', value: BRANCH)]
           }
@@ -177,9 +180,9 @@ pipeline {
     stage('run simpletest tests') {
         agent {
             docker {
-                image "docker.dbc.dk/k8s-deploy-env:latest"
-                alwaysPull true
-                label "devel9"
+                image "docker.dbc.dk/k8s-deploy-env:${k8sDeployEnvId}"
+                label 'devel9'
+                args '-u 0:0'
             }
         }
 
@@ -190,12 +193,12 @@ pipeline {
                 rm -rf simpletest
                 rm -f simpletest*.xml
                 POD=\$(kubectl -n $NAMESPACE get pod -l app=bibliotek-dk-www-$BRANCH -o jsonpath="{.items[0].metadata.name}")
-                kubectl -n $NAMESPACE exec -it \${POD} -- /bin/bash -c "cd /tmp && rm -rf simpletest"
-                kubectl -n $NAMESPACE exec -it \${POD} -- /bin/bash -c "cd /var/www/html && drush en -y simpletest"
-                kubectl -n $NAMESPACE exec -it \${POD} -- /bin/bash -c "php /var/www/html/scripts/run-tests-xunit.sh --clean"
-                kubectl -n $NAMESPACE exec -it \${POD} -- /bin/bash -c 'php /var/www/html/scripts/run-tests-xunit.sh --php /usr/bin/php --xml /tmp/simpletest-bibdk.xml --url ${testURL} --concurrency 20 "Ting Client","Netpunkt / Bibliotek.dk","Ding! - WAYF","Bibliotek.dk - ADHL","Bibliotek.dk - Bibdk Behaviour","Bibliotek.dk - captcha","Bibliotek.dk - Cart","Bibliotek.dk - Facetbrowser","Bibliotek.dk - Favourites","Bibliotek.dk - Frontend","Bibliotek.dk - Further Search","Bibliotek.dk - Heimdal","Bibliotek.dk - Helpdesk","Bibliotek.dk - Holdingstatus","Bibliotek.dk - OpenOrder","Bibliotek.dk - Open Platform Client","Bibliotek.dk - OpenUserstatus","Bibliotek.dk - Provider",bibliotek.dk,Bibliotek.dk,"Bibliotek.dk - SB Kopi","Bibliotek.dk - Provider" || true'
+                kubectl -n $NAMESPACE exec -i \${POD} -- /bin/bash -c "cd /tmp && rm -rf simpletest"
+                kubectl -n $NAMESPACE exec -i \${POD} -- /bin/bash -c "cd /var/www/html && drush en -y simpletest"
+                kubectl -n $NAMESPACE exec -i \${POD} -- /bin/bash -c "php /var/www/html/scripts/run-tests-xunit.sh --clean"
+                kubectl -n $NAMESPACE exec -i \${POD} -- /bin/bash -c 'php /var/www/html/scripts/run-tests-xunit.sh --php /usr/bin/php --xml /tmp/simpletest-bibdk.xml --url ${testURL} --concurrency 20 "Ting Client","Netpunkt / Bibliotek.dk","Ding! - WAYF","Bibliotek.dk - ADHL","Bibliotek.dk - Bibdk Behaviour","Bibliotek.dk - captcha","Bibliotek.dk - Cart","Bibliotek.dk - Facetbrowser","Bibliotek.dk - Favourites","Bibliotek.dk - Frontend","Bibliotek.dk - Further Search","Bibliotek.dk - Heimdal","Bibliotek.dk - Helpdesk","Bibliotek.dk - Holdingstatus","Bibliotek.dk - OpenOrder","Bibliotek.dk - Open Platform Client","Bibliotek.dk - OpenUserstatus","Bibliotek.dk - Provider",bibliotek.dk,Bibliotek.dk,"Bibliotek.dk - SB Kopi","Bibliotek.dk - Provider" || true'
                 kubectl cp $NAMESPACE/\${POD}:/tmp/simpletest-bibdk.xml ./simpletest-bibdk.xml
-                kubectl -n $NAMESPACE exec -it \${POD} -- /bin/bash -c "cd /var/www/html && drush dis -y simpletest"
+                kubectl -n $NAMESPACE exec -i \${POD} -- /bin/bash -c "cd /var/www/html && drush dis -y simpletest"
                 """
 
 
