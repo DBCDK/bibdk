@@ -239,8 +239,10 @@ pipeline {
             }
 */
             sh """
-            mv helpers.py bibdk/tests
+              ls -hal && pwd
             """
+//              mv helpers.py bibdk/tests
+//            """
             dir('bibdk') {
                 script {
                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'netpunkt-user', usernameVariable: 'NETPUNKT_USER', passwordVariable: 'NETPUNKT_PASS']]) {
