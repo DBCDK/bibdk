@@ -19,11 +19,6 @@ function bibdk_cart_get_link($id, $linktext, $prefix) {
 
   $id = implode(',', $id);
 
-  $star_icon = array(
-    '#theme' => 'bibdk_icon',
-    '#title' => t('add_to_cart_star', array(),array('context' => 'bibdk_reservation') ),
-    '#icon' => 'star',
-  );
   $link = array(
     '#theme' => 'link',
     '#text' => t($linktext, array(), array('context' => 'bibdk_reservation')),
@@ -34,8 +29,8 @@ function bibdk_cart_get_link($id, $linktext, $prefix) {
         'data-cart-pid' => $id,
         'class' => $class,
       ),
+      'svg' => 'svg-star',
       'html' => FALSE,
-      'svg' => drupal_render($star_icon),
     ),
     '#weight' => -1,
   );
