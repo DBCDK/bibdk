@@ -230,13 +230,14 @@ pipeline {
                 credentialsId: 'dscrum_ssh_gitlab',
                 url: 'gitlab@gitlab.dbc.dk:d-scrum/d7/BibdkWebdriver.git'
 
-            dir('bibdk'){
+/*            dir('bibdk') {
                 git branch: params.deploybranch,
                         url: 'https://github.com/DBCDK/bibdk'
                 dir('xunit-transforms') {
                     git 'https://git.dbc.dk/common/xunit-transforms'
                 }
             }
+*/
             sh """
             mv helpers.py bibdk/tests
             """
