@@ -230,19 +230,17 @@ pipeline {
                 credentialsId: 'dscrum_ssh_gitlab',
                 url: 'gitlab@gitlab.dbc.dk:d-scrum/d7/BibdkWebdriver.git'
 
-/*            dir('bibdk') {
+            dir('bibdk') {
                 git branch: params.deploybranch,
-                        url: 'https://github.com/DBCDK/bibdk'
+                    credentialsId: 'frontend-dbc',
+                    url: 'https://github.com/DBCDK/bibdk'
                 dir('xunit-transforms') {
                     git 'https://git.dbc.dk/common/xunit-transforms'
                 }
             }
-*/
             sh """
-              ls -hal && pwd
+            mv helpers.py bibdk/tests
             """
-//              mv helpers.py bibdk/tests
-//            """
             dir('bibdk') {
                 script {
                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'netpunkt-user', usernameVariable: 'NETPUNKT_USER', passwordVariable: 'NETPUNKT_PASS']]) {
