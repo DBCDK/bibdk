@@ -233,7 +233,8 @@ pipeline {
             dir('bibdk') {
                 checkout scm
                 dir('xunit-transforms') {
-                    git 'https://git.dbc.dk/common/xunit-transforms'
+                    git credentialsId: 'dscrum_ssh_gitlab',
+                        url: 'gitlab@gitlab.dbc.dk:d-scrum/jenkins-jobs/xunit-transform.git'
                 }
             }
             sh """
