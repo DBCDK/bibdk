@@ -231,9 +231,7 @@ pipeline {
                 url: 'gitlab@gitlab.dbc.dk:d-scrum/d7/BibdkWebdriver.git'
 
             dir('bibdk') {
-                git branch: $BRANCH_NAME,
-                    credentialsId: 'frontend-github',
-                    url: 'https://github.com/DBCDK/bibdk'
+                checkout scm
                 dir('xunit-transforms') {
                     git 'https://git.dbc.dk/common/xunit-transforms'
                 }
