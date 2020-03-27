@@ -232,7 +232,7 @@ pipeline {
 
             dir('bibdk') {
                 git branch: params.deploybranch,
-                    credentialsId: 'frontend-dbc',
+                    credentialsId: 'frontend-github',
                     url: 'https://github.com/DBCDK/bibdk'
                 dir('xunit-transforms') {
                     git 'https://git.dbc.dk/common/xunit-transforms'
