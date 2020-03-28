@@ -269,7 +269,7 @@ pipeline {
     // No need for mockup module after tests are run.
         agent {
             docker {
-                image "docker.dbc.dk/k8s-deploy-env:${k8sDeployEnvId}"
+                image "docker.dbc.dk/k8s-deploy-env:latest"
                 label 'devel9'
                 args '-u 0:0'
             }
