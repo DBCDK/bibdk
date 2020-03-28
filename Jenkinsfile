@@ -278,7 +278,7 @@ pipeline {
             script {
                 sh """
                     POD=\$(kubectl -n $NAMESPACE get pod -l app=bibliotek-dk-www-$BRANCH -o jsonpath="{.items[0].metadata.name}")
-                    kubectl -n $NAMESPACE exec -it \${POD} -- /bin/bash -c "cd /var/www/html && drush -y dis bibdk_mockup"
+                    kubectl -n $NAMESPACE exec -it \${POD} -- /bin/bash -c "drush -r /var/www/html -y dis bibdk_mockup"
                 """
             }
         }
