@@ -10,7 +10,7 @@ def NAMESPACE = 'frontend-features'
 
 // artifactory buildname
 def BUILDNAME = 'Bibliotek-dk :: ' + BRANCH
-
+def URL = 'http://${PRODUCT}-www-${BRANCH}.${NAMESPACE}.svc.cloud.dbc.dk'
 def DISTROPATH = "https://raw.github.com/DBCDK/bibdk/develop/distro.make"
 
 pipeline {
@@ -244,11 +244,11 @@ pipeline {
                 script {
                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'netpunkt-user', usernameVariable: 'NETPUNKT_USER', passwordVariable: 'NETPUNKT_PASS']]) {
                         sh """
-                    export FEATURE_BUILD_URL=${URL}
-                    export BIBDK_WEBDRIVER_URL=${URL}/
-                    export BIBDK_OPENUSERINFO_URL="http://openuserinfo-prod.frontend-prod.svc.cloud.dbc.dk/server.php"
-                    py.test --junitxml=selenium.xml --driver Remote --host selenium.dbc.dk --port 4444 --capability browserName chrome -v tests/ -o base_url=${URL} || true
-                    xsltproc xunit-transforms/pytest-selenium.xsl selenium.xml > selenium-result.xml
+                          export FEATURE_BUILD_URL=${URL}
+                          export BIBDK_WEBDRIVER_URL=${URL}/
+                          export BIBDK_OPENUSERINFO_URL="http://openuserinfo-prod.frontend-prod.svc.cloud.dbc.dk/server.php"
+                          py.test --junitxml=selenium.xml --driver Remote --host selenium.dbc.dk --port 4444 --capability browserName chrome -v tests/ -o base_url=${URL} || true
+                          xsltproc xunit-transforms/pytest-selenium.xsl selenium.xml > selenium-result.xml
                     """
                     }
 
