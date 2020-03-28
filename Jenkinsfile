@@ -10,7 +10,7 @@ def NAMESPACE = 'frontend-features'
 
 // artifactory buildname
 def BUILDNAME = 'Bibliotek-dk :: ' + BRANCH
-def URL = 'http://${PRODUCT}-www-${BRANCH}.${NAMESPACE}.svc.cloud.dbc.dk'
+def URL = 'http://'+PRODUCT+'-www-'+BRANCH+'.'+NAMESPACE+'.svc.cloud.dbc.dk'
 def DISTROPATH = "https://raw.github.com/DBCDK/bibdk/develop/distro.make"
 
 pipeline {
@@ -242,6 +242,7 @@ pipeline {
             """
             dir('bibdk') {
                 script {
+
                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'netpunkt-user', usernameVariable: 'NETPUNKT_USER', passwordVariable: 'NETPUNKT_PASS']]) {
                         sh """
                           export FEATURE_BUILD_URL=${URL}
@@ -252,7 +253,7 @@ pipeline {
                     """
                     }
 
-                    step([$class    : 'XUnitBuilder', testTimeMargin: '3000', thresholdMode: 1,
+                    step([$class: 'XUnitBuilder', testTimeMargin: '3000', thresholdMode: 1,
                           thresholds: [
                                   [$class: 'FailedThreshold', failureNewThreshold: '', failureThreshold: '0', unstableNewThreshold: '', unstableThreshold: ''],
                                   [$class: 'SkippedThreshold', failureNewThreshold: '', failureThreshold: '', unstableNewThreshold: '', unstableThreshold: '']],
