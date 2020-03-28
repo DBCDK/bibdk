@@ -267,15 +267,19 @@ pipeline {
 
     stage('disabling mockup module') {
     // No need for mockup module after tests are run.
-
+        agent {
+            docker {
+                image "docker.dbc.dk/k8s-deploy-env:${k8sDeployEnvId}"
+                label 'devel9'
+                args '-u 0:0'
+            }
+        }
         steps {
             script {
-                withCredentials([file(credentialsId: 'frontend-kubecert', variable: 'KUBECONFIG')]) {
-                    sh """
-                        POD=\$(kubectl -n $NAMESPACE get pod -l app=bibliotek-dk-www-$BRANCH -o jsonpath="{.items[0].metadata.name}")
-                        kubectl -n $NAMESPACE exec -it \${POD} -- /bin/bash -c "cd /var/www/html && drush -y dis bibdk_mockup"
-                    """
-                }
+                sh """
+                    POD=\$(kubectl -n $NAMESPACE get pod -l app=bibliotek-dk-www-$BRANCH -o jsonpath="{.items[0].metadata.name}")
+                    kubectl -n $NAMESPACE exec -it \${POD} -- /bin/bash -c "cd /var/www/html && drush -y dis bibdk_mockup"
+                """
             }
         }
     }
