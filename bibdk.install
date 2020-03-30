@@ -670,7 +670,7 @@ function bibdk_update_7065() {
 }
 
 /** Enable bibdk_ogp_metadata */
-function bibdk_update_7065() {
+function bibdk_update_7066() {
   $modules = array('bibdk_ogp_metadata');
-  module_disable($modules);
+  module_enable($modules);
 }
