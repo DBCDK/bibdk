@@ -1,4 +1,9 @@
 #! groovy
+@Library('pu-deploy')
+@Library('frontend-dscrum')
+
+def k8sDeployEnvId = findLastSuccessfulBuildNumber('Docker-k8s-deploy-env')
+
 // general vars
 def DOCKER_REPO = "docker-dscrum.dbc.dk"
 def PRODUCT = 'bibliotek-dk'
@@ -97,7 +102,7 @@ pipeline {
       steps {
         dir('docker/db') {
           sh """
-                wget -P docker-entrypoint.d https://is.dbc.dk/job/Bibliotek%20DK/job/Tools/job/Fetch%20Bibliotek%20DK%20database/lastSuccessfulBuild/artifact/bibdk_db_sql.tar.gz
+            wget -P docker-entrypoint.d https://is.dbc.dk/job/Bibliotek%20DK/job/Tools/job/Fetch%20Bibliotek%20DK%20database/lastSuccessfulBuild/artifact/bibdk_db_sql.tar.gz
           """
         }
         dir('docker/db/docker-entrypoint.d') {
@@ -185,11 +190,15 @@ pipeline {
           args '-u 0:0'
         }
       }
+      environment {
+        KUBECONFIG = credentials("kubecert-frontend")
+        KUBECTL = "kubectl --kubeconfig '${KUBECONFIG}'"
+      }
       steps {
         script {
           sh """
-            POD=\$(kubectl -n $NAMESPACE get pod -l app=bibliotek-dk-www-$BRANCH -o jsonpath="{.items[0].metadata.name}")
-            kubectl -n $NAMESPACE exec -it \${POD} -- /bin/bash -c "drush -r /var/www/html -y en bibdk_mockup"
+            POD=\$(kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' get pod -l app=bibliotek-dk-www-$BRANCH -o jsonpath="{.items[0].metadata.name}")
+            kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' exec -it \${POD} -- /bin/bash -c "drush -r /var/www/html -y en bibdk_mockup"
           """
         }
       }
@@ -286,16 +295,20 @@ pipeline {
     // No need for mockup module after tests are run.
         agent {
             docker {
-                image "docker.dbc.dk/k8s-deploy-env:latest"
+                image "docker.dbc.dk/k8s-deploy-env:${k8sDeployEnvId}"
                 label 'devel9'
                 args '-u 0:0'
             }
         }
+        environment {
+          KUBECONFIG = credentials("kubecert-frontend")
+          KUBECTL = "kubectl --kubeconfig '${KUBECONFIG}'"
+        }
         steps {
             script {
                 sh """
-                    POD=\$(kubectl -n $NAMESPACE get pod -l app=bibliotek-dk-www-$BRANCH -o jsonpath="{.items[0].metadata.name}")
-                    kubectl -n $NAMESPACE exec -it \${POD} -- /bin/bash -c "drush -r /var/www/html -y dis bibdk_mockup"
+                    POD=\$(kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' get pod -l app=bibliotek-dk-www-$BRANCH -o jsonpath="{.items[0].metadata.name}")
+                    kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' exec -it \${POD} -- /bin/bash -c "drush -r /var/www/html -y dis bibdk_mockup"
                 """
             }
         }
