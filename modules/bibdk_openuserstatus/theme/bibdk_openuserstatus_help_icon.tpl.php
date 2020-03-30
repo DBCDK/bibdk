@@ -7,7 +7,8 @@
        aria-label="<?php print t('Help', array(), array('context' => 'bibdk_theme')); ?>"
        role="button">
       <svg class="svg-icon svg-question">
-        <use xlink:href="#svg-question" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <title><?php print t('Help', array(), array('context' => 'bibdk_theme')); ?></title>
+        <use xlink:href="#svg-question" xmlns:xlink="http://www.w3.org/1999/xlink"/>
       </svg>
     </a>
   </p>
