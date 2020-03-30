@@ -69,6 +69,9 @@ if [ "$1" == '' ]; then
   sed -i 's/;opcache.revalidate_freq=2/opcache.revalidate_freq=0/' $PHPINI
   # increase memory_limit
   sed -i 's/memory_limit = 128M/memory_limit = 512M/' $PHPINI
+  # increase max_input_vars
+  sed -i 's/;max_input_vars = 128M/max_input_vars = 2048/' $PHPINI
+
   # allow url include
   # sed -i 's/allow_url_include = Off/allow_url_include = On/' $PHPINI
   echo "sendmail_path = /usr/bin/msmtp -t" >> $PHPINI
