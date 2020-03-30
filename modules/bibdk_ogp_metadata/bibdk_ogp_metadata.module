@@ -1,4 +1,5 @@
 <?php
+define("OGP_SITE_URL", "https://bibliotek.dk");
 
 /**
  * Implements hook_html_head_alter.
@@ -11,69 +12,28 @@ function bibdk_ogp_metadata_html_head_alter(&$head_elements){
   if(strpos($path, 'search') !== -1){
     $switch = 'search';
   }
-  else if(strpos($path, 'work') !== -1){
-    $switch = 'work';
-  }
+
   switch($switch){
-    case 'frontpage':
-      bibdk_ogp_metadata_head_frontpage($head_elements);
-      break;
     case 'search':
-      bibdk_ogp_metadata_head_search($head_elements);
+      $url = url(current_path(), array('absolute' => TRUE,'query' => drupal_get_query_parameters()));
+      bibdk_ogp_metadata_all_head($head_elements, 'search bibliotek.dk', $url);
       break;
     default:
+      bibdk_ogp_metadata_all_head($head_elements);
       break;
   }
   // @TODO add more specific pages - eg. work
 }
 
 /**
- * Metadata specific for search pages
- * @param $head_elements
- */
-function bibdk_ogp_metadata_head_search(&$head_elements){
-  $url = url(current_path(), array('absolute' => TRUE,'query' => drupal_get_query_parameters()));
-  // add generel headers
-  bibdk_ogp_metadata_all_head($head_elements, 'search bibliotek.dk');
-  // url
-  $head_elements['ogp_url']= array(
-    '#type' => 'html_tag',
-    '#tag' => 'meta',
-    '#attributes' => array(
-      'property'=>'og:url',
-      'content' => $url
-    )
-  );
-  drupal_add_html_head($head_elements, 'ogp_url');
-}
-
-/**
- * ogp metadata for frontpage
- * @param $head_elements
- */
-function bibdk_ogp_metadata_head_frontpage(&$head_elements){
-  // add generel headers
-  bibdk_ogp_metadata_all_head($head_elements);
-  // url
-  $head_elements['ogp_url']= array(
-    '#type' => 'html_tag',
-    '#tag' => 'meta',
-    '#attributes' => array(
-      'property'=>'og:url',
-      'content' => 'https://bibliotek.dk'
-    )
-  );
-  drupal_add_html_head($head_elements, 'ogp_url');
-}
-
-/**
  * Generel headers
- * Add og:type = website and og:title = bibliotek.dk (or another title) to all pages
+ * add elements required : title, type, image, url
  * @param $head_elements
  * @param $title
+ * @param $url
  */
-function bibdk_ogp_metadata_all_head(&$head_elements, $title = 'bibliotek.dk'){
-  //type
+function bibdk_ogp_metadata_all_head(&$head_elements, $title = 'bibliotek.dk', $url = "OGP_SITE_URL"){
+  //type - always website
   $head_elements['ogp_type']= array(
     '#type' => 'html_tag',
     '#tag' => 'meta',
@@ -83,7 +43,7 @@ function bibdk_ogp_metadata_all_head(&$head_elements, $title = 'bibliotek.dk'){
     )
   );
   drupal_add_html_head($head_elements, 'ogp_type');
-  // title - defaults to 'bibliotek.dk'
+  // title - from parameters
   $head_elements['ogp_title']= array(
     '#type' => 'html_tag',
     '#tag' => 'meta',
@@ -93,8 +53,8 @@ function bibdk_ogp_metadata_all_head(&$head_elements, $title = 'bibliotek.dk'){
     )
   );
   drupal_add_html_head($head_elements, 'ogp_title');
-  // image - use logo for now
-  $image_url = url('profiles/bibdk/themes/bibdk_theme/img/dbc-logo-footer-nopayoff.png', array('absolute'=>TRUE));
+  // image - use logo for now - remove language prefix
+  $image_url = url('/profiles/bibdk/themes/bibdk_theme/img/dbc-logo-footer-nopayoff.png', array('absolute'=>TRUE, 'language'=>''));
   $head_elements['ogp_image']= array(
     '#type' => 'html_tag',
     '#tag' => 'meta',
@@ -104,6 +64,16 @@ function bibdk_ogp_metadata_all_head(&$head_elements, $title = 'bibliotek.dk'){
     )
   );
   drupal_add_html_head($head_elements, 'ogp_image');
+  // url
+  $head_elements['ogp_url']= array(
+    '#type' => 'html_tag',
+    '#tag' => 'meta',
+    '#attributes' => array(
+      'property'=>'og:url',
+      'content' => $url,
+    )
+  );
+  drupal_add_html_head($head_elements, 'ogp_url');
 }
 
 
