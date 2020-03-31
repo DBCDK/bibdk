@@ -58,7 +58,7 @@ class TestWorkDisplay(helpers.BibdkUnitTestCase):
         shelf = browser.find_elements_by_css_selector('.field-name-bibdk-mani-shelf a')
         if not u"skønlitteratur" in shelf[-1].text:
             assert False
-        if not 'dkcclterm.dk%3Dsk' in shelf[-1].get_attribute('href'):
+        if not 'dkcclterm.dk%3D%22sk%22' in shelf[-1].get_attribute('href'):
             assert False
 
     def test_work_display_creator_link(self):
@@ -325,5 +325,5 @@ class TestWorkDisplay(helpers.BibdkUnitTestCase):
                 )
             )
         )
-        if not 'phrase.subject="venskab" and dkcclterm.dk=sk' in new_input.get_attribute('value'):
+        if not 'phrase.subject="venskab" and dkcclterm.dk="sk"' in new_input.get_attribute('value'):
             assert False
