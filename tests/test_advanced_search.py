@@ -189,6 +189,9 @@ class TestAdvancedSearch(helpers.BibdkUnitTestCase):
         )
         lydbog.click()
 
-        order_button = wait.until(
-          expected_conditions.visibility_of_element_located((By.ID, "this_edition_870970-basis:25109066"))
-        )
+        # Temporarily closed becaused ordering is closed
+        #order_button = wait.until(
+        #  expected_conditions.visibility_of_element_located((By.ID, "this_edition_870970-basis:25109066"))
+        #)
+
+        

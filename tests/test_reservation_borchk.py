@@ -95,10 +95,9 @@ class TestReservationBorchk(helpers.BibdkUnitTestCase):
         # PJO TODO find a library that accepts orders from unknown user - and then enable the test
         #self.assertIn('Borrower not found, but Library accepts reservations from unknown users', warning_messages, 'Library should accept unknown users.')
 
+    """
     def test_reservation_reject_unknown_user(self):
-        """
-        Library accepts only orders from known user.
-        """
+        #Library accepts only orders from known user.
         browser = self.browser
         self.bootstrap_reservation(self.pid, self.guldborgsund, self.guldborgsund_dummy_data)
         step3 = browser.find_element_by_id('edit-3')
@@ -109,6 +108,7 @@ class TestReservationBorchk(helpers.BibdkUnitTestCase):
         self.assertIn(error_message, error_messages, 'Library should reject unknown users.')
         print(error_message)
         print(error_messages)
+    """
 
     def test_reservation_known_user(self):
         """
