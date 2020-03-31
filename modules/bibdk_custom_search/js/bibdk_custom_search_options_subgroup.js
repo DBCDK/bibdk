@@ -11,6 +11,7 @@
 
   Drupal.bibdkCustomSearchOptionsSubgroup = function() {
     $('fieldset[data-child]').hide();
+
     // If child checkbox is checked remove checked from parent
     $('fieldset[data-child] input').change(function() {
 
@@ -32,9 +33,8 @@
       var childKey = $(this).attr('data-child');
       $('fieldset[data-child="' + childKey + '"]').toggle();
     });
-
-    /* Expand all subgroups with selected values*/
-    $('fieldset[data-child] input:checked').each(function(i, element) {
+    // Expand all subgroups with selected values
+   $('fieldset[data-child] input:checked').each(function(i, element) {
       var childKey = $(element).closest('fieldset[data-child]').attr('data-child');
       var trigger = $('[data-child="' + childKey + '"]:not(.toggled).toggle-subgroup');
       trigger.trigger('click');
@@ -102,6 +102,7 @@
     $('.text-white').addClass('toggled');
   };
 
+
   Drupal.behaviors.bibdkCustomSearchCheckboxes = {
     attach: function(context, settings) {
       $('.form-type-checkbox input').change(function() {
@@ -137,6 +138,16 @@
 
       Drupal.bibdkCustomSearchOptionsSubgroup();
       Drupal.bibdkCustomSearchClearEmptyFields();
+
+      var hash= window.location.hash
+      if ( hash == '' || hash == '#' || hash == undefined ) return false;
+      var target = $(hash);
+      target = target.length ? target : $('[name=' + hash.slice(1) +']');
+      if (target.length) {
+        $('html,body').stop().animate({
+          scrollTop: target.offset().top
+        }, 0);
+      }
     }
   };
 }(jQuery));
