@@ -39,10 +39,6 @@ pipeline {
         }
       }
       steps {
-        // Where the heck are we?
-        sh """
-          echo ${env.WORKSPACE}
-        """
         // Drush Make
         sh """
           drush make -v --working-copy --strict=0 --dbc-modules=$BRANCH_NAME --no-gitinfofile --contrib-destination=profiles/bibdk $DISTROPATH www
@@ -61,8 +57,6 @@ pipeline {
         stash name: "www", includes: "www.tar"
       }
     }
-
-    // @TODO NOT NOW only build develop and master switch on branch - if feature call feature build job
 
     stage('Docker: Drupal Site') {
       agent {
@@ -96,6 +90,10 @@ pipeline {
     // select count(*) from sessions where to_timestamp(timestamp) < now() - INTERVAL '1 DAY';
     // delete from sessions where to_timestamp(timestamp) < now() - INTERVAL '1 DAY';
     stage('Docker: Drupal database') {
+      when {
+        // Only run if branch is not master.
+        expression { BRANCH != 'master' }
+      }
       agent {
         node { label 'devel9-head' }
       }
