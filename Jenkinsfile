@@ -243,7 +243,6 @@ pipeline {
           kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' exec -i \${POD} -- /bin/bash -c "drush -r /var/www/html dis -y simpletest"
           """
 
-
           step([
             $class: 'XUnitBuilder', testTimeMargin: '3000', thresholdMode: 1,
             thresholds: [
