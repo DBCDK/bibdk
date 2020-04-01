@@ -217,7 +217,7 @@ pipeline {
         // Only run if branch is not master.
         expression { BRANCH != 'master' }
       }
-      parallel Selenium: {
+      parallel {
         stage('Selenium') {
           agent {
             docker {
@@ -264,8 +264,6 @@ pipeline {
             }
           }
         }
-      },
-      Simpletest: {
         stage('Simpletest') {
           agent {
             docker {
