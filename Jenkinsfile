@@ -129,8 +129,8 @@ pipeline {
           def buildInfo_www = Artifactory.newBuildInfo()
           buildInfo_www.name = BUILDNAME
           buildInfo_www = artyDocker.push("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:${currentBuild.number}", 'docker-dscrum', buildInfo_www)
-          buildInfo_db.env.capture = true
-          buildInfo_db.env.collect()
+          buildInfo_www.env.capture = true
+          buildInfo_www.env.collect()
 
           if (BRANCH != 'master') {
             def buildInfo_db = Artifactory.newBuildInfo()
