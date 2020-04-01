@@ -64,6 +64,17 @@ function bibdk_ogp_metadata_all_head(&$head_elements, $title = 'bibliotek.dk', $
     )
   );
   drupal_add_html_head($head_elements, 'ogp_image');
+  // image width
+  $head_elements['ogp_image_width']= array(
+    '#type' => 'html_tag',
+    '#tag' => 'meta',
+    '#attributes' => array(
+      'property'=>'og:image:width',
+      'content' => 160,
+    )
+  );
+  drupal_add_html_head($head_elements, 'ogp_image_width');
+
   // url
   $head_elements['ogp_url']= array(
     '#type' => 'html_tag',
@@ -74,6 +85,16 @@ function bibdk_ogp_metadata_all_head(&$head_elements, $title = 'bibliotek.dk', $
     )
   );
   drupal_add_html_head($head_elements, 'ogp_url');
+  // site name
+  $head_elements['ogp_site_name']= array(
+    '#type' => 'html_tag',
+    '#tag' => 'meta',
+    '#attributes' => array(
+      'property'=>'og:site_name',
+      'content' => "BIBLIOTEK.DK",
+    )
+  );
+  drupal_add_html_head($head_elements, 'ogp_site_name');
 }
 
 
