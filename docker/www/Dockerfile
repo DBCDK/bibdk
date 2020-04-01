@@ -30,22 +30,22 @@ RUN apt-get update && \
   rm -rf /var/lib/apt/lists/* && \
   apt-get autoremove -y
 
-COPY crontab /etc/crontab
 COPY data-vol /etc/logrotate.d
 COPY --chown=root:www-data www $APACHE_ROOT
-COPY 000-default.conf /etc/apache2/sites-enabled
-COPY entry.sh /
-COPY healthcheck.sh /
-COPY apache_ready.sh /
-COPY run_environment.sh /
+COPY conf/000-default.conf /etc/apache2/sites-enabled
+COPY script/entry.sh /
+COPY script/healthcheck.sh /
+COPY script/apache_ready.sh /
+COPY script/run_environment.sh /
 COPY www/profiles/bibdk/modules/bibdk_config/docker/settings.php $APACHE_ROOT/sites/default
 COPY robots.txt $APACHE_ROOT
-ADD fqdn.conf /etc/apache2/conf-available
-COPY apache_security.conf /etc/apache2/conf-enabled/
-COPY run-tests-jenkins.sh $APACHE_ROOT/scripts
-COPY run-tests-xunit.sh $APACHE_ROOT/scripts
+ADD conf/fqdn.conf /etc/apache2/conf-available
+COPY conf/apache_security.conf /etc/apache2/conf-enabled/
+COPY script/run-tests-jenkins.sh $APACHE_ROOT/scripts
+COPY script/run-tests-xunit.sh $APACHE_ROOT/scripts
+COPY script/run_cron.sh /
 COPY msmtprc /etc/
-COPY 20-yaz.ini /etc/php/7.3/apache2/conf.d/
+COPY conf/20-yaz.ini /etc/php/7.3/apache2/conf.d/
 
 RUN mkdir -p $APACHE_ROOT/private && \
   sudo chown www-data:www-data $APACHE_ROOT/private && \
