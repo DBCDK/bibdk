@@ -54,7 +54,7 @@ function bibdk_ogp_metadata_all_head(&$head_elements, $title = 'bibliotek.dk', $
   );
   drupal_add_html_head($head_elements, 'ogp_title');
   // image - use logo for now - remove language prefix
-  $image_url = url('/profiles/bibdk/themes/bibdk_theme/img/dbc-logo-footer-nopayoff.png', array('absolute'=>TRUE, 'language'=>''));
+  $image_url = url('/profiles/bibdk/themes/bibdk_theme/img/svg/logo.svg', array('absolute'=>TRUE, 'language'=>''));
   $head_elements['ogp_image']= array(
     '#type' => 'html_tag',
     '#tag' => 'meta',
