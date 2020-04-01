@@ -155,11 +155,16 @@ pipeline {
             buildInfo_www_latest.append buildInfo_db_latest
             artyServer.publishBuildInfo buildInfo_www_latest
           }
-
-          sh """
+          if (BRANCH != 'master') {
+            sh """
             	docker rmi ${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:${currentBuild.number}
             	docker rmi ${DOCKER_REPO}/${PRODUCT}-db-${BRANCH}:${currentBuild.number}
             """
+          } else {
+            sh """
+            	docker rmi ${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:${currentBuild.number}
+            """
+          }
           // cleanup development setup
           if (BRANCH == 'develop') {
              sh """
