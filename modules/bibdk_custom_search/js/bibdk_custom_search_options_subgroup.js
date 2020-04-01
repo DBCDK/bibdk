@@ -139,11 +139,19 @@
       Drupal.bibdkCustomSearchOptionsSubgroup();
       Drupal.bibdkCustomSearchClearEmptyFields();
 
+      // okay - because above javascripts folds and unfolds advanced search options
+      // page jumps to bottom when an advanced search option is selected.
+      // script below forces page to jump to hash given in url (#content)
+      // get the hash
       var hash= window.location.hash
+      // check the hast
       if ( hash == '' || hash == '#' || hash == undefined ) return false;
+      // jqueryfi
       var target = $(hash);
       target = target.length ? target : $('[name=' + hash.slice(1) +']');
+      // check web-element
       if (target.length) {
+        // scroll to hash
         $('html,body').stop().animate({
           scrollTop: target.offset().top
         }, 0);
