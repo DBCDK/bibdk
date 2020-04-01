@@ -125,18 +125,20 @@ pipeline {
         script {
           def artyServer = Artifactory.server 'arty'
           def artyDocker = Artifactory.docker server: artyServer, host: env.DOCKER_HOST
-          def buildInfo_db = Artifactory.newBuildInfo()
-          buildInfo_db.name = BUILDNAME
-          buildInfo_db = artyDocker.push("${DOCKER_REPO}/${PRODUCT}-db-${BRANCH}:${currentBuild.number}", 'docker-dscrum', buildInfo_db)
-          buildInfo_db.env.capture = true
-          buildInfo_db.env.collect()
 
           def buildInfo_www = Artifactory.newBuildInfo()
           buildInfo_www.name = BUILDNAME
           buildInfo_www = artyDocker.push("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:${currentBuild.number}", 'docker-dscrum', buildInfo_www)
+          buildInfo_db.env.capture = true
+          buildInfo_db.env.collect()
 
-          buildInfo_db.append buildInfo_www
-          artyServer.publishBuildInfo buildInfo_db
+          if (BRANCH != 'master') {
+            def buildInfo_db = Artifactory.newBuildInfo()
+            buildInfo_db.name = BUILDNAME
+            buildInfo_db = artyDocker.push("${DOCKER_REPO}/${PRODUCT}-db-${BRANCH}:${currentBuild.number}", 'docker-dscrum', buildInfo_db)
+            buildInfo_www.append buildInfo_db
+          }
+          artyServer.publishBuildInfo buildInfo_www
 
           // we need a latest tag for development setup
           if (BRANCH == 'develop') {
