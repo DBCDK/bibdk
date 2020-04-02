@@ -1,0 +1,93 @@
+<?php
+define("OGP_SITE_URL", "https://bibliotek.dk");
+
+
+/**
+ * Implements hook_html_head_alter.
+ * Add ogp metadata in page headers
+ * @param $head_elements
+ */
+function bibdk_ogp_metadata_html_head_alter(&$head_elements){
+  $path = $_GET['q'];
+  $switch = 'frontpage';
+  if(strpos($path, 'search') !== FALSE){
+    $switch = 'search';
+  }
+  // grab translations from custom search
+  $title = t('search_block_label_first', array(), array('context' => 'bibdk_custom_search'));
+  $title = $title . t('search_block_label_second', array(), array('context' => 'bibdk_custom_search'));
+
+  switch($switch){
+    case 'search':
+      $url = url(current_path(), array('absolute' => TRUE,'query' => drupal_get_query_parameters()));
+      bibdk_ogp_metadata_all_head($head_elements, $title, $url);
+      break;
+    default:
+      bibdk_ogp_metadata_all_head($head_elements, $title);
+      break;
+  }
+  // @TODO add more specific pages - eg. work
+}
+
+/**
+ * Generel headers
+ * add elements required : title, type, image, url
+ * @param $head_elements
+ * @param $title
+ * @param $url
+ */
+function bibdk_ogp_metadata_all_head(&$head_elements, $title = 'bibliotek.dk', $url = "OGP_SITE_URL"){
+  //type - always website
+  $head_elements['ogp_type']= array(
+    '#type' => 'html_tag',
+    '#tag' => 'meta',
+    '#attributes' => array(
+      'property'=>'og:type',
+      'content' => 'website'
+    )
+  );
+  drupal_add_html_head($head_elements, 'ogp_type');
+  // title - from parameters
+  $head_elements['ogp_title']= array(
+    '#type' => 'html_tag',
+    '#tag' => 'meta',
+    '#attributes' => array(
+      'property'=>'og:title',
+      'content' => $title,
+    )
+  );
+  drupal_add_html_head($head_elements, 'ogp_title');
+  // image - use logo for now - remove language prefix
+  $image_url = url('/profiles/bibdk/themes/bibdk_theme/img/ogp_logo.jpg', array('absolute'=>TRUE, 'language'=>''));
+  $head_elements['ogp_image']= array(
+    '#type' => 'html_tag',
+    '#tag' => 'meta',
+    '#attributes' => array(
+      'property'=>'og:image',
+      'content' => $image_url,
+    )
+  );
+  drupal_add_html_head($head_elements, 'ogp_image');
+  // url
+  $head_elements['ogp_url']= array(
+    '#type' => 'html_tag',
+    '#tag' => 'meta',
+    '#attributes' => array(
+      'property'=>'og:url',
+      'content' => $url,
+    )
+  );
+  drupal_add_html_head($head_elements, 'ogp_url');
+  // site name
+  $head_elements['ogp_site_name']= array(
+    '#type' => 'html_tag',
+    '#tag' => 'meta',
+    '#attributes' => array(
+      'property'=>'og:site_name',
+      'content' => "BIBLIOTEK.DK",
+    )
+  );
+  drupal_add_html_head($head_elements, 'ogp_site_name');
+}
+
+

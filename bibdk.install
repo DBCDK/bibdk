@@ -44,6 +44,7 @@ function _bibdk_enable_modules() {
     'bibdk_linkme',
     'bibdk_log_stdout',
     'bibdk_manifestation_fields',
+    'bibdk_ogp_metadata',
     'bibdk_openorder',
     'bibdk_provider',
     'bibdk_reservation',
@@ -112,7 +113,7 @@ function _bibdk_enable_modules() {
   if (!module_enable($module_list)) {
     $installed_module_list = array_keys(system_rebuild_module_data());
     $modules_diff = array_diff($module_list, $installed_module_list);
-    die('A module (' . implode(', ', $modules_diff) . ' ) present in array \'$module_list\' in file \'bibdk.install\' was not found. Install process aborted.');
+    die("A module (" . implode(', ', $modules_diff) . " ) present in array $module_list in file bibdk.install was not found. Install process aborted.");
   }
 }
 
@@ -668,8 +669,13 @@ function bibdk_update_7065() {
   module_disable($modules);
 }
 
-/** Enable new manifestation display fields */
-function bibdk_update_7065() {
+/** Enable bibdk_ogp_metadata */
+function bibdk_update_7066() {
+  $modules = array('bibdk_ogp_metadata');
+  module_enable($modules);
+}
+
+function bibdk_update_7067() {
   $modules = array('bibdk_manifestation_fields');
   module_enable($modules);
 }
