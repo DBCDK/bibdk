@@ -243,7 +243,7 @@ projects[libraries][version] = 2.5
 
 projects[memcache][subdir] = contrib
 projects[memcache][type] = module
-projects[memcache][version] = 1.7-beta1
+projects[memcache][version] = 1.6
 projects[memcache][patch][] = https://raw.githubusercontent.com/DBCDK/patches/master/memcache_lock_no_call_to_stats.patch
 
 projects[menu_attributes][subdir] = contrib
