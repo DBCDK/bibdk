@@ -1,6 +1,7 @@
 <?php
 define("OGP_SITE_URL", "https://bibliotek.dk");
 
+
 /**
  * Implements hook_html_head_alter.
  * Add ogp metadata in page headers
@@ -9,17 +10,20 @@ define("OGP_SITE_URL", "https://bibliotek.dk");
 function bibdk_ogp_metadata_html_head_alter(&$head_elements){
   $path = $_GET['q'];
   $switch = 'frontpage';
-  if(strpos($path, 'search') !== -1){
+  if(strpos($path, 'search') !== FALSE){
     $switch = 'search';
   }
+  // grab translations from custom search
+  $title = t('search_block_label_first', array(), array('context' => 'bibdk_custom_search'));
+  $title = $title . t('search_block_label_second', array(), array('context' => 'bibdk_custom_search'));
 
   switch($switch){
     case 'search':
       $url = url(current_path(), array('absolute' => TRUE,'query' => drupal_get_query_parameters()));
-      bibdk_ogp_metadata_all_head($head_elements, 'search bibliotek.dk', $url);
+      bibdk_ogp_metadata_all_head($head_elements, $title, $url);
       break;
     default:
-      bibdk_ogp_metadata_all_head($head_elements);
+      bibdk_ogp_metadata_all_head($head_elements, $title);
       break;
   }
   // @TODO add more specific pages - eg. work
@@ -54,7 +58,7 @@ function bibdk_ogp_metadata_all_head(&$head_elements, $title = 'bibliotek.dk', $
   );
   drupal_add_html_head($head_elements, 'ogp_title');
   // image - use logo for now - remove language prefix
-  $image_url = url('/profiles/bibdk/themes/bibdk_theme/img/svg/logo.svg', array('absolute'=>TRUE, 'language'=>''));
+  $image_url = url('/profiles/bibdk/themes/bibdk_theme/img/ogp_logo.jpg', array('absolute'=>TRUE, 'language'=>''));
   $head_elements['ogp_image']= array(
     '#type' => 'html_tag',
     '#tag' => 'meta',
@@ -64,17 +68,6 @@ function bibdk_ogp_metadata_all_head(&$head_elements, $title = 'bibliotek.dk', $
     )
   );
   drupal_add_html_head($head_elements, 'ogp_image');
-  // image width
-  $head_elements['ogp_image_width']= array(
-    '#type' => 'html_tag',
-    '#tag' => 'meta',
-    '#attributes' => array(
-      'property'=>'og:image:width',
-      'content' => 160,
-    )
-  );
-  drupal_add_html_head($head_elements, 'ogp_image_width');
-
   // url
   $head_elements['ogp_url']= array(
     '#type' => 'html_tag',
