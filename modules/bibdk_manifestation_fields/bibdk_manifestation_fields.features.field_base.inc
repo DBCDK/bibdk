@@ -284,6 +284,27 @@ function bibdk_manifestation_fields_field_default_field_bases() {
     'type' => 'bibdk_mani_contribs',
   );
 
+  // Exported field_base: 'bibdk_mani_contribs_extra'.
+  $field_bases['bibdk_mani_contribs_extra'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'bibdk_mani_contribs_extra',
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'ting_openformat',
+    'settings' => array(),
+    'storage' => array(
+      'active' => 1,
+      'module' => 'virtual_field',
+      'settings' => array(),
+      'type' => 'virtual_field',
+    ),
+    'translatable' => 0,
+    'type' => 'bibdk_mani_contribs_extra',
+  );
+
   // Exported field_base: 'bibdk_mani_creators'.
   $field_bases['bibdk_mani_creators'] = array(
     'active' => 1,
@@ -1143,6 +1164,27 @@ function bibdk_manifestation_fields_field_default_field_bases() {
     ),
     'translatable' => 0,
     'type' => 'bibdk_saou_link',
+  );
+
+  // Exported field_base: 'ting_openformat_mani_lk_subjects'.
+  $field_bases['ting_openformat_mani_lk_subjects'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'ting_openformat_mani_lk_subjects',
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'ting_openformat',
+    'settings' => array(),
+    'storage' => array(
+      'active' => 1,
+      'module' => 'virtual_field',
+      'settings' => array(),
+      'type' => 'virtual_field',
+    ),
+    'translatable' => 0,
+    'type' => 'ting_openformat_mani_lk_subjects',
   );
 
   return $field_bases;

@@ -667,3 +667,9 @@ function bibdk_update_7065() {
   $modules = array('ask_vopros');
   module_disable($modules);
 }
+
+/** Enable new manifestation display fields */
+function bibdk_update_7065() {
+  $modules = array('bibdk_manifestation_fields');
+  module_enable($modules);
+}
