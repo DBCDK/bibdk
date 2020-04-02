@@ -57,16 +57,6 @@ if [ "$1" == '' ]; then
   PHPINI=/etc/php/7.3/apache2/php.ini
   # sendmail
   sed -i 's:;sendmail_path =:sendmail_path = /usr/sbin/ssmtp -t:' $PHPINI
-  # Enable Opcache settings
-  sed -i 's/;opcache\.enable=0/opcache\.enable=1/' $PHPINI
-  # Memory consumption
-  sed -i 's/;opcache.memory_consumption=64/opcache.memory_consumption=192/' $PHPINI
-  # Memory for interned strings
-  sed -i 's/;opcache.interned_strings_buffer=4/opcache.interned_strings_buffer=16/' $PHPINI
-  # Max accelerated files
-  sed -i 's/;opcache.max_accelerated_files=2000/opcache.max_accelerated_files=7963/' $PHPINI
-  # revalidate frequence.
-  sed -i 's/;opcache.revalidate_freq=2/opcache.revalidate_freq=0/' $PHPINI
   # increase memory_limit
   sed -i 's/memory_limit = 128M/memory_limit = 512M/' $PHPINI
   # increase max_input_vars
