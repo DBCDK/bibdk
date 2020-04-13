@@ -674,3 +674,9 @@ function bibdk_update_7066() {
   $modules = array('bibdk_ogp_metadata');
   module_enable($modules);
 }
+
+/** Add manifestation display fields */
+function bibdk_update_7067() {
+  $modules = array('bibdk_manifestation_fields');
+  module_enable($modules);
+}
