@@ -977,6 +977,27 @@ function bibdk_manifestation_fields_field_default_field_bases() {
     'type' => 'bibdk_mani_shelf',
   );
 
+  // Exported field_base: 'bibdk_mani_shelf_public'.
+  $field_bases['bibdk_mani_shelf_public'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'bibdk_mani_shelf_public',
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'ting_openformat',
+    'settings' => array(),
+    'storage' => array(
+      'active' => 1,
+      'module' => 'virtual_field',
+      'settings' => array(),
+      'type' => 'virtual_field',
+    ),
+    'translatable' => 0,
+    'type' => 'bibdk_mani_shelf_public',
+  );
+
   // Exported field_base: 'bibdk_mani_system_demand'.
   $field_bases['bibdk_mani_system_demand'] = array(
     'active' => 1,
