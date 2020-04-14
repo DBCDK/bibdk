@@ -1,0 +1,5 @@
+name = Bibliotek.dk - ogp metadata
+description = add headers with metadata for browser preview (https://ogp.me/)
+core = 7.x
+version = 7.x-0.1
+package = Bibliotek.dk

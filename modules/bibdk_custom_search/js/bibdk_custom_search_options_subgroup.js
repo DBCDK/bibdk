@@ -11,6 +11,7 @@
 
   Drupal.bibdkCustomSearchOptionsSubgroup = function() {
     $('fieldset[data-child]').hide();
+
     // If child checkbox is checked remove checked from parent
     $('fieldset[data-child] input').change(function() {
 
@@ -32,9 +33,8 @@
       var childKey = $(this).attr('data-child');
       $('fieldset[data-child="' + childKey + '"]').toggle();
     });
-
-    /* Expand all subgroups with selected values*/
-    $('fieldset[data-child] input:checked').each(function(i, element) {
+    // Expand all subgroups with selected values
+   $('fieldset[data-child] input:checked').each(function(i, element) {
       var childKey = $(element).closest('fieldset[data-child]').attr('data-child');
       var trigger = $('[data-child="' + childKey + '"]:not(.toggled).toggle-subgroup');
       trigger.trigger('click');
@@ -63,6 +63,8 @@
         $(this).attr('checked', false);
       }
     });
+
+
   };
 
   Drupal.setBodyClass = function(currClass) {
@@ -102,34 +104,59 @@
     $('.text-white').addClass('toggled');
   };
 
+  Drupal.bibdkForceScrollToAnchor = function(context){
+    // okay - because above javascripts folds and unfolds advanced search options
+    // page jumps to bottom when an advanced search option is selected.
+    // script below forces page to jump to hash given in url (#content)
+    // get the hash
+    var hash = window.location.hash
+    console.log(window.location);
+    console.log(Drupal);
+
+
+    // check the hast
+    if (hash == '' || hash == '#' || hash == undefined) return false;
+    // jqueryfi
+    var target = $(hash);
+    target = target.length ? target : $('[name=' + hash.slice(1) + ']');
+    // check web-element
+    if (target.length) {
+      // scroll to hash
+      $('html,body', context).once().stop().animate({
+        scrollTop: target.offset().top
+      }, 0);
+    }
+  }
+
+
   Drupal.behaviors.bibdkCustomSearchCheckboxes = {
     attach: function(context, settings) {
-      $('.form-type-checkbox input').change(function() {
+      $('.form-type-checkbox input').change(function () {
         // clear other checkboxes if top-level default is selected, and default value is null.
-        if($(this).hasClass('default-value') && $(this).is(':checked') && !$(this).val()) {
-          $(this).closest(".bibdk-custom-search-element").find("input").each(function(i) {
-            if(!$(this).hasClass('default-value')) {
+        if ($(this).hasClass('default-value') && $(this).is(':checked') && !$(this).val()) {
+          $(this).closest(".bibdk-custom-search-element").find("input").each(function (i) {
+            if (!$(this).hasClass('default-value')) {
               $(this).attr('checked', false);
             }
           })
         }
         // clear top-level default if other checkboxes is selected, and default value is null.
-        if(!$(this).hasClass('default-value') && $(this).is(':checked')) {
-          $(this).closest(".bibdk-custom-search-element").find("input").each(function(i) {
-            if($(this).hasClass('default-value')) {
+        if (!$(this).hasClass('default-value') && $(this).is(':checked')) {
+          $(this).closest(".bibdk-custom-search-element").find("input").each(function (i) {
+            if ($(this).hasClass('default-value')) {
               $(this).attr('checked', false);
             }
           })
         }
         // set top-level default as selected, if all other checkboxes are unchecked.
-        if(!$(this).is(':checked')) {
+        if (!$(this).is(':checked')) {
           var counter = 0;
-          $(this).closest(".bibdk-custom-search-element").find("input").each(function(i) {
-            if($(this).is(':checked')) {
+          $(this).closest(".bibdk-custom-search-element").find("input").each(function (i) {
+            if ($(this).is(':checked')) {
               counter++;
             }
           })
-          if(!counter) {
+          if (!counter) {
             $(this).closest(".bibdk-custom-search-element").find("input.default-value").attr('checked', true);
           }
         }
@@ -137,6 +164,7 @@
 
       Drupal.bibdkCustomSearchOptionsSubgroup();
       Drupal.bibdkCustomSearchClearEmptyFields();
+      Drupal.bibdkForceScrollToAnchor(context);
     }
   };
 }(jQuery));

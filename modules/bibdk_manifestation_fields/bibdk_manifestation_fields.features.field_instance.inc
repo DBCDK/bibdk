@@ -45,7 +45,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 37,
+        'weight' => 40,
       ),
       'print' => array(
         'label' => 'above',
@@ -111,7 +111,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 46,
+        'weight' => 49,
       ),
       'print' => array(
         'label' => 'above',
@@ -176,7 +176,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 48,
+        'weight' => 51,
       ),
       'print' => array(
         'label' => 'above',
@@ -242,7 +242,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 24,
+        'weight' => 26,
       ),
       'print' => array(
         'label' => 'above',
@@ -375,7 +375,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 40,
+        'weight' => 43,
       ),
       'print' => array(
         'label' => 'above',
@@ -441,7 +441,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 15,
+        'weight' => 17,
       ),
       'print' => array(
         'label' => 'above',
@@ -572,7 +572,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 38,
+        'weight' => 41,
       ),
       'print' => array(
         'label' => 'above',
@@ -637,7 +637,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 39,
+        'weight' => 42,
       ),
       'print' => array(
         'label' => 'above',
@@ -702,7 +702,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 43,
+        'weight' => 46,
       ),
       'print' => array(
         'label' => 'above',
@@ -768,7 +768,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 22,
+        'weight' => 24,
       ),
       'print' => array(
         'label' => 'above',
@@ -865,6 +865,71 @@ function bibdk_manifestation_fields_field_default_field_instances() {
       ),
       'type' => 'text_textfield',
       'weight' => 11,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'bibdkManifestation-bibdkManifestation-bibdk_mani_contribs_extra'.
+  $field_instances['bibdkManifestation-bibdkManifestation-bibdk_mani_contribs_extra'] = array(
+    'bundle' => 'bibdkManifestation',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'ding_entity_type' => 'bibdkManifestation',
+    'display' => array(
+      'cart' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'default' => array(
+        'label' => 'above',
+        'module' => 'ting_openformat',
+        'settings' => array(),
+        'type' => 'ting_openformat_default_formatter',
+        'weight' => 68,
+      ),
+      'email' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'full' => array(
+        'label' => 'above',
+        'module' => 'ting_openformat',
+        'settings' => array(),
+        'type' => 'ting_openformat_default_formatter',
+        'weight' => 6,
+      ),
+      'print' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'reservation' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 67,
+      ),
+    ),
+    'entity_type' => 'bibdkManifestation',
+    'field_name' => 'bibdk_mani_contribs_extra',
+    'label' => 'Contributors extra',
+    'required' => FALSE,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 72,
     ),
   );
 
@@ -970,7 +1035,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 45,
+        'weight' => 48,
       ),
       'print' => array(
         'label' => 'above',
@@ -1035,7 +1100,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 47,
+        'weight' => 50,
       ),
       'print' => array(
         'label' => 'above',
@@ -1101,7 +1166,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 28,
+        'weight' => 30,
       ),
       'print' => array(
         'label' => 'above',
@@ -1166,7 +1231,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 52,
+        'weight' => 60,
       ),
       'print' => array(
         'label' => 'above',
@@ -1232,7 +1297,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 8,
+        'weight' => 9,
       ),
       'print' => array(
         'label' => 'above',
@@ -1299,7 +1364,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 12,
+        'weight' => 14,
       ),
       'print' => array(
         'label' => 'above',
@@ -1366,7 +1431,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 19,
+        'weight' => 21,
       ),
       'print' => array(
         'label' => 'above',
@@ -1433,7 +1498,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 20,
+        'weight' => 22,
       ),
       'print' => array(
         'label' => 'above',
@@ -1500,7 +1565,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 11,
+        'weight' => 13,
       ),
       'print' => array(
         'label' => 'above',
@@ -1567,7 +1632,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 31,
+        'weight' => 33,
       ),
       'print' => array(
         'label' => 'above',
@@ -1634,7 +1699,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 32,
+        'weight' => 34,
       ),
       'print' => array(
         'label' => 'above',
@@ -1701,7 +1766,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 34,
+        'weight' => 36,
       ),
       'print' => array(
         'label' => 'above',
@@ -1768,7 +1833,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 33,
+        'weight' => 35,
       ),
       'print' => array(
         'label' => 'above',
@@ -1835,7 +1900,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 36,
+        'weight' => 39,
       ),
       'print' => array(
         'label' => 'above',
@@ -1902,7 +1967,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 6,
+        'weight' => 7,
       ),
       'print' => array(
         'label' => 'above',
@@ -1969,7 +2034,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 27,
+        'weight' => 29,
       ),
       'print' => array(
         'label' => 'above',
@@ -2036,7 +2101,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 29,
+        'weight' => 31,
       ),
       'print' => array(
         'label' => 'above',
@@ -2103,7 +2168,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 30,
+        'weight' => 32,
       ),
       'print' => array(
         'label' => 'above',
@@ -2170,7 +2235,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 26,
+        'weight' => 28,
       ),
       'print' => array(
         'label' => 'above',
@@ -2236,7 +2301,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 53,
+        'weight' => 61,
       ),
       'print' => array(
         'label' => 'above',
@@ -2303,7 +2368,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 10,
+        'weight' => 12,
       ),
       'print' => array(
         'label' => 'above',
@@ -2370,7 +2435,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 9,
+        'weight' => 10,
       ),
       'print' => array(
         'label' => 'above',
@@ -2437,7 +2502,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 7,
+        'weight' => 8,
       ),
       'print' => array(
         'label' => 'above',
@@ -2504,7 +2569,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 17,
+        'weight' => 19,
       ),
       'print' => array(
         'label' => 'above',
@@ -2571,7 +2636,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 18,
+        'weight' => 20,
       ),
       'print' => array(
         'label' => 'above',
@@ -2638,7 +2703,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 25,
+        'weight' => 27,
       ),
       'print' => array(
         'label' => 'above',
@@ -2705,7 +2770,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 21,
+        'weight' => 23,
       ),
       'print' => array(
         'label' => 'above',
@@ -2772,7 +2837,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 14,
+        'weight' => 16,
       ),
       'print' => array(
         'label' => 'above',
@@ -2838,7 +2903,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 41,
+        'weight' => 44,
       ),
       'print' => array(
         'label' => 'above',
@@ -2904,7 +2969,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 13,
+        'weight' => 15,
       ),
       'print' => array(
         'label' => 'above',
@@ -2971,7 +3036,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 35,
+        'weight' => 38,
       ),
       'print' => array(
         'label' => 'above',
@@ -3001,6 +3066,71 @@ function bibdk_manifestation_fields_field_default_field_instances() {
       ),
       'type' => 'text_textfield',
       'weight' => 18,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'bibdkManifestation-bibdkManifestation-bibdk_mani_shelf_public'.
+  $field_instances['bibdkManifestation-bibdkManifestation-bibdk_mani_shelf_public'] = array(
+    'bundle' => 'bibdkManifestation',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'ding_entity_type' => 'bibdkManifestation',
+    'display' => array(
+      'cart' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'default' => array(
+        'label' => 'above',
+        'module' => 'ting_openformat',
+        'settings' => array(),
+        'type' => 'ting_openformat_default_formatter',
+        'weight' => 69,
+      ),
+      'email' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'full' => array(
+        'label' => 'above',
+        'module' => 'ting_openformat',
+        'settings' => array(),
+        'type' => 'ting_openformat_default_formatter',
+        'weight' => 37,
+      ),
+      'print' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'reservation' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 68,
+      ),
+    ),
+    'entity_type' => 'bibdkManifestation',
+    'field_name' => 'bibdk_mani_shelf_public',
+    'label' => 'Shelf Public Libraries',
+    'required' => FALSE,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 73,
     ),
   );
 
@@ -3037,7 +3167,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 44,
+        'weight' => 47,
       ),
       'print' => array(
         'label' => 'above',
@@ -3103,7 +3233,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 16,
+        'weight' => 18,
       ),
       'print' => array(
         'label' => 'above',
@@ -3169,7 +3299,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 50,
+        'weight' => 59,
       ),
       'print' => array(
         'label' => 'above',
@@ -3303,7 +3433,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 49,
+        'weight' => 52,
       ),
       'print' => array(
         'label' => 'above',
@@ -3368,7 +3498,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 59,
+        'weight' => 62,
       ),
       'print' => array(
         'label' => 'above',
@@ -3436,7 +3566,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 23,
+        'weight' => 25,
       ),
       'print' => array(
         'label' => 'above',
@@ -3503,7 +3633,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
         'module' => 'ting_openformat',
         'settings' => array(),
         'type' => 'ting_openformat_default_formatter',
-        'weight' => 42,
+        'weight' => 45,
       ),
       'print' => array(
         'label' => 'above',
@@ -3533,6 +3663,70 @@ function bibdk_manifestation_fields_field_default_field_instances() {
       ),
       'type' => 'text_textfield',
       'weight' => 55,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'bibdkManifestation-bibdkManifestation-ting_openformat_mani_lk_subjects'.
+  $field_instances['bibdkManifestation-bibdkManifestation-ting_openformat_mani_lk_subjects'] = array(
+    'bundle' => 'bibdkManifestation',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'ding_entity_type' => 'bibdkManifestation',
+    'display' => array(
+      'cart' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'default' => array(
+        'label' => 'above',
+        'module' => 'ting_openformat',
+        'settings' => array(),
+        'type' => 'ting_openformat_default_formatter',
+        'weight' => 67,
+      ),
+      'email' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'full' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 63,
+      ),
+      'print' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'reservation' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 66,
+      ),
+    ),
+    'entity_type' => 'bibdkManifestation',
+    'field_name' => 'ting_openformat_mani_lk_subjects',
+    'label' => 'Work Laesekompas subjects',
+    'required' => FALSE,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 71,
     ),
   );
 
@@ -4050,6 +4244,53 @@ function bibdk_manifestation_fields_field_default_field_instances() {
       ),
       'type' => 'text_textfield',
       'weight' => 4,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'bibdkManifestationSection-bibdkManifestationSection-bibdk_mani_contribs_extra'.
+  $field_instances['bibdkManifestationSection-bibdkManifestationSection-bibdk_mani_contribs_extra'] = array(
+    'bundle' => 'bibdkManifestationSection',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'ding_entity_type' => 'bibdkManifestationSection',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'ting_openformat',
+        'settings' => array(),
+        'type' => 'ting_openformat_default_formatter',
+        'weight' => 42,
+      ),
+      'full' => array(
+        'label' => 'above',
+        'module' => 'ting_openformat',
+        'settings' => array(),
+        'type' => 'ting_openformat_default_formatter',
+        'weight' => 42,
+      ),
+      'reservation' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 42,
+      ),
+    ),
+    'entity_type' => 'bibdkManifestationSection',
+    'field_name' => 'bibdk_mani_contribs_extra',
+    'label' => 'Contributors extra',
+    'required' => FALSE,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 42,
     ),
   );
 
@@ -5276,6 +5517,53 @@ function bibdk_manifestation_fields_field_default_field_instances() {
   );
 
   // Exported field_instance:
+  // 'bibdkManifestationSection-bibdkManifestationSection-bibdk_mani_shelf_public'.
+  $field_instances['bibdkManifestationSection-bibdkManifestationSection-bibdk_mani_shelf_public'] = array(
+    'bundle' => 'bibdkManifestationSection',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'ding_entity_type' => 'bibdkManifestationSection',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'ting_openformat',
+        'settings' => array(),
+        'type' => 'ting_openformat_default_formatter',
+        'weight' => 43,
+      ),
+      'full' => array(
+        'label' => 'above',
+        'module' => 'ting_openformat',
+        'settings' => array(),
+        'type' => 'ting_openformat_default_formatter',
+        'weight' => 43,
+      ),
+      'reservation' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 43,
+      ),
+    ),
+    'entity_type' => 'bibdkManifestationSection',
+    'field_name' => 'bibdk_mani_shelf_public',
+    'label' => 'Shelf Public Libraries',
+    'required' => FALSE,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 43,
+    ),
+  );
+
+  // Exported field_instance:
   // 'bibdkManifestationSection-bibdkManifestationSection-bibdk_mani_text_levels'.
   $field_instances['bibdkManifestationSection-bibdkManifestationSection-bibdk_mani_text_levels'] = array(
     'bundle' => 'bibdkManifestationSection',
@@ -5930,6 +6218,53 @@ function bibdk_manifestation_fields_field_default_field_instances() {
       ),
       'type' => 'text_textfield',
       'weight' => 4,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'bibdkManifestationVolume-bibdkManifestationVolume-bibdk_mani_contribs_extra'.
+  $field_instances['bibdkManifestationVolume-bibdkManifestationVolume-bibdk_mani_contribs_extra'] = array(
+    'bundle' => 'bibdkManifestationVolume',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'ding_entity_type' => 'bibdkManifestationVolume',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'ting_openformat',
+        'settings' => array(),
+        'type' => 'ting_openformat_default_formatter',
+        'weight' => 43,
+      ),
+      'full' => array(
+        'label' => 'above',
+        'module' => 'ting_openformat',
+        'settings' => array(),
+        'type' => 'ting_openformat_default_formatter',
+        'weight' => 43,
+      ),
+      'reservation' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 43,
+      ),
+    ),
+    'entity_type' => 'bibdkManifestationVolume',
+    'field_name' => 'bibdk_mani_contribs_extra',
+    'label' => 'Contributors extra',
+    'required' => FALSE,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 43,
     ),
   );
 
@@ -7155,6 +7490,53 @@ function bibdk_manifestation_fields_field_default_field_instances() {
   );
 
   // Exported field_instance:
+  // 'bibdkManifestationVolume-bibdkManifestationVolume-bibdk_mani_shelf_public'.
+  $field_instances['bibdkManifestationVolume-bibdkManifestationVolume-bibdk_mani_shelf_public'] = array(
+    'bundle' => 'bibdkManifestationVolume',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'ding_entity_type' => 'bibdkManifestationVolume',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'ting_openformat',
+        'settings' => array(),
+        'type' => 'ting_openformat_default_formatter',
+        'weight' => 44,
+      ),
+      'full' => array(
+        'label' => 'above',
+        'module' => 'ting_openformat',
+        'settings' => array(),
+        'type' => 'ting_openformat_default_formatter',
+        'weight' => 44,
+      ),
+      'reservation' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 44,
+      ),
+    ),
+    'entity_type' => 'bibdkManifestationVolume',
+    'field_name' => 'bibdk_mani_shelf_public',
+    'label' => 'Shelf Public Libraries',
+    'required' => FALSE,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 44,
+    ),
+  );
+
+  // Exported field_instance:
   // 'bibdkManifestationVolume-bibdkManifestationVolume-bibdk_mani_text_levels'.
   $field_instances['bibdkManifestationVolume-bibdkManifestationVolume-bibdk_mani_text_levels'] = array(
     'bundle' => 'bibdkManifestationVolume',
@@ -7311,6 +7693,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
   t('Content Title');
   t('Context');
   t('Contributors');
+  t('Contributors extra');
   t('Creators');
   t('Database references');
   t('Debates');
@@ -7343,6 +7726,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
   t('Section');
   t('Series');
   t('Shelf');
+  t('Shelf Public Libraries');
   t('System demands');
   t('Text Levels');
   t('Title');
@@ -7350,6 +7734,7 @@ function bibdk_manifestation_fields_field_default_field_instances() {
   t('Tracks');
   t('Used Language');
   t('Volume');
+  t('Work Laesekompas subjects');
 
   return $field_instances;
 }
