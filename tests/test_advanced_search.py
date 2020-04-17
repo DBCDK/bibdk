@@ -185,7 +185,7 @@ class TestAdvancedSearch(helpers.BibdkUnitTestCase):
 
         # Show manifestation for lydbog cd
         lydbog = wait.until(
-          expected_conditions.visibility_of_element_located((By.ID, "manifestation-toggle-button-Lydbog-cd-870970-basis54708513"))
+          expected_conditions.visibility_of_element_located((By.ID, "manifestation-toggle-button-Lydbog-cd-870970-basis25419766"))
         )
         lydbog.click()
 
