@@ -1,0 +1,12 @@
+<?php
+/**
+ * @file
+ * Bibliotek.dk ogp metadata - install file
+ */
+
+/** Implements hook_update_N
+ * Add translation for string constants
+ */
+function bibdk_ogp_metadata_update_7001() {
+  t('ogp_description', array(), array('context' => 'bibdk_ogp'));
+}
