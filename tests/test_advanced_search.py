@@ -179,13 +179,13 @@ class TestAdvancedSearch(helpers.BibdkUnitTestCase):
 
         # Click on result
         work = wait.until(
-          expected_conditions.visibility_of_element_located((By.ID, "selid-870970basis54708513"))
+          expected_conditions.visibility_of_element_located((By.ID, "selid-870970basis25419766"))
         )
         work.click()
 
         # Show manifestation for lydbog cd
         lydbog = wait.until(
-          expected_conditions.visibility_of_element_located((By.ID, "manifestation-toggle-button-Lydbog-cd-870970-basis54708513"))
+          expected_conditions.visibility_of_element_located((By.ID, "manifestation-toggle-button-Lydbog-cd-870970-basis25419766"))
         )
         lydbog.click()
 
@@ -193,5 +193,3 @@ class TestAdvancedSearch(helpers.BibdkUnitTestCase):
         #order_button = wait.until(
         #  expected_conditions.visibility_of_element_located((By.ID, "this_edition_870970-basis:25109066"))
         #)
-
-        
