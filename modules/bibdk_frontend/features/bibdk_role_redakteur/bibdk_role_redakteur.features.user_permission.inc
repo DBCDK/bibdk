@@ -46,6 +46,7 @@ function bibdk_role_redakteur_user_default_permissions() {
     'name' => 'administer themes',
     'roles' => array(
       'administrator' => 'administrator',
+      'redakteur' => 'redakteur',
     ),
     'module' => 'system',
   );
