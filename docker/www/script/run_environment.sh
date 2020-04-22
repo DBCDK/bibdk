@@ -12,3 +12,6 @@ sed -i "s/'password' => '',/'password' => '$POSTGRES_PASSWORD',/" $SETTINGS
 sed -i "s/'host' => '',/'host' => '$POSTGRES_HOST',/" $SETTINGS
 # MEMCACHE_SERVER
 sed -i "s/@MEMCACHE_SERVER@/$MEMCACHE_SERVER/" $SETTINGS
+
+# Make a symbolic link to netpunkt modules - for simpletest to run.
+/bin/sh -c "cd $APACHE_ROOT/sites/default && ln -sf $APACHE_ROOT/profiles/bibdk/modules"
