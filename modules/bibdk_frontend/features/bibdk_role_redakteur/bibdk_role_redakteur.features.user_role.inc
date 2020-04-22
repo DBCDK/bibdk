@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * bibdk_role_redakteur.features.user_role.inc
@@ -13,7 +14,7 @@ function bibdk_role_redakteur_user_default_roles() {
   // Exported role: redakteur.
   $roles['redakteur'] = array(
     'name' => 'redakteur',
-    'weight' => '2',
+    'weight' => 2,
   );
 
   return $roles;
