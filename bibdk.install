@@ -80,7 +80,6 @@ function _bibdk_enable_modules() {
     'ding_provider',
     'ding_user',
     'ding_wayf',
-    'ding_webtrends',
     'bibdk_netarchive',
     'admin_menu',
     'elements',

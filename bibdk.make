@@ -67,16 +67,6 @@ projects[ding_wayf][download][type] = git
 projects[ding_wayf][download][url] = git@github.com:DBCDK/ding_wayf.git
 projects[ding_wayf][download][tag] = 7.x-1.0
 
-projects[ding_webtrends][type] = module
-projects[ding_webtrends][download][type] = git
-projects[ding_webtrends][download][url] = git@github.com:DBCDK/ding_webtrends.git
-projects[ding_webtrends][download][tag] = 7.x-0.2+dbc.2
-
-projects[ding_webtrends_2014][type] = module
-projects[ding_webtrends_2014][download][type] = git
-projects[ding_webtrends_2014][download][url] = git@github.com:DBCDK/ding_webtrends_2014.git
-projects[ding_webtrends_2014][download][tag] = 7.x-0.3
-
 projects[ting-client][type] = module
 projects[ting-client][download][type] = git
 projects[ting-client][download][url] = git@github.com:DBCDK/ting-client.git
@@ -209,7 +199,7 @@ projects[entity][version] = 1.9
 
 projects[eu-cookie-compliance][subdir] = contrib
 projects[eu-cookie-compliance][type] = module
-projects[eu-cookie-compliance][version] = 1.13
+projects[eu-cookie-compliance][version] = 1.31
 
 projects[features][subdir] = contrib
 projects[features][type] = module
