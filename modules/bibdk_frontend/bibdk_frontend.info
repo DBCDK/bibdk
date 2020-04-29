@@ -1,10 +1,13 @@
 name = Bibliotek.dk - Frontend
-description = Handles visual setup of the bibdk profile such as blocks etc.
+description = Handles visual setup of the bibdk profile such as blocks etc. Implements tracking scripts used for statistics.
 core = 7.x
-version = 7.x-0.73
+version = 7.x-0.74
 package = Bibdk Frontend
 
 files[] = js/autocomplete.js
 files[] = test/bibdk_frontend.test
 
 dependencies[] = translatable
+
+scripts[] = matomo/piwik.js
+scripts[] = webtrekk/webtrek.js

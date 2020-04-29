@@ -1,0 +1,15 @@
+name = Bibliotek.dk - EU Cookie Compliance
+description = EU Cookie Compliance Configuration
+core = 7.x
+package = Bibliotek.dk
+version = 7.x-1.0
+dependencies[] = ctools
+dependencies[] = strongarm
+features[ctools][] = strongarm:strongarm:1
+features[features_api][] = api:2
+features[variable][] = eu_cookie_compliance
+features[variable][] = eu_cookie_compliance_cookie_lifetime
+features[variable][] = eu_cookie_compliance_domain
+features[variable][] = eu_cookie_compliance_domain_all_sites
+features[variable][] = eu_cookie_compliance_en
+features[variable][] = see_the_banner
