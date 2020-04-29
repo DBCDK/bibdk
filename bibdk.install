@@ -85,6 +85,7 @@ function _bibdk_enable_modules() {
     'admin_menu',
     'elements',
     'eu_cookie_compliance',
+    'hotjar',
     'microcurl',
     'ting_agency',
     'ting_client',
@@ -678,5 +679,11 @@ function bibdk_update_7066() {
 /** Add manifestation display fields */
 function bibdk_update_7067() {
   $modules = array('bibdk_manifestation_fields');
+  module_enable($modules);
+}
+
+/** Enable Hotjar tracking module */
+function bibdk_update_7068() {
+  $modules = array('hotjar');
   module_enable($modules);
 }
