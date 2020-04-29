@@ -197,9 +197,9 @@ projects[entity][subdir] = contrib
 projects[entity][type] = module
 projects[entity][version] = 1.9
 
-projects[eu-cookie-compliance][subdir] = contrib
-projects[eu-cookie-compliance][type] = module
-projects[eu-cookie-compliance][version] = 1.31
+projects[eu_cookie_compliance][subdir] = contrib
+projects[eu_cookie_compliance][type] = module
+projects[eu_cookie_compliance][version] = 1.31
 
 projects[features][subdir] = contrib
 projects[features][type] = module
