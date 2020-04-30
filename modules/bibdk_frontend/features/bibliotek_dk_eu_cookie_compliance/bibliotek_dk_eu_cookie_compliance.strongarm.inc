@@ -52,7 +52,7 @@ Vi benytter dog en cookie for at huske dit valg.',
     'withdraw_button_on_info_popup' => 0,
     'withdraw_message' => array(
       'value' => '<h2>We use cookies on this site to enhance your user experience</h2><p>You have given your consent for us to set cookies.</p>',
-      'format' => 'plain_text',
+      'format' => 'html_5',
     ),
     'withdraw_tab_button_label' => 'Privacy settings',
     'withdraw_action_button_label' => 'Withdraw consent',
