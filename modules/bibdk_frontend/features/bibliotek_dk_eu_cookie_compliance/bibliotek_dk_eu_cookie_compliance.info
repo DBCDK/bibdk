@@ -11,5 +11,4 @@ features[variable][] = eu_cookie_compliance
 features[variable][] = eu_cookie_compliance_cookie_lifetime
 features[variable][] = eu_cookie_compliance_domain
 features[variable][] = eu_cookie_compliance_domain_all_sites
-features[variable][] = eu_cookie_compliance_en
 features[variable][] = see_the_banner

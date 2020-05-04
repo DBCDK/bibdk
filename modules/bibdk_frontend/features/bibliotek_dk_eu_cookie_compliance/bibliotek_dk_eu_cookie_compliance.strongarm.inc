@@ -44,10 +44,10 @@ Vi benytter dog en cookie for at huske dit valg.',
       'format' => 'plain_text',
     ),
     'mobile_breakpoint' => '768',
-    'popup_agree_button_message' => 'OK, I agree',
+    'popup_agree_button_message' => 'Acceptér',
     'show_disagree_button' => TRUE,
-    'popup_disagree_button_message' => 'No, give me more info',
-    'disagree_button_label' => 'No, thanks',
+    'popup_disagree_button_message' => 'Mere info',
+    'disagree_button_label' => 'Afvis',
     'withdraw_enabled' => 0,
     'withdraw_button_on_info_popup' => 0,
     'withdraw_message' => array(
@@ -109,22 +109,6 @@ Vi benytter dog en cookie for at huske dit valg.',
   $strongarm->name = 'eu_cookie_compliance_domain_all_sites';
   $strongarm->value = 0;
   $export['eu_cookie_compliance_domain_all_sites'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'eu_cookie_compliance_en';
-  $strongarm->value = array(
-    'popup_info' => array(
-      'value' => '<h2>We use cookies on this site to enhance your user experience</h2><p>By clicking any link on this page you are giving your consent for us to set cookies.</p>',
-      'format' => 'plain_text',
-    ),
-    'popup_agreed' => array(
-      'value' => '<h2>Thank you for accepting cookies</h2><p>You can now hide this message or find out more about cookies.</p>',
-      'format' => 'plain_text',
-    ),
-  );
-  $export['eu_cookie_compliance_en'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
