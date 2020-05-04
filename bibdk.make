@@ -201,6 +201,10 @@ projects[eu_cookie_compliance][subdir] = contrib
 projects[eu_cookie_compliance][type] = module
 projects[eu_cookie_compliance][version] = 1.31
 
+projects[hotjar][subdir] = contrib
+projects[hotjar][type] = module
+projects[hotjar][version] = 1.3
+
 projects[features][subdir] = contrib
 projects[features][type] = module
 projects[features][version] = 2.11
