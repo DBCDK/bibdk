@@ -9,6 +9,12 @@ class TestReservationAnonUser(helpers.BibdkUnitTestCase):
         browser = self.browser
         self._goto_frontpage()
         wait = WebDriverWait(browser, 30)
+
+        agree = wait.until(
+          EC.visibility_of_element_located((By.CLASS_NAME, "agree-button"))
+        )
+        agree.click()
+
         # Perform search
         input = wait.until(
             EC.visibility_of_element_located(

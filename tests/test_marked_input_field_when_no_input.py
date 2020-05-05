@@ -3,6 +3,12 @@ import helpers
 class TestMarkedInputFieldWhenNoInput(helpers.BibdkUnitTestCase):
     def test_red_rings(self):
         self._goto_frontpage()
+        browser = self.browser
+        wait = WebDriverWait(browser, 30)
+        agree = wait.until(
+          expected_conditions.visibility_of_element_located((By.CLASS_NAME, "agree-button"))
+        )
+        agree.click()
         searchbox = self.browser.find_element_by_id('edit-search-block-form--2')
         searchbox.send_keys('rec.id=820030-katalog:1887566')
         self.browser.find_element_by_id('edit-submit').click()

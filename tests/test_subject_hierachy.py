@@ -18,6 +18,12 @@ class TestBibdkSubjectHierachy(helpers.BibdkUnitTestCase):
         browser.implicitly_wait(20)
         self._goto_frontpage()
 
+        wait = WebDriverWait(browser, 30)
+        agree = wait.until(
+          expected_conditions.visibility_of_element_located((By.CLASS_NAME, "agree-button"))
+        )
+        agree.click()
+
         # ensure that the subject hierachy is present
         subject_hierachy = browser.find_element_by_id("subjectshierarchy")
 
@@ -66,6 +72,12 @@ class TestBibdkSubjectHierachy(helpers.BibdkUnitTestCase):
         browser = self.browser
         browser.implicitly_wait(5)
         self._goto_frontpage()
+
+        wait = WebDriverWait(browser, 30)
+        agree = wait.until(
+          expected_conditions.visibility_of_element_located((By.CLASS_NAME, "agree-button"))
+        )
+        agree.click()
 
         link_a = "bibdk_subject_hierarchy/nojs/4"
         link_b = "bibdk_subject_hierarchy/nojs/4%2C5"
@@ -168,6 +180,12 @@ class TestBibdkSubjectHierachy(helpers.BibdkUnitTestCase):
         browser.implicitly_wait(5)
         browser.get(self.base_url)
 
+        wait = WebDriverWait(browser, 30)
+        agree = wait.until(
+          expected_conditions.visibility_of_element_located((By.CLASS_NAME, "agree-button"))
+        )
+        agree.click()
+
         # ensure that the subject hierachy is present
         subject_hierachy_searchfield = browser.find_element_by_class_name("subject-hierarchy-searchfield")
         subject_hierachy_link_wrapper = subject_hierachy_searchfield.find_element_by_class_name("show-for-large-up")
@@ -187,10 +205,10 @@ class TestBibdkSubjectHierachy(helpers.BibdkUnitTestCase):
 
         subject_hierachy_input = browser.find_element_by_id("edit-search-hierarchy-input")
         self.assertTrue(subject_hierachy_input.is_displayed(), "subject hierachy search input field should be visible")
-        
+
         subject_hierachy_submit = browser.find_element_by_id("edit-search-hierarchy-submit")
         self.assertTrue(subject_hierachy_submit.is_displayed(), "subject hierachy search submit button should be visible")
-        
+
         subject_hierachy_input.send_keys("foo")
 
         subject_hierachy_submit.click()
@@ -213,7 +231,7 @@ class TestBibdkSubjectHierachy(helpers.BibdkUnitTestCase):
 
     '''
     PJO 19/05/19 outcommented - FIX IT
-    
+
     def test_subject_hierarchy_responsive(self):
         """
         We test visiblity of subject hierarchy on small devices
@@ -237,7 +255,7 @@ class TestBibdkSubjectHierachy(helpers.BibdkUnitTestCase):
 
         subject_hierachy.find_element_by_class_name("subject-item")
         subject_hierachy.find_element_by_class_name("subjects-sublist")
-        
+
         searchfield = subject_hierachy.find_element_by_class_name("subject-hierarchy-searchfield")
         show_for_large_up = searchfield.find_element_by_class_name("show-for-large-up")
         self.assertTrue(show_for_large_up.is_displayed(), "searchfield.show-for-large-up should be visible")
@@ -264,9 +282,7 @@ class TestBibdkSubjectHierachy(helpers.BibdkUnitTestCase):
 
         # testing on small size (W: < 480)
         browser.set_window_size(479, 768)
-        
+
         not_visible = subject_hierachy.find_element_by_id("bibdk-subject-hierarchy")
         self.assertFalse(not_visible.is_displayed(), "bibdk-subject-hierarchy should not be visible")
     '''
-
-

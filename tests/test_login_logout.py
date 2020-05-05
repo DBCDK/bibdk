@@ -60,6 +60,11 @@ class TestLoginLogout(helpers.BibdkUnitTestCase, helpers.BibdkUser):
         user.create()
 
         self._goto_frontpage()
+        wait = WebDriverWait(browser, 30)
+        agree = wait.until(
+          expected_conditions.visibility_of_element_located((By.CLASS_NAME, "agree-button"))
+        )
+        agree.click()
 
         # click the loginlink
         browser.find_element_by_class_name("right-off-canvas-toggle").click()
@@ -114,5 +119,3 @@ class TestLoginLogout(helpers.BibdkUnitTestCase, helpers.BibdkUser):
 
         #WebDriverWait(modal, 30).until(expected_conditions.presence_of_element_located((By.CLASS_NAME, "message--warning")))
         #browser.find_element_by_class_name("message--warning")
-
-
