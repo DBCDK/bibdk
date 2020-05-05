@@ -143,6 +143,7 @@ function _bibdk_frontend_enable_modules() {
     'bibliotek_dk_custom_search_filters',
     'dbc_zabbix_configuration',
     'bibliotek_dk_subject_hierarchy',
+    'bibliotek_dk_eu_cookie_compliance',
     //Content
     'bibdk_custom_header_block',
     'bibdk_article_view',
@@ -562,5 +563,12 @@ function bibdk_frontend_update_7034() {
  * Enable bibliotek_dk_subject_hierarchy settings.
  */
 function bibdk_frontend_update_7035(&$sandbox) {
+  _bibdk_frontend_enable_modules();
+}
+
+/**
+ * Enable bibliotek_dk_eu_cookie_compliance settings.
+ */
+function bibdk_frontend_update_7036(&$sandbox) {
   _bibdk_frontend_enable_modules();
 }

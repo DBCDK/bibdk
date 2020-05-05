@@ -1,0 +1,8 @@
+<?php
+
+/**
+ * @file
+ * Code for the Bibliotek.dk - EU Cookie Compliance feature.
+ */
+
+include_once 'bibliotek_dk_eu_cookie_compliance.features.inc';
