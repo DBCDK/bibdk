@@ -9,7 +9,6 @@
  */
 function _bibdk_custom_search_create_advanced_form($elements, $default_values) {
   $fields = array();
-
   // We loop through all search elements
   foreach ($elements as $element) {
 
@@ -208,7 +207,7 @@ function bibdk_custom_search_create_checkboxes($element, &$default_values, $opti
     $return[$element->value]['#attributes'] += array(
       'data-parent' => $parent,
     );
-    $return[$element->value]['#title'] = '<span data-child="' . $key . '" class="toggle-subgroup"> + </span>' . $return[$element->value]['#title'];
+    $return[$element->value]['#title'] = '<span title="' . t('Udvid @title', array('@title' => $return[$element->value]['#title']), array('context' => 'bibdk_theme')) . '" data-child="' . $key . '" class="toggle-subgroup"> + </span>' . $return[$element->value]['#title'];
     $return[$key . '-fieldset'] = array(
       '#type' => 'fieldset',
       '#attributes' => array(

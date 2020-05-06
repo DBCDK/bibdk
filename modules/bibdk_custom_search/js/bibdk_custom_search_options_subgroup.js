@@ -29,6 +29,19 @@
     });
     $('.toggle-subgroup').click(function(e) {
       e.preventDefault();
+      var title = $(this).attr('title').split(" ");
+      // We need to handle the title tag in the span.
+      if ($(this).hasClass('toggled')) { // Contracting
+        $(this).attr(
+          'title',
+          Drupal.t('Udvid @title', {'@title': title[1]})
+        );
+      } else {
+        $(this).attr(
+          'title',
+          Drupal.t('Sammentræk @title', {'@title': title[1]})
+        );
+      }
       $(this).toggleClass('toggled');
       var childKey = $(this).attr('data-child');
       $('fieldset[data-child="' + childKey + '"]').toggle();
