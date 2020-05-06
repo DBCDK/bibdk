@@ -17,6 +17,7 @@ class TestBibdkSubjectHierachy(helpers.BibdkUnitTestCase):
         browser = self.browser
         browser.implicitly_wait(20)
         self._goto_frontpage()
+        self._check_pop_up()
 
         # ensure that the subject hierachy is present
         subject_hierachy = browser.find_element_by_id("subjectshierarchy")
@@ -40,6 +41,7 @@ class TestBibdkSubjectHierachy(helpers.BibdkUnitTestCase):
 
         # goto to the page
         browser.get(href)
+        self._check_pop_up()
         h = browser.find_element_by_id("bibdk-subject-hierarchy")
         h.find_element_by_class_name("subjects-sublists")
         # failure: default_file_save_path attribute missing
@@ -187,10 +189,10 @@ class TestBibdkSubjectHierachy(helpers.BibdkUnitTestCase):
 
         subject_hierachy_input = browser.find_element_by_id("edit-search-hierarchy-input")
         self.assertTrue(subject_hierachy_input.is_displayed(), "subject hierachy search input field should be visible")
-        
+
         subject_hierachy_submit = browser.find_element_by_id("edit-search-hierarchy-submit")
         self.assertTrue(subject_hierachy_submit.is_displayed(), "subject hierachy search submit button should be visible")
-        
+
         subject_hierachy_input.send_keys("foo")
 
         subject_hierachy_submit.click()
@@ -213,7 +215,7 @@ class TestBibdkSubjectHierachy(helpers.BibdkUnitTestCase):
 
     '''
     PJO 19/05/19 outcommented - FIX IT
-    
+
     def test_subject_hierarchy_responsive(self):
         """
         We test visiblity of subject hierarchy on small devices
@@ -237,7 +239,7 @@ class TestBibdkSubjectHierachy(helpers.BibdkUnitTestCase):
 
         subject_hierachy.find_element_by_class_name("subject-item")
         subject_hierachy.find_element_by_class_name("subjects-sublist")
-        
+
         searchfield = subject_hierachy.find_element_by_class_name("subject-hierarchy-searchfield")
         show_for_large_up = searchfield.find_element_by_class_name("show-for-large-up")
         self.assertTrue(show_for_large_up.is_displayed(), "searchfield.show-for-large-up should be visible")
@@ -264,9 +266,7 @@ class TestBibdkSubjectHierachy(helpers.BibdkUnitTestCase):
 
         # testing on small size (W: < 480)
         browser.set_window_size(479, 768)
-        
+
         not_visible = subject_hierachy.find_element_by_id("bibdk-subject-hierarchy")
         self.assertFalse(not_visible.is_displayed(), "bibdk-subject-hierarchy should not be visible")
     '''
-
-
