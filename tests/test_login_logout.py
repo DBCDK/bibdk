@@ -17,6 +17,7 @@ class TestLoginLogout(helpers.BibdkUnitTestCase, helpers.BibdkUser):
         user.create()
 
         self._goto_frontpage()
+        self._check_pop_up()
 
         # click the loginlink
         topbar_links = browser.find_element_by_class_name("topbar-links")
@@ -102,6 +103,7 @@ class TestLoginLogout(helpers.BibdkUnitTestCase, helpers.BibdkUser):
         browser = self.browser
         browser.get(self.base_url)
         browser.implicitly_wait(10)
+        self._check_pop_up()
 
         # click the loginlink
         topbar_links = browser.find_element_by_class_name("topbar-links")
