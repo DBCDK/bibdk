@@ -15,42 +15,48 @@ class TestBibdkSubjectHierachy(helpers.BibdkUnitTestCase):
 
         # testing on default size (W:1024)
         browser = self.browser
-        browser.implicitly_wait(20)
+        wait = WebDriverWait(browser, 30)
         self._goto_frontpage()
         self._check_pop_up()
 
         # ensure that the subject hierachy is present
-        subject_hierachy = browser.find_element_by_id("subjectshierarchy")
+        subject_hierarchy = wait.until(
+            expected_conditions.visibility_of_element_located(
+                (By.ID, "subjectshierarchy")
+            )
+        )
 
         # move to subject hierarchy - it might not be visible
         actions = ActionChains(browser)
-        actions.move_to_element(subject_hierachy)
+        actions.move_to_element(subject_hierarchy)
         actions.perform()
 
         # click the 6th element in the subject hierachy
-        subject_hierachy.find_element_by_id("subject-hierarchy-note-link-0-6").click()
+        subject_hierarchy.find_element_by_id("subject-hierarchy-note-link-0-6").click()
 
-        subject_hierachy.find_element_by_class_name("row-2")
+        subject_hierarchy.find_element_by_class_name("row-2")
         WebDriverWait(browser, 20).until(expected_conditions.presence_of_element_located((By.CLASS_NAME, "subjects-sublists")))
 
         # find wrapper on items list
-        subject_hierachy.find_element_by_class_name("subjects-sublist")
+        subject_hierarchy.find_element_by_class_name("subjects-sublist")
 
         # extract a direct link
-        href = subject_hierachy.find_element_by_link_text("Computere").get_attribute("href")
+        href = subject_hierarchy.find_element_by_link_text("Computere").get_attribute("href")
 
         # goto to the page
         browser.get(href)
         self._check_pop_up()
-        h = browser.find_element_by_id("bibdk-subject-hierarchy")
-        h.find_element_by_class_name("subjects-sublists")
-        # failure: default_file_save_path attribute missing
-        # self._save_screenshot('hest')
+        subject_hierarchy = wait.until(
+            expected_conditions.visibility_of_element_located(
+                (By.ID, "bibdk-subject-hierarchy")
+            )
+        )
+        subject_hierarchy.find_element_by_class_name("subjects-sublists")
 
-        h.find_element_by_id("subject-hierarchy-label-link-0-1").click()
+        subject_hierarchy.find_element_by_id("subject-hierarchy-label-link-0-1").click()
         WebDriverWait(browser, 20).until(expected_conditions.presence_of_element_located((By.LINK_TEXT, "Sygdomme")))
 
-        row_1 = h.find_element_by_class_name("row-1")
+        row_1 = subject_hierarchy.find_element_by_class_name("row-1")
         row_1.find_element_by_class_name("subjects-sublists")
 
         browser.find_element_by_id("subject-hierarchy-label-link-0-11").click()
