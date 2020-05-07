@@ -37,11 +37,27 @@ function bibdk_frontend_user_login(&$edit, $account) {
   }
 }
 
+/**
+ * Implements hook_js_alter().
+ */
+function bibdk_frontend_js_alter(&$scripts) {
+  $path = $_GET['q'];
+  // scripts to check
+  $script_to_check = array('sites/default/modules/bibdk_frontend/webtrekk/webtrek.js');
+  // remove on user/ pages
+  if (strpos($path, 'user/') !== FALSE) {
+    foreach ($script_to_check as $script) {
+      unset($scripts[$script]);
+    }
+  }
+}
+
 
 /**
  * Implements hook_module_implements_alter().
  * Change weight on module
- * bibdk_frontend needs to be the last module called in the login process, because it makes a redirect.
+ * bibdk_frontend needs to be the last module called in the login process,
+ * because it makes a redirect.
  */
 function bibdk_frontend_module_implements_alter(&$implementations, $hook) {
   if ($hook == 'user_login') {
@@ -77,8 +93,10 @@ function _bibdk_frontend_login_redirect(&$edit, $url, $options) {
 
 /**
  * Implements hook_l10n_update_projects_alter().
- * @see l10n_update.api.php
+ *
  * @param $projects
+ *
+ * @see l10n_update.api.php
  */
 function bibdk_frontend_l10n_update_projects_alter(&$projects) {
   $projects['bibliotekdk'] = array(
@@ -122,15 +140,16 @@ function bibdk_frontend_ctools_plugin_api() {
 
 
 /**
- * Helper function for hook_default_page_manager_pages and hook_default_page_manager_handlers.
+ * Helper function for hook_default_page_manager_pages and
+ * hook_default_page_manager_handlers.
  */
 function _bibdk_frontend_process_includes($path, $name) {
   $items = array();
-  $files = glob($path."*.inc");
-  foreach($files as $file) {
+  $files = glob($path . "*.inc");
+  foreach ($files as $file) {
     include_once $file;
     $items[$$name->name] = $$name;
-   }
+  }
   return $items;
 }
 
@@ -250,8 +269,8 @@ function bibdk_frontend_form_user_login_alter(&$form, $form_state, $form_id) {
   $form['name']['#type'] = "emailfield";
   //disabel client side validation
   $form['#attributes'] = array(
-    'novalidate'=>'1',
-    'formnovalidate'=>'1',
+    'novalidate' => '1',
+    'formnovalidate' => '1',
   );
 
   $form['#action'] = url('user/login', array('query' => array('destination' => (isset($_SESSION['referrer'])) ? $_SESSION['referrer'] : '')));
@@ -261,7 +280,7 @@ function bibdk_frontend_form_user_login_alter(&$form, $form_state, $form_id) {
  * Implement hook_element_info_alter
  * remove element validation for email (see contrib/elements/element.module
  */
-function bibdk_frontend_element_info_alter(&$type){
+function bibdk_frontend_element_info_alter(&$type) {
   if (isset($type['emailfield']['#element_validate'])) {
     unset($type['emailfield']['#element_validate']);
   }
@@ -338,7 +357,7 @@ function bibdk_frontend_menu_link_alter(&$item) {
  */
 function bibdk_frontend_exit() {
   $path = $_GET['q'];
-  if(function_exists('drupal_http_build_query')) {
+  if (function_exists('drupal_http_build_query')) {
     if ((strpos($path, 'search/') === 0 || strpos($path, 'vejviser') === 0) || (strpos($path, 'user/') === 0 && $path != 'user/login' && $path != 'user/logout')) {
       $_SESSION['referrer'] = $path . '?' . drupal_http_build_query($_GET);
     }
