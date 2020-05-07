@@ -54,11 +54,7 @@ class TestAdvancedSearch(helpers.BibdkUnitTestCase):
         #url = self.base_url + 'search/work/master chief'
         url = self.base_url + 'search/work/51450515'
         browser.get(url)
-
-        agree = wait.until(
-          expected_conditions.visibility_of_element_located((By.CLASS_NAME, "agree-button"))
-        )
-        agree.click()
+        self._check_pop_up()
 
         self.assertTrue(browser.find_element_by_id('870970basis51450515'))
 
