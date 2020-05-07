@@ -17,6 +17,7 @@ class TestBibdkSubjectHierachy(helpers.BibdkUnitTestCase):
         browser = self.browser
         browser.implicitly_wait(20)
         self._goto_frontpage()
+        self._check_pop_up()
 
         wait = WebDriverWait(browser, 30)
         agree = wait.until(
@@ -46,6 +47,7 @@ class TestBibdkSubjectHierachy(helpers.BibdkUnitTestCase):
 
         # goto to the page
         browser.get(href)
+        self._check_pop_up()
         h = browser.find_element_by_id("bibdk-subject-hierarchy")
         h.find_element_by_class_name("subjects-sublists")
         # failure: default_file_save_path attribute missing

@@ -19,12 +19,7 @@ class LinkMeTestCase(helpers.BibdkUnitTestCase):
         url = self.base_search_url + search
         browser.get(url)
         browser.implicitly_wait(10)
-
-        wait = WebDriverWait(browser, 30)
-        agree = wait.until(
-          expected_conditions.visibility_of_element_located((By.CLASS_NAME, "agree-button"))
-        )
-        agree.click()
+        self._check_pop_up()
 
         # Click on 'vis mere'
         show_more = browser.find_element_by_id("selid-870971tsart35908412")

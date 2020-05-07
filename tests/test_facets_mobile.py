@@ -11,12 +11,7 @@ class TestMobileFacets(helpers.BibdkUnitTestCase):
         browser = self.browser
         browser.implicitly_wait(10)
         browser.get(self.base_url)
-        wait = WebDriverWait(browser, 30)
-
-        agree = wait.until(
-          expected_conditions.visibility_of_element_located((By.CLASS_NAME, "agree-button"))
-        )
-        agree.click()
+        self._check_pop_up()
 
         # testing on medium size (W: 480 - 768)
         browser.set_window_size(460, 768)
