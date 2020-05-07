@@ -15,40 +15,48 @@ class TestBibdkSubjectHierachy(helpers.BibdkUnitTestCase):
 
         # testing on default size (W:1024)
         browser = self.browser
-        browser.implicitly_wait(20)
+        wait = WebDriverWait(browser, 30)
         self._goto_frontpage()
+        self._check_pop_up()
 
         # ensure that the subject hierachy is present
-        subject_hierachy = browser.find_element_by_id("subjectshierarchy")
+        subject_hierarchy = wait.until(
+            expected_conditions.visibility_of_element_located(
+                (By.ID, "subjectshierarchy")
+            )
+        )
 
         # move to subject hierarchy - it might not be visible
         actions = ActionChains(browser)
-        actions.move_to_element(subject_hierachy)
+        actions.move_to_element(subject_hierarchy)
         actions.perform()
 
         # click the 6th element in the subject hierachy
-        subject_hierachy.find_element_by_id("subject-hierarchy-note-link-0-6").click()
+        subject_hierarchy.find_element_by_id("subject-hierarchy-note-link-0-6").click()
 
-        subject_hierachy.find_element_by_class_name("row-2")
+        subject_hierarchy.find_element_by_class_name("row-2")
         WebDriverWait(browser, 20).until(expected_conditions.presence_of_element_located((By.CLASS_NAME, "subjects-sublists")))
 
         # find wrapper on items list
-        subject_hierachy.find_element_by_class_name("subjects-sublist")
+        subject_hierarchy.find_element_by_class_name("subjects-sublist")
 
         # extract a direct link
-        href = subject_hierachy.find_element_by_link_text("Computere").get_attribute("href")
+        href = subject_hierarchy.find_element_by_link_text("Computere").get_attribute("href")
 
         # goto to the page
         browser.get(href)
-        h = browser.find_element_by_id("bibdk-subject-hierarchy")
-        h.find_element_by_class_name("subjects-sublists")
-        # failure: default_file_save_path attribute missing
-        # self._save_screenshot('hest')
+        self._check_pop_up()
+        subject_hierarchy = wait.until(
+            expected_conditions.visibility_of_element_located(
+                (By.ID, "bibdk-subject-hierarchy")
+            )
+        )
+        subject_hierarchy.find_element_by_class_name("subjects-sublists")
 
-        h.find_element_by_id("subject-hierarchy-label-link-0-1").click()
+        subject_hierarchy.find_element_by_id("subject-hierarchy-label-link-0-1").click()
         WebDriverWait(browser, 20).until(expected_conditions.presence_of_element_located((By.LINK_TEXT, "Sygdomme")))
 
-        row_1 = h.find_element_by_class_name("row-1")
+        row_1 = subject_hierarchy.find_element_by_class_name("row-1")
         row_1.find_element_by_class_name("subjects-sublists")
 
         browser.find_element_by_id("subject-hierarchy-label-link-0-11").click()
@@ -187,10 +195,10 @@ class TestBibdkSubjectHierachy(helpers.BibdkUnitTestCase):
 
         subject_hierachy_input = browser.find_element_by_id("edit-search-hierarchy-input")
         self.assertTrue(subject_hierachy_input.is_displayed(), "subject hierachy search input field should be visible")
-        
+
         subject_hierachy_submit = browser.find_element_by_id("edit-search-hierarchy-submit")
         self.assertTrue(subject_hierachy_submit.is_displayed(), "subject hierachy search submit button should be visible")
-        
+
         subject_hierachy_input.send_keys("foo")
 
         subject_hierachy_submit.click()
@@ -213,7 +221,7 @@ class TestBibdkSubjectHierachy(helpers.BibdkUnitTestCase):
 
     '''
     PJO 19/05/19 outcommented - FIX IT
-    
+
     def test_subject_hierarchy_responsive(self):
         """
         We test visiblity of subject hierarchy on small devices
@@ -237,7 +245,7 @@ class TestBibdkSubjectHierachy(helpers.BibdkUnitTestCase):
 
         subject_hierachy.find_element_by_class_name("subject-item")
         subject_hierachy.find_element_by_class_name("subjects-sublist")
-        
+
         searchfield = subject_hierachy.find_element_by_class_name("subject-hierarchy-searchfield")
         show_for_large_up = searchfield.find_element_by_class_name("show-for-large-up")
         self.assertTrue(show_for_large_up.is_displayed(), "searchfield.show-for-large-up should be visible")
@@ -264,9 +272,7 @@ class TestBibdkSubjectHierachy(helpers.BibdkUnitTestCase):
 
         # testing on small size (W: < 480)
         browser.set_window_size(479, 768)
-        
+
         not_visible = subject_hierachy.find_element_by_id("bibdk-subject-hierarchy")
         self.assertFalse(not_visible.is_displayed(), "bibdk-subject-hierarchy should not be visible")
     '''
-
-

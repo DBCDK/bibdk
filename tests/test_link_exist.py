@@ -19,8 +19,9 @@ class LinkMeTestCase(helpers.BibdkUnitTestCase):
         url = self.base_search_url + search
         browser.get(url)
         browser.implicitly_wait(10)
+        self._check_pop_up()
 
-        # Click on 'vis mere' 
+        # Click on 'vis mere'
         show_more = browser.find_element_by_id("selid-870971tsart35908412")
         show_more.click()
 
@@ -33,7 +34,7 @@ class LinkMeTestCase(helpers.BibdkUnitTestCase):
         )
         linkme.click()
 
-        # Get linktext     
+        # Get linktext
         linktext = browser.find_element_by_id('edit-link')
         href = linktext.get_attribute('value')
 
