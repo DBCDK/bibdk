@@ -19,12 +19,6 @@ class TestBibdkSubjectHierachy(helpers.BibdkUnitTestCase):
         self._goto_frontpage()
         self._check_pop_up()
 
-        wait = WebDriverWait(browser, 30)
-        agree = wait.until(
-          expected_conditions.visibility_of_element_located((By.CLASS_NAME, "agree-button"))
-        )
-        agree.click()
-
         # ensure that the subject hierachy is present
         subject_hierarchy = wait.until(
             expected_conditions.visibility_of_element_located(
@@ -80,12 +74,6 @@ class TestBibdkSubjectHierachy(helpers.BibdkUnitTestCase):
         browser = self.browser
         browser.implicitly_wait(5)
         self._goto_frontpage()
-
-        wait = WebDriverWait(browser, 30)
-        agree = wait.until(
-          expected_conditions.visibility_of_element_located((By.CLASS_NAME, "agree-button"))
-        )
-        agree.click()
 
         link_a = "bibdk_subject_hierarchy/nojs/4"
         link_b = "bibdk_subject_hierarchy/nojs/4%2C5"
@@ -187,12 +175,6 @@ class TestBibdkSubjectHierachy(helpers.BibdkUnitTestCase):
         browser = self.browser
         browser.implicitly_wait(5)
         browser.get(self.base_url)
-
-        wait = WebDriverWait(browser, 30)
-        agree = wait.until(
-          expected_conditions.visibility_of_element_located((By.CLASS_NAME, "agree-button"))
-        )
-        agree.click()
 
         # ensure that the subject hierachy is present
         subject_hierachy_searchfield = browser.find_element_by_class_name("subject-hierarchy-searchfield")
