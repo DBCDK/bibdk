@@ -16,11 +16,11 @@ class TestBriefDisplay(helpers.BibdkUnitTestCase):
 
         # Undefined language (no language added)
         self.search_pid('870971-tsart:34480990')
-        self.assertEqual(browser.find_element_by_css_selector('h3.searchresult-work-title').text, 'Køge Kyst')
+        self.assertEqual(browser.find_element_by_css_selector('h3.searchresult-work-title').text, u'Køge Kyst')
 
         # Danish title (no language added)
         self.search_pid('870970-basis:51048830')
-        self.assertEqual(browser.find_element_by_css_selector('h3.searchresult-work-title').text, "Fasandræberne : krimithriller")
+        self.assertEqual(browser.find_element_by_css_selector('h3.searchresult-work-title').text, u'Fasandræberne : krimithriller')
 
     # Helper method : Search for element with specific pid
     def search_pid(self, pid):
