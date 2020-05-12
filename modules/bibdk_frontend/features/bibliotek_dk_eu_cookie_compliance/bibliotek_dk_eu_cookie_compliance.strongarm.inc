@@ -26,9 +26,9 @@ function bibliotek_dk_eu_cookie_compliance_strongarm() {
     'fix_first_cookie_category' => 1,
     'select_all_categories_by_default' => 0,
     'disabled_javascripts' => 'profiles/bibdk/modules/bibdk_frontend/matomo/piwik.js
-profiles/bibdk/modules/bibdk_frontend/webtrekk/webtrek.js',
-    'whitelisted_cookies' => 'has_js
-UUID',
+profiles/bibdk/modules/bibdk_frontend/webtrekk/webtrek.js
+//static.hotjar.com/c/hotjar-1787658.js?sv=6',
+    'whitelisted_cookies' => '',
     'consent_storage_method' => 'do_not_store',
     'popup_clicking_confirmation' => FALSE,
     'popup_info' => array(
@@ -117,8 +117,8 @@ Vi benytter dog en cookie for at huske dit valg.',
   $strongarm->value = array(
     1 => '1',
     2 => '2',
+    3 => '3',
     4 => 0,
-    3 => 0,
   );
   $export['see_the_banner'] = $strongarm;
 
