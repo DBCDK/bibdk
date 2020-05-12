@@ -342,7 +342,8 @@ function _bibdk_custom_search_get_page_selector($page_id, $pages) {
     '#attributes' => array(
       'id' => 'edit-select-material-type',
       'data-js-id' => 'js-select-material-type',
-      'class' => array('select-material-type')
+      'class' => array('select-material-type'),
+      'title' => t('Select material type', array(), array('context' => 'bibdk_custom_search'))
     ),
     '#options' => $options,
     '#default_value' => $page_id,
