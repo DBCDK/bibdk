@@ -84,6 +84,7 @@ function _bibdk_custom_search_translate_element(&$element) {
  * @param $default_values
  */
 function _bibdk_custom_search_add_element($element, &$field, &$default_values) {
+  //var_dump($element);
   $value = str_replace('.', '_', $element->search_code);
   if (!isset($field[$value])) {
     $field[$value] = array(
@@ -109,6 +110,7 @@ function _bibdk_custom_search_add_element($element, &$field, &$default_values) {
       $field[$value]['#default_value'] = isset($default_values[$value]) ? array_shift($default_values[$value]) : NULL;
       $field[$value]['#parents'] = array($value, $element->value_title);
       $field[$value]['#tree'] = FALSE;
+      $field[$value]['#attributes']['aria-label'] = $element->element_label;
       break;
     CASE 'select':
 
@@ -116,6 +118,7 @@ function _bibdk_custom_search_add_element($element, &$field, &$default_values) {
       if (!$element->option_disabled) {
         $field[$value]['#options'][$element->value] = $element->label;
       }
+      $field[$value]['#attributes']['title'] = $element->value_title;
       break;
     CASE 'radios':
       $field[$value]['#theme'] = 'bibdk_custom_search_radio_buttons';
