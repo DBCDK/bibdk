@@ -374,7 +374,7 @@ function template_preprocess_bibdk_custom_search_radio_buttons(&$variables) {
       $u_key = drupal_html_id($toggle['key']);
       $first = $toggle['options']['first']['value'];
       $last = $toggle['options']['last']['value'];
-      $variables['form'][$key]['#title'] = '<span data-child="' . $u_key . '" class="toggle-subgroup"> + </span>' . $variables['form'][$key]['#title'];
+      $variables['form'][$key]['#title'] = '<span role="button" title="' . t('Udvid @title', array('@title' => $variables['form'][$key]['#title']), array('context' => 'bibdk_theme')) . '" data-child="' . $u_key . '" class="toggle-subgroup"> + </span>' . $variables['form'][$key]['#title'];
       $variables['form'][$first]['#prefix'] = '<fieldset id="edit-term-' . $key . '" class="sub-elements form-wrapper" data-child="' . $u_key . '" style="display: block;">';
       $variables['form'][$last]['#suffix'] = '</fieldset>';
     }
