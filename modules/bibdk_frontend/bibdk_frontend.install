@@ -138,7 +138,6 @@ function _bibdk_frontend_enable_modules() {
     'bibliotek_dk_offcanvas_menu',
     'bibliotek_dk_footer_menu',
     'bibdk_facets',
-    'bibdk_jquery_update_settings',
     'bibliotek_dk_schema_org_settings',
     'bibliotek_dk_custom_search_filters',
     'dbc_zabbix_configuration',
