@@ -146,7 +146,7 @@ class TestSearhhistory(helpers.BibdkUnitTestCase):
         browser.find_element_by_id('edit-and-or-radios-and-').click()
         browser.find_element_by_id('edit-combine').click()
         self.assertEqual(self.browser.find_element_by_id("edit-search-block-form--2").get_attribute('value'), '((gammel and hankat)) and ((kim and larsen))')
-        browser.find_element_by_xpath("//h2[text()='Gammel hankat']")
+        browser.find_element_by_xpath("//h3[text()='Gammel hankat']")
 
         #assert warning does not exist
         elementList = browser.find_elements_by_css_selector(".message--warning")
