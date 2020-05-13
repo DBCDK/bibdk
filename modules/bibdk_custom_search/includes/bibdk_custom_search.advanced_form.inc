@@ -9,7 +9,6 @@
  */
 function _bibdk_custom_search_create_advanced_form($elements, $default_values) {
   $fields = array();
-
   // We loop through all search elements
   foreach ($elements as $element) {
 
@@ -96,6 +95,8 @@ function _bibdk_custom_search_add_element($element, &$field, &$default_values) {
         'tabindex' => $element->tab_index,
         'accesskey' => $element->access_key,
         'data-term' => array($value),
+        'aria-label' => $field['#element_title'],
+        'description' => $field['#element_title'],
       ),
     );
   }
@@ -196,6 +197,8 @@ function bibdk_custom_search_create_checkboxes($element, &$default_values, $opti
     '#parents' => array($parent, $element->value),
     '#attributes' => array(
       'data-group' => $parent,
+      'aria-label' => t('Vælg @title', array('@title' => $element->label)),
+      'title' => t('Vælg @title', array('@title' => $element->label)),
       'class' => array(($element->default_value == $element->value) ? 'default-value' : ''),
     ),
   );
@@ -208,11 +211,13 @@ function bibdk_custom_search_create_checkboxes($element, &$default_values, $opti
     $return[$element->value]['#attributes'] += array(
       'data-parent' => $parent,
     );
-    $return[$element->value]['#title'] = '<span data-child="' . $key . '" class="toggle-subgroup"> + </span>' . $return[$element->value]['#title'];
+    $return[$element->value]['#title'] = '<span role="button" title="' . t('Udvid @title', array('@title' => $return[$element->value]['#title']), array('context' => 'bibdk_theme')) . '" data-child="' . $key . '" class="toggle-subgroup"> + </span>' . $return[$element->value]['#title'];
     $return[$key . '-fieldset'] = array(
       '#type' => 'fieldset',
       '#attributes' => array(
         'data-child' => $key,
+        'aria-label' => t('Vælg @title', array('@title' => $element->label)),
+        'title' => t('Vælg @title', array('@title' => $return[$element->value]['#title'])),
         'class' => array('sub-elements'),
       ),
       '#parents' => array($parent),
