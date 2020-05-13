@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Drupal needs this blank file.
- */
-
-include_once 'bibdk_jquery_update_settings.features.inc';
