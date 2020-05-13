@@ -27,12 +27,15 @@ function bibliotek_dk_eu_cookie_compliance_strongarm() {
     'select_all_categories_by_default' => 0,
     'disabled_javascripts' => 'profiles/bibdk/modules/bibdk_frontend/matomo/piwik.js
 profiles/bibdk/modules/bibdk_frontend/webtrekk/webtrek.js',
-    'whitelisted_cookies' => '',
+    'whitelisted_cookies' => 'has_js
+UUID',
     'consent_storage_method' => 'do_not_store',
     'popup_clicking_confirmation' => FALSE,
     'popup_info' => array(
-      'value' => 'Bibliotek.dk benytter cookies til at få websitet til at fungere optimalt. <br/ >
-Du accepterer brugen af cookies ved at klikke Ja, jeg accepterer eller klikke videre. ',
+      'value' => '<b>Vi bruger cookies til at indsamle statistik over brugen af hjemmesiden. </b><br/>
+Hvis du klikker på knappen \'accepter\', godkender du, at vi sætter cookies til brug for statistik. <br/>
+Hvis du klikker på knappen \'Afvis\', sætter vi ikke cookies til statistik. <br/>
+Vi benytter dog en cookie for at huske dit valg.',
       'format' => 'html_5',
     ),
     'use_mobile_message' => 0,
@@ -41,15 +44,15 @@ Du accepterer brugen af cookies ved at klikke Ja, jeg accepterer eller klikke vi
       'format' => 'plain_text',
     ),
     'mobile_breakpoint' => '768',
-    'popup_agree_button_message' => 'OK, I agree',
+    'popup_agree_button_message' => 'Acceptér',
     'show_disagree_button' => TRUE,
-    'popup_disagree_button_message' => 'No, give me more info',
-    'disagree_button_label' => 'No, thanks',
+    'popup_disagree_button_message' => 'Mere info',
+    'disagree_button_label' => 'Afvis',
     'withdraw_enabled' => 0,
     'withdraw_button_on_info_popup' => 0,
     'withdraw_message' => array(
       'value' => '<h2>We use cookies on this site to enhance your user experience</h2><p>You have given your consent for us to set cookies.</p>',
-      'format' => 'plain_text',
+      'format' => 'html_5',
     ),
     'withdraw_tab_button_label' => 'Privacy settings',
     'withdraw_action_button_label' => 'Withdraw consent',
@@ -114,8 +117,8 @@ Du accepterer brugen af cookies ved at klikke Ja, jeg accepterer eller klikke vi
   $strongarm->value = array(
     1 => '1',
     2 => '2',
-    3 => '3',
     4 => 0,
+    3 => 0,
   );
   $export['see_the_banner'] = $strongarm;
 
