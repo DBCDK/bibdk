@@ -177,7 +177,7 @@ function _bibdk_set_variables() {
   variable_set('ding_user_creds_lifetime', 7200);
   variable_set('cron_safe_threshold', 3600);
 
-  if( module_exists('jquery_update')){
+  if (module_exists('jquery_update')) {
     $bibdk_theme_settings = variable_get('theme_bibdk_theme_settings');
     $bibdk_theme_settings['jquery_update_jquery_version'] = '2.1';
     variable_set('theme_bibdk_theme_settings', $bibdk_theme_settings);
@@ -469,7 +469,8 @@ function bibdk_update_7041() {
 }
 
 /**
- * Delete {system} records for long-lost modules (open_holdingstatus_webservice).
+ * Delete {system} records for long-lost modules
+ * (open_holdingstatus_webservice).
  */
 function bibdk_update_7042() {
   $modules = array(
@@ -634,7 +635,7 @@ function bibdk_update_7058() {
 }
 
 /** enable bibdk_log_stdout  */
-function bibdk_update_7059(){
+function bibdk_update_7059() {
   $modules = array('bibdk_log_stdout');
   module_enable($modules);
 }
