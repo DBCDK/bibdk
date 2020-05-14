@@ -693,3 +693,16 @@ function bibdk_update_7068() {
   $modules = array('hotjar');
   module_enable($modules);
 }
+
+/**
+ * Delete {system} records for long-lost modules.
+ */
+function bibdk_update_7069() {
+  $modules = array(
+    'bibdk_jquery_update_settings'
+  );
+  db_delete('system')
+    ->condition('name', $modules, 'IN')
+    ->condition('type', 'module')
+    ->execute();
+}
