@@ -156,7 +156,8 @@ function bibdk_subject_hierarchy_searchfield_form($form, &$form_state) {
     '#type' => 'textfield',
     '#attributes' => array(
       'class' => array('searchfield-input'),
-      'placeholder' => t('search in subject hierarchy'),
+      'placeholder' => t('search in subject hierarchy', array(), array('context' => 'bibdk_subject_hierarchy')),
+      'aria-label' => t('Search subject hierarchy', array(), array('context' => 'bibdk_subject_hierarchy')),
     ),
   );
 

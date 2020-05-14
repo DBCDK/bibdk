@@ -63,8 +63,9 @@ function bibdk_vejviser_form($form, &$form_state) {
   $form['openagency_query'] = array(
     '#type' => 'textfield',
     '#attributes' => array(
-      'placeholder' => t('Library name, zip or city'),
+      'placeholder' => t('Library name, zip or city', array(), array('context' => 'bibdk_vejviser')),
       'class' => array('vejviser-search-input'),
+      'aria-label' => t('Search for library', array(), array('context' => 'bibdk_vejviser'))
     ),
     '#autocomplete_path' => 'vejviser/autocomplete',
   );
@@ -354,4 +355,3 @@ function bibdk_vejviser_handle_agency_response($response) {
     drupal_goto('vejviser');
   }
 }
-
