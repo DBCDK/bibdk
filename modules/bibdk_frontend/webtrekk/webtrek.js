@@ -1,3 +1,9 @@
+/**
+ * Collects bibliotek.dk statistic for webtrek.
+ * The script is inserted via the eu_cookie_compliance module, if the user
+ * accepts to be traced.
+ */
+
 //Placeholder for fremtidige OnSiteSearch variabler start
 //Placeholder for fremtidige OnSiteSearch variabler slut
 
