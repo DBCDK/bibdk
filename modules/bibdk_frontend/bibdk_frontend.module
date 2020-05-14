@@ -381,3 +381,13 @@ function template_preprocess_bibdk_custom_search_radio_buttons(&$variables) {
     unset($variables['form']['#data_toggle']);
   }
 }
+
+/**
+ * Implements hook_hotjar_access.
+ * @return bool
+ */
+function bibdk_frontend_hotjar_access() {
+  // If the user hasn't consented to being tracked.
+  return ((!isset($_COOKIE['cookie-agreed'])) || (isset($_COOKIE['cookie-agreed']) && $_COOKIE['cookie-agreed'] === "0")) ?
+    HOTJAR_ACCESS_DENY : HOTJAR_ACCESS_ALLOW;
+}
