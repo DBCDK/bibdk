@@ -342,7 +342,8 @@ function _bibdk_custom_search_get_page_selector($page_id, $pages) {
     '#attributes' => array(
       'id' => 'edit-select-material-type',
       'data-js-id' => 'js-select-material-type',
-      'class' => array('select-material-type')
+      'class' => array('select-material-type'),
+      'title' => t('Select material type', array(), array('context' => 'bibdk_custom_search'))
     ),
     '#options' => $options,
     '#default_value' => $page_id,
@@ -598,9 +599,14 @@ function bibdk_custom_searchpage_ajax_callback() {
       '_' => '-',
     ));
 
-  $form = drupal_render(drupal_get_form('search_block_form'));
+  $form = drupal_get_form('search_block_form');
+  $form = drupal_render($form);
 
-  $label_type = t('label_' . str_replace('/', '_', $type), array(), array('context' => 'bibdk_custom_search'));
+  $label_type = t(
+    'label_' . str_replace('/', '_', $type),
+    array(),
+    array('context' => 'bibdk_custom_search')
+  );
 
   drupal_json_output(array(
     'bodyclass' => $bodyClass,
