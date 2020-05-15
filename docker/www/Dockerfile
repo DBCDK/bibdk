@@ -4,16 +4,14 @@ FROM docker-dscrum.dbc.dk/d7-php7-builder as builder
 ARG BRANCH
 ENV BRANCH=${BRANCH}
 
-WORKDIR /var/lib/jenkins
 USER jenkins
-RUN drush make -v --working-copy --strict=0 --dbc-modules=${BRANCH} --no-gitinfofile --contrib-destination=profiles/bibdk "https://raw.github.com/DBCDK/bibdk/develop/distro.make" www
-
-WORKDIR /var/lib/jenkins/www/profiles/bibdk/themes/bibdk_theme/.npm
-RUN npm install && ./node_modules/gulp/bin/gulp.js build --production
+# build drupal code
+RUN cd /var/lib/jenkins && drush make -v --working-copy --strict=0 --dbc-modules=${BRANCH} --no-gitinfofile --contrib-destination=profiles/bibdk "https://raw.github.com/DBCDK/bibdk/develop/distro.make" www
+# build stylesheet
+RUN cd /var/lib/jenkins/www/profiles/bibdk/themes/bibdk_theme/.npm && npm install && ./node_modules/gulp/bin/gulp.js build --production
 
 FROM docker.dbc.dk/dbc-apache-php7
 MAINTAINER D-scrum <d-scrum@dbc.dk>
-
 # set environment variables
 # mailhost for exim4
 ENV smarthost=mailhost.dbc.dk
@@ -74,6 +72,8 @@ RUN mkdir -p $APACHE_ROOT/private && \
   a2enmod rewrite && \
   a2enmod headers && \
   a2enconf fqdn
+
+WORKDIR $APACHE_ROOT
 
 EXPOSE 80
 
