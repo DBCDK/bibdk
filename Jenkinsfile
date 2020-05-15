@@ -45,7 +45,6 @@ pipeline {
             }
           }
         }
-
       }
     }
     // if sessions table grows to big - delete sessions more than a day old
