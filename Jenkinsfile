@@ -38,10 +38,10 @@ pipeline {
       steps {
         dir('docker/www') {
           script {
-            docker.build("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:${currentBuild.number}", "--build-arg BRANCH=${BRANCH_NAME}")
+            docker.build("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:${currentBuild.number}", "--build-arg BRANCH=${BRANCH_NAME} .")
             // we need a latest tag for development setup
             if (BRANCH == 'develop') {
-              docker.build("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:latest", "--build-arg BRANCH=${BRANCH_NAME}")
+              docker.build("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:latest", "--build-arg BRANCH=${BRANCH_NAME} .")
             }
           }
         }
