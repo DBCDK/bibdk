@@ -1,5 +1,7 @@
 /**
- * Indsamler bibliotek.dk statistik til stats.dbc.dk
+ * Collects bibliotek.dk statistic for stats.dbc.dk.
+ * The script is inserted via the eu_cookie_compliance module, if the user
+ * accepts to be traced.
  */
 var _paq = _paq || [];
 _paq.push(['trackPageView']);

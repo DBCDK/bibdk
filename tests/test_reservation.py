@@ -48,6 +48,7 @@ class TestReservation(helpers.BibdkUnitTestCase):
 
         # do a search
         self._goto("search/work/rec.id=" + pid)
+        self._check_pop_up()
         order_btn = WebDriverWait(browser, 20).until(expected_conditions.presence_of_element_located((By.ID, pid_id)))
 
         # click the order any edition button
@@ -137,6 +138,7 @@ class TestReservation(helpers.BibdkUnitTestCase):
 
         # do a search
         self._goto("search/work/rec.id=" + pid)
+        self._check_pop_up()
         order_btn = WebDriverWait(browser, 20).until(expected_conditions.presence_of_element_located((By.ID, pid_id)))
 
         # click the order any edition button
@@ -194,10 +196,3 @@ class TestReservation(helpers.BibdkUnitTestCase):
         # ensure we have two windows available. The first popup is closed but
         # the link should open in a new one as it is a external link
         #self.assertEqual(2, len(browser.window_handles))
-
-
-
-
-
-
-

@@ -3,6 +3,8 @@ import helpers
 class TestMarkedInputFieldWhenNoInput(helpers.BibdkUnitTestCase):
     def test_red_rings(self):
         self._goto_frontpage()
+        browser = self.browser
+        self._check_pop_up()
         searchbox = self.browser.find_element_by_id('edit-search-block-form--2')
         searchbox.send_keys('rec.id=820030-katalog:1887566')
         self.browser.find_element_by_id('edit-submit').click()

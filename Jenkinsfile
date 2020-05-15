@@ -99,17 +99,6 @@ pipeline {
       }
       steps {
         dir('docker/db') {
-          sh """
-            wget -P docker-entrypoint.d https://is.dbc.dk/job/Bibliotek%20DK/job/Tools/job/Fetch%20Bibliotek%20DK%20database/lastSuccessfulBuild/artifact/bibdk_db_sql.tar.gz
-          """
-        }
-        dir('docker/db/docker-entrypoint.d') {
-          sh """
-            tar -xf bibdk_db_sql.tar.gz
-            rm -rf bibdk_db_sql.tar.gz
-          """
-        }
-        dir('docker/db') {
           script {
             docker.build("${DOCKER_REPO}/${PRODUCT}-db-${BRANCH}:${currentBuild.number}")
             // we need a latest tag for development setup
