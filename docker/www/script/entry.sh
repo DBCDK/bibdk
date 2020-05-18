@@ -34,13 +34,9 @@ if [ "$1" == '' ]; then
 #		ln -s /data/log /var/log/apache2
 #	fi
 	# Prepare Drupal
-# location of settings.php
-	SETTINGS=/var/www/html/sites/default/settings.php
-	# set cookie domain
-	sed -i "s/\.bibliotek\.dk/$cookie_domain/" $SETTINGS
-# location of configuration feature
+  # location of configuration feature
 	CONFIG=$APACHE_ROOT/profiles/bibdk/modules/bibdk_config/features/bibdk_webservice_settings_operational/bibdk_webservice_settings_operational.strongarm.inc
-# set configuration from environment vars
+  # set configuration from environment vars
 	while IFS='=' read -r name value ; do
     	echo "$name $value"
     	#old expression - overwrite value by adding a line with new value
@@ -76,6 +72,12 @@ if [ "$1" == '' ]; then
   sed -i 's/KeepAlive On/KeepAlive Off/' /etc/apache2/apache2.conf
 
   ### SETTINGS.PHP FILE::::::
+  # location of settings.php
+	SETTINGS=/var/www/html/sites/default/settings.php
+	# COOKIE DOMAIN
+	sed -i "s/\.bibliotek\.dk/$COOKIE_DOMAIN/" $SETTINGS
+  # BASE URL
+  sed -i "s/@DOMAIN@/$URL" $SETTINGS
   # POSTGRES_DB
   sed -i "s/'database' => '',/'database' => '$POSTGRES_DB',/" $SETTINGS
   # POSTGRES_USER
