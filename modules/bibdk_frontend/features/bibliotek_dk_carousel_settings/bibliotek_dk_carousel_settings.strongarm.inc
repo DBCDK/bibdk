@@ -61,7 +61,7 @@ function bibliotek_dk_carousel_settings_strongarm() {
     6 => array(
       'title' => 'Børnebøger',
       'subtitle' => 'bøger for børn',
-      'query' => '(dkcclterm.sf=b or dkcclterm.sf=s) and dkcclterm.uu=nt and (term.type=bog)',
+      'query' => '(dkcclterm.sf=b or dkcclterm.sf=s) and dkcclterm.uu=nt and (term.type=bog) and rec.hasCoverUrl=true',
       'period' => '3',
       'offset' => '4',
     ),
