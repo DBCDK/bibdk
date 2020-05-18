@@ -64,6 +64,7 @@ class TestWorkDisplay(helpers.BibdkUnitTestCase):
     def test_work_display_creator_link(self):
         browser = self.browser
         self._goto_frontpage()
+        self._check_pop_up()
         wait = WebDriverWait(browser, 30)
 
         # Perform search
@@ -240,6 +241,7 @@ class TestWorkDisplay(helpers.BibdkUnitTestCase):
         browser = self.browser
         self._goto_frontpage()
         wait = WebDriverWait(browser, 30)
+        self._check_pop_up()
 
         # Perform search
         input = wait.until(

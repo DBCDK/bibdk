@@ -68,13 +68,6 @@ pipeline {
           sh """
           tar -xf www.tar
           """
-          // get pgp key to use debian packages from indexdata ( for installing yaz )
-          // see also yaz.list which is added in Dockerfile
-          // REMOVE when yaz is no longer used
-          sh """
-          wget http://ftp.indexdata.dk/debian/indexdata.asc
-          """
-
           script {
             docker.build("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:${currentBuild.number}")
             // we need a latest tag for development setup
@@ -98,17 +91,6 @@ pipeline {
         node { label 'devel9-head' }
       }
       steps {
-        dir('docker/db') {
-          sh """
-            wget -P docker-entrypoint.d https://is.dbc.dk/job/Bibliotek%20DK/job/Tools/job/Fetch%20Bibliotek%20DK%20database/lastSuccessfulBuild/artifact/bibdk_db_sql.tar.gz
-          """
-        }
-        dir('docker/db/docker-entrypoint.d') {
-          sh """
-            tar -xf bibdk_db_sql.tar.gz
-            rm -rf bibdk_db_sql.tar.gz
-          """
-        }
         dir('docker/db') {
           script {
             docker.build("${DOCKER_REPO}/${PRODUCT}-db-${BRANCH}:${currentBuild.number}")

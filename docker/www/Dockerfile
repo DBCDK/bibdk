@@ -12,7 +12,10 @@ ENV POSTGRES_DB=filestore \
     POSTGRES_HOST=bibliotek-dk-db-develop.frontend-features.svc.cloud.dbc.dk \
     NAMESPACE_NAME=frontend-features
 
-COPY indexdata.asc /
+# get pgp key to use debian packages from indexdata ( for installing yaz )
+# see also yaz.list which is added in Dockerfile
+# REMOVE when yaz is no longer used
+ADD ["http://ftp.indexdata.dk/debian/indexdata.asc", "/"]
 RUN apt-key add indexdata.asc
 COPY yaz.list /etc/apt/sources.list.d/
 

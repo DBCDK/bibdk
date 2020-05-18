@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.common.action_chains import ActionChains
 
 
 import helpers
@@ -50,7 +51,12 @@ class TestInfomediaLink(helpers.BibdkUnitTestCase):
         WebDriverWait(self.browser, 30).until(expected_conditions.presence_of_element_located((By.ID, "870971-avis89724244")))
 
         # open infomedia window
-        browser.find_element_by_class_name('infomedia-button').click()
+        but = browser.find_element_by_class_name('infomedia-button')
+        actions = ActionChains(self.browser)
+        actions.move_to_element(but)
+        actions.click(but)
+        actions.perform()
+        
         # wait for popup
         WebDriverWait(browser, 30).until(self.found_window('PopUpWindowreservation'))
         # seitch to popup

@@ -123,9 +123,6 @@
     // script below forces page to jump to hash given in url (#content)
     // get the hash
     var hash = window.location.hash
-    console.log(window.location);
-    console.log(Drupal);
-
 
     // check the hast
     if (hash === '' || hash === '#' || hash === undefined) return false;
@@ -181,4 +178,3 @@
     }
   };
 }(jQuery));
-
