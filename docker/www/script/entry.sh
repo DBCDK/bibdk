@@ -74,7 +74,7 @@ if [ "$1" == '' ]; then
   # location of settings.php
 	SETTINGS=/var/www/html/sites/default/settings.php
 	# COOKIE DOMAIN
-	sed -i "s/\.bibliotek\.dk/$COOKIE_DOMAIN/" $SETTINGS
+	#sed -i "s/\.bibliotek\.dk/$COOKIE_DOMAIN/" $SETTINGS
   # POSTGRES_DB
   sed -i "s/'database' => '',/'database' => '$POSTGRES_DB',/" $SETTINGS
   # POSTGRES_USER
