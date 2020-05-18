@@ -46,13 +46,15 @@ function bibdk_frontend_eu_cookie_javascripts_alter(&$scripts) {
   // scripts to check
   $script_to_check = array(
     'sites/default/modules/bibdk_frontend/webtrekk/webtrek.js',
-    'profiles/bibdk/modules/bibdk_frontend/webtrekk/webtrek.js'
+    'profiles/bibdk/modules/bibdk_frontend/webtrekk/webtrek.js',
+    'https://geid.wbtrk.net/cc?a=rtacdb&c=wt_geid&ac=wt_geid&av=815893495620071064410644&al=24&acp=/&acd=.wbtrk.net&acl=180&o=s&x=1589349562934',
+    'https://cdn.wbtrk.net/js/geid.min.js'
   );
   // remove on user/ pages
   if (strpos($path, 'user/') !== FALSE) {
-    foreach ($script_to_check as $script) {
-      if($scripts[$script]) {
-        unset($scripts[$script]);
+    foreach ($scripts as $key => $script) {
+      if (in_array($script_to_check, $script )) {
+        unset($scripts[$key]);
       }
     }
   }
