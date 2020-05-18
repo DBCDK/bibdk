@@ -43,11 +43,16 @@ function bibdk_frontend_user_login(&$edit, $account) {
 function bibdk_frontend_js_alter(&$scripts) {
   $path = $_GET['q'];
   // scripts to check
-  $script_to_check = array('sites/default/modules/bibdk_frontend/webtrekk/webtrek.js');
+  $script_to_check = array(
+    'sites/default/modules/bibdk_frontend/webtrekk/webtrek.js',
+    'profiles/bibdk/modules/bibdk_frontend/webtrekk/webtrek.js'
+  );
   // remove on user/ pages
   if (strpos($path, 'user/') !== FALSE) {
     foreach ($script_to_check as $script) {
-      unset($scripts[$script]);
+      if($scripts[$script]) {
+        unset($scripts[$script]);
+      }
     }
   }
 }
