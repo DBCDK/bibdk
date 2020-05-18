@@ -43,11 +43,16 @@ function bibdk_frontend_user_login(&$edit, $account) {
 function bibdk_frontend_js_alter(&$scripts) {
   $path = $_GET['q'];
   // scripts to check
-  $script_to_check = array('sites/default/modules/bibdk_frontend/webtrekk/webtrek.js');
+  $script_to_check = array(
+    'sites/default/modules/bibdk_frontend/webtrekk/webtrek.js',
+    'profiles/bibdk/modules/bibdk_frontend/webtrekk/webtrek.js'
+  );
   // remove on user/ pages
   if (strpos($path, 'user/') !== FALSE) {
     foreach ($script_to_check as $script) {
-      unset($scripts[$script]);
+      if($scripts[$script]) {
+        unset($scripts[$script]);
+      }
     }
   }
 }
@@ -374,10 +379,20 @@ function template_preprocess_bibdk_custom_search_radio_buttons(&$variables) {
       $u_key = drupal_html_id($toggle['key']);
       $first = $toggle['options']['first']['value'];
       $last = $toggle['options']['last']['value'];
-      $variables['form'][$key]['#title'] = '<span data-child="' . $u_key . '" class="toggle-subgroup"> + </span>' . $variables['form'][$key]['#title'];
+      $variables['form'][$key]['#title'] = '<span role="button" title="' . t('Udvid @title', array('@title' => $variables['form'][$key]['#title']), array('context' => 'bibdk_theme')) . '" data-child="' . $u_key . '" class="toggle-subgroup"> + </span>' . $variables['form'][$key]['#title'];
       $variables['form'][$first]['#prefix'] = '<fieldset id="edit-term-' . $key . '" class="sub-elements form-wrapper" data-child="' . $u_key . '" style="display: block;">';
       $variables['form'][$last]['#suffix'] = '</fieldset>';
     }
     unset($variables['form']['#data_toggle']);
   }
+}
+
+/**
+ * Implements hook_hotjar_access.
+ * @return bool
+ */
+function bibdk_frontend_hotjar_access() {
+  // If the user hasn't consented to being tracked.
+  return ((!isset($_COOKIE['cookie-agreed'])) || (isset($_COOKIE['cookie-agreed']) && $_COOKIE['cookie-agreed'] === "0")) ?
+    HOTJAR_ACCESS_DENY : HOTJAR_ACCESS_ALLOW;
 }

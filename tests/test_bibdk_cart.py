@@ -128,7 +128,7 @@ class TestBibdkCart(helpers.BibdkUnitTestCase):
     def _test_cart_pager(self):
         # Tmp hack: Disable test - Python may have some issues with the openuserinfo_url SSL certificate:
         #           InsecurePlatformWarning: A true SSLContext object is not available. This prevents urllib3 from configuring SSL appropriately and may cause
-        #           certain SSL connections to fail. You can upgrade to a newer version of Python to solve this. For more information, see 
+        #           certain SSL connections to fail. You can upgrade to a newer version of Python to solve this. For more information, see
         #           https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
         # Test the bibdk cart pager
 
@@ -198,7 +198,7 @@ class TestBibdkCart(helpers.BibdkUnitTestCase):
     def _test_add_remove_to_cart_as_logged_in_user(self):
         # Tmp hack: Disable test - Python may have some issues with the openuserinfo_url SSL certificate:
         #           InsecurePlatformWarning: A true SSLContext object is not available. This prevents urllib3 from configuring SSL appropriately and may cause
-        #           certain SSL connections to fail. You can upgrade to a newer version of Python to solve this. For more information, see 
+        #           certain SSL connections to fail. You can upgrade to a newer version of Python to solve this. For more information, see
         #           https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
         """
         test_add_remove_to_cart_as_logged_in_user
@@ -315,7 +315,7 @@ class TestBibdkCart(helpers.BibdkUnitTestCase):
     def _test_add_remove_to_cart_as_logged_in_user_mobile_size(self):
         # Tmp hack: Disable test - Python may have some issues with the openuserinfo_url SSL certificate:
         #           InsecurePlatformWarning: A true SSLContext object is not available. This prevents urllib3 from configuring SSL appropriately and may cause
-        #           certain SSL connections to fail. You can upgrade to a newer version of Python to solve this. For more information, see 
+        #           certain SSL connections to fail. You can upgrade to a newer version of Python to solve this. For more information, see
         #           https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
         """
         Verify test_add_remove_to_cart_as_logged_in_user_mobile_size
@@ -399,7 +399,7 @@ class TestBibdkCart(helpers.BibdkUnitTestCase):
         time.sleep(1)
         self._check_pop_up()
         time.sleep(1)
-        wait = WebDriverWait(browser, 2)
+        wait = WebDriverWait(browser, 30)
         ActionChains(browser).move_to_element(wait.until(EC.visibility_of_element_located((By.ID, "selid-" + re.sub('[-:]', '', id))))).click().perform()
 
         # add item to cart, using the add any edition btn

@@ -15,20 +15,33 @@
     // If child checkbox is checked remove checked from parent
     $('fieldset[data-child] input').change(function() {
 
-      if($(this).attr('checked') == 'checked') {
+      if($(this).attr('checked') === 'checked') {
         var parentKey = $(this).closest('fieldset[data-child]').attr('data-child');
         $('[data-parent][value="' + parentKey + '"]').attr('checked', false);
       }
     });
     // If parent checkbox is checked remove checked from children
     $('input[data-parent]').change(function() {
-      if($(this).attr('checked') == 'checked') {
+      if($(this).attr('checked') === 'checked') {
         var childKey = $(this).attr('value')
         $('fieldset[data-child="' + childKey + '"] input').attr('checked', false);
       }
     });
     $('.toggle-subgroup').click(function(e) {
       e.preventDefault();
+      var title = $(this).attr('title').split(" ");
+      // We need to handle the title tag in the span.
+      if ($(this).hasClass('toggled')) { // Contracting
+        $(this).attr(
+          'title',
+          Drupal.t('Udvid @title', {'@title': title[1]})
+        );
+      } else {
+        $(this).attr(
+          'title',
+          Drupal.t('Sammentræk @title', {'@title': title[1]})
+        );
+      }
       $(this).toggleClass('toggled');
       var childKey = $(this).attr('data-child');
       $('fieldset[data-child="' + childKey + '"]').toggle();
@@ -54,7 +67,7 @@
           $('[data-group="' + group + '"].master').attr('checked', false)
         }
       }
-      else if($('[data-group="' + group + '"]:checked').length == 0) {
+      else if($('[data-group="' + group + '"]:checked').length === 0) {
         $('[data-group="' + group + '"].master').attr('checked', true);
       }
     });
@@ -110,8 +123,9 @@
     // script below forces page to jump to hash given in url (#content)
     // get the hash
     var hash = window.location.hash
-    // check the hash
-    if (hash == '' || hash == '#' || hash == undefined) return false;
+
+    // check the hast
+    if (hash === '' || hash === '#' || hash === undefined) return false;
     // jqueryfi
     var target = $(hash);
     target = target.length ? target : $('[name=' + hash.slice(1) + ']');
@@ -164,4 +178,3 @@
     }
   };
 }(jQuery));
-

@@ -9,7 +9,6 @@
  */
 function _bibdk_custom_search_create_advanced_form($elements, $default_values) {
   $fields = array();
-
   // We loop through all search elements
   foreach ($elements as $element) {
 
@@ -96,28 +95,31 @@ function _bibdk_custom_search_add_element($element, &$field, &$default_values) {
         'tabindex' => $element->tab_index,
         'accesskey' => $element->access_key,
         'data-term' => array($value),
+        'aria-label' => $field['#element_title'],
+        'description' => $field['#element_title'],
       ),
     );
   }
 
   // Add type specific settings for values
   switch ($element->value_type) {
-    CASE 'textarea':
+    case 'textarea':
       $field[$value]['#size'] = 30;
-    CASE 'textfield':
+    case 'textfield':
       $field[$value]['#maxlength'] = 64;
       $field[$value]['#default_value'] = isset($default_values[$value]) ? array_shift($default_values[$value]) : NULL;
       $field[$value]['#parents'] = array($value, $element->value_title);
       $field[$value]['#tree'] = FALSE;
+      $field[$value]['#attributes']['aria-label'] = $element->element_label;
       break;
-    CASE 'select':
-
+    case 'select':
       $field[$value]['#default_value'] = isset($default_values[$value]) ? $default_values[$value] : $element->default_value;
       if (!$element->option_disabled) {
         $field[$value]['#options'][$element->value] = $element->label;
       }
+      $field[$value]['#attributes']['title'] = $element->value_title;
       break;
-    CASE 'radios':
+    case 'radios':
       $field[$value]['#theme'] = 'bibdk_custom_search_radio_buttons';
       $field[$value]['#default_value'] = isset($default_values[$element->search_code]) ? $default_values[$element->search_code] : $element->default_value;
       if (!$element->option_disabled) {
@@ -145,7 +147,7 @@ function _bibdk_custom_search_add_element($element, &$field, &$default_values) {
         $field[$value]['#data_toggle'][] = $data_toggle;
       }
       break;
-    CASE 'checkboxes':
+    case 'checkboxes':
       $field[$value]['#type'] = 'container';
       $field[$value]['#tree'] = TRUE;
       $checkbox_values = isset($field[$value]['#values']) ? $field[$value]['#values'] : array();
@@ -161,10 +163,9 @@ function _bibdk_custom_search_add_element($element, &$field, &$default_values) {
         $field[$value]['#values'] = array_merge((array) $checkbox_values, $checkboxes['values']);
       }
       break;
-    DEFAULT:
+    default:
       break;
   }
-
 }
 
 /**
@@ -196,6 +197,8 @@ function bibdk_custom_search_create_checkboxes($element, &$default_values, $opti
     '#parents' => array($parent, $element->value),
     '#attributes' => array(
       'data-group' => $parent,
+      'aria-label' => t('Vælg @title', array('@title' => $element->label)),
+      'title' => t('Vælg @title', array('@title' => $element->label)),
       'class' => array(($element->default_value == $element->value) ? 'default-value' : ''),
     ),
   );
@@ -208,11 +211,13 @@ function bibdk_custom_search_create_checkboxes($element, &$default_values, $opti
     $return[$element->value]['#attributes'] += array(
       'data-parent' => $parent,
     );
-    $return[$element->value]['#title'] = '<span data-child="' . $key . '" class="toggle-subgroup"> + </span>' . $return[$element->value]['#title'];
+    $return[$element->value]['#title'] = '<span role="button" title="' . t('Udvid @title', array('@title' => $return[$element->value]['#title']), array('context' => 'bibdk_theme')) . '" data-child="' . $key . '" class="toggle-subgroup"> + </span>' . $return[$element->value]['#title'];
     $return[$key . '-fieldset'] = array(
       '#type' => 'fieldset',
       '#attributes' => array(
         'data-child' => $key,
+        'aria-label' => t('Vælg @title', array('@title' => $element->label)),
+        'title' => t('Vælg @title', array('@title' => $return[$element->value]['#title'])),
         'class' => array('sub-elements'),
       ),
       '#parents' => array($parent),
