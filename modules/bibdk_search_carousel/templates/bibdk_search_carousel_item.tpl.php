@@ -8,7 +8,7 @@
   <div class="carousel-item-image-wrapper">
     <div class="carousel-item-image">
       <a href="<?php echo $url; ?>" title="<?php print check_plain($title); ?>">
-        <img src="<?php echo $image; ?>" alt=""/>
+        <img src="<?php echo $image; ?>" alt="<?php print check_plain($title); ?>"/>
       </a>
     </div>
   </div>
