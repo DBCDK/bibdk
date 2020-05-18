@@ -61,7 +61,6 @@ if [ "$1" == '' ]; then
   # allow url include
   # sed -i 's/allow_url_include = Off/allow_url_include = On/' $PHPINI
   echo "sendmail_path = /usr/bin/msmtp -t" >> $PHPINI
-  echo "sendmail_path = /usr/bin/msmtp -t" >> $PHPINI
 
   ### APACHE2.CONF FILE::::::
   # MaxKeepAliveRequests
@@ -76,8 +75,6 @@ if [ "$1" == '' ]; then
 	SETTINGS=/var/www/html/sites/default/settings.php
 	# COOKIE DOMAIN
 	sed -i "s/\.bibliotek\.dk/$COOKIE_DOMAIN/" $SETTINGS
-  # BASE URL
-  sed -i "s/@DOMAIN@/$URL/" $SETTINGS
   # POSTGRES_DB
   sed -i "s/'database' => '',/'database' => '$POSTGRES_DB',/" $SETTINGS
   # POSTGRES_USER
