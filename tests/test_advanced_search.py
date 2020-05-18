@@ -179,11 +179,13 @@ class TestAdvancedSearch(helpers.BibdkUnitTestCase):
 
         # search
         browser.get(self.base_url + '/bibdk_frontpage/bog')
+        time.sleep(10)
         self._check_pop_up()
 
         search_block_form = wait.until(
           expected_conditions.visibility_of_element_located((By.NAME, "search_block_form"))
         )
+
         search_block_form.send_keys("jungersen undtagelsen")
         browser.find_element_by_id("edit-submit").click()
 
@@ -197,7 +199,6 @@ class TestAdvancedSearch(helpers.BibdkUnitTestCase):
         lydbog = wait.until(
           expected_conditions.visibility_of_element_located((By.ID, "manifestation-toggle-button-Lydbog-cd-870970-basis25419766"))
         )
-
         lydbog.click()
         time.sleep(10)
 

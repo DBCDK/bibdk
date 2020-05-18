@@ -18,7 +18,8 @@ class LinkMeTestCase(helpers.BibdkUnitTestCase):
         search = 'rec.id=870971-tsart:35908412'
         url = self.base_search_url + search
         browser.get(url)
-        browser.implicitly_wait(10)
+        browser.implicitly_wait(30)
+        time.sleep(10)
         self._check_pop_up()
 
         # Click on 'vis mere'
