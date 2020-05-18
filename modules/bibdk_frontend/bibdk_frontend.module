@@ -38,10 +38,11 @@ function bibdk_frontend_user_login(&$edit, $account) {
 }
 
 /**
- * Implements hook_js_alter().
+ * Implements hook_eu_cookie_javascripts_alter
  */
-function bibdk_frontend_js_alter(&$scripts) {
+function bibdk_frontend_eu_cookie_javascripts_alter(&$scripts) {
   $path = $_GET['q'];
+
   // scripts to check
   $script_to_check = array(
     'sites/default/modules/bibdk_frontend/webtrekk/webtrek.js',
@@ -56,7 +57,6 @@ function bibdk_frontend_js_alter(&$scripts) {
     }
   }
 }
-
 
 /**
  * Implements hook_module_implements_alter().
@@ -389,6 +389,7 @@ function template_preprocess_bibdk_custom_search_radio_buttons(&$variables) {
 
 /**
  * Implements hook_hotjar_access.
+ *
  * @return bool
  */
 function bibdk_frontend_hotjar_access() {
