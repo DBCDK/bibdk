@@ -77,7 +77,7 @@ if [ "$1" == '' ]; then
 	# COOKIE DOMAIN
 	sed -i "s/\.bibliotek\.dk/$COOKIE_DOMAIN/" $SETTINGS
   # BASE URL
-  sed -i "s/@DOMAIN@/$URL" $SETTINGS
+  sed -i "s/@DOMAIN@/$URL/" $SETTINGS
   # POSTGRES_DB
   sed -i "s/'database' => '',/'database' => '$POSTGRES_DB',/" $SETTINGS
   # POSTGRES_USER
