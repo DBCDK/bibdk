@@ -92,7 +92,7 @@ if [ "$1" == '' ]; then
   # location of .htaccess
   HTACCESS=/var/www/html/.htaccess
   # Make apache jump to https when accessed with http.
-  echo 'Header always set Content-Security-Policy "upgrade-insecure-requests;"' >> $HTACCESS
+  # echo 'Header always set Content-Security-Policy "upgrade-insecure-requests;"' >> $HTACCESS
 
 	service rsyslog start
 
