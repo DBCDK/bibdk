@@ -25,7 +25,7 @@ if [ "$1" == '' ]; then
   cd /tmp || return
   tar -xf files.tar.gz
   mkdir files/private
-  rm -rf /var/www/html/sites/default/files/
+  #rm -rf /var/www/html/sites/default/files/
   cp -Rf files /var/www/html/sites/default
   chown -Rf www-data:www-data /var/www/html/sites/default/files
   rm -rf files files.tar.gz
