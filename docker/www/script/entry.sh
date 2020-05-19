@@ -88,6 +88,12 @@ if [ "$1" == '' ]; then
   # MEMCACHE_SERVER
   sed -i "s/@MEMCACHE_SERVER@/$MEMCACHE_SERVER/" $SETTINGS
 
+  ### HTACCESS FILE::::::::::
+  # location of .htaccess
+  HTACCESS=/var/www/html/.htaccess
+  # Make apache jump to https when accessed with http.
+  echo 'Header always set Content-Security-Policy "upgrade-insecure-requests;"' >> $HTACCESS
+
 	service rsyslog start
 
 # Make a symbolic link to netpunkt modules - for simpletest to run.
