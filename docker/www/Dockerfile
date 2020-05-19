@@ -64,9 +64,7 @@ COPY script/run_cron.sh /
 COPY msmtprc /etc/
 COPY conf/20-yaz.ini /etc/php/7.3/apache2/conf.d/
 
-RUN mkdir -p $APACHE_ROOT/private && \
-  sudo chown www-data:www-data $APACHE_ROOT/private && \
-  chmod 755 /entry.sh && \
+RUN chmod 755 /entry.sh && \
   chmod 755 /healthcheck.sh && \
   chmod 777 /etc/php/7.3/apache2/conf.d/20-yaz.ini && \
   a2enmod rewrite && \
