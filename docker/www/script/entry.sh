@@ -88,11 +88,14 @@ if [ "$1" == '' ]; then
   # MEMCACHE_SERVER
   sed -i "s/@MEMCACHE_SERVER@/$MEMCACHE_SERVER/" $SETTINGS
 
-  ### HTACCESS FILE::::::::::
-  # location of .htaccess
-  HTACCESS=/var/www/html/.htaccess
-  # Make apache jump to https when accessed with http.
-  # echo 'Header always set Content-Security-Policy "upgrade-insecure-requests;"' >> $HTACCESS
+  # We do not want this on frontend-features where we don't use https.
+  if [ "$NAMESPACE_NAME" != 'frontend-features' ]; then
+    ### HTACCESS FILE::::::::::
+    # location of .htaccess
+    HTACCESS=/var/www/html/.htaccess
+    # Make apache jump to https when accessed with http.
+    echo 'Header always set Content-Security-Policy "upgrade-insecure-requests;"' >> $HTACCESS
+  fi
 
 	service rsyslog start
 
