@@ -14,7 +14,7 @@ function bibdk_covers_objects() {
   $covers = array();
   $cover_path = $thumbnail_path = $backcover_path = '';
 
-  if ( empty($_POST['coverData']) ) {
+  if (empty($_POST['coverData'])) {
     watchdog('bibdk_covers', 'Empty coverData variable in $_POST', array(), WATCHDOG_ERROR);
     drupal_json_output($covers);
     drupal_exit();
@@ -29,23 +29,22 @@ function bibdk_covers_objects() {
     // Determine if the local id is a known negative
     // pjo outcommented this - check with jgn
     //if ( cache_get('bibdk_covers:' . $local_id, FALSE) ) {
-    if ( cache_get('bibdk_covers:' . $local_id) ) {
+
+    if (cache_get('bibdk_covers:' . $local_id)) {
       break;
     }
 
-    if ( $cover_path = open_moreinfo_object_path($local_id, 'detailUrl') ) {
+    if ($cover_path = open_moreinfo_object_path($local_id, 'detailUrl')) {
 
-      if ( !file_exists($cover_path) )  {
+      if (!file_exists($cover_path)) {
         drupal_json_output(FALSE);
         drupal_exit();
       }
 
       $covers['imageStyle'] = $image_style;
-
-      $covers[ $local_id . ':' . 'detailUrl' ] = image_style_url('large', _bibdk_covers_object_path($local_id, 'detailUrl'));
-
-      if ( $thumbnail_path = open_moreinfo_object_path($local_id, 'thumbnailUrl') ) {
-        $covers[ $local_id . ':' . 'thumbnailUrl' ] = image_style_url('medium', _bibdk_covers_object_path($local_id, 'detailUrl'));
+      $covers[$local_id . ':' . 'detailUrl'] = image_style_url('large', _bibdk_covers_object_path($local_id, 'detailUrl'));
+      if ($thumbnail_path = open_moreinfo_object_path($local_id, 'thumbnailUrl')) {
+        $covers[$local_id . ':' . 'thumbnailUrl'] = image_style_url('medium', _bibdk_covers_object_path($local_id, 'detailUrl'));
       }
 
       $backcover_path = open_moreinfo_object_path($local_id, 'backpagePdfUrl');
@@ -53,15 +52,15 @@ function bibdk_covers_objects() {
         if ($wrapper = file_stream_wrapper_get_instance_by_uri($backcover_path)) {
           $backcover_path = $wrapper->getExternalUrl();
         }
-        $covers[ $local_id . ':' . 'backpagePdfUrl' ] = $backcover_path;
+        $covers[$local_id . ':' . 'backpagePdfUrl'] = $backcover_path;
       }
       else {
-        $covers[ $local_id . ':' . 'backpagePdfUrl' ] = '';
+        $covers[$local_id . ':' . 'backpagePdfUrl'] = '';
       }
 
     }
     else {
-      // No cover image. Cache this for future reference to avoid unnecessary requests
+      //No cover image. Cache this for future reference to avoid unnecessary requests
       cache_set('bibdk_covers:' . $local_id['id'], 1, 'cache', $_SERVER['REQUEST_TIME'] + variable_get('moreInfo_cache_lifetime', 604800));
     }
 

@@ -56,6 +56,7 @@ class TestInfomediaLink(helpers.BibdkUnitTestCase):
         actions.move_to_element(but)
         actions.click(but)
         actions.perform()
+        
         # wait for popup
         WebDriverWait(browser, 30).until(self.found_window('PopUpWindowreservation'))
         # seitch to popup

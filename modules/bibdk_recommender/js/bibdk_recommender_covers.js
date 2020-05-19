@@ -63,8 +63,11 @@
 
   // Retrieve Recommender images
   Drupal.getBibdkCarouselCovers = function(elem) {
+    // i do not like this - these are globals
     pid   = elem.attr("data-pid");
     style = elem.attr("data-style"); // detail || thumbnail
+    alt =  elem.attr("data-alt");
+
     if (pid === undefined || style === undefined) {
       return;
     }
@@ -92,10 +95,12 @@
       style = coverData["imageStyle"];
       delete coverData["imageStyle"];
     }
+
     $.each(coverData, function(coverInfo, url) {
+
       coverInfo = coverInfo.split(':');
       if (coverInfo[2] == style + 'Url') { // thumbnailUrl || detailUrl || backpagePdfUrl
-        var img = '<img src="' + url + '" alt=""/>';
+        var img = '<img src="' + url + '" alt="' + alt +'"/>';
         var element = $('.bibdk-recommender-cover-placeholder[data-pid="' + coverInfo[0] + ':' + coverInfo[1] + '"] .bibdk-recommender-material-type');
         element.foundation('reflow').html(img);
         element.css('opacity', 1);
