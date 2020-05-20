@@ -21,27 +21,7 @@ if [ "$1" == '' ]; then
   # Make sure Apache shuts down properly
   trap stop SIGINT SIGTERM
 
-  if [ "$NAMESPACE_NAME" != "frontend-prod" ]; then
-    cd /tmp || return
-    tar -xf files.tar.gz
-    mkdir files/private
-    #rm -rf /var/www/html/sites/default/files/
-    cp -Rf files /var/www/html/sites/default
-    chown -Rf www-data:www-data /var/www/html/sites/default/files
-    rm -rf files files.tar.gz
-  fi
 
-  # Check if external storage is mounted
-  #if [ -d '/data/files' ]; then
-  #		rm -rf $APACHE_ROOT/sites/default/files
-  #		ln -s /data/files $APACHE_ROOT/sites/default/files
-  #		chown -R www-data:www-data /data/files
-  #	fi
-
-  #	if [ -d '/data/log' ]; then
-  #		rm -rf /var/log/apache2
-  #		ln -s /data/log /var/log/apache2
-  #	fi
   # Prepare Drupal
   # location of configuration feature
   CONFIG=$APACHE_ROOT/profiles/bibdk/modules/bibdk_config/features/bibdk_webservice_settings_operational/bibdk_webservice_settings_operational.strongarm.inc
@@ -104,9 +84,20 @@ if [ "$1" == '' ]; then
     echo 'Header always set Content-Security-Policy "upgrade-insecure-requests;"' >>$HTACCESS
   fi
 
+  # only set files files folder if we are NOT in prod
+  if [ "$NAMESPACE_NAME" != "frontend-prod" ]; then
+    cd /tmp || return
+    tar -xf files.tar.gz
+    mkdir files/private
+    #rm -rf /var/www/html/sites/default/files/
+    cp -Rf files /var/www/html/sites/default
+    chown -Rf www-data:www-data /var/www/html/sites/default/files
+    rm -rf files files.tar.gz
+  fi
+
   service rsyslog start
 
-  # Make a symbolic link to netpunkt modules - for simpletest to run.
+  # Make a symbolic link to modules - for simpletest to run.
   /bin/sh -c "cd $APACHE_ROOT/sites/default && ln -sf $APACHE_ROOT/profiles/bibdk/modules"
 
   # Start Apache
