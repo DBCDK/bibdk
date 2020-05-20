@@ -1,3 +1,4 @@
+
 An attempt to make development easier with docker and docker compose.
 
 prerequisites:
@@ -10,7 +11,7 @@ to install bibliotek.dk:
     NOTICE - it is important that you copy ENTIRE folder and contents - do not rename the folder - docker-compose
     names its network and containers from the folder it is run in, and scripts uses naming of containers to exec commands
 2. cd into bibdk_development folder
-3. run build.sh ($ . build.sh)
+3. run build.sh ($ . build.sh) && run.sh ($ . run.sh)
 
 wait ... containers may show up as unhealthy for a little while - be patient it takes about 5 minutes for database and drupal
 to initialize and synchronize
