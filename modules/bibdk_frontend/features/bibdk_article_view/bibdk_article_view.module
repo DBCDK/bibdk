@@ -67,8 +67,7 @@ function bibdk_article_view_get_bottom_link($txt, $path, $wrapper) {
         'target' => '_blank',
         'class' => array('article-bottom-link ' . $custom_class),
       ),
-      'html' => FALSE,
-      'svg' => 'svg-arrow-right',
+      'html' => FALSE
     ),
   );
 
