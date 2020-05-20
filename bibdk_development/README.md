@@ -17,19 +17,21 @@ wait ... containers may show up as unhealthy for a little while - be patient it 
 to initialize and synchronize
 
 bibliotek.dk can now be seen on localhost:8080
-in the folder a html/ dir is generated - the bibdk repo is in html/profiles/bibdk, so go ahead and do your development.
+
+In the folder a html/ dir is generated - the bibdk repo is in html/profiles/bibdk, so go ahead and do your development.
 Changes in code will be reflected on localhost:8080.
 
 To run on another port you will have to edit the docker-compose.yml file.
 
 --------------------------------------------------------------------------------------------------
 to clean up:
-minimal: run
-    $docker-compose down
+- minimal: run
+    `$docker-compose down`
 this will close the docker network and release port 8080
-total: run
-    $docker-compose down --rmi all
-this will close the docker network and remove all containers and images in the network
+
+- total: run
+    `$docker-compose down --rmi all`
+this will close the docker network, release port 8080 and delete all containers and images in the network
 
 Downloaded files will have to be deleted manually
 
