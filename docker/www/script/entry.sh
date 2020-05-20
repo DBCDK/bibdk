@@ -5,49 +5,36 @@ set -e
 DAEMON=apache2
 
 stop() {
-    echo "Received SIGINT or SIGTERM. Shutting down $DAEMON"
-    exit 0
-    # Get PID
-    pid=$(cat /var/run/$DAEMON/$DAEMON.pid)
-    # Set TERM
-    kill -SIGTERM "${pid}"
-    # Wait for exit
-    wait "${pid}"
-    # All done.
-    echo "Done."
+  echo "Received SIGINT or SIGTERM. Shutting down $DAEMON"
+  exit 0
+  # Get PID
+  pid=$(cat /var/run/$DAEMON/$DAEMON.pid)
+  # Set TERM
+  kill -SIGTERM "${pid}"
+  # Wait for exit
+  wait "${pid}"
+  # All done.
+  echo "Done."
 }
 
-
 if [ "$1" == '' ]; then
-	# Make sure Apache shuts down properly
-	trap stop SIGINT SIGTERM
+  # Make sure Apache shuts down properly
+  trap stop SIGINT SIGTERM
 
-	# Check if external storage is mounted
-	#if [ -d '/data/files' ]; then
-#		rm -rf $APACHE_ROOT/sites/default/files
-#		ln -s /data/files $APACHE_ROOT/sites/default/files
-#		chown -R www-data:www-data /data/files
-#	fi
 
-#	if [ -d '/data/log' ]; then
-#		rm -rf /var/log/apache2
-#		ln -s /data/log /var/log/apache2
-#	fi
-	# Prepare Drupal
+  # Prepare Drupal
   # location of configuration feature
-	CONFIG=$APACHE_ROOT/profiles/bibdk/modules/bibdk_config/features/bibdk_webservice_settings_operational/bibdk_webservice_settings_operational.strongarm.inc
+  CONFIG=$APACHE_ROOT/profiles/bibdk/modules/bibdk_config/features/bibdk_webservice_settings_operational/bibdk_webservice_settings_operational.strongarm.inc
   # set configuration from environment vars
-	while IFS='=' read -r name value ; do
-    	echo "$name $value"
-    	#old expression - overwrite value by adding a line with new value
-	    #sed -i "s|\$export\['${name}|\$strongarm->value = '${value}';\n    &|" $CONFIG
-	    #new expression - replace line holding the value (it must be JUST AFTER the $strongarm->name AND BE A SINGLE LINE for this to work)
-	    #sed -i "/\$strongarm->name = '${name}'/{n;s/.*/  \$strongarm->value = '${value}';/;}" $CONFIG
-	    #sed -i "s|\$strongarm->name = '${name}'/{n;s/.*|\$strongarm->value = '${value}';|;}" $CONFIG
-	    sed -i "/\$strongarm->name = '${name}'/{n;s|.*|  \$strongarm->value = '${value}';|;}" $CONFIG
-
-
-	done < <(env)
+  while IFS='=' read -r name value; do
+    echo "$name $value"
+    #old expression - overwrite value by adding a line with new value
+    #sed -i "s|\$export\['${name}|\$strongarm->value = '${value}';\n    &|" $CONFIG
+    #new expression - replace line holding the value (it must be JUST AFTER the $strongarm->name AND BE A SINGLE LINE for this to work)
+    #sed -i "/\$strongarm->name = '${name}'/{n;s/.*/  \$strongarm->value = '${value}';/;}" $CONFIG
+    #sed -i "s|\$strongarm->name = '${name}'/{n;s/.*|\$strongarm->value = '${value}';|;}" $CONFIG
+    sed -i "/\$strongarm->name = '${name}'/{n;s|.*|  \$strongarm->value = '${value}';|;}" $CONFIG
+  done < <(env)
 
   ### PHP.INI FILE::::::
   PHPINI=/etc/php/7.3/apache2/php.ini
@@ -60,7 +47,7 @@ if [ "$1" == '' ]; then
 
   # allow url include
   # sed -i 's/allow_url_include = Off/allow_url_include = On/' $PHPINI
-  echo "sendmail_path = /usr/bin/msmtp -t" >> $PHPINI
+  echo "sendmail_path = /usr/bin/msmtp -t" >>$PHPINI
 
   ### APACHE2.CONF FILE::::::
   # MaxKeepAliveRequests
@@ -72,9 +59,9 @@ if [ "$1" == '' ]; then
 
   ### SETTINGS.PHP FILE::::::
   # location of settings.php
-	SETTINGS=/var/www/html/sites/default/settings.php
-	# COOKIE DOMAIN
-	sed -i "s/\.bibliotek\.dk/$COOKIE_DOMAIN/" $SETTINGS
+  SETTINGS=/var/www/html/sites/default/settings.php
+  # COOKIE DOMAIN
+  sed -i "s/\.bibliotek\.dk/$COOKIE_DOMAIN/" $SETTINGS
   # POSTGRES_DB
   sed -i "s/'database' => '',/'database' => '$POSTGRES_DB',/" $SETTINGS
   # POSTGRES_USER
@@ -94,21 +81,32 @@ if [ "$1" == '' ]; then
     # location of .htaccess
     HTACCESS=/var/www/html/.htaccess
     # Make apache jump to https when accessed with http.
-    echo 'Header always set Content-Security-Policy "upgrade-insecure-requests;"' >> $HTACCESS
+    echo 'Header always set Content-Security-Policy "upgrade-insecure-requests;"' >>$HTACCESS
   fi
 
-	service rsyslog start
+  # only set files files folder if we are NOT in prod
+  if [ "$NAMESPACE_NAME" != "frontend-prod" ]; then
+    cd /tmp || return
+    tar -xf files.tar.gz
+    mkdir files/private
+    #rm -rf /var/www/html/sites/default/files/
+    cp -Rf files /var/www/html/sites/default
+    chown -Rf www-data:www-data /var/www/html/sites/default/files
+    rm -rf files files.tar.gz
+  fi
 
-# Make a symbolic link to netpunkt modules - for simpletest to run.
-	/bin/sh -c "cd $APACHE_ROOT/sites/default && ln -sf $APACHE_ROOT/profiles/bibdk/modules"
+  service rsyslog start
 
-	# Start Apache
-	/bin/sh -c ". /etc/apache2/envvars && /usr/sbin/apache2 -D FOREGROUND"
+  # Make a symbolic link to modules - for simpletest to run.
+  /bin/sh -c "cd $APACHE_ROOT/sites/default && ln -sf $APACHE_ROOT/profiles/bibdk/modules"
+
+  # Start Apache
+  /bin/sh -c ". /etc/apache2/envvars && /usr/sbin/apache2 -D FOREGROUND"
 
 elif [ "$1" == 'cron' ]; then
-	trap stop SIGINT SIGTERM
-	/bin/sh -c "cron -f"
+  trap stop SIGINT SIGTERM
+  /bin/sh -c "cron -f"
 
 else
-	exec "$@"
+  exec "$@"
 fi
