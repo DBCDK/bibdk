@@ -4,13 +4,14 @@
  * Code for the article_view feature.
  */
 
- include_once 'bibdk_article_view.features.inc';
+include_once 'bibdk_article_view.features.inc';
 
 /**
  * Implements hook_preprocess_HOOK
  *
  * Add classes and fields that needs to be handled in special ways to
  * bibdk_articles_view
+ *
  * @param $vars
  */
 function bibdk_article_view_preprocess_views_view_fields(&$vars) {
@@ -20,12 +21,15 @@ function bibdk_article_view_preprocess_views_view_fields(&$vars) {
     return;
   }
 
-  // get the node
   $node = node_load($vars['row']->nid);
   $wrapper = entity_metadata_wrapper('node', $node);
 
   $classes = bibdk_article_view_handle_classes($wrapper);
   $vars['class'] = drupal_attributes($classes);
+
+  // title for latest article being rendered
+  static $title;
+  $title = !empty($wrapper->title->value()) ? $wrapper->title->value() : $title;
 
   // get link text
   $link_text = $wrapper->field_link_text->value();
@@ -46,9 +50,13 @@ function bibdk_article_view_preprocess_views_view_fields(&$vars) {
     }
   }
 
+  $field_image = $wrapper->field_image->value();
+  if (!empty($field_image)) {
+    $vars['fields']['field_image']->content = bibdk_article_view_get_image_with_alt($title, $field_image);
+  }
 }
 
-function bibdk_article_view_get_bottom_link($txt, $path, $wrapper){
+function bibdk_article_view_get_bottom_link($txt, $path, $wrapper) {
   $custom_class = $wrapper->field_link_classes->value();
   $link = array(
     '#theme' => 'link',
@@ -64,6 +72,18 @@ function bibdk_article_view_get_bottom_link($txt, $path, $wrapper){
   );
 
   return drupal_render($link);
+}
+
+function bibdk_article_view_get_image_with_alt($alt, $field_image) {
+  $image = array(
+    '#theme' => 'image',
+    '#width' => $field_image['width'],
+    '#height' => $field_image['height'],
+    '#alt' => $alt,
+    '#path' => $field_image['uri']
+  );
+
+  return drupal_render($image);
 }
 
 
@@ -89,7 +109,9 @@ function bibdk_article_view_get_top_link($txt, $path, $wrapper) {
 
 /**
  * Set classes needed for styling articles
+ *
  * @param $wrapper
+ *
  * @return array
  */
 function bibdk_article_view_handle_classes($wrapper) {
@@ -110,8 +132,6 @@ function bibdk_article_view_handle_classes($wrapper) {
   );
   return array('class' => $classes);
 }
-
-
 
 
 /**

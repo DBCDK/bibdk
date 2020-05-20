@@ -1,0 +1,5 @@
+POSTGRES_HOST=postgres_db
+POSTGRES_PASSWORD=filestore
+POSTGRES_USER=filestore
+POSTGRES_DB=filestore
+MEMCACHE_SERVER=memcached

@@ -1,6 +1,17 @@
+ARG BRANCH=develop
+
+FROM docker-dscrum.dbc.dk/d7-php7-builder as builder
+ARG BRANCH
+ENV BRANCH=${BRANCH}
+
+USER jenkins
+# build drupal code
+RUN cd /var/lib/jenkins && drush make -v --working-copy --strict=0 --dbc-modules=${BRANCH} --no-gitinfofile --contrib-destination=profiles/bibdk "https://raw.github.com/DBCDK/bibdk/develop/distro.make" www
+# build stylesheet
+RUN cd /var/lib/jenkins/www/profiles/bibdk/themes/bibdk_theme/.npm && npm install && ./node_modules/gulp/bin/gulp.js build --production
+
 FROM docker.dbc.dk/dbc-apache-php7
 MAINTAINER D-scrum <d-scrum@dbc.dk>
-
 # set environment variables
 # mailhost for exim4
 ENV smarthost=mailhost.dbc.dk
@@ -34,13 +45,16 @@ RUN apt-get update && \
   apt-get autoremove -y
 
 COPY data-vol /etc/logrotate.d
-COPY --chown=root:www-data www $APACHE_ROOT
+COPY --from=builder --chown=root:www-data /var/lib/jenkins/www $APACHE_ROOT
+COPY --from=builder /var/lib/jenkins/www/profiles/bibdk/modules/bibdk_config/docker/settings.php $APACHE_ROOT/sites/default
+RUN chown root:www-data $APACHE_ROOT
+#COPY --chown=root:www-data www $APACHE_ROOT
 COPY conf/000-default.conf /etc/apache2/sites-enabled
 COPY script/entry.sh /
 COPY script/healthcheck.sh /
 COPY script/apache_ready.sh /
 COPY script/run_environment.sh /
-COPY www/profiles/bibdk/modules/bibdk_config/docker/settings.php $APACHE_ROOT/sites/default
+ADD --chown=www-data:www-data ["https://is.dbc.dk/job/Bibliotek%20DK/job/Tools/job/Fetch%20Bibliotek%20DK%20files%20folder/lastSuccessfulBuild/artifact/files.tar.gz","/tmp"]
 COPY robots.txt $APACHE_ROOT
 ADD conf/fqdn.conf /etc/apache2/conf-available
 COPY conf/apache_security.conf /etc/apache2/conf-enabled/
@@ -50,14 +64,14 @@ COPY script/run_cron.sh /
 COPY msmtprc /etc/
 COPY conf/20-yaz.ini /etc/php/7.3/apache2/conf.d/
 
-RUN mkdir -p $APACHE_ROOT/private && \
-  sudo chown www-data:www-data $APACHE_ROOT/private && \
-  chmod 755 /entry.sh && \
+RUN chmod 755 /entry.sh && \
   chmod 755 /healthcheck.sh && \
   chmod 777 /etc/php/7.3/apache2/conf.d/20-yaz.ini && \
   a2enmod rewrite && \
   a2enmod headers && \
   a2enconf fqdn
+
+WORKDIR $APACHE_ROOT
 
 EXPOSE 80
 

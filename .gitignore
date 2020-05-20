@@ -12,3 +12,4 @@ modules/dbc_zabbix
 themes/bibdk_theme
 tests/helpers.py
 tests/__pycache__
+bibdk_development

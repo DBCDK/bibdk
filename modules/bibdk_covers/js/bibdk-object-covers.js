@@ -33,17 +33,19 @@
     if(coverData === false){
       return;
     }
+
+
     $.each(coverData, function(coverInfo, url) {
       coverInfo = coverInfo.split(':');
       // thumbnail
       if (coverInfo[1] == 'thumbnailUrl') {
-        var img = '<img src="' + url + '" alt=""/>';
+        var img = '<img src="' + url + '" alt="cover"/>';
         $('.bibdk-cover-processing' + '.bibdk-cover-work-object-id-' + coverInfo[0] + ' a').html(img);
         $('.bibdk-cover-processing' + '.bibdk-cover-work-object-id-' + coverInfo[0] + ' a').parents('.work-cover').show();
       }
       // large
       if (coverInfo[1] == 'detailUrl') {
-        var img = '<img src="' + url + '" alt=""/>';
+        var img = '<img src="' + url + '" alt="cover"/>';
         $('.bibdk-cover-processing' + '.bibdk-cover-work-object-id-' + coverInfo[0]).parents('.field-items').find('.reveal-cover-large-image').foundation('reflow').html(img);
       }
       // back cover

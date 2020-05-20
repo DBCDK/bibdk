@@ -30,33 +30,6 @@ pipeline {
     disableConcurrentBuilds()
   }
   stages {
-    stage('build and stash bibdk code') {
-      agent {
-        docker {
-          label "devel9-head"
-          image "docker-dscrum.dbc.dk/d7-php7-builder:latest"
-          alwaysPull true
-        }
-      }
-      steps {
-        // Drush Make
-        sh """
-          drush make -v --working-copy --strict=0 --dbc-modules=$BRANCH_NAME --no-gitinfofile --contrib-destination=profiles/bibdk $DISTROPATH www
-        """
-        // Building CSS
-        dir('www/profiles/bibdk/themes/bibdk_theme/.npm') {
-          sh """
-            npm install
-            ./node_modules/gulp/bin/gulp.js build --production
-          """
-        }
-        // Stuffing a tar with the code.
-        sh """
-        tar -czf www.tar www
-        """
-        stash name: "www", includes: "www.tar"
-      }
-    }
 
     stage('Docker: Drupal Site') {
       agent {
@@ -64,19 +37,14 @@ pipeline {
       }
       steps {
         dir('docker/www') {
-          unstash "www"
-          sh """
-          tar -xf www.tar
-          """
           script {
-            docker.build("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:${currentBuild.number}")
+            docker.build("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:${currentBuild.number}", "--build-arg BRANCH=${BRANCH_NAME} .")
             // we need a latest tag for development setup
             if (BRANCH == 'develop') {
-              docker.build("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:latest")
+              docker.build("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:latest", "--build-arg BRANCH=${BRANCH_NAME} .")
             }
           }
         }
-
       }
     }
     // if sessions table grows to big - delete sessions more than a day old
