@@ -1,0 +1,3 @@
+[submodule "bibdk_development"]
+        path = bibdk_development
+        url = gitlab@gitlab.dbc.dk:d-scrum/docker/development_setup.git
