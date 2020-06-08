@@ -38,10 +38,10 @@ pipeline {
       steps {
         dir('docker/www') {
           script {
-            docker.build("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:${currentBuild.number}", "--build-arg BRANCH=${BRANCH_NAME} .")
+            docker.build("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:${currentBuild.number}", "--build-arg BRANCH=${BRANCH_NAME} --no-cache .")
             // we need a latest tag for development setup
             if (BRANCH == 'develop') {
-              docker.build("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:latest", "--build-arg BRANCH=${BRANCH_NAME} .")
+              docker.build("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:latest", "--build-arg BRANCH=${BRANCH_NAME} --no-cache .")
             }
           }
         }
@@ -61,10 +61,10 @@ pipeline {
       steps {
         dir('docker/db') {
           script {
-            docker.build("${DOCKER_REPO}/${PRODUCT}-db-${BRANCH}:${currentBuild.number}")
+            docker.build("${DOCKER_REPO}/${PRODUCT}-db-${BRANCH}:${currentBuild.number} --no-cache")
             // we need a latest tag for development setup
             if (BRANCH == 'develop') {
-              docker.build("${DOCKER_REPO}/${PRODUCT}-db-${BRANCH}:latest")
+              docker.build("${DOCKER_REPO}/${PRODUCT}-db-${BRANCH}:latest --no-cache")
             }
           }
         }
