@@ -70,7 +70,7 @@ pipeline {
         }
       }
     }
-    stage('Push to artifactory ') {
+    stage('Push to artifactory') {
       steps {
         script {
           def artyServer = Artifactory.server 'arty'
