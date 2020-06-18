@@ -61,6 +61,9 @@ class TestLoginLogout(helpers.BibdkUnitTestCase, helpers.BibdkUser):
         user.create()
 
         self._goto_frontpage()
+
+        time.sleep(5)
+
         self._check_pop_up()
 
         # click the loginlink
