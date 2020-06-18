@@ -47,11 +47,6 @@ function bibdk_frontend_eu_cookie_javascripts_alter(&$scripts) {
   if (strpos($path, 'user/') !== FALSE) {
     // scripts to check
     $script_to_check = array(
-      'https://bibliotek.dk/profiles/bibdk/modules/bibdk_frontend/webtrekk/webtrek.js',
-      'http://bibliotek-dk-www-develop.frontend-features.svc.cloud.dbc.dk/profiles/bibdk/modules/bibdk_frontend/webtrekk/webtrek.js',
-      'http://bibliotek-dk-www-master.frontend-staging.svc.cloud.dbc.dk/profiles/bibdk/modules/bibdk_frontend/webtrekk/webtrek.js',
-      'sites/default/modules/bibdk_frontend/webtrekk/webtrek.js',
-      'profiles/bibdk/modules/bibdk_frontend/webtrekk/webtrek.js',
       'https://geid.wbtrk.net/cc?a=rtacdb&amp;c=wt_geid&amp;ac=wt_geid&amp;av=815893495620071064410644&amp;al=24&amp;acp=/&amp;acd=.wbtrk.net&amp;acl=180&amp;o=s&amp;x=1589349562934',
       'https://cdn.wbtrk.net/js/geid.min.js'
     );
