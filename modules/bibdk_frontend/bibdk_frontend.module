@@ -38,29 +38,6 @@ function bibdk_frontend_user_login(&$edit, $account) {
 }
 
 /**
- * Implements hook_eu_cookie_javascripts_alter
- */
-function bibdk_frontend_eu_cookie_javascripts_alter(&$scripts) {
-  $path = $_GET['q'];
-
-  // remove on user/ pages
-  if (strpos($path, 'user/') !== FALSE) {
-    // scripts to check
-    $script_to_check = array(
-      'https://geid.wbtrk.net/cc?a=rtacdb&amp;c=wt_geid&amp;ac=wt_geid&amp;av=815893495620071064410644&amp;al=24&amp;acp=/&amp;acd=.wbtrk.net&amp;acl=180&amp;o=s&amp;x=1589349562934',
-      'https://cdn.wbtrk.net/js/geid.min.js'
-    );
-
-    $flipped = array_flip($script_to_check);
-    foreach ($scripts as $key => $script) {
-      if ($flipped[$script] ) {
-        unset($scripts[$key]);
-      }
-    }
-  }
-}
-
-/**
  * Implements hook_module_implements_alter().
  * Change weight on module
  * bibdk_frontend needs to be the last module called in the login process,
