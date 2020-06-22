@@ -29,12 +29,12 @@ class TestInfomediaLink(helpers.BibdkUnitTestCase):
 
         wait = WebDriverWait(self.browser, 20)
         # Search for article 870971:avis-89724244
-        self.browser.get(self.base_url);
+        self.browser.get(self.base_url)
         self.search_pid('870971-avis:89724244')
-        self.assertTrue(self.browser.find_element_by_id('selid-870971avis89724244'));
+        self.assertTrue(self.browser.find_element_by_id('selid-870971avis89724244'))
 
         # Make a new search with expanded view and wait for result
-        self.browser.find_element_by_id('ting-openformat-full-view-button-expanded').click();
+        self.browser.find_element_by_id('ting-openformat-full-view-button-expanded').click()
         wait.until(expected_conditions.presence_of_element_located((By.ID, "870971-avis89724244")))
 
         # Assert infomedialink is present
@@ -47,6 +47,7 @@ class TestInfomediaLink(helpers.BibdkUnitTestCase):
         self.login(user['mail'], user['passwd'])
         url = self.base_url + 'search/work/?search_block_form=rec.id=870971-avis:89724244'
         browser.get(url)
+        self._check_pop_up()
         browser.find_element_by_id('selid-870971avis89724244').click()
         WebDriverWait(self.browser, 30).until(expected_conditions.presence_of_element_located((By.ID, "870971-avis89724244")))
 
@@ -56,7 +57,7 @@ class TestInfomediaLink(helpers.BibdkUnitTestCase):
         actions.move_to_element(but)
         actions.click(but)
         actions.perform()
-        
+
         # wait for popup
         WebDriverWait(browser, 30).until(self.found_window('PopUpWindowreservation'))
         # seitch to popup

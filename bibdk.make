@@ -200,7 +200,6 @@ projects[entity][version] = 1.9
 projects[eu_cookie_compliance][subdir] = contrib
 projects[eu_cookie_compliance][type] = module
 projects[eu_cookie_compliance][version] = 1.31
-projects[eu_cookie_compliance][patch][] = https://raw.githubusercontent.com/DBCDK/patches/master/bibdk_eucookie_alter_disabled_javascripts.patch
 
 projects[hotjar][subdir] = contrib
 projects[hotjar][type] = module
