@@ -153,7 +153,7 @@ pipeline {
       steps {
         script {
           sh """
-            POD=\$(${KUBECTL} get pod -l app=bibliotek-dk-www-$BRANCH -o jsonpath="{.items[0].metadata.name}")
+            POD=\$(${KUBECTL} get pod --field-selector=status.phase=Running -l app=bibliotek-dk-www-$BRANCH -o jsonpath="{.items[0].metadata.name}")
             ${KUBECTL} exec -it \${POD} -- /bin/bash -c "drush -r /var/www/html -y en bibdk_mockup"
           """
         }
