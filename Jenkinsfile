@@ -26,7 +26,7 @@ pipeline {
     NAMESPACE = 'frontend-features'
     DOCKER_REPO = "docker-dscrum.dbc.dk"
     BUILDNAME = "Bibliotek-dk :: ${BRANCH}"
-    WEBSITE = "http://'+${PRODUCT}-www-${BRANCH}.${NAMESPACE}.svc.cloud.dbc.dk"
+    WEBSITE = "http://${PRODUCT}-www-${BRANCH}.${NAMESPACE}.svc.cloud.dbc.dk"
     DISTROPATH = "https://raw.github.com/DBCDK/bibdk/develop/distro.make"
   }
   triggers {
