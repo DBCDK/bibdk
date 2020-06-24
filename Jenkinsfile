@@ -42,9 +42,9 @@ pipeline {
       steps {
         script {
           docker.build("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:${currentBuild.number}",
-            "-f ./docker/www/Dockerfile --no-cache --build-arg BRANCH=${BRANCH_NAME} .")
+            "-f ./docker/www/Dockerfile --no-cache --build-arg BRANCH=${BRANCH_NAME} ./docker/www")
           if (BRANCH == 'develop') {
-            docker.build("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:latest", "-f ./docker/www/Dockerfile --build-arg BRANCH=${BRANCH_NAME} --no-cache .")
+            docker.build("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:latest", "-f ./docker/www/Dockerfile --build-arg BRANCH=${BRANCH_NAME} --no-cache ./docker/www")
           }
         }
       }
