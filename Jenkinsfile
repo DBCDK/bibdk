@@ -5,22 +5,12 @@
 def k8sDeployEnvId = findLastSuccessfulBuildNumber('Docker-k8s-deploy-env')
 
 // general vars
-def DOCKER_REPO = "docker-dscrum.dbc.dk"
-def PRODUCT = 'bibliotek-dk'
-def BRANCH = 'develop'
-BRANCH = BRANCH_NAME.replaceAll('feature/', '')
-BRANCH = BRANCH.replaceAll('_', '-')
 
-def NAMESPACE = 'frontend-features'
 
-// artifactory buildname
-def BUILDNAME = 'Bibliotek-dk :: ' + BRANCH
-def URL = 'http://'+PRODUCT+'-www-'+BRANCH+'.'+NAMESPACE+'.svc.cloud.dbc.dk'
-def DISTROPATH = "https://raw.github.com/DBCDK/bibdk/develop/distro.make"
 
 pipeline {
   agent {
-    node { label 'devel9-head' }
+    node { label 'devel10-head' }
   }
   options {
     buildDiscarder(logRotator(artifactDaysToKeepStr: "", artifactNumToKeepStr: "", daysToKeepStr: "", numToKeepStr: "5"))
@@ -29,20 +19,32 @@ pipeline {
     // Limit concurrent builds to one pr. branch.
     disableConcurrentBuilds()
   }
+  environment {
+    PRODUCT = "bibliotek-dk"
+    BRANCH = BRANCH_NAME.replaceAll('feature/', '').replaceAll('_', '-')
+    // artifactory data
+    NAMESPACE = 'frontend-features'
+    DOCKER_REPO = "docker-dscrum.dbc.dk"
+    BUILDNAME = "Bibliotek-dk :: ${BRANCH}"
+    WEBSITE = "http://${PRODUCT}-www-${BRANCH}.${NAMESPACE}.svc.cloud.dbc.dk"
+    DISTROPATH = "https://raw.github.com/DBCDK/bibdk/develop/distro.make"
+  }
+  triggers {
+    gitlab(
+      triggerOnPush: true,
+      triggerOnMergeRequest: true,
+      branchFilterType: 'All'
+    )
+  }
   stages {
-
-    stage('Docker: Drupal Site') {
-      agent {
-        node { label 'devel9-head' }
-      }
+    // Build the Drupal website image.
+    stage('Docker Drupal Site') {
       steps {
-        dir('docker/www') {
-          script {
-            docker.build("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:${currentBuild.number}", "--build-arg BRANCH=${BRANCH_NAME} --no-cache .")
-            // we need a latest tag for development setup
-            if (BRANCH == 'develop') {
-              docker.build("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:latest", "--build-arg BRANCH=${BRANCH_NAME} --no-cache .")
-            }
+        script {
+          docker.build("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:${currentBuild.number}",
+            "-f ./docker/www/Dockerfile --no-cache --build-arg BRANCH=${BRANCH_NAME} ./docker/www")
+          if (BRANCH == 'develop') {
+            docker.build("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:latest", "-f ./docker/www/Dockerfile --build-arg BRANCH=${BRANCH_NAME} --no-cache ./docker/www")
           }
         }
       }
@@ -55,17 +57,12 @@ pipeline {
         // Only run if branch is not master.
         expression { BRANCH != 'master' }
       }
-      agent {
-        node { label 'devel9-head' }
-      }
       steps {
-        dir('docker/db') {
-          script {
-            docker.build("${DOCKER_REPO}/${PRODUCT}-db-${BRANCH}:${currentBuild.number} --no-cache")
-            // we need a latest tag for development setup
-            if (BRANCH == 'develop') {
-              docker.build("${DOCKER_REPO}/${PRODUCT}-db-${BRANCH}:latest --no-cache")
-            }
+        script {
+          docker.build("${DOCKER_REPO}/${PRODUCT}-db-${BRANCH}:${currentBuild.number}", "./docker/db -f ./docker/db/Dockerfile --no-cache")
+          // we need a latest tag for development setup
+          if (BRANCH == 'develop') {
+            docker.build("${DOCKER_REPO}/${PRODUCT}-db-${BRANCH}:latest", "./docker/db -f ./docker/db/Dockerfile --no-cache")
           }
         }
       }
@@ -129,10 +126,10 @@ pipeline {
       steps {
         script {
           if (BRANCH == 'master') {
-            build job: 'Bibliotek DK/Deploy jobs for Bibliotek DK/Deploy Bibliotek DK staging'
-            $NAMESPACE = 'frontend-staging'
+            build job: 'Bibliotek DK/Deployments/staging'
+            NAMESPACE = 'frontend-staging'
           } else {
-            build job: 'Bibliotek DK/Deploy jobs for Bibliotek DK/Deploy Bibliotek DK develop', parameters: [string(name: 'deploybranch', value: BRANCH)]
+            build job: 'Bibliotek DK/Deployments/develop', parameters: [string(name: 'deploybranch', value: BRANCH)]
           }
         }
       }
@@ -151,13 +148,13 @@ pipeline {
       }
       environment {
         KUBECONFIG = credentials("kubecert-frontend")
-        KUBECTL = "kubectl --kubeconfig '${KUBECONFIG}'"
+        KUBECTL = "kubectl -n ${NAMESPACE} --kubeconfig '${KUBECONFIG}'"
       }
       steps {
         script {
           sh """
-            POD=\$(kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' get pod -l app=bibliotek-dk-www-$BRANCH -o jsonpath="{.items[0].metadata.name}")
-            kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' exec -it \${POD} -- /bin/bash -c "drush -r /var/www/html -y en bibdk_mockup"
+            POD=\$(${KUBECTL} get pod --field-selector=status.phase=Running -l app=bibliotek-dk-www-$BRANCH -o jsonpath="{.items[0].metadata.name}")
+            ${KUBECTL} exec -it \${POD} -- /bin/bash -c "drush -r /var/www/html -y en bibdk_mockup"
           """
         }
       }
@@ -195,10 +192,10 @@ pipeline {
               script {
                 withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'netpunkt-user', usernameVariable: 'NETPUNKT_USER', passwordVariable: 'NETPUNKT_PASS']]) {
                   sh """
-                    export FEATURE_BUILD_URL=${URL}
-                    export BIBDK_WEBDRIVER_URL=${URL}/
+                    export FEATURE_BUILD_URL=${WEBSITE}
+                    export BIBDK_WEBDRIVER_URL=${WEBSITE}/
                     export BIBDK_OPENUSERINFO_URL="http://openuserinfo-prod.frontend-prod.svc.cloud.dbc.dk/server.php"
-                    py.test --junitxml=selenium.xml --driver Remote --host selenium.dbc.dk --port 4444 --capability browserName chrome -v tests/ -o base_url=${URL} || true
+                    py.test --junitxml=selenium.xml --driver Remote --host selenium.dbc.dk --port 4444 --capability browserName chrome -v tests/ -o base_url=${WEBSITE} || true
                     xsltproc xunit-transforms/pytest-selenium.xsl selenium.xml > selenium-result.xml
                   """
                 }
@@ -224,7 +221,7 @@ pipeline {
           }
           environment {
              KUBECONFIG = credentials("kubecert-frontend")
-             KUBECTL = "kubectl --kubeconfig '${KUBECONFIG}'"
+             KUBECTL = "kubectl -n ${NAMESPACE} --kubeconfig '${KUBECONFIG}'"
           }
           steps {
             script {
@@ -232,13 +229,13 @@ pipeline {
               sh """
               rm -rf simpletest
               rm -f simpletest*.xml
-              POD=\$(kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' get pod -l app=bibliotek-dk-www-$BRANCH -o jsonpath="{.items[0].metadata.name}")
-              kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' exec -i \${POD} -- /bin/bash -c "cd /tmp && rm -rf simpletest"
-              kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' exec -i \${POD} -- /bin/bash -c "drush -r /var/www/html en -y simpletest"
-              kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' exec -i \${POD} -- /bin/bash -c "php /var/www/html/scripts/run-tests-xunit.sh --clean"
-              kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' exec -i \${POD} -- /bin/bash -c 'php /var/www/html/scripts/run-tests-xunit.sh --php /usr/bin/php --xml /tmp/simpletest-bibdk.xml --url ${testURL} --concurrency 20 "Ting Client","Netpunkt / Bibliotek.dk","Ding! - WAYF","Bibliotek.dk - ADHL","Bibliotek.dk - Bibdk Behaviour","Bibliotek.dk - captcha","Bibliotek.dk - Cart","Bibliotek.dk - Facetbrowser","Bibliotek.dk - Favourites","Bibliotek.dk - Frontend","Bibliotek.dk - Further Search","Bibliotek.dk - Heimdal","Bibliotek.dk - Helpdesk","Bibliotek.dk - Holdingstatus","Bibliotek.dk - OpenOrder","Bibliotek.dk - Open Platform Client","Bibliotek.dk - OpenUserstatus","Bibliotek.dk - Provider",bibliotek.dk,Bibliotek.dk,"Bibliotek.dk - SB Kopi","Bibliotek.dk - Provider" || true'
+              POD=\$(${KUBECTL} get pod -l app=bibliotek-dk-www-$BRANCH -o jsonpath="{.items[0].metadata.name}")
+              ${KUBECTL} exec -i \${POD} -- /bin/bash -c "cd /tmp && rm -rf simpletest"
+              ${KUBECTL} exec -i \${POD} -- /bin/bash -c "drush -r /var/www/html en -y simpletest"
+              ${KUBECTL} exec -i \${POD} -- /bin/bash -c "php /var/www/html/scripts/run-tests-xunit.sh --clean"
+              ${KUBECTL} exec -i \${POD} -- /bin/bash -c 'php /var/www/html/scripts/run-tests-xunit.sh --php /usr/bin/php --xml /tmp/simpletest-bibdk.xml --url ${testURL} --concurrency 20 "Ting Client","Netpunkt / Bibliotek.dk","Ding! - WAYF","Bibliotek.dk - ADHL","Bibliotek.dk - Bibdk Behaviour","Bibliotek.dk - captcha","Bibliotek.dk - Cart","Bibliotek.dk - Facetbrowser","Bibliotek.dk - Favourites","Bibliotek.dk - Frontend","Bibliotek.dk - Further Search","Bibliotek.dk - Heimdal","Bibliotek.dk - Helpdesk","Bibliotek.dk - Holdingstatus","Bibliotek.dk - OpenOrder","Bibliotek.dk - Open Platform Client","Bibliotek.dk - OpenUserstatus","Bibliotek.dk - Provider",bibliotek.dk,Bibliotek.dk,"Bibliotek.dk - SB Kopi","Bibliotek.dk - Provider" || true'
               kubectl cp $NAMESPACE/\${POD}:/tmp/simpletest-bibdk.xml ./simpletest-bibdk.xml  --kubeconfig '${KUBECONFIG}'
-              kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' exec -i \${POD} -- /bin/bash -c "drush -r /var/www/html dis -y simpletest"
+              ${KUBECTL} exec -i \${POD} -- /bin/bash -c "drush -r /var/www/html dis -y simpletest"
               """
 
               step([
@@ -271,13 +268,13 @@ pipeline {
       }
       environment {
         KUBECONFIG = credentials("kubecert-frontend")
-        KUBECTL = "kubectl --kubeconfig '${KUBECONFIG}'"
+        KUBECTL = "kubectl -n ${NAMESPACE} --kubeconfig '${KUBECONFIG}'"
       }
       steps {
         script {
           sh """
-            POD=\$(kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' get pod -l app=bibliotek-dk-www-$BRANCH -o jsonpath="{.items[0].metadata.name}")
-            kubectl -n $NAMESPACE --kubeconfig '${KUBECONFIG}' exec -it \${POD} -- /bin/bash -c "drush -r /var/www/html -y dis bibdk_mockup"
+            POD=\$(${KUBECTL} get pod -l app=bibliotek-dk-www-$BRANCH -o jsonpath="{.items[0].metadata.name}")
+            ${KUBECTL} exec -it \${POD} -- /bin/bash -c "drush -r /var/www/html -y dis bibdk_mockup"
           """
         }
       }
