@@ -25,14 +25,19 @@ function bibliotek_dk_eu_cookie_compliance_strongarm() {
     'accept_all_categories_button_label' => 'Accept all cookies',
     'fix_first_cookie_category' => 1,
     'select_all_categories_by_default' => 0,
-    'disabled_javascripts' => 'profiles/bibdk/modules/bibdk_frontend/matomo/piwik.js',
+    'disabled_javascripts' => 'profiles/bibdk/modules/bibdk_frontend/matomo/piwik.js
+https://stats.dbc.dk/piwik.js
+https://static.hotjar.com/c/hotjar-1787658.js?sv=6
+http://static.hotjar.com/c/hotjar-1787658.js?sv=6
+https://script.hotjar.com/modules.f622ea0eeded5efcf120.js
+https://in.hotjar.com/api/v2/client/sites/1787658/visit-data?sv=6',
     'whitelisted_cookies' => 'has_js
 UUID',
     'consent_storage_method' => 'do_not_store',
     'popup_clicking_confirmation' => FALSE,
     'popup_info' => array(
       'value' => '<b>Vi bruger cookies til at indsamle statistik over brugen af hjemmesiden. </b><br/>
-Hvis du klikker på knappen \'accepter\', godkender du, at vi sætter cookies til brug for statistik. <br/>
+Hvis du klikker på knappen \'Accepter\', godkender du, at vi sætter cookies til brug for statistik. <br/>
 Hvis du klikker på knappen \'Afvis\', sætter vi ikke cookies til statistik. <br/>
 Vi benytter dog en cookie for at huske dit valg.',
       'format' => 'html_5',
@@ -43,15 +48,15 @@ Vi benytter dog en cookie for at huske dit valg.',
       'format' => 'plain_text',
     ),
     'mobile_breakpoint' => '768',
-    'popup_agree_button_message' => 'Acceptér',
+    'popup_agree_button_message' => 'Accepter',
     'show_disagree_button' => TRUE,
-    'popup_disagree_button_message' => 'Mere info',
+    'popup_disagree_button_message' => 'Læs mere om vores brug af cookies',
     'disagree_button_label' => 'Afvis',
     'withdraw_enabled' => 0,
     'withdraw_button_on_info_popup' => 0,
     'withdraw_message' => array(
       'value' => '<h2>We use cookies on this site to enhance your user experience</h2><p>You have given your consent for us to set cookies.</p>',
-      'format' => 'html_5',
+      'format' => 'plain_text',
     ),
     'withdraw_tab_button_label' => 'Privacy settings',
     'withdraw_action_button_label' => 'Withdraw consent',
