@@ -2815,7 +2815,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '238c9bb0-6841-da64-199a-aab1670b05e8';
   $option->v_uuid = '3c0f6ff4-63f2-8a54-4500-6198904477ba';
-  $option->sort = -92;
+  $option->sort = -91;
   $option->label = 'Playstation Vita';
   $option->value = 'term.type="playstation vita"';
   $option->expand = '0';
@@ -3367,7 +3367,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '3689ff50-3c68-8c44-59f0-63246f074c2a';
   $option->v_uuid = '3c0f6ff4-63f2-8a54-4500-6198904477ba';
-  $option->sort = -87;
+  $option->sort = -86;
   $option->label = 'Xbox 360';
   $option->value = 'term.type="xbox 360"';
   $option->expand = '0';
@@ -3547,7 +3547,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '3ab0660b-f523-4eee-bced-bdd0054916e5';
   $option->v_uuid = '3c0f6ff4-63f2-8a54-4500-6198904477ba';
-  $option->sort = -88;
+  $option->sort = -87;
   $option->label = 'Xbox';
   $option->value = 'term.type="xbox"';
   $option->expand = '0';
@@ -3571,7 +3571,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '3b148271-66a0-453e-9d20-ec974ddb7567';
   $option->v_uuid = '3c0f6ff4-63f2-8a54-4500-6198904477ba';
-  $option->sort = -86;
+  $option->sort = -85;
   $option->label = 'Xbox One';
   $option->value = 'term.type="xbox one"';
   $option->expand = '0';
@@ -3703,7 +3703,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '3ffa308b-9344-4969-a5b4-31cff8427b81';
   $option->v_uuid = '3c0f6ff4-63f2-8a54-4500-6198904477ba';
-  $option->sort = -91;
+  $option->sort = -90;
   $option->label = 'PSP';
   $option->value = 'term.type="psp"';
   $option->expand = '0';
@@ -4385,6 +4385,18 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option = new stdClass();
   $option->disabled = FALSE; /* Edit this to true to make a default option disabled initially */
   $option->api_version = 1;
+  $option->o_uuid = '678cad78-88c9-4765-ad8f-df06f45e902f';
+  $option->v_uuid = '3c0f6ff4-63f2-8a54-4500-6198904477ba';
+  $option->sort = -92;
+  $option->label = 'Nintendo Switch';
+  $option->value = 'term.type="nintendo switch"';
+  $option->expand = '0';
+  $option->is_disabled = FALSE;
+  $export['678cad78-88c9-4765-ad8f-df06f45e902f'] = $option;
+
+  $option = new stdClass();
+  $option->disabled = FALSE; /* Edit this to true to make a default option disabled initially */
+  $option->api_version = 1;
   $option->o_uuid = '67cad172-efc3-4444-59a2-1590bb53bd83';
   $option->v_uuid = '8e7bda97-5430-9774-e54c-4d2b0005a06b';
   $option->sort = -78;
@@ -4711,7 +4723,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '74a3b752-7fe7-4f44-753b-5bfc468555a6';
   $option->v_uuid = '3c0f6ff4-63f2-8a54-4500-6198904477ba';
-  $option->sort = -90;
+  $option->sort = -89;
   $option->label = 'Wii';
   $option->value = 'term.type="wii"';
   $option->expand = '0';
@@ -7615,7 +7627,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = 'e12fa2f8-c2e6-ee54-29dc-5860e95905c5';
   $option->v_uuid = '3c0f6ff4-63f2-8a54-4500-6198904477ba';
-  $option->sort = -89;
+  $option->sort = -88;
   $option->label = 'Wii U';
   $option->value = 'term.type="wii u"';
   $option->expand = '0';
