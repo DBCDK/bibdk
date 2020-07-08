@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
-drush -r /var/www/html cron
+cd $APACHE_ROOT || return
+drush cron

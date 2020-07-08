@@ -28,7 +28,11 @@ ENV POSTGRES_DB=filestore \
 # REMOVE when yaz is no longer used
 ADD ["http://ftp.indexdata.dk/debian/indexdata.asc", "/"]
 RUN apt-key add indexdata.asc
-COPY yaz.list /etc/apt/sources.list.d/
+COPY conf/yaz.list /etc/apt/sources.list.d/
+
+# Environment variables are set in configmap.yaml
+# NOTICE vars are used to alter configuration feature, so names MUST be mapped from
+# configuration file. see drupal_config.sh for details
 
 RUN apt-get update && \
   apt-get -q -y install cron logrotate php-gd php-pear wget php-soap php-yaml make php-dev rsyslog sudo wget msmtp postgresql-client libyaz5 yaz libyaz5-dev && \
@@ -44,28 +48,30 @@ RUN apt-get update && \
   rm -rf /var/lib/apt/lists/* && \
   apt-get autoremove -y
 
-COPY data-vol /etc/logrotate.d
+# Copy application folders to image.
 COPY --from=builder --chown=root:www-data /var/lib/jenkins/www $APACHE_ROOT
-COPY --from=builder /var/lib/jenkins/www/profiles/bibdk/modules/bibdk_config/docker/settings.php $APACHE_ROOT/sites/default
-RUN chown root:www-data $APACHE_ROOT
-#COPY --chown=root:www-data www $APACHE_ROOT
-COPY conf/000-default.conf /etc/apache2/sites-enabled
-COPY script/entry.sh /
-COPY script/healthcheck.sh /
-COPY script/apache_ready.sh /
-COPY script/run_environment.sh /
-ADD --chown=www-data:www-data ["https://is.dbc.dk/job/Bibliotek%20DK/job/Tools/job/Fetch%20Bibliotek%20DK%20files%20folder/lastSuccessfulBuild/artifact/files.tar.gz","/tmp"]
-COPY robots.txt $APACHE_ROOT
-ADD conf/fqdn.conf /etc/apache2/conf-available
-COPY conf/apache_security.conf /etc/apache2/conf-enabled/
+# COPY --from=builder /var/lib/jenkins/www/profiles/bibdk/modules/bibdk_config/docker/settings.php $APACHE_ROOT/sites/default
+COPY settings.php $APACHE_ROOT/sites/default
+
+# Copy linux stuff
 COPY script/run-tests-jenkins.sh $APACHE_ROOT/scripts
 COPY script/run-tests-xunit.sh $APACHE_ROOT/scripts
-COPY script/run_cron.sh /
-COPY msmtprc /etc/
+COPY conf/data-vol /etc/logrotate.d
+RUN chown root:www-data $APACHE_ROOT
+COPY conf/000-default.conf /etc/apache2/sites-enabled
+COPY conf/apache_security.conf /etc/apache2/conf-enabled/
+ADD conf/fqdn.conf /etc/apache2/conf-available
+COPY script/healthcheck.sh /
+ADD --chown=www-data:www-data ["https://is.dbc.dk/job/Bibliotek%20DK/job/Tools/job/Fetch%20Bibliotek%20DK%20files%20folder/lastSuccessfulBuild/artifact/files.tar.gz","/tmp"]
+COPY conf/robots.txt $APACHE_ROOT
+COPY conf/msmtprc /etc/
 COPY conf/20-yaz.ini /etc/php/7.3/apache2/conf.d/
 
-RUN chmod 755 /entry.sh && \
-  chmod 755 /healthcheck.sh && \
+# Copy startup scripts
+COPY script/run_cron.sh /
+COPY script/drupal_config.sh /
+
+RUN chmod 755 /healthcheck.sh && \
   chmod 777 /etc/php/7.3/apache2/conf.d/20-yaz.ini && \
   a2enmod rewrite && \
   a2enmod headers && \
@@ -77,4 +83,4 @@ EXPOSE 80
 
 HEALTHCHECK CMD ["/healthcheck.sh"]
 
-ENTRYPOINT ["/entry.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
