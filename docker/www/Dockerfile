@@ -10,7 +10,7 @@ RUN cd /var/lib/jenkins && drush make -v --working-copy --strict=0 --dbc-modules
 # build stylesheet
 RUN cd /var/lib/jenkins/www/profiles/bibdk/themes/bibdk_theme/.npm && npm install && ./node_modules/gulp/bin/gulp.js build --production
 
-FROM docker.dbc.dk/dbc-apache-php7
+FROM docker.dbc.dk/dbc-apache-php7:new_php_ini-1
 MAINTAINER D-scrum <d-scrum@dbc.dk>
 # set environment variables
 # mailhost for exim4
