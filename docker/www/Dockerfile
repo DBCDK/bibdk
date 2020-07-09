@@ -6,9 +6,12 @@ ENV BRANCH=${BRANCH}
 
 USER jenkins
 # build drupal code
-RUN cd /var/lib/jenkins && drush make -v --working-copy --strict=0 --dbc-modules=${BRANCH} --no-gitinfofile --contrib-destination=profiles/bibdk "https://raw.github.com/DBCDK/bibdk/develop/distro.make" www
+RUN cd /var/lib/jenkins && \
+    drush make -v --working-copy --strict=0 --dbc-modules=${BRANCH} --no-gitinfofile --contrib-destination=profiles/bibdk "https://raw.github.com/DBCDK/bibdk/develop/distro.make" www
 # build stylesheet
-RUN cd /var/lib/jenkins/www/profiles/bibdk/themes/bibdk_theme/.npm && npm install && ./node_modules/gulp/bin/gulp.js build --production
+RUN cd /var/lib/jenkins/www/profiles/bibdk/themes/bibdk_theme/.npm && \
+    npm install && \
+    ./node_modules/gulp/bin/gulp.js build --production
 
 FROM docker.dbc.dk/dbc-apache-php7:new_php_ini-1
 MAINTAINER D-scrum <d-scrum@dbc.dk>
@@ -54,7 +57,6 @@ RUN apt-get update && \
 COPY --from=builder --chown=root:www-data /var/lib/jenkins/www $APACHE_ROOT
 # COPY --from=builder /var/lib/jenkins/www/profiles/bibdk/modules/bibdk_config/docker/settings.php $APACHE_ROOT/sites/default
 COPY settings.php $APACHE_ROOT/sites/default
-RUN chown root:www-data $APACHE_ROOT
 
 # Copy linux stuff
 COPY conf/data-vol /etc/logrotate.d
@@ -65,6 +67,8 @@ ADD --chown=www-data:www-data ["https://is.dbc.dk/job/Bibliotek%20DK/job/Tools/j
 COPY conf/robots.txt $APACHE_ROOT
 COPY conf/msmtprc /etc/
 COPY conf/20-yaz.ini /etc/php/7.3/apache2/conf.d/
+# I Netpunkt, men ikke her. Skal bibliotek.dk også ha en?:
+# COPY conf/crontab /etc/crontab
 
 # Copy startup scripts
 COPY script/run_cron.sh /
@@ -75,10 +79,13 @@ COPY script/healthcheck.sh /
 COPY script/run-tests-jenkins.sh $APACHE_ROOT/scripts
 COPY script/run-tests-xunit.sh $APACHE_ROOT/scripts
 
-RUN chmod 755 /healthcheck.sh && \
+RUN sudo chown root:www-data $APACHE_ROOT && \
+  sudo chown -R www-data:www-data $APACHE_ROOT/sites/default/files && \
+  chmod 755 /healthcheck.sh && \
   chmod 755 /run_cron.sh && \
   chmod 755 /drupal_config.sh && \
   chmod 777 /etc/php/7.3/apache2/conf.d/20-yaz.ini && \
+  # Set up apache modules and configuration.
   a2enmod rewrite && \
   a2enmod headers && \
   a2enconf fqdn
