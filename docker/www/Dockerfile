@@ -12,10 +12,12 @@ RUN cd /var/lib/jenkins/www/profiles/bibdk/themes/bibdk_theme/.npm && npm instal
 
 FROM docker.dbc.dk/dbc-apache-php7:new_php_ini-1
 MAINTAINER D-scrum <d-scrum@dbc.dk>
+
 # set environment variables
 # mailhost for exim4
 ENV smarthost=mailhost.dbc.dk
 ENV cookie_domain=.bibliotek.dk
+
 # database settings
 ENV POSTGRES_DB=filestore \
     POSTGRES_USER=filestore \
@@ -52,16 +54,13 @@ RUN apt-get update && \
 COPY --from=builder --chown=root:www-data /var/lib/jenkins/www $APACHE_ROOT
 # COPY --from=builder /var/lib/jenkins/www/profiles/bibdk/modules/bibdk_config/docker/settings.php $APACHE_ROOT/sites/default
 COPY settings.php $APACHE_ROOT/sites/default
+RUN chown root:www-data $APACHE_ROOT
 
 # Copy linux stuff
-COPY script/run-tests-jenkins.sh $APACHE_ROOT/scripts
-COPY script/run-tests-xunit.sh $APACHE_ROOT/scripts
 COPY conf/data-vol /etc/logrotate.d
-RUN chown root:www-data $APACHE_ROOT
 COPY conf/000-default.conf /etc/apache2/sites-enabled
 COPY conf/apache_security.conf /etc/apache2/conf-enabled/
 ADD conf/fqdn.conf /etc/apache2/conf-available
-COPY script/healthcheck.sh /
 ADD --chown=www-data:www-data ["https://is.dbc.dk/job/Bibliotek%20DK/job/Tools/job/Fetch%20Bibliotek%20DK%20files%20folder/lastSuccessfulBuild/artifact/files.tar.gz","/tmp"]
 COPY conf/robots.txt $APACHE_ROOT
 COPY conf/msmtprc /etc/
@@ -71,7 +70,14 @@ COPY conf/20-yaz.ini /etc/php/7.3/apache2/conf.d/
 COPY script/run_cron.sh /
 COPY script/drupal_config.sh /
 
+# Copy test scripts
+COPY script/healthcheck.sh /
+COPY script/run-tests-jenkins.sh $APACHE_ROOT/scripts
+COPY script/run-tests-xunit.sh $APACHE_ROOT/scripts
+
 RUN chmod 755 /healthcheck.sh && \
+  chmod 755 /run_cron.sh && \
+  chmod 755 /drupal_config.sh && \
   chmod 777 /etc/php/7.3/apache2/conf.d/20-yaz.ini && \
   a2enmod rewrite && \
   a2enmod headers && \
