@@ -55,6 +55,7 @@ RUN apt-get update && \
 
 # Copy application folders to image.
 COPY --from=builder --chown=root:www-data /var/lib/jenkins/www $APACHE_ROOT
+RUN mkdir $APACHE_ROOT/sites/default/files
 # COPY --from=builder /var/lib/jenkins/www/profiles/bibdk/modules/bibdk_config/docker/settings.php $APACHE_ROOT/sites/default
 COPY settings.php $APACHE_ROOT/sites/default
 
