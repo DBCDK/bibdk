@@ -261,7 +261,7 @@ $update_free_access = FALSE;
  *   $drupal_hash_salt = file_get_contents('/home/example/salt.txt');
  *
  */
-$drupal_hash_salt = 'I2b7zWO_x7b_ItsahivAzQNr4eoNUustyB10Z_NXCl0';
+$drupal_hash_salt = 'VgV9ocAweoSNRoYVIwrYkE_A6XnrSR';
 
 /**
  * Base URL (optional).
@@ -322,6 +322,11 @@ ini_set('session.gc_maxlifetime', 200000);
 ini_set('session.cookie_lifetime', 0);
 
 /**
+ * increase max input vars (default is 1000)
+ */
+ini_set('max_input_vars', 2000);
+
+/**
  * If you encounter a situation where users post a large amount of text, and
  * the result is stripped out upon viewing but can still be edited, Drupal's
  * output filter may not have sufficient memory to process it.  If you
@@ -373,7 +378,7 @@ $cookie_domain = '@COOKIE_DOMAIN@';
  * theme. It is located inside 'modules/system/maintenance-page.tpl.php'.
  * Note: This setting does not apply to installation and update pages.
  */
-# $conf['maintenance_theme'] = 'bartik';
+$conf['maintenance_theme'] = 'seven';
 
 /**
  * Reverse Proxy Configuration:
@@ -563,23 +568,9 @@ $conf['404_fast_html'] = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN"
 # $conf['proxy_user_agent'] = '';
 # $conf['proxy_exceptions'] = array('127.0.0.1', 'localhost');
 
-// As of version 1.7, the following settings is no longer mandatory.
-// When not specified, 'chr' will leverage Drupal proxy settings
-// (see http://git.io/vU8Af) and use them for both HTTP and HTTPS.
-$conf['http_proxy'] = array(
-  'server' => 'dmzproxy.dbc.dk',
-  'port' => '3128',
-  'username' => '',
-  'password' => '',
-  'exceptions' => array('localhost', '127.0.0.1', '*.addi.dk'),
-);
-// As of version 1.7, the following it's assumed by default and
-// you can omit this line.  If you haven't set 'http_proxy', 'chr' will
-// fall back on Drupal proxy settings and use the same settings
-// for both HTTP and HTTPS.
-$conf['https_proxy'] = $conf['http_proxy'];
-$conf['chr_override_drupal_http_request'] = TRUE;
-
+$conf['proxy_server'] = 'dmzproxy.dbc.dk';
+$conf['proxy_port'] = 3128;
+$conf['proxy_exceptions'] = array('localhost', '127.0.0.1', '*.addi.dk');
 
 /**
  * Authorized file system operations:
@@ -603,7 +594,7 @@ $conf['chr_override_drupal_http_request'] = TRUE;
  *
  * Remove the leading hash signs to disable.
  */
-# $conf['allow_authorize_operations'] = FALSE;
+$conf['allow_authorize_operations'] = FALSE;
 
 /**
  * Theme debugging:
@@ -623,14 +614,26 @@ $conf['chr_override_drupal_http_request'] = TRUE;
  */
 # $conf['theme_debug'] = TRUE;
 
-$conf['cache_backends'][] = 'profiles/netpunkt/modules/contrib/memcache/memcache.inc';
-// The 'cache_form' bin must be assigned no non-volatile storage.
+$conf['cache_backends'][] = 'profiles/bibdk/modules/contrib/memcache/memcache.inc';
 $conf['cache_class_cache_form'] = 'DrupalDatabaseCache';
 $conf['cache_default_class'] = 'MemCacheDrupal';
-/* 'netpunkt-memcached-${BRANCH}.${NAMESPACE}.svc.cloud.dbc.dk' */
+/** user memcache for locks - we are experiencing deadlocks on database */
+$conf['lock_inc'] = 'profiles/bibdk/modules/contrib/memcache/memcache-lock.inc';
+$conf['memcache_stampede_protection'] = TRUE;
+
 $conf['memcache_servers'] = array(
   '@MEMCACHED_SERVER@:11211' => 'default',
+  //'bibliotekdk-memcached-replica.frontend-features.svc.cloud.dbc.dk:11211' => 'default',
 );
+
 $conf['memcache_bins'] = array(
-    'cache' => 'default'
+  'cache' => 'default',
+  'cache_ding_user_credentials' => 'default',
+  'cache_bibdk_webservices' => 'default',
+);
+/**
+ * IP's that should be ignored in behavior logs
+ */
+$conf['behavior_ignored_ips'] = array(
+  '172.18.1.26'
 );
