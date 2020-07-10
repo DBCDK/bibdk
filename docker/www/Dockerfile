@@ -59,6 +59,8 @@ COPY --from=builder --chown=root:www-data /var/lib/jenkins/www $APACHE_ROOT
 RUN mkdir $APACHE_ROOT/sites/default/files
 # COPY --from=builder /var/lib/jenkins/www/profiles/bibdk/modules/bibdk_config/docker/settings.php $APACHE_ROOT/sites/default
 COPY settings.php $APACHE_ROOT/sites/default
+RUN chown root:www-data $APACHE_ROOT && \
+  sudo chown -R www-data:www-data $APACHE_ROOT/sites/default/files
 
 # Copy linux stuff
 COPY conf/data-vol /etc/logrotate.d
@@ -81,9 +83,7 @@ COPY script/healthcheck.sh /
 COPY script/run-tests-jenkins.sh $APACHE_ROOT/scripts
 COPY script/run-tests-xunit.sh $APACHE_ROOT/scripts
 
-RUN sudo chown root:www-data $APACHE_ROOT && \
-  sudo chown -R www-data:www-data $APACHE_ROOT/sites/default/files && \
-  chmod 755 /healthcheck.sh && \
+RUN chmod 755 /healthcheck.sh && \
   chmod 755 /run_cron.sh && \
   chmod 755 /drupal_config.sh && \
   chmod 777 /etc/php/7.3/apache2/conf.d/20-yaz.ini && \
