@@ -40,7 +40,8 @@ COPY conf/yaz.list /etc/apt/sources.list.d/
 # configuration file. see drupal_config.sh for details
 
 RUN apt-get update && \
-  apt-get -q -y install cron logrotate php-gd php-pear wget php-soap php-yaml make php-dev rsyslog sudo wget msmtp postgresql-client libyaz5 yaz libyaz5-dev && \
+  apt-get -q -y install cron logrotate php-gd php-mbstring php-pear wget php-soap php-yaml \
+  make php-dev rsyslog sudo wget msmtp postgresql-client libyaz5 yaz libyaz5-dev && \
   pecl channel-update pecl.php.net && \
   pecl install yaz && \
   rm -rf /var/lib/apt/lists/* && \
