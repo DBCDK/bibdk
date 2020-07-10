@@ -60,7 +60,7 @@ RUN mkdir $APACHE_ROOT/sites/default/files
 # COPY --from=builder /var/lib/jenkins/www/profiles/bibdk/modules/bibdk_config/docker/settings.php $APACHE_ROOT/sites/default
 COPY settings.php $APACHE_ROOT/sites/default
 RUN chown root:www-data $APACHE_ROOT && \
-  sudo chown -R www-data:www-data $APACHE_ROOT/sites/default/files
+    chown -R www-data:www-data $APACHE_ROOT/sites/default/files
 
 # Copy linux stuff
 COPY conf/data-vol /etc/logrotate.d
