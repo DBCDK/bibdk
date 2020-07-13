@@ -70,8 +70,6 @@ ADD --chown=www-data:www-data ["https://is.dbc.dk/job/Bibliotek%20DK/job/Tools/j
 COPY conf/robots.txt $APACHE_ROOT
 COPY conf/msmtprc /etc/
 COPY conf/20-yaz.ini /etc/php/7.3/apache2/conf.d/
-# I Netpunkt, men ikke her. Skal bibliotek.dk også ha en?:
-# COPY conf/crontab /etc/crontab
 
 # Copy startup scripts
 COPY script/run_cron.sh /
