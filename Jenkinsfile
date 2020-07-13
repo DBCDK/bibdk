@@ -4,10 +4,6 @@
 
 def k8sDeployEnvId = findLastSuccessfulBuildNumber('Docker-k8s-deploy-env')
 
-// general vars
-
-
-
 pipeline {
   agent {
     node { label 'devel10-head' }
@@ -227,15 +223,15 @@ pipeline {
             script {
               testURL = "http://bibliotek-dk-www-${BRANCH}.frontend-features.svc.cloud.dbc.dk"
               sh """
-              rm -rf simpletest
-              rm -f simpletest*.xml
-              POD=\$(${KUBECTL} get pod -l app=bibliotek-dk-www-$BRANCH -o jsonpath="{.items[0].metadata.name}")
-              ${KUBECTL} exec -i \${POD} -- /bin/bash -c "cd /tmp && rm -rf simpletest"
-              ${KUBECTL} exec -i \${POD} -- /bin/bash -c "drush -r /var/www/html en -y simpletest"
-              ${KUBECTL} exec -i \${POD} -- /bin/bash -c "php /var/www/html/scripts/run-tests-xunit.sh --clean"
-              ${KUBECTL} exec -i \${POD} -- /bin/bash -c 'php /var/www/html/scripts/run-tests-xunit.sh --php /usr/bin/php --xml /tmp/simpletest-bibdk.xml --url ${testURL} --concurrency 20 "Ting Client","Netpunkt / Bibliotek.dk","Ding! - WAYF","Bibliotek.dk - ADHL","Bibliotek.dk - Bibdk Behaviour","Bibliotek.dk - captcha","Bibliotek.dk - Cart","Bibliotek.dk - Facetbrowser","Bibliotek.dk - Favourites","Bibliotek.dk - Frontend","Bibliotek.dk - Further Search","Bibliotek.dk - Heimdal","Bibliotek.dk - Helpdesk","Bibliotek.dk - Holdingstatus","Bibliotek.dk - OpenOrder","Bibliotek.dk - Open Platform Client","Bibliotek.dk - OpenUserstatus","Bibliotek.dk - Provider",bibliotek.dk,Bibliotek.dk,"Bibliotek.dk - SB Kopi","Bibliotek.dk - Provider" || true'
-              kubectl cp $NAMESPACE/\${POD}:/tmp/simpletest-bibdk.xml ./simpletest-bibdk.xml  --kubeconfig '${KUBECONFIG}'
-              ${KUBECTL} exec -i \${POD} -- /bin/bash -c "drush -r /var/www/html dis -y simpletest"
+                rm -rf simpletest
+                rm -f simpletest*.xml
+                POD=\$(${KUBECTL} get pod -l app=bibliotek-dk-www-$BRANCH -o jsonpath="{.items[0].metadata.name}")
+                ${KUBECTL} exec -i \${POD} -- /bin/bash -c "cd /tmp && rm -rf simpletest"
+                ${KUBECTL} exec -i \${POD} -- /bin/bash -c "drush -r /var/www/html en -y simpletest"
+                ${KUBECTL} exec -i \${POD} -- /bin/bash -c "php /var/www/html/scripts/run-tests-xunit.sh --clean"
+                ${KUBECTL} exec -i \${POD} -- /bin/bash -c 'php /var/www/html/scripts/run-tests-xunit.sh --php /usr/bin/php --xml /tmp/simpletest-bibdk.xml --url ${testURL} --concurrency 20 "Ting Client","Netpunkt / Bibliotek.dk","Ding! - WAYF","Bibliotek.dk - ADHL","Bibliotek.dk - Bibdk Behaviour","Bibliotek.dk - captcha","Bibliotek.dk - Cart","Bibliotek.dk - Facetbrowser","Bibliotek.dk - Favourites","Bibliotek.dk - Frontend","Bibliotek.dk - Further Search","Bibliotek.dk - Heimdal","Bibliotek.dk - Helpdesk","Bibliotek.dk - Holdingstatus","Bibliotek.dk - OpenOrder","Bibliotek.dk - Open Platform Client","Bibliotek.dk - OpenUserstatus","Bibliotek.dk - Provider",bibliotek.dk,Bibliotek.dk,"Bibliotek.dk - SB Kopi","Bibliotek.dk - Provider" || true'
+                kubectl cp $NAMESPACE/\${POD}:/tmp/simpletest-bibdk.xml ./simpletest-bibdk.xml  --kubeconfig '${KUBECONFIG}'
+                ${KUBECTL} exec -i \${POD} -- /bin/bash -c "drush -r /var/www/html dis -y simpletest"
               """
 
               step([
@@ -283,7 +279,7 @@ pipeline {
   post {
     always {
       sh """
-      echo WORKSPACE: ${env.WORKSPACE}
+        echo WORKSPACE: ${env.WORKSPACE}
       """
       cleanWs()
       dir("${env.WORKSPACE}@2") {
