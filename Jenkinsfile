@@ -3,7 +3,6 @@
 @Library('frontend-dscrum')
 
 def k8sDeployEnvId = findLastSuccessfulBuildNumber('Docker-k8s-deploy-env')
-def DEVELOP = true
 
 pipeline {
   agent {
