@@ -9,6 +9,10 @@
  * @return array
  */
 function bibdk_provider_user_authenticate($name, $pass) {
+
+  // USE LOWERCASE (NO uppercase)
+  $name = strtolower($name);
+
   $return = array(
     'success' => FALSE,
   );
