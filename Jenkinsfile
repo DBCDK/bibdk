@@ -125,7 +125,7 @@ pipeline {
             build job: 'Bibliotek DK/Deployments/staging'
             NAMESPACE = 'frontend-staging'
           } else {
-            build job: 'Bibliotek DK/Deployments/develop', parameters: [string(name: 'deploybranch', value: BRANCH)]
+            build job: 'Bibliotek DK/Deployments/features', parameters: [string(name: 'deploybranch', value: BRANCH)]
           }
         }
       }
