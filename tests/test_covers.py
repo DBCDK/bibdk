@@ -4,14 +4,11 @@ from selenium.webdriver.support import expected_conditions
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.action_chains import ActionChains
 
-
 import helpers
 import time
 
 class TestCovers(helpers.BibdkUnitTestCase):
-
     '''
-    PJO 10/05/19 outcommented this test - FIX IT
     def test_work_cover_plus_back_cover(self):
 
         # Search for work without back cover (Carter: Bodlen) rec.id=870970-basis:28917074
@@ -80,12 +77,12 @@ class TestCovers(helpers.BibdkUnitTestCase):
         WebDriverWait(self.browser, 10).until(expected_conditions.visibility_of_element_located((By.CSS_SELECTOR, '#reveal-cover-back-0sfhfxx')))
         self.assertTrue(self.browser.find_element_by_css_selector('#reveal-cover-back-0sfhfxx object').is_displayed(), 'Back cover is displayed in a Foundation reveal')
 
-        '''
+    '''
 
     def test_work_cover_no_back_cover(self):
 
         # Search for work without back cover (Gaiman: Coraline) rec.id=870970-basis:24601986
-        self.browser.get(self.base_url);
+        self.browser.get(self.base_url)
 
         self.search_pid('870970-basis:24601986')
         self.assertTrue(self.browser.find_element_by_id('selid-870970basis24601986'))

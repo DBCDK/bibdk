@@ -5,11 +5,8 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.action_chains import ActionChains
 import time
-import sys
-sys.path.insert(0,'.')
 
 import helpers
-
 
 # This tess tests the reservation flow
 class TestReservation(helpers.BibdkUnitTestCase):
