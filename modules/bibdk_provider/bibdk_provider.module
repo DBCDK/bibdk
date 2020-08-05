@@ -335,7 +335,7 @@ function bibdk_provider_form_user_pass_alter(&$form, &$form_state) {
 function _bibdk_provider_user_pass_validate(&$form, &$form_state) {
   // USE lowercase not UPPERCASE - we need to change formstate as it is used
   // later in login flow
-  $form_state['values']['name'] = strtolower($form_state['values']['name']);
+  $form_state['values']['name'] =  mb_strtolower($form_state['values']['name']);
   $mail = $form_state['values']['name'];
 
   if (valid_email_address($mail)) {
