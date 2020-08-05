@@ -68,3 +68,18 @@ function bibdk_provider_update_7003(){
 function bibdk_provider_update_7004(){
   _bibdk_provider_string_translations();
 }
+
+/**
+* Implements hook_update_n
+* delete users from users and authmap tables
+* to avoid mix of lower and uppercase in user name and mail
+* @see BIBDK_709
+*/
+function bibdk_provider_update_7005(){
+  db_delete('users')
+  ->condition('uid', 1, '>')
+  ->execute();
+
+  db_delete('authmap')
+  ->execute();
+}
