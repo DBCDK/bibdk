@@ -5,6 +5,8 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.action_chains import ActionChains
 import time
+import sys
+sys.path.insert(0,'.')
 
 import helpers
 
@@ -66,7 +68,7 @@ class TestReservation(helpers.BibdkUnitTestCase):
         selector = WebDriverWait(browser, 20).until(expected_conditions.presence_of_element_located((By.CLASS_NAME, "reservation-favourite-selector")))
 
         # select DBC testbibliotek
-        Select(selector).select_by_value("790900")
+        Select(selector).select_by_value("100450")
 
         #click the next button
         browser.find_element_by_id("edit-next").click()
@@ -85,28 +87,25 @@ class TestReservation(helpers.BibdkUnitTestCase):
         # get the messages
         messages = browser.find_element_by_id("messages")
 
-        # ensure we have a status message
-        messages.find_element_by_class_name("message--error")
-
         # ensure a link is present
-        #link = messages.find_element_by_xpath("//a[contains(@href, '/bibdk_openuserstatus')]")
+        link = messages.find_element_by_xpath("//a[contains(@href, '/bibdk_openuserstatus')]")
 
         # click the link
-        #link.click()
+        link.click()
 
         # switch to main
-        #browser.switch_to.window(mainwindow)
+        browser.switch_to.window(mainwindow)
 
         # ensure we have only one window available
-        #self.assertEqual(1, len(browser.window_handles))
+        self.assertEqual(1, len(browser.window_handles))
 
-        #tabs = WebDriverWait(browser, 20).until(expected_conditions.presence_of_element_located((By.ID, "block-bibdk-frontend-bibdk-tabs")))
+        tabs = WebDriverWait(browser, 20).until(expected_conditions.presence_of_element_located((By.ID, "block-bibdk-frontend-bibdk-tabs")))
 
-        #tabs.find_element_by_xpath("//a[contains(@href, '/bibdk_openuserstatus')]")
+        tabs.find_element_by_xpath("//a[contains(@href, '/bibdk_openuserstatus')]")
         # ensurte the user have been redirected to the userstatus page
-        #txt = browser.current_url
-        #if not '/bibdk_openuserstatus' in txt:
-        #    self.fail('wrong url')
+        txt = browser.current_url
+        if not '/bibdk_openuserstatus' in txt:
+            self.fail('wrong url')
 
         # also test on the classes on the body tag on the page
         ##browser.find_element_by_class_name("page-user-bibdk-openuserstatus")
