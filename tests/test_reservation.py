@@ -80,7 +80,6 @@ class TestReservation(helpers.BibdkUnitTestCase):
         ##browser.find_element_by_xpath("//input[@id='edit-3' and @disabled]")
         ##browser.find_element_by_xpath("//input[@id='edit-4' and @disabled]")
 
-        time.sleep(10)
         # get the messages
         messages = browser.find_element_by_id("messages")
 
