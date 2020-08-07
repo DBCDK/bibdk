@@ -9,17 +9,21 @@ FQDN_CONF=/etc/apache2/conf-available/fqdn.conf
 # location of configuration feature
 CONFIG=$APACHE_ROOT/profiles/bibdk/modules/bibdk_config/features/bibdk_webservice_settings_operational/bibdk_webservice_settings_operational.strongarm.inc
 
+if [ "$NAMESPACE_NAME" == "frontend-features" ]; then
+  mv /tmp/files.tar.gz /var/www/html/sites/default/ && cd /var/www/html/sites/default/ && rm -rf files/ && tar -xf files.tar.gz && chown -R www-data:www-data files
+fi
+
 # set configuration from environment vars
-while IFS='=' read -r name value ; do
-  	echo "$name $value"
-    sed -i "s/@${name}@/$(echo $value | sed -e 's/\//\\\//g; s/&/\\\&/g')/g" $SETTINGS
-    sed -i "s|\$export\['${name}|\$strongarm->value = '${value}';\n    &|" $CONFIG
+while IFS='=' read -r name value; do
+  echo "$name $value"
+  sed -i "s/@${name}@/$(echo $value | sed -e 's/\//\\\//g; s/&/\\\&/g')/g" $SETTINGS
+  sed -i "s|\$export\['${name}|\$strongarm->value = '${value}';\n    &|" $CONFIG
 done < <(env)
 
 if [ -d '/data/log' ]; then
-	echo "local0.* /data/log/watchdog.log" >> /etc/rsyslog.conf
-	touch /data/log/watchdog.log
-	chmod 644 /data/log/watchdog.log
+  echo "local0.* /data/log/watchdog.log" >>/etc/rsyslog.conf
+  touch /data/log/watchdog.log
+  chmod 644 /data/log/watchdog.log
 fi
 service rsyslog start
 
@@ -34,7 +38,6 @@ sed -i 's/memory_limit = 128M/memory_limit = 512M/' $PHPINI
 sed -i 's/;max_input_vars = 128M/max_input_vars = 2048/' $PHPINI
 # Enable mail sending
 echo "sendmail_path = /usr/bin/msmtp -t" >>$PHPINI
-
 
 cd $APACHE_ROOT
 drush rr
