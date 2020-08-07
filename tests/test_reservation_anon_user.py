@@ -9,9 +9,7 @@ class TestReservationAnonUser(helpers.BibdkUnitTestCase):
         browser = self.browser
         self._goto_frontpage()
         wait = WebDriverWait(browser, 30)
-
         self._check_pop_up()
-
         # Perform search
         input = wait.until(
             EC.visibility_of_element_located(
