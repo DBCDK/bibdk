@@ -9,8 +9,13 @@ FQDN_CONF=/etc/apache2/conf-available/fqdn.conf
 # location of configuration feature
 CONFIG=$APACHE_ROOT/profiles/bibdk/modules/bibdk_config/features/bibdk_webservice_settings_operational/bibdk_webservice_settings_operational.strongarm.inc
 
-if [ "$BRANCH" != "master" ]; then
-  mv /tmp/files.tar.gz /var/www/html/sites/default/ && cd /var/www/html/sites/default/ && rm -rf files/ && tar -xf files.tar.gz && chown -R www-data:www-data files
+if [ "$NAMESPACE_NAME" == "frontend-features" ]; then
+  cd /tmp || return
+  tar -xf files.tar.gz
+  rm -rf /var/www/html/sites/default/files/*
+  cp -Rf files /var/www/html/sites/default
+  chown -Rf www-data:www-data /var/www/html/sites/default/files
+  rm -rf files files.tar.gz
 fi
 
 # set configuration from environment vars
