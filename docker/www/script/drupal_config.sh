@@ -30,7 +30,7 @@ if [ -d '/data/log' ]; then
   touch /data/log/watchdog.log
   chmod 644 /data/log/watchdog.log
 fi
-service rsyslog start
+#ervice rsyslog start
 
 # make a symbolic link to modules - for simpletest to run
 /bin/sh -c "cd $APACHE_ROOT/sites/default && ln -sf $APACHE_ROOT/profiles/bibdk/modules"
