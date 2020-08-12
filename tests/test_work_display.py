@@ -329,3 +329,47 @@ class TestWorkDisplay(helpers.BibdkUnitTestCase):
         )
         if not 'phrase.subject="venskab" and dkcclterm.dk="sk"' in new_input.get_attribute('value'):
             assert False
+
+    def test_work_display_note_link(self):
+        browser = self.browser
+        self._goto_frontpage()
+        self._check_pop_up()
+        wait = WebDriverWait(browser, 30)
+
+        # Perform search
+        input = wait.until(
+            EC.visibility_of_element_located(
+                (
+                    By.CLASS_NAME, "search-block-form"
+                )
+            )
+        )
+        input.send_keys('rec.id=870970-basis:50705633')
+
+        submit = wait.until(
+            EC.visibility_of_element_located(
+                (
+                    By.ID, "edit-submit"
+                )
+            )
+        )
+        submit.click()
+
+        # Display full record
+        record = wait.until(
+            EC.visibility_of_element_located(
+                (
+                    By.CLASS_NAME, "work-header"
+                )
+            )
+        )
+        record.click()
+
+        # Check that note link i present
+        link = wait.until(
+            EC.visibility_of_element_located(
+                (
+                    By.CSS_SELECTOR, ".field-name-bibdk-mani-access-note a"
+                )
+            )
+        )
