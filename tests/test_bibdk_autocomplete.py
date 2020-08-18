@@ -30,6 +30,40 @@ class BibdkAutocompleteTestCase(helpers.BibdkUnitTestCase):
         list = auto.find_elements_by_tag_name('li')
         self.assertTrue(len(list) == 1)
 
+    def test_escaping_character(self):
+        browser = self.browser
+        browser.get(self.base_url)
+        wait = WebDriverWait(browser, 30)
+
+        input = wait.until(
+            expected_conditions.visibility_of_element_located(
+                (By.ID, 'edit-search-block-form--2')
+            )
+        )
+        input.send_keys('hvem pukler')
+
+        # Check that there is one suggestion
+        auto = wait.until(
+            expected_conditions.visibility_of_element_located
+            (
+                (
+                    By.ID, 'autocomplete'
+                )
+            )
+        )
+        list = auto.find_elements_by_tag_name('li')
+        self.assertTrue(len(list) == 1)
+
+        # Check that the '?' has been escaped
+        message = wait.until(
+            expected_conditions.visibility_of_element_located(
+                (
+                    By.XPATH, "//*[contains(text(), 'hvem pukler kamelerne for\\?' )]"
+                )
+            )
+        )
+
+
     def test_single_word(self):
         browser = self.browser
         browser.get(self.base_url)
