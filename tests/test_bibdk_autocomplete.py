@@ -37,7 +37,7 @@ class BibdkAutocompleteTestCase(helpers.BibdkUnitTestCase):
 
         input = wait.until(
             expected_conditions.visibility_of_element_located(
-                (By.ID, 'edit-search-block-form--2')
+                (By.NAME, 'search_block_form')
             )
         )
         input.send_keys('hvem pukler')

@@ -112,7 +112,8 @@ function bibdk_autocomplete_callback($p_uuid, $v_uuid, $string = '') {
       if (empty($result['data'])) {
         bibdk_autocomplete_callback_error($action, $options);
       }
-      foreach ($result['data'] as $kay => $val) {
+      foreach ($result['data'] as $key => $val) {
+        // Escape '?' in order to ba able to use it in search ('\?').
         $term = preg_replace('/(\?)/', '\\\\?', $val['term']);
         if (strpos($term, ' ')) {
           // contains blank
