@@ -220,7 +220,12 @@ function _bibdk_searchhistory_element_view($element) {
   if (!empty($element['params'])) {
     $query += $element['params'];
   }
-
+  foreach ($query as $key => $value) {
+    if ($key === 'qe') {
+      $query[] = $value;
+      unset($query[$key]);
+    }
+  }
   $display = _bibdk_searchhistory_get_markup_for_search($element);
 
   $search = array(
@@ -398,7 +403,6 @@ function bibdk_searchhistory_parse_params($params) {
       }
     }
   }
-
   return $string;
 }
 
@@ -408,7 +412,7 @@ function bibdk_searchhistory_parse_params($params) {
  * @return string
  */
 function _bibdk_searchhistory_get_search_string($element, $raw = FALSE) {
-  $keys = explode('?', $element['string']);
+  $keys = explode('&', $element['string']);
   if (!$raw) {
     return (!empty($keys[0])) ? t('freetext_search', array(), array('context' => 'bibdk_searchhistory')) . ' = ' . $keys[0] : '';
   }
