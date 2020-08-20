@@ -222,8 +222,12 @@ function _bibdk_searchhistory_element_view($element) {
   }
   foreach ($query as $key => $value) {
     if ($key === 'qe') {
-      $query[] = $value;
-      unset($query[$key]);
+      if (!isset($value['delimiter']) && !isset($value['n/a'])) {
+        $query[] = $value;
+        unset($query[$key]);
+      } else if (isset($value['n/a'])) {
+        $query = array('search_block_form' => $query['cql']);
+      }
     }
   }
   $display = _bibdk_searchhistory_get_markup_for_search($element);
@@ -338,7 +342,6 @@ function bibdk_searchhistory_get_views($elements) {
     $string = $element['string'];
     $views[$string] = _bibdk_searchhistory_element_view($element);
   }
-
   return $views;
 }
 
@@ -412,8 +415,12 @@ function bibdk_searchhistory_parse_params($params) {
  * @return string
  */
 function _bibdk_searchhistory_get_search_string($element, $raw = FALSE) {
-  $string = str_replace('?qe%5B', '&qe%5B', $element['string']);
-  $keys = explode('&', $string);
+  $string = $element['string'];
+  if (preg_match('/\\\/', $string)) {
+    $keys = explode('&', $string);
+  } else {
+    $keys = explode('?', $string);
+  }
   if (!$raw) {
     return (!empty($keys[0])) ? t('freetext_search', array(), array('context' => 'bibdk_searchhistory')) . ' = ' . $keys[0] : '';
   }
