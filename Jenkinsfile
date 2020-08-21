@@ -191,7 +191,7 @@ pipeline {
                     export FEATURE_BUILD_URL=${WEBSITE}
                     export BIBDK_WEBDRIVER_URL=${WEBSITE}/
                     export BIBDK_OPENUSERINFO_URL="http://openuserinfo-prod.frontend-prod.svc.cloud.dbc.dk/server.php"
-                    py.test --junitxml=selenium.xml --driver Remote --host selenium.dbc.dk --port 4444 --capability browserName chrome -v tests/ -o base_url=${WEBSITE} || true
+                    py.test --junitxml=selenium.xml --driver Remote --host selenium.dbc.dk --port 4444 --capability browserName firefox -v tests/ -o base_url=${WEBSITE} || true
                     xsltproc xunit-transforms/pytest-selenium.xsl selenium.xml > selenium-result.xml
                   """
                 }
