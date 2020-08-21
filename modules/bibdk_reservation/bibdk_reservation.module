@@ -594,10 +594,16 @@ function bibdk_reservation_new_order_object() {
  */
 function bibdk_reservation_get_manifestation($id) {
   if (is_array($id)) {
-    $id = reset($id);
+    foreach($id as $key => $value) {
+      $result = ting_openformat_get_manifestations($value);
+      if ($result[$id]->manifestations[$id]->manifestation->adminData->requestButton->{'$'} === true) {
+        return reset($result);
+      }
+    }
+  } else {
+    $result = ting_openformat_get_manifestations($id);
   }
 
-  $result = ting_openformat_get_manifestations($id);
   return reset($result);
 }
 
@@ -669,4 +675,3 @@ function bibdk_reservation_catalog_callback() {
     drupal_goto($url);
   }
 }
-
