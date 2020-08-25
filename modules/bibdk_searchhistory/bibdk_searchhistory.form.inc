@@ -222,9 +222,11 @@ function _bibdk_searchhistory_element_view($element) {
   }
   foreach ($query as $key => $value) {
     if ($key === 'qe') {
+      // Move 'qe' up one level in order to make search string work
       if (!isset($value['delimiter']) && !isset($value['n/a'])) {
         $query[] = $value;
         unset($query[$key]);
+        // Give up and use cql string in stead
       } else if (isset($value['n/a'])) {
         $query = array('search_block_form' => $query['cql']);
       }
@@ -416,6 +418,7 @@ function bibdk_searchhistory_parse_params($params) {
  */
 function _bibdk_searchhistory_get_search_string($element, $raw = FALSE) {
   $string = $element['string'];
+  // When '?' has been excaped, explode on '&' instead
   if (preg_match('/\\\/', $string)) {
     $keys = explode('&', $string);
   } else {
