@@ -220,7 +220,18 @@ function _bibdk_searchhistory_element_view($element) {
   if (!empty($element['params'])) {
     $query += $element['params'];
   }
-
+  foreach ($query as $key => $value) {
+    if ($key === 'qe') {
+      // Move 'qe' up one level in order to make search string work
+      if (!isset($value['delimiter']) && !isset($value['n/a'])) {
+        $query[] = $value;
+        unset($query[$key]);
+        // Give up and use cql string in stead
+      } else if (isset($value['n/a'])) {
+        $query = array('search_block_form' => $query['cql']);
+      }
+    }
+  }
   $display = _bibdk_searchhistory_get_markup_for_search($element);
 
   $search = array(
@@ -333,7 +344,6 @@ function bibdk_searchhistory_get_views($elements) {
     $string = $element['string'];
     $views[$string] = _bibdk_searchhistory_element_view($element);
   }
-
   return $views;
 }
 
@@ -398,7 +408,6 @@ function bibdk_searchhistory_parse_params($params) {
       }
     }
   }
-
   return $string;
 }
 
@@ -408,7 +417,13 @@ function bibdk_searchhistory_parse_params($params) {
  * @return string
  */
 function _bibdk_searchhistory_get_search_string($element, $raw = FALSE) {
-  $keys = explode('?', $element['string']);
+  $string = $element['string'];
+  // When '?' has been excaped, explode on '&' instead
+  if (preg_match('/\\\/', $string)) {
+    $keys = explode('&', $string);
+  } else {
+    $keys = explode('?', $string);
+  }
   if (!$raw) {
     return (!empty($keys[0])) ? t('freetext_search', array(), array('context' => 'bibdk_searchhistory')) . ' = ' . $keys[0] : '';
   }
