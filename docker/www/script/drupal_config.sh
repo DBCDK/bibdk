@@ -44,8 +44,4 @@ sed -i 's/;max_input_vars = 128M/max_input_vars = 2048/' $PHPINI
 # Enable mail sending
 echo "sendmail_path = /usr/bin/msmtp -t" >>$PHPINI
 
-cd $APACHE_ROOT
-drush rr
-drush updb -y
-drush fra -y
-drush cc all
+

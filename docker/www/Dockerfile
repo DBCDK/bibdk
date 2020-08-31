@@ -92,6 +92,9 @@ RUN mkdir -p $APACHE_ROOT/private && \
   a2enmod headers && \
   a2enconf fqdn
 
+# do some filehandling - php.ini, settings.php, features etc
+RUN ./drupal_config.sh
+
 WORKDIR $APACHE_ROOT
 
 EXPOSE 80
