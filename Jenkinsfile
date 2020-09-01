@@ -233,6 +233,7 @@ pipeline {
                 ${KUBECTL} cp \${POD}:/tmp/simpletest-bibdk.xml ./simpletest-bibdk.xml
                 ${KUBECTL} exec -i \${POD} -- /bin/bash -c "drush -r /var/www/html dis -y simpletest"
               """
+              stash name: "simpletest-bibdk", includes: "simpletest-bibdk.xml"
 
               step([
                 $class: 'XUnitBuilder', testTimeMargin: '3000', thresholdMode: 1,
@@ -247,6 +248,13 @@ pipeline {
             }
           }
         }
+      }
+    }
+
+    stage('simpletest report'){
+      steps{
+        unstash name: "simpletest-bibdk"
+        generateTestReport('simpletest-bibdk.xml')
       }
     }
 
@@ -292,5 +300,41 @@ pipeline {
         deleteDir()
       }
     }
+  }
+}
+
+/**
+ * function to generate test-report
+ * @param String pattern
+ *  the pattern to look for (path to junit xml. eg. test-report.xml)
+ */
+void generateTestReport(String pattern, String type = "JUnit") {
+  if (type == "JUnit") {
+    step([$class        : 'XUnitBuilder',
+          testTimeMargin: '3000',
+          thresholdMode : 1,
+          thresholds    : [failed(failureNewThreshold: '0',
+            failureThreshold: '0',
+            unstableNewThreshold: '0',
+            unstableThreshold: '0')],
+          tools         : [JUnit(deleteOutputFiles: true,
+            failIfNotNew: true,
+            pattern: pattern,
+            skipNoTestFiles: false,
+            stopProcessingIfError: true)]])
+  }
+  if (type == "PHPUnit") {
+    step([$class        : 'XUnitBuilder',
+          testTimeMargin: '3000',
+          thresholdMode : 1,
+          thresholds    : [failed(failureNewThreshold: '0',
+            failureThreshold: '0',
+            unstableNewThreshold: '0',
+            unstableThreshold: '0')],
+          tools         : [PHPUnit(deleteOutputFiles: true,
+            failIfNotNew: true,
+            pattern: pattern,
+            skipNoTestFiles: false,
+            stopProcessingIfError: true)]])
   }
 }
