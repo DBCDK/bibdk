@@ -252,9 +252,13 @@ pipeline {
     }
 
     stage('simpletest report'){
+      when {
+        // Only run if branch is not master.
+        expression { BRANCH != 'master' }
+      }
       steps{
         unstash name: "simpletest-bibdk"
-        generateTestReport('simpletest-bibdk.xml')
+        generateTestReport('simpletest-bibdk.xml')  
       }
     }
 
