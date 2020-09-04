@@ -595,9 +595,10 @@ function bibdk_reservation_new_order_object() {
 function bibdk_reservation_get_manifestation($id) {
   if (is_array($id)) {
     // Loop through manifestations in order to find manifestation that can be ordered (if any).
-    foreach($id as $key => $value) {
-      $result = ting_openformat_get_manifestations($value);
-      if (isset($result[$id]->manifestations[$id]->manifestation->adminData->requestButton) && $result[$id]->manifestations[$id]->manifestation->adminData->requestButton->{'$'} === true) {
+    foreach($id as $pid) {
+      $result = ting_openformat_get_manifestations($pid);
+      if (isset($result[$pid]->manifestations[$pid]->manifestation->adminData->requestButton) &&
+          $result[$pid]->manifestations[$pid]->manifestation->adminData->requestButton->{'$'} === true) {
         break;
       }
     }
