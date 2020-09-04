@@ -64,9 +64,6 @@ RUN chown root:www-data $APACHE_ROOT
 
 # Copy linux stuff
 COPY conf/data-vol /etc/logrotate.d
-
-#COPY conf/000-default.conf /etc/apache2/sites-enabled
-
 COPY conf/apache_security.conf /etc/apache2/conf-enabled/
 ADD conf/fqdn.conf /etc/apache2/conf-available
 ADD --chown=www-data:www-data ["https://is.dbc.dk/job/Bibliotek%20DK/job/Tools/job/Fetch%20Bibliotek%20DK%20files%20folder/lastSuccessfulBuild/artifact/files.tar.gz","/tmp"]
