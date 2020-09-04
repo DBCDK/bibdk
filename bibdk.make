@@ -134,7 +134,6 @@ projects[cql_strict_parser][download][tag] = 7.x-0.4
 projects[bibdk_config][type] = module
 projects[bibdk_config][download][type] = git
 projects[bibdk_config][download][url] = gitlab@gitlab.dbc.dk:d-scrum/d7/bibliotek-dk/bibdk_config.git
-projects[bibdk_config][download][tag] = 7.x-1.41
 
 projects[bibdk_behaviour][type] = module
 projects[bibdk_behaviour][download][type] = git
