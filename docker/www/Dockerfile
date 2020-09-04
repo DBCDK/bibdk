@@ -61,6 +61,7 @@ RUN mkdir $APACHE_ROOT/sites/default/files
 COPY settings.php $APACHE_ROOT/sites/default
 RUN chown root:www-data $APACHE_ROOT
 
+
 # Copy linux stuff
 COPY conf/data-vol /etc/logrotate.d
 COPY conf/000-default.conf /etc/apache2/sites-enabled
