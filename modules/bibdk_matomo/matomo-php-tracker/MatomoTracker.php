@@ -1486,7 +1486,7 @@ class MatomoTracker
         $this->requestTimeout = $timeout;
         return $this;
     }
-	
+
 	/**
      * Sets the request method to POST, which is recommended when using setTokenAuth()
      * to prevent the token from being recorded in server logs. Avoid using redirects
@@ -1562,10 +1562,10 @@ class MatomoTracker
             && !$this->doBulkRequests
         ) {
             $urlParts = explode('?', $url);
-			
+
             $url = $urlParts[0];
             $postData = $urlParts[1];
-			
+
             $method = 'POST';
         }
 
@@ -1600,7 +1600,7 @@ class MatomoTracker
                 default:
                     break;
             }
-			
+
             if (isset($postData)) {
                 $options[CURLOPT_HTTPHEADER][] = 'Content-Type: application/x-www-form-urlencoded';
                 $options[CURLOPT_POSTFIELDS] = $postData;
@@ -1617,6 +1617,11 @@ class MatomoTracker
                 $options[CURLOPT_COOKIE] = http_build_query($this->outgoingTrackerCookies);
                 $this->outgoingTrackerCookies = array();
             }
+
+            dpm('CURL GET');
+            dpm($options);
+            dpm($this);
+            return 'fisk';
 
             $ch = curl_init();
             curl_setopt_array($ch, $options);
@@ -1644,7 +1649,7 @@ class MatomoTracker
             if (isset($proxy)) {
                 $stream_options['http']['proxy'] = $proxy;
             }
-			
+
             if (isset($postData)) {
                 $stream_options['http']['header'] .= 'Content-Type: application/x-www-form-urlencoded';
                 $stream_options['http']['content'] = $postData;

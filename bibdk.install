@@ -85,7 +85,6 @@ function _bibdk_enable_modules() {
     'elements',
     'eu_cookie_compliance',
     'hotjar',
-    'matomo',
     'microcurl',
     'ting_agency',
     'ting_client',

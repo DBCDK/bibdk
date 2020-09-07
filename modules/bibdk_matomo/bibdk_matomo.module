@@ -1,2 +1,25 @@
 <?php
 # drupal needs this file
+
+/** Implements hook_init */
+function bibdk_matomo_init() {
+  // do a page view if cookies are deselected (not set or 0)
+  if (empty($_COOKIE['cookie-agreed'])) {
+    /*$fisk = new MatomoTracker(11);
+    try {
+      $fisk->doTrackPageView('search');
+    }
+    catch(Exception $e){
+      dpm($e->getMessage(), 'MATOMO EXCEPTION');
+    }
+    dpm($fisk);
+    */
+  }
+  dpm($_COOKIE);
+  dpm('fisk');
+}
+
+/** Implements hook_js_alter */
+function bibdk_matomo_js_alter(&$scripts){
+  dpm($scripts, 'BIBDK');
+}
