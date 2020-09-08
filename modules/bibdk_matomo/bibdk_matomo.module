@@ -3,6 +3,9 @@
 
 /** Implements hook_init */
 function bibdk_matomo_init() {
+  // always add piwik script
+  drupal_add_js('https://stats.dbc.dk/piwik.js', 'external');
+
   // load piwik script depending on what selection user has done in cookie popup
   if (empty($_COOKIE['cookie-agreed'])) {
     // user disagreed or has not yet agreed
