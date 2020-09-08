@@ -1,7 +1,5 @@
 name = bibdk_matomo
-description = module to include php class @see https://github.com/matomo-org/matomo-php-tracker/
+description = module to load javascript depending on eu cookie
 core = 7.x
 version = 7.x-0.1
 package = Bibliotek.dk
-
-files[] = matomo-php-tracker/MatomoTracker.php
