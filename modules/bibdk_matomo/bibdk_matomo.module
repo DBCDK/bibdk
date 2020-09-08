@@ -1,8 +1,11 @@
 <?php
-# drupal needs this file
 
-/** Implements hook_init */
-function bibdk_matomo_init() {
+/** Implements hook_page_alter */
+/**
+ * Check the cookie - if user agreed add tracking with cookie script
+ * if user did not agree add tracking with no cookie script
+ */
+function bibdk_matomo_page_alter(&$page) {
   // always add piwik script
   drupal_add_js('https://stats.dbc.dk/piwik.js', 'external');
 
@@ -11,8 +14,10 @@ function bibdk_matomo_init() {
     // user disagreed or has not yet agreed
     // load trackingscript with no cookie
     drupal_add_js('piwik/piwik_no_cookies.js');
+    dpm('NO COOKIE');
   }
   else {
     drupal_add_js('piwik/piwik.js');
+    dpm('COOKIE');
   }
 }
