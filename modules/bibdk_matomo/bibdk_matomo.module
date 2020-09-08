@@ -14,10 +14,8 @@ function bibdk_matomo_page_alter(&$page) {
     // user disagreed or has not yet agreed
     // load trackingscript with no cookie
     drupal_add_js('piwik/piwik_no_cookies.js');
-    dpm('NO COOKIE');
   }
   else {
     drupal_add_js('piwik/piwik.js');
-    dpm('COOKIE');
   }
 }
