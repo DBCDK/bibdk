@@ -13,9 +13,9 @@ function bibdk_matomo_page_alter(&$page) {
   if (empty($_COOKIE['cookie-agreed'])) {
     // user disagreed or has not yet agreed
     // load trackingscript with no cookie
-    drupal_add_js('piwik/piwik_no_cookies.js');
+    drupal_add_js(drupal_get_path('module', 'bibdk_matomo') . '/piwik/piwik_no_cookies.js');
   }
   else {
-    drupal_add_js('piwik/piwik.js');
+    drupal_add_js(drupal_get_path('module', 'bibdk_matomo') . '/piwik/piwik.js');
   }
 }
