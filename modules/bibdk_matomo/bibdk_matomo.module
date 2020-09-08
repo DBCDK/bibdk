@@ -3,23 +3,13 @@
 
 /** Implements hook_init */
 function bibdk_matomo_init() {
-  // do a page view if cookies are deselected (not set or 0)
+  // load piwik script depending on what selection user has done in cookie popup
   if (empty($_COOKIE['cookie-agreed'])) {
-    /*$fisk = new MatomoTracker(11);
-    try {
-      $fisk->doTrackPageView('search');
-    }
-    catch(Exception $e){
-      dpm($e->getMessage(), 'MATOMO EXCEPTION');
-    }
-    dpm($fisk);
-    */
+    // user disagreed or has not yet agreed
+    // load trackingscript with no cookie
+    drupal_add_js('piwik/piwik_no_cookies.js');
   }
-  dpm($_COOKIE);
-  dpm('fisk');
-}
-
-/** Implements hook_js_alter */
-function bibdk_matomo_js_alter(&$scripts){
-  dpm($scripts, 'BIBDK');
+  else {
+    drupal_add_js('piwik/piwik.js');
+  }
 }
