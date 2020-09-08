@@ -1,0 +1,21 @@
+<?php
+
+/** Implements hook_page_alter */
+/**
+ * Check the cookie - if user agreed add tracking with cookie script
+ * if user did not agree add tracking with no cookie script
+ */
+function bibdk_matomo_page_alter(&$page) {
+  // always add piwik script
+  drupal_add_js('https://stats.dbc.dk/piwik.js', 'external');
+
+  // load piwik script depending on what selection user has done in cookie popup
+  if (empty($_COOKIE['cookie-agreed'])) {
+    // user disagreed or has not yet agreed
+    // load trackingscript with no cookie
+    drupal_add_js('piwik/piwik_no_cookies.js');
+  }
+  else {
+    drupal_add_js('piwik/piwik.js');
+  }
+}
