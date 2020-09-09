@@ -73,19 +73,50 @@ function bibdk_actions_email_page($ids, $sent = FALSE) {
  * @return array
  */
 function bibdk_actions_get_fieldinfo($view) {
-  _bibdk_actions_manifestation_view_strip_links($view);
   $display_strings = array();
   if (isset($view['#fields']) && is_array($view['#fields'])) {
     foreach ($view['#fields'] as $key => $field) {
-      if (is_array($field[0]) && is_array($field[0][0]) && isset($field[0][0]['#openformat_field']['#markup']) && isset($field['#title'])) {
-        $display_strings[$field['#weight']] = t($field['#title']) . ': ' . $field[0][0]['#openformat_field']['#markup']; 
+      if (!$title = !empty($field['#title']) ? $field['#title'] : false) {
+        continue;
       }
+      $weight = !empty($field['#weight']) ? $field['#weight'] : false;
+      $field_content = null;
+      _bibdk_actions_recurse_fieldinfo($field, $field_content);
+      $display_strings[$weight] = t($title) . ': ' . $field_content;
     }
   }
   ksort($display_strings);
   return $display_strings;
 }
 
+/** Recurse fields for strings.
+ * @param $field
+ * @param $display_string
+ */
+function _bibdk_actions_recurse_fieldinfo($field, &$display_string) {
+  foreach ($field as $key => $value) {
+    if (is_object($value)) {
+       continue;
+    }
+    if (strpos('#', $key) === true) {
+       continue;
+    }
+    else if (is_array($value)) {
+      if (!empty($value['#openformat_field']['#markup'])) {
+        $display_string .= $value['#openformat_field']['#markup'];
+      }
+      else if (!empty($value['#openformat_field']['#text'])) {
+        $display_string .= $value['#openformat_field']['#text'];
+      }
+      else if (!empty($value['#markup'])) {
+        $display_string .= $value['#markup'];
+      }
+      else {
+        _bibdk_actions_recurse_fieldinfo($value, $display_string);
+      }
+    }
+  }
+}
 
 /**
  * Creates the bibdk_actions_mail_form form
