@@ -95,7 +95,7 @@ function bibdk_actions_get_fieldinfo($view) {
  */
 function _bibdk_actions_recurse_fieldinfo($field, &$display_string) {
   foreach ($field as $key => $value) {
-    else if (is_array($value)) {
+    if (is_array($value)) {
       if (strpos('#', $key) === true) {
          continue;
       }
