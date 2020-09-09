@@ -95,13 +95,10 @@ function bibdk_actions_get_fieldinfo($view) {
  */
 function _bibdk_actions_recurse_fieldinfo($field, &$display_string) {
   foreach ($field as $key => $value) {
-    if (is_object($value)) {
-       continue;
-    }
-    if (strpos('#', $key) === true) {
-       continue;
-    }
     else if (is_array($value)) {
+      if (strpos('#', $key) === true) {
+         continue;
+      }
       if (!empty($value['#openformat_field']['#markup'])) {
         $display_string .= $value['#openformat_field']['#markup'];
       }
