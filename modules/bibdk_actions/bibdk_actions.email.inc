@@ -74,15 +74,23 @@ function bibdk_actions_email_page($ids, $sent = FALSE) {
  */
 function bibdk_actions_get_fieldinfo($view) {
   $display_strings = array();
+  // 'Info text' er f.ek. 'drupal_text_restrictedAccess'.
+  // 'Manifestation type' f.ex.: 'literature',  'article'
+  // Kan der være flere af dén slags?
+  $translateable_fieldvalues = array('Manifestation type','Info text');
   if (isset($view['#fields']) && is_array($view['#fields'])) {
     foreach ($view['#fields'] as $key => $field) {
       if (!$title = !empty($field['#title']) ? $field['#title'] : false) {
         continue;
       }
-      $weight = !empty($field['#weight']) ? $field['#weight'] : false;
+      $weight = !empty($field['#weight']) ? $field['#weight'] : 0;
       $field_content = null;
-      _bibdk_actions_recurse_fieldinfo($field, $field_content);
-      $display_strings[$weight] = t($title) . ': ' . $field_content;
+      $translate = false;
+      if (in_array($title, $translateable_fieldvalues)) {
+        $translate = true;
+      }
+      _bibdk_actions_recurse_fieldinfo($field, $field_content, $translate);
+      $display_strings[$weight] = t($title, array(), array('context' => 'bibdk_openformat')) . ': ' . $field_content;
     }
   }
   ksort($display_strings);
@@ -91,25 +99,29 @@ function bibdk_actions_get_fieldinfo($view) {
 
 /** Recurse fields for strings.
  * @param $field
- * @param $display_string
+ * @param &$display_string
  */
-function _bibdk_actions_recurse_fieldinfo($field, &$display_string) {
+function _bibdk_actions_recurse_fieldinfo($field, &$display_string, $translate=false) {
   foreach ($field as $key => $value) {
     if (is_array($value)) {
-      if (strpos('#', $key) === true) {
-         continue;
-      }
+    // Skip Manifestation object & strings.
       if (!empty($value['#openformat_field']['#markup'])) {
-        $display_string .= $value['#openformat_field']['#markup'];
+        $display_string .= ($translate)
+                           ? t($value['#openformat_field']['#markup'], array(), array('context' => 'bibdk_openformat'))
+                           : $value['#openformat_field']['#markup'];
       }
       else if (!empty($value['#openformat_field']['#text'])) {
-        $display_string .= $value['#openformat_field']['#text'];
+        $display_string .= ($translate)
+                           ? t($value['#openformat_field']['#text'], array(), array('context' => 'bibdk_openformat'))
+                           : $value['#openformat_field']['#text'];
       }
       else if (!empty($value['#markup'])) {
-        $display_string .= $value['#markup'];
+        $display_string .= ($translate)
+                           ? t($value['#markup'], array(), array('context' => 'bibdk_openformat'))
+                           : $value['#markup'];
       }
       else {
-        _bibdk_actions_recurse_fieldinfo($value, $display_string);
+        _bibdk_actions_recurse_fieldinfo($value, $display_string, $translate);
       }
     }
   }
