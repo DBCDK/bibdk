@@ -5,6 +5,8 @@
  * Check the cookie - if user agreed add tracking with cookie script
  * if user did not agree add tracking with no cookie script
  */
+
+/*
 function bibdk_matomo_page_alter(&$page) {
   // always add piwik script
   drupal_add_js('https://stats.dbc.dk/piwik.js', 'external');
@@ -19,3 +21,30 @@ function bibdk_matomo_page_alter(&$page) {
     drupal_add_js(drupal_get_path('module', 'bibdk_matomo') . '/piwik/piwik.js');
   }
 }
+*/
+function bibdk_matomo_page_alter(&$page) {
+  require_once 'matomo-php-tracker/MatomoTracker.php';
+  // always add piwik script
+  drupal_add_js('https://stats.dbc.dk/piwik.js', 'external');
+
+  // load piwik script depending on what selection user has done in cookie popup
+  if (empty($_COOKIE['cookie-agreed'])) {
+    // user disagreed or has not yet agreed
+    // track a pageview with matomotracker
+    //require_once("MatomoTracker.php");
+
+    // Matomo object
+    //$matomoTracker = new MatomoTracker(32, 'http://stats.dbc.dk');
+    $matomoTracker = new MatomoTracker(32, 'http://stats.dbc.dk');
+
+    // Set authentication token
+    //$matomoTracker->setTokenAuth($matomoToken);
+
+    // Track page view
+    $fisk = $matomoTracker->doTrackPageView('');
+  }
+  else {
+    drupal_add_js(drupal_get_path('module', 'bibdk_matomo') . '/piwik/piwik.js');
+  }
+}
+
