@@ -73,19 +73,77 @@ function bibdk_actions_email_page($ids, $sent = FALSE) {
  * @return array
  */
 function bibdk_actions_get_fieldinfo($view) {
-  _bibdk_actions_manifestation_view_strip_links($view);
   $display_strings = array();
+  // 'Info text' er f.ek. 'drupal_text_restrictedAccess'.
+  // 'Manifestation type' f.ex.: 'literature',  'article'
+  // Kan der være flere af dén slags?
+  // Nogle fields, f.ex. 'Contributors' har skilletegn. Andre ikke, f.ex.: 'Related series'
+  // Nogle fields, f.ex. 'Format' slutter med et linieskift i mail'en. Andre ikke, f.ex.: 'Recommended Audience'
+  $translateable_fieldvalues = array('Manifestation type', 'Info text');
   if (isset($view['#fields']) && is_array($view['#fields'])) {
     foreach ($view['#fields'] as $key => $field) {
-      if (is_array($field[0]) && is_array($field[0][0]) && isset($field[0][0]['#openformat_field']['#markup']) && isset($field['#title'])) {
-        $display_strings[$field['#weight']] = t($field['#title']) . ': ' . $field[0][0]['#openformat_field']['#markup']; 
+      if (!$title = !empty($field['#title']) ? $field['#title'] : false) {
+        continue;
       }
+      $weight = !empty($field['#weight']) ? $field['#weight'] : 0;
+      $field_content = null;
+      $translate = $has_delimiters = false;
+      if (in_array($title, $translateable_fieldvalues)) {
+        $translate = true;
+      }
+      _bibdk_actions_recurse_fieldinfo($field, $field_content, $has_delimiters, $translate);
+      if (is_array($field_content)) {
+        $field_content = ($has_delimiters) ? implode($field_content) : implode(', ', $field_content);
+      }
+      $display_strings[$weight] = t($title, array(), array('context' => 'bibdk_openformat')) . ': ' . $field_content;
     }
   }
   ksort($display_strings);
   return $display_strings;
 }
 
+/** Recurse fields for strings.
+ * @param $field
+ * @param &$display_string
+ * @param &$has_deimiters
+ * @param $translate
+ */
+function _bibdk_actions_recurse_fieldinfo($field, &$display_string, &$has_delimiters, $translate=false) {
+  foreach ($field as $key => $value) {
+    if (is_array($value)) {
+    // Skip Manifestation object & strings.
+      if (!empty($value['#openformat_field']['#markup'])) {
+        _bibdk_actions_parse_fieldinfo($value['#openformat_field']['#markup'], $display_string, $has_delimiters, $translate);
+      }
+      else if (!empty($value['#openformat_field']['#text'])) {
+        _bibdk_actions_parse_fieldinfo($value['#openformat_field']['#text'], $display_string, $has_delimiters, $translate);
+      }
+      else if (!empty($value['#markup'])) {
+        _bibdk_actions_parse_fieldinfo($value['#markup'], $display_string, $has_delimiters, $translate);
+      }
+      else {
+        _bibdk_actions_recurse_fieldinfo($value, $display_string, $has_delimiters, $translate);
+      }
+    }
+  }
+}
+
+/** Translate if needed.
+ * @param $value
+ * @param &$display_string
+ * @param &$has_deimiters
+ * @param $translate
+ */
+function _bibdk_actions_parse_fieldinfo($value, &$display_string, &$has_delimiters, $translate=false) {
+  $val = ($translate)
+         ? t($value, array(), array('context' => 'bibdk_openformat'))
+         : $value;
+  $display_string[] = trim($val, "\t\r\n");
+  $delimiters = array(',', ', ', ':', ': ', ';', '; ');
+  if (in_array($val, $delimiters)) {
+    $has_delimiters = true;
+  }
+}
 
 /**
  * Creates the bibdk_actions_mail_form form
