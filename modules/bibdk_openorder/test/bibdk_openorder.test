@@ -18,6 +18,11 @@ class BibdkOpenOrderUnitTestCase extends DrupalUnitTestCase {
     module_load_include('module', 'bibdk_openorder');
   }
 
+  public function testTrackingId() {
+    $params = _bibdk_openorder_set_fixed_parameters();
+    $this->assertNotNull($params['trackingId'], 'trackingId is set');
+  }
+
   // checck _bibdk_openorder_check_required_params method
   public function testRequiredParamsMethod() {
     $values = array(
