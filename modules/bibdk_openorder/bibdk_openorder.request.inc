@@ -9,6 +9,7 @@ class bibdk_openorder extends TingClientRequest {
   protected $pid;
   protected $action;
   protected $outputType;
+  protected $trackingId;
 // extra attributes for placeOrderRequest
   protected $articleDirect;
   protected $author;
@@ -467,6 +468,14 @@ class bibdk_openorder extends TingClientRequest {
 
   public function getOutputType() {
     return $this->outputType;
+  }
+
+  public function setTrackingId($value = NULL) {
+    $this->trackingId = $value;
+  }
+
+  public function getTrackingId() {
+    return $this->trackingId;
   }
 
   public function setAction($value = NULL) {

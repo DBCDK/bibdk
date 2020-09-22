@@ -99,6 +99,7 @@ function _bibdk_openorder_set_fixed_parameters() {
   $params['authentication'] = $authentication;
 
   $params['serviceRequester'] = variable_get('bibdk_openorder_serviceRequester');
+  $params['trackingId'] = date('Y-m-d\TH:i:s:') . substr((string) microtime(), 2, 6) . ':' . getmypid();
 
   return $params;
 }
