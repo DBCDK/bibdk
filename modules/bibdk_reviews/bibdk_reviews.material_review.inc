@@ -158,7 +158,7 @@ function bibdk_review_make_search_link($title) {
     '#prefix' =>'<span class="bibdk-review-link">',
     '#suffix' => '</span>',
     '#options' => array(
-      'query' => array('search_block_form' => "'" . $title . "'"),
+      'query' => array('search_block_form' => '"' . $title . '"'),
       'fragment' => 'content',
       'attributes' => array(
         'title' => $title,
