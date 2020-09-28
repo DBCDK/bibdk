@@ -32,6 +32,9 @@ if [ -d '/data/log' ]; then
 fi
 #ervice rsyslog start
 
+# We need https=on in the 000-default.conf file.
+sed -i '/^\s*Alias/a SetEnvIf X-Forwarded-Proto https HTTPS=on' $APACHE_CONF
+
 # make a symbolic link to modules - for simpletest to run
 /bin/sh -c "cd $APACHE_ROOT/sites/default && ln -sf $APACHE_ROOT/profiles/bibdk/modules"
 
