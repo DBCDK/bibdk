@@ -196,6 +196,9 @@ pipeline {
                   """
                 }
 
+                stash name: "selenium-result", includes: "selenium-result.xml"
+
+                /*
                 step([$class: 'XUnitBuilder', testTimeMargin: '3000', thresholdMode: 1,
                   thresholds: [
                     [$class: 'FailedThreshold', failureNewThreshold: '', failureThreshold: '0', unstableNewThreshold: '', unstableThreshold: ''],
@@ -203,6 +206,7 @@ pipeline {
                   tools     : [
                     [$class: 'JUnitType', deleteOutputFiles: true, failIfNotNew: true, pattern: 'selenium-result.xml', skipNoTestFiles: false, stopProcessingIfError: false]]
                 ])
+                 */
               }
             }
           }
@@ -235,6 +239,7 @@ pipeline {
               """
               stash name: "simpletest-bibdk", includes: "simpletest-bibdk.xml"
 
+              /*
               step([
                 $class: 'XUnitBuilder', testTimeMargin: '3000', thresholdMode: 1,
                 thresholds: [
@@ -245,6 +250,7 @@ pipeline {
                   [$class: 'JUnitType', deleteOutputFiles: true, failIfNotNew: true, pattern: 'simpletest*.xml', skipNoTestFiles: false, stopProcessingIfError: false]
                 ]
               ])
+               */
             }
           }
         }
@@ -258,7 +264,10 @@ pipeline {
       }
       steps{
         unstash name: "simpletest-bibdk"
-        generateTestReport('simpletest-bibdk.xml')  
+        generateTestReport('simpletest-bibdk.xml')
+
+        unstash name: "selenium-result"
+        generateTestReport('selenium-result.xml')
       }
     }
 
