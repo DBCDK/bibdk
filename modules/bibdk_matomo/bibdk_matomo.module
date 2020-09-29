@@ -1,12 +1,10 @@
 <?php
 
-/** Implements hook_page_alter */
 /**
+ * Implements hook_page_alter.
  * Check the cookie - if user agreed add tracking with cookie script
  * if user did not agree add tracking with no cookie script
  */
-
-/*
 function bibdk_matomo_page_alter(&$page) {
   // always add piwik script
   drupal_add_js('https://stats.dbc.dk/piwik.js', 'external');
@@ -21,7 +19,7 @@ function bibdk_matomo_page_alter(&$page) {
     drupal_add_js(drupal_get_path('module', 'bibdk_matomo') . '/piwik/piwik.js');
   }
 }
-*/
+/*
 function bibdk_matomo_page_alter(&$page) {
   require_once 'matomo-php-tracker/MatomoTracker.php';
   // always add piwik script
@@ -47,4 +45,4 @@ function bibdk_matomo_page_alter(&$page) {
     drupal_add_js(drupal_get_path('module', 'bibdk_matomo') . '/piwik/piwik.js');
   }
 }
-
+*/
