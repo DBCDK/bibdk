@@ -4,3 +4,4 @@ Matomo, formerly Piwik, is a free and open source web analytics application deve
 wikipedia: [https://en.wikipedia.org/wiki/Matomo_(software)]
 
 NB: matomo.js calls an external script: [https://stats.dbc.dk/piwik.js]
+    stg.bibliotek.dk har siteId: 32
