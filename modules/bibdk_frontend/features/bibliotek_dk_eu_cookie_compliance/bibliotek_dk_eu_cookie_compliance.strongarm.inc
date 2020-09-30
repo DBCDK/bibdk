@@ -25,7 +25,7 @@ function bibliotek_dk_eu_cookie_compliance_strongarm() {
     'accept_all_categories_button_label' => 'Accept all cookies',
     'fix_first_cookie_category' => 1,
     'select_all_categories_by_default' => 0,
-    'disabled_javascripts' => 'profiles/bibdk/modules/bibdk_frontend/matomo/piwik.js',
+    'disabled_javascripts' => '',
     'whitelisted_cookies' => 'has_js
 UUID',
     'consent_storage_method' => 'do_not_store',
