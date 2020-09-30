@@ -25,12 +25,7 @@ function bibliotek_dk_eu_cookie_compliance_strongarm() {
     'accept_all_categories_button_label' => 'Accept all cookies',
     'fix_first_cookie_category' => 1,
     'select_all_categories_by_default' => 0,
-    'disabled_javascripts' => 'profiles/bibdk/modules/bibdk_frontend/matomo/piwik.js
-https://stats.dbc.dk/piwik.js
-https://static.hotjar.com/c/hotjar-1787658.js?sv=6
-http://static.hotjar.com/c/hotjar-1787658.js?sv=6
-https://script.hotjar.com/modules.f622ea0eeded5efcf120.js
-https://in.hotjar.com/api/v2/client/sites/1787658/visit-data?sv=6',
+    'disabled_javascripts' => '',
     'whitelisted_cookies' => 'has_js
 UUID',
     'consent_storage_method' => 'do_not_store',
