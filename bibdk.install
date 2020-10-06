@@ -49,7 +49,6 @@ function _bibdk_enable_modules() {
     'bibdk_provider',
     'bibdk_reservation',
     'bibdk_recommender',
-    'bibdk_saou',
     'bibdk_sbkopi',
     'bibdk_schemaorg',
     'bibdk_searchhistory',
@@ -705,4 +704,13 @@ function bibdk_update_7069() {
     ->condition('name', $modules, 'IN')
     ->condition('type', 'module')
     ->execute();
+}
+
+/**
+ * Disable bibdk_saou
+ */
+function bibdk_update_7070(&$sandbox) {
+  module_disable(array(
+    'bibdk_saou',
+  ));
 }
