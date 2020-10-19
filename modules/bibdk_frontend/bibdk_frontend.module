@@ -386,7 +386,7 @@ function bibdk_frontend_hotjar_access() {
  */
 function bibdk_frontend_page_alter(&$page) {
   // always add piwik script
-  drupal_add_js('https://stats.dbc.dk/piwik.js', 'external');
+  drupal_add_js('https://stats.dbc.dk/piwik.js', array('external'=>true, 'scope'=>'footer'));
 
   // load piwik script depending on what selection user has done in cookie compliance.
   if (empty($_COOKIE['cookie-agreed'])) {
