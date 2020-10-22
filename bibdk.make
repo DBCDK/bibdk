@@ -17,14 +17,14 @@ libraries[ckeditor][download][url] = http://download.cksource.com/CKEditor/CKEdi
 
 libraries[slick][destination] = libraries
 libraries[slick][directory_name] = slick
-libraries[slick][download][type] = git
+; libraries[slick][download][type] = git
 libraries[slick][download][url] = https://github.com/kenwheeler/slick/
 libraries[slick][download][tag] = '1.8.0'
 
 libraries[audit][destination] = libraries
 libraries[audit][directory_name] = audit
-libraries[audit][download][type] = git
-libraries[audit][download][url] = gitlab@gitlab.dbc.dk:pu/audit/audit-trail-php-library.git
+; libraries[audit][download][type] = git
+libraries[audit][download][url] = gitlab@gitlab.dbc.dk:jgn/audit-trail-php-library.git
 ; libraries[audit][download][tag] = '1.8.0'
 
 ; --- Theming ---
