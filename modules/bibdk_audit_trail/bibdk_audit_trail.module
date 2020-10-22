@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * Add Audit Trail for Bibliotek.dk
+ */
+
+/**
+ * Implements foo
+ */
+function bibdk_audit_trail_foo() {
+  open_platform_client_authenticate_request();
+}
+
+// debugging
+function log_to_file($text, $header = null) {
+  $file =  './drupal_debug.txt';
+  $header = !empty($header) ? $header . ' -> ' : null;
+  $f = fopen($file, 'a');
+  fwrite($f, date('Ymd H:i:s - ') . $header . print_r($text, 1) . "\n");
+  fclose($f);
+}

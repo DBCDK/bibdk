@@ -1,0 +1,7 @@
+name = Bibliotek.dk - mobile frontend
+description = Handles visual setup of the bibdk profile such as blocks etc.
+core = 7.x
+version = 7.x-0.15
+package = Bibdk mobile frontend
+project = bibliotekdk
+
