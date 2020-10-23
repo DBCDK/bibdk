@@ -52,7 +52,7 @@ pipeline {
     stage('Docker: Drupal database') {
       when {
         // Only run if branch is not master.
-        expression { BRANCH != 'master'; NO_TESTS != false }
+        expression { BRANCH != 'master' AND NO_TESTS != false }
       }
       steps {
         script {
@@ -134,7 +134,7 @@ pipeline {
     stage('enabling mockup module') {
       when {
         // Only run if branch is not master.
-        expression { BRANCH != 'master'; NO_TESTS != false }
+        expression { BRANCH != 'master' AND NO_TESTS != false }
       }
       agent {
         docker {
@@ -159,7 +159,7 @@ pipeline {
     stage('run selenium and simpletest tests') {
       when {
         // Only run if branch is not master.
-        expression { BRANCH != 'master'; NO_TESTS != false }
+        expression { BRANCH != 'master' AND NO_TESTS != false }
       }
       parallel {
         stage('Selenium') {
@@ -264,7 +264,7 @@ pipeline {
     stage('simpletest report'){
       when {
         // Only run if branch is not master.
-        expression { BRANCH != 'master'; NO_TESTS != false }
+        expression { BRANCH != 'master' AND NO_TESTS != false }
       }
       steps{
         unstash name: "simpletest-bibdk"
@@ -278,7 +278,7 @@ pipeline {
     stage('disabling mockup module') {
       when {
         // Only run if branch is not master.
-        expression { BRANCH != 'master'; NO_TESTS != false }
+        expression { BRANCH != 'master' AND NO_TESTS != false }
       }
       agent {
         docker {
