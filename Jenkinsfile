@@ -24,6 +24,7 @@ pipeline {
     BUILDNAME = "Bibliotek-dk :: ${BRANCH}"
     WEBSITE = "http://${PRODUCT}-www-${BRANCH}.${NAMESPACE}.svc.cloud.dbc.dk"
     DISTROPATH = "https://raw.github.com/DBCDK/bibdk/develop/distro.make"
+    NO_TESTS = false
   }
   triggers {
     gitlab(
@@ -134,6 +135,7 @@ pipeline {
       when {
         // Only run if branch is not master.
         expression { BRANCH != 'master' }
+        expression { NO_TESTS != false }
       }
       agent {
         docker {
@@ -159,6 +161,7 @@ pipeline {
       when {
         // Only run if branch is not master.
         expression { BRANCH != 'master' }
+        expression { NO_TESTS != false }
       }
       parallel {
         stage('Selenium') {
@@ -212,6 +215,9 @@ pipeline {
           }
         }
         stage('Simpletest') {
+          when {
+            expression { NO_TESTS != false }
+          }
           agent {
             docker {
               image "docker.dbc.dk/k8s-deploy-env:latest"
@@ -261,6 +267,7 @@ pipeline {
       when {
         // Only run if branch is not master.
         expression { BRANCH != 'master' }
+        expression { NO_TESTS != false }
       }
       steps{
         unstash name: "simpletest-bibdk"
@@ -275,6 +282,7 @@ pipeline {
       when {
         // Only run if branch is not master.
         expression { BRANCH != 'master' }
+        expression { NO_TESTS != false }
       }
       agent {
         docker {

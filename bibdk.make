@@ -24,7 +24,7 @@ libraries[slick][download][tag] = '1.8.0'
 libraries[audit][destination] = libraries
 libraries[audit][directory_name] = audit
 ; libraries[audit][download][type] = git
-libraries[audit][download][url] = gitlab@gitlab.dbc.dk:jgn/audit-trail-php-library.git
+libraries[audit][download][url] = https://gitlab.dbc.dk/jgn/audit-trail-php-library.git
 ; libraries[audit][download][tag] = '1.8.0'
 
 ; --- Theming ---
