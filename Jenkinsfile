@@ -24,7 +24,7 @@ pipeline {
     BUILDNAME = "Bibliotek-dk :: ${BRANCH}"
     WEBSITE = "http://${PRODUCT}-www-${BRANCH}.${NAMESPACE}.svc.cloud.dbc.dk"
     DISTROPATH = "https://raw.github.com/DBCDK/bibdk/develop/distro.make"
-    NO_TESTS = false
+    NO_TESTS = true
   }
   triggers {
     gitlab(
