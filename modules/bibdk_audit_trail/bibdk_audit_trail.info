@@ -5,3 +5,4 @@ version = 7.x-0.15
 package = Bibdk mobile frontend
 project = bibliotekdk
 
+dependencies[] = libraries

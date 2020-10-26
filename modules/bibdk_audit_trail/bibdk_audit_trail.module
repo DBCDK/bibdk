@@ -7,8 +7,40 @@
 /**
  * Implements foo
  */
-function bibdk_audit_trail_foo() {
-  open_platform_client_authenticate_request();
+function bibdk_audit_trail_page_build() {
+  try {
+    if ($path = libraries_get_path('audittrail')) {
+      $path .= '/src/' . 'AuditTrail.php';
+      /*
+      include_once $path;
+      DBC\AT\AuditTrail::log(
+        'thisisalogintoken',
+        ['012.345.678.9', '123.456.789.0'],
+        'bibliotek.dk',
+        'read',
+        'owningUser'
+        ['accessInfo']
+      );
+      */
+    }
+  }
+  catch (Exception $e) {
+    // Exception thrown, log error and carry on.
+    watchdog('bibdk_audit', 'AuditTrail exception, message: @message', array('@message' => $e->getMessage()), WATCHDOG_ERROR);
+  }
+}
+
+/**
+ * Implements hook_bibdk_audit_trail().
+ */
+function bibdk_audit_trail_bibdk_audit_trail() {
+  global $user;
+  $ret = array();
+  $ret['audit_trail']['foo0'] = 'bar';
+  $ret['audit_trail']['foo1'] = 'bar';
+  $ret['audit_trail']['foo2'] = 'bar';
+  $ret['audit_trail']['foo3'] = 'bar';
+  return $ret;
 }
 
 // debugging
