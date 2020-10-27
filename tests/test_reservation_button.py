@@ -1,4 +1,6 @@
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 import helpers
 
 
@@ -67,6 +69,65 @@ class TestReservationButton(helpers.BibdkUnitTestCase):
         # assert that the correct classes are found on the button after the AJAX call finished
         self.assertTrue("in-cart" not in memo_btn.get_attribute("class"), "found class not-in-cart")
 
+    def test_reservation_order_any_several_manifestations(self):
+        browser = self.browser
+        self._goto_frontpage()
+        wait = WebDriverWait(browser, 30)
+        self._check_pop_up()
+        # Perform search
+        input = wait.until(
+            EC.visibility_of_element_located(
+                (
+                    By.CLASS_NAME, "search-block-form"
+                )
+            )
+        )
+        input.send_keys('gudstjenestens bønner malene bjerre')
+
+        submit = wait.until(
+            EC.visibility_of_element_located(
+                (
+                    By.ID, "edit-submit"
+                )
+            )
+        )
+        submit.click()
+
+        # Open Reservation
+        reservation = wait.until(
+            EC.visibility_of_element_located(
+                (
+                    By.ID, "any_edition_but_870970basis52574692"
+                )
+            )
+        )
+        reservation.click()
+
+        # Order material
+        order = wait.until(
+            EC.visibility_of_element_located(
+                (
+                    By.ID, "any_edtion_order_870970basis52574692"
+                )
+            )
+        )
+        order.click()
+
+        # wait for the PopUpWindow to visible
+        wait.until(
+            self.found_window('PopUpWindowreservation')
+        )
+        # ensure we have two windows available
+        self.assertEqual(2, len(browser.window_handles))
+
+        # Check that order is possible
+        input = wait.until(
+            EC.visibility_of_element_located(
+                (
+                    By.ID, "edit-anyfield"
+                )
+            )
+        )
 
     def is_object_disabled(self, obj):
         return self.class_in_attributes("disabled", obj)

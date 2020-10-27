@@ -233,7 +233,6 @@ function bibdk_reservation_create_wizard_form($form, &$form_state) {
   else {
     $bibdk_work_entity = BibdkReservationOrderObject::GetObject()->getwork();
   }
-
   if ($bibdk_work_entity->isReservable()) {
 
     $step = $form_state['step'];
@@ -598,7 +597,7 @@ function bibdk_reservation_get_manifestation($id) {
     foreach($id as $pid) {
       $result = ting_openformat_get_manifestations($pid);
       if (isset($result[$pid]->manifestations[$pid]->manifestation->adminData->requestButton) &&
-          $result[$pid]->manifestations[$pid]->manifestation->adminData->requestButton->{'$'} === true) {
+          $result[$pid]->manifestations[$pid]->manifestation->adminData->requestButton->{'$'} === 'true') {
         break;
       }
     }
