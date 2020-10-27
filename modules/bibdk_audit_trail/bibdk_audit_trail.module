@@ -7,41 +7,38 @@
 /**
  * Implements foo
  */
-function bibdk_audit_trail_page_build() {
+function bibdk_audit_trail_page_build($action, $user_id, $access_info) {
 
-  $info = libraries_load('audittrail');
-  if ($info['audittrail'] === FALSE) {
-    if (class_exists('DBC\AT\AuditTrail')) {
-      if (isset($_SESSION['heimdal']) && !empty($_SESSION['heimdal'])) {
-        // Token can either be Heimdals access_token or the agency from the Netpunkt Triple. The Netpunkt triple is only
-        // used by DBC.
-        $token = (isset($_SESSION['heimdal']['access_token']) && !empty($_SESSION['heimdal']['access_token'])) ?
-          $_SESSION['heimdal']['access_token'] : "DBC-" . $_SESSION['agency'];
-        $ipAddress = ip_address();
-        var_dump($_SESSION);
-        /*
-        try {
-          DBC\AT\AuditTrail::log(
-            $token,
-            ((!is_array($ipAddress)) ? [$ipAddress] : $ipAddress),
-            'Netpunkt',
-            'write',
-            $data['userId'],
-            [
-              'orderId' => $data['orderId'],
-              'userId' => $data['userId'],
-              'userName' => $data['userName'],
-              'userMail' => $data['userMail']
-            ]
-          );
-        } catch (Exception $e) {
-          watchdog('netpunkt_reservation', $e->getMessage(), [], WATCHDOG_ERROR);
+  if (user_is_logged_in()) {
+    $info = libraries_load('audittrail');
+    if ($info['audittrail'] !== FALSE && $info['audittrail'] !== 0) {
+      if (class_exists('DBC\AT\AuditTrail')) {
+        if (isset($_SESSION['heimdal']) && !empty($_SESSION['heimdal'])) {
+          // Token can either be Heimdals access_token or the agency from the Netpunkt Triple. The Netpunkt triple is only
+          // used by DBC.
+          $token = (isset($_SESSION['heimdal']['access_token']) && !empty($_SESSION['heimdal']['access_token'])) ?
+            $_SESSION['heimdal']['access_token'] : "DBC-" . $_SESSION['agency'];
+          $ipAddress = ip_address();
+          echo $token;
+          /*
+          try {
+            DBC\AT\AuditTrail::log(
+              $token,
+              ((!is_array($ipAddress)) ? [$ipAddress] : $ipAddress),
+              'BibliotekDK',
+              $action,
+              $user_id,
+              $access_info
+            );
+          } catch (Exception $e) {
+            watchdog('netpunkt_reservation', $e->getMessage(), [], WATCHDOG_ERROR);
+          }
+          */
         }
-        */
       }
+    } else {
+      echo 'libraries_load is false or zero - bum';
     }
-  } else {
-    echo 'libraries_load is false - bum';
   }
 }
 

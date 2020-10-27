@@ -23,9 +23,9 @@ libraries[slick][download][tag] = '1.8.0'
 
 libraries[audit][destination] = libraries
 libraries[audit][directory_name] = audit
-; libraries[audit][download][type] = git
+libraries[audit][download][type] = git
 libraries[audit][download][url] = https://gitlab.dbc.dk/pu/audit/audit-trail-php-library.git
-; libraries[audit][download][tag] = '1.8.0'
+libraries[audit][download][branch] = 'codereview'
 
 ; --- Theming ---
 ; New bibliotek.dk theme
