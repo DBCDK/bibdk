@@ -8,25 +8,40 @@
  * Implements foo
  */
 function bibdk_audit_trail_page_build() {
-  try {
-    if ($path = libraries_get_path('audittrail')) {
-      $path .= '/src/' . 'AuditTrail.php';
-      /*
-      include_once $path;
-      DBC\AT\AuditTrail::log(
-        'thisisalogintoken',
-        ['012.345.678.9', '123.456.789.0'],
-        'bibliotek.dk',
-        'read',
-        'owningUser'
-        ['accessInfo']
-      );
-      */
+
+  $info = libraries_load('audittrail');
+  if ($info['audittrail'] === FALSE) {
+    if (class_exists('DBC\AT\AuditTrail')) {
+      if (isset($_SESSION['heimdal']) && !empty($_SESSION['heimdal'])) {
+        // Token can either be Heimdals access_token or the agency from the Netpunkt Triple. The Netpunkt triple is only
+        // used by DBC.
+        $token = (isset($_SESSION['heimdal']['access_token']) && !empty($_SESSION['heimdal']['access_token'])) ?
+          $_SESSION['heimdal']['access_token'] : "DBC-" . $_SESSION['agency'];
+        $ipAddress = ip_address();
+        var_dump($_SESSION);
+        /*
+        try {
+          DBC\AT\AuditTrail::log(
+            $token,
+            ((!is_array($ipAddress)) ? [$ipAddress] : $ipAddress),
+            'Netpunkt',
+            'write',
+            $data['userId'],
+            [
+              'orderId' => $data['orderId'],
+              'userId' => $data['userId'],
+              'userName' => $data['userName'],
+              'userMail' => $data['userMail']
+            ]
+          );
+        } catch (Exception $e) {
+          watchdog('netpunkt_reservation', $e->getMessage(), [], WATCHDOG_ERROR);
+        }
+        */
+      }
     }
-  }
-  catch (Exception $e) {
-    // Exception thrown, log error and carry on.
-    watchdog('bibdk_audit', 'AuditTrail exception, message: @message', array('@message' => $e->getMessage()), WATCHDOG_ERROR);
+  } else {
+    echo 'libraries_load is false - bum';
   }
 }
 
