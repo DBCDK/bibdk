@@ -93,3 +93,14 @@ function bibdk_audit_trail_libraries_info() {
 function bibdk_audit_trail_version_callback() {
   return TRUE;
 }
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function bibdk_audit_trail_form_bibdk_reservation_create_wizard_form_alter(&$form, &$form_state) {
+  $form['#validate'][] = 'bibdk_audit_trail_bibdk_reservation_create_wizard_form_validate';
+}
+
+function bibdk_audit_trail_bibdk_reservation_create_wizard_form_validate($form, &$form_state) {
+  watchdog('bibdk_audit_trail', 'validate function used', [], WATCHDOG_INFO);
+}
