@@ -13,26 +13,13 @@ function bibdk_audit_trail_submit_data($action, $user_id, $access_info) {
 
   global $user;
   $info = libraries_load('audit');
-  if ($info['audit'] !== FALSE && $info['audit'] !== 0) {
-
+  if ($info !== FALSE && $info !== 0) {
     if (class_exists('DBC\AT\AuditTrail')) {
       if (isset($_SESSION['heimdal']) && !empty($_SESSION['heimdal'])) {
         // This is not about the account being watched or edited - but who is looking.
         $token = (isset($_SESSION['heimdal']['access_token']) && !empty($_SESSION['heimdal']['access_token'])) ?
           $_SESSION['heimdal']['access_token'] : $user->uid;
         $ipAddress = ip_address();
-        watchdog(
-          'bibdk_audit_trail', 'TOKEN: @token IPADDRESS: @ipaddress ACCESS: @access USERID: @userid ACTION: @action',
-          [
-            '@token' => $token,
-            '@ipaddress' => $ipAddress,
-            '@access' => json_encode($access_info),
-            '@userid' => $user_id,
-            '@action' => $action
-          ],
-          WATCHDOG_INFO
-        );
-        /*
         try {
           DBC\AT\AuditTrail::log(
             $token,
@@ -45,7 +32,6 @@ function bibdk_audit_trail_submit_data($action, $user_id, $access_info) {
         } catch (Exception $e) {
           watchdog('bibdk_audit_trail', $e->getMessage(), [], WATCHDOG_ERROR);
         }
-        */
       } else {
         watchdog('bibdk_audit_trail', 'Heimdal not found in session', [], WATCHDOG_ERROR);
       }
@@ -65,10 +51,7 @@ function bibdk_audit_trail_submit_data($action, $user_id, $access_info) {
  * @param $category
  */
 function bibdk_audit_trail_user_update(&$edit, $account, $category) {
-
-  $data = ['account_uid' => $account->uid];
-  bibdk_audit_trail_submit_data('write', $account->uid, $data);
-
+  bibdk_audit_trail_submit_data('write', $account->uid, _bibdk_audit_trail_access_info($account));
 }
 
 /**
@@ -76,9 +59,17 @@ function bibdk_audit_trail_user_update(&$edit, $account, $category) {
  */
 function bibdk_audit_trail_user_load($users) {
   foreach($users AS $user) {
-    $data = [];
-    bibdk_audit_trail_submit_data('read', $user->uid, $data);
+    bibdk_audit_trail_submit_data('read', $user->uid, _bibdk_audit_trail_access_info($user));
   }
+}
+
+function _bibdk_audit_trail_access_info($user) {
+  return [
+    'account_uid' => $user->uid,
+    'account_mail' => $user->mail,
+    'account_name' => $user->name,
+    'current_path' => current_path()
+  ];
 }
 
 /**
