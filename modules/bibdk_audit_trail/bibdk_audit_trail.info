@@ -1,8 +1,8 @@
-name = Bibliotek.dk - mobile frontend
-description = Handles visual setup of the bibdk profile such as blocks etc.
+name = Bibliotek.dk - Audit trail
+description = Handles the communication with the AuditTrail PHP library
 core = 7.x
-version = 7.x-0.15
-package = Bibdk mobile frontend
+version = 7.x-0.1
+package = Bibdk
 project = bibliotekdk
 
 dependencies[] = libraries
