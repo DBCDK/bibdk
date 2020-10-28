@@ -12,8 +12,9 @@
 function bibdk_audit_trail_submit_data($action, $user_id, $access_info) {
 
   global $user;
-  $info = libraries_load('audittrail');
-  if ($info['audittrail'] !== FALSE && $info['audittrail'] !== 0) {
+  $info = libraries_load('audit');
+  if ($info['audit'] !== FALSE && $info['audit'] !== 0) {
+
     if (class_exists('DBC\AT\AuditTrail')) {
       if (isset($_SESSION['heimdal']) && !empty($_SESSION['heimdal'])) {
         // This is not about the account being watched or edited - but who is looking.
@@ -78,4 +79,26 @@ function bibdk_audit_trail_user_load($users) {
     $data = [];
     bibdk_audit_trail_submit_data('read', $user->uid, $data);
   }
+}
+
+/**
+ * Implements hook_libraries_info().
+ */
+function bibdk_audit_trail_libraries_info() {
+  $libraries['audit'] = array(
+    'name' => 'Audit Trail',
+    'vendor url' => 'https://dbc.dk',
+    'version callback' => 'bibdk_audit_trail_version_callback',
+    'files' => array(
+      'php' => array(
+        'src/AuditTrail.php',
+      ),
+    ),
+  );
+
+  return $libraries;
+}
+
+function bibdk_audit_trail_version_callback() {
+  return TRUE;
 }
