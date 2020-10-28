@@ -5,61 +5,73 @@
  */
 
 /**
- * Implements foo
+ * @param string $action
+ * @param string $user_id
+ * @param array $access_info
  */
-function bibdk_audit_trail_page_build($action, $user_id, $access_info) {
+function bibdk_audit_trail_submit_data($action, $user_id, $access_info) {
 
-  if (user_is_logged_in()) {
-    $info = libraries_load('audittrail');
-    if ($info['audittrail'] !== FALSE && $info['audittrail'] !== 0) {
-      if (class_exists('DBC\AT\AuditTrail')) {
-        if (isset($_SESSION['heimdal']) && !empty($_SESSION['heimdal'])) {
-          // Token can either be Heimdals access_token or the agency from the Netpunkt Triple. The Netpunkt triple is only
-          // used by DBC.
-          $token = (isset($_SESSION['heimdal']['access_token']) && !empty($_SESSION['heimdal']['access_token'])) ?
-            $_SESSION['heimdal']['access_token'] : "DBC-" . $_SESSION['agency'];
-          $ipAddress = ip_address();
-          echo $token;
-          /*
-          try {
-            DBC\AT\AuditTrail::log(
-              $token,
-              ((!is_array($ipAddress)) ? [$ipAddress] : $ipAddress),
-              'BibliotekDK',
-              $action,
-              $user_id,
-              $access_info
-            );
-          } catch (Exception $e) {
-            watchdog('netpunkt_reservation', $e->getMessage(), [], WATCHDOG_ERROR);
-          }
-          */
+  global $user;
+  $info = libraries_load('audittrail');
+  if ($info['audittrail'] !== FALSE && $info['audittrail'] !== 0) {
+    if (class_exists('DBC\AT\AuditTrail')) {
+      if (isset($_SESSION['heimdal']) && !empty($_SESSION['heimdal'])) {
+        // This is not about the account being watched or edited - but who is looking.
+        $token = (isset($_SESSION['heimdal']['access_token']) && !empty($_SESSION['heimdal']['access_token'])) ?
+          $_SESSION['heimdal']['access_token'] : $user->uid;
+        $ipAddress = ip_address();
+        watchdog(
+          'bibdk_audit_trail', 'TOKEN: @token IPADDRESS: @ipaddress ACCESS: @access USERID: @userid ACTION: @action',
+          [
+            '@token' => $token,
+            '@ipaddress' => $ipAddress,
+            '@access' => json_encode($access_info),
+            '@userid' => $user_id,
+            '@action' => $action
+          ],
+          WATCHDOG_INFO
+        );
+        /*
+        try {
+          DBC\AT\AuditTrail::log(
+            $token,
+            ((!is_array($ipAddress)) ? [$ipAddress] : $ipAddress),
+            'BibliotekDK',
+            $action,
+            $user_id,
+            $access_info
+          );
+        } catch (Exception $e) {
+          watchdog('bibdk_audit_trail', $e->getMessage(), [], WATCHDOG_ERROR);
         }
+        */
       }
-    } else {
-      echo 'libraries_load is false or zero - bum';
     }
+  } else {
+    watchdog('bibdk_audit_trail', 'libraries_load is false or zero', [], WATCHDOG_ERROR);
   }
 }
 
 /**
- * Implements hook_bibdk_audit_trail().
+ * Implements hook_user_update().
+ *
+ * @param $edit
+ * @param $account
+ * @param $category
  */
-function bibdk_audit_trail_bibdk_audit_trail() {
-  global $user;
-  $ret = array();
-  $ret['audit_trail']['foo0'] = 'bar';
-  $ret['audit_trail']['foo1'] = 'bar';
-  $ret['audit_trail']['foo2'] = 'bar';
-  $ret['audit_trail']['foo3'] = 'bar';
-  return $ret;
+function bibdk_audit_trail_user_update(&$edit, $account, $category) {
+
+  $data = ['account_uid' => $account->uid];
+  bibdk_audit_trail_submit_data('write', $account->uid, $data);
+
 }
 
-// debugging
-function log_to_file($text, $header = null) {
-  $file =  './drupal_debug.txt';
-  $header = !empty($header) ? $header . ' -> ' : null;
-  $f = fopen($file, 'a');
-  fwrite($f, date('Ymd H:i:s - ') . $header . print_r($text, 1) . "\n");
-  fclose($f);
+/**
+ * Implements hook_user_load().
+ */
+function bibdk_audit_trail_user_load($users) {
+  foreach($users AS $user) {
+    $data = [];
+    bibdk_audit_trail_submit_data('read', $user->uid, $data);
+  }
 }
