@@ -45,7 +45,11 @@ function bibdk_audit_trail_submit_data($action, $user_id, $access_info) {
           watchdog('bibdk_audit_trail', $e->getMessage(), [], WATCHDOG_ERROR);
         }
         */
+      } else {
+        watchdog('bibdk_audit_trail', 'Heimdal not found in session', [], WATCHDOG_ERROR);
       }
+    } else {
+      watchdog('bibdk_audit_trail', 'AuditTrail class not found', [], WATCHDOG_ERROR);
     }
   } else {
     watchdog('bibdk_audit_trail', 'libraries_load is false or zero', [], WATCHDOG_ERROR);
