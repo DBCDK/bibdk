@@ -12,9 +12,9 @@ The audit trail is need due to GDPR. we need to be able to prove who is watching
  There is no return value on this function.
  ```php
  /**
-  * @params string $action Must be either read or write.
-  * @params string $owning_user The owner of the data been loaded or written. It can be either a token or $user->uid.
-  * @params array $access_info The important data like email, username, orderId etc.
+  * @param string $action Must be either read or write.
+  * @param string $owning_user The owner of the data been loaded or written. It can be either a token or $user->uid.
+  * @param array $access_info The important data like email, username, orderId etc.
   */
  bibdk_audit_trail_submit_data(
    $action,

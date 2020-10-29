@@ -5,9 +5,11 @@
  */
 
 /**
- * @param string $action
- * @param string $user_id
- * @param array $access_info
+ * This is the main function for this module. It submits data to the PHP library AuditTrail.
+ *
+ * @param string $action Must be either read or write.
+ * @param string $owning_user The owner of the data been loaded or written. It can be either a token or $user->uid.
+ * @param array $access_info The important data like email, username, orderId etc.
  */
 function bibdk_audit_trail_submit_data($action, $owning_user, $access_info) {
 
