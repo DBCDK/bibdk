@@ -1,9 +1,0 @@
-<?php
-
-function bibdk_audit_trail_install() {
-  _bibdk_audit_trail_set_variables();
-}
-
-function _bibdk_audit_trail_set_variables() {
-  variable_set('bibdk_audit_trail_foo', 'bar');
-}
