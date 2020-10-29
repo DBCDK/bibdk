@@ -9,37 +9,39 @@
  * @param string $user_id
  * @param array $access_info
  */
-function bibdk_audit_trail_submit_data($action, $user_id, $access_info) {
+function bibdk_audit_trail_submit_data($action, $owning_user, $access_info) {
 
-  global $user;
-  $info = libraries_load('audit');
-  if ($info !== FALSE && $info !== 0) {
-    if (class_exists('DBC\AT\AuditTrail')) {
-      if (isset($_SESSION['heimdal']) && !empty($_SESSION['heimdal'])) {
-        // This is not about the account being watched or edited - but who is looking.
-        $token = (isset($_SESSION['heimdal']['access_token']) && !empty($_SESSION['heimdal']['access_token'])) ?
-          $_SESSION['heimdal']['access_token'] : $user->uid;
-        $ipAddress = ip_address();
-        try {
-          DBC\AT\AuditTrail::log(
-            $token,
-            ((!is_array($ipAddress)) ? [$ipAddress] : $ipAddress),
-            'BibliotekDK',
-            $action,
-            $user_id,
-            $access_info
-          );
-        } catch (Exception $e) {
-          watchdog('bibdk_audit_trail', $e->getMessage(), [], WATCHDOG_ERROR);
+  if (user_is_logged_in()) {
+    global $user;
+    $info = libraries_load('audit');
+    if ($info !== FALSE && $info !== 0) {
+      if (class_exists('DBC\AT\AuditTrail')) {
+        if (isset($_SESSION['heimdal']) && !empty($_SESSION['heimdal'])) {
+          // This is not about the account being watched or edited - but who is looking.
+          $token = (isset($_SESSION['heimdal']['access_token']) && !empty($_SESSION['heimdal']['access_token'])) ?
+            $_SESSION['heimdal']['access_token'] : $user->uid;
+          $ipAddress = ip_address();
+          try {
+            DBC\AT\AuditTrail::log(
+              $token,
+              ((!is_array($ipAddress)) ? [$ipAddress] : $ipAddress),
+              'BibliotekDK',
+              $action,
+              $owning_user,
+              $access_info
+            );
+          } catch (Exception $e) {
+            watchdog('bibdk_audit_trail', $e->getMessage(), [], WATCHDOG_ERROR);
+          }
+        } else {
+          watchdog('bibdk_audit_trail', 'Heimdal not found in session', [], WATCHDOG_ERROR);
         }
       } else {
-        watchdog('bibdk_audit_trail', 'Heimdal not found in session', [], WATCHDOG_ERROR);
+        watchdog('bibdk_audit_trail', 'AuditTrail class not found', [], WATCHDOG_ERROR);
       }
     } else {
-      watchdog('bibdk_audit_trail', 'AuditTrail class not found', [], WATCHDOG_ERROR);
+      watchdog('bibdk_audit_trail', 'libraries_load is false or zero', [], WATCHDOG_ERROR);
     }
-  } else {
-    watchdog('bibdk_audit_trail', 'libraries_load is false or zero', [], WATCHDOG_ERROR);
   }
 }
 
@@ -63,13 +65,20 @@ function bibdk_audit_trail_user_load($users) {
   }
 }
 
-function _bibdk_audit_trail_access_info($user) {
-  return [
+/**
+ * @param object $user
+ * @param array $extra_info
+ * @return array
+ */
+function _bibdk_audit_trail_access_info($user, $extra_info = array()) {
+  $data = [
     'account_uid' => $user->uid,
     'account_mail' => $user->mail,
     'account_name' => $user->name,
     'current_path' => current_path()
   ];
+
+  return (!empty($extra_info)) ? array_merge($data, $extra_info) : $data;
 }
 
 /**
@@ -102,5 +111,33 @@ function bibdk_audit_trail_form_bibdk_reservation_create_wizard_form_alter(&$for
 }
 
 function bibdk_audit_trail_bibdk_reservation_create_wizard_form_validate($form, &$form_state) {
-  watchdog('bibdk_audit_trail', 'validate function used', [], WATCHDOG_INFO);
+  $_SESSION['bibdk_audit']['formUserName'] = $form_state['values']['userName'];
+  $_SESSION['bibdk_audit']['formUserId'] = $form_state['values']['userId'];
+}
+
+/**
+ * Implements hook_bibdk_reservation_complete().
+ */
+function bibdk_audit_trail_bibdk_reservation_complete($pids, $result) {
+
+  global $user;
+  if (isset($_SESSION['bibdk_audit'])) {
+
+    if (isset($result->orderId)) {
+      $_SESSION['bibdk_audit']['orderId'] = $result->orderId;
+    }
+    bibdk_audit_trail_submit_data(
+      'write',
+      $user->uid,
+      _bibdk_audit_trail_access_info($user, $_SESSION['bibdk_audit'])
+    );
+    unset($_SESSION['bibdk_audit']);
+  } else {
+    watchdog(
+      'bibdk_audit_trail',
+      'bibdk_audit session is missing.',
+      [],
+      WATCHDOG_ERROR
+    );
+  }
 }
