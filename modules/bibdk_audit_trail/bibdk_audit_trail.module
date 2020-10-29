@@ -43,6 +43,7 @@ function bibdk_audit_trail_submit_data($action, $owning_user, $access_info) {
 
 /**
  * Implements hook_user_update().
+ * Everytime a users data is being written, we need to know.
  *
  * @param $edit
  * @param $account
@@ -55,6 +56,9 @@ function bibdk_audit_trail_user_update(&$edit, $account, $category) {
 
 /**
  * Implements hook_user_load().
+ * Everytime a users data is loaded, we need to know.
+ *
+ * @param $users
  */
 function bibdk_audit_trail_user_load($users) {
 
@@ -113,7 +117,7 @@ function bibdk_audit_trail_form_bibdk_reservation_create_wizard_form_alter(&$for
 
 /**
  * A Validation function that does not validate.
- * Its only purpose is to store the data until we get to bibdk_audit_trail_bibdk_reservation_complete().
+ * Its only purpose is to store the data, until we get to bibdk_audit_trail_bibdk_reservation_complete().
  * @see bibdk_audit_trail_bibdk_reservation_complete().
  *
  * @param $form
