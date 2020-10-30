@@ -715,3 +715,9 @@ function bibdk_update_7070(&$sandbox) {
     'bibdk_saou',
   ));
 }
+
+/** Enable Bibkdk_audit_trail module */
+function bibdk_update_7071() {
+  $modules = array('bibdk_audit_trail');
+  module_enable($modules);
+}
