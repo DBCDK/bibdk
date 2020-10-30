@@ -25,7 +25,6 @@ libraries[audit][destination] = libraries
 libraries[audit][directory_name] = audit
 libraries[audit][download][type] = git
 libraries[audit][download][url] = gitlab@gitlab.dbc.dk:pu/audit/audit-trail-php-library.git
-libraries[audit][download][branch] = 'codereview'
 
 ; --- Theming ---
 ; New bibliotek.dk theme
