@@ -26,6 +26,7 @@ function _bibdk_enable_modules() {
     'ask_vopros',
     'views',
     'bibdk_actions',
+    'bibdk_audit_trail',
     'bibdk_ajax_error_behavior',
     'bibdk_cart',
     'bibdkcaptcha',
