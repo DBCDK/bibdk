@@ -1,0 +1,172 @@
+<?php
+
+/**
+ * Add Audit Trail for Bibliotek.dk
+ */
+
+/**
+ * This is the main function for this module. It submits data to the PHP library AuditTrail.
+ *
+ * @param string $action Must be either read or write.
+ * @param string $owning_user The owner of the data been loaded or written. It can be either a token or $user->uid.
+ * @param array $access_info The important data like email, username, orderId etc.
+ */
+function bibdk_audit_trail_submit_data($action, $owning_user, $access_info) {
+
+  if (user_is_logged_in()) {
+    global $user;
+    $info = libraries_load('audit');
+    if ($info !== FALSE && $info !== 0) {
+      if (class_exists('DBC\AT\AuditTrail')) {
+        // This is not about the account being watched or edited - but who is looking.
+        $token = (isset($_SESSION['heimdal']['access_token']) && !empty($_SESSION['heimdal']['access_token'])) ?
+          $_SESSION['heimdal']['access_token'] : $user->uid;
+        $ipAddress = ip_address();
+        try {
+          DBC\AT\AuditTrail::log(
+            $token,
+            ((!is_array($ipAddress)) ? [$ipAddress] : $ipAddress),
+            'BibliotekDK',
+            $action,
+            $owning_user,
+            $access_info
+          );
+        } catch (Exception $e) {
+          watchdog('bibdk_audit_trail', $e->getMessage(), [], WATCHDOG_ERROR);
+        }
+      } else {
+        watchdog('bibdk_audit_trail', 'AuditTrail class not found', [], WATCHDOG_ERROR);
+      }
+    } else {
+      watchdog('bibdk_audit_trail', 'libraries_load is false or zero', [], WATCHDOG_ERROR);
+    }
+  }
+}
+
+/**
+ * Implements hook_user_update().
+ * Everytime a users data is being written, we need to know.
+ *
+ * @param $edit
+ * @param $account
+ * @param $category
+ */
+function bibdk_audit_trail_user_update(&$edit, $account, $category) {
+
+  bibdk_audit_trail_submit_data('write', $account->uid, _bibdk_audit_trail_access_info($account));
+}
+
+/**
+ * Implements hook_user_load().
+ * Everytime a users data is loaded, we need to know.
+ *
+ * @param $users
+ */
+function bibdk_audit_trail_user_load($users) {
+
+  foreach($users AS $user) {
+    bibdk_audit_trail_submit_data('read', $user->uid, _bibdk_audit_trail_access_info($user));
+  }
+}
+
+/**
+ * @param object $user
+ * @param array $extra_info
+ * @return array
+ */
+function _bibdk_audit_trail_access_info($user, $extra_info = array()) {
+
+  $data = [
+    'account_uid' => $user->uid,
+    'account_mail' => $user->mail,
+    'account_name' => $user->name,
+    'current_path' => current_path()
+  ];
+
+  return (!empty($extra_info)) ? array_merge($data, $extra_info) : $data;
+}
+
+/**
+ * Implements hook_libraries_info().
+ */
+function bibdk_audit_trail_libraries_info() {
+
+  $libraries['audit'] = array(
+    'name' => 'Audit Trail',
+    'vendor url' => 'https://dbc.dk',
+    'version callback' => 'bibdk_audit_trail_version_callback',
+    'files' => array(
+      'php' => array(
+        'src/AuditTrail.php',
+      ),
+    ),
+  );
+
+  return $libraries;
+}
+
+function bibdk_audit_trail_version_callback() {
+  return TRUE;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function bibdk_audit_trail_form_bibdk_reservation_create_wizard_form_alter(&$form, &$form_state) {
+
+  $form['#validate'][] = 'bibdk_audit_trail_bibdk_reservation_create_wizard_form_validate';
+}
+
+/**
+ * A Validation function that does not validate.
+ * Its only purpose is to store the data, until we get to bibdk_audit_trail_bibdk_reservation_complete().
+ * @see bibdk_audit_trail_bibdk_reservation_complete().
+ *
+ * @param $form
+ * @param $form_state
+ */
+function bibdk_audit_trail_bibdk_reservation_create_wizard_form_validate($form, &$form_state) {
+
+  if (isset($form_state['values']['userName'])) {
+    $_SESSION['bibdk_audit']['formUserName'] = $form_state['values']['userName'];
+  }
+  if (isset($form_state['values']['userId'])) {
+    $_SESSION['bibdk_audit']['formUserId'] = $form_state['values']['userId'];
+  }
+}
+
+/**
+ * Implements hook_bibdk_reservation_complete().
+ *
+ * @param array $pids
+ * @param object $result
+ */
+function bibdk_audit_trail_bibdk_reservation_complete($pids, $result) {
+
+  if (isset($_SESSION['bibdk_audit'])) {
+    global $user;
+    if (isset($result->orderId) && !empty($result->orderId)) {
+      $_SESSION['bibdk_audit']['orderId'] = $result->orderId;
+    } else {
+      watchdog(
+        'bibdk_audit_trail',
+        'Order complete, but no orderId',
+        [],
+        WATCHDOG_ERROR
+      );
+    }
+    bibdk_audit_trail_submit_data(
+      'write',
+      $_SESSION['bibdk_audit']['formUserId'],
+      _bibdk_audit_trail_access_info($user, $_SESSION['bibdk_audit'])
+    );
+    unset($_SESSION['bibdk_audit']);
+  } else {
+    watchdog(
+      'bibdk_audit_trail',
+      'bibdk_audit session is missing.',
+      [],
+      WATCHDOG_ERROR
+    );
+  }
+}

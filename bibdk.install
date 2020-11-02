@@ -26,6 +26,7 @@ function _bibdk_enable_modules() {
     'ask_vopros',
     'views',
     'bibdk_actions',
+    'bibdk_audit_trail',
     'bibdk_ajax_error_behavior',
     'bibdk_cart',
     'bibdkcaptcha',
@@ -713,4 +714,10 @@ function bibdk_update_7070(&$sandbox) {
   module_disable(array(
     'bibdk_saou',
   ));
+}
+
+/** Enable Bibkdk_audit_trail module */
+function bibdk_update_7071() {
+  $modules = array('bibdk_audit_trail');
+  module_enable($modules);
 }
