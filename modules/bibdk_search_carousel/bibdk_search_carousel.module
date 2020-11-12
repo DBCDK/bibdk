@@ -125,7 +125,7 @@ function bibdk_search_carousel_ctools_plugin_directory($module, $plugin) {
  * query index set in the administration backend, when defining the tabs.
  *
  * If no cache is found, it tries to search the data well repeatedly until
- * BIBDK_SEARCH_CAROUSEL_COVERS_MAX or BIBDK_SEARCH_CAROUSEL_QUERIES_MAX is reached. 
+ * BIBDK_SEARCH_CAROUSEL_COVERS_MAX or BIBDK_SEARCH_CAROUSEL_QUERIES_MAX is reached.
  * If data still do not exists, an empty string is returned.
  *
  * @param int $index
@@ -140,16 +140,19 @@ function bibdk_search_carousel_ctools_plugin_directory($module, $plugin) {
 function _bibdk_search_carousel_get_content($index = 0, $bibdk_seach_queries = array())  {
 
   global $language;
-  
+
   if (empty($bibdk_seach_queries[$index]['query'])) {
     return array();
   }
 
   $cache_key = 'bibdk_search_carousel_content_' . $language->language . drupal_html_id(md5($bibdk_seach_queries[$index]['query'], TRUE));
 
-  if ($cache = cache_get($cache_key, 'cache')) {
-    return $cache->data;
+  if ($cache = cache_get($cache_key, 'cache_bibdk_carousel')) {
+    if(!empty($cache->data)) {
+      return $cache->data;
+    }
   }
+
 
   $query = $bibdk_seach_queries[$index];
 
@@ -264,11 +267,27 @@ function _bibdk_search_carousel_get_content($index = 0, $bibdk_seach_queries = a
   }
 
   if (!empty($cover_items)) {
-    cache_set($cache_key, $cover_items, 'cache');
+    cache_set($cache_key, $cover_items, 'cache_bibdk_carousel', CACHE_TEMPORARY);
   }
 
   return $cover_items;
 
+}
+
+/**
+ * Implements hook_cron
+ */
+function bibdk_search_carousel_cron(){
+  cache_clear_all('*', 'cache_bibdk_carousel', TRUE);
+}
+
+/**
+ * Implement hook_flush_cache
+ */
+function bibdk_search_carousel_flush_caches(){
+  return array(
+    'cache_bibdk_carousel',
+  );
 }
 
 
