@@ -62,7 +62,6 @@ function bibdk_search_carousel_menu() {
 }
 
 
-
 /**
  * Implements hook_help().
  */
@@ -71,10 +70,9 @@ function bibdk_search_carousel_help($path, $arg) {
     case 'admin/help#bibdk_search_carousel';
       $file = drupal_get_path('module', 'bibdk_search_carousel') . "/help/bibdk_search_carousel.php";
       return $output = file_get_contents($file);
-    break;
+      break;
   }
 }
-
 
 
 /**
@@ -92,10 +90,10 @@ function bibdk_search_carousel_theme($existing, $type, $theme, $path) {
     ),
     'bibdk_search_carousel_item' => array(
       'variables' => array(
-        'image'   => NULL,
-        'title'   => NULL,
+        'image' => NULL,
+        'title' => NULL,
         'creator' => NULL,
-        'url'     => NULL,
+        'url' => NULL,
       ),
       'template' => 'templates/bibdk_search_carousel_item',
       'file' => 'bibdk_search_carousel.theme.inc',
@@ -105,7 +103,6 @@ function bibdk_search_carousel_theme($existing, $type, $theme, $path) {
     ),
   );
 }
-
 
 
 /**
@@ -118,15 +115,15 @@ function bibdk_search_carousel_ctools_plugin_directory($module, $plugin) {
 }
 
 
-
 /**
- * Returns the content for a search carousel tab. It utilizes cache to optimize the cover page search.
- * It will fill the cache based on the tab index provided. This index matches the search carousel
- * query index set in the administration backend, when defining the tabs.
+ * Returns the content for a search carousel tab. It utilizes cache to optimize
+ * the cover page search. It will fill the cache based on the tab index
+ * provided. This index matches the search carousel query index set in the
+ * administration backend, when defining the tabs.
  *
  * If no cache is found, it tries to search the data well repeatedly until
- * BIBDK_SEARCH_CAROUSEL_COVERS_MAX or BIBDK_SEARCH_CAROUSEL_QUERIES_MAX is reached.
- * If data still do not exists, an empty string is returned.
+ * BIBDK_SEARCH_CAROUSEL_COVERS_MAX or BIBDK_SEARCH_CAROUSEL_QUERIES_MAX is
+ * reached. If data still do not exists, an empty string is returned.
  *
  * @param int $index
  *  Search carsousel tab index.
@@ -137,7 +134,7 @@ function bibdk_search_carousel_ctools_plugin_directory($module, $plugin) {
  * @return array
  *  Returns a render array or the empty array if no covers are found.
  */
-function _bibdk_search_carousel_get_content($index = 0, $bibdk_seach_queries = array())  {
+function _bibdk_search_carousel_get_content($index = 0, $bibdk_seach_queries = array()) {
 
   global $language;
 
@@ -148,7 +145,7 @@ function _bibdk_search_carousel_get_content($index = 0, $bibdk_seach_queries = a
   $cache_key = 'bibdk_search_carousel_content_' . $language->language . drupal_html_id(md5($bibdk_seach_queries[$index]['query'], TRUE));
 
   if ($cache = cache_get($cache_key, 'cache_bibdk_carousel')) {
-    if(!empty($cache->data)) {
+    if (!empty($cache->data)) {
       return $cache->data;
     }
   }
@@ -221,7 +218,8 @@ function _bibdk_search_carousel_get_content($index = 0, $bibdk_seach_queries = a
     // Loop over the search results collecting basic object information.
     foreach ($ting_client_search_result->collections as $ting_client_object_collection) {
 
-      $manifestations = $ting_client_object_collection->getFormattedCollection()->getBriefDisplay()->manifestation;
+      $manifestations = $ting_client_object_collection->getFormattedCollection()
+        ->getBriefDisplay()->manifestation;
 
       foreach ($manifestations as $manifestation) {
 
@@ -243,17 +241,17 @@ function _bibdk_search_carousel_get_content($index = 0, $bibdk_seach_queries = a
             $url = url(
               'search/work/',
               array(
-                'query' => array('search_block_form' => 'rec.id='. $item['pid']),
+                'query' => array('search_block_form' => 'rec.id=' . $item['pid']),
                 'fragment' => 'content',
                 'html' => TRUE,
               )
             );
             $cover_items[] = array(
-              '#theme'   => 'bibdk_search_carousel_item',
-              '#image'   => $cover_url,
-              '#title'   => (!empty($manifestation->title->{'$'})) ? $manifestation->title->{'$'} : NULL,
+              '#theme' => 'bibdk_search_carousel_item',
+              '#image' => $cover_url,
+              '#title' => (!empty($manifestation->title->{'$'})) ? $manifestation->title->{'$'} : NULL,
               '#creator' => (!empty($manifestation->creator->{'$'})) ? $manifestation->creator->{'$'} : NULL,
-              '#url'     => $url,
+              '#url' => $url,
             );
           }
         }
@@ -277,14 +275,14 @@ function _bibdk_search_carousel_get_content($index = 0, $bibdk_seach_queries = a
 /**
  * Implements hook_cron
  */
-function bibdk_search_carousel_cron(){
+function bibdk_search_carousel_cron() {
   cache_clear_all('*', 'cache_bibdk_carousel', TRUE);
 }
 
 /**
  * Implement hook_flush_cache
  */
-function bibdk_search_carousel_flush_caches(){
+function bibdk_search_carousel_flush_caches() {
   return array(
     'cache_bibdk_carousel',
   );
@@ -309,10 +307,10 @@ function bibdk_search_carousel_bibdk_search_carousel_query($query) {
   $periods = array();
   for ($n = 0; $n < $query['period']; $n++) {
     $offset = $query['offset'];
-    $weeks = $week * ( $n + $offset );
+    $weeks = $week * ($n + $offset);
     $periods[] = date($bibdk_dateformat, $today - $weeks);
   }
-  if ( !empty($periods)  ) {
+  if (!empty($periods)) {
     $query['query'] = $query['query'] . $bibdk_query_prefix . implode(CQL_OR, $periods) . $bibdk_query_suffix;
   }
 
@@ -327,7 +325,7 @@ function bibdk_search_carousel_bibdk_search_carousel_query_list_for_top($numberO
   $result = open_adhl_topTenRequest($numberOfItems);
 
   $query_string = '(';
-  foreach ( $result as $id => $res ) {
+  foreach ($result as $id => $res) {
     $query_string .= $res . ' or ';
   }
   $query_string = substr($query_string, 0, -4);
