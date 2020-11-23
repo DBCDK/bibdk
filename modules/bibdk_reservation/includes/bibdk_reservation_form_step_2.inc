@@ -514,7 +514,7 @@ function bibdk_reservation_prepare_set_order_params($form_state) {
 }
 
 /**
- * More paramters for a reservation. @param array $form_state
+ * More parameters for a reservation. @param array $form_state
  *   state of submitted form
  *
  * @see bibdk_openorder::placeOrderRequest
