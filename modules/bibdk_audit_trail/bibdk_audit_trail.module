@@ -127,18 +127,23 @@ function bibdk_audit_trail_form_bibdk_reservation_create_wizard_form_alter(&$for
  */
 function bibdk_audit_trail_bibdk_reservation_create_wizard_form_validate($form, &$form_state) {
 
-  $agency = new TingAgency(
-    BibdkReservationOrderObject::GetObject()->getBranchId()
-  );
+  $branchId = BibdkReservationOrderObject::GetObject()->getBranchId();
+  $user_id_type = "";
+  if (!is_null($branchId)) {
+    $agency = new TingAgency(
+      $branchId
+    );
 
-  $agency_fields = $agency->getAgencyFields();
-  $user_id = (!is_null($agency_fields)) ? $agency_fields->getUserIdKey() : 0;
-
-  if (isset($form_state['values']['userName'])) {
-    $_SESSION['bibdk_audit']['formUserName'] = $form_state['values']['userName'];
+    $agency_fields = $agency->getAgencyFields();
+    $user_id_type = (!is_null($agency_fields)) ? $agency_fields->getUserIdKey() : "";
   }
-  if (isset($form_state['values'][$user_id])) {
-    $_SESSION['bibdk_audit']['formUserId'] = $form_state['values'][$user_id];
+  if ($user_id_type !== "") {
+    if (isset($form_state['values']['userName'])) {
+      $_SESSION['bibdk_audit']['formUserName'] = $form_state['values']['userName'];
+    }
+    if (isset($form_state['values'][$user_id_type])) {
+      $_SESSION['bibdk_audit']['formUserId'] = $form_state['values'][$user_id_type];
+    }
   }
 }
 
