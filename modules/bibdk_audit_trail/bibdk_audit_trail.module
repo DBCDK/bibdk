@@ -132,7 +132,7 @@ function bibdk_audit_trail_bibdk_reservation_create_wizard_form_validate($form, 
   );
 
   $agency_fields = $agency->getAgencyFields();
-  $user_id = $agency_fields->getUserIdKey();
+  $user_id = (!is_null($agency_fields)) ? $agency_fields->getUserIdKey() : 0;
 
   if (isset($form_state['values']['userName'])) {
     $_SESSION['bibdk_audit']['formUserName'] = $form_state['values']['userName'];
