@@ -26,6 +26,11 @@ libraries[audit][directory_name] = audit
 libraries[audit][download][type] = git
 libraries[audit][download][url] = gitlab@gitlab.dbc.dk:pu/audit/audit-trail-php-library.git
 
+libraries[audit][destination] = libraries
+libraries[audit][directory_name] = vipcore
+libraries[audit][download][type] = git
+libraries[audit][download][url] = gitlab@gitlab.dbc.dk:pu/vip-core/vip-core-php.git
+
 ; --- Theming ---
 ; New bibliotek.dk theme
 projects[bibdk_theme][type] = theme
