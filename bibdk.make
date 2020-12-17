@@ -138,6 +138,10 @@ projects[cql_strict_parser][download][type] = git
 projects[cql_strict_parser][download][url] = git@github.com:DBCDK/cql_strict_parser.git
 projects[cql_strict_parser][download][tag] = 7.x-0.4
 
+projects[vip_core][type] = module
+projects[vip_core][download][type] = git
+projects[vip_core][download][url] = gitlab@gitlab.dbc.dk:d-scrum/d7/modules/vip_core.git
+
 ; THIS MODULE IS ONLY AVAILABLE WITHIN THE DBC A/S ORGANISATION
 ; PLEASE UNCOMMENT AS THE MODULE WONT BE DOWNLOADABLE OUTSIDE DBC A/S
 projects[bibdk_config][type] = module
