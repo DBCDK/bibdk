@@ -1,4 +1,5 @@
 libraries
+modules/vip_core
 modules/ding_*
 modules/ting_*
 modules/ting-client
