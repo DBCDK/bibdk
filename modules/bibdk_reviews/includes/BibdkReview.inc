@@ -78,5 +78,13 @@ function __construct($xml) {
     return $return;
 
   }
-}
 
+  function getRelations() {
+    $relations = $this->xpath->query('/object/relations/relation');
+    $return = array();
+    foreach ($relations as $relation) {
+      $return[] = $relation->nodeValue;
+    }
+    return $return;
+  }
+}
