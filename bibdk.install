@@ -724,6 +724,6 @@ function bibdk_update_7071() {
 
 /** Enable DBC composer module */
 function bibdk_update_7072() {
-  $modules = array('dbc_composer');
+  $modules = array('dbc_composer', 'vip_core');
   module_enable($modules);
 }
