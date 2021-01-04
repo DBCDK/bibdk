@@ -17,8 +17,9 @@ function __construct($xml) {
   $this->xpath->registerNamespace('docbook', 'http://docbook.org/ns/docbook');
 }
 
-  /*
-  Get marcxchange subfield y for makeing link in material reviews
+  /**
+  * Get marcxchange subfield y for makeing link in material reviews
+  * @return array
   */
   function getSubfields() {
     $this->xpath->registerNamespace('marcx', 'info:lc/xmlns/marcxchange-v1');
@@ -33,6 +34,10 @@ function __construct($xml) {
     return $return;
   }
 
+  /**
+   * Get section from DocBook (Materialevurderinger)
+   * @return array
+   */
   function getSections() {
     $sections = $this->xpath->query('/object/docbook:article/docbook:section');
     $return = array();
@@ -52,6 +57,10 @@ function __construct($xml) {
 
   }
 
+  /**
+   * Get title from DocBook (Materialevurderinger)
+   * @return array
+   */
   function getTitle() {
   $titles = $this->xpath->query('/object/docbook:article/docbook:title');
    $return = array();
@@ -61,7 +70,10 @@ function __construct($xml) {
     return $return;
   }
 
-
+  /**
+   * Get author (reviewer) from DocBook (Materialevurderinger)
+   * @return array
+   */
   function getAuthor() {
     $authors = $this->xpath->query('/object/docbook:article/docbook:info/docbook:author/docbook:personname');
     $return = array();
@@ -79,6 +91,10 @@ function __construct($xml) {
 
   }
 
+  /**
+   * Get relations from OpenSearch response
+   * @return array
+   */
   function getRelations() {
     $relations = $this->xpath->query('/object/relations/relation');
     $return = array();

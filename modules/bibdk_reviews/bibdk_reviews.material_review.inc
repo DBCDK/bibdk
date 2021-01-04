@@ -38,7 +38,7 @@ function bibdk_reviews_view($review_ids) {
     return $no_reviews_found;
   }
 
-  $type = $review_ids['type'];
+  $type = $review_ids['type'] ?? '';
   unset($review_ids['type']);
 
   $xml = _bibdk_reviews_getReview_from_webservice($review_ids);
@@ -99,7 +99,7 @@ function _bibdk_create_original_note($pid) {
       'html' => TRUE,
     ),
   );
-  $render_array = array(
+  return array(
     '#type' => 'html_tag',
     '#tag' => 'div',
     '#attributes' => array(
@@ -107,7 +107,6 @@ function _bibdk_create_original_note($pid) {
     ),
     '#value' => $note . render($link),
   );
-  return $render_array;
 }
 
 
