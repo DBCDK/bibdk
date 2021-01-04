@@ -26,11 +26,6 @@ libraries[audit][directory_name] = audit
 libraries[audit][download][type] = git
 libraries[audit][download][url] = gitlab@gitlab.dbc.dk:pu/audit/audit-trail-php-library.git
 
-libraries[vipcore][destination] = libraries
-libraries[vipcore][directory_name] = vipcore
-libraries[vipcore][download][type] = git
-libraries[vipcore][download][url] = gitlab@gitlab.dbc.dk:pu/vip-core/vip-core-php.git
-
 ; --- Theming ---
 ; New bibliotek.dk theme
 projects[bibdk_theme][type] = theme
@@ -152,6 +147,10 @@ projects[bibdk_behaviour][type] = module
 projects[bibdk_behaviour][download][type] = git
 projects[bibdk_behaviour][download][url] = gitlab@gitlab.dbc.dk:d-scrum/d7/bibliotek-dk/bibdk_behaviour.git
 projects[bibdk_behaviour][download][tag] = 7.x-0.10
+
+projects[bibdk_composer][type] = module
+projects[bibdk_composer][download][type] = git
+projects[bibdk_composer][download][url] = gitlab@gitlab.dbc.dk:d-scrum/d7/modules/composer.git
 
 ; --- Non Ding2 or Bibliotek.dk specific
 

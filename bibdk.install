@@ -721,3 +721,9 @@ function bibdk_update_7071() {
   $modules = array('bibdk_audit_trail');
   module_enable($modules);
 }
+
+/** Enable DBC composer module */
+function bibdk_update_7072() {
+  $modules = array('dbc_composer');
+  module_enable($modules);
+}
