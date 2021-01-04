@@ -10,6 +10,7 @@ modules/bibdk_config
 modules/cql_strict_parser
 modules/microcurl
 modules/dbc_zabbix
+modules/dbc_composer
 themes/bibdk_theme
 tests/helpers.py
 tests/__pycache__
