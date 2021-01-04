@@ -123,8 +123,14 @@ function _bibdk_favourite_get_from_webservice() {
 
   $agencies = array();
   foreach ($saved_agencies as $key => $agency) {
-    $fav = new TingAgency($agency['oui:agencyId']);
-    $branch = $fav->getBranch();
+    //$fav = new TingAgency($agency['oui:agencyId']);
+
+    try {
+      $branch = new FavouriteAgency($agency);
+    } catch (Exception $e) {
+      echo $e->getMessage();
+    }
+
     if (isset($branch)) {
       $saved_agencies[$key]['oui:userData'];
       // Handle if data is encrypted.
@@ -187,6 +193,7 @@ function bibdk_favourite_check_agencies($saved_agencies, $add = FALSE) {
   $agencies = array();
   $order_agency = FALSE;
   foreach ($saved_agencies as $key => $agency) {
+
     if ($agency['oui:orderAgency'] == 'TRUE') {
       $order_agency = TRUE;
     }

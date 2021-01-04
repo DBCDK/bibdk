@@ -1,6 +1,6 @@
 <?php
 
-class FavouriteAgency extends TingAgency {
+class FavouriteAgency extends VipCoreAgencyBranch {
 
   public $userData;
   public $orderAgency;
@@ -9,9 +9,30 @@ class FavouriteAgency extends TingAgency {
     if (!isset($favourite['oui:agencyId'])) {
       return;
     }
-    parent::__construct($favourite['oui:agencyId']);
-    $this->userData = isset($favourite['oui:userData']) ? unserialize($favourite['oui:userData']) : NULL;
-    $this->orderAgency = ($favourite['oui:orderAgency'] == 'TRUE') ? TRUE : FALSE;
+
+    $info = libraries_load('vipcore');
+
+    if ($info !== FALSE && $info !== 0) {
+
+      $cache = \DBC\VC\CacheMiddleware\MemcachedCacheMiddleware::createCacheMiddleware(
+        array(array('url' => 'localhost', 'port' => 11211)), 3600, 'bibdk'
+      );
+      try {
+        $url = variable_get('vip_core_url', 'http://vipcore.iscrum-vip-prod.svc.cloud.dbc.dk');
+        $vipcore = new \DBC\VC\VipCore($url, 10, 'bibdk-bibdk_favorite', $cache);
+      } catch (Exception $e) {
+        echo $e->getMessage();
+      }
+      parent::__construct($vipcore->findLibrary($favourite['oui:agencyId']));
+      $this->userData = isset($favourite['oui:userData']) ? unserialize($favourite['oui:userData']) : NULL;
+      $this->orderAgency = ($favourite['oui:orderAgency'] == 'TRUE') ? TRUE : FALSE;
+    } else {
+      return;
+    }
+  }
+
+  public function getAgencyId() {
+    return $this->getMainAgencyId();
   }
 
   public function getOrderAgency() {

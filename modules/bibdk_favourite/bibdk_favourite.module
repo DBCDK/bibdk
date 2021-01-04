@@ -9,7 +9,6 @@ require_once(drupal_get_path('module', 'bibdk_favourite') . '/includes/bibdk_fav
 require_once(drupal_get_path('module', 'bibdk_favourite') . '/includes/bibdk_favourite.no_favourites.inc');
 require_once(drupal_get_path('module', 'bibdk_favourite') . '/includes/bibdk_favourite.webservice.inc');
 require_once(drupal_get_path('module', 'bibdk_favourite') . '/includes/bibdk_favourite.shortcodes.inc');
-require_once(drupal_get_path('module', 'ting_agency') . '/TingAgency.php');
 require_once(drupal_get_path('module', 'bibdk_favourite') . '/lib/FavouriteAgency.php');
 
 /**
