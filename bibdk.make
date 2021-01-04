@@ -148,9 +148,9 @@ projects[bibdk_behaviour][download][type] = git
 projects[bibdk_behaviour][download][url] = gitlab@gitlab.dbc.dk:d-scrum/d7/bibliotek-dk/bibdk_behaviour.git
 projects[bibdk_behaviour][download][tag] = 7.x-0.10
 
-projects[bibdk_composer][type] = module
-projects[bibdk_composer][download][type] = git
-projects[bibdk_composer][download][url] = gitlab@gitlab.dbc.dk:d-scrum/d7/modules/composer.git
+projects[dbc_composer][type] = module
+projects[dbc_composer][download][type] = git
+projects[dbc_composer][download][url] = gitlab@gitlab.dbc.dk:d-scrum/d7/modules/composer.git
 
 ; --- Non Ding2 or Bibliotek.dk specific
 
