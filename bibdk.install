@@ -721,3 +721,12 @@ function bibdk_update_7071() {
   $modules = array('bibdk_audit_trail');
   module_enable($modules);
 }
+
+/**
+ * Enable bibdk_reviews (new field)
+ */
+function bibdk_update_7072() {
+  module_enable(array(
+    'bibdk_reviews',
+  ));
+}

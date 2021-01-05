@@ -26,6 +26,7 @@ function bibdk_reviews_theme() {
         'titles' => array(),
         'sections' => array(),
         'authors' => array(),
+        'reusednote' => array(),
       ),
       'template' => 'theme/bibdk_review_material_review',
     ),

@@ -37,15 +37,32 @@ function bibdk_reviews_view($review_ids) {
   if (!isset($review_ids) || !is_array($review_ids) || count($review_ids) == 0) {
     return $no_reviews_found;
   }
+
+  $type = $review_ids['type'] ?? '';
+  unset($review_ids['type']);
+
   $xml = _bibdk_reviews_getReview_from_webservice($review_ids);
   $reviews = _bibdk_review_convert_result_to_bibdk_reviews($xml);
 
   // Render the view
   $elements = array();
+  $note = '';
   foreach ($reviews as $review) {
+    if ($type === 'dbcaddi:hasReusedReview') {
+      $relations = $review->getRelations();
+      $pid = '';
+      foreach ($relations as $relation) {
+        if (strpos($relation, 'dbcaddi:isReviewOf') > -1) {
+          $pid = str_replace('dbcaddi:isReviewOf', '', $relation);
+          break;
+        }
+      }
+      $note = _bibdk_create_original_note($pid);
+    }
     $link_field = $review->getSections($reviews);
     $elements[] = array(
       '#theme' => 'bibdk-review-material-review',
+      '#reusednote' => render($note),
       '#titles' => implode(', ', $review->getTitle()),
       '#authors' => implode(', ', $review->getAuthor()),
       '#sections' => $link_field,
@@ -64,6 +81,34 @@ function bibdk_reviews_view($review_ids) {
   return $no_reviews_found;
 }
 
+/** Create note with link to originally reviewed material.
+ * @param string $pid
+ * @return array
+ */
+function _bibdk_create_original_note($pid) {
+  $note = t('This review was originally created for ', array(), array('context' => 'bibdk_reviews'));
+  $link = array(
+    '#theme' => 'link',
+    '#text' => t('this version', array(), array('context' => 'bibdk_reviews')),
+    '#path' => 'search/work',
+    '#options' => array(
+      'query' => array(
+        'search_block_form' => $pid,
+      ),
+      'attributes' => array('class' => array('bibliotekdk-primary-version-link'), 'target' => '_blank'),
+      'html' => TRUE,
+    ),
+  );
+  return array(
+    '#type' => 'html_tag',
+    '#tag' => 'div',
+    '#attributes' => array(
+      'class' => array('reused-note'),
+    ),
+    '#value' => $note . render($link),
+  );
+}
+
 
 /** Get reviews with ids $ids
  * @param $ids
@@ -75,6 +120,7 @@ function _bibdk_reviews_getReview_from_webservice($ids) {
     'objectFormat' => array('docbook','marcxchange'),
     'objectId' => $ids,
     'outputType' => 'xml',
+    'relationData' => 'uri',
   );
 
   $client = new ting_client_class();
