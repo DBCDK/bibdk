@@ -5,27 +5,24 @@ class FavouriteAgency extends VipCoreAgencyBranch {
   public $userData;
   public $orderAgency;
 
-  private $branch;
+  protected $branch;
 
   public function __construct($favourite) {
     if (!isset($favourite['oui:agencyId'])) {
       return;
     }
 
-
-    $cache = \DBC\VC\CacheMiddleware\MemcachedCacheMiddleware::createCacheMiddleware(
-      array(array('url' => 'localhost', 'port' => 11211)), 3600, 'bibdk'
-    );
-    try {
-      $url = variable_get('vip_core_url', 'http://vipcore.iscrum-vip-prod.svc.cloud.dbc.dk');
-      $vipcore = new \DBC\VC\VipCore($url, 10, 'bibdk-bibdk_favorite', $cache);
-    } catch (Exception $e) {
-      echo $e->getMessage();
-    }
-    parent::__construct($vipcore->findLibrary($favourite['oui:agencyId']));
+    parent::__construct($favourite['oui:agencyId']);
     $this->userData = isset($favourite['oui:userData']) ? unserialize($favourite['oui:userData']) : NULL;
     $this->orderAgency = ($favourite['oui:orderAgency'] == 'TRUE') ? TRUE : FALSE;
 
+  }
+
+  /**
+   * @param $branch
+   */
+  public function setBranch($branch) {
+    $this->branch = $branch;
   }
 
   /**
@@ -37,6 +34,20 @@ class FavouriteAgency extends VipCoreAgencyBranch {
       return $this->branch;
     }
     return NULL;
+  }
+
+  public function getActionLinks() {
+    $links = array();
+    $serviceDeclarationUrl = $this->branch->getServiceDeclarationUrl();
+    if (!empty($serviceDeclarationUrl)) {
+      $links[t('serviceDeclarationUrl')] = $serviceDeclarationUrl;
+    }
+    $branchWebsiteUrl = $this->branch->getWebsiteUrl();
+    if (!empty($branchWebsiteUrl)) {
+      $links[t('branchWebsiteUrl')] = $branchWebsiteUrl;
+    }
+
+    return $links;
   }
 
   public function getAgencyId() {

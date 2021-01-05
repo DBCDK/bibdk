@@ -47,8 +47,10 @@ function bibdk_favourite_add_favourite_to_session($favourite) {
     _bibdk_favourite_set_agencies();
   }
 
-  if (!isset($_SESSION['bibdk_favourites'][$favourite->getAgencyId()])) {
-    $_SESSION['bibdk_favourites'][$favourite->getAgencyId()] = serialize($favourite);
+  $branchId = $favourite->getBranch()->getBranchId();
+
+  if (!isset($_SESSION['bibdk_favourites'][$branchId])) {
+    $_SESSION['bibdk_favourites'][$branchId] = serialize($favourite);
   }
 }
 
@@ -125,8 +127,20 @@ function _bibdk_favourite_get_from_webservice() {
   foreach ($saved_agencies as $key => $agency) {
     //$fav = new TingAgency($agency['oui:agencyId']);
 
+    $favouriteAgency = new FavouriteAgency($agency);
+
     try {
-      $branch = new FavouriteAgency($agency);
+      $cache = \DBC\VC\CacheMiddleware\MemcachedCacheMiddleware::createCacheMiddleware(
+        array(array('url' => 'localhost', 'port' => 11211)), 3600, 'bibdk'
+      );
+      $url = variable_get('vip_core_url', 'http://vipcore.iscrum-vip-prod.svc.cloud.dbc.dk');
+      $vipcore = new \DBC\VC\VipCore($url, 10, 'bibdk-bibdk_favorite', $cache);
+
+
+      $response = $vipcore->findLibrary($agency['oui:agencyId']);
+      $branch = new VipCoreAgencyBranch($response);
+
+      $favouriteAgency->setBranch($branch);
     } catch (Exception $e) {
       echo $e->getMessage();
     }
@@ -199,7 +213,7 @@ function bibdk_favourite_check_agencies($saved_agencies, $add = FALSE) {
     }
     $agencies[$agency['oui:agencyId']] = new FavouriteAgency($agency);
     if (isset($agency['agencyBranch'])) {
-      //$agencies[$agency['oui:agencyId']]->setBranch($agency['agencyBranch']);
+      $agencies[$agency['oui:agencyId']]->setBranch($agency['agencyBranch']);
     }
   }
   if (!$order_agency && !empty($agencies) && !$add) {

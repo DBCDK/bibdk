@@ -4,7 +4,6 @@ package = Bibliotek.dk
 core = 7.x
 version = 7.x-0.37
 dependencies[] = ding_provider
-dependencies[] = ting_agency
 dependencies[] = bibdk_borchk
 dependencies[] = shortcode
 

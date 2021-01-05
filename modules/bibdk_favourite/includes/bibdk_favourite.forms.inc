@@ -127,7 +127,7 @@ function bibdk_favourite_form_view_items_from_session($favourite, $weight, $togg
     '#theme' => 'ting_agency_more_info',
     '#branch' => $branch,
     '#openingHours' => theme('ting_agency_opening_hours', array('branch' => $branch,)),
-    '#tools' => array('#theme' => 'ting_agency_tools', '#branch'=>$branch),
+    '#tools' => array('#theme' => 'ting_agency_tools', '#branch'=>$favourite),
     '#address' => theme('ting_agency_address', array('branch' => $branch)),
     '#contact' => theme('ting_agency_contact', array('branch' => $branch)),
     '#toggle_enabled' => $toggle_enabled,
@@ -141,7 +141,7 @@ function bibdk_favourite_form_view_items_from_session($favourite, $weight, $togg
   $form[$favourite->getAgencyId()]['library'] = array(
     '#theme' => 'ting_agency_library',
     '#branchName' => $branch->getBranchShortName($language->language),
-    '#agencyName' => $branch->agencyName,
+    '#agencyName' => $branch->getAgencyName(),
     '#actions' => $actions,
     '#add_classes' => $classes,
     '#moreinfo' => $moreinfo,
