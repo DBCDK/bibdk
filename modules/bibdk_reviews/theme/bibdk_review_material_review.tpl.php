@@ -1,14 +1,18 @@
 <div class='bibdk-review' >
+  <?php print $reusednote; ?>
   <?php foreach($sections as $section) : ?>
   <div class='section'>
     <h6>
-      <?php print $section['docbook:title']; ?>
+      <strong>
+        <?php print $section['docbook:title']; ?>
+      </strong>
     </h6>
     <p>
       <?php print $section['docbook:para']; ?>
     </p>
   </div>
   <?php endforeach; ?>
+    <br/>
     <div class='type'>
       <?php print $titles; ?>
     </div>
