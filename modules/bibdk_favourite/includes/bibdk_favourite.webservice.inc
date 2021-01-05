@@ -199,7 +199,7 @@ function bibdk_favourite_check_agencies($saved_agencies, $add = FALSE) {
     }
     $agencies[$agency['oui:agencyId']] = new FavouriteAgency($agency);
     if (isset($agency['agencyBranch'])) {
-      $agencies[$agency['oui:agencyId']]->setBranch($agency['agencyBranch']);
+      //$agencies[$agency['oui:agencyId']]->setBranch($agency['agencyBranch']);
     }
   }
   if (!$order_agency && !empty($agencies) && !$add) {

@@ -8,6 +8,10 @@ USER jenkins
 # build drupal code
 RUN cd /var/lib/jenkins && \
     drush make -v --working-copy --strict=0 --dbc-modules=${BRANCH} --no-gitinfofile --contrib-destination=profiles/bibdk "https://raw.github.com/DBCDK/bibdk/develop/distro.make" www
+
+# Build composer code
+RUN cd /var/lib/jenkins/www/profiles/bibdk && composer up
+
 # build stylesheet
 RUN cd /var/lib/jenkins/www/profiles/bibdk/themes/bibdk_theme/.npm && \
     npm install && \
