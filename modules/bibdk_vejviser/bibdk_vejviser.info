@@ -4,7 +4,7 @@ package = Bibliotek.dk
 core = 7.x
 version = 7.x-0.25
 
-dependencies[] = ting_agency
+dependencies[] = vip_core
 
 files[] = test/bibdk_vejviser.test
 files[] = test/bibdk_vejviser.autocomplete.test

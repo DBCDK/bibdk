@@ -47,7 +47,7 @@ function bibdk_favourite_add_favourite_to_session($favourite) {
     _bibdk_favourite_set_agencies();
   }
 
-  $branchId = $favourite->getBranch()->getBranchId();
+  $branchId = $favourite->getBranchId();
 
   if (!isset($_SESSION['bibdk_favourites'][$branchId])) {
     $_SESSION['bibdk_favourites'][$branchId] = serialize($favourite);
@@ -125,9 +125,6 @@ function _bibdk_favourite_get_from_webservice() {
 
   $agencies = array();
   foreach ($saved_agencies as $key => $agency) {
-    //$fav = new TingAgency($agency['oui:agencyId']);
-
-    $favouriteAgency = new FavouriteAgency($agency);
 
     try {
       $cache = \DBC\VC\CacheMiddleware\MemcachedCacheMiddleware::createCacheMiddleware(
@@ -138,27 +135,25 @@ function _bibdk_favourite_get_from_webservice() {
 
 
       $response = $vipcore->findLibrary($agency['oui:agencyId']);
-      $branch = new VipCoreAgencyBranch($response);
-
-      $favouriteAgency->setBranch($branch);
+      $favouriteAgency = new FavouriteAgency($agency, $response);
     } catch (Exception $e) {
       echo $e->getMessage();
     }
 
-    if (isset($branch)) {
+    if (isset($favouriteAgency)) {
       $saved_agencies[$key]['oui:userData'];
       // Handle if data is encrypted.
       if ($saved_agencies[$key]['oui:userData'] && variable_get('bibdk_provider_favourite_use_encryption', FALSE)) {
         $saved_agencies[$key]['oui:userData'] = bibdk_provider_decrypt_data($saved_agencies[$key]['oui:userData']);
       }
       $user_data = $saved_agencies[$key]['oui:userData'];
-      $branch->userdata = array();
+      $favouriteAgency->userdata = array();
       if ($user_data) {
-        $branch->userdata = unserialize($user_data);
+        $favouriteAgency->userdata = unserialize($user_data);
       }
-      $branch->orderLibrary = $saved_agencies[$key]['oui:orderAgency'];
-      $agencies[$agency['oui:agencyId']] = $branch;
-      $saved_agencies[$key]['agencyBranch'] = $branch;
+      $favouriteAgency->orderLibrary = $saved_agencies[$key]['oui:orderAgency'];
+      $agencies[$agency['oui:agencyId']] = $favouriteAgency;
+      $saved_agencies[$key]['agencyBranch'] = $favouriteAgency;
     }
   }
   return bibdk_favourite_check_agencies($saved_agencies);
@@ -197,6 +192,12 @@ function _bibdk_favourite_set_agencies() {
   }
 }
 
+/**
+ * @param $saved_agencies
+ * @param false $add
+ * @return array
+ * @throws \GuzzleHttp\Exception\GuzzleException
+ */
 function bibdk_favourite_check_agencies($saved_agencies, $add = FALSE) {
   if (!$saved_agencies) {
     $message = _bibdk_favourite_set_error_text();
@@ -211,10 +212,7 @@ function bibdk_favourite_check_agencies($saved_agencies, $add = FALSE) {
     if ($agency['oui:orderAgency'] == 'TRUE') {
       $order_agency = TRUE;
     }
-    $agencies[$agency['oui:agencyId']] = new FavouriteAgency($agency);
-    if (isset($agency['agencyBranch'])) {
-      $agencies[$agency['oui:agencyId']]->setBranch($agency['agencyBranch']);
-    }
+    $agencies[$agency['oui:agencyId']] = $agency['agencyBranch'];
   }
   if (!$order_agency && !empty($agencies) && !$add) {
     // no orderagency is set pick a new favourite as orderagency

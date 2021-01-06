@@ -399,10 +399,19 @@ function bibdk_favourite_save_userdata($agencyid, array $userdata, $show_message
  * @return array bibdkReservationUserInput
  */
 function bibdk_favourite_get_agency_fields($agencyId) {
-  $agency = new TingAgency($agencyId);
-  $fields = $agency->getAgencyFields();
 
-  return $fields;
+  try {
+    $cache = \DBC\VC\CacheMiddleware\MemcachedCacheMiddleware::createCacheMiddleware(
+      array(array('url' => 'localhost', 'port' => 11211)), 3600, 'bibdk'
+    );
+    $url = variable_get('vip_core_url', 'http://vipcore.iscrum-vip-prod.svc.cloud.dbc.dk');
+
+    $vipcore = new \DBC\VC\VipCore($url, 10, 'bibdk-bibdk_favorite', $cache);
+    $response = $vipcore->service($agencyId, 'userOrderParameters');
+    return new VipCoreService($response, 'userOrderParameters');
+  } catch (Exception $e) {
+    throw new Exception($e);
+  }
 }
 
 /**

@@ -10,29 +10,35 @@ class FavouriteAgency extends VipCoreAgencyBranch {
   /**
    * FavouriteAgency constructor.
    * @param $favourite
+   * @param null|stdClass $findLibraryResponse
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  public function __construct($favourite) {
+  public function __construct($favourite, $findLibraryResponse = NULL) {
     if (!isset($favourite['oui:agencyId'])) {
       return;
     }
 
-    try {
-      $cache = \DBC\VC\CacheMiddleware\MemcachedCacheMiddleware::createCacheMiddleware(
-        array(array('url' => 'localhost', 'port' => 11211)), 3600, 'bibdk'
-      );
-      $url = variable_get('vip_core_url', 'http://vipcore.iscrum-vip-prod.svc.cloud.dbc.dk');
-
-      $vipcore = new \DBC\VC\VipCore($url, 10, 'bibdk-bibdk_favorite', $cache);
-      $response = $vipcore->findLibrary($favourite['oui:agencyId']);
-      parent::__construct($response);
-    } catch (Exception $e) {
-      throw new Exception($e);
-    }
-
     $this->userData = isset($favourite['oui:userData']) ? unserialize($favourite['oui:userData']) : NULL;
     $this->orderAgency = ($favourite['oui:orderAgency'] == 'TRUE');
+    $this->agencyId = $favourite['oui:agencyId'];
 
+    if (is_null($findLibraryResponse)) {
+      try {
+        $cache = \DBC\VC\CacheMiddleware\MemcachedCacheMiddleware::createCacheMiddleware(
+          array(array('url' => 'localhost', 'port' => 11211)), 3600, 'bibdk'
+        );
+        $url = variable_get('vip_core_url', 'http://vipcore.iscrum-vip-prod.svc.cloud.dbc.dk');
+
+        $vipcore = new \DBC\VC\VipCore($url, 10, 'bibdk-bibdk_favorite', $cache);
+        $response = $vipcore->findLibrary($favourite['oui:agencyId']);
+
+        return parent::__construct($response);
+      } catch (Exception $e) {
+        throw new Exception($e);
+      }
+    } else {
+      return parent::__construct($findLibraryResponse);
+    }
   }
 
   /**
@@ -53,22 +59,19 @@ class FavouriteAgency extends VipCoreAgencyBranch {
     return NULL;
   }
 
-  public function getActionLinks() {
-    $links = array();
-    $serviceDeclarationUrl = $this->branch->getServiceDeclarationUrl();
-    if (!empty($serviceDeclarationUrl)) {
-      $links[t('serviceDeclarationUrl')] = $serviceDeclarationUrl;
-    }
-    $branchWebsiteUrl = $this->branch->getWebsiteUrl();
-    if (!empty($branchWebsiteUrl)) {
-      $links[t('branchWebsiteUrl')] = $branchWebsiteUrl;
-    }
-
-    return $links;
-  }
-
   public function getAgencyId() {
     return $this->getMainAgencyId();
+  }
+
+  /**
+   * Get local lookup url for looking up
+   * records in local library system.
+   *
+   * @return string|NULL
+   */
+  public function getMainAgencyId() {
+    return (isset($this->branch->agencyId) ? $this->branch->agencyId :
+      (isset($this->branch->branch->agencyId) ? $this->branch->branch->agencyId : NULL));
   }
 
   public function getOrderAgency() {

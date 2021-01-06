@@ -27,13 +27,12 @@ function bibdk_favourite_my_page_get_rows($max_rows) {
   if (sizeof($agencies) > 0) {
     $agencies = array_slice($agencies, 0, $max_rows);
     foreach ($agencies as $id => $favourite) {
-      $branch = $favourite->getBranch();
-      if (empty($branch)) {
+      if (empty($favourite)) {
         continue;
       }
       global $language;
       $ret[] = array(
-        'label_row' => $branch->getBranchShortName($language->language),
+        'label_row' => $favourite->getBranchShortName($language->language),
         'value_row' => ($favourite->orderAgency) ? t('(Order agency)') : NULL,
       );
     }

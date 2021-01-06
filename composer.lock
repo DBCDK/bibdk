@@ -12,7 +12,7 @@
             "source": {
                 "type": "git",
                 "url": "gitlab@gitlab.dbc.dk:pu/vip-core/vip-core-php.git",
-                "reference": "4070a158870e70f0850fb4949b0060e952722343"
+                "reference": "a49fc10f1a8f5c00b8cce378d46a239014a4b755"
             },
             "require": {
                 "doctrine/common": "^3.0",
@@ -59,7 +59,7 @@
             "support": {
                 "issues": "https://support.dbc.dk"
             },
-            "time": "2020-12-15T06:29:59+00:00"
+            "time": "2021-01-06T07:56:15+00:00"
         },
         {
             "name": "doctrine/annotations",

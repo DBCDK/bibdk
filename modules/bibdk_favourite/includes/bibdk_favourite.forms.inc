@@ -84,15 +84,29 @@ function bibdk_favourite_check_for_new_agency() {
           unset($_SESSION['bibdk_favourites']);
         }
         // get the agency
-        $agency = new TingAgency($_GET['agency']);
+
+        try {
+          $cache = \DBC\VC\CacheMiddleware\MemcachedCacheMiddleware::createCacheMiddleware(
+            array(array('url' => 'localhost', 'port' => 11211)), 3600, 'bibdk'
+          );
+          $url = variable_get('vip_core_url', 'http://vipcore.iscrum-vip-prod.svc.cloud.dbc.dk');
+
+          $vipcore = new \DBC\VC\VipCore($url, 10, 'bibdk-bibdk_favorite', $cache);
+          $response = $vipcore->findLibrary($_GET['agency']);
+
+        } catch (Exception $e) {
+          throw new Exception($e);
+        }
+
+        $agency = new VipCoreAgencyBranch($response);
         global $language;
-        $name = $agency->getBranch()->getBranchName($language->language);
+        $name = $agency->getBranchName();
       }
     }
     else {
       $agency = unserialize($_SESSION['bibdk_favourites'][$_GET['agency']]);
       global $language;
-      $name = $agency->getBranch()->getBranchName($language->language);
+      $name = $agency->getBranchName();
     }
   }
   return $name;
@@ -126,10 +140,10 @@ function bibdk_favourite_form_view_items_from_session($favourite, $weight, $togg
   $moreinfo = array(
     '#theme' => 'bibdk_favourite_more_info',
     '#branch' => $branch,
-    '#openingHours' => theme('bibdk_favourite_opening_hours', array('branch' => $branch)),
+    '#openingHours' => theme('bibdk_favourite_opening_hours', array('branch' => $favourite)),
     '#tools' => array('#theme' => 'bibdk_favourite_tools', '#branch' => $favourite),
-    '#address' => theme('bibdk_favourite_address', array('branch' => $branch)),
-    '#contact' => theme('bibdk_favourite_contact', array('branch' => $branch)),
+    '#address' => theme('bibdk_favourite_address', array('branch' => $favourite)),
+    '#contact' => theme('bibdk_favourite_contact', array('branch' => $favourite)),
     '#toggle_enabled' => $toggle_enabled,
   ) ;
   $classes = array();
@@ -140,12 +154,12 @@ function bibdk_favourite_form_view_items_from_session($favourite, $weight, $togg
 
   $form[$favourite->getAgencyId()]['library'] = array(
     '#theme' => 'bibdk_favourite_library',
-    '#branchName' => $branch->getBranchShortName($language->language),
-    '#agencyName' => $branch->getAgencyName(),
+    '#branchName' => $favourite->getBranchShortName($language->language),
+    '#agencyName' => $favourite->getAgencyName(),
     '#actions' => $actions,
     '#add_classes' => $classes,
     '#moreinfo' => $moreinfo,
-    '#branchid' => $branch->branchId,
+    '#branchid' => $favourite->branchId,
     '#toggle_enabled' => $toggle_enabled
   );
 
@@ -302,9 +316,8 @@ function _bibdk_favourite_set_user_data_page_title($branchid) {
   $branchName = '';
   $favourites = bibdk_favourite_get_favourites();
   if (isset($favourites[$branchid])) {
-    $branch = $favourites[$branchid]->getBranch();
     global $language;
-    $name = $branch->getBranchName($language->language);
+    $name = $favourites[$branchid]->getBranchName();
     $branchName = isset($name) ? $name : '';
   }
 

@@ -22,7 +22,7 @@ class BibdkOpenuserstatusRenewAllTest extends DrupalWebTestCase {
 
     parent::setUp(array(
       'bibdk_openuserstatus',
-      'ting_agency',
+      'vip_core',
       'openagency_webservice_mockup',
       'openuserstatus_webservice_mockup',
       'ting_openuserstatus',
