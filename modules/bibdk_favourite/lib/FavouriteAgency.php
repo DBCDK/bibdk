@@ -7,14 +7,31 @@ class FavouriteAgency extends VipCoreAgencyBranch {
 
   protected $branch;
 
+  /**
+   * FavouriteAgency constructor.
+   * @param $favourite
+   * @throws \GuzzleHttp\Exception\GuzzleException
+   */
   public function __construct($favourite) {
     if (!isset($favourite['oui:agencyId'])) {
       return;
     }
 
-    parent::__construct($favourite['oui:agencyId']);
+    try {
+      $cache = \DBC\VC\CacheMiddleware\MemcachedCacheMiddleware::createCacheMiddleware(
+        array(array('url' => 'localhost', 'port' => 11211)), 3600, 'bibdk'
+      );
+      $url = variable_get('vip_core_url', 'http://vipcore.iscrum-vip-prod.svc.cloud.dbc.dk');
+
+      $vipcore = new \DBC\VC\VipCore($url, 10, 'bibdk-bibdk_favorite', $cache);
+      $response = $vipcore->findLibrary($favourite['oui:agencyId']);
+      parent::__construct($response);
+    } catch (Exception $e) {
+      throw new Exception($e);
+    }
+
     $this->userData = isset($favourite['oui:userData']) ? unserialize($favourite['oui:userData']) : NULL;
-    $this->orderAgency = ($favourite['oui:orderAgency'] == 'TRUE') ? TRUE : FALSE;
+    $this->orderAgency = ($favourite['oui:orderAgency'] == 'TRUE');
 
   }
 
