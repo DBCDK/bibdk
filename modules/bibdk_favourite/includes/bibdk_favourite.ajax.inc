@@ -83,7 +83,7 @@ function bibdk_favourite_ajax_link_delete_favourite($branchId) {
     $agencies = isset($_SESSION['bibdk_favourites']) ? $_SESSION['bibdk_favourites'] : NULL;
     if ($agencies) {
       $agency = unserialize(current($agencies));
-      $commands[] = bibdk_favourite_ajax_command($agency->getAgencyId());
+      $commands[] = bibdk_favourite_ajax_command($agency->getBranchId());
     }
   }
   $selector = '.favourite-' . $branchId;

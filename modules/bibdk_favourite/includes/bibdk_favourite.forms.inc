@@ -142,7 +142,7 @@ function bibdk_favourite_form_view_items_from_session($favourite, $weight, $togg
     $classes[] = 'order-agency';
   }
 
-  $form[$favourite->getAgencyId()]['library'] = array(
+  $form[$favourite->getBranchId()]['library'] = array(
     '#theme' => 'bibdk_favourite_library',
     '#branchName' => $favourite->getBranchShortName($language->language),
     '#agencyName' => $favourite->getAgencyName(),
@@ -154,7 +154,7 @@ function bibdk_favourite_form_view_items_from_session($favourite, $weight, $togg
   );
 
   // place branch on top if set as order-agency
-  $form[$favourite->getAgencyId()]['#weight'] = ($favourite->getOrderAgency()) ? -1 : $weight;
+  $form[$favourite->getBranchId()]['#weight'] = ($favourite->getOrderAgency()) ? -1 : $weight;
 
   return $form;
 }
@@ -188,7 +188,7 @@ function bibdk_favourite_get_action_links($favourite) {
   $links[] = array(
     '#theme' => 'link',
     '#text' => $order_txt,
-    '#path' => 'favourite/add/' . $favourite->getAgencyId(),
+    '#path' => 'favourite/add/' . $favourite->getBranchId(),
     '#options' => array(
       'attributes' => array(
         'alt' => $order_txt,
@@ -205,7 +205,7 @@ function bibdk_favourite_get_action_links($favourite) {
   $links[] = array(
     '#theme' => 'link',
     '#text' => $edit_text,
-    '#path' => 'overlay/favourite/userdata/' . $favourite->getAgencyId(),
+    '#path' => 'overlay/favourite/userdata/' . $favourite->getBranchId(),
     '#options' => array(
       'attributes' => array(
         'alt' => $order_txt,
@@ -222,7 +222,7 @@ function bibdk_favourite_get_action_links($favourite) {
   $links[] = array(
     '#theme' => 'link',
     '#text' => t('Remove favoritelibrary', array(), array('context' => 'bibdk_favourite')),
-    '#path' => 'favourite_delete/ajax/' . $favourite->getAgencyId(),
+    '#path' => 'favourite_delete/ajax/' . $favourite->getBranchId(),
     '#options' => array(
       'attributes' => array(
         'alt' => t('Remove favoritelibrary', array(), array('context' => 'bibdk_favourite')),
