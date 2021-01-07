@@ -396,22 +396,13 @@ function bibdk_favourite_save_userdata($agencyid, array $userdata, $show_message
  * Get fields required by Agency
  *
  * @param $agencyId
- * @return array bibdkReservationUserInput
+ * @return VipCoreService bibdkReservationUserInput
  */
 function bibdk_favourite_get_agency_fields($agencyId) {
 
-  try {
-    $cache = \DBC\VC\CacheMiddleware\MemcachedCacheMiddleware::createCacheMiddleware(
-      array(array('url' => 'localhost', 'port' => 11211)), 3600, 'bibdk'
-    );
-    $url = variable_get('vip_core_url', 'http://vipcore.iscrum-vip-prod.svc.cloud.dbc.dk');
-
-    $vipcore = new \DBC\VC\VipCore($url, 10, 'bibdk-bibdk_favorite', $cache);
-    $response = $vipcore->service($agencyId, 'userOrderParameters');
-    return new VipCoreService($response, 'userOrderParameters');
-  } catch (Exception $e) {
-    throw new Exception($e);
-  }
+  $response = vip_core_service($agencyId, 'userOrderParameters');
+  $fields = new VipCoreFields($response);
+  return $fields;
 }
 
 /**
@@ -623,16 +614,37 @@ function _bibdk_favourite_error_no_agency_user_data() {
  * @return array|void
  */
 function bibdk_favourite_get_selector_for_subagencies($branchId, $userData) {
-  $agency = new TingAgency($branchId);
 
-  if (!($agency->hasSubDivisions($branchId))) {
-    return;
+  try {
+  $agency = vip_core_findlibrary($branchId);
+
+  $pickupAgencyList = vip_core_pickupAgencyList([$agency->getMainAgencyId()]);
+  } catch (Exception $e) {
+    drupal_set_message($e->getMessage(), 'error');
+  }
+  $options = array();
+  if (isset($pickupAgencyList->library)) {
+    foreach ($pickupAgencyList->library as $item) {
+      if (isset($item->pickupAgency) && is_array($item->pickupAgency)) {
+        foreach ($item->pickupAgency as $pickupAgency) {
+          if (isset($pickupAgency->branchId) && $pickupAgency->branchId == $branchId) {
+            if (!isset($pickupAgency->agencySubdivision)) {
+              return;
+            } else {
+              if ($pickupAgency->branchType == 'b') {
+                foreach ($pickupAgency->agencySubdivision as $key => $value) {
+                  $options['Bogbussen:'][$value] = $value;
+                }
+              } else {
+                $options[$pickupAgency->branchId] = $pickupAgency->branchShortName[0]->value;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
-  $library_status = variable_get('AgencyRequest_library_status', '');
-
-  $options = $agency->getPickupAgencySelectList($library_status);
-  $options = $options['Bogbussen:'];
   $value = isset($userData['subdivision']) ? $userData['subdivision'] : NULL;
 
   foreach ($options as $key => $option) {
@@ -776,7 +788,7 @@ function theme_bibdk_favourite_address($variables) {
  * @return string (html)
  */
 function theme_bibdk_favourite_pickup_allowed($variables) {
-  /** @var TingClientAgencyBranch $branch */
+  /** @var VipCoreAgencyBranch $branch */
   $branch = $variables['branch'];
   if (empty($branch)) {
     return;

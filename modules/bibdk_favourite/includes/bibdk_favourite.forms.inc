@@ -84,21 +84,11 @@ function bibdk_favourite_check_for_new_agency() {
           unset($_SESSION['bibdk_favourites']);
         }
         // get the agency
-
         try {
-          $cache = \DBC\VC\CacheMiddleware\MemcachedCacheMiddleware::createCacheMiddleware(
-            array(array('url' => 'localhost', 'port' => 11211)), 3600, 'bibdk'
-          );
-          $url = variable_get('vip_core_url', 'http://vipcore.iscrum-vip-prod.svc.cloud.dbc.dk');
-
-          $vipcore = new \DBC\VC\VipCore($url, 10, 'bibdk-bibdk_favorite', $cache);
-          $response = $vipcore->findLibrary($_GET['agency']);
-
+          $agency = vip_core_findlibrary($_GET['agency']);
         } catch (Exception $e) {
-          throw new Exception($e);
+          drupal_set_message($e->getMessage(), 'error');
         }
-
-        $agency = new VipCoreAgencyBranch($response);
         global $language;
         $name = $agency->getBranchName();
       }

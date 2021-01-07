@@ -97,8 +97,8 @@ function _bibdk_favourite_save_on_webservice($agencyId) {
 /**
  * Get favourite agencies for the user
  *
- * @global object $user
- * @return TingClientAgencyBranch
+ * @return array
+ * @throws \GuzzleHttp\Exception\GuzzleException
  */
 function _bibdk_favourite_get_from_webservice() {
   global $user;
@@ -118,26 +118,19 @@ function _bibdk_favourite_get_from_webservice() {
   module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.agencies');
   $saved_agencies = bibdk_favourite_parse_agencies($xml);
 
-
   if (!$saved_agencies) {
     return array();
   }
 
   $agencies = array();
   foreach ($saved_agencies as $key => $agency) {
-
-    try {
-      $cache = \DBC\VC\CacheMiddleware\MemcachedCacheMiddleware::createCacheMiddleware(
-        array(array('url' => 'localhost', 'port' => 11211)), 3600, 'bibdk'
-      );
-      $url = variable_get('vip_core_url', 'http://vipcore.iscrum-vip-prod.svc.cloud.dbc.dk');
-      $vipcore = new \DBC\VC\VipCore($url, 10, 'bibdk-bibdk_favorite', $cache);
-
-
-      $response = $vipcore->findLibrary($agency['oui:agencyId']);
-      $favouriteAgency = new FavouriteAgency($agency, $response);
-    } catch (Exception $e) {
-      echo $e->getMessage();
+    if (isset($agency['oui:agencyId'])) {
+      try {
+        $response = vip_core_findlibrary($agency['oui:agencyId']);
+        $favouriteAgency = new FavouriteAgency($agency, $response);
+      } catch (Exception $e) {
+        drupal_set_message($e->getMessage(), 'error');
+      }
     }
 
     if (isset($favouriteAgency)) {

@@ -24,20 +24,13 @@ class FavouriteAgency extends VipCoreAgencyBranch {
 
     if (is_null($findLibraryResponse)) {
       try {
-        $cache = \DBC\VC\CacheMiddleware\MemcachedCacheMiddleware::createCacheMiddleware(
-          array(array('url' => 'localhost', 'port' => 11211)), 3600, 'bibdk'
-        );
-        $url = variable_get('vip_core_url', 'http://vipcore.iscrum-vip-prod.svc.cloud.dbc.dk');
-
-        $vipcore = new \DBC\VC\VipCore($url, 10, 'bibdk-bibdk_favorite', $cache);
-        $response = $vipcore->findLibrary($favourite['oui:agencyId']);
-
+        $response = vip_core_findlibrary($favourite['oui:agencyId']);
         return parent::__construct($response);
       } catch (Exception $e) {
         throw new Exception($e);
       }
     } else {
-      return parent::__construct($findLibraryResponse);
+      return parent::__construct($findLibraryResponse->branch);
     }
   }
 
