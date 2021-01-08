@@ -527,7 +527,7 @@ function bibdk_favourite_userdata_form($form, &$form_state, $fields, $userData =
     $value = isset($form_state['values'][$type]) ? $form_state['values'][$type] : $userDataElement;
     if ($type == 'userMail') {
       if (!$userParameter['required']) {
-        $title .= ' ' . t('label_notice_recommended', array(), array('context' => 'ting_agency'));
+        $title .= ' ' . t('label_notice_recommended', array(), array('context' => 'bibdk_favourite'));
       }
     }
 
@@ -797,9 +797,9 @@ function theme_bibdk_favourite_pickup_allowed($variables) {
 }
 
 /**
- * preprocess function for library template (ting_agency_library.tpl.php)
+ * preprocess function for library template (bibdk_favourite_library.tpl.php)
  */
-function template_preprocess_ting_agency_library(&$variables) {
+function template_preprocess_bibdk_favourite_library(&$variables) {
   if (isset($variables['add_classes'])) {
     $variables['classes_array'] = array_merge($variables['classes_array'], $variables['add_classes']);
   }
