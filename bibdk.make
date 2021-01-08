@@ -223,16 +223,6 @@ projects[ie6nomore][subdir] = contrib
 projects[ie6nomore][type] = module
 projects[ie6nomore][version] = 1.0-beta4
 
-projects[l10n_client][subdir] = contrib
-projects[l10n_client][type] = module
-projects[l10n_client][version] = 1.3
-;projects[l10n_client][patch][] = https://raw.github.com/DBCDK/patches/master/dbc_l10n_client/dbc_l10n_client_patch.patch
-
-projects[l10n_update][subdir] = contrib
-projects[l10n_update][type] = module
-projects[l10n_update][version] = 2.3
-;projects[l10n_update][patch][] = http://drupal.org/files/l10n_update-drush_l10n_update_specify_modules-1982580-3.patch
-
 projects[libraries][subdir] = contrib
 projects[libraries][type] = module
 projects[libraries][version] = 2.5
