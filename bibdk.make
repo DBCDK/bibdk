@@ -76,11 +76,6 @@ projects[ting-client][download][type] = git
 projects[ting-client][download][url] = git@github.com:DBCDK/ting-client.git
 projects[ting-client][download][tag] = 7.x-2.48
 
-projects[ting_agency][type] = module
-projects[ting_agency][download][type] = git
-projects[ting_agency][download][url] = git@github.com:DBCDK/ting_agency.git
-projects[ting_agency][download][tag] = 7.x-1.7
-
 projects[ting_infomedia][type] = module
 projects[ting_infomedia][download][type] = git
 projects[ting_infomedia][download][url] = git@github.com:DBCDK/ting_infomedia.git
@@ -151,6 +146,10 @@ projects[bibdk_behaviour][download][tag] = 7.x-0.10
 projects[dbc_composer][type] = module
 projects[dbc_composer][download][type] = git
 projects[dbc_composer][download][url] = gitlab@gitlab.dbc.dk:d-scrum/d7/modules/composer.git
+
+projects[vip_core][type] = module
+projects[vip_core][download][type] = git
+projects[vip_core][download][url] = gitlab@gitlab.dbc.dk:d-scrum/d7/modules/vip_core.git
 
 ; --- Non Ding2 or Bibliotek.dk specific
 

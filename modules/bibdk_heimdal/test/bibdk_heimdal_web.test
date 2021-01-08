@@ -34,7 +34,7 @@ class BibdkHeimdalWebTestCase extends DrupalWebTestCase {
   public function modules_and_dependencies() {
     $this->assertTrue(module_exists('bibdk_heimdal'), 'bibdk_heimdal enabled');
     $this->assertTrue(module_exists('ding_provider'), 'ding_provider enabled');
-    $this->assertTrue(module_exists('ting_agency'), 'ting agency enabled');
+    $this->assertTrue(module_exists('vip_core'), 'ting agency enabled');
     $this->assertTrue(module_exists('bibdk_favourite'), 'bibdk_favourite enabled');
   }
 

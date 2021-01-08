@@ -19,7 +19,7 @@ class BibdkVejviserTestCaseTingSettings extends DrupalWebTestCase {
    * Setting up the test
    */
   public function setUp() {
-    parent::setUp(array('bibdk_vejviser', 'ting_openformat', 'ting_agency'));
+    parent::setUp(array('bibdk_vejviser', 'ting_openformat', 'vip_core'));
   }
 
   /**

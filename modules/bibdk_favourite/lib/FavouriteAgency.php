@@ -1,7 +1,5 @@
 <?php
 
-require_once '/var/www/html/profiles/bibdk/modules/vip_core/includes/VipCoreAgencyBranch.inc';
-
 class FavouriteAgency extends VipCoreAgencyBranch {
 
   public $userData;
