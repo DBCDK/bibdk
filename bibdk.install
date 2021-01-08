@@ -730,3 +730,9 @@ function bibdk_update_7072() {
     'bibdk_reviews',
   ));
 }
+
+/** Enable DBC composer module and vip_core */
+function bibdk_update_7073() {
+  $modules = array('dbc_composer', 'vip_core');
+  module_enable($modules);
+}

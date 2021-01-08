@@ -1,0 +1,24 @@
+{
+  "name": "dbc/bibliotekdk",
+  "description": "Composer file for bibliotek.dk",
+  "keywords": [
+    "DBC"
+  ],
+  "homepage": "http://dbc.dk",
+  "license": "None",
+  "authors": [
+    {
+      "name": "DBC",
+      "email": "support@dbc.dk"
+    }
+  ],
+  "require": {
+    "dbc/php-vipcore": "dev-master"
+  },
+  "repositories": {
+    "vc": {
+      "type": "git",
+      "url": "gitlab@gitlab.dbc.dk:pu/vip-core/vip-core-php.git"
+    }
+  }
+}
