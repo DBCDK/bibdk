@@ -319,7 +319,7 @@ function bibdk_reservation_step_2_user_form_fields($form, $form_state) {
     $form['userParameters']['userfields'] = $fields;
   }
   else {
-    $fields = ting_agency_userdata_form($form, $form_state, $fields, NULL, $branch->branchId);
+    $fields = bibdk_favourite_userdata_form($form, $form_state, $fields, NULL, $branch->branchId);
     $form['userParameters']['userfields'] = $fields;
   }
 
