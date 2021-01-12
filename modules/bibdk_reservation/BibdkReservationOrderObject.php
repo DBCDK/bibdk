@@ -20,7 +20,7 @@ class BibdkReservationOrderObject {
   private $sbKopi;
   private $articleDirect;
   private $sbKopiUser;
-  
+
 
   public function getSbKopiUser() {
     return $this->sbKopiUser;
@@ -116,10 +116,11 @@ class BibdkReservationOrderObject {
     return $this->branchId;
   }
 
-  public function setBranch($branch) {
+  public function setBranch(VipCoreAgencyBranch $branch) {
     $this->branch = $branch;
-    $this->setBranchId($branch->branchId);
-    $this->agency = new TingAgency($branch->branchId);
+    $this->setBranchId($branch->getBranchId());
+
+    $this->agency = vip_core_findlibrary($branch->getBranchId());
     return $this;
   }
 

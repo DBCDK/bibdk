@@ -178,6 +178,7 @@ function bibdk_reservation_get_favourites_for_selector() {
   global $language;
   $ret = array();
   $favourites = BibdkReservationOrderObject::GetObject()->getFavourites();
+  /** @var FavouriteAgency $favourite */
   foreach ($favourites as $favourite) {
     $branch = $favourite->getBranch();
     if (is_object($branch)) {
@@ -535,11 +536,10 @@ function bibdk_reservation_prepare_set_user_order_data(&$form_state) {
   }
 
   // bug 21614 userId was overwritten if both cpr and cardno is present.
-  $agency = new TingAgency(
-    BibdkReservationOrderObject::GetObject()->getBranchId()
-  );
+  $branchId = BibdkReservationOrderObject::GetObject()->getBranchId();
 
-  $agency_fields = $agency->getAgencyFields();
+  $response = vip_core_service($branchId, 'userOrderParameters');
+  $agency_fields = new VipCoreFields($response);
   $user_id = $agency_fields->getUserIdKey();
 
   foreach ($agency_fields->userParameters as $key => $userParameter) {
@@ -739,15 +739,20 @@ function bibdk_reservation_borchk_parse_response($response, $acceptOrderFromUnkn
 /**
  * Get fields required by Agency
  *
- * @return AgencyFields
+ * @return VipCoreFields
  */
 function bibdk_reservation_get_agency_fields() {
 
+  /** @var VipCoreAgencyBranch $agency */
   $agency = BibdkReservationOrderObject::GetObject()->getAgency();
   if (!is_object($agency)) {
     return NULL;
   }
-  $fields = $agency->getAgencyFields();
+
+  $response = vip_core_service($agency->getMainAgencyId(), 'userOrderParameters');
+  $fields = new VipCoreFields($response);
+
+//  $fields = $agency->getAgencyFields();
   if (!empty($fields)) {
     BibdkReservationOrderObject::GetObject()->setFields($fields);
   }

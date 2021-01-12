@@ -47,7 +47,7 @@ class FavouriteAgency extends VipCoreAgencyBranch {
   public function getBranch() {
 
     if (!is_null($this->branch)) {
-      return $this->branch;
+      return new VipCoreAgencyBranch($this->branch);
     }
     return NULL;
   }

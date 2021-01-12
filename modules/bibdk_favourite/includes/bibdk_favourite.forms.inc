@@ -113,7 +113,13 @@ function bibdk_favourite_forms_set_message($name) {
 
 /**
  * the form to be displayed on profile tab
- * */
+ * @param FavouriteAgency $favourite
+ * @param $weight
+ * @param bool $toggle_enabled
+ * @param bool $action_enabled
+ * @return array|void
+ * @throws Exception
+ */
 function bibdk_favourite_form_view_items_from_session($favourite, $weight, $toggle_enabled = TRUE, $action_enabled = TRUE) {
   global $language;
 
@@ -137,19 +143,19 @@ function bibdk_favourite_form_view_items_from_session($favourite, $weight, $togg
     '#toggle_enabled' => $toggle_enabled,
   ) ;
   $classes = array();
-  $classes[] = 'favourite-' . $favourite->getAgencyId();
+  $classes[] = 'favourite-' . $favourite->getBranchId();
   if ($favourite->getOrderAgency()) {
     $classes[] = 'order-agency';
   }
 
   $form[$favourite->getBranchId()]['library'] = array(
     '#theme' => 'bibdk_favourite_library',
-    '#branchName' => $favourite->getBranchShortName($language->language),
+    '#branchName' => $favourite->getBranchShortName(),
     '#agencyName' => $favourite->getAgencyName(),
     '#actions' => $actions,
     '#add_classes' => $classes,
     '#moreinfo' => $moreinfo,
-    '#branchid' => $favourite->branchId,
+    '#branchid' => $favourite->getBranchId(),
     '#toggle_enabled' => $toggle_enabled
   );
 
