@@ -140,7 +140,7 @@ function _bibdk_favourite_get_from_webservice() {
         $saved_agencies[$key]['oui:userData'] = bibdk_provider_decrypt_data($saved_agencies[$key]['oui:userData']);
       }
       $user_data = $saved_agencies[$key]['oui:userData'];
-      $favouriteAgency->userdata = array();
+      $favouriteAgency->userData = array();
       if ($user_data) {
         $favouriteAgency->userData = unserialize($user_data);
       }
