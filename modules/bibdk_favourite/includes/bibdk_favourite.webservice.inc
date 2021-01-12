@@ -142,7 +142,7 @@ function _bibdk_favourite_get_from_webservice() {
       $user_data = $saved_agencies[$key]['oui:userData'];
       $favouriteAgency->userdata = array();
       if ($user_data) {
-        $favouriteAgency->userdata = unserialize($user_data);
+        $favouriteAgency->userData = unserialize($user_data);
       }
       $favouriteAgency->orderLibrary = $saved_agencies[$key]['oui:orderAgency'];
       $agencies[$agency['oui:agencyId']] = $favouriteAgency;

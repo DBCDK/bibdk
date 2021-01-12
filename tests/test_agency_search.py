@@ -27,4 +27,4 @@ class TestAgencySearch(helpers.BibdkUnitTestCase):
         browser.find_element_by_css_selector('.bibdk-favourite-library.favourite-714700').click()
 
         # assert Servicedeclaration (bug 17981)
-        browser.find_element_by_xpath("//a[contains(@href,'http://www.fkb.dk/page85.asp')]")
+        browser.find_element_by_xpath("//a[contains(@href,'https://fkb.dk/')]")

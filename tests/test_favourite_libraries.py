@@ -23,10 +23,10 @@ class TestFavouriteLibraries(helpers.BibdkUnitTestCase):
         user.do_consent(browser)
         agency_input = browser.find_element_by_id("edit-openagency-query")
         agency_input.clear()
-        agency_input.send_keys('frederiksberg')
+        agency_input.send_keys('Lyngby')
 
         browser.find_element_by_id("edit-openagency-submit").click()
-        browser.find_element_by_xpath("//a[contains(@href,'/bibdk_favourite_list?agency=714700')]").click()
+        browser.find_element_by_xpath("//a[contains(@href,'/bibdk_favourite_list?agency=717300')]").click()
 
 
         browser.get(self.base_url + "user")
