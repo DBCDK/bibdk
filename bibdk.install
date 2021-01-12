@@ -733,9 +733,6 @@ function bibdk_update_7072() {
 
 /** Enable DBC composer module and disable ting_agency */
 function bibdk_update_7073() {
-  $modules = array('dbc_composer', 'vip_core');
-  module_enable($modules);
-  unset($modules);
   $modules = array('ting_agency');
   module_disable($modules);
 }
