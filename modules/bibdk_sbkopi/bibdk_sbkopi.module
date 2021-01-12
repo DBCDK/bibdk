@@ -42,7 +42,7 @@ function bibdk_sbkopi_form_ting_client_admin_webservices_settings_alter(&$form, 
   $form['sbkopi']['bibdk_sbkopi_place_copy_request_url'] = array(
     '#type' => 'textfield',
     '#title' => t('URL to SB copy service'),
-    '#description' => t('URL to statsbibliotekets place copy service e.g., https://webservice.statsbiblioteket.dk/placeCopyRequest'),
+    '#description' => t('URL to statsbibliotekets place copy service e.g., https://webservice.statsbiblioteket.dk/placeCopyRequest', array(), array('context' => 'bibdk_sbkopi')),
     '#required' => TRUE,
     '#default_value' => variable_get('bibdk_sbkopi_place_copy_request_url', FALSE),
   );
@@ -66,14 +66,14 @@ function bibdk_sbkopi_form_ting_client_admin_webservices_settings_alter(&$form, 
   $form['sbkopi']['bibdk_sbkopi_journal_url'] = array(
     '#type' => 'textfield',
     '#title' => t('Url to SB Journal service'),
-    '#description' => t('Url to statsbibliotekets journal service e.g., https://webservice.statsbiblioteket.dk/copydanws/journal'),
+    '#description' => t('Url to statsbibliotekets journal service e.g., https://webservice.statsbiblioteket.dk/copydanws/journal', array(), array('context' => 'bibdk_sbkopi')),
     '#required' => TRUE,
     '#default_value' => variable_get('bibdk_sbkopi_journal_url', FALSE),
   );
   $form['sbkopi']['bibdk_sbkopi_subscriber_url'] = array(
     '#type' => 'textfield',
     '#title' => t('Url to SB Subscriber service'),
-    '#description' => t('Url to statsbibliotekets subscriber service e.g., https://webservice.statsbiblioteket.dk/copydanws/subscriber'),
+    '#description' => t('Url to statsbibliotekets subscriber service e.g., https://webservice.statsbiblioteket.dk/copydanws/subscriber', array(), array('context' => 'bibdk_sbkopi')),
     '#required' => TRUE,
     '#default_value' => variable_get('bibdk_sbkopi_subscriber_url', FALSE),
   );

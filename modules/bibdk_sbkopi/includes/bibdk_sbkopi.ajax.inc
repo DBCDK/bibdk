@@ -33,11 +33,20 @@ function bibdk_sbkopi_ajax_get_options() {
  */
 function bibdk_sbkopi_ajax_openorder_request($pid, $reservation = FALSE) {
   $order_library = bibdk_favourite_get_order_library();
-  if ($delivery_method = bibdk_sbkopi_delivery_method($pid) && bibdk_sb_kopi_do_subscriber_request($order_library->getAgencyMainId())) {
-    return _bibdk_sb_kopi_get_link($pid);
-  }
-  else {
-    return ($reservation === TRUE) ? "error" : FALSE;
+  if (!ding_user_is_provider_user() || $order_library === NULL) {
+    if ($delivery_method = bibdk_sbkopi_delivery_method($pid)) {
+      return _bibdk_sb_kopi_get_link($pid);
+    }
+    else {
+      return ($reservation === TRUE) ? "error" : FALSE;
+    }
+  } else {
+    if ($delivery_method = bibdk_sbkopi_delivery_method($pid) && bibdk_sb_kopi_do_subscriber_request($order_library->getAgencyMainId())) {
+      return _bibdk_sb_kopi_get_link($pid);
+    }
+    else {
+      return ($reservation === TRUE) ? "error" : FALSE;
+    }
   }
 }
 
@@ -147,6 +156,7 @@ function bibdk_sb_kopi_do_issn_request($issn) {
 
   try {
     $micro = new MicroCURL(array());
+    $micro->set_proxy("dmzproxy.dbc.dk:3128");
   }
   catch (\MicroCURLException $e) {
     watchdog('bibdk_sbkopi', 'sb kopi fejlede %message', array('%message' => $e->getMessage()), WATCHDOG_ERROR);
@@ -188,6 +198,7 @@ function bibdk_sb_kopi_do_subscriber_request($agency) {
 
   try {
     $micro = new MicroCURL(array());
+    $micro->set_proxy("dmzproxy.dbc.dk:3128");
   }
   catch (\MicroCURLException $e) {
     watchdog('bibdk_sbkopi', 'Subscriber request failed: %message', array('%message' => $e->getMessage()), WATCHDOG_ERROR);
