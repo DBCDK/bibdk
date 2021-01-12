@@ -559,12 +559,12 @@ function bibdk_favourite_userdata_form($form, &$form_state, $fields, $userData =
 /**
  * Render the view of an agency branch and wrap it in an form element
  *
- * @param TingClientAgencyBranch $branch
+ * @param VipCoreAgencyBranch $branch
  * @param array $settings
  *
  * @return mixed
  */
-function bibdk_favourite_view_agency_branch(TingClientAgencyBranch $branch, $settings = array()) {
+function bibdk_favourite_view_agency_branch(VipCoreAgencyBranch $branch, $settings = array()) {
   // Actions can be both links and form elements, and needs to handles separately
   $actions = isset($settings['#actions']) ? $settings['#actions'] : '';
   unset($settings['#actions']);
@@ -578,11 +578,11 @@ function bibdk_favourite_view_agency_branch(TingClientAgencyBranch $branch, $set
   global $language;
   $default = array(
     '#theme' => 'bibdk_favourite_library',
-    '#branchName' => $branch->getBranchName($language->language),
+    '#branchName' => $branch->getBranchName(),
     '#actions' => drupal_render($actions),
     '#add_classes' => $classes,
     '#moreinfo' => bibdk_favourite_get_more_info($branch),
-    '#branchid' => $branch->branchId,
+    '#branchid' => $branch->getBranchId(),
     '#temporarilyClosedReason' => bibdk_favourite_temporarily_closed_message($branch),
   );
 
@@ -596,8 +596,8 @@ function bibdk_favourite_view_agency_branch(TingClientAgencyBranch $branch, $set
     $render['#weight'] = -1;
   }
   return array(
-    '#title' => $branch->getBranchName($language->language),
-    $branch->branchId => $render,
+    '#title' => $branch->getBranchName(),
+    $branch->getBranchId() => $render,
   );
 }
 
@@ -669,7 +669,7 @@ function bibdk_favourite_get_selector_for_subagencies($branchId, $userData) {
  * Generate more info for branch
  * get default moreinfo for a branch
  *
- * @param TingClientAgencyBranch $branch
+ * @param VipCoreAgencyBranch $branch
  *
  * @return array
  * render array for drupal_render
@@ -681,7 +681,7 @@ function bibdk_favourite_get_more_info(VipCoreAgencyBranch $branch) {
   $defaults = array(
     '#theme' => 'bibdk_favourite_more_info',
     '#branch' => $branch,
-    '#openingHours' => $branch->getOpeningHours($language->language),
+    '#openingHours' => $branch->getOpeningHours(),
     '#tools' => $tools,
     '#address' => $branch->getAddress(),
     '#pickupallowed' => $branch->getPicupAllowed(),

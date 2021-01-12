@@ -141,7 +141,7 @@ function bibdk_reservation_parse_agency_search_result($result) {
     $settings = array(
       '#actions' =>  bibdk_reservation_agency_branch_get_action_link($branch),
     );
-    $form +=ting_agency_view_agency_branch($branch, $settings);
+    $form += bibdk_favourite_view_agency_branch($branch, $settings);
   }
 
 
