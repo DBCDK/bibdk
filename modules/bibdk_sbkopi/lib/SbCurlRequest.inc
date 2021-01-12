@@ -30,7 +30,6 @@ class SbCurlRequest extends MicroCURL {
     } catch (Exception $e) {
       throw new MicroCURLException($e);
     }
-    $this->set_proxy("dmzproxy.dbc.dk:3128");
     $this->setRequest($request, $xmlns);
     $this->setParameters($parameters);
     $this->set_post_xml($this->getPostXml());

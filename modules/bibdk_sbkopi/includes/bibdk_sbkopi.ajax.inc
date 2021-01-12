@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Ajax related functionality fr showing links to sb copy service
+ * Ajax related functionality for showing links to sb copy service
  */
 
 /**
@@ -32,7 +32,8 @@ function bibdk_sbkopi_ajax_get_options() {
  * @return bool|array|string
  */
 function bibdk_sbkopi_ajax_openorder_request($pid, $reservation = FALSE) {
-  if ($delivery_method = bibdk_sbkopi_delivery_method($pid)) {
+  $order_library = bibdk_favourite_get_order_library();
+  if ($delivery_method = bibdk_sbkopi_delivery_method($pid) && bibdk_sb_kopi_do_subscriber_request($order_library->getAgencyMainId())) {
     return _bibdk_sb_kopi_get_link($pid);
   }
   else {
@@ -52,9 +53,8 @@ function bibdk_sbkopi_delivery_method($pid) {
   // openformat can handle single field requests.
   $response = bibdk_sbkopi_do_marcxchangeRequest($pid);
   $issn = bibdk_sbkopi_parse_marcx($response);
-
   if (!empty($issn)) {
-    $xml = bibdk_sb_kopi_do_article_request($issn);
+    $xml = bibdk_sb_kopi_do_issn_request($issn);
   }
   else {
     $xml = FALSE;
@@ -135,19 +135,18 @@ function bibdk_sbkopi_parse_marcx($response) {
 }
 
 /**
- * Do a request to sbkopi article service - check if given issn is deliverable.
+ * Do a request to the copydan issn service - check if given issn is deliverable.
  *
  * @param $issn
  * @return bool|SimpleXMLElement
  */
-function bibdk_sb_kopi_do_article_request($issn) {
+function bibdk_sb_kopi_do_issn_request($issn) {
   $url = variable_get('bibdk_sbkopi_journal_url');
   $url .= '?issn=' . str_replace('-', '', $issn);
   $url .= "&date=" . date('Y-m-d');
 
   try {
     $micro = new MicroCURL(array());
-    $micro->set_proxy("dmzproxy.dbc.dk:3128");
   }
   catch (\MicroCURLException $e) {
     watchdog('bibdk_sbkopi', 'sb kopi fejlede %message', array('%message' => $e->getMessage()), WATCHDOG_ERROR);
@@ -164,7 +163,7 @@ function bibdk_sb_kopi_do_article_request($issn) {
 }
 
 /**
- * Parse response from open order
+ * Parse response from the copydan issn service
  *
  * @param \SimpleXMLElement $xml
  *
@@ -173,6 +172,47 @@ function bibdk_sb_kopi_do_article_request($issn) {
 function bibdk_sbkopi_ajax_parse_response($xml) {
   $possible = $xml->eDeliveryAllowed->__toString();
   return ($possible === "true") ? "electronic" : FALSE;
+}
+
+/**
+ * Do a request to the subscriber service - does the users chosen library
+ * subscribe to Digital Artikelservice?
+ *
+ * @param $issn
+ * @return bool|SimpleXMLElement
+ */
+function bibdk_sb_kopi_do_subscriber_request($agency) {
+  $url = variable_get('bibdk_sbkopi_subscriber_url');
+  $url .= "?date=" . date('Y-m-d');
+  $url .= '&isil=' . 'DK-' . $agency;
+
+  try {
+    $micro = new MicroCURL(array());
+  }
+  catch (\MicroCURLException $e) {
+    watchdog('bibdk_sbkopi', 'Subscriber request failed: %message', array('%message' => $e->getMessage()), WATCHDOG_ERROR);
+    return FALSE;
+  }
+
+  if ($content = $micro->get($url)) {
+    return bibdk_sbkopi_ajax_parse_subscriber_response(simplexml_load_string($content));
+  }
+
+  watchdog('bibdk_sbkopi', 'Subscriber request failed, url %url', array('%url' => $url));
+
+  return FALSE;
+}
+
+/**
+ * Parse response from the subscriber service
+ *
+ * @param \SimpleXMLElement $xml
+ *
+ * @return bool
+ */
+function bibdk_sbkopi_ajax_parse_subscriber_response($xml) {
+  $possible = $xml->isSubscriber->__toString();
+  return ($possible === "true") ? TRUE : FALSE;
 }
 
 /**
@@ -219,4 +259,3 @@ function _bibdk_sbkopi_set_xpath($xml) {
   $xpath->registerNamespace('ns', 'http://oss.dbc.dk/ns/openorder');
   return $xpath;
 }
-

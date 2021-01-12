@@ -20,6 +20,9 @@ function bibdk_sbkopi_ting_client_webservice() {
   $ret['statsbibjournal']['class'] = 'bibdk_sb_journal';
   $ret['statsbibjournal']['url'] = 'bibdk_statsbibjournal_url';
 
+  $ret['statsbibsubscriber']['class'] = 'bibdk_sb_subscriber';
+  $ret['statsbibsubscriber']['url'] = 'bibdk_statsbibsubscriber_url';
+
   return $ret;
 }
 
@@ -66,6 +69,13 @@ function bibdk_sbkopi_form_ting_client_admin_webservices_settings_alter(&$form, 
     '#description' => t('Url to statsbibliotekets journal service e.g., https://webservice.statsbiblioteket.dk/copydanws/journal'),
     '#required' => TRUE,
     '#default_value' => variable_get('bibdk_sbkopi_journal_url', FALSE),
+  );
+  $form['sbkopi']['bibdk_sbkopi_subscriber_url'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Url to SB Subscriber service'),
+    '#description' => t('Url to statsbibliotekets subscriber service e.g., https://webservice.statsbiblioteket.dk/copydanws/subscriber'),
+    '#required' => TRUE,
+    '#default_value' => variable_get('bibdk_sbkopi_subscriber_url', FALSE),
   );
 }
 
@@ -142,6 +152,3 @@ function bibdk_sbkopi_ting_openformat_actions($type, $entity, $view_mode, $langc
     }
   }
 }
-
-
-
