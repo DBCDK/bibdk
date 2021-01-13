@@ -132,7 +132,7 @@ function bibdk_reservation_parse_agency_search_result($result) {
     return array();
   }
 
-  if (!is_array($result)){
+  if (!is_array($result)) {
     $result = array($result);
   }
 
@@ -159,16 +159,16 @@ function bibdk_reservation_form_step_1_submit($form, &$form_state) {
 }
 
 /**
- * @param TingClientAgencyBranch $branch
+ * @param VipCoreAgencyBranch $branch
  * @return array
  */
 function bibdk_reservation_agency_branch_get_action_link($branch) {
   $form = array();
 
-  if($branch->pickupAllowed){
+  if($branch->getPicupAllowed()) {
     $form = array(
       '#value' => t('select_reservation_library', array(), array('context' => 'bibdk_reservation')),
-      '#name' => 'branch-' . $branch->branchId,
+      '#name' => 'branch-' . $branch->getBranchId(),
       '#type' => 'submit',
       '#submit' => array('bibdk_reservation_wizard_next_submit'),
       '#step' => 2,

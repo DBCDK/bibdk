@@ -569,7 +569,7 @@ function bibdk_favourite_view_agency_branch(VipCoreAgencyBranch $branch, $settin
   $actions = isset($settings['#actions']) ? $settings['#actions'] : '';
   unset($settings['#actions']);
 
-  $classes = array('favourite-' . $branch->branchId);
+  $classes = array('favourite-' . $branch->getBranchId());
   if ($branch->isOrderLibrary()) {
     $classes[] = 'order-agency';
   }

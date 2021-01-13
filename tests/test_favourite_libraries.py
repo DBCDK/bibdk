@@ -34,7 +34,7 @@ class TestFavouriteLibraries(helpers.BibdkUnitTestCase):
         browser.find_element_by_xpath("//div[@id='block-bibdk-frontend-bibdk-tabs']//a[contains(@href,'/bibdk_favourite_list')]").click()
 
         # Assert library with id 714700 (frederiksberg) has been added
-        self.assertTrue(browser.find_element_by_class_name('favourite-714700'))
+        self.assertTrue(browser.find_element_by_class_name('favourite-717300'))
 
     def test_favourite_link_presence(self):
         browser = self.browser
