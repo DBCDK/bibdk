@@ -79,7 +79,7 @@ class TestReservationAnonUser(helpers.BibdkUnitTestCase):
         library = wait.until(
             EC.visibility_of_element_located(
                 (
-                    By.CSS_SELECTOR, ".ting-agency--actions .form-submit"
+                    By.CSS_SELECTOR, ".bibdk-favourite--actions .form-submit"
                 )
             )
         )

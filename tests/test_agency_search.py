@@ -18,7 +18,7 @@ class TestAgencySearch(helpers.BibdkUnitTestCase):
         browser.find_element_by_id('edit-openagency-submit').click()
 
         # assert list of libraries
-        print(len(browser.find_elements_by_css_selector(".ting-agency-library")))
+        print(len(browser.find_elements_by_css_selector(".bibdk-favourite-library")))
         self.assertTrue(len(browser.find_elements_by_css_selector(".bibdk-favourite-library")) > 10)
 
         # assert frederiksberg hovedbibliotek is present
