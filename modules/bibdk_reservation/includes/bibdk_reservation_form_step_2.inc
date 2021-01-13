@@ -1,5 +1,7 @@
 <?php
 
+module_load_include('php', 'vip_core', 'includes/VipCoreFields');
+
 /**
  * implements hook_form
  */
@@ -555,7 +557,7 @@ function bibdk_reservation_prepare_set_user_order_data(&$form_state) {
     else {
       if (isset($form_state['values'][$type])) {
 
-        $agencyFields = new AgencyFields(NULL);
+        $agencyFields = new VipCoreFields(NULL);
         $agencyFields->userParameters[$key] = $userParameter;
         $fields = $agencyFields->getUserIdKey();
 
