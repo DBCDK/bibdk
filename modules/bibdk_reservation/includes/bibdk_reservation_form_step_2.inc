@@ -315,11 +315,11 @@ function bibdk_reservation_step_2_user_form_fields($form, $form_state) {
 
   global $user;
   if (ding_user_is_provider_user($user)) {
-    $fields = bibdk_favourite_user_form_fields($form, $form_state, $branch->branchId);
+    $fields = bibdk_favourite_user_form_fields($form, $form_state, $branch->getBranchId());
     $form['userParameters']['userfields'] = $fields;
   }
   else {
-    $fields = bibdk_favourite_userdata_form($form, $form_state, $fields, NULL, $branch->branchId);
+    $fields = bibdk_favourite_userdata_form($form, $form_state, $fields, NULL, $branch->getBranchId());
     $form['userParameters']['userfields'] = $fields;
   }
 
