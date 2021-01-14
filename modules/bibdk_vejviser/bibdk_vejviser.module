@@ -250,12 +250,7 @@ function bibdk_vejviser_execute_agency_search($query) {
   }
 
   try {
-    $cache = \DBC\VC\CacheMiddleware\MemcachedCacheMiddleware::createCacheMiddleware(
-      array(array('url' => 'localhost', 'port' => 11211)), 3600, 'bibdk'
-    );
-    $url = variable_get('vip_core_url', 'http://vipcore.iscrum-vip-prod.svc.cloud.dbc.dk');
-
-    $vipcore = new \DBC\VC\VipCore($url, 10, 'bibdk-bibdk_favorite', $cache);
+    $vipcore = _vip_core_setup_vipcore();
     $response = $vipcore->findLibrary(
       null, null, null, null, null, $sort, $query
     );
@@ -279,13 +274,9 @@ function bibdk_vejviser_execute_pickup_agency_search($agencyId) {
   if (empty($agencyId)) {
     return;
   }
-  $client = new ting_client_class();
-  // Call pickupAgencyListRequest service parm: agencyId
 
-  $resp = $client->do_request('AgencyRequest', array(
-    'agencyId' => $agencyId,
-    'action' => 'pickupAgencyListRequest'
-  ));
+  $agencyId = (!is_array($agencyId)) ? array($agencyId) : $agencyId;
+  $resp = vip_core_pickupAgencyList($agencyId);
 
   return bibdk_vejviser_handle_agency_response($resp);
 }
