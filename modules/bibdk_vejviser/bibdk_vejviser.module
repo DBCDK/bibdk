@@ -223,10 +223,9 @@ function bibdk_vejviser_agency_search() {
  * @return string
  */
 function bibdk_vejviser_get_agency_link($branch) {
-  if (empty($branch->agencyId) && !isset($branch->branch)) {
+  if (empty($branch->getAgencyName())) {
     return $branch->getMainAgencyId();
-  }
-  else {
+  } else {
     return l($branch->getAgencyName(), 'vejviser/', array(
       'attributes' => array('class' => array('agencylist-link')),
       'query' => array('agencyId' => $branch->getMainAgencyId())
@@ -276,9 +275,12 @@ function bibdk_vejviser_execute_pickup_agency_search($agencyId) {
   }
 
   $agencyId = (!is_array($agencyId)) ? array($agencyId) : $agencyId;
-  $resp = vip_core_pickupAgencyList($agencyId);
-
-  return bibdk_vejviser_handle_agency_response($resp);
+  try {
+    $resp = vip_core_pickupAgencyList($agencyId);
+    return bibdk_vejviser_handle_agency_response($resp);
+  } catch (\GuzzleHttp\Exception\GuzzleException $e) {
+    drupal_set_message($e, 'error');
+  }
 }
 
 /**
