@@ -16,13 +16,14 @@ class TestMarkedInputFieldWhenNoInput(helpers.BibdkUnitTestCase):
         self.browser.switch_to.window('PopUpWindowreservation')
         anyfield = self.browser.find_element_by_id('edit-anyfield')
         anyfield.clear()
-        anyfield.send_keys('frederiksberg')
+        anyfield.send_keys(u'frederiksværk')
         self.browser.find_element_by_id('edit-search').click()
         time.sleep(2)
-        self.browser.find_element_by_class_name('favourite-714700').click()
+        self.browser.find_element_by_name('branch-726000').click()
+        time.sleep(5)
         self.browser.find_element_by_id('edit-next').click()
-        customid = self.browser.find_element_by_id('edit-customid')
-        self.assertEqual(customid.get_attribute('class'),
+        userid = self.browser.find_element_by_id('edit-userid')
+        self.assertEqual(userid.get_attribute('class'),
             u'bibdk-password-field form-text required error')
         pincode = self.browser.find_element_by_id('edit-pincode')
         self.assertEqual(pincode.get_attribute('class'),
