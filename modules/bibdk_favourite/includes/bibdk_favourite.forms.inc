@@ -150,7 +150,7 @@ function bibdk_favourite_form_view_items_from_session($favourite, $weight, $togg
 
   $form[$favourite->getBranchId()]['library'] = array(
     '#theme' => 'bibdk_favourite_library',
-    '#branchName' => $favourite->getBranchShortName(),
+    '#branchName' => $favourite->getBranchShortName($language),
     '#agencyName' => $favourite->getAgencyName(),
     '#actions' => $actions,
     '#add_classes' => $classes,
@@ -313,7 +313,7 @@ function _bibdk_favourite_set_user_data_page_title($branchid) {
   $favourites = bibdk_favourite_get_favourites();
   if (isset($favourites[$branchid])) {
     global $language;
-    $name = $favourites[$branchid]->getBranchName();
+    $name = $favourites[$branchid]->getBranchName($language);
     $branchName = isset($name) ? $name : '';
   }
 
