@@ -16,6 +16,7 @@ function bibdk_sbkopi_install() {
   bibdk_sbkopi_set_vars();
 }
 
+// USE FEATURES INSTEAD
 function bibdk_sbkopi_set_vars() {
   variable_set(
     'bibdk_sbkopi_journal_url',
@@ -41,6 +42,3 @@ function bibdk_sbkopi_update_7001() {
 function bibdk_sbkopi_update_7002() {
   bibdk_sbkopi_set_vars();
 }
-
-
-
