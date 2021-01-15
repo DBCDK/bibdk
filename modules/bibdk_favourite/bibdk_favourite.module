@@ -681,7 +681,7 @@ function bibdk_favourite_get_more_info(VipCoreAgencyBranch $branch) {
   $defaults = array(
     '#theme' => 'bibdk_favourite_more_info',
     '#branch' => $branch,
-    '#openingHours' => $branch->getOpeningHours(),
+    '#openingHours' => $branch->getOpeningHours($language),
     '#tools' => $tools,
     '#address' => $branch->getAddress(),
     '#pickupallowed' => $branch->getPicupAllowed(),

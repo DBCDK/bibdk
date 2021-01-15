@@ -544,7 +544,7 @@ function bibdk_reservation_prepare_set_user_order_data(&$form_state) {
   $agency_fields = new VipCoreFields($response);
   $user_id = $agency_fields->getUserIdKey();
 
-  foreach ($agency_fields->userParameters as $key => $userParameter) {
+  foreach ($agency_fields->getUserParameters() as $key => $userParameter) {
 
     $type = $userParameter['type'];
     if ($user_id === $type) {
@@ -558,7 +558,7 @@ function bibdk_reservation_prepare_set_user_order_data(&$form_state) {
       if (isset($form_state['values'][$type])) {
 
         $agencyFields = new VipCoreFields(NULL);
-        $agencyFields->userParameters[$key] = $userParameter;
+        $agencyFields->setUserParameters($key, $userParameter);
         $fields = $agencyFields->getUserIdKey();
 
         if (!is_null($fields) && !isset($userOrderData['userId'])) {
