@@ -17,7 +17,12 @@ function bibdk_reservation_get_messages($bibdk_work_entity) {
  * @return array
  */
 function bibdk_reservation_get_actions($ids, $bibdk_work_entity) {
-  if($links = bibdk_reservation_get_action_links($ids, $bibdk_work_entity)) {
+  $parm = $bibdk_work_entity->getManifestations();
+  $manifestation = reset($parm);
+
+  if($links = bibdk_reservation_get_action_links($ids, $manifestation)) {
+    $header = $manifestation->isReservable() ? 'Alternative access' : 'Is not reservable';
+    $description = $manifestation->isReservable() ? 'description_text' : 'description_not_reservable';
     $form = array(
       '#type' => 'container',
       '#attributes' => array(
@@ -29,13 +34,13 @@ function bibdk_reservation_get_actions($ids, $bibdk_work_entity) {
     $form['header'] = array(
       '#theme' => 'html_tag',
       '#tag' => 'h2',
-      '#value' => t('Alternative access', array(), array('context' => 'bibdk_reservation')),
+      '#value' => t($header, array(), array('context' => 'bibdk_reservation')),
     );
 
     $form['description'] = array(
       '#theme' => 'html_tag',
       '#tag' => 'p',
-      '#value' => t('description_text', array(), array('context' => 'bibdk_reservation')),
+      '#value' => t($description, array(), array('context' => 'bibdk_reservation')),
       '#attributes' => array(
         'class' => array(
           'bibdk-reservation-links-description'
@@ -51,11 +56,8 @@ function bibdk_reservation_get_actions($ids, $bibdk_work_entity) {
   return $links;
 }
 
-function bibdk_reservation_get_action_links($ids, BibdkWork $bibdk_work_entity) {
+function bibdk_reservation_get_action_links($ids, $manifestation) {
   $links = array();
-
-  $parm = $bibdk_work_entity->getManifestations();
-  $manifestation = reset($parm);
 
   if ($link = bibdk_reservation_article_infomedia_link($manifestation)) {
     $links[] = $link;
@@ -71,15 +73,11 @@ function bibdk_reservation_get_action_links($ids, BibdkWork $bibdk_work_entity) 
   }
 
   if ($manifestation->hasDirectLink() && $manifestation->getRestrictedExtendedUse()) {
-    if (!user_is_logged_in()) {
-      // not logged in, do log on to see if your favorite library gives access
-    } else {
-      $links['wrapper']['item_list_link'] = bibdk_saou_link_to_soau_ressource($manifestation);
-    }
-  } else {
-    if ($manifestation->hasDirectLink()) {
-      $links[]['#markup'] = _ting_openformat_render_direct_link($manifestation->getInfotext(), $manifestation);
-    }
+    $links[]['#markup'] = t('Only restricted access', array(), array('context' => 'bibdk_reservation'));
+    $links[]['#markup'] = _ting_openformat_render_direct_link($manifestation->getInfotext(), $manifestation);
+  }
+  else if ($manifestation->hasDirectLink()) {
+    $links[]['#markup'] = _ting_openformat_render_direct_link($manifestation->getInfotext(), $manifestation);
   }
   return $links;
 }
