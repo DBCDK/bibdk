@@ -1,4 +1,6 @@
 libraries
+modules/dbc_composer
+modules/vip_core
 modules/ding_*
 modules/ting_*
 modules/ting-client
@@ -12,3 +14,4 @@ modules/dbc_zabbix
 themes/bibdk_theme
 tests/helpers.py
 tests/__pycache__
+vendor
