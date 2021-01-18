@@ -47,4 +47,5 @@ sed -i 's/;max_input_vars = 128M/max_input_vars = 2048/' $PHPINI
 # Enable mail sending
 echo "sendmail_path = /usr/bin/msmtp -t" >>$PHPINI
 
+/entrypoint.sh
 
