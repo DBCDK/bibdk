@@ -124,6 +124,8 @@ pipeline {
           if (BRANCH == 'master') {
             build job: 'Bibliotek DK/Deployments/staging'
             NAMESPACE = 'frontend-staging'
+          } else if (BRANCH == 'noconfigmaps') {
+            build job: 'Bibliotek DK/Deployments/no-configmap', parameters: [string(name: 'deploybranch', value: BRANCH)]
           } else {
             build job: 'Bibliotek DK/Deployments/features', parameters: [string(name: 'deploybranch', value: BRANCH)]
           }

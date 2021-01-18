@@ -102,4 +102,4 @@ EXPOSE 80
 
 HEALTHCHECK CMD ["/healthcheck.sh"]
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/drupal_config.sh"]
