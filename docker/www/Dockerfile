@@ -30,7 +30,8 @@ ENV POSTGRES_DB=filestore \
     POSTGRES_USER=filestore \
     POSTGRES_PASSWORD=filestore \
     POSTGRES_HOST=bibliotek-dk-db-develop.frontend-features.svc.cloud.dbc.dk \
-    NAMESPACE_NAME=frontend-features
+    NAMESPACE_NAME=frontend-features \
+    STARTUP=drupal
 
 # get pgp key to use debian packages from indexdata ( for installing yaz )
 # see also yaz.list which is added in Dockerfile
