@@ -9,7 +9,7 @@ FQDN_CONF=/etc/apache2/conf-available/fqdn.conf
 # location of configuration feature
 CONFIG=$APACHE_ROOT/profiles/bibdk/modules/bibdk_config/features/bibdk_webservice_settings_operational/bibdk_webservice_settings_operational.strongarm.inc
 
-if [[ "$NAMESPACE_NAME" == "frontend-features" ]] ; then
+if [[ "$NAMESPACE_NAME" != "frontend-prod" ]] ; then
   cd /tmp || return
   tar -xf files.tar.gz
   rm -rf /var/www/html/sites/default/files/*
@@ -47,4 +47,8 @@ sed -i 's/;max_input_vars = 128M/max_input_vars = 2048/' $PHPINI
 # Enable mail sending
 echo "sendmail_path = /usr/bin/msmtp -t" >>$PHPINI
 
-
+if [ "$STARTUP" == 'cron' ]; then
+  drush cron
+else
+  /entrypoint.sh
+fi

@@ -33,10 +33,8 @@ class SbCopyFields {
     'pid' => array('required' => TRUE, 'type' => 'value'),
     'agencyId' => array('required' => TRUE, 'type' => 'value'),
     'pickupAgencyId' => array('required' => TRUE, 'type' => 'value'),
-    'user_loaner_id' => array('required' => TRUE, 'type' => 'value'),
     'userName' => array('required' => TRUE),
     'userMail' => array('required' => TRUE),
-    'user_interest_date' => array('required' => TRUE, 'type' => 'date'),
   );
   private $fields = array();
   private $defaultValues = array();

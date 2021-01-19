@@ -77,7 +77,7 @@ function bibdk_sbkopi_default_values($form_state, Manifestation $manifestation, 
   $custom_values = array(
     'userMail' => (!isset($form_state_values['userMail']) && isset($user_values['email'])) ? $user_values['email'] : NULL,
     'pid' => $manifestation->id,
-    'agencyId' => $order_library->getAgencyId(),
+    'agencyId' => $order_library->getAgencyMainId(),
     'pickupAgencyId' => $order_library->getBranch()->getBranchId(),
     'user_loaner_id' => $order_library->getUserId(),
     'publicationTitle' => $manifestation->getTitle(),
