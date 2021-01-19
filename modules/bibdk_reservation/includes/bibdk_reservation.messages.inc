@@ -78,6 +78,9 @@ function bibdk_reservation_get_action_links($ids, $manifestation) {
   }
   else if ($manifestation->hasDirectLink()) {
     $links[]['#markup'] = _ting_openformat_render_direct_link($manifestation->getInfotext(), $manifestation);
+  } else {
+    $links[]['#markup'] = _ting_openformat_render_direct_link($manifestation->getInfotext(), $manifestation);
+    $links[]['#markup'] = t('drupal_text_' . $manifestation->getInfotext(), array(), array('context' => 'bibdk_reservation'));
   }
   return $links;
 }
