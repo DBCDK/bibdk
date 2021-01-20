@@ -48,8 +48,7 @@ sed -i 's/;max_input_vars = 128M/max_input_vars = 2048/' $PHPINI
 echo "sendmail_path = /usr/bin/msmtp -t" >>$PHPINI
 
 if [ "$STARTUP" == 'cron' ]; then
-  cd /var/www/html || return
-  drush cron
+  drush cron -r /var/www/html
 else
   /entrypoint.sh
 fi
