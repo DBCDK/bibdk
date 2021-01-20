@@ -133,7 +133,8 @@ function bibdk_audit_trail_bibdk_reservation_create_wizard_form_validate($form, 
 
     $response = vip_core_service($branchId, 'userOrderParameters');
 
-    $agency_fields = new VipCoreFields($response);
+    //$agency_fields = new VipCoreFields($response);
+    $agency_fields = new VipCoreService($response, 'userOrderParameters');
 
     $user_id_type = (!is_null($agency_fields)) ? $agency_fields->getUserIdKey() : "";
   }

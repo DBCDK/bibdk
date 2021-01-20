@@ -209,18 +209,18 @@ class BibdkReservationOrderObject {
   }
 
   /**
-   * @return VipCoreFields
+   * @return VipCoreService
    */
   public function getFields() {
 
-    if ($this->fields instanceof VipCoreFields) {
+    if ($this->fields instanceof VipCoreService) {
       return $this->fields;
     } else {
       // LKH 2021. This is a very ugly hack for the popup reservation window when you want to change between favourite libraries.
-      // For some odd reason, the $_SESSION['orderobject']->fields becomes __PHP_Incomplete_Class_Name instead of VipCoreFields.
+      // For some odd reason, the $_SESSION['orderobject']->fields becomes __PHP_Incomplete_Class_Name instead of VipCoreService.
       // This 'hack' solves the problem.
       $response = vip_core_service($this->branchId, 'userOrderParameters');
-      $this->fields = new VipCoreFields($response);
+      $this->fields = new VipCoreService($response, 'userOrderParameters');
       return $this->fields;
     }
   }

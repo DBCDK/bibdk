@@ -1,6 +1,6 @@
 <?php
 
-module_load_include('php', 'vip_core', 'includes/VipCoreFields');
+module_load_include('php', 'vip_core', 'includes/VipCoreService');
 
 /**
  * implements hook_form
@@ -541,7 +541,8 @@ function bibdk_reservation_prepare_set_user_order_data(&$form_state) {
   $branchId = BibdkReservationOrderObject::GetObject()->getBranchId();
 
   $response = vip_core_service($branchId, 'userOrderParameters');
-  $agency_fields = new VipCoreFields($response);
+  //$agency_fields = new VipCoreFields($response);
+  $agency_fields = new VipCoreService($response, 'UserOrderParameters');
   $user_id = $agency_fields->getUserIdKey();
 
   foreach ($agency_fields->getUserParameters() as $key => $userParameter) {
@@ -557,7 +558,8 @@ function bibdk_reservation_prepare_set_user_order_data(&$form_state) {
     else {
       if (isset($form_state['values'][$type])) {
 
-        $agencyFields = new VipCoreFields(NULL);
+        //$agencyFields = new VipCoreFields(NULL);
+        $agencyFields = new VipCoreService(NULL, 'UserOrderParameters');
         $agencyFields->setUserParameters($key, $userParameter);
         $fields = $agencyFields->getUserIdKey();
 
@@ -741,7 +743,7 @@ function bibdk_reservation_borchk_parse_response($response, $acceptOrderFromUnkn
 /**
  * Get fields required by Agency
  *
- * @return VipCoreFields
+ * @return VipCoreService
  */
 function bibdk_reservation_get_agency_fields() {
 
@@ -752,7 +754,8 @@ function bibdk_reservation_get_agency_fields() {
   }
 
   $response = vip_core_service($agency->getMainAgencyId(), 'userOrderParameters');
-  $fields = new VipCoreFields($response);
+  $fields = new VipCoreService($response, 'userOrderParameters');
+  //$fields = new VipCoreFields($response);
 
 //  $fields = $agency->getAgencyFields();
   if (!empty($fields)) {

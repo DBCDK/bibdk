@@ -401,8 +401,8 @@ function bibdk_favourite_save_userdata($agencyid, array $userdata, $show_message
 function bibdk_favourite_get_agency_fields($agencyId) {
 
   $response = vip_core_service($agencyId, 'userOrderParameters');
-  $fields = new VipCoreFields($response);
-  return $fields;
+  //$fields = new VipCoreFields($response);
+  return new VipCoreService($response, 'userOrderParameters');
 }
 
 /**
