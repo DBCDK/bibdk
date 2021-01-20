@@ -31,6 +31,7 @@ ENV POSTGRES_DB=filestore \
     POSTGRES_PASSWORD=filestore \
     POSTGRES_HOST=bibliotek-dk-db-develop.frontend-features.svc.cloud.dbc.dk \
     NAMESPACE_NAME=frontend-features \
+    STARTUP=drupal \
     USE_MEMCACHE=no
 
 # get pgp key to use debian packages from indexdata ( for installing yaz )
@@ -103,4 +104,4 @@ EXPOSE 80
 
 HEALTHCHECK CMD ["/healthcheck.sh"]
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/drupal_config.sh"]

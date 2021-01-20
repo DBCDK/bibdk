@@ -39,7 +39,11 @@ class TestFacets(helpers.BibdkUnitTestCase):
         #wait for the facetbrowser to be loaded
         wait.until(expected_conditions.presence_of_element_located((By.ID, "bibdk-facetbrowser-form")))
 
+<<<<<<< HEAD
         harry_warren = browser.find_element(By.PARTIAL_LINK_TEXT, "harry james")
+=======
+        harry_warren = browser.find_element(By.PARTIAL_LINK_TEXT, "harry warren")
+>>>>>>> develop
 
         facet_subjects = wait.until(
         expected_conditions.visibility_of_element_located((By.XPATH,"//fieldset[@id='facet-subject']")))
@@ -92,4 +96,3 @@ class TestFacets(helpers.BibdkUnitTestCase):
 
         #Check for present of facet viser
         facet_subject_viser = left_column.find_element_by_id('edit-form-viser')
-
