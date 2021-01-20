@@ -16,6 +16,7 @@ if [[ "$NAMESPACE_NAME" != "frontend-prod" ]] ; then
   cp -Rf files /var/www/html/sites/default
   chown -Rf www-data:www-data /var/www/html/sites/default/files
   rm -rf files files.tar.gz
+  cd /var/www/html
 fi
 
 # set configuration from environment vars
