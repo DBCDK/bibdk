@@ -50,6 +50,8 @@ echo "sendmail_path = /usr/bin/msmtp -t" >>$PHPINI
 
 if [ "$STARTUP" == 'cron' ]; then
   drush cron -r /var/www/html
+elif [ "$STARTUP" == 'update' ]; then
+  drush updb -y -r /var/www/html && drush rr -r /var/www/html && drush fra -y -r /var/www/html && drush cc all -r /var/www/html
 else
   /entrypoint.sh
 fi

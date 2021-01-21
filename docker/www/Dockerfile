@@ -79,7 +79,7 @@ COPY conf/20-yaz.ini /etc/php/7.3/apache2/conf.d/
 
 # Copy startup scripts
 COPY script/run_cron.sh /
-COPY script/drupal_config.sh /
+COPY script/start_bibdk.sh /
 
 # Copy test scripts
 COPY script/healthcheck.sh /
@@ -104,4 +104,4 @@ EXPOSE 80
 
 HEALTHCHECK CMD ["/healthcheck.sh"]
 
-ENTRYPOINT ["/drupal_config.sh"]
+ENTRYPOINT ["/start_bibdk.sh"]
