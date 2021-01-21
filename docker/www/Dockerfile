@@ -41,10 +41,6 @@ ADD ["http://ftp.indexdata.dk/debian/indexdata.asc", "/"]
 RUN apt-key add indexdata.asc
 COPY conf/yaz.list /etc/apt/sources.list.d/
 
-# Environment variables are set in configmap.yaml
-# NOTICE vars are used to alter configuration feature, so names MUST be mapped from
-# configuration file. see drupal_config.sh for details
-
 RUN apt-get update && \
   apt-get -q -y install cron logrotate php-gd php-mbstring php-pear wget php-soap php-yaml \
   make php-dev rsyslog sudo wget msmtp postgresql-client libyaz5 yaz libyaz5-dev && \
@@ -89,7 +85,7 @@ COPY script/run-tests-xunit.sh $APACHE_ROOT/scripts
 RUN mkdir -p $APACHE_ROOT/private && \
   chmod 755 /healthcheck.sh && \
   chmod 755 /run_cron.sh && \
-  chmod 755 /drupal_config.sh && \
+  chmod 755 /start_bibdk.sh && \
   chmod 777 /etc/php/7.3/apache2/conf.d/20-yaz.ini && \
   sudo chown www-data:www-data $APACHE_ROOT/private && \
   sudo chown -R www-data:www-data $APACHE_ROOT/sites/default/files && \
