@@ -663,7 +663,7 @@ function bibdk_reservation_borchk_validate($form_state) {
  * Execute service request to borchk
  *
  * @param array $form_state
- * @param AgencyFields $agencySettings
+ * @param VipCoreService $agencySettings
  *
  * @return array
  *   messages to display (if any)
