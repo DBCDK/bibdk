@@ -138,14 +138,14 @@ class BibdkReservationOrderObject {
   }
 
   /**
-   * @return TingAgency
+   * @return VipCoreAgencyBranch
    */
   public function getAgency() {
     return $this->agency;
   }
 
   /**
-   * @return TingClientAgencyBranch
+   * @return VipCoreAgencyBranch
    */
   public function getBranch() {
     return $this->branch;
