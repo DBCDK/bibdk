@@ -20,7 +20,8 @@ function bibdk_reservation_get_actions($ids, $bibdk_work_entity) {
   $parm = $bibdk_work_entity->getManifestations();
   $manifestation = reset($parm);
 
-  if($links = bibdk_reservation_get_action_links($ids, $manifestation)) {
+  if($manifestation->hasDirectLink()) {
+    $links = bibdk_reservation_get_action_links($ids, $manifestation);
     $header = $manifestation->isReservable() ? 'Alternative access' : 'Is not reservable';
     $description = $manifestation->isReservable() ? 'description_text' : 'description_not_reservable';
     $form = array(
