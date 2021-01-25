@@ -30,7 +30,7 @@ function bibdk_reservation_form_step_2($form, &$form_state) {
   $form['branchdata']['favouriteselector'] = bibdk_reservation_favourite_selector();
   $fields = bibdk_reservation_get_agency_fields();
 
-  $infotxt = $fields->getAcceptOrderFromUnknownUserText($language->language);
+  $infotxt = $fields->getAcceptOrderFromUnknownUserText();
 
   if (empty($infotxt)) {
     $infotxt = t('accept_order_from_unknown_standard_txt', array(), array('context' => 'bibdk_reservation'));
@@ -589,7 +589,6 @@ function bibdk_reservation_prepare_set_user_order_data(&$form_state) {
 /*
  * Implements hook_form_submit
  */
-
 function bibdk_reservation_form_step_2_submit($form, &$form_state) {
   if (isset($form_state['values']['self_pickup'])) {
     BibdkReservationOrderObject::GetObject()
