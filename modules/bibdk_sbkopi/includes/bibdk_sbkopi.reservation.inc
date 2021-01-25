@@ -34,7 +34,6 @@ function bibdk_sbkopi_reservation_form($form, &$form_state, $pid, $state = NULL)
   }
   else {
     $order_library = $result['order_library'];
-    bibdk_sbkopi_messages($pid, $order_library->getBranch());
     $manifestation = ting_openformat_get_single_manifestation($pid);
     $default_values = bibdk_sbkopi_default_values($form_state, $manifestation, $order_library);
     $fields = bibdk_sbkopi_get_fields_for_manifestation($order_library, $manifestation, $default_values);
@@ -217,7 +216,10 @@ function bibdk_sbkopi_order_form_submit($form, &$form_state) {
       // The service do not provide usable feedback for the cause of error, so
       // we log the error and writes out a generic error message to user
       watchdog('sb_kopi', "response code: !reponse_code, return message: !return_message, url: !url, xml: @xml", $e->getParams(), WATCHDOG_ERROR);
-      drupal_set_message(t('sb_kopi error message'), 'error');
+      // TEMP while KB is testing show error message from service in GUI.
+      $response = $e->getParams();
+      drupal_set_message('response code: ' . $response['!reponse_code'] . ' return message: ' . $response['!return_message'], 'error');
+      //drupal_set_message(t('sb_kopi error message'), 'error');
 
       $form_state['rebuild'] = TRUE;
     }
@@ -234,29 +236,6 @@ function bibdk_sbkopi_manifestation_view($manifestation, $title = 'You are about
   $render = bibdk_reservation_render_custom_manifestation_view($manifestation, $title);
   $render['#attributes']['class'] = array('sbkopi-manifestation-container');
   return $render;
-}
-
-/**
- * Return the relevant messages
- *
- * @param $pid
- * @param TingClientAgencyBranch $branch
- */
-function bibdk_sbkopi_messages($pid, TingClientAgencyBranch $branch) {
-  if ($delivery = bibdk_sbkopi_delivery_method($pid)) {
-    if (!$branch->getStateAndUniversityLibraryCopyService()) {
-      drupal_set_message(t('sb_no_subscription', array(), array('context' => 'bibdk_sbkopi')), 'warning');
-    }
-    else if ($delivery == 'postal') {
-      drupal_set_message(t('sb_subscription_and_postal', array(), array('context' => 'bibdk_sbkopi')), 'warning');
-    }
-    else {
-      drupal_set_message(t('sb_subscription_and_electronic', array(), array('context' => 'bibdk_sbkopi')), 'warning');
-    }
-  }
-  else {
-    drupal_set_message(t('This article cannot be ordered', array(), array('context' => 'bibdk_sbkopi')), 'error');
-  }
 }
 
 /**
