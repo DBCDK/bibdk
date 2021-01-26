@@ -165,7 +165,7 @@ function bibdk_reservation_form_step_1_submit($form, &$form_state) {
 function bibdk_reservation_agency_branch_get_action_link($branch) {
   $form = array();
 
-  if($branch->getPicupAllowed()) {
+  if($branch->getPickupAllowed()) {
     $form = array(
       '#value' => t('select_reservation_library', array(), array('context' => 'bibdk_reservation')),
       '#name' => 'branch-' . $branch->getBranchId(),
