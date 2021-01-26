@@ -187,7 +187,7 @@ function bibdk_vejviser_agency_search() {
       // check if any modules has anything to add to branch
       // but show only button if pickup is allowed for this branch
       $action = NULL;
-      if ($branch->getPicupAllowed() == '1' && $logged_in) {
+      if ($branch->getPickupAllowed() == '1' && $logged_in) {
         $action = module_invoke_all('add_to_vejviser', $branch->getBranchId());
       }
       $settings = array(
@@ -318,7 +318,7 @@ function bibdk_vejviser_handle_response($response) {
 function bibdk_vejviser_handle_agency_response($response) {
 
   if (isset($response->pickupAgencyListResponse->library[0]->pickupAgency)) {
-    // loop on picupAgencies
+    // loop on pickupAgencies
     foreach ($response->pickupAgencyListResponse->library[0]->pickupAgency as $value) {
       $agencies[] = new VipCoreAgencyBranch($value);
     }

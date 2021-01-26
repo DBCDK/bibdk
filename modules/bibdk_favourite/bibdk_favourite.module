@@ -793,7 +793,7 @@ function theme_bibdk_favourite_pickup_allowed($variables) {
   if (empty($branch)) {
     return;
   }
-  return $branch->getPicupAllowed();
+  return $branch->getPickupAllowed();
 }
 
 /**
