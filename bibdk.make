@@ -152,6 +152,10 @@ projects[vip_core][type] = module
 projects[vip_core][download][type] = git
 projects[vip_core][download][url] = gitlab@gitlab.dbc.dk:d-scrum/d7/modules/vip_core.git
 
+projects[howru][type] = module
+projects[howru][download][type] = git
+projects[howru][download][url] = gitlab@gitlab.dbc.dk:d-scrum/d7/modules/howru.git
+
 ; --- Non Ding2 or Bibliotek.dk specific
 
 projects[dbc_zabbix][type] = module
