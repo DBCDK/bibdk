@@ -168,22 +168,17 @@ function _bibdk_reservation_get_userstatus_link($pickUpAgency) {
     ),
   );
 
-  if(empty($ncipLookUpUser)){
+  if (empty($ncipLookUpUser)) {
     $userStatusUrl = $pickUpAgency->getUserStatusUrl();
-    if(!empty($userStatusUrl)){
+    if (!empty($userStatusUrl)) {
       $url = $userStatusUrl;
       $attributes['attributes']['target'][0] = '_blank';
     } else {
       return $msg;
     }
-  } else if(bibdk_reservation_user_is_logged_in()){
+  } else if (bibdk_reservation_user_is_logged_in()) {
     global $user;
-    if(module_exists('me')){
-      $url = 'user/me/bibdk_openuserstatus';
-    }
-    else {
-      $url = 'user/' . $user->uid . '/bibdk_openuserstatus';
-    }
+    $url = (module_exists('me')) ? 'user/me/bibdk_openuserstatus' : 'user/' . $user->uid . '/bibdk_openuserstatus';
   } else {
     return $msg;
   }
