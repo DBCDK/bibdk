@@ -737,7 +737,7 @@ function bibdk_update_7073() {
   module_enable($modules);
 }
 
-/** Enable DBC composer module and vip_core */
+/** Enable howru module */
 function bibdk_update_7074() {
   $modules = array('howru');
   module_enable($modules);
