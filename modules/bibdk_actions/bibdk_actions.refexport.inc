@@ -156,9 +156,6 @@ function bibdk_actions_refexport_links($pid = NULL, $attributes = array()) {
     }
 
     $callbackUrl = url('export/cart/', array('absolute' => TRUE)) . $value['format'] . '/' . $pid;
-    if (strpos($callbackUrl, 'https') === 0) {
-      $callbackUrl = substr_replace($callbackUrl, 'http', 0, 5);
-    }
     $path = $value['path'] . $callbackUrl;
 
     $links[$type] = array(
