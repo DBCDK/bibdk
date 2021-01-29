@@ -255,11 +255,13 @@ function bibdk_openuserstatus_get_agency_branch_name($agencyId) {
  * @return null|string
  */
 function bibdk_openuserstatus_get_agencyname_main($agencyId) {
-  global $language;
-  $agency = new TingAgency($agencyId);
-  $agency_main_id = $agency->getAgencyMainId();
-  $agency = new TingAgency($agency_main_id);
-  $name = $agency->getBranch()->getAgencyName($language->language);
+
+  $agency = vip_core_findlibrary($agencyId);
+  //$agency = new TingAgency($agencyId);
+  $agency_main_id = $agency->getMainAgencyId();
+  $agency = vip_core_findlibrary($agency_main_id);
+  //$agency = new TingAgency($agency_main_id);
+  $name = $agency->getBranchName();
   return isset($name) ? $name : NULL;
 }
 

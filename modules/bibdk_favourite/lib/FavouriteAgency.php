@@ -176,6 +176,19 @@ class FavouriteAgency extends VipCoreAgencyBranch {
   }
 
   /**
+   * @return null|string
+   * @throws \TingClientAgencyBranchException
+   * @throws \TingClientException
+   */
+  public function getRenewOrderAllowed() {
+    $branch = $this->getBranch();
+    if (isset($branch)) {
+      return $branch->getNcipRenewOrder();
+    }
+  }
+
+
+  /**
    * @param $object
    * @return array
    */
