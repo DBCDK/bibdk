@@ -34,7 +34,9 @@ function bibdk_favourite_save_favourite_on_webservice($branchId) {
 
 /**
  * Add favourite library to sesssion
- * */
+ *
+ * @param FavouriteAgency $favourite
+ */
 function bibdk_favourite_add_favourite_to_session($favourite) {
   if (!isset($_SESSION)) {
     drupal_session_initialize();
@@ -47,7 +49,7 @@ function bibdk_favourite_add_favourite_to_session($favourite) {
     _bibdk_favourite_set_agencies();
   }
 
-  $branchId = $favourite->getBranchId();
+  $branchId = $favourite->getBranch()->getBranchId();
 
   if (!isset($_SESSION['bibdk_favourites'][$branchId])) {
     $_SESSION['bibdk_favourites'][$branchId] = serialize($favourite);
