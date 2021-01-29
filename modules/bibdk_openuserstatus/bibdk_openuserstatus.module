@@ -229,11 +229,12 @@ function bibdk_openuserstatus_get_favourites() {
  */
 function bibdk_openuserstatus_get_agencyname($agencyId) {
   global $language;
-  $agency = new TingAgency($agencyId);
+  /** @var VipCoreAgencyBranch $agency */
+  $agency = vip_core_findlibrary($agencyId);
   // @TODO which one to use ??
   //  $name = $agency->getBranch()->getBranchName($language->language);
   //  return isset ($name) ? $name : NULL;
-  $name = $agency->getBranch()->getBranchShortName($language->language);
+  $name = $agency->getBranchShortName($language->language);
   return isset($name) ? $name : NULL;
 }
 
@@ -244,8 +245,9 @@ function bibdk_openuserstatus_get_agencyname($agencyId) {
  */
 function bibdk_openuserstatus_get_agency_branch_name($agencyId) {
   global $language;
-  $agency = new TingAgency($agencyId);
-  $name = $agency->getBranch()->getBranchName($language->language);
+  /** @var VipCoreAgencyBranch $agency */
+  $agency = vip_core_findlibrary($agencyId);
+  $name = $agency->getBranchName($language->language);
   return isset($name) ? $name : NULL;
 }
 
@@ -257,10 +259,8 @@ function bibdk_openuserstatus_get_agency_branch_name($agencyId) {
 function bibdk_openuserstatus_get_agencyname_main($agencyId) {
 
   $agency = vip_core_findlibrary($agencyId);
-  //$agency = new TingAgency($agencyId);
   $agency_main_id = $agency->getMainAgencyId();
   $agency = vip_core_findlibrary($agency_main_id);
-  //$agency = new TingAgency($agency_main_id);
   $name = $agency->getBranchName();
   return isset($name) ? $name : NULL;
 }
