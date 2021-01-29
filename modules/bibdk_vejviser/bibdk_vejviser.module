@@ -317,10 +317,10 @@ function bibdk_vejviser_handle_response($response) {
  */
 function bibdk_vejviser_handle_agency_response($response) {
 
-  if (isset($response->pickupAgencyListResponse->library[0]->pickupAgency)) {
+  if (isset($response->library[0]->pickupAgency)) {
     // loop on pickupAgencies
-    foreach ($response->pickupAgencyListResponse->library[0]->pickupAgency as $value) {
-      $agencies[] = new VipCoreAgencyBranch($value);
+    foreach ($response->library[0]->pickupAgency as $value) {
+      $agencies[] = vip_core_findlibrary($value->branchId);
     }
     return $agencies;
   }
