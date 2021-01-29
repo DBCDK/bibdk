@@ -23,11 +23,11 @@
   <!-- first column -->
   <!-- second column -->
   <div class="library-details-column-2">
-    <?php if ($openingHours != 'bibdk_favourite_no_opening_hours') { ?>
+    <?php if ($openingHours != 'bibdk_favourite_no_opening_hours' && !is_null($openingHours)): ?>
       <p class="subheader">
         <strong><?php print t('ting_agency_opening_hours'); ?></strong></p>
       <p class="openinghours"><?php print $openingHours; ?></p>
-    <?php } ?>
+    <?php endif; ?>
     <?php if (isset($tools)) : ?>
       <p class="subheader">
         <strong><?php print t('ting_agency_tools'); ?></strong>
