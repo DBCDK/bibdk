@@ -676,12 +676,11 @@ function bibdk_favourite_get_selector_for_subagencies($branchId, $userData) {
  * @throws Exception
  */
 function bibdk_favourite_get_more_info(VipCoreAgencyBranch $branch) {
-  global $language;
   $tools = get_bibdk_favourite_tools($branch);
   $defaults = array(
     '#theme' => 'bibdk_favourite_more_info',
     '#branch' => $branch,
-    '#openingHours' => $branch->getOpeningHours($language),
+    '#openingHours' => $branch->getOpeningHours(),
     '#tools' => $tools,
     '#address' => $branch->getAddress(),
     '#pickupallowed' => $branch->getPickupAllowed(),

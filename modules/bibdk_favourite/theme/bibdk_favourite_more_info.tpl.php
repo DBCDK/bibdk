@@ -7,7 +7,7 @@
       </p>
       <p class="address"><?php print $address; ?></p>
     <?php endif; ?>
-    <?php if (isset($pickupallowed)) : ?>
+    <?php if (isset($pickupallowed) && $pickupallowed !== '1') : ?>
       <p class="pickupallowed"><?php print $pickupallowed; ?></p>
     <?php endif; ?>
     <?php if (isset($contact)) : ?>
