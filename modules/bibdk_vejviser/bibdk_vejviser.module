@@ -153,8 +153,8 @@ function bibdk_vejviser_agency_search() {
   if (isset($_REQUEST['agencyId'])) {
     // Agency pickup search
     $result = bibdk_vejviser_execute_pickup_agency_search($_REQUEST['agencyId']);
-    if (!empty($result[0]) && !empty($result[0]->agencyName)) {
-      $raw = _bibdk_vejviser_vejviser_raw($result[0]->agencyName);
+    if (!empty($result[0]) && !empty($result[0]->getAgencyName())) {
+      $raw = _bibdk_vejviser_vejviser_raw($result[0]->getAgencyName());
     }
   }
   elseif (!isset($_REQUEST['openagency_query'])) {
@@ -223,8 +223,9 @@ function bibdk_vejviser_agency_search() {
  * @return string
  */
 function bibdk_vejviser_get_agency_link($branch) {
-  if (empty($branch->getAgencyName())) {
-    return $branch->getMainAgencyId();
+  if (isset($_REQUEST['agencyId']) && $_REQUEST['agencyId'] === $branch->getMainAgencyId()) {
+    // vejviser?agencyId=710100 must show name and no link.
+    return $branch->getAgencyName();
   } else {
     return l($branch->getAgencyName(), 'vejviser/', array(
       'attributes' => array('class' => array('agencylist-link')),
