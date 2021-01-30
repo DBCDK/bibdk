@@ -207,7 +207,9 @@ function bibdk_favourite_check_agencies($saved_agencies, $add = FALSE) {
     if ($agency['oui:orderAgency'] == 'TRUE') {
       $order_agency = TRUE;
     }
-    $agencies[$agency['oui:agencyId']] = $agency['agencyBranch'];
+    if (isset($agency['agencyBranch'])) {
+      $agencies[$agency['oui:agencyId']] = $agency['agencyBranch'];
+    }
   }
   if (!$order_agency && !empty($agencies) && !$add) {
     // no orderagency is set pick a new favourite as orderagency
