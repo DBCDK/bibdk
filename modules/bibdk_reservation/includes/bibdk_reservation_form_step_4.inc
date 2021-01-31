@@ -118,7 +118,16 @@ function bibdk_reservation_form_step_4_do_order() {
     }
 
     $result = bibdk_reservation_form_step_4_handle_response($response);
+    // We need the following to ifs for bibdk_audit_trail.
+    if (!user_is_logged_in()) {
+      if (isset($params['userId']) && !empty($params['userId']) && $params['userIdAuthenticated'] === "true") {
+        $result['userId'] = $params['userId'];
+        $result['userName'] = $params['userName'] ?? '';
+        $result['userMail'] = $params['userMail'] ?? '';
+      }
+    }
     module_invoke_all('bibdk_reservation_complete', $pids, $result);
+    unset($result['userId'], $result['userName'], $result['userMail']);
   }
 
   return $result;
