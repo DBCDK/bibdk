@@ -132,7 +132,17 @@ pipeline {
         }
       }
     }
-    stage('enabling mockup module') {
+    stage('Test') {
+          steps {
+            script {
+              if (BRANCH != 'master') {
+                build job: 'Bibliotek DK/Tools/Test feature branch',
+                      parameters: [string(name: 'deploybranch', value: BRANCH_NAME)
+              }
+            }
+          }
+        }
+    /* stage('enabling mockup module') {
       when {
         // Only run if branch is not master.
         expression { BRANCH != 'master' }
@@ -199,7 +209,7 @@ pipeline {
 
                 stash name: "selenium-result", includes: "selenium-result.xml"
 
-                /*
+                 *//*
                 step([$class: 'XUnitBuilder', testTimeMargin: '3000', thresholdMode: 1,
                   thresholds: [
                     [$class: 'FailedThreshold', failureNewThreshold: '', failureThreshold: '0', unstableNewThreshold: '', unstableThreshold: ''],
@@ -207,7 +217,7 @@ pipeline {
                   tools     : [
                     [$class: 'JUnitType', deleteOutputFiles: true, failIfNotNew: true, pattern: 'selenium-result.xml', skipNoTestFiles: false, stopProcessingIfError: false]]
                 ])
-                 */
+                 *//*
               }
             }
           }
@@ -240,7 +250,7 @@ pipeline {
               """
               stash name: "simpletest-bibdk", includes: "simpletest-bibdk.xml"
 
-              /*
+               *//*
               step([
                 $class: 'XUnitBuilder', testTimeMargin: '3000', thresholdMode: 1,
                 thresholds: [
@@ -251,7 +261,7 @@ pipeline {
                   [$class: 'JUnitType', deleteOutputFiles: true, failIfNotNew: true, pattern: 'simpletest*.xml', skipNoTestFiles: false, stopProcessingIfError: false]
                 ]
               ])
-               */
+               *//*
             }
           }
         }
@@ -296,7 +306,7 @@ pipeline {
           """
         }
       }
-    }
+    } */
   }
   post {
     always {
