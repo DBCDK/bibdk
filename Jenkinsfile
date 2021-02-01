@@ -118,26 +118,30 @@ pipeline {
         }
       }
     }
-    stage('Deploy') {
-      steps {
-        script {
-          if (BRANCH == 'master') {
-            build job: 'Bibliotek DK/Deployments/staging'
-            NAMESPACE = 'frontend-staging'
-          } else {
-            build job: 'Bibliotek DK/Deployments/features',
-                  parameters: [string(name: 'deploybranch', value: BRANCH),
-                               booleanParam(name: 'test', value: false)]
+    stage('run Deploy and Tests') {
+      parallel {
+        stage('Deploy') {
+          steps {
+            script {
+              if (BRANCH == 'master') {
+                build job: 'Bibliotek DK/Deployments/staging'
+                NAMESPACE = 'frontend-staging'
+              } else {
+                build job: 'Bibliotek DK/Deployments/features',
+                      parameters: [string(name: 'deploybranch', value: BRANCH),
+                                   booleanParam(name: 'test', value: false)]
+              }
+            }
           }
         }
-      }
-    }
-    stage('Test') {
-      steps {
-        script {
-          if (BRANCH != 'master') {
-            build job: 'Bibliotek DK/Tools/Test feature branch',
-                  parameters: [string(name: 'deploybranch', value: BRANCH_NAME)]
+        stage('Test') {
+          steps {
+            script {
+              if (BRANCH != 'master') {
+                build job: 'Bibliotek DK/Tools/Test feature branch',
+                      parameters: [string(name: 'deploybranch', value: BRANCH_NAME)]
+              }
+            }
           }
         }
       }
