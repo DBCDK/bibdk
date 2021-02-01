@@ -116,12 +116,13 @@ function _bibdk_holdingsstatus_favourite_item_list($pid) {
       continue;
     }
     $agencyId = $favourite->getMainAgencyId();
+    /** @var VipCoreService $info */
     $info = vip_core_service($key, 'information');
     $item_list[$agencyId] = theme('favourite_holdings', array(
-      'library_name' => $info->agency->agencyName ?? '',
+      'library_name' => $info->getAgencyName(),
       'lid' => $agencyId,
       'pid' => $pid,
-      'link' => $info->agency->lookupUrl ?? '',
+      'link' => $info->getAgencyLookupUrl(),
     ));
   }
 
