@@ -664,8 +664,8 @@ function bibdk_openuserstatus_get_group_element_amount($user_status) {
       if (isset($agency_data->response['fiscalAccount']['totalAmount'])) {
         if ($agency_data->response['fiscalAccount']['totalAmount'] > 0 ) {
           $currency_text = t($agency_data->response['fiscalAccount']['totalAmountCurrency'], array(), array('context' => 'bibdk_openuserstatus'));
-          if (!is_null($favourites[$agencyId])) {
-            $items['agencyId'][] = $favourites[$agencyId]->getBranchShortName($language->language) . ' ' . $currency_text . ' ' . $agency_data->response['fiscalAccount']['totalAmount'];
+          if (!is_null($favourites[$agencyId]) && $favourites[$agencyId]->getBranch() !== NULL) {
+            $items['agencyId'][] = $favourites[$agencyId]->getBranch()->getBranchShortName($language->language) . ' ' . $currency_text . ' ' . $agency_data->response['fiscalAccount']['totalAmount'];
           }
         }
       }
