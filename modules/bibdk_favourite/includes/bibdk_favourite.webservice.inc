@@ -129,6 +129,7 @@ function _bibdk_favourite_get_from_webservice() {
     if (isset($agency['oui:agencyId'])) {
       try {
         $response = vip_core_findlibrary($agency['oui:agencyId']);
+        $favouriteAgency = NULL;
         $favouriteAgency = new FavouriteAgency($agency, $response);
       } catch (Exception $e) {
         drupal_set_message($e->getMessage(), 'error');

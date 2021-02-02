@@ -141,7 +141,7 @@ function bibdk_favourite_theme() {
  * @return array; an array with agencyId as key, favourite-object as value
  */
 function bibdk_favourite_get_favourites() {
-  $agencies = isset($_SESSION['bibdk_favourites']) ? $_SESSION['bibdk_favourites'] : NULL;
+  $agencies = NULL; //isset($_SESSION['bibdk_favourites']) ? $_SESSION['bibdk_favourites'] : NULL;
   if (empty($agencies)) {
     _bibdk_favourite_set_agencies();
   }
