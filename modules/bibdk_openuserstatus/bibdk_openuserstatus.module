@@ -440,7 +440,7 @@ function bibdk_openuserstatus_renew_request_complete_set_messages($error, $succe
 /**
  * Submit function handling submission triggered by the delete selected in the
  * reservations in process table.
- * Collects the sleceted and orderids and groups them buy associated agencyid
+ * Collects the selected and orderids and groups them buy associated agencyid
  *
  * @param array $form
  * @param array $form_state
@@ -455,12 +455,14 @@ function bibdk_openuserstatus_cancel_selected_submit($form, &$form_state) {
   foreach ($values as $orderId) {
     if ($orderId) {
       $material = bibdk_openuserstatus_get_reservation($orderId, $reservations);
-      $agencyId = $material['agencyId'];
-      $order = array(
-        'orderId' => $orderId,
-        'orderType' => $material['orderType'],
-      );
-      $cancellations[$agencyId][] = $order;
+      if (isset($material['agencyId'])) {
+        $agencyId = $material['agencyId'];
+        $order = array(
+          'orderId' => $orderId,
+          'orderType' => $material['orderType'],
+        );
+        $cancellations[$agencyId][] = $order;
+      }
     }
   }
   bibdk_openuserstatus_cancel_reservations($cancellations);
