@@ -318,7 +318,7 @@ large-up')),
             '#label' => t('bibdk_openuserstatus_change_library', array(), array('context' => 'bibdk_userstatus')),
             '#element_id' => drupal_html_id($id),
           );
-          
+
           $item['library']['data'] = $named_agencies[$reservation['agencyId']];
         }
         else {
@@ -666,7 +666,7 @@ function bibdk_openuserstatus_get_group_element_amount($user_status) {
       if (isset($agency_data->response['fiscalAccount']['totalAmount'])) {
         if ($agency_data->response['fiscalAccount']['totalAmount'] > 0 ) {
           $currency_text = t($agency_data->response['fiscalAccount']['totalAmountCurrency'], array(), array('context' => 'bibdk_openuserstatus'));
-          $items['agencyId'][] = $favourites[$agencyId]->getBranch()->getBranchShortName($language->language) . ' ' . $currency_text . ' ' . $agency_data->response['fiscalAccount']['totalAmount'];
+          $items['agencyId'][] = $favourites[$agencyId]->getBranchShortName($language->language) . ' ' . $currency_text . ' ' . $agency_data->response['fiscalAccount']['totalAmount'];
         }
       }
     }
