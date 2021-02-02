@@ -745,7 +745,7 @@ function bibdk_update_7074() {
 
 
 /** disable ting_agency */
-function bibdk_update_7074() {
+function bibdk_update_7075() {
   $modules = array('ting_agency');
   module_disable($modules);
 }
