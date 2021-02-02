@@ -737,6 +737,13 @@ function bibdk_update_7073() {
   module_enable($modules);
 }
 
+/** Enable howru module */
+function bibdk_update_7074() {
+  $modules = array('howru');
+  module_enable($modules);
+}
+
+
 /** disable ting_agency */
 function bibdk_update_7074() {
   $modules = array('ting_agency');

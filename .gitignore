@@ -1,4 +1,6 @@
 libraries
+modules/howru
+modules/dbc_composer
 modules/vip_core
 modules/ding_*
 modules/ting_*
