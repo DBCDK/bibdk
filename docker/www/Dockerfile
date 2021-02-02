@@ -17,7 +17,7 @@ RUN cd /var/lib/jenkins/www/profiles/bibdk/themes/bibdk_theme/.npm && \
     npm install && \
     ./node_modules/gulp/bin/gulp.js build --production
 
-FROM docker.dbc.dk/dbc-apache-php7:new_php_ini-1
+FROM docker.dbc.dk/dbc-apache-php7
 MAINTAINER D-scrum <d-scrum@dbc.dk>
 
 # set environment variables
@@ -42,7 +42,7 @@ RUN apt-key add indexdata.asc
 COPY conf/yaz.list /etc/apt/sources.list.d/
 
 RUN apt-get update && \
-  apt-get -q -y install cron logrotate php-gd php-mbstring php-pear wget php-soap php-yaml \
+  apt-get -q -y install cron logrotate php-gd php-mbstring php-pear wget php-soap php-yaml php-memcached \
   make php-dev rsyslog sudo wget msmtp postgresql-client libyaz5 yaz libyaz5-dev && \
   pecl channel-update pecl.php.net && \
   pecl install yaz && \

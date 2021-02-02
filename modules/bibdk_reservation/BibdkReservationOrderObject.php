@@ -20,7 +20,7 @@ class BibdkReservationOrderObject {
   private $sbKopi;
   private $articleDirect;
   private $sbKopiUser;
-  
+
 
   public function getSbKopiUser() {
     return $this->sbKopiUser;
@@ -116,10 +116,11 @@ class BibdkReservationOrderObject {
     return $this->branchId;
   }
 
-  public function setBranch($branch) {
+  public function setBranch(VipCoreAgencyBranch $branch) {
     $this->branch = $branch;
-    $this->setBranchId($branch->branchId);
-    $this->agency = new TingAgency($branch->branchId);
+    $this->setBranchId($branch->getBranchId());
+
+    $this->agency = vip_core_findlibrary($branch->getBranchId());
     return $this;
   }
 
@@ -137,14 +138,14 @@ class BibdkReservationOrderObject {
   }
 
   /**
-   * @return TingAgency
+   * @return VipCoreAgencyBranch
    */
   public function getAgency() {
     return $this->agency;
   }
 
   /**
-   * @return TingClientAgencyBranch
+   * @return VipCoreAgencyBranch
    */
   public function getBranch() {
     return $this->branch;
@@ -208,10 +209,20 @@ class BibdkReservationOrderObject {
   }
 
   /**
-   * @return AgencyFields
+   * @return VipCoreService
    */
   public function getFields() {
-    return $this->fields;
+
+    if ($this->fields instanceof VipCoreService) {
+      return $this->fields;
+    } else {
+      // LKH 2021. This is a very ugly hack for the popup reservation window when you want to change between favourite libraries.
+      // For some odd reason, the $_SESSION['orderobject']->fields becomes __PHP_Incomplete_Class_Name instead of VipCoreService.
+      // This 'hack' solves the problem.
+      $response = vip_core_service($this->branchId, 'userOrderParameters');
+      $this->fields = new VipCoreService($response, 'userOrderParameters');
+      return $this->fields;
+    }
   }
 
   public static function reset() {

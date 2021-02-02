@@ -98,7 +98,7 @@ function bibdk_favourite_parse_agency_search_result($result) {
     $settings = array(
       '#actions' => bibdk_favourite_get_agency_action($branch)
     );
-    $form += ting_agency_view_agency_branch($branch, $settings);
+    $form += bibdk_favourite_view_agency_branch($branch, $settings);
   }
   return $form;
 }

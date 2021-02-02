@@ -34,7 +34,9 @@ function bibdk_favourite_save_favourite_on_webservice($branchId) {
 
 /**
  * Add favourite library to sesssion
- * */
+ *
+ * @param FavouriteAgency $favourite
+ */
 function bibdk_favourite_add_favourite_to_session($favourite) {
   if (!isset($_SESSION)) {
     drupal_session_initialize();
@@ -47,8 +49,10 @@ function bibdk_favourite_add_favourite_to_session($favourite) {
     _bibdk_favourite_set_agencies();
   }
 
-  if (!isset($_SESSION['bibdk_favourites'][$favourite->getAgencyId()])) {
-    $_SESSION['bibdk_favourites'][$favourite->getAgencyId()] = serialize($favourite);
+  $branchId = $favourite->getBranch()->getBranchId();
+
+  if (!isset($_SESSION['bibdk_favourites'][$branchId])) {
+    $_SESSION['bibdk_favourites'][$branchId] = serialize($favourite);
   }
 }
 
@@ -95,8 +99,8 @@ function _bibdk_favourite_save_on_webservice($agencyId) {
 /**
  * Get favourite agencies for the user
  *
- * @global object $user
- * @return TingClientAgencyBranch
+ * @return array
+ * @throws \GuzzleHttp\Exception\GuzzleException
  */
 function _bibdk_favourite_get_from_webservice() {
   global $user;
@@ -116,29 +120,36 @@ function _bibdk_favourite_get_from_webservice() {
   module_load_include('inc', 'bibdk_favourite', 'includes/bibdk_favourite.agencies');
   $saved_agencies = bibdk_favourite_parse_agencies($xml);
 
-
   if (!$saved_agencies) {
     return array();
   }
 
   $agencies = array();
   foreach ($saved_agencies as $key => $agency) {
-    $fav = new TingAgency($agency['oui:agencyId']);
-    $branch = $fav->getBranch();
-    if (isset($branch)) {
+    if (isset($agency['oui:agencyId'])) {
+      try {
+        $response = vip_core_findlibrary($agency['oui:agencyId']);
+        $favouriteAgency = NULL;
+        $favouriteAgency = new FavouriteAgency($agency, $response);
+      } catch (Exception $e) {
+        drupal_set_message($e->getMessage(), 'error');
+      }
+    }
+
+    if (isset($favouriteAgency)) {
       $saved_agencies[$key]['oui:userData'];
       // Handle if data is encrypted.
       if ($saved_agencies[$key]['oui:userData'] && variable_get('bibdk_provider_favourite_use_encryption', FALSE)) {
         $saved_agencies[$key]['oui:userData'] = bibdk_provider_decrypt_data($saved_agencies[$key]['oui:userData']);
       }
       $user_data = $saved_agencies[$key]['oui:userData'];
-      $branch->userdata = array();
+      $favouriteAgency->userData = array();
       if ($user_data) {
-        $branch->userdata = unserialize($user_data);
+        $favouriteAgency->userData = unserialize($user_data);
       }
-      $branch->orderLibrary = $saved_agencies[$key]['oui:orderAgency'];
-      $agencies[$agency['oui:agencyId']] = $branch;
-      $saved_agencies[$key]['agencyBranch'] = $branch;
+      $favouriteAgency->orderLibrary = $saved_agencies[$key]['oui:orderAgency'];
+      $agencies[$agency['oui:agencyId']] = $favouriteAgency;
+      $saved_agencies[$key]['agencyBranch'] = $favouriteAgency;
     }
   }
   return bibdk_favourite_check_agencies($saved_agencies);
@@ -177,6 +188,12 @@ function _bibdk_favourite_set_agencies() {
   }
 }
 
+/**
+ * @param $saved_agencies
+ * @param false $add
+ * @return array
+ * @throws \GuzzleHttp\Exception\GuzzleException
+ */
 function bibdk_favourite_check_agencies($saved_agencies, $add = FALSE) {
   if (!$saved_agencies) {
     $message = _bibdk_favourite_set_error_text();
@@ -187,12 +204,12 @@ function bibdk_favourite_check_agencies($saved_agencies, $add = FALSE) {
   $agencies = array();
   $order_agency = FALSE;
   foreach ($saved_agencies as $key => $agency) {
+
     if ($agency['oui:orderAgency'] == 'TRUE') {
       $order_agency = TRUE;
     }
-    $agencies[$agency['oui:agencyId']] = new FavouriteAgency($agency);
     if (isset($agency['agencyBranch'])) {
-      $agencies[$agency['oui:agencyId']]->setBranch($agency['agencyBranch']);
+      $agencies[$agency['oui:agencyId']] = $agency['agencyBranch'];
     }
   }
   if (!$order_agency && !empty($agencies) && !$add) {

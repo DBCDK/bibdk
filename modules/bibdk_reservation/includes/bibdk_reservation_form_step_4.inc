@@ -118,7 +118,16 @@ function bibdk_reservation_form_step_4_do_order() {
     }
 
     $result = bibdk_reservation_form_step_4_handle_response($response);
+    // We need the following to ifs for bibdk_audit_trail.
+    if (!user_is_logged_in()) {
+      if (isset($params['userId']) && !empty($params['userId']) && $params['userIdAuthenticated'] === "true") {
+        $result['userId'] = $params['userId'];
+        $result['userName'] = $params['userName'] ?? '';
+        $result['userMail'] = $params['userMail'] ?? '';
+      }
+    }
     module_invoke_all('bibdk_reservation_complete', $pids, $result);
+    unset($result['userId'], $result['userName'], $result['userMail']);
   }
 
   return $result;
@@ -151,7 +160,7 @@ function bibdk_reservation_set_confirm_message(){
  * Generates a message based on the the current users loginstatus and the
  * pickUpAgency's userstatuspolicy
  *
- * @param TingClientAgencyBranch $pickUpAgency
+ * @param VipCoreAgencyBranch $pickUpAgency
  * @return null|string
  */
 function _bibdk_reservation_get_userstatus_link($pickUpAgency) {
@@ -168,22 +177,17 @@ function _bibdk_reservation_get_userstatus_link($pickUpAgency) {
     ),
   );
 
-  if(empty($ncipLookUpUser)){
+  if (empty($ncipLookUpUser)) {
     $userStatusUrl = $pickUpAgency->getUserStatusUrl();
-    if(!empty($userStatusUrl)){
+    if (!empty($userStatusUrl)) {
       $url = $userStatusUrl;
       $attributes['attributes']['target'][0] = '_blank';
     } else {
       return $msg;
     }
-  } else if(bibdk_reservation_user_is_logged_in()){
+  } else if (bibdk_reservation_user_is_logged_in()) {
     global $user;
-    if(module_exists('me')){
-      $url = 'user/me/bibdk_openuserstatus';
-    }
-    else {
-      $url = 'user/' . $user->uid . '/bibdk_openuserstatus';
-    }
+    $url = (module_exists('me')) ? 'user/me/bibdk_openuserstatus' : 'user/' . $user->uid . '/bibdk_openuserstatus';
   } else {
     return $msg;
   }

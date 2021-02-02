@@ -10,15 +10,9 @@
  * @return null
  */
 function bibdk_reservation_get_branch_name_from_id($agencyId, $type = 'long') {
-  global $language;
-  $lang = $language->language;
-  $consortia = new TingAgency($agencyId);
-  if ($type == 'short') {
-    return $consortia->getBranch()->getBranchShortName($lang);
-  }
-  else {
-    return $consortia->getBranch()->getBranchName($lang);
-  }
+
+  $consortia = vip_core_findlibrary($agencyId);
+  return ($type == 'short') ? $consortia->getBranchShortName() : $consortia->getBranchName();
 }
 
 /**

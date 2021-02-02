@@ -111,22 +111,13 @@ function bibdk_holdingstatus_get_localisation($pids, $ref=NULL) {
     }
   }
 
-// $logfile = conf_path() . '/files/test.log';
-// ini_set('log_errors', 1);
-// ini_set('error_log', $logfile);
-
   $render_agencies = array();
   $worldcat_info = array('sortkey'=>NULL, 'rs_library'=>FALSE, 'no_rs_library'=>FALSE);
 
   if ( isset($result['agencies']) ) {
     foreach ($result['agencies'] as $agencyId => $localization) {
 
-// error_log(print_r($agencyId,1));
-
-      $agency = new TingAgency($agencyId);
-      // $information = $agency->getInformation();
-      $information = $agency->getBranch(TRUE);
-
+      $information = vip_core_findlibrary($agencyId);
       if ( !isset($information) ) {
         $error_messages[] = t('library_not_found');
       }

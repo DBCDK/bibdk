@@ -30,29 +30,6 @@ function bibdk_vejviser_menu() {
 }
 
 /**
- * Implements hook_form_FORM_ID_alter (ting_admin_ting_settings)
- * Creates a field for adding a URL for the Ting Agency Serach webservice
- */
-function bibdk_vejviser_form_ting_admin_ting_settings_alter(&$form, &$form_state, $form_id) {
-  $form['ting']['AgencyRequest_url'] = array(
-    '#type' => 'textfield',
-    '#title' => t('OpenAgency URL'),
-    '#description' => t('URL to the Ting agency search webservice, e.g. http://openagency.addi.dk/1.6/'),
-    '#required' => TRUE,
-    '#default_value' => variable_get('AgencyRequest_url', ''),
-  );
-}
-
-/**
- * Implements hook_how_r_u();
- *
- * @return type
- */
-function bibdk_vejviser_how_r_u() {
-  return array('Open Agency' => variable_get('AgencyRequest_url', ''));
-}
-
-/**
  * Creates the form array
  *
  * @param array $form
@@ -176,8 +153,8 @@ function bibdk_vejviser_agency_search() {
   if (isset($_REQUEST['agencyId'])) {
     // Agency pickup search
     $result = bibdk_vejviser_execute_pickup_agency_search($_REQUEST['agencyId']);
-    if (!empty($result[0]) && !empty($result[0]->agencyName)) {
-      $raw = _bibdk_vejviser_vejviser_raw($result[0]->agencyName);
+    if (!empty($result[0]) && !empty($result[0]->getAgencyName())) {
+      $raw = _bibdk_vejviser_vejviser_raw($result[0]->getAgencyName());
     }
   }
   elseif (!isset($_REQUEST['openagency_query'])) {
@@ -205,18 +182,19 @@ function bibdk_vejviser_agency_search() {
   $branches = array();
   if (!empty($result)) {
     // add addtional html; button etc. to each branch
+    /** @var VipCoreAgencyBranch $branch */
     foreach ($result as $branch) {
       // check if any modules has anything to add to branch
       // but show only button if pickup is allowed for this branch
       $action = NULL;
-      if ($branch->pickupAllowed == '1' && $logged_in) {
-        $action = module_invoke_all('add_to_vejviser', $branch->branchId);
+      if ($branch->getPickupAllowed() == '1' && $logged_in) {
+        $action = module_invoke_all('add_to_vejviser', $branch->getBranchId());
       }
       $settings = array(
         '#actions' => $action,
         '#agencyName' => bibdk_vejviser_get_agency_link($branch),
       );
-      $branches[] = ting_agency_view_agency_branch($branch, $settings);
+      $branches[] = bibdk_vejviser_view_agency_branch($branch, $settings);
     }
   }
 
@@ -241,17 +219,17 @@ function bibdk_vejviser_agency_search() {
  * create agency_link and return. ex:
  * http://dringo.dbc.dk/ana.ding/da/vejviser/?agencyId=830070
  *
- * @param String $branch
+ * @param VipCoreAgencyBranch $branch
  * @return string
  */
 function bibdk_vejviser_get_agency_link($branch) {
-  if (empty($branch->agencyId)) {
-    return $branch->agencyName;
-  }
-  else {
-    return l($branch->agencyName, 'vejviser/', array(
+  if (isset($_REQUEST['agencyId']) && $_REQUEST['agencyId'] === $branch->getMainAgencyId()) {
+    // vejviser?agencyId=710100 must show name and no link.
+    return $branch->getAgencyName();
+  } else {
+    return l($branch->getAgencyName(), 'vejviser/', array(
       'attributes' => array('class' => array('agencylist-link')),
-      'query' => array('agencyId' => $branch->agencyId)
+      'query' => array('agencyId' => $branch->getMainAgencyId())
     ));
   }
 }
@@ -271,14 +249,17 @@ function bibdk_vejviser_execute_agency_search($query) {
     return;
   }
 
-  $client = new ting_client_class();
-  $resp = $client->do_request('AgencyRequest', array(
-    'anyField' => $query,
-    'sort' => $sort,
-    'action' => 'findLibraryRequest'
-  ));
+  try {
+    $vipcore = _vip_core_setup_vipcore();
+    $response = $vipcore->findLibrary(
+      null, null, null, null, null, $sort, $query
+    );
 
-  return bibdk_vejviser_handle_response($resp);
+  } catch (Exception $e) {
+    throw new Exception($e);
+  }
+
+  return bibdk_vejviser_handle_response($response);
 }
 
 /**
@@ -293,15 +274,14 @@ function bibdk_vejviser_execute_pickup_agency_search($agencyId) {
   if (empty($agencyId)) {
     return;
   }
-  $client = new ting_client_class();
-  // Call pickupAgencyListRequest service parm: agencyId
 
-  $resp = $client->do_request('AgencyRequest', array(
-    'agencyId' => $agencyId,
-    'action' => 'pickupAgencyListRequest'
-  ));
-
-  return bibdk_vejviser_handle_agency_response($resp);
+  $agencyId = (!is_array($agencyId)) ? array($agencyId) : $agencyId;
+  try {
+    $resp = vip_core_pickupAgencyList($agencyId);
+    return bibdk_vejviser_handle_agency_response($resp);
+  } catch (\GuzzleHttp\Exception\GuzzleException $e) {
+    drupal_set_message($e, 'error');
+  }
 }
 
 /**
@@ -313,14 +293,14 @@ function bibdk_vejviser_execute_pickup_agency_search($agencyId) {
  * @return array
  */
 function bibdk_vejviser_handle_response($response) {
-  if (isset($response->findLibraryResponse->pickupAgency)) {
-    foreach ($response->findLibraryResponse->pickupAgency as $value) {
-      $agencies[] = new TingClientAgencyBranch($value);
+  if (isset($response->pickupAgency)) {
+    foreach ($response->pickupAgency as $value) {
+      $agencies[] = new VipCoreAgencyBranch($value);
     }
     return $agencies;
   }
   else if (isset($response->error)) {
-    $error = $this->getValue($response->error);
+    $error = $response->error;
     drupal_set_message(t($error, array(), array('context' => 'bibdk_vejviser')), 'error');
   }
   else if (!isset($response->error) && !isset($response->pickupAgency)) {
@@ -333,20 +313,20 @@ function bibdk_vejviser_handle_response($response) {
  * Handling the response. pickupAgencyListResponse will be passed for all
  * pickupAgencyListResponse->library[0]->pickupAgency for display
  *
- * @param array $response
+ * @param stdClass $response
  * @return array
  */
 function bibdk_vejviser_handle_agency_response($response) {
 
-  if (isset($response->pickupAgencyListResponse->library[0]->pickupAgency)) {
-    // loop on picupAgencies
-    foreach ($response->pickupAgencyListResponse->library[0]->pickupAgency as $value) {
-      $agencies[] = new TingClientAgencyBranch($value, TingClientRequest::getValue($response->pickupAgencyListResponse->library[0]->agencyName));
+  if (isset($response->library[0]->pickupAgency)) {
+    // loop on pickupAgencies
+    foreach ($response->library[0]->pickupAgency as $value) {
+      $agencies[] = vip_core_findlibrary($value->branchId);
     }
     return $agencies;
   }
   else if (isset($response->error)) {
-    $error = $this->getValue($response->error);
+    $error = $response->error;
     drupal_set_message(t($error, array(), array('context' => 'bibdk_vejviser')), 'error');
   }
   else if (!isset($response->error) && !isset($response->pickupAgency)) {
@@ -354,4 +334,49 @@ function bibdk_vejviser_handle_agency_response($response) {
     drupal_set_message(t($error, array(), array('context' => 'bibdk_vejviser')), 'error');
     drupal_goto('vejviser');
   }
+}
+
+/**
+ * Render the view of an agency branch and wrap it in an form element
+ *
+ * @param VipCoreAgencyBranch $branch
+ * @param array $settings
+ *
+ * @return mixed
+ */
+function bibdk_vejviser_view_agency_branch(VipCoreAgencyBranch $branch, $settings = array()) {
+  // Actions can be both links and form elements, and needs to handles separately
+  $actions = isset($settings['#actions']) ? $settings['#actions'] : '';
+  unset($settings['#actions']);
+
+  $classes = array('favourite-' . $branch->getBranchId());
+  if ($branch->isOrderLibrary()) {
+    $classes[] = 'order-agency';
+  }
+
+  // Set default values
+  global $language;
+  $default = array(
+    '#theme' => 'bibdk_favourite_library',
+    '#branchName' => $branch->getBranchName($language->language),
+    '#actions' => drupal_render($actions),
+    '#add_classes' => $classes,
+    '#moreinfo' => bibdk_favourite_get_more_info($branch),
+    '#branchid' => $branch->getBranchId(),
+    '#temporarilyClosedReason' => bibdk_favourite_temporarily_closed_message($branch),
+  );
+
+  // create render array
+  $render['library'] = $settings;
+  $render['library'] += $default;
+  $render['action'] = $actions;
+
+  // place branch on top if set as order-agency
+  if ($branch->isOrderLibrary()) {
+    $render['#weight'] = -1;
+  }
+  return array(
+    '#title' => $branch->getBranchName($language->language),
+    $branch->getBranchId() => $render,
+  );
 }

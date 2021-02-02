@@ -3,12 +3,12 @@
 /*
  * get AgencyInformation from favourites
  */
-function bibdk_holdingstatus_get_agency_information($favourites){
+function bibdk_holdingstatus_get_agency_information($favourites) {
   if ( !empty($favourites) )
   {
-    foreach($favourites as $agencyId => $favourite){
+    foreach($favourites as $agencyId => $favourite) {
       $information = $favourite->getInformation();
-      if (isset($information)){
+      if (isset($information)) {
         $return[$information->getAgencyId()] = $information;
       }
     }
@@ -68,7 +68,7 @@ function bibdk_holdings_favourite_placeholder($pid) {
  * @param $pid
  * @return string
  */
-function bibdk_holdingstatus_holdings_for_favourites_view($pid){
+function bibdk_holdingstatus_holdings_for_favourites_view($pid) {
    $item_list = _bibdk_holdingsstatus_favourite_item_list($pid);
 
   if (empty($item_list)) {
@@ -106,21 +106,23 @@ function _bibdk_holdingsstatus_favourite_item_list($pid) {
   $favourites = bibdk_favourite_get_favourites();
 
   $item_list = array();
+  /**
+   * @var string $key
+   * @var FavouriteAgency $favourite
+   */
   foreach ($favourites as $key => $favourite) {
-    $agency = new TingAgency($key);
-    $agencyId = $agency->getAgencyMainId();
-    $agency = new TingAgency($agencyId);
 
-    if (!isset($loks['agencies'][$agencyId])){
+    if (!isset($loks['agencies'][$key])) {
       continue;
     }
-
-    $lookupUrl = $favourite->getInformation()->getLookupUrl();
+    $agencyId = $favourite->getMainAgencyId();
+    /** @var VipCoreService $info */
+    $info = vip_core_service($key, 'information');
     $item_list[$agencyId] = theme('favourite_holdings', array(
-      'library_name' => $agency->getInformation()->getAgencyName(),
+      'library_name' => $info->getAgencyName(),
       'lid' => $agencyId,
       'pid' => $pid,
-      'link' => $lookupUrl,
+      'link' => $info->getAgencyLookupUrl(),
     ));
   }
 

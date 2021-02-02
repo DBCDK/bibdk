@@ -64,8 +64,10 @@ function bibdk_audit_trail_user_update(&$edit, $account, $category) {
  */
 function bibdk_audit_trail_user_load($users) {
 
-  foreach($users AS $user) {
-    bibdk_audit_trail_submit_data('read', $user->uid, _bibdk_audit_trail_access_info($user));
+  if (user_is_logged_in()) {
+    foreach($users AS $user) {
+      bibdk_audit_trail_submit_data('read', $user->uid, _bibdk_audit_trail_access_info($user));
+    }
   }
 }
 
@@ -130,11 +132,12 @@ function bibdk_audit_trail_bibdk_reservation_create_wizard_form_validate($form, 
   $branchId = BibdkReservationOrderObject::GetObject()->getBranchId();
   $user_id_type = "";
   if (!is_null($branchId)) {
-    $agency = new TingAgency(
-      $branchId
-    );
 
-    $agency_fields = $agency->getAgencyFields();
+    $response = vip_core_service($branchId, 'userOrderParameters');
+
+    //$agency_fields = new VipCoreFields($response);
+    $agency_fields = new VipCoreService($response, 'userOrderParameters');
+
     $user_id_type = (!is_null($agency_fields)) ? $agency_fields->getUserIdKey() : "";
   }
   if ($user_id_type !== "") {
@@ -156,9 +159,18 @@ function bibdk_audit_trail_bibdk_reservation_create_wizard_form_validate($form, 
 function bibdk_audit_trail_bibdk_reservation_complete($pids, $result) {
 
   if (isset($_SESSION['bibdk_audit'])) {
-    global $user;
+    if (user_is_logged_in()) {
+      global $user;
+    } else {
+      $user = new stdClass();
+      $user->uid = $result['userId'] ?? '';
+      $user->name = $result['userName'] ?? '';
+      $user->mail = $result['userMail'] ?? '';
+    }
     if (isset($result->orderId) && !empty($result->orderId)) {
       $_SESSION['bibdk_audit']['orderId'] = $result->orderId;
+    } else if (isset($result['orderId']) && !empty($result['orderId'])) {
+      $_SESSION['bibdk_audit']['orderId'] = $result['orderId'];
     } else {
       watchdog(
         'bibdk_audit_trail',

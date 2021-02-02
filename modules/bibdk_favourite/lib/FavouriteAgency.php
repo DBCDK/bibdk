@@ -1,17 +1,70 @@
 <?php
 
-class FavouriteAgency extends TingAgency {
+class FavouriteAgency extends VipCoreAgencyBranch {
 
   public $userData;
   public $orderAgency;
 
-  public function __construct($favourite) {
+  protected $branch;
+
+  /**
+   * FavouriteAgency constructor.
+   * @param $favourite
+   * @param null|stdClass $findLibraryResponse
+   * @throws \GuzzleHttp\Exception\GuzzleException
+   */
+  public function __construct($favourite, $findLibraryResponse = NULL) {
     if (!isset($favourite['oui:agencyId'])) {
       return;
     }
-    parent::__construct($favourite['oui:agencyId']);
+
     $this->userData = isset($favourite['oui:userData']) ? unserialize($favourite['oui:userData']) : NULL;
-    $this->orderAgency = ($favourite['oui:orderAgency'] == 'TRUE') ? TRUE : FALSE;
+    $this->orderAgency = ($favourite['oui:orderAgency'] == 'TRUE');
+    $this->agencyId = $favourite['oui:agencyId'];
+
+    if (is_null($findLibraryResponse)) {
+      try {
+        $response = vip_core_findlibrary($favourite['oui:agencyId']);
+        return parent::__construct($response);
+      } catch (Exception $e) {
+        throw new Exception($e);
+      }
+    } else {
+      return parent::__construct($findLibraryResponse->branch);
+    }
+  }
+
+  /**
+   * @param $branch
+   */
+  public function setBranch($branch) {
+    $this->branch = $branch;
+  }
+
+  /**
+   * @return null
+   */
+  public function getBranch() {
+
+    if (!is_null($this->branch)) {
+      return new VipCoreAgencyBranch($this->branch);
+    }
+    return NULL;
+  }
+
+  public function getAgencyId() {
+    return $this->getMainAgencyId();
+  }
+
+  /**
+   * Get local lookup url for looking up
+   * records in local library system.
+   *
+   * @return string|NULL
+   */
+  public function getMainAgencyId() {
+    return (isset($this->branch->agencyId) ? $this->branch->agencyId :
+      (isset($this->branch->branch->agencyId) ? $this->branch->branch->agencyId : NULL));
   }
 
   public function getOrderAgency() {
@@ -121,6 +174,19 @@ class FavouriteAgency extends TingAgency {
       unset($_SESSION['userStatus'][$this->getAgencyId()]);
     }
   }
+
+  /**
+   * @return null|string
+   * @throws \TingClientAgencyBranchException
+   * @throws \TingClientException
+   */
+  public function getRenewOrderAllowed() {
+    $branch = $this->getBranch();
+    if (isset($branch)) {
+      return $branch->getNcipRenewOrder();
+    }
+  }
+
 
   /**
    * @param $object

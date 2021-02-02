@@ -13,7 +13,8 @@
     }
   ],
   "require": {
-    "dbc/php-vipcore": "dev-master"
+    "dbc/php-vipcore": "dev-master",
+    "symfony/cache": "^5.2"
   },
   "repositories": {
     "vc": {

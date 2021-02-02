@@ -6,7 +6,6 @@ version = 7.x-0.20
 
 dependencies[] = bibdk_favourite
 dependencies[] = ting_openuserstatus
-dependencies[] = ting_agency
 
 files[] = lib/UserStatusResponse.php
 files[] = includes/bibdk_openuserstatus.admin.inc

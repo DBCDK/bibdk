@@ -23,10 +23,10 @@ class TestFavouriteLibraries(helpers.BibdkUnitTestCase):
         user.do_consent(browser)
         agency_input = browser.find_element_by_id("edit-openagency-query")
         agency_input.clear()
-        agency_input.send_keys('frederiksberg')
+        agency_input.send_keys('Lyngby')
 
         browser.find_element_by_id("edit-openagency-submit").click()
-        browser.find_element_by_xpath("//a[contains(@href,'/bibdk_favourite_list?agency=714700')]").click()
+        browser.find_element_by_xpath("//a[contains(@href,'/bibdk_favourite_list?agency=717300')]").click()
 
 
         browser.get(self.base_url + "user")
@@ -34,7 +34,7 @@ class TestFavouriteLibraries(helpers.BibdkUnitTestCase):
         browser.find_element_by_xpath("//div[@id='block-bibdk-frontend-bibdk-tabs']//a[contains(@href,'/bibdk_favourite_list')]").click()
 
         # Assert library with id 714700 (frederiksberg) has been added
-        self.assertTrue(browser.find_element_by_class_name('favourite-714700'))
+        self.assertTrue(browser.find_element_by_class_name('favourite-717300'))
 
     def test_favourite_link_presence(self):
         browser = self.browser

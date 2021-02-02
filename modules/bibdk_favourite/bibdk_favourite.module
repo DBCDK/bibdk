@@ -9,7 +9,6 @@ require_once(drupal_get_path('module', 'bibdk_favourite') . '/includes/bibdk_fav
 require_once(drupal_get_path('module', 'bibdk_favourite') . '/includes/bibdk_favourite.no_favourites.inc');
 require_once(drupal_get_path('module', 'bibdk_favourite') . '/includes/bibdk_favourite.webservice.inc');
 require_once(drupal_get_path('module', 'bibdk_favourite') . '/includes/bibdk_favourite.shortcodes.inc');
-require_once(drupal_get_path('module', 'ting_agency') . '/TingAgency.php');
 require_once(drupal_get_path('module', 'bibdk_favourite') . '/lib/FavouriteAgency.php');
 
 /**
@@ -85,6 +84,54 @@ function bibdk_favourite_theme() {
     'bibdk_favourite_action_links' => array(
       'variables' => array('links' => array()),
     ),
+    'bibdk_favourite_more_info' => array(
+      'variables' => array(
+        'branch' => NULL,
+        'openingHours' => NULL,
+        'toggle_enabled' => TRUE,
+        'tools' => NULL,
+        'address' => NULL,
+        'pickupallowed' => NULL,
+        'librarydkcontact' => NULL,
+        'contact' => NULL,
+        'more' => array()
+      ),
+      'template' => 'theme/bibdk_favourite_more_info',
+    ),
+    'bibdk_favourite_library' => array(
+      'variables' => array(
+        'branchName' => NULL,
+        'agencyName' => NULL,
+        'actions' => NULL,
+        'moreinfo' => NULL,
+        'branchid' => NULL,
+        'add_classes' => array(),
+        'toggle_enabled' => TRUE,
+        'temporarilyClosedReason' => NULL
+      ),
+      'template' => 'theme/bibdk_favourite_library',
+    ),
+    'bibdk_favourite_opening_hours' => array(
+      'variables' => array('branch' => NULL,),
+    ),
+    'bibdk_favourite_tools' => array(
+      'variables' => array('branch' => NULL,),
+    ),
+    'bibdk_favourite_address' => array(
+      'variables' => array('branch' => NULL,),
+    ),
+    'bibdk_favourite_librarydk_contact' => array(
+      'variables' => array('branch' => NULL,),
+    ),
+    'bibdk_favourite_contact' => array(
+      'variables' => array('branch' => NULL,),
+    ),
+    'bibdk_favourite_pickup_allowed' => array(
+      'variables' => array('branch' => NULL,),
+    ),
+    'bibdk_favourite_branch_short_name' => array(
+      'variables' => array('branch' => NULL,),
+    ),
   );
 }
 
@@ -94,7 +141,7 @@ function bibdk_favourite_theme() {
  * @return array; an array with agencyId as key, favourite-object as value
  */
 function bibdk_favourite_get_favourites() {
-  $agencies = isset($_SESSION['bibdk_favourites']) ? $_SESSION['bibdk_favourites'] : NULL;
+  $agencies = NULL; //isset($_SESSION['bibdk_favourites']) ? $_SESSION['bibdk_favourites'] : NULL;
   if (empty($agencies)) {
     _bibdk_favourite_set_agencies();
   }
@@ -349,13 +396,13 @@ function bibdk_favourite_save_userdata($agencyid, array $userdata, $show_message
  * Get fields required by Agency
  *
  * @param $agencyId
- * @return array bibdkReservationUserInput
+ * @return VipCoreService bibdkReservationUserInput
  */
 function bibdk_favourite_get_agency_fields($agencyId) {
-  $agency = new TingAgency($agencyId);
-  $fields = $agency->getAgencyFields();
 
-  return $fields;
+  $response = vip_core_service($agencyId, 'userOrderParameters');
+  //$fields = new VipCoreFields($response);
+  return new VipCoreService($response, 'userOrderParameters');
 }
 
 /**
@@ -422,3 +469,411 @@ function _bibdk_favourite_sort($a, $b) {
   return ($a->orderAgency < $b->orderAgency) ? 1 : -1;
 }
 
+/**
+ * @param $form
+ * @param $form_state
+ * @param $fields
+ * @param null $userData
+ * @param null $branchid
+ *
+ * @return mixed
+ */
+function bibdk_favourite_userdata_form($form, &$form_state, $fields, $userData = NULL, $branchid = NULL) {
+  $params = isset($fields) ? $fields->getUserParameters() : NULL;
+  if (empty($params)) {
+    $form['wrapper']['error'] = array('#markup' => _bibdk_favourite_error_no_agency_user_data());
+    return $form;
+  }
+
+  $form['description'] = array(
+    '#theme' => 'html_tag',
+    '#tag' => 'p',
+    '#value' => t('description_text', array(), array('context' => 'bibdk_favourite')),
+    '#weight' => -101,
+  );
+
+  // checkbox to unmask password fields
+  $form['uncheck'] = array(
+    '#title' => t('Show_masked_input'),
+    '#type' => 'checkbox',
+    '#attributes' => array('class' => array(drupal_html_class('bibdk_unmask_password_field'))),
+    '#weight' => -100,
+  );
+
+  $form['wrapper'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+      'class' => array(drupal_html_class('switch_me')),
+    ),
+  );
+
+  // insert a fake password field to stop browsers from autofilling the real fields
+  // with saved password
+  $form['wrapper']['fake_password'] = array(
+    '#attributes' => array(
+      'aria-disabled' => array('false'),
+      'aria-hidden' => array('true'),
+      'autocomplete' => array('new-pincode'),
+      'style' => array('position:absolute; top: -1000px;'),
+      'tabindex' => array('-1'),
+    ),
+    '#type' => 'password',
+  );
+
+  foreach ($fields->getUserParameters() as $userParameter) {
+    $type = $userParameter['type'];
+    $title = isset($userParameter['field_name']) ? $userParameter['field_name'] : "";
+    $userDataElement = isset($userData[$userParameter['type']]) ? $userData[$userParameter['type']] : NULL;
+    $value = isset($form_state['values'][$type]) ? $form_state['values'][$type] : $userDataElement;
+    if ($type == 'userMail') {
+      if (!$userParameter['required']) {
+        $title .= ' ' . t('label_notice_recommended', array(), array('context' => 'bibdk_favourite'));
+      }
+    }
+
+    $attributes = array();
+    if (isset($userParameter['field_type']) && $userParameter['field_type'] == 'password') {
+      $attributes['class'] = array(drupal_html_class('bibdk_password_field'));
+      $attributes['autocomplete'] = 'password';
+      //NB This doesn't work because of validation - so it is temporarily disabled.
+      //$attributes['name'] = 'search-' . $type;
+    }
+
+    $form['wrapper'][$type] = array(
+      '#attributes' => $attributes,
+      '#type' => 'textfield',
+      '#title' => $title,
+      '#description' => isset($userParameter['field_description']) ? $userParameter['field_description'] : NULL,
+      '#required' => $userParameter['required'],
+      '#default_value' => isset($value) ? $value : "",
+    );
+  }
+
+  if (isset($branchid)) {
+    $form['wrapper']['subdivision'] = bibdk_favourite_get_selector_for_subagencies($branchid, $userData);
+  }
+
+  return $form;
+}
+
+/**
+ * Render the view of an agency branch and wrap it in an form element
+ *
+ * @param VipCoreAgencyBranch $branch
+ * @param array $settings
+ *
+ * @return mixed
+ */
+function bibdk_favourite_view_agency_branch(VipCoreAgencyBranch $branch, $settings = array()) {
+  // Actions can be both links and form elements, and needs to handles separately
+  $actions = isset($settings['#actions']) ? $settings['#actions'] : '';
+  unset($settings['#actions']);
+
+  $classes = array('favourite-' . $branch->getBranchId());
+  if ($branch->isOrderLibrary()) {
+    $classes[] = 'order-agency';
+  }
+
+  // Set default values
+  global $language;
+  $default = array(
+    '#theme' => 'bibdk_favourite_library',
+    '#branchName' => $branch->getBranchName(),
+    '#actions' => drupal_render($actions),
+    '#add_classes' => $classes,
+    '#moreinfo' => bibdk_favourite_get_more_info($branch),
+    '#branchid' => $branch->getBranchId(),
+    '#temporarilyClosedReason' => bibdk_favourite_temporarily_closed_message($branch),
+  );
+
+  // create render array
+  $render['library'] = $settings;
+  $render['library'] += $default;
+  $render['action'] = $actions;
+
+  // place branch on top if set as order-agency
+  if ($branch->isOrderLibrary()) {
+    $render['#weight'] = -1;
+  }
+  return array(
+    '#title' => $branch->getBranchName(),
+    $branch->getBranchId() => $render,
+  );
+}
+
+/**
+ * @return null|string
+ */
+function _bibdk_favourite_error_no_agency_user_data() {
+  return t('no_agency_data_from_agency');
+}
+
+/**
+ * @param $branchId
+ *
+ * @return array|void
+ */
+function bibdk_favourite_get_selector_for_subagencies($branchId, $userData) {
+
+  try {
+  $agency = vip_core_findlibrary($branchId);
+
+  $pickupAgencyList = vip_core_pickupAgencyList([$agency->getMainAgencyId()]);
+  } catch (Exception $e) {
+    drupal_set_message($e->getMessage(), 'error');
+  }
+  $options = array();
+  if (isset($pickupAgencyList->library)) {
+    foreach ($pickupAgencyList->library as $item) {
+      if (isset($item->pickupAgency) && is_array($item->pickupAgency)) {
+        foreach ($item->pickupAgency as $pickupAgency) {
+          if (isset($pickupAgency->branchId) && $pickupAgency->branchId == $branchId) {
+            if (!isset($pickupAgency->agencySubdivision)) {
+              return;
+            } else {
+              if ($pickupAgency->branchType == 'b') {
+                foreach ($pickupAgency->agencySubdivision as $key => $value) {
+                  $options['Bogbussen:'][$value] = $value;
+                }
+              } else {
+                $options[$pickupAgency->branchId] = $pickupAgency->branchShortName[0]->value;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  $value = isset($userData['subdivision']) ? $userData['subdivision'] : NULL;
+
+  foreach ($options as $key => $option) {
+    if (!isset($value)) {
+      $value = $option;
+    }
+    $option_list[$key] = $option;
+  }
+  $option_list[$value] = $value;
+
+  $form_element = array(
+    '#title' => t('Select bus stop', array(), array('context' => 'bibdk_favourite')),
+    '#type' => 'select',
+    '#options' => $option_list,
+    '#default_value' => $value,
+  );
+
+  return $form_element;
+}
+
+/**
+ * Generate more info for branch
+ * get default moreinfo for a branch
+ *
+ * @param VipCoreAgencyBranch $branch
+ *
+ * @return array
+ * render array for drupal_render
+ * @throws Exception
+ */
+function bibdk_favourite_get_more_info(VipCoreAgencyBranch $branch) {
+  $tools = get_bibdk_favourite_tools($branch);
+  $defaults = array(
+    '#theme' => 'bibdk_favourite_more_info',
+    '#branch' => $branch,
+    '#openingHours' => $branch->getOpeningHours(),
+    '#tools' => $tools,
+    '#address' => $branch->getAddress(),
+    '#pickupallowed' => $branch->getPickupAllowed(),
+    '#librarydkcontact' => bibdk_favourite_element_create_list($branch->getLibrarydkContact()),
+    '#contact' => bibdk_favourite_element_create_list($branch->getContact()),
+  );
+
+  // @see netpunkt_agency::netpunkt_agency_ting_agency_get_more_info_alter
+  drupal_alter('bibdk_favourite_get_more_info', $defaults, $branch);
+
+  return $defaults;
+}
+
+/**
+ * Check if Temporarily closed message exists for branch and return message
+ *
+ * @param $branch
+ *
+ * @return string
+ */
+function bibdk_favourite_temporarily_closed_message($branch) {
+  global $language;
+  // Handle TemporarilyClosedReason
+  $tmp_reason = $branch->getTemporarilyClosedReason($language->language);
+
+  // @see netpunkt_agency::netpunkt_agency_ting_agency_temporarily_closed_message
+  drupal_alter('bibdk_favourite_temporarily_closed_message', $tmp_reason, $branch);
+
+  if ($tmp_reason != 'bibdk_favourite_no_temporarilyClosedReason') {
+    // Hide all drupalmessages
+    $messages = drupal_get_messages();
+    // Set  message for temporarilyClosedReason
+    drupal_set_message($tmp_reason, 'warning');
+    $tmp_reason = theme('status_messages');
+    // Restore old messages
+    foreach ($messages as $key => $message) {
+      drupal_set_message($message[0], $key);
+    }
+  }
+  else {
+    $tmp_reason = NULL;
+  }
+
+  return $tmp_reason;
+}
+
+/**
+ * @param $branch
+ * @return array
+ */
+function get_bibdk_favourite_tools($branch) {
+  /** @var VipCoreAgencyBranch  $branch */
+  $links = $branch->getActionLinks();
+  $items = array();
+  if (!empty($links)) {
+    foreach ($links as $name => $link) {
+      $item['data'] = l(
+        $name,
+        $link,
+        array('attributes' => array('target' => '_blank'))
+      );
+      $items[] = $item;
+    }
+    return array(
+      '#theme' => 'item_list',
+      '#items' => $items
+    );
+  }
+}
+
+/**
+ * @param $list
+ * @return string
+ */
+function bibdk_favourite_element_create_list($list) {
+  $output = '';
+  if (!empty($list)) {
+    foreach ($list as $key => $value) {
+      $output .= $key . ' : ' . $value . '<br/>';
+    }
+  }
+  return $output;
+}
+
+/**
+ * \brief Theme address for given agency
+ *
+ * @param array $variables
+ * @return string (html)
+ */
+function theme_bibdk_favourite_address($variables) {
+  $branch = $variables['branch'];
+  if (empty($branch)) {
+    return;
+  }
+  $address = $branch->getAddress();
+  return $address;
+}
+
+/**
+ * \brief Theme pickup for given agency
+ *
+ * @param array $variables
+ * @return string (html)
+ */
+function theme_bibdk_favourite_pickup_allowed($variables) {
+  /** @var VipCoreAgencyBranch $branch */
+  $branch = $variables['branch'];
+  if (empty($branch)) {
+    return;
+  }
+  return $branch->getPickupAllowed();
+}
+
+/**
+ * preprocess function for library template (bibdk_favourite_library.tpl.php)
+ */
+function template_preprocess_bibdk_favourite_library(&$variables) {
+  if (isset($variables['add_classes'])) {
+    $variables['classes_array'] = array_merge($variables['classes_array'], $variables['add_classes']);
+  }
+}
+
+/**
+ * \brief Theme contact info
+ *
+ * @param array $variables
+ * @return string (html)
+ */
+function theme_bibdk_favourite_contact($variables) {
+  $branch = $variables['branch'];
+  if (empty($branch)) {
+    return;
+  }
+  $contact_array = $branch->getContact();
+  return bibdk_favourite_element_create_list($contact_array);
+}
+
+/**
+ * \brief Theme librarydkcontact info
+ *
+ * @param array $variables
+ * @return string (html)
+ */
+function theme_bibdk_favourite_librarydk_contact($variables) {
+  $branch = $variables['branch'];
+  if (empty($branch)) {
+    return;
+  }
+  $contact_array = $branch->getLibrarydkContact();
+  return bibdk_favourite_element_create_list($contact_array);
+}
+
+/**
+ * \brief Theme agency opening hours
+ *
+ * @global stdClass $language
+ * @param array $variables
+ * @return string (html)
+ */
+function theme_bibdk_favourite_opening_hours($variables) {
+  $branch = $variables['branch'];
+  if (empty($branch)) {
+    return;
+  }
+  global $language;
+  $lang = $language->language;
+  $render_array = array('#markup' => $branch->getOpeningHours($lang));
+  if (empty($render_array)) {
+    return NULL;
+  }
+  return drupal_render($render_array);
+}
+
+/**
+ * \brief Theme links given from agency
+ *
+ * @param $variables
+ * @return string|void
+ * @throws Exception
+ */
+function theme_bibdk_favourite_tools($variables) {
+  $branch = $variables['branch'];
+  if (empty($branch)) {
+    return;
+  }
+  $links = $branch->getActionLinks();
+  $items = array();
+  if (!empty($links)) {
+    foreach ($links as $name => $link) {
+      $item['data'] = l($name, $link, array());
+      $items[] = $item;
+    }
+    return theme('item_list', array('items' => $items));
+  }
+}

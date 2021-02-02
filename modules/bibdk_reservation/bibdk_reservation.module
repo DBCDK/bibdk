@@ -362,7 +362,7 @@ function bibdk_reservation_validate_email(&$form, &$form_state) {
 /**
  * Render an agency
  *
- * @param $branch
+ * @param VipCoreAgencyBranch $branch
  * @param $form_state
  *
  * @return array
@@ -378,9 +378,9 @@ function bibdk_reservation_render_custom_branch_view($branch, $form_state) {
 
   global $language;
   $shortname = $branch->getBranchShortName($language->language);
-  $address = $branch->postalAddress;
-  $postalCode = $branch->postalCode;
-  $city = $branch->city;
+  $address = $branch->getAddress();
+  $postalCode = $branch->getPostalCode();
+  $city = $branch->getCity();
 
   $markup = theme('bibdk_reservation_agency', array(
     'name' => $shortname,

@@ -1,5 +1,7 @@
 <?php
 
+module_load_include('php', 'vip_core', 'includes/VipCoreService');
+
 /**
  * implements hook_form
  */
@@ -28,7 +30,7 @@ function bibdk_reservation_form_step_2($form, &$form_state) {
   $form['branchdata']['favouriteselector'] = bibdk_reservation_favourite_selector();
   $fields = bibdk_reservation_get_agency_fields();
 
-  $infotxt = $fields->getAcceptOrderFromUnknownUserText($language->language);
+  $infotxt = $fields->getAcceptOrderFromUnknownUserText();
 
   if (empty($infotxt)) {
     $infotxt = t('accept_order_from_unknown_standard_txt', array(), array('context' => 'bibdk_reservation'));
@@ -178,6 +180,7 @@ function bibdk_reservation_get_favourites_for_selector() {
   global $language;
   $ret = array();
   $favourites = BibdkReservationOrderObject::GetObject()->getFavourites();
+  /** @var FavouriteAgency $favourite */
   foreach ($favourites as $favourite) {
     $branch = $favourite->getBranch();
     if (is_object($branch)) {
@@ -314,11 +317,11 @@ function bibdk_reservation_step_2_user_form_fields($form, $form_state) {
 
   global $user;
   if (ding_user_is_provider_user($user)) {
-    $fields = bibdk_favourite_user_form_fields($form, $form_state, $branch->branchId);
+    $fields = bibdk_favourite_user_form_fields($form, $form_state, $branch->getBranchId());
     $form['userParameters']['userfields'] = $fields;
   }
   else {
-    $fields = ting_agency_userdata_form($form, $form_state, $fields, NULL, $branch->branchId);
+    $fields = bibdk_favourite_userdata_form($form, $form_state, $fields, NULL, $branch->getBranchId());
     $form['userParameters']['userfields'] = $fields;
   }
 
@@ -535,14 +538,14 @@ function bibdk_reservation_prepare_set_user_order_data(&$form_state) {
   }
 
   // bug 21614 userId was overwritten if both cpr and cardno is present.
-  $agency = new TingAgency(
-    BibdkReservationOrderObject::GetObject()->getBranchId()
-  );
+  $branchId = BibdkReservationOrderObject::GetObject()->getBranchId();
 
-  $agency_fields = $agency->getAgencyFields();
+  $response = vip_core_service($branchId, 'userOrderParameters');
+  //$agency_fields = new VipCoreFields($response);
+  $agency_fields = new VipCoreService($response, 'UserOrderParameters');
   $user_id = $agency_fields->getUserIdKey();
 
-  foreach ($agency_fields->userParameters as $key => $userParameter) {
+  foreach ($agency_fields->getUserParameters() as $key => $userParameter) {
 
     $type = $userParameter['type'];
     if ($user_id === $type) {
@@ -555,8 +558,9 @@ function bibdk_reservation_prepare_set_user_order_data(&$form_state) {
     else {
       if (isset($form_state['values'][$type])) {
 
-        $agencyFields = new AgencyFields(NULL);
-        $agencyFields->userParameters[$key] = $userParameter;
+        //$agencyFields = new VipCoreFields(NULL);
+        $agencyFields = new VipCoreService(NULL, 'UserOrderParameters');
+        $agencyFields->setUserParameters($key, $userParameter);
         $fields = $agencyFields->getUserIdKey();
 
         if (!is_null($fields) && !isset($userOrderData['userId'])) {
@@ -585,7 +589,6 @@ function bibdk_reservation_prepare_set_user_order_data(&$form_state) {
 /*
  * Implements hook_form_submit
  */
-
 function bibdk_reservation_form_step_2_submit($form, &$form_state) {
   if (isset($form_state['values']['self_pickup'])) {
     BibdkReservationOrderObject::GetObject()
@@ -659,7 +662,7 @@ function bibdk_reservation_borchk_validate($form_state) {
  * Execute service request to borchk
  *
  * @param array $form_state
- * @param AgencyFields $agencySettings
+ * @param VipCoreService $agencySettings
  *
  * @return array
  *   messages to display (if any)
@@ -739,15 +742,21 @@ function bibdk_reservation_borchk_parse_response($response, $acceptOrderFromUnkn
 /**
  * Get fields required by Agency
  *
- * @return AgencyFields
+ * @return VipCoreService
  */
 function bibdk_reservation_get_agency_fields() {
 
+  /** @var VipCoreAgencyBranch $agency */
   $agency = BibdkReservationOrderObject::GetObject()->getAgency();
   if (!is_object($agency)) {
     return NULL;
   }
-  $fields = $agency->getAgencyFields();
+
+  $response = vip_core_service($agency->getMainAgencyId(), 'userOrderParameters');
+  $fields = new VipCoreService($response, 'userOrderParameters');
+  //$fields = new VipCoreFields($response);
+
+//  $fields = $agency->getAgencyFields();
   if (!empty($fields)) {
     BibdkReservationOrderObject::GetObject()->setFields($fields);
   }
