@@ -653,9 +653,7 @@ function bibdk_openuserstatus_get_group_elements($user_status, $group, $element)
  * returns the accumulated ammount for each library
  *
  * @param array $user_status
- * @param string $group
- * @param string $element
- * @return string
+ * @return array
  */
 function bibdk_openuserstatus_get_group_element_amount($user_status) {
   $favourites = bibdk_favourite_get_favourites();
@@ -666,7 +664,9 @@ function bibdk_openuserstatus_get_group_element_amount($user_status) {
       if (isset($agency_data->response['fiscalAccount']['totalAmount'])) {
         if ($agency_data->response['fiscalAccount']['totalAmount'] > 0 ) {
           $currency_text = t($agency_data->response['fiscalAccount']['totalAmountCurrency'], array(), array('context' => 'bibdk_openuserstatus'));
-          $items['agencyId'][] = $favourites[$agencyId]->getBranchShortName($language->language) . ' ' . $currency_text . ' ' . $agency_data->response['fiscalAccount']['totalAmount'];
+          if (!is_null($favourites[$agencyId])) {
+            $items['agencyId'][] = $favourites[$agencyId]->getBranchShortName($language->language) . ' ' . $currency_text . ' ' . $agency_data->response['fiscalAccount']['totalAmount'];
+          }
         }
       }
     }
