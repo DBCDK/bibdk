@@ -250,10 +250,8 @@ function bibdk_vejviser_execute_agency_search($query) {
   }
 
   try {
-    $vipcore = _vip_core_setup_vipcore();
-    $response = $vipcore->findLibrary(
-      null, null, null, null, null, $sort, $query
-    );
+    $response = vip_core_findlibrary(null, null, null, null, null,
+                                     $sort, $query);
 
   } catch (Exception $e) {
     throw new Exception($e);
@@ -293,10 +291,16 @@ function bibdk_vejviser_execute_pickup_agency_search($agencyId) {
  * @return array
  */
 function bibdk_vejviser_handle_response($response) {
-  if (isset($response->pickupAgency)) {
-    foreach ($response->pickupAgency as $value) {
-      $agencies[] = new VipCoreAgencyBranch($value);
+  if (is_array($response)) {
+    $agencies = array();
+    foreach ($response as $agencyBranch) {
+      if ($agencyBranch instanceof VipCoreAgencyBranch) {
+        $agencies[] = $agencyBranch;
+      }
     }
+    return $agencies;
+  } else if ($response instanceof VipCoreAgencyBranch) {
+    $agencies[] = $response;
     return $agencies;
   }
   else if (isset($response->error)) {
