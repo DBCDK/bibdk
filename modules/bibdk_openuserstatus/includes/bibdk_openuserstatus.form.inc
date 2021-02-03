@@ -550,8 +550,10 @@ function bibdk_openuserstatus_get_fiscal_account_table($form, $fiscals, $fiscals
     foreach (array_keys($items) as $agencyId) {
       $agency = array();
       $agency['items'] = $items[$agencyId];
-      $agency['branchName'] = $favourites[$agencyId]->getBranch()->getBranchShortName($language->language);
-      $agency['paymentUrl'] = $favourites[$agencyId]->getBranch()->getPaymentUrl();
+      if (isset($favourites[$agencyId])) {
+        $agency['branchName'] = $favourites[$agencyId]->getBranch()->getBranchShortName($language->language);
+        $agency['paymentUrl'] = $favourites[$agencyId]->getBranch()->getPaymentUrl();
+      }
       $agency['class'] = 'fiscal-account';
       $agency['msg'] = t('we_have_no_registered_debt_associated_with_your_name', array(), array('context' => 'bibdk_openuserstatus'));
       $agency['header'] = $header;
