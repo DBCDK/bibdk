@@ -49,9 +49,10 @@ function bibdk_favourite_add_favourite_to_session($favourite) {
     _bibdk_favourite_set_agencies();
   }
 
-  $branchId = $favourite->getBranch()->getBranchId();
+  $branch = $favourite->getBranch();
+  $branchId = (!is_null($branch)) ? $favourite->getBranch()->getBranchId() : '';
 
-  if (!isset($_SESSION['bibdk_favourites'][$branchId])) {
+  if (!empty($branchId) && !isset($_SESSION['bibdk_favourites'][$branchId])) {
     $_SESSION['bibdk_favourites'][$branchId] = serialize($favourite);
   }
 }
