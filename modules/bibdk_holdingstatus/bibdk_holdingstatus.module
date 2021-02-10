@@ -118,7 +118,7 @@ function bibdk_holdingstatus_get_localisation($pids, $ref=NULL) {
     foreach ($result['agencies'] as $agencyId => $localization) {
 
       $information = vip_core_findlibrary($agencyId);
-      if ( !isset($information) ) {
+      if (is_array($information) && isset($information['error']) ) {
         $error_messages[] = t('library_not_found');
       }
       else {
