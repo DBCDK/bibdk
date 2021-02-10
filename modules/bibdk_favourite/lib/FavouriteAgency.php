@@ -5,7 +5,7 @@ class FavouriteAgency extends VipCoreAgencyBranch {
   public $userData;
   public $orderAgency;
 
-  protected $branch;
+  public $branch;
 
   /**
    * FavouriteAgency constructor.
@@ -54,6 +54,10 @@ class FavouriteAgency extends VipCoreAgencyBranch {
 
   public function getAgencyId() {
     return $this->getMainAgencyId();
+  }
+
+  public function setAgencyId($agencyId) {
+    $this->branch->agencyId = $agencyId;
   }
 
   /**
@@ -177,8 +181,7 @@ class FavouriteAgency extends VipCoreAgencyBranch {
 
   /**
    * @return null|string
-   * @throws \TingClientAgencyBranchException
-   * @throws \TingClientException
+   * @throws \Exception
    */
   public function getRenewOrderAllowed() {
     $branch = $this->getBranch();
