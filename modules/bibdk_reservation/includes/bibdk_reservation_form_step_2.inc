@@ -752,7 +752,7 @@ function bibdk_reservation_get_agency_fields() {
     return NULL;
   }
 
-  $response = vip_core_service($agency->getMainAgencyId(), 'userOrderParameters');
+  $response = vip_core_service($agency->getBranchId(), 'userOrderParameters');
   $fields = new VipCoreService($response, 'userOrderParameters');
   //$fields = new VipCoreFields($response);
 
