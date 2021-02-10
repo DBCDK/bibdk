@@ -378,9 +378,13 @@ function bibdk_reservation_render_custom_branch_view($branch, $form_state) {
 
   global $language;
   $shortname = $branch->getBranchShortName($language->language);
-  $address = $branch->getAddress();
+
   $postalCode = $branch->getPostalCode();
   $city = $branch->getCity();
+
+  $show_postalCode_City = (!empty($city) && !empty($postalCode)) ? FALSE : TRUE;
+  $address = $branch->getAddress($show_postalCode_City);
+
 
   $markup = theme('bibdk_reservation_agency', array(
     'name' => $shortname,
