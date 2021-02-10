@@ -291,7 +291,7 @@ function bibdk_vejviser_execute_pickup_agency_search($agencyId) {
  * @return array
  */
 function bibdk_vejviser_handle_response($response) {
-  if (is_array($response)) {
+  if (is_array($response) && !isset($response['error'])) {
     $agencies = array();
     foreach ($response as $agencyBranch) {
       if ($agencyBranch instanceof VipCoreAgencyBranch) {
@@ -303,11 +303,11 @@ function bibdk_vejviser_handle_response($response) {
     $agencies[] = $response;
     return $agencies;
   }
-  else if (isset($response->error)) {
-    $error = $response->error;
+  else if (isset($response->error) || isset($response['error'])) {
+    $error = $response->error ?? $response['error'];
     drupal_set_message(t($error, array(), array('context' => 'bibdk_vejviser')), 'error');
   }
-  else if (!isset($response->error) && !isset($response->pickupAgency)) {
+  else if (!isset($response->error) && !isset($response['error']) && !isset($response->pickupAgency)) {
     $error = t('no_libraries_found_and_no_errors_reported');
     drupal_set_message(t($error, array(), array('context' => 'bibdk_vejviser')), 'error');
   }
