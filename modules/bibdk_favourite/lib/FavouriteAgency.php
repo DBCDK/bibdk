@@ -9,28 +9,24 @@ class FavouriteAgency extends VipCoreAgencyBranch {
 
   /**
    * FavouriteAgency constructor.
-   * @param $favourite
-   * @param null|stdClass $findLibraryResponse
+   * @param stdClass $favourite
+   * @param null|VipCoreAgencyBranch $vipCoreAgencyBranch
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  public function __construct($favourite, $findLibraryResponse = NULL) {
+  public function __construct($favourite, $vipCoreAgencyBranch = null) {
     if (!isset($favourite['oui:agencyId'])) {
       return;
     }
 
-    $this->userData = isset($favourite['oui:userData']) ? unserialize($favourite['oui:userData']) : NULL;
+    parent::__construct(NULL);
+
+    $userData = unserialize($favourite['oui:userData']);
+
+    $this->userData = (FALSE === $userData) ? $favourite['oui:userData'] : $userData;
     $this->orderAgency = ($favourite['oui:orderAgency'] == 'TRUE');
     $this->agencyId = $favourite['oui:agencyId'];
-
-    if (is_null($findLibraryResponse)) {
-      try {
-        $response = vip_core_findlibrary($favourite['oui:agencyId']);
-        return parent::__construct($response);
-      } catch (Exception $e) {
-        throw new Exception($e);
-      }
-    } else {
-      return parent::__construct($findLibraryResponse->branch);
+    if (!is_null($vipCoreAgencyBranch)) {
+      $this->branch = $vipCoreAgencyBranch->getBranch();
     }
   }
 
@@ -67,8 +63,7 @@ class FavouriteAgency extends VipCoreAgencyBranch {
    * @return string|NULL
    */
   public function getMainAgencyId() {
-    return (isset($this->branch->agencyId) ? $this->branch->agencyId :
-      (isset($this->branch->branch->agencyId) ? $this->branch->branch->agencyId : NULL));
+    return (isset($this->branch->agencyId) ? $this->branch->agencyId : NULL);
   }
 
   public function getOrderAgency() {
