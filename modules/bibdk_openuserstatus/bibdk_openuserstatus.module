@@ -295,7 +295,9 @@ function bibdk_openuserstatus_get_pickup_agencies($agencyId) {
   $pickupAgencies = array();
   if (isset($favourites[$agencyId])) {
     if ($favourites[$agencyId]->getNcipUpdateOrder()) {
-      $pickupAgencies = $favourites[$agencyId]->getPickupAgencySelectList();
+      $pickupAgencyList = vip_core_pickupAgencyList([$agencyId]);
+      /** @var array $pickupAgencies */
+      $pickupAgencies = $pickupAgencyList[0]->getPickupAgencySelectList();
     }
   }
   return $pickupAgencies;
