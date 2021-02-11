@@ -362,7 +362,7 @@ function bibdk_reservation_validate_email(&$form, &$form_state) {
 /**
  * Render an agency
  *
- * @param VipCoreAgencyBranch $branch
+ * @param VipCoreFindLibrary $branch
  * @param $form_state
  *
  * @return array

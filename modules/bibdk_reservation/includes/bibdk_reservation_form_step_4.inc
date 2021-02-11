@@ -160,7 +160,7 @@ function bibdk_reservation_set_confirm_message(){
  * Generates a message based on the the current users loginstatus and the
  * pickUpAgency's userstatuspolicy
  *
- * @param VipCoreAgencyBranch $pickUpAgency
+ * @param VipCoreFindLibrary $pickUpAgency
  * @return null|string
  */
 function _bibdk_reservation_get_userstatus_link($pickUpAgency) {

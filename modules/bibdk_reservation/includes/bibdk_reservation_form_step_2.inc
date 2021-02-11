@@ -746,7 +746,7 @@ function bibdk_reservation_borchk_parse_response($response, $acceptOrderFromUnkn
  */
 function bibdk_reservation_get_agency_fields() {
 
-  /** @var VipCoreAgencyBranch $agency */
+  /** @var VipCoreFindLibrary $agency */
   $agency = BibdkReservationOrderObject::GetObject()->getAgency();
   if (!is_object($agency)) {
     return NULL;

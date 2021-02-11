@@ -116,7 +116,7 @@ class BibdkReservationOrderObject {
     return $this->branchId;
   }
 
-  public function setBranch(VipCoreAgencyBranch $branch) {
+  public function setBranch(VipCoreFindLibrary $branch) {
     $this->branch = $branch;
     $this->setBranchId($branch->getBranchId());
 
@@ -138,14 +138,14 @@ class BibdkReservationOrderObject {
   }
 
   /**
-   * @return VipCoreAgencyBranch
+   * @return VipCoreFindLibrary
    */
   public function getAgency() {
     return $this->agency;
   }
 
   /**
-   * @return VipCoreAgencyBranch
+   * @return VipCoreFindLibrary
    */
   public function getBranch() {
     return $this->branch;

@@ -159,7 +159,7 @@ function bibdk_reservation_form_step_1_submit($form, &$form_state) {
 }
 
 /**
- * @param VipCoreAgencyBranch $branch
+ * @param VipCoreFindLibrary $branch
  * @return array
  */
 function bibdk_reservation_agency_branch_get_action_link($branch) {

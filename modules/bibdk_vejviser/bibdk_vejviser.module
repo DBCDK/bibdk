@@ -182,7 +182,7 @@ function bibdk_vejviser_agency_search() {
   $branches = array();
   if (!empty($result)) {
     // add addtional html; button etc. to each branch
-    /** @var VipCoreAgencyBranch $branch */
+    /** @var VipCoreFindLibrary $branch */
     foreach ($result as $branch) {
       // check if any modules has anything to add to branch
       // but show only button if pickup is allowed for this branch
@@ -219,7 +219,7 @@ function bibdk_vejviser_agency_search() {
  * create agency_link and return. ex:
  * http://dringo.dbc.dk/ana.ding/da/vejviser/?agencyId=830070
  *
- * @param VipCoreAgencyBranch $branch
+ * @param VipCoreFindLibrary $branch
  * @return string
  */
 function bibdk_vejviser_get_agency_link($branch) {
@@ -294,12 +294,12 @@ function bibdk_vejviser_handle_response($response) {
   if (is_array($response) && !isset($response['error'])) {
     $agencies = array();
     foreach ($response as $agencyBranch) {
-      if ($agencyBranch instanceof VipCoreAgencyBranch) {
+      if ($agencyBranch instanceof VipCoreFindLibrary) {
         $agencies[] = $agencyBranch;
       }
     }
     return $agencies;
-  } else if ($response instanceof VipCoreAgencyBranch) {
+  } else if ($response instanceof VipCoreFindLibrary) {
     $agencies[] = $response;
     return $agencies;
   }
@@ -343,12 +343,12 @@ function bibdk_vejviser_handle_agency_response($response) {
 /**
  * Render the view of an agency branch and wrap it in an form element
  *
- * @param VipCoreAgencyBranch $branch
+ * @param VipCoreFindLibrary $branch
  * @param array $settings
  *
  * @return mixed
  */
-function bibdk_vejviser_view_agency_branch(VipCoreAgencyBranch $branch, $settings = array()) {
+function bibdk_vejviser_view_agency_branch(VipCoreFindLibrary $branch, $settings = array()) {
   // Actions can be both links and form elements, and needs to handles separately
   $actions = isset($settings['#actions']) ? $settings['#actions'] : '';
   unset($settings['#actions']);

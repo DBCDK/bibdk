@@ -559,12 +559,12 @@ function bibdk_favourite_userdata_form($form, &$form_state, $fields, $userData =
 /**
  * Render the view of an agency branch and wrap it in an form element
  *
- * @param VipCoreAgencyBranch $branch
+ * @param VipCoreFindLibrary $branch
  * @param array $settings
  *
  * @return mixed
  */
-function bibdk_favourite_view_agency_branch(VipCoreAgencyBranch $branch, $settings = array()) {
+function bibdk_favourite_view_agency_branch(VipCoreFindLibrary $branch, $settings = array()) {
   // Actions can be both links and form elements, and needs to handles separately
   $actions = isset($settings['#actions']) ? $settings['#actions'] : '';
   unset($settings['#actions']);
@@ -625,7 +625,7 @@ function bibdk_favourite_get_selector_for_subagencies($branchId, $userData) {
   if (is_array($pickupAgencyList)) {
     /** @var VipCoreAgency $agency */
     foreach ($pickupAgencyList AS $agency) {
-      /** @var VipCoreAgencyBranch $pickupAgency */
+      /** @var VipCoreFindLibrary $pickupAgency */
       foreach($agency->getPickUpAgencies() AS $pickupAgency) {
         if (!empty($pickupAgency->getBranchId()) && $pickupAgency->getBranchId() === $branchId) {
           if (empty($pickupAgency->getAgencySubdivisions())) {
@@ -668,13 +668,13 @@ function bibdk_favourite_get_selector_for_subagencies($branchId, $userData) {
  * Generate more info for branch
  * get default moreinfo for a branch
  *
- * @param VipCoreAgencyBranch $branch
+ * @param VipCoreFindLibrary $branch
  *
  * @return array
  * render array for drupal_render
  * @throws Exception
  */
-function bibdk_favourite_get_more_info(VipCoreAgencyBranch $branch) {
+function bibdk_favourite_get_more_info(VipCoreFindLibrary $branch) {
   $tools = get_bibdk_favourite_tools($branch);
   $defaults = array(
     '#theme' => 'bibdk_favourite_more_info',
@@ -731,7 +731,7 @@ function bibdk_favourite_temporarily_closed_message($branch) {
  * @return array
  */
 function get_bibdk_favourite_tools($branch) {
-  /** @var VipCoreAgencyBranch  $branch */
+  /** @var VipCoreFindLibrary  $branch */
   $links = $branch->getActionLinks();
   $items = array();
   if (!empty($links)) {
@@ -786,7 +786,7 @@ function theme_bibdk_favourite_address($variables) {
  * @return string (html)
  */
 function theme_bibdk_favourite_pickup_allowed($variables) {
-  /** @var VipCoreAgencyBranch $branch */
+  /** @var VipCoreFindLibrary $branch */
   $branch = $variables['branch'];
   if (empty($branch)) {
     return;

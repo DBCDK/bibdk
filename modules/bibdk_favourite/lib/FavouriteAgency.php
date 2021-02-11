@@ -1,6 +1,8 @@
 <?php
 
-class FavouriteAgency extends VipCoreAgencyBranch {
+require_once module_load_include('inc', 'vip_core', '/includes/VipCoreFindLibrary');
+
+class FavouriteAgency extends VipCoreFindLibrary {
 
   public $userData;
   public $orderAgency;
@@ -10,7 +12,7 @@ class FavouriteAgency extends VipCoreAgencyBranch {
   /**
    * FavouriteAgency constructor.
    * @param stdClass $favourite
-   * @param null|VipCoreAgencyBranch $vipCoreAgencyBranch
+   * @param null|VipCoreFindLibrary $vipCoreAgencyBranch
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function __construct($favourite, $vipCoreAgencyBranch = null) {
@@ -43,7 +45,7 @@ class FavouriteAgency extends VipCoreAgencyBranch {
   public function getBranch() {
 
     if (!is_null($this->branch)) {
-      return new VipCoreAgencyBranch($this->branch);
+      return new VipCoreFindLibrary($this->branch);
     }
     return NULL;
   }

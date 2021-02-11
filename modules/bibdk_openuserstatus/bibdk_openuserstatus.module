@@ -229,7 +229,7 @@ function bibdk_openuserstatus_get_favourites() {
  */
 function bibdk_openuserstatus_get_agencyname($agencyId) {
   global $language;
-  /** @var VipCoreAgencyBranch $agency */
+  /** @var VipCoreFindLibrary $agency */
   $agency = vip_core_findlibrary($agencyId);
   // @TODO which one to use ??
   //  $name = $agency->getBranch()->getBranchName($language->language);
@@ -245,7 +245,7 @@ function bibdk_openuserstatus_get_agencyname($agencyId) {
  */
 function bibdk_openuserstatus_get_agency_branch_name($agencyId) {
   global $language;
-  /** @var VipCoreAgencyBranch $agency */
+  /** @var VipCoreFindLibrary $agency */
   $agency = vip_core_findlibrary($agencyId);
   $name = $agency->getBranchName($language->language);
   return isset($name) ? $name : NULL;
