@@ -615,29 +615,28 @@ function _bibdk_favourite_error_no_agency_user_data() {
  */
 function bibdk_favourite_get_selector_for_subagencies($branchId, $userData) {
 
+  $pickupAgencyList = array();
   try {
-  $agency = vip_core_findlibrary($branchId);
-
-  $pickupAgencyList = vip_core_pickupAgencyList([$agency->getMainAgencyId()]);
+  $pickupAgencyList = vip_core_pickupAgencyList([$branchId]);
   } catch (Exception $e) {
     drupal_set_message($e->getMessage(), 'error');
   }
   $options = array();
-  if (isset($pickupAgencyList->library)) {
-    foreach ($pickupAgencyList->library as $item) {
-      if (isset($item->pickupAgency) && is_array($item->pickupAgency)) {
-        foreach ($item->pickupAgency as $pickupAgency) {
-          if (isset($pickupAgency->branchId) && $pickupAgency->branchId == $branchId) {
-            if (!isset($pickupAgency->agencySubdivision)) {
-              return;
-            } else {
-              if ($pickupAgency->branchType == 'b') {
-                foreach ($pickupAgency->agencySubdivision as $key => $value) {
-                  $options['Bogbussen:'][$value] = $value;
-                }
-              } else {
-                $options[$pickupAgency->branchId] = $pickupAgency->branchShortName[0]->value;
+  if (is_array($pickupAgencyList)) {
+    /** @var VipCoreAgency $agency */
+    foreach ($pickupAgencyList AS $agency) {
+      /** @var VipCoreAgencyBranch $pickupAgency */
+      foreach($agency->getPickUpAgencies() AS $pickupAgency) {
+        if (!empty($pickupAgency->getBranchId()) && $pickupAgency->getBranchId() === $branchId) {
+          if (empty($pickupAgency->getAgencySubdivisions())) {
+            return;
+          } else {
+            if ($pickupAgency->getBranchType() == 'b') {
+              foreach ($pickupAgency->getAgencySubdivisions() as $key => $value) {
+                $options['Bogbussen:'][$value] = $value;
               }
+            } else {
+              $options[$pickupAgency->getBranchId()] = $pickupAgency->getBranchShortName();
             }
           }
         }

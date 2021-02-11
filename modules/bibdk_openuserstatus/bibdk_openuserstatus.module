@@ -164,7 +164,7 @@ function bibdk_openuserstatus_request() {
       continue;
     }
 
-    // if user favorite branch mainlibrary allready exist in list continiue
+    // if user favorite branch main library already exist in list continue
     if (!in_array($agency_main_id, $array_main_id)) {
       $array_main_id[] = $agency_main_id;
     }
@@ -294,7 +294,7 @@ function bibdk_openuserstatus_get_pickup_agencies($agencyId) {
   $favourites = bibdk_favourite_get_favourites();
   $pickupAgencies = array();
   if (isset($favourites[$agencyId])) {
-    if ($favourites[$agencyId]->getUpdateOrderAllowed()) {
+    if ($favourites[$agencyId]->getNcipUpdateOrder()) {
       $pickupAgencies = $favourites[$agencyId]->getPickupAgencySelectList();
     }
   }

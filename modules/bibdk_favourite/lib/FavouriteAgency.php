@@ -48,8 +48,13 @@ class FavouriteAgency extends VipCoreAgencyBranch {
     return NULL;
   }
 
+  /**
+   * Return the favourite agency id
+   *
+   * @return string|null
+   */
   public function getAgencyId() {
-    return $this->getMainAgencyId();
+    return $this->agencyId ?? NULL;
   }
 
   public function setAgencyId($agencyId) {
