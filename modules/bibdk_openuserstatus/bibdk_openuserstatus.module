@@ -261,7 +261,7 @@ function bibdk_openuserstatus_get_agencyname_main($agencyId) {
   $agency = vip_core_findlibrary($agencyId);
   $agency_main_id = $agency->getMainAgencyId();
   $agency = vip_core_findlibrary($agency_main_id);
-  $name = $agency->getBranchName();
+  $name = $agency->getAgencyName();
   return isset($name) ? $name : NULL;
 }
 
