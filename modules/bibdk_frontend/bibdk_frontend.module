@@ -376,3 +376,22 @@ function bibdk_frontend_page_alter(&$page) {
     drupal_add_js(drupal_get_path('module', 'bibdk_frontend') . '/matomo/matomo.js');
   }
 }
+
+/**
+ * Outlook mail program along with hotmail etc. creates a preview that destroys the one time link.
+ * Slack also creates a silly preview.
+ *
+ * @param $form
+ * @param $form_state
+ * @param $form_id
+ */
+function bibdk_frontend_form_user_pass_reset_alter(&$form, &$form_state, $form_id) {
+
+  $user_agent = $_SERVER['HTTP_USER_AGENT'];
+  if (strpos($user_agent, 'BingPreview') !== FALSE || strpos($user_agent, 'Slackbot') !== FALSE) {
+    // Deny access for the BingPreview bot, used by outlook.com on links
+    // in e-mails.
+    drupal_access_denied();
+    drupal_exit();
+  }
+}
