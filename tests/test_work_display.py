@@ -373,3 +373,93 @@ class TestWorkDisplay(helpers.BibdkUnitTestCase):
                 )
             )
         )
+
+    def test_work_display_one_contributor(self):
+        browser = self.browser
+        self._goto_frontpage()
+        self._check_pop_up()
+        wait = WebDriverWait(browser, 30)
+
+        # Perform search
+        input = wait.until(
+            EC.visibility_of_element_located(
+                (
+                    By.CLASS_NAME, "search-block-form"
+                )
+            )
+        )
+        input.send_keys('rec.id=870970-basis:47917727')
+
+        submit = wait.until(
+            EC.visibility_of_element_located(
+                (
+                    By.ID, "edit-submit"
+                )
+            )
+        )
+        submit.click()
+
+        # Display full record
+        record = wait.until(
+            EC.visibility_of_element_located(
+                (
+                    By.CLASS_NAME, "work-header"
+                )
+            )
+        )
+        record.click()
+
+        # Check that contributor is present
+        contrib = wait.until(
+            EC.visibility_of_element_located(
+                (
+                    By.CSS_SELECTOR, ".field-name-bibdk-mani-contribs .openformat-field"
+                )
+            )
+        )
+        assert contrib.text == u'illustrator'
+
+    def test_work_display_several_contributors(self):
+        browser = self.browser
+        self._goto_frontpage()
+        self._check_pop_up()
+        wait = WebDriverWait(browser, 30)
+
+        # Perform search
+        input = wait.until(
+            EC.visibility_of_element_located(
+                (
+                    By.CLASS_NAME, "search-block-form"
+                )
+            )
+        )
+        input.send_keys('rec.id=870970-basis:47917743')
+
+        submit = wait.until(
+            EC.visibility_of_element_located(
+                (
+                    By.ID, "edit-submit"
+                )
+            )
+        )
+        submit.click()
+
+        # Display full record
+        record = wait.until(
+            EC.visibility_of_element_located(
+                (
+                    By.CLASS_NAME, "work-header"
+                )
+            )
+        )
+        record.click()
+
+        # Check that contributors are present
+        contrib = wait.until(
+            EC.visibility_of_element_located(
+                (
+                    By.CSS_SELECTOR, ".field-name-bibdk-mani-contribs .openformat-field:first-of-type"
+                )
+            )
+        )
+        assert contrib.text == u'redaktører'
