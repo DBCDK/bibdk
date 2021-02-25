@@ -458,7 +458,7 @@ class TestWorkDisplay(helpers.BibdkUnitTestCase):
         contrib = wait.until(
             EC.visibility_of_element_located(
                 (
-                    By.CSS_SELECTOR, ".field-name-bibdk-mani-contribs .openformat-field:first-of_type"
+                    By.CSS_SELECTOR, ".field-name-bibdk-mani-contribs .openformat-field:first-of-type"
                 )
             )
         )
