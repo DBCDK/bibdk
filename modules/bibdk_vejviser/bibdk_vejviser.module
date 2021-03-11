@@ -293,7 +293,9 @@ function bibdk_vejviser_execute_pickup_agency_search($agencyId) {
  */
 function bibdk_vejviser_handle_response($response) {
   if (is_object($response)) {
-    $response[0] = $reponse;
+    $resp_array = array();
+    $resp_array[0] =  $response;
+    $response = $resp_array;
   }
   if (!isset($response['error'])) {
     return $response;
