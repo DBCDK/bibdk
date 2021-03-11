@@ -252,7 +252,6 @@ function bibdk_vejviser_execute_agency_search($query) {
   try {
     $response = vip_core_findlibrary(null, null, null, null, null,
                                      $sort, $query);
-
   } catch (Exception $e) {
     throw new Exception($e);
   }
@@ -284,58 +283,89 @@ function bibdk_vejviser_execute_pickup_agency_search($agencyId) {
 
 /**
  * Handling the response.
- * Received errors needs handling. The role of this function is quite limited.
+ * Received errors needs handling.
+ * The role of this function is quite limited.
  * It might be worth handling errors elsewhere and deprecate this function
  *
- * @param array $response
+ * @param mixed $response
  * @return array
+ * @throws \Exception
  */
 function bibdk_vejviser_handle_response($response) {
-  if (is_array($response) && !isset($response['error'])) {
-    $agencies = array();
-    foreach ($response as $agencyBranch) {
-      if ($agencyBranch instanceof VipCoreFindLibrary) {
-        $agencies[] = $agencyBranch;
-      }
-    }
-    return $agencies;
-  } else if ($response instanceof VipCoreFindLibrary) {
-    $agencies[] = $response;
-    return $agencies;
+  if (is_object($response)) {
+    $response[0] = $reponse;
   }
-  else if (isset($response->error) || isset($response['error'])) {
-    $error = $response->error ?? $response['error'];
-    drupal_set_message(t($error, array(), array('context' => 'bibdk_vejviser')), 'error');
+  if (!isset($response['error'])) {
+    return $response;
+  } else if (isset($response['error'])) {
+    drupal_set_message(
+      t(
+        $response['error'],
+        array(),
+        array('context' => 'bibdk_vejviser')
+      ),
+      'error'
+    );
   }
-  else if (!isset($response->error) && !isset($response['error']) && !isset($response->pickupAgency)) {
+  else if (!isset($response['error']) && !isset($response->pickupAgency) && (!($response instanceof VipCoreFindLibrary))) {
     $error = t('no_libraries_found_and_no_errors_reported');
-    drupal_set_message(t($error, array(), array('context' => 'bibdk_vejviser')), 'error');
+    drupal_set_message(
+      t(
+        $error,
+        array(),
+        array('context' => 'bibdk_vejviser')
+      ),
+      'error'
+    );
+  } else {
+    return array($response);
   }
 }
 
 /**
- * Handling the response. pickupAgencyListResponse will be passed for all
+ * Handling the response.
+ * pickupAgencyListResponse will be passed for all
  * pickupAgencyListResponse->library[0]->pickupAgency for display
  *
- * @param stdClass $response
+ * @param array $response
  * @return array
+ * @throws \Exception
  */
 function bibdk_vejviser_handle_agency_response($response) {
 
-  if (isset($response->library[0]->pickupAgency)) {
-    // loop on pickupAgencies
-    foreach ($response->library[0]->pickupAgency as $value) {
-      $agencies[] = vip_core_findlibrary($value->branchId);
-    }
-    return $agencies;
+  if (!empty($response[0]->getAgencyName())) {
+    // set search statustext
+    drupal_set_message(
+      t(
+        'search results for %value',
+        array(
+          '%value' => $response[0]->getAgencyName()
+        )
+      ),
+      'status'
+    );
+    if (!is_array($response)) { $response = array($response); }
+    return $response[0]->getPickUpAgencies();
   }
-  else if (isset($response->error)) {
-    $error = $response->error;
-    drupal_set_message(t($error, array(), array('context' => 'bibdk_vejviser')), 'error');
+  else if (!empty($response->getError())) {
+    drupal_set_message(
+      t(
+        $response->getError(),
+        array(),
+        array('context' => 'bibdk_vejviser')
+      ),
+      'error'
+    );
   }
-  else if (!isset($response->error) && !isset($response->pickupAgency)) {
+  else if (!empty($response->getError()) && !isset($response->pickupAgency)) {
     $error = t('no_libraries_found_and_no_errors_reported');
-    drupal_set_message(t($error, array(), array('context' => 'bibdk_vejviser')), 'error');
+    drupal_set_message(
+      t($error,
+        array(),
+        array('context' => 'bibdk_vejviser')
+      ),
+      'error'
+    );
     drupal_goto('vejviser');
   }
 }
