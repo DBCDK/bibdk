@@ -165,7 +165,7 @@ function bibdk_reservation_form_step_1_submit($form, &$form_state) {
 function bibdk_reservation_agency_branch_get_action_link($branch) {
   $form = array();
 
-  if($branch->getPickupAllowed()) {
+  if($branch->getPickupAllowed() === '1') {
     $form = array(
       '#value' => t('select_reservation_library', array(), array('context' => 'bibdk_reservation')),
       '#name' => 'branch-' . $branch->getBranchId(),
@@ -173,6 +173,10 @@ function bibdk_reservation_agency_branch_get_action_link($branch) {
       '#submit' => array('bibdk_reservation_wizard_next_submit'),
       '#step' => 2,
       '#branch' => $branch,
+    );
+  } else {
+    $form = array(
+      '#markup' => t('This library does not accept requests from bibliotek.dk', array(), array('context' => 'bibdk_reservation')),
     );
   }
   return $form;
