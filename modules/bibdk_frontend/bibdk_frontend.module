@@ -387,7 +387,7 @@ function bibdk_frontend_page_alter(&$page) {
  */
 function bibdk_frontend_form_user_pass_reset_alter(&$form, &$form_state, $form_id) {
 
-  if ($_SERVER['REQUEST_METHOD'] === "HEAD" && strpos($_SERVER['HTTP_REFERER'], 'outlook.com') !== FALSE) {
+  if ($_SERVER['REQUEST_METHOD'] === "HEAD" && strpos($_SERVER['HTTP_REFERER'], 'protection.outlook.com') !== FALSE) {
     drupal_access_denied();
     drupal_exit();
   }
