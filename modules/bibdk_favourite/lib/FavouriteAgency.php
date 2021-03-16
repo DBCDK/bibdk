@@ -27,8 +27,16 @@ class FavouriteAgency extends VipCoreFindLibrary {
     $this->userData = (FALSE === $userData) ? $favourite['oui:userData'] : $userData;
     $this->orderAgency = ($favourite['oui:orderAgency'] == 'TRUE');
     $this->agencyId = $favourite['oui:agencyId'];
-    if (!is_null($vipCoreAgencyBranch)) {
+    // If $vipCoreAgencyBranch is an array - there has been an error somewhere.
+    if (!is_null($vipCoreAgencyBranch) && !is_array($vipCoreAgencyBranch)) {
       $this->branch = $vipCoreAgencyBranch->getBranch();
+    } else {
+      watchdog(
+        'bibdk_favourite',
+        '@agency does not exist. Clean up OpenUserInfo',
+        array('@agency' => $this->agencyId),
+        WATCHDOG_WARNING
+      );
     }
   }
 
