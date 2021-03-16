@@ -32,7 +32,7 @@ class FavouriteAgency extends VipCoreFindLibrary {
     } else {
       watchdog(
         'bibdk_favourite',
-        'Something is wrong with @agency',
+        '@agency does not exist. Clean up OpenUserInfo',
         array('@agency' => $this->agencyId),
         WATCHDOG_WARNING
       );
