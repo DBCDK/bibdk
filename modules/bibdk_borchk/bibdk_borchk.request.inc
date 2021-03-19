@@ -8,13 +8,12 @@ class bibdk_borchk extends TingClientRequest Implements ITingClientRequestCache 
   protected $userId;
   protected $action;
   protected $cacheKey;
-  protected $outputType;
 
   /** Implementation of ITingClientRequestCache */
 
   /** \brief ITingClientRequestCache::cacheKey; get a cachekey
-   * 
-   * @return string 
+   *
+   * @return string
    */
   public function cacheKey() {
     $params = $this->getParameters();
@@ -27,7 +26,7 @@ class bibdk_borchk extends TingClientRequest Implements ITingClientRequestCache 
   /** \brief make a cachekey based on request parameters
    *
    * @param array $params
-   * @param string $ret 
+   * @param string $ret
    */
   private function make_cache_key($params, &$ret) {
     foreach ($params as $key => $value) {
@@ -43,7 +42,7 @@ class bibdk_borchk extends TingClientRequest Implements ITingClientRequestCache 
   }
 
   /** \brief ITingClientRequestCache::cacheEnable; Check if cache is enabled
-   *   
+   *
    * @return value of variable (drupal_get)
    */
   public function cacheEnable($value = NULL) {
@@ -52,13 +51,42 @@ class bibdk_borchk extends TingClientRequest Implements ITingClientRequestCache 
   }
 
   /*   * \brief set timeout of cache
-   * 
-   * @return mixed value of variable (variable_get)  
+   *
+   * @return mixed value of variable (variable_get)
    */
 
   public function cacheTimeout($value = NULL) {
     $class_name = get_class($this);
     return variable_get($class_name . TingClientRequest::cache_lifetime, '1');
+  }
+
+  /**
+   * Override TingClientRequest::parseResponse
+   *
+   * As of openorder 3.0 service returns xml only. Ting client is made for
+   * parsing json supported by OLS webservices.
+   *
+   * Two classes from OLS are used to convert xml to json, to use same procedure as
+   * before.
+   *
+   * @see ting-client/lib/ols_convert/xmlconvert_class.php and objconvert_class.php
+   *
+   * @param $responseString
+   * @return mixed
+   */
+  public function parseResponse($responseString) {
+    $dom = new DOMDocument();
+    $dom->preserveWhiteSpace = FALSE;
+    if(@$dom->loadXML($responseString)){
+      $xmlconvert = new xmlconvert();
+      $objconvert = new objconvert();
+      $OLS_obj = $xmlconvert->xml2obj($dom);
+      $badgerfish = $objconvert->obj2json($OLS_obj);
+      return parent::parseResponse($badgerfish);
+    }
+    else{
+      throw new Exception('failed to parse response from borchk: ' . $responseString);
+    }
   }
 
   public function checkResponse($response) {
@@ -98,7 +126,7 @@ class bibdk_borchk extends TingClientRequest Implements ITingClientRequestCache 
   }
 
   /* \brief implements ITingClientRequestCache::cacheBin
-   * 
+   *
    * @return string; name of cachebin
    */
 
@@ -146,17 +174,9 @@ class bibdk_borchk extends TingClientRequest Implements ITingClientRequestCache 
     return $this->userId;
   }
 
-  public function setOutputType($value = NULL) {
-    $this->outputType = $value;
-  }
-
-  public function getOutputType() {
-    return $this->outputType;
-  }
-
   public function getRequest() {
     $this->setParameter('action', 'borrowerCheckRequest');
-    $params = array('serviceRequester', 'libraryCode', 'userPincode', 'userId', 'outputType');
+    $params = array('serviceRequester', 'libraryCode', 'userPincode', 'userId');
     foreach ($params as $parameter) {
       $getter = 'get' . ucfirst($parameter);
       $value = $this->$getter();
@@ -171,6 +191,15 @@ class bibdk_borchk extends TingClientRequest Implements ITingClientRequestCache 
   // empty;
   public function processResponse(stdClass $result) {
     return $result;
+  }
+
+  /**
+ * do NOT set default outputType in TingClientRequestAdapter - we handle
+ * response ourself - see this::parseResponse
+ * @return bool
+ */
+  public function defaultOutputType() {
+    return FALSE;
   }
 
 }

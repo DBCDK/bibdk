@@ -689,9 +689,8 @@ function bibdk_reservation_borchk_execute($form_state, $agencySettings) {
       ->getUserIdKey();
     $userId = isset($form_state['values'][$userIdKey]) ? $form_state['values'][$userIdKey] : NULL;
     $userPincode = isset($form_state['values']['pincode']) ? $form_state['values']['pincode'] : NULL;
-    $response = bibdk_borchk_request($userId, $userPincode, $libraryCode, 'json', 'bibliotek.dk');
-
-    $messages = bibdk_reservation_borchk_parse_response($response->borrowerCheckResponse->requestStatus->{'$'}, $acceptOrderFromUnknownUser, $acceptOrderAgencyOffline);
+    $response = bibdk_borchk_request($userId, $userPincode, $libraryCode, 'bibliotek.dk');
+    $messages = bibdk_reservation_borchk_parse_response($response, $acceptOrderFromUnknownUser, $acceptOrderAgencyOffline);
   }
 
   return $messages;
@@ -707,11 +706,12 @@ function bibdk_reservation_borchk_execute($form_state, $agencySettings) {
  * @return array
  */
 function bibdk_reservation_borchk_parse_response($response, $acceptOrderFromUnknownUser, $acceptOrderAgencyOffline) {
+  $result = isset($response->Envelope->Body->borrowerCheckResponse->requestStatus->{'$'}) ? $response->Envelope->Body->borrowerCheckResponse->requestStatus->{'$'} : 'error_in_request';
   $message = array(
     'error' => NULL,
     'status' => NULL
   );
-  switch ($response) {
+  switch ($result) {
     case 'ok' :
       return;
       break;
