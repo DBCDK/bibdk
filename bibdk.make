@@ -283,14 +283,14 @@ projects[shortcode][version] = 2.27
 
 projects[slick][subdir] = contrib
 projects[slick][type] = module
-projects[slick][version] = 3.1
+projects[slick][version] = 2.1
 projects[slick][patch][] = https://www.drupal.org/files/issues/2021-03-18/slick-mousewheel-3204431-2.patch
 
 
 projects[strongarm][subdir] = contrib
 projects[strongarm][type] = module
 projects[strongarm][version] = 2.0
-
+  
 projects[variable][subdir] = contrib
 projects[variable][type] = module
 projects[variable][version] = 2.5
