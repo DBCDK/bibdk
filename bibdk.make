@@ -19,7 +19,7 @@ libraries[slick][destination] = libraries
 libraries[slick][directory_name] = slick
 ; libraries[slick][download][type] = git
 libraries[slick][download][url] = https://github.com/kenwheeler/slick/
-libraries[slick][download][tag] = '1.8.1'
+;libraries[slick][download][tag] = '1.8.1'
 
 libraries[audit][destination] = libraries
 libraries[audit][directory_name] = audit
@@ -284,6 +284,7 @@ projects[shortcode][version] = 2.27
 projects[slick][subdir] = contrib
 projects[slick][type] = module
 projects[slick][version] = 3.1
+projects[slick][patch][] = https://www.drupal.org/files/issues/2021-03-18/slick-mousewheel-3204431-2.patch
 
 projects[strongarm][subdir] = contrib
 projects[strongarm][type] = module
