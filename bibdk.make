@@ -19,7 +19,7 @@ libraries[slick][destination] = libraries
 libraries[slick][directory_name] = slick
 ; libraries[slick][download][type] = git
 libraries[slick][download][url] = https://github.com/kenwheeler/slick/
-;libraries[slick][download][tag] = '1.8.1'
+libraries[slick][download][tag] = '1.8.1'
 
 libraries[audit][destination] = libraries
 libraries[audit][directory_name] = audit
