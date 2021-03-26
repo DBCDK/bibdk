@@ -41,7 +41,7 @@ function bibdk_sbkopi_ajax_openorder_request($pid, $reservation = FALSE) {
       return ($reservation === TRUE) ? "error" : FALSE;
     }
   } else {
-    if ($delivery_method = bibdk_sbkopi_delivery_method($pid) && bibdk_sb_kopi_do_subscriber_request($order_library->getAgencyMainId())) {
+    if ($delivery_method = bibdk_sbkopi_delivery_method($pid) && bibdk_sb_kopi_do_subscriber_request($order_library->getMainAgencyId())) {
       return _bibdk_sb_kopi_get_link($pid);
     }
     else {
