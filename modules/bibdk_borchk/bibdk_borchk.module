@@ -12,10 +12,17 @@ function bibdk_borchk_ting_client_webservice() {
 }
 
 /**
- * do a request
+ * Send request to the Borchk service
+ *
+ * @param string $userId
+ * @param string $userPincode
+ * @param string $libraryCode
+ * @param string|null $serviceRequester
+ *
+ * @return string
  * */
 function bibdk_borchk_request($userId, $userPincode, $libraryCode, $serviceRequester = NULL) {
-  if(empty($serviceRequester)){
+  if (empty($serviceRequester)) {
     $serviceRequester = variable_get('bibdk_borchk_servicerequester');
   }
 

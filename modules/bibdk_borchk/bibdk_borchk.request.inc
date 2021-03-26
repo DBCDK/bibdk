@@ -43,6 +43,7 @@ class bibdk_borchk extends TingClientRequest Implements ITingClientRequestCache 
 
   /** \brief ITingClientRequestCache::cacheEnable; Check if cache is enabled
    *
+   * @param string|null $value
    * @return value of variable (drupal_get)
    */
   public function cacheEnable($value = NULL) {
@@ -50,8 +51,9 @@ class bibdk_borchk extends TingClientRequest Implements ITingClientRequestCache 
     return variable_get($class_name . TingClientRequest::cache_enable);
   }
 
-  /*   * \brief set timeout of cache
+  /**   * \brief set timeout of cache
    *
+   * @param string|null $value
    * @return mixed value of variable (variable_get)
    */
 
@@ -73,56 +75,21 @@ class bibdk_borchk extends TingClientRequest Implements ITingClientRequestCache 
    *
    * @param $responseString
    * @return mixed
+   * @throws Exception
    */
   public function parseResponse($responseString) {
     $dom = new DOMDocument();
     $dom->preserveWhiteSpace = FALSE;
-    if(@$dom->loadXML($responseString)){
+    if (@$dom->loadXML($responseString)) {
       $xmlconvert = new xmlconvert();
       $objconvert = new objconvert();
       $OLS_obj = $xmlconvert->xml2obj($dom);
       $badgerfish = $objconvert->obj2json($OLS_obj);
       return parent::parseResponse($badgerfish);
     }
-    else{
+    else {
       throw new Exception('failed to parse response from borchk: ' . $responseString);
     }
-  }
-
-  public function checkResponse($response) {
-    if ($this->isJson($response)) {
-      $ret = json_decode($response);
-      if (isset($ret->borrowerCheckResponse->requestStatus)) {
-        $status = $ret->borrowerCheckResponse->requestStatus->{'$'};
-        if ($status == 'service_unavailable') {
-          return FALSE;
-        }
-      }
-    }
-    else {
-      //response is assumed xml -- could be serialized php
-      $dom = new DomDocument();
-      if (@$dom->loadXML($response)) {
-        $xpath = new DomXPATH($dom);
-        $xpath->registerNamespace('hest', "http://oss.dbc.dk/ns/borchk");
-        $query = '//hest:requestStatus';
-        $nodes = $xpath->query($query);
-        $status = $nodes->item(0)->nodeValue;
-        if ($status == 'service_unavailable') {
-          return FALSE;
-        }
-      }
-    }
-    return TRUE;
-  }
-
-  private function isJson($response){
-    if(is_string($response)){
-      if(is_object(json_decode($response))){
-        return TRUE;
-      }
-    }
-    return FALSE;
   }
 
   /* \brief implements ITingClientRequestCache::cacheBin
@@ -134,42 +101,72 @@ class bibdk_borchk extends TingClientRequest Implements ITingClientRequestCache 
     return 'cache_borchk_webservice';
   }
 
+  /**
+   * @param string|null
+   */
   public function setServiceRequester($value = NULL) {
     $this->serviceRequester = $value;
   }
 
+  /**
+   * @return string
+   */
   public function getServiceRequester() {
     return $this->serviceRequester;
   }
 
+  /**
+   * @param string|null
+   */
   public function setLibraryCode($value = NULL) {
     $this->libraryCode = $value;
   }
 
+  /**
+   * @return string
+   */
   public function getLibraryCode() {
     return $this->libraryCode;
   }
 
+  /**
+   * @param string|null
+   */
   public function setUserPincode($value = NULL) {
     $this->userPincode = $value;
   }
 
+  /**
+   * @return string
+   */
   public function getUserPincode() {
     return $this->userPincode;
   }
 
+  /**
+   * @param string|null
+   */
   public function setAction($value = NULL) {
     $this->action = $value;
   }
 
+  /**
+   * @return string
+   */
   public function getAction() {
     return $this->action;
   }
 
+  /**
+   * @param string|null
+   */
   public function setUserId($value = NULL) {
     $this->userId = $value;
   }
 
+  /**
+   * @return string
+   */
   public function getUserId() {
     return $this->userId;
   }
