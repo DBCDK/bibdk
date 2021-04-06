@@ -1082,6 +1082,27 @@ function bibdk_manifestation_fields_field_default_field_bases() {
     'type' => 'bibdk_mani_title_specific',
   );
 
+  // Exported field_base: 'bibdk_mani_title_extra'.
+  $field_bases['bibdk_mani_title_extra'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'bibdk_mani_title_extra',
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'ting_openformat',
+    'settings' => array(),
+    'storage' => array(
+      'active' => 1,
+      'module' => 'virtual_field',
+      'settings' => array(),
+      'type' => 'virtual_field',
+    ),
+    'translatable' => 0,
+    'type' => 'bibdk_mani_title_extra',
+  );
+
   // Exported field_base: 'bibdk_mani_tracks'.
   $field_bases['bibdk_mani_tracks'] = array(
     'active' => 1,
