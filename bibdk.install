@@ -749,3 +749,9 @@ function bibdk_update_7075() {
   $modules = array('ting_agency');
   module_disable($modules);
 }
+
+/** Add manifestation display fields */
+function bibdk_update_7076() {
+  $modules = array('bibdk_manifestation_fields');
+  module_enable($modules);
+}

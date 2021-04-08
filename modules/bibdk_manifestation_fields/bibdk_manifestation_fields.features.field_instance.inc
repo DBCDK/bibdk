@@ -3401,6 +3401,73 @@ function bibdk_manifestation_fields_field_default_field_instances() {
   );
 
   // Exported field_instance:
+  // 'bibdkManifestation-bibdkManifestation-bibdk_mani_title_extra'.
+  $field_instances['bibdkManifestation-bibdkManifestation-bibdk_mani_title_extra'] = array(
+    'bundle' => 'bibdkManifestation',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'ding_entity_type' => 'bibdkManifestation',
+    'display' => array(
+      'cart' => array(
+        'label' => 'hidden',
+        'module' => 'ting_openformat',
+        'settings' => array(),
+        'type' => 'ting_openformat_default_formatter',
+        'weight' => 0,
+      ),
+      'default' => array(
+        'label' => 'above',
+        'module' => 'ting_openformat',
+        'settings' => array(),
+        'type' => 'ting_openformat_default_formatter',
+        'weight' => 54,
+      ),
+      'email' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 46,
+      ),
+      'full' => array(
+        'label' => 'above',
+        'module' => 'ting_openformat',
+        'settings' => array(),
+        'type' => 'ting_openformat_default_formatter',
+        'weight' => 0,
+      ),
+      'print' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 46,
+      ),
+      'reservation' => array(
+        'label' => 'above',
+        'module' => 'ting_openformat',
+        'settings' => array(),
+        'type' => 'ting_openformat_default_formatter',
+        'weight' => 56,
+      ),
+    ),
+    'entity_type' => 'bibdkManifestation',
+    'field_name' => 'bibdk_mani_title_extra',
+    'label' => 'Title Extra',
+    'required' => FALSE,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 58,
+    ),
+  );
+
+  // Exported field_instance:
   // 'bibdkManifestation-bibdkManifestation-bibdk_mani_tracks'.
   $field_instances['bibdkManifestation-bibdkManifestation-bibdk_mani_tracks'] = array(
     'bundle' => 'bibdkManifestation',

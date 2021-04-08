@@ -95,7 +95,12 @@ function bibdk_actions_get_fieldinfo($view) {
       if (is_array($field_content)) {
         $field_content = ($has_delimiters) ? implode($field_content) : implode(', ', $field_content);
       }
-      $display_strings[$weight] = t($title, array(), array('context' => 'bibdk_openformat')) . ': ' . $field_content;
+      if (t($title, array(), array('context' => 'bibdk_openformat')) !== ' ') {
+        $display_strings[$weight] = t($title, array(), array('context' => 'bibdk_openformat')) . ': ' . $field_content;
+      } else {
+        $display_strings[$weight] = $field_content;
+      }
+
     }
   }
   ksort($display_strings);
