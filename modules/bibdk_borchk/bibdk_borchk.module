@@ -7,14 +7,22 @@ function bibdk_borchk_ting_client_webservice() {
   $ret = array();
   $ret['borchk']['class'] = 'bibdk_borchk';
   $ret['borchk']['url'] = 'bibdk_borchk_url';
+  $ret['borchk']['xsdNamespace'] = array(0 => 'http://oss.dbc.dk/ns/borchk');
   return $ret;
 }
 
 /**
- * do a request
+ * Send request to the Borchk service
+ *
+ * @param string $userId
+ * @param string $userPincode
+ * @param string $libraryCode
+ * @param string|null $serviceRequester
+ *
+ * @return string
  * */
-function bibdk_borchk_request($userId, $userPincode, $libraryCode, $outputType = 'json', $serviceRequester = NULL) {
-  if(empty($serviceRequester)){
+function bibdk_borchk_request($userId, $userPincode, $libraryCode, $serviceRequester = NULL) {
+  if (empty($serviceRequester)) {
     $serviceRequester = variable_get('bibdk_borchk_servicerequester');
   }
 
@@ -25,9 +33,7 @@ function bibdk_borchk_request($userId, $userPincode, $libraryCode, $outputType =
     'userPincode' => $userPincode,
     'serviceRequester' => $serviceRequester,
     'libraryCode' => $libraryCode,
-    'outputType' => $outputType,
   ));
-
   return $response;
 }
 

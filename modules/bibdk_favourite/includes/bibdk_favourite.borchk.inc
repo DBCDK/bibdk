@@ -19,7 +19,7 @@ function bibdk_favourite_borchk($form, $form_state) {
     if ($fields->isBorrowerCheckRequired() == true) {
       // Do validate userdata
       $userPincode = $form_state['values']['pincode'];
-      $response = bibdk_borchk_request($userId, $userPincode, $libraryCode, 'xml', 'bibliotek.dk');
+      $response = bibdk_borchk_request($userId, $userPincode, $libraryCode, 'bibliotek.dk');
       $result = bibdk_favourite_parse_borchk($response);
       if ($result['status'] == 'error') {
         form_set_error('userid', t($result['message'], array(), array('context' => 'bibdk_favourite_borchk')));
@@ -53,24 +53,9 @@ function _bibdk_favourite_get_userid_from_array($values) {
  * @param string $response (xml from borchk)
  */
 function bibdk_favourite_parse_borchk($response) {
-  $dom = new DOMDocument();
-  if (!@$dom->loadXML($response)) {
-    $result['status'] = 'error';
-    $result['message'] = t('invalid response from borchk', array(), array('context' => 'bibdk_favourite_borchk'));
-    watchdog('borchk', 'invalid response from borchk %response', array('%response' => $response), WATCHDOG_ERROR);
-    return $result;
-  }
-  $xpath = new DOMXPath($dom);
-  $xpath->registerNamespace('ns', 'http://oss.dbc.dk/ns/borchk');
-  $query = '//ns:requestStatus';
-  $nodelist = $xpath->query($query);
-  $status = $nodelist->item(0)->nodeValue;
-  if ($status != 'ok') {
-    $result['status'] = 'error';
-    $result['message'] = t($status, array(), array('context' => 'bibdk_favourite_borchk'));
-  }
-  else {
-    $result['status'] = 'ok';
-  }
-  return $result;
+  $result = isset($response->Envelope->Body->borrowerCheckResponse->requestStatus->{'$'}) ? $response->Envelope->Body->borrowerCheckResponse->requestStatus->{'$'} : 'error';
+  $res = array();
+  $res['status'] = ($result === 'ok') ? 'ok' : 'error';
+  $res['message'] = $result;
+  return $res;
 }
