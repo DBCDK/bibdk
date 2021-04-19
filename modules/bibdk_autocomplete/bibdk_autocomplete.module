@@ -133,6 +133,8 @@ function bibdk_autocomplete_callback($p_uuid, $v_uuid, $string = '') {
   $json_result = drupal_json_encode($items);
   if (!$json_result) {
     bibdk_autocomplete_callback_error($action, $options);
+  } else {
+    module_invoke_all('bibdk_behaviour_request', array('suggestions' => $items));
   }
 
   // Return the result to the form in json
