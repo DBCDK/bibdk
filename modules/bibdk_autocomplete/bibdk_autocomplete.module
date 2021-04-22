@@ -33,6 +33,13 @@ function bibdk_autocomplete_menu() {
     'file' => 'includes/bibdk_autocomplete.admin.inc',
   );
 
+  $items['bibdk/behaviour/autocomplete'] = array(
+    'title' => 'Bibliotek.dk autocomplete behaviour',
+    'description' => 'Autocomplete behaviour callback',
+    'page callback' => 'bibdk_autocomplete_behaviour_callback',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
   return $items;
 }
 
@@ -315,6 +322,10 @@ function _bibdk_autocomplete_form_search_block_form_alter(&$form, &$form_state, 
       'data' => drupal_get_path('module', 'bibdk_autocomplete') . '/js/bibdk_autocomplete.overrides.js',
       'weight' => 10,
     );
+    $form['#attached']['js'][] = array(
+      'data' => drupal_get_path('module', 'bibdk_autocomplete') . '/js/bibdk_autocomplete.behavior.js',
+      'weight' => 10,
+    );
   }
 
 }
@@ -435,4 +446,24 @@ function bibdk_make_item_list($items) {
 
   return $render;
 
+}
+
+/**
+ * Callback for autocomplete behaviour.
+ */
+function bibdk_autocomplete_behaviour_callback() {
+  $behaviour_data = $_POST;
+  $settings = variable_get('bibdk_autocomplete_ortograf_var', array());
+  foreach ($behaviour_data['ortograf'] as $key => $fields) {
+    if (!isset($fields['suggestions'])) {
+      unset($behaviour_data['ortograf'][$key]);
+      continue;
+    }
+    $p_uuid = $fields['pageUuid'];
+    $i_uuid = $fields['inputUuid'];
+    $type = $settings[$p_uuid]['vars'][$i_uuid]['type'];
+    $behaviour_data['ortograf'][$key]['type'] = $type;
+    unset($behaviour_data['ortograf'][$key]['id']);
+  }
+  module_invoke_all('bibdk_behaviour_request', $behaviour_data);
 }
