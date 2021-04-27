@@ -1,11 +1,12 @@
 (function($) {
 
   /**
-   * If we are on devicesize large and up request and insert the advanced
+   * If we are on device size large and up request and insert the advanced
    * search panel
    */
   function getAdvancedSearchPanel() {
     if(typeof($(window.document).foundation) !== "undefined") {
+
       if (window.matchMedia(window.Foundation.media_queries.large).matches
         && Drupal.settings.bibdk_custom_search && !Drupal.settings.bibdk_custom_search.advancedSearchIsLoaded) {
 
@@ -23,7 +24,7 @@
           });
       }
     }
-  };
+  }
 
   var CustomSearch = {
     toggleAdvancedSearchPanel: function(context) {
