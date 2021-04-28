@@ -387,9 +387,7 @@ function _bibdk_custom_search_get_advanced_fields_form($destination = FALSE) {
     unset($default_values['n/a']);
   }
 
-  $advanced_search_panel = _bibdk_custom_search_get_search_panel($page, $result, $default_values);
-
-  return $advanced_search_panel;
+  return _bibdk_custom_search_get_search_panel($page, $result, $default_values);
 }
 
 /**
@@ -433,7 +431,12 @@ function _bibdk_custom_search_get_search_panel($page, $result, $default_values) 
   $advanced_search_is_loaded = TRUE;
 
   //tell our JS if the advanced search panel should be loaded by AJAX or not
-  drupal_add_js(array('bibdk_custom_search' => array('advancedSearchIsLoaded' => $advanced_search_is_loaded)), 'setting');
+  drupal_add_js(array(
+    'bibdk_custom_search' => array(
+      'advancedSearchIsLoaded' => $advanced_search_is_loaded,
+      'hideAvancedSearch' => $collaps_hidden,
+    )
+  ), 'setting');
 
   // Page specific elements
   if ($page['delimiter']) {
