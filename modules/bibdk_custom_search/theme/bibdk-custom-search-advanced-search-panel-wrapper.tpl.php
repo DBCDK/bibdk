@@ -16,7 +16,6 @@
         <?php print t('Expand search options'); ?>
       </span>
     </span>
-
   </a>
 </div>
 <div id="search-advanced" class="<?php print $form['#collaps_hidden']; ?> show-for-large-up">
