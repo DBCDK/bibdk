@@ -14,7 +14,7 @@ files[] = test/bibdk_custom_search_unit_test.test
 files[] = test/bibdk_custom_search_web_test.test
 files[] = test/bibdk_custom_search_test_list.test
 
-scripts[] = js/bibdk_custom_search.js
+;scripts[] = js/bibdk_custom_search.js
 scripts[] = js/bibdk_custom_search_list.js
 scripts[] = js/bibdk_custom_search_options_subgroup.js
 
