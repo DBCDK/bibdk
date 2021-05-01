@@ -483,7 +483,7 @@ function _bibdk_custom_search_is_advanced_search_expanded($get) {
   }
   $is_expanded = (isset($get['is_expanded'])) ? $get['is_expanded'] : FALSE;
   $expand_setting = bibdk_custom_search_user_settings($get['q'], $is_expanded);
-  if (!isset($expand_setting) || $expand_setting == FALSE) {
+  if (!isset($expand_setting) || $expand_setting == FALSE || $expand_setting === "false") {
     return FALSE;
   }
 

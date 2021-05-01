@@ -130,6 +130,8 @@ function bibdk_custom_search_user_settings($tab, $is_expanded) {
       return $tab;
     }
     return bibdk_usersettings_user_settings_get($key_search, $is_expanded);
+  } else if ($is_expanded) {
+    return TRUE;
   }
   else {
     return NULL;
