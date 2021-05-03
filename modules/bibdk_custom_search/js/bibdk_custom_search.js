@@ -1,21 +1,29 @@
 (function($) {
 
   /**
-   * If we are on devicesize large and up request and insert the advanced
+   * If we are on device size large and up request and insert the advanced
    * search panel
    */
   function getAdvancedSearchPanel() {
     if(typeof($(window.document).foundation) !== "undefined") {
+
       if (window.matchMedia(window.Foundation.media_queries.large).matches
         && Drupal.settings.bibdk_custom_search && !Drupal.settings.bibdk_custom_search.advancedSearchIsLoaded) {
 
+        var is_expanded = !$("#search-advanced").hasClass("hidden");
         var url = Drupal.settings.basePath + Drupal.settings.pathPrefix + "bibdk_custom_search/ajax/get_search_panel";
-        jQuery.get(url, {page_id: "bibdk_frontpage"})
+        jQuery.get(url, {page_id: "bibdk_frontpage", is_expanded: is_expanded})
           .done(function (data, response) {
             Drupal.settings.bibdk_custom_search.advancedSearchIsLoaded = true;
-            var $new = $("#search-advanced-panel", data);
-            $("#search-advanced-panel").replaceWith($new);
-            Drupal.attachBehaviors($new, Drupal.settings);
+            var $searchadvancedpanel = $("#search-advanced-panel", data);
+            var $searchavanced = $("#search-advanced", data);
+            var $selidcustomsearchexpand = $("#selid_custom_search_expand", data);
+
+            $("#search-advanced").replaceWith($searchavanced);
+            $("#search-advanced-panel").replaceWith($searchadvancedpanel);
+            $("#selid_custom_search_expand").replaceWith($selidcustomsearchexpand);
+
+            Drupal.attachBehaviors($searchadvancedpanel, Drupal.settings);
             onLoad.setFocus();
           })
           .fail(function () {
@@ -23,7 +31,7 @@
           });
       }
     }
-  };
+  }
 
   var CustomSearch = {
     toggleAdvancedSearchPanel: function(context) {

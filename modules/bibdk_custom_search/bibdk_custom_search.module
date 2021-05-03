@@ -333,11 +333,10 @@ function _bibdk_custom_search_get_page_selector($page_id, $pages) {
   $options = array();
 
   foreach ($pages as $page) {
-    $key = $page['href'];
-    $options[$key] = $page['title'];
+    $options[$page['href']] = $page['title'];
   }
 
-  $select = array(
+  return array(
     '#type' => 'select',
     '#attributes' => array(
       'id' => 'edit-select-material-type',
@@ -348,8 +347,6 @@ function _bibdk_custom_search_get_page_selector($page_id, $pages) {
     '#options' => $options,
     '#default_value' => $page_id,
   );
-
-  return $select;
 }
 
 /**
@@ -390,9 +387,7 @@ function _bibdk_custom_search_get_advanced_fields_form($destination = FALSE) {
     unset($default_values['n/a']);
   }
 
-  $advanced_search_panel = _bibdk_custom_search_get_search_panel($page, $result, $default_values);
-
-  return $advanced_search_panel;
+  return _bibdk_custom_search_get_search_panel($page, $result, $default_values);
 }
 
 /**
@@ -436,7 +431,11 @@ function _bibdk_custom_search_get_search_panel($page, $result, $default_values) 
   $advanced_search_is_loaded = TRUE;
 
   //tell our JS if the advanced search panel should be loaded by AJAX or not
-  drupal_add_js(array('bibdk_custom_search' => array('advancedSearchIsLoaded' => $advanced_search_is_loaded)), 'setting');
+  drupal_add_js(array(
+    'bibdk_custom_search' => array(
+      'advancedSearchIsLoaded' => $advanced_search_is_loaded
+    )
+  ), 'setting');
 
   // Page specific elements
   if ($page['delimiter']) {
@@ -482,9 +481,9 @@ function _bibdk_custom_search_is_advanced_search_expanded($get) {
   if (count($query) > 0) {
     return TRUE;
   }
-
-  $expand_setting = bibdk_custom_search_user_settings($get['q']);
-  if (!isset($expand_setting)) {
+  $is_expanded = (isset($get['is_expanded'])) ? $get['is_expanded'] : FALSE;
+  $expand_setting = bibdk_custom_search_user_settings($get['q'], $is_expanded);
+  if (!isset($expand_setting) || $expand_setting == FALSE || $expand_setting === "false") {
     return FALSE;
   }
 

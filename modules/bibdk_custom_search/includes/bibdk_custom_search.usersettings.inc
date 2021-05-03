@@ -110,9 +110,10 @@ function _bibdk_custom_search_usersettings_expand_search_options_page() {
 
 /** Return expand_search_option setting for tabname
  * @param $tab
+ * @param $is_expanded
  * @return string
  */
-function bibdk_custom_search_user_settings($tab) {
+function bibdk_custom_search_user_settings($tab, $is_expanded) {
 
   $key_search = 'bibdk_custom_search_start_expand_';
   $vars = explode("/",$tab);
@@ -128,7 +129,9 @@ function bibdk_custom_search_user_settings($tab) {
       }
       return $tab;
     }
-    return bibdk_usersettings_user_settings_get($key_search, NULL);
+    return bibdk_usersettings_user_settings_get($key_search, $is_expanded);
+  } else if ($is_expanded === "true" || $is_expanded === TRUE) {
+    return TRUE;
   }
   else {
     return NULL;

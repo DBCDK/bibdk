@@ -47,6 +47,7 @@ function bibliotek_dk_custom_search_filters_strongarm() {
       'pid' => 0,
       'remove' => 0,
     ),
+    /*
     'film_ikke_til_u' => (object) array(
       'description' => 'film ikke til udlån',
       'value' => '(dkcclterm.tg="må kun benyttes på statsbiblioteket" or dkcclterm.tg="Kun til brug på Statsbibliotekets læsesal")',
@@ -55,6 +56,7 @@ function bibliotek_dk_custom_search_filters_strongarm() {
       'pid' => 0,
       'remove' => 0,
     ),
+    */
   );
   $export['bibdk_custom_search_user_settings'] = $strongarm;
 

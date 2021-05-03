@@ -195,7 +195,7 @@ function _bibdk_usersettings_clear_expand_settings($clear_option) {
  * @param $default
  * @return mixed
  */
-function bibdk_usersettings_user_settings_get($name, $default) {
+function bibdk_usersettings_user_settings_get($name, $default = NULL) {
   global $user;
 
   if (!ding_user_is_provider_user($user)) {
@@ -216,6 +216,9 @@ function bibdk_usersettings_user_settings_get($name, $default) {
   if ($provider_data !== FALSE) {
     $value = unserialize(_bibdk_usersettings_parse_response($provider_data));
     bibdk_usersettings_set_cache($user->uid, $name, $value);
+    if (is_null($value)) {
+      return $default;
+    }
     return $value;
   }
 

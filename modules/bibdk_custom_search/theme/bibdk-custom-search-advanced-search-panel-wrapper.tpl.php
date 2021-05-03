@@ -1,4 +1,4 @@
-<div id="custom-search--advanced-toggle" data-toggle-state-hidden="<?php print $form['#toggled']; ?>" class=" <?php print $form['#toggled']; ?> show-for-large-up">
+<div id="custom-search--advanced-toggle" data-toggle-state-hidden="<?php print $form['#toggled']; ?>" class="<?php print $form['#toggled']; ?> show-for-large-up">
   <a id="selid_custom_search_expand" class="text-darkgrey" href="#">
     <span class="toggle-text <?php print $form['#collaps_hidden']; ?>">
       <svg class="custom-search--advanced-toggle-icon">
@@ -16,7 +16,6 @@
         <?php print t('Expand search options'); ?>
       </span>
     </span>
-
   </a>
 </div>
 <div id="search-advanced" class="<?php print $form['#collaps_hidden']; ?> show-for-large-up">
