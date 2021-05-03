@@ -15,15 +15,15 @@
         jQuery.get(url, {page_id: "bibdk_frontpage", is_expanded: is_expanded})
           .done(function (data, response) {
             Drupal.settings.bibdk_custom_search.advancedSearchIsLoaded = true;
-            var $searchadvancedpanel = $("#search-advanced-panel", data);
-            var $searchavanced = $("#search-advanced", data);
-            var $selidcustomsearchexpand = $("#selid_custom_search_expand", data);
+            var searchadvancedpanel = $("#search-advanced-panel", data);
+            var searchavanced = $("#search-advanced", data);
+            var selidcustomsearchexpand = $("#selid_custom_search_expand", data);
 
-            $("#search-advanced").replaceWith($searchavanced);
-            $("#search-advanced-panel").replaceWith($searchadvancedpanel);
-            $("#selid_custom_search_expand").replaceWith($selidcustomsearchexpand);
+            $("#search-advanced").replaceWith(searchavanced);
+            $("#search-advanced-panel").replaceWith(searchadvancedpanel);
+            $("#selid_custom_search_expand").replaceWith(selidcustomsearchexpand);
 
-            Drupal.attachBehaviors($searchadvancedpanel, Drupal.settings);
+            Drupal.attachBehaviors(searchadvancedpanel, Drupal.settings);
             onLoad.setFocus();
           })
           .fail(function () {
