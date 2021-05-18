@@ -11,7 +11,7 @@ require_once(drupal_get_path('module', 'bibdk_vejviser') . '/includes/bibdk_vejv
 /**
  * Implements hook_menu();
  *
- * @return boolean
+ * @return array
  */
 function bibdk_vejviser_menu() {
   $items['vejviser'] = array(
@@ -173,7 +173,7 @@ function bibdk_vejviser_agency_search() {
 
   if (isset($_REQUEST['openagency_query'])) {
     // Agency  query search
-    $query = $_REQUEST['openagency_query'];
+    $query = str_replace('&amp;', '&', $_REQUEST['openagency_query']);
     $result = bibdk_vejviser_execute_agency_search($query);
   }
 
