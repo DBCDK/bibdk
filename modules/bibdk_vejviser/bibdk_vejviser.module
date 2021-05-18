@@ -11,7 +11,7 @@ require_once(drupal_get_path('module', 'bibdk_vejviser') . '/includes/bibdk_vejv
 /**
  * Implements hook_menu();
  *
- * @return boolean
+ * @return array
  */
 function bibdk_vejviser_menu() {
   $items['vejviser'] = array(
