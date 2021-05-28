@@ -6,7 +6,6 @@ class FavouriteAgency extends VipCoreFindLibrary {
 
   public $userData;
   public $orderAgency;
-
   public $branch;
 
   /**
@@ -81,10 +80,16 @@ class FavouriteAgency extends VipCoreFindLibrary {
     return (isset($this->branch->agencyId) ? $this->branch->agencyId : NULL);
   }
 
+  /**
+   * @return bool
+   */
   public function getOrderAgency() {
     return $this->orderAgency;
   }
 
+  /**
+   * @return mixed
+   */
   public function getUserData() {
     return $this->userData;
   }
@@ -106,21 +111,36 @@ class FavouriteAgency extends VipCoreFindLibrary {
     return FALSE;
   }
 
+  /**
+   * @return false|mixed
+   */
   public function getPinCode() {
-    return isset($this->userData['pincode']) ? $this->userData['pincode'] : FALSE;
+    return $this->userData['pincode'] ?? FALSE;
   }
 
+  /**
+   * Retrieve the status of the user. This also includes loans and reservations.
+   * Therefore we need an expiration date.
+   *
+   * @return array|false|mixed
+   */
   public function getUserStatus() {
-    // check if userstatus is already in $_SESSION
-    if (isset($_SESSION['userStatus'][$this->getAgencyId()])) {
-      return $_SESSION['userStatus'][$this->getAgencyId()];
+    // check if userstatus is already in $_SESSION and that it hasn't expired.
+    if (isset($_SESSION['userStatus'])) {
+      if (isset($_SESSION['userStatus'][$this->getAgencyId()])) {
+        $expired = ($_SESSION['userStatus'][$this->getAgencyId()]['expires']) ?? NULL;
+        if (!is_null($expired) && $expired > time()) {
+          return $_SESSION['userStatus'][$this->getAgencyId()];
+        }
+      }
     }
-    // get parameters
-    $userId = $this->getUserId();
-    $userPincode = $this->getPinCode();
-    $libraryCode = $this->getAgencyId();
 
     if (module_exists('ting_openuserstatus')) {
+      // get parameters
+      $userId = $this->getUserId();
+      $userPincode = $this->getPinCode();
+      $libraryCode = $this->getAgencyId();
+
       // get userstatus from webservice
       $response = ting_openuserstatus_do_userstatus($userId, $userPincode, $libraryCode);
       if (isset($response['error'])) {
@@ -128,13 +148,21 @@ class FavouriteAgency extends VipCoreFindLibrary {
       }
       // no errors found. add response to $_SESSION
       $_SESSION['userStatus'][$this->getAgencyId()] = $response;
+      // We need to set an expiration time for the user data.
+      $session_durability = (int)variable_get('userstatusExpires', 600);
+      $_SESSION['userStatus'][$this->getAgencyId()]['expires'] = (time() + $session_durability);
       // last check
-      return isset($_SESSION['userStatus'][$this->getAgencyId()]) ? $_SESSION['userStatus'][$this->getAgencyId()] : FALSE;
+      return $_SESSION['userStatus'][$this->getAgencyId()] ?? FALSE;
     }
-    // cannot retrive userstatus
+    // cannot retrieve userstatus
     return FALSE;
   }
 
+  /**
+   * @param array $orders
+   *
+   * @return array|false
+   */
   public function cancelOrder(array $orders) {
     $userId = $this->getUserId();
     $userPincode = $this->getPinCode();

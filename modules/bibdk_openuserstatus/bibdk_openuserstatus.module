@@ -150,6 +150,7 @@ function bibdk_openuserstatus_request() {
   }
   $ret = array();
 
+  /** @var \FavouriteAgency $favourite */
   foreach ($favourites as $favourite) {
     $res = $favourite->getUserStatus();
     $agency_id = $favourite->getAgencyId();
@@ -423,7 +424,7 @@ function bibdk_openuserstatus_renew_request_complete_set_messages($error, $succe
     if ($reason == 'Item not renewable') {
       drupal_set_message(t('The following items are not renewable: %materials', array('%materials' => implode(', ', $err)), array(
         'context' =>
-          'bibdk_openuserstatus:error'
+          'bibdk_openuserstatus:error',
       )), 'error');
     }
     else {
@@ -434,7 +435,7 @@ function bibdk_openuserstatus_renew_request_complete_set_messages($error, $succe
   if (count($succes) >= 1) {
     drupal_set_message(t('The following materials was sucessfully renewed: %materials', array('%materials' => implode(', ', $succes)), array
     (
-      'context' => 'bibdk_openuserstatus'
+      'context' => 'bibdk_openuserstatus',
     )), 'status');
   }
 }
@@ -501,7 +502,7 @@ function bibdk_openuserstatus_cancel_reservations($cancellations) {
       if (isset($resp['error']) && !empty($resp['error'])) {
         drupal_set_message(t('An error occured and your request could not be completed. Please try again later.', array(), array(
           'context' =>
-            'bibdk_openuserstatus:error'
+            'bibdk_openuserstatus:error',
         )), 'error');
       }
       else {

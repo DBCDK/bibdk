@@ -11,9 +11,12 @@ class UserStatusResponse {
 
 
   /**
-   * @param stdClass $response
+   * UserStatusResponse constructor.
+   *
+   * @param null $response
+   * @param bool $error
    */
-  public function __construct($response=NULL,$error=FALSE) {
+  public function __construct($response = NULL, bool $error = FALSE) {
     if (!empty($error)) {
       $this->setError($error);
     }

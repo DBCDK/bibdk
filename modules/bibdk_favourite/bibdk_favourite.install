@@ -8,3 +8,7 @@ function _bibdk_favourite_set_translatables() {
   t('No branchID provided. Please reload the page and try again.', array(), array('context' => 'bibdk_favourite'));
 }
 
+/** Set the userstatus_expires variable for the userStatus in the session table */
+function bibdk_favourite_update_7001() {
+  variable_set('userstatusExpires', 600);
+}
