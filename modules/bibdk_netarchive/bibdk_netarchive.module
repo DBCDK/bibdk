@@ -93,9 +93,10 @@ function bibdk_netarchive_moreinfo_callback($local_id = NULL) {
     $original->setSourceFile($archive_path);
     $pageId = $original->importPage(1);
     $size = $original->getTemplateSize($pageId);
+    $orientation = $size['w'] > $size['h'] ? 'L' : 'P';
 
     // initiate FPDI
-    $pdf = new FPDI('P', 'mm', array($size['w'], $size['h']));
+    $pdf = new FPDI($orientation, 'mm', array($size['w'], $size['h']));
 
     // add a page
     $pdf->AddPage();
