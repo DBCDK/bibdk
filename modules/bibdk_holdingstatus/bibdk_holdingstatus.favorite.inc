@@ -107,16 +107,19 @@ function _bibdk_holdingsstatus_favourite_item_list($pid) {
 
   $item_list = array();
   /**
-   * @var string $key
+   * @var string $brachId
    * @var FavouriteAgency $favourite
    */
-  foreach ($favourites as $key => $favourite) {
+  foreach ($favourites as $brachId => $favourite) {
     $agencyId = $favourite->getMainAgencyId();
-    if (!isset($loks['agencies'][$key]) && !isset($loks['agencies'][$agencyId])) {
+    // Some agencies only have localizations on their main agency id, while others have
+    // branch specific localizations, therefore we need to check both the chosen
+    // branch id and the main agency id.
+    if (!isset($loks['agencies'][$brachId]) && !isset($loks['agencies'][$agencyId])) {
       continue;
     }
     /** @var VipCoreService $info */
-    $info = vip_core_service($key, 'information');
+    $info = vip_core_service($brachId, 'information');
     $item_list[$agencyId] = theme('favourite_holdings', array(
       'library_name' => $info->getAgencyName(),
       'lid' => $agencyId,
