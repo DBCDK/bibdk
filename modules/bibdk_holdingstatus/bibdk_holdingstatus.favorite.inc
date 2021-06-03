@@ -111,11 +111,10 @@ function _bibdk_holdingsstatus_favourite_item_list($pid) {
    * @var FavouriteAgency $favourite
    */
   foreach ($favourites as $key => $favourite) {
-
-    if (!isset($loks['agencies'][$key])) {
+    $agencyId = $favourite->getMainAgencyId();
+    if (!isset($loks['agencies'][$key]) && !isset($loks['agencies'][$agencyId])) {
       continue;
     }
-    $agencyId = $favourite->getMainAgencyId();
     /** @var VipCoreService $info */
     $info = vip_core_service($key, 'information');
     $item_list[$agencyId] = theme('favourite_holdings', array(
