@@ -87,8 +87,16 @@ function bibdk_netarchive_moreinfo_callback($local_id = NULL) {
 
   try {
 
+    // Original Pdf
+    // Get the page size of the original document
+    $original = new FPDI();
+    $original->setSourceFile($archive_path);
+    $pageId = $original->importPage(1);
+    $size = $original->getTemplateSize($pageId);
+    $orientation = $size['w'] > $size['h'] ? 'L' : 'P';
+
     // initiate FPDI
-    $pdf = new FPDI();
+    $pdf = new FPDI($orientation, 'mm', array($size['w'], $size['h']));
 
     // add a page
     $pdf->AddPage();
@@ -221,5 +229,3 @@ function bibdk_netarchive_ting_openformat_actions($type, $entity, $view_mode, $l
   }
 
 }
-
-
