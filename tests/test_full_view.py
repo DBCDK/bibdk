@@ -40,6 +40,7 @@ class FullViewTestCase(helpers.BibdkUnitTestCase):
         browser = self.browser
         url = self.base_search_url + self.searchterm + "?full_view=0"
         browser.get(url)
+        browser.implicitly_wait(10)
 
         more_infos = browser.find_elements_by_class_name('work')
         count = len(more_infos)
