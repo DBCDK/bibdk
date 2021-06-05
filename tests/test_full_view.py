@@ -64,6 +64,7 @@ class FullViewTestCase(helpers.BibdkUnitTestCase):
         work_id = "selid-" + pid
         url = self.base_search_url + self.searchterm + "?full_view=0"
         browser.get(url)
+        self._check_pop_up()
         try:
             browser.find_element_by_id(work_id).click()
         except AssertionError:
