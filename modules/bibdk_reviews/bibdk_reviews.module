@@ -116,7 +116,6 @@ function _bibdk_reviews_get_work_entity_from_manifestation_ids($ids) {
   foreach ($result->collections as $tingClientObjectCollection) {
     foreach ($tingClientObjectCollection->getObjects() as $tingClientObject) {
 
-
       $tingClientObject->getTrimmedRelationsData(array('relationUri' => '150005-anmeld'));
       $objects[$tingClientObject->id] = $tingClientObject;
     }
