@@ -112,10 +112,13 @@ function _bibdk_reviews_get_work_entity_from_manifestation_ids($ids) {
   if (empty($result->collections)) {
     return array();
   }
-  /* @var $TingClientObjectCollection TingClientObjectCollection */
-  foreach ($result->collections as $TingClientObjectCollection) {
-    foreach ($TingClientObjectCollection->getObjects() as $TingClientObject) {
-      $objects[$TingClientObject->id] = $TingClientObject;
+  /* @var $tingClientObjectCollection TingClientObjectCollection */
+  foreach ($result->collections as $tingClientObjectCollection) {
+    foreach ($tingClientObjectCollection->getObjects() as $tingClientObject) {
+
+
+      $tingClientObject->getTrimmedRelationsData(array('relationUri' => '150005-anmeld'));
+      $objects[$tingClientObject->id] = $tingClientObject;
     }
   }
 
