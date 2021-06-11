@@ -22,6 +22,10 @@ function bibdk_sbkopi_set_vars() {
     'bibdk_sbkopi_journal_url',
     'https://webservice.statsbiblioteket.dk/copydanws/journal'
   );
+  variable_set(
+    'bibdk_sbkopi_subscriber_url',
+    'https://webservice.statsbiblioteket.dk/copydanws/subscriber'
+  );
 }
 
 /**
