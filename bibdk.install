@@ -755,3 +755,9 @@ function bibdk_update_7076() {
   $modules = array('bibdk_manifestation_fields');
   module_enable($modules);
 }
+
+/** Re-enable bibdk_sbkopi (Digital Artikelservice) */
+function bibdk_update_7077() {
+  $modules = array('bibdk_sbkopi');
+  module_enable($modules);
+}
