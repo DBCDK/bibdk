@@ -22,6 +22,7 @@ class TestSBKopi(helpers.BibdkUnitTestCase):
     def test_sbkopi_popup_window(self):
         browser = self.browser
         browser.get(self.base_url + 'search/work/870971-tsart:35977937')
+        self._check_popup()
         self.browser.find_element_by_id('selid-870971tsart35977937').click()
         browser.implicitly_wait(20)
         browser.find_element_by_xpath("//a[contains(@href,'reservation/sbkopi/870971-tsart%3A35977937')]").click()
