@@ -12,7 +12,6 @@ class TestSBKopi(helpers.BibdkUnitTestCase):
 
         browser.find_element_by_id("870971-tsart34276501")
 
-    '''
     def test_bestil_kopi_on_single_work(self):
         browser = self.browser
         single_work_pid = "work/870971-tsart:35977937"
@@ -145,4 +144,3 @@ class TestSBKopi(helpers.BibdkUnitTestCase):
         # browser.find_element_by_css_selector('.browser.find_element_by_css_selector')
 
         #Test manifestation with article fields
-    '''
