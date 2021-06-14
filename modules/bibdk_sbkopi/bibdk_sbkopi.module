@@ -15,13 +15,13 @@ include_once 'includes/bibdk_sbkopi.ajax.inc';
 function bibdk_sbkopi_ting_client_webservice() {
   $ret = array();
   $ret['statsbib']['class'] = 'bibdk_statsbib';
-  $ret['statsbib']['url'] = 'bibdk_statsbib_url';
+  $ret['statsbib']['url'] = 'bibdk_sbkopi_place_copy_request_url';
 
   $ret['statsbibjournal']['class'] = 'bibdk_sb_journal';
-  $ret['statsbibjournal']['url'] = 'bibdk_statsbibjournal_url';
+  $ret['statsbibjournal']['url'] = 'bibdk_sbkopi_journal_url';
 
   $ret['statsbibsubscriber']['class'] = 'bibdk_sb_subscriber';
-  $ret['statsbibsubscriber']['url'] = 'bibdk_statsbibsubscriber_url';
+  $ret['statsbibsubscriber']['url'] = 'bibdk_sbkopi_subscriber_url';
 
   return $ret;
 }
