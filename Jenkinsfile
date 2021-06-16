@@ -133,10 +133,10 @@ pipeline {
       }
     }
     stage('Test') {
+      when {
+        expression { BRANCH != 'master'}
+      }
       steps {
-        when {
-          expression { BRANCH != 'master'}
-        }
         script {
           build job: 'Bibliotek DK/Tools/Test feature branch',
                 parameters: [string(name: 'deploybranch', value: BRANCH_NAME)]
