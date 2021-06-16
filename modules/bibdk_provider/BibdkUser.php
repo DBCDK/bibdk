@@ -536,7 +536,7 @@ class BibdkUser {
    * @param string $username
    * @param string $agencyid
    * @param bool $encrypted
-   * @return array xml
+   * @return array
    */
   public function addFavourite($username, $agencyid, $encrypted = FALSE) {
     // Always force encryption on save.
@@ -571,7 +571,7 @@ class BibdkUser {
    * @param boolean $encrypted
    *   If deleting agency from encrypted table or not.
    *
-   * @return bool xml
+   * @return bool
    */
   public function deleteFavourite($username, $agencyid, $encrypted = FALSE) {
     $params = array(
@@ -612,9 +612,7 @@ class BibdkUser {
       'oui:favouriteData' => $data,
       'oui:encrypted' => $encrypted,
     );
-    $response = $this->makeRequest('setFavouriteDataRequest', $params);
-
-    return $response;
+    return $this->makeRequest('setFavouriteDataRequest', $params);
   }
 
   /**
@@ -790,7 +788,10 @@ class BibdkUser {
    * the provider (OpenUserInfo) - thus deletion of the user should be handled
    * likewise.
    *
-   * @param $name
+   * @param string $name
+   *
+   * @return bool
+   * @throws \Exception
    */
   public function deleteCulrUser($name) {
     $params = array(
@@ -821,7 +822,7 @@ class BibdkUser {
    *
    * @param string $wayfId
    * @param string $loginType
-   * @return mixed; userid(string) if user exists, FALSE if not
+   * @return false|string userid(string) if user exists, FALSE if not
    * @throws Exception
    */
   public function verifyWayf($wayfId, $loginType) {
