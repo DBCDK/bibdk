@@ -134,20 +134,13 @@ pipeline {
     }
     stage('Test') {
       steps {
-        script {
-          if (BRANCH != 'master') {
-            build job: 'Bibliotek DK/Tools/Test feature branch',
-                  parameters: [string(name: 'deploybranch', value: BRANCH_NAME)]
-          }
+        when {
+          expression { BRANCH != 'master'}
         }
-      }
-    }
-    stage('simpletest report') {
-      when {
-        // Only run if branch is not master.
-        expression { BRANCH != 'master' }
-      }
-      steps{
+        script {
+          build job: 'Bibliotek DK/Tools/Test feature branch',
+                parameters: [string(name: 'deploybranch', value: BRANCH_NAME)]
+        }
         unstash name: "simpletest-bibdk"
         generateTestReport('simpletest-bibdk.xml')
 
@@ -155,6 +148,7 @@ pipeline {
         generateTestReport('selenium-result.xml')
       }
     }
+
     /* stage('enabling mockup module') {
       when {
         // Only run if branch is not master.
