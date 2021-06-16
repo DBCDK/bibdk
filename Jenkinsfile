@@ -138,14 +138,14 @@ pipeline {
       }
       steps {
         script {
-          build job: 'Bibliotek DK/Tools/Test feature branch',
+          def job = build job: 'Bibliotek DK/Tools/Test feature branch',
                 parameters: [string(name: 'deploybranch', value: BRANCH_NAME)]
-        }
-        unstash name: "simpletest-bibdk"
-        generateTestReport('simpletest-bibdk.xml')
 
-        unstash name: "selenium-result"
-        generateTestReport('selenium-result.xml')
+          copyArtifacts filter: '*.xml', fingerprintArtifacts: true, parameters: "deploybranch=${BRANCH_NAME}",
+                        projectName: 'Bibliotek DK/Tools/Test feature branch', selector: specific("${job.number}")
+          generateTestReport('simpletest-bibdk.xml')
+          generateTestReport('selenium-result.xml')
+        }
       }
     }
 
