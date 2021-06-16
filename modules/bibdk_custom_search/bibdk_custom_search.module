@@ -399,7 +399,15 @@ function _bibdk_custom_search_get_advanced_fields_form($destination = FALSE) {
  * @return array
  */
 function _bibdk_custom_search_get_search_panel($page, $result, $default_values) {
+
   $is_visible = _bibdk_custom_search_is_advanced_search_expanded($default_values);
+
+  // If the visitor is not authenticated and the page is not the frontpage:
+  // Then we want the advanced searchpage, to be expanded no matter what.
+  if (!user_is_logged_in() && $page['page_path'] !== "bibdk_frontpage") {
+    $is_visible = TRUE;
+  }
+
   $toggled = ($is_visible) ? 'toggled' : '';
   $toggled_class = ($is_visible) ? 'show-advanced-toggled' : '';
   $expand_hidden = ($is_visible) ? 'hidden' : '';

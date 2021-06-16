@@ -118,7 +118,7 @@ function bibdk_provider_user_bind_voxb($userName,$voxbId){
  *
  * @param $username
  * @param $settingtype
- * @return array (might be empty)
+ * @return bool|string (might be empty)
  */
 function bibdk_provider_user_get_setting($username, $settingtype) {
   return BibdkUser::instance()->getUserSetting($username, $settingtype);
@@ -128,7 +128,7 @@ function bibdk_provider_user_get_setting($username, $settingtype) {
    * @param $username
    * @param $settingtype
    * @param $settingString
-   * @return array
+   * @return bool
    */
 function bibdk_provider_user_set_setting($username, $settingtype, $settingString) {
   return BibdkUser::instance()->setUserSetting($username, $settingtype, $settingString);
@@ -139,7 +139,7 @@ function bibdk_provider_user_set_setting($username, $settingtype, $settingString
  *
  * @param $username
  * @param $settingtype
- * @return \type
+ * @return bool
  */
 function bibdk_provider_user_delete_setting($username, $settingtype) {
   return BibdkUser::instance()->deleteSetting($username, $settingtype);
@@ -196,7 +196,7 @@ function bibdk_provider_user_delete_favourite($name, $agencyid) {
  * @param string name
  *   The userId (email).
  *
- * @return array
+ * @return bool|string
  *   List of all favourites user has.
  */
 function bibdk_provider_user_get_favourites($name) {
@@ -323,7 +323,42 @@ function bibdk_provider_user_verify($name) {
  * @return bool
  */
 function bibdk_provider_user_create_account($name, $pass) {
-  return BibdkUser::instance()->create($name, $pass);
+
+  $userCreated = BibdkUser::instance()->create($name, $pass);
+
+  if ($userCreated) {
+    // we want new users to have the advanced search form expanded
+    // except for the frontpage.
+    bibdk_usersettings_user_settings_set(
+      'bibdk_custom_search_start_expand_bog',
+      's:19:"bibdk_frontpage/bog";'
+    );
+    bibdk_usersettings_user_settings_set(
+      'bibdk_custom_search_start_expand_artikel',
+      's:23:"bibdk_frontpage/artikel";'
+    );
+    bibdk_usersettings_user_settings_set(
+      'bibdk_custom_search_start_expand_film',
+      's:20:"bibdk_frontpage/film";'
+    );
+    bibdk_usersettings_user_settings_set(
+      'bibdk_custom_search_start_expand_net',
+      's:19:"bibdk_frontpage/net";'
+    );
+    bibdk_usersettings_user_settings_set(
+      'bibdk_custom_search_start_expand_spil',
+      's:20:"bibdk_frontpage/spil";'
+    );
+    bibdk_usersettings_user_settings_set(
+      'bibdk_custom_search_start_expand_musik',
+      's:21:"bibdk_frontpage/musik";'
+    );
+    bibdk_usersettings_user_settings_set(
+      'bibdk_custom_search_start_expand_noder',
+      's:21:"bibdk_frontpage/noder";'
+    );
+  }
+  return $userCreated;
 }
 
 /**

@@ -22,11 +22,9 @@ class bibdkHeimdalUser {
       watchdog('HEIMDAL', 'NO AGENCYID FOR CULR ACTIONS', WATCHDOG_ERROR);
     }
 
-    $this->cpr = isset($attributes['attributes']['cpr']) ?
-      $attributes['attributes']['cpr'] : NULL;
+    $this->cpr = $attributes['attributes']['cpr'] ?? NULL;
 
-    $culr_libraries = isset($attributes['attributes']['agencies']) ?
-      $attributes['attributes']['agencies'] : array();
+    $culr_libraries = $attributes['attributes']['agencies'] ?? [];
 
     $libraries = self::getLibraries();
     if(empty($culr_libraries) && empty($libraries)){
@@ -85,8 +83,7 @@ class bibdkHeimdalUser {
    * @return array
    */
   public static function getLibraries() {
-    return isset($_SESSION['culr_libraries']) ?
-      $_SESSION['culr_libraries'] : array();
+    return $_SESSION['culr_libraries'] ?? [];
   }
 
   /**
