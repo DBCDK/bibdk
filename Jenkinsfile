@@ -133,15 +133,17 @@ pipeline {
       }
     }
     stage('Test') {
+      when {
+        expression { BRANCH != 'master'}
+      }
       steps {
         script {
-          if (BRANCH != 'master') {
-            build job: 'Bibliotek DK/Tools/Test feature branch',
-                  parameters: [string(name: 'deploybranch', value: BRANCH_NAME)]
-          }
+          build job: 'Bibliotek DK/Tools/Test feature branch',
+                parameters: [string(name: 'deploybranch', value: BRANCH_NAME)]
         }
       }
     }
+
     /* stage('enabling mockup module') {
       when {
         // Only run if branch is not master.

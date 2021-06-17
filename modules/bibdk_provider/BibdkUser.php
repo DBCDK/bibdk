@@ -143,7 +143,7 @@ class BibdkUser {
    * @param $xmlstring string The reponse as a xml string.
    * @param $xmltag string Which XPath element should extracted from the response.
    *
-   * @return DOMElement|bool FALSE if the xpath can't be set otherwise value of the xmltag
+   * @return DomNode|bool FALSE if the xpath can't be set otherwise value of the xmltag
    */
   private function responseExtractor($xmlstring, $xmltag) {
     if (!@$this->set_xpath($xmlstring)) {
@@ -533,9 +533,10 @@ class BibdkUser {
 
   /**
    * \brief add an agency to favourites for given user
-   * @param type $username
-   * @param type $agencyid
-   * @return type xml
+   * @param string $username
+   * @param string $agencyid
+   * @param bool $encrypted
+   * @return array
    */
   public function addFavourite($username, $agencyid, $encrypted = FALSE) {
     // Always force encryption on save.
@@ -570,7 +571,7 @@ class BibdkUser {
    * @param boolean $encrypted
    *   If deleting agency from encrypted table or not.
    *
-   * @return type xml
+   * @return bool
    */
   public function deleteFavourite($username, $agencyid, $encrypted = FALSE) {
     $params = array(
@@ -590,6 +591,16 @@ class BibdkUser {
     }
   }
 
+  /**
+   * Save an agency on a given user.
+   *
+   * @param string $name
+   * @param string $agencyid
+   * @param string $data
+   * @param false $encrypted
+   *
+   * @return bool|string
+   */
   public function saveFavouriteData($name, $agencyid, $data, $encrypted = FALSE) {
     if ($encrypted) {
       $data = bibdk_provider_encrypt_data($data);
@@ -601,9 +612,7 @@ class BibdkUser {
       'oui:favouriteData' => $data,
       'oui:encrypted' => $encrypted,
     );
-    $response = $this->makeRequest('setFavouriteDataRequest', $params);
-
-    return $response;
+    return $this->makeRequest('setFavouriteDataRequest', $params);
   }
 
   /**
@@ -673,7 +682,7 @@ class BibdkUser {
    * @param $pass
    *   Password for the user.
    *
-   * @return
+   * @return bool
    *   Boolean telling whether the user was created or not.
    */
   public function create($name, $pass) {
@@ -686,12 +695,7 @@ class BibdkUser {
 
     $xmlmessage = $this->responseExtractor($response, 'createUserResponse');
 
-    if ($xmlmessage != FALSE && $xmlmessage->nodeName == 'oui:userId') {
-      return TRUE;
-    }
-    else {
-      return FALSE;
-    }
+    return ($xmlmessage != FALSE && $xmlmessage->nodeName == 'oui:userId');
   }
 
   /**
@@ -784,7 +788,10 @@ class BibdkUser {
    * the provider (OpenUserInfo) - thus deletion of the user should be handled
    * likewise.
    *
-   * @param $name
+   * @param string $name
+   *
+   * @return bool
+   * @throws \Exception
    */
   public function deleteCulrUser($name) {
     $params = array(
@@ -815,7 +822,7 @@ class BibdkUser {
    *
    * @param string $wayfId
    * @param string $loginType
-   * @return mixed; userid(string) if user exists, FALSE if not
+   * @return false|string userid(string) if user exists, FALSE if not
    * @throws Exception
    */
   public function verifyWayf($wayfId, $loginType) {

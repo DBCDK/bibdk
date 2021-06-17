@@ -118,7 +118,7 @@ function bibdk_heimdal_init() {
  *NOTICE this one does a redirect
  */
 function bibdk_heimdal_check_for_errors() {
-  $error = isset($_GET['error']) ? $_GET['error'] : '';
+  $error = $_GET['error'] ?? '';
   if (!empty($error)) {
     $message = t($_GET['error'], array(), array('context' => 'heimdal'));
     bibdk_heimdal_cleanup_and_exit($message);

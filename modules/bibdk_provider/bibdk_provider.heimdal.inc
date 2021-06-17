@@ -81,9 +81,10 @@ function bibdk_provider_heimdal_login_creds($heimdalUser, $notify = null) {
 
 
 /**
- * Create a user on openuserinfo - if user doesn't already exist
+ * Create a user on openUserInfo - if user doesn't already exist
  * @param string $mail
  *   Username
+ * @return bool
  */
 function bibdk_provider_heimdal_create_bibdk_user($mail) {
   if (!BibdkUser::instance()->verify($mail)) {
