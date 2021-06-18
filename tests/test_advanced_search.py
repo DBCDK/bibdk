@@ -89,7 +89,7 @@ class TestAdvancedSearch(helpers.BibdkUnitTestCase):
                 (By.ID, "selid_custom_search_expand")
             )
         )
-        toggle.click()
+        #toggle.click()
 
         browser.find_element_by_name('n/amaterialetype[term.type%3D%22film%22+and+term.accessType%3D%22online%22]').click()
         browser.find_element_by_name('term_title[titel]').send_keys('huden jeg bor i')
