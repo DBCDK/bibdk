@@ -16,7 +16,7 @@ class TestMultipleCreators(helpers.BibdkUnitTestCase):
                 (By.ID, "selid_custom_search_expand")
             )
         )
-        toggle.click()
+        #toggle.click()
         WebDriverWait(browser, 30).until(
             expected_conditions.visibility_of_element_located(
                 (By.ID, "search-advanced-panel")
