@@ -16,7 +16,7 @@ class UserStatusResponse {
    * @param null $response
    * @param bool $error
    */
-  public function __construct($response = NULL, bool $error = FALSE) {
+  public function __construct($response = NULL, $error = FALSE) {
     if (!empty($error)) {
       $this->setError($error);
     }
