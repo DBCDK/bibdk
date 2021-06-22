@@ -175,6 +175,10 @@ function bibdk_sbkopi_order_form_fields($manifestation, $sb_fields) {
   $form['userinfo']['submit'] = array(
     '#type' => 'submit',
     '#value' => t('sb_kopi_order', array(), array('context' => 'bibdk_sbkopi')),
+    '#attributes' => array("onclick" => "
+      jQuery(this).attr('disabled', true);
+      jQuery(this).parents('form').submit();"
+    ),
   );
 
   $form['#submit'] = array('bibdk_sbkopi_order_form_submit');
@@ -218,9 +222,18 @@ function bibdk_sbkopi_order_form_submit($form, &$form_state) {
       watchdog('sb_kopi', "response code: !reponse_code, return message: !return_message, url: !url, xml: @xml", $e->getParams(), WATCHDOG_ERROR);
       // TEMP while KB is testing show error message from service in GUI.
       $response = $e->getParams();
-      drupal_set_message('response code: ' . $response['!reponse_code'] . ' return message: ' . $response['!return_message'], 'error');
+      drupal_set_message(
+        t(
+          'An error has occured at SBKOPI. Please try again.',
+          array(), array('context' => 'bibdk_sbkopi')
+        ),
+        'error'
+      );
       //drupal_set_message(t('sb_kopi error message'), 'error');
-
+      $form_state['buttons'][0]['#attributes'] = array(
+        "onclick" =>
+        "jQuery(this).attr('disabled', false);"
+      );
       $form_state['rebuild'] = TRUE;
     }
   }
