@@ -28,7 +28,7 @@ function bibdk_provider_agency_get_order_library($form, $form_state) {
   }
   else if ($order_library = bibdk_favourite_get_order_library()) {
     if ($order_library->getUserData() == FALSE) {
-      return bibdk_favourite_user_form_fields($form, $form_state, $order_library->getBranch()->branchId);
+      return bibdk_favourite_user_form_fields($form, $form_state, $order_library->getBranch()->getBranchId());
     }
     return array('order_library' => $order_library);
   }
