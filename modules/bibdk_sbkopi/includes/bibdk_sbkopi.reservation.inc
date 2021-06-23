@@ -220,8 +220,6 @@ function bibdk_sbkopi_order_form_submit($form, &$form_state) {
       // The service do not provide usable feedback for the cause of error, so
       // we log the error and writes out a generic error message to user
       watchdog('sb_kopi', "response code: !reponse_code, return message: !return_message, url: !url, xml: @xml", $e->getParams(), WATCHDOG_ERROR);
-      // TEMP while KB is testing show error message from service in GUI.
-      $response = $e->getParams();
       drupal_set_message(
         t(
           'An error has occured at SBKOPI. Please try again.',
@@ -229,7 +227,6 @@ function bibdk_sbkopi_order_form_submit($form, &$form_state) {
         ),
         'error'
       );
-      //drupal_set_message(t('sb_kopi error message'), 'error');
       $form_state['buttons'][0]['#attributes'] = array(
         "onclick" =>
         "jQuery(this).attr('disabled', false);"
