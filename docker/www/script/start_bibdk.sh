@@ -47,6 +47,8 @@ PHPINI=/etc/php/7.3/apache2/php.ini
 sed -i 's/memory_limit = 128M/memory_limit = 512M/' $PHPINI
 # increase max_input_vars
 sed -i 's/;max_input_vars = 128M/max_input_vars = 2048/' $PHPINI
+# Setting cookie expiration date to 2 days in the future.
+sed -i 's/session.cookie_lifetime = 0/session.cookie_lifetime = 172800/' $PHPINI
 # Enable mail sending
 echo "sendmail_path = /usr/bin/msmtp -t" >>$PHPINI
 
