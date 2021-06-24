@@ -297,7 +297,7 @@ function bibdk_reservation_create_wizard_form($form, &$form_state) {
 
       $form['#attached']['js'][] = array(
         'type' => 'inline',
-        'data' => '_paq.push(["trackGoal", 1]);',
+        'data' => '_paq.push(["trackGoal", 2]);',
         'scope' => 'footer',
         'group' => JS_THEME,
         'weight' => 5,
