@@ -294,6 +294,15 @@ function bibdk_reservation_create_wizard_form($form, &$form_state) {
     }
 
     if ($step == BIBDK_RESERVATION_STEPS) {
+
+      $form['#attached']['js'][] = array(
+        'type' => 'inline',
+        'data' => '_paq.push(["trackGoal", 1]);',
+        'scope' => 'footer',
+        'group' => JS_THEME,
+        'weight' => 5,
+      );
+
       // Email submit button
       $form['navigation']['sendmail'] = array(
         '#type' => 'submit',
