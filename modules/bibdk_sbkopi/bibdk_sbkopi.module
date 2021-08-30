@@ -133,7 +133,7 @@ function bibdk_sbkopi_theme() {
 function bibdk_sbkopi_ting_openformat_actions($type, $entity, $view_mode, $langcode) {
   if ($type == 'bibdkManifestation') {
     // Check for sb link for following types
-    $sb_type_list = array('Tidsskriftsartikel', 'Tidsskrift', 'Årbog', 'Periodikum', );
+    $sb_type_list = array('Tidsskriftsartikel', 'Tidsskrift', 'Periodikum', );
 
     if (in_array($entity->getSubType(), $sb_type_list)) {
       drupal_add_js(drupal_get_path('module', 'bibdk_sbkopi') . '/js/ajaxGetCopyOptions.js');
