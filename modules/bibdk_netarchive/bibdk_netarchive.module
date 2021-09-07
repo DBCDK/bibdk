@@ -64,6 +64,8 @@ function bibdk_netarchive_moreinfo_callback($local_id = NULL) {
   if ($bibdata = bibdk_netarchive_search($local_id)) {
     // get netarchive pdf
     $archive_path = open_moreinfo_object_path($local_id, 'netarchivePdfUrl');
+    // It can be an array due to Netpunkt.
+    $archive_path = is_array($archive_path) ? $archive_path[0] : $archive_path;
     if (!$archive_path) {
       watchdog('netarchive', 'Netarchive PDF return empty path.', array(), WATCHDOG_ERROR);
     }
