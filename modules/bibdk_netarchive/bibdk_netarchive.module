@@ -51,8 +51,8 @@ function bibdk_netarchive_moreinfo_callback($local_id = NULL) {
   $for_tit = $archive_path = '';
 
   if (!$local_id) {
-    return t('pdf ID is missing', array(), array('context' => 'bibdk_netarchive:error'));
     watchdog('netarchive', 'Netarchive PDF was called with empty ID.', array(), WATCHDOG_ERROR);
+    return t('pdf ID is missing', array(), array('context' => 'bibdk_netarchive:error'));
   }
 
   require_once('lib/fpdf/fpdf.php');
