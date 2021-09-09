@@ -48,8 +48,8 @@ function bibdk_covers_objects() {
       }
 
       $backcover_path = open_moreinfo_object_path($local_id, 'backpagePdfUrl');
-      if ($backcover_path && file_exists($backcover_path)) {
-        if ($wrapper = file_stream_wrapper_get_instance_by_uri($backcover_path)) {
+      if ($backcover_path && file_exists($backcover_path[0])) {
+        if ($wrapper = file_stream_wrapper_get_instance_by_uri($backcover_path[0])) {
           $backcover_path = $wrapper->getExternalUrl();
         }
         $covers[$local_id . ':' . 'backpagePdfUrl'] = $backcover_path;
