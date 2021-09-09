@@ -36,7 +36,7 @@ function bibdk_covers_objects() {
 
     if ($cover_path = open_moreinfo_object_path($local_id, 'detailUrl')) {
 
-      if (!file_exists($cover_path)) {
+      if (!file_exists($cover_path[0])) {
         drupal_json_output(FALSE);
         drupal_exit();
       }
