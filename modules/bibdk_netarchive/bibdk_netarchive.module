@@ -51,8 +51,8 @@ function bibdk_netarchive_moreinfo_callback($local_id = NULL) {
   $for_tit = $archive_path = '';
 
   if (!$local_id) {
-    return t('pdf ID is missing', array(), array('context' => 'bibdk_netarchive:error'));
     watchdog('netarchive', 'Netarchive PDF was called with empty ID.', array(), WATCHDOG_ERROR);
+    return t('pdf ID is missing', array(), array('context' => 'bibdk_netarchive:error'));
   }
 
   require_once('lib/fpdf/fpdf.php');
@@ -64,6 +64,8 @@ function bibdk_netarchive_moreinfo_callback($local_id = NULL) {
   if ($bibdata = bibdk_netarchive_search($local_id)) {
     // get netarchive pdf
     $archive_path = open_moreinfo_object_path($local_id, 'netarchivePdfUrl');
+    // It can be an array due to Netpunkt.
+    $archive_path = is_array($archive_path) ? $archive_path[0] : $archive_path;
     if (!$archive_path) {
       watchdog('netarchive', 'Netarchive PDF return empty path.', array(), WATCHDOG_ERROR);
     }
@@ -188,13 +190,17 @@ function bibdk_netarchive_search($local_id) {
 }
 
 
-/** Implements hook_ting_openformat_actions
+/**
+ * Implements hook_ting_openformat_actions
  * Add actions to work, subwork and manifestations
+ *
  * @param $type
  * @param $entity
  * @param $view_mode
  * @param $langcode
- * @return array
+ *
+ * @return array|void
+ * @throws \Exception
  */
 function bibdk_netarchive_ting_openformat_actions($type, $entity, $view_mode, $langcode) {
 
