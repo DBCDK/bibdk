@@ -37,8 +37,7 @@ function bibdk_sbkopi_reservation_form($form, &$form_state, $pid, $state = NULL)
     $manifestation = ting_openformat_get_single_manifestation($pid);
     $default_values = bibdk_sbkopi_default_values($form_state, $manifestation, $order_library);
     $fields = bibdk_sbkopi_get_fields_for_manifestation($order_library, $manifestation, $default_values);
-    $rebuild = $form_state['rebuild'];
-    $form += bibdk_sbkopi_order_form_fields($manifestation, $fields, $rebuild);
+    $form += bibdk_sbkopi_order_form_fields($manifestation, $fields);
     return $form;
   }
 }
@@ -155,10 +154,9 @@ function bibdk_sbkopi_user_not_logged_in() {
  *
  * @param $manifestation
  * @param $sb_fields
- * @param false $form_rebuilded
  * @return mixed
  */
-function bibdk_sbkopi_order_form_fields($manifestation, $sb_fields, $form_rebuilded = FALSE) {
+function bibdk_sbkopi_order_form_fields($manifestation, $sb_fields) {
   $form['manifestation'] = bibdk_sbkopi_manifestation_view($manifestation);
 
   $form['userinfo'] = array(
