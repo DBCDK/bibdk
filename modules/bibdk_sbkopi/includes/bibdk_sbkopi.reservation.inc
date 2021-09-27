@@ -37,7 +37,8 @@ function bibdk_sbkopi_reservation_form($form, &$form_state, $pid, $state = NULL)
     $manifestation = ting_openformat_get_single_manifestation($pid);
     $default_values = bibdk_sbkopi_default_values($form_state, $manifestation, $order_library);
     $fields = bibdk_sbkopi_get_fields_for_manifestation($order_library, $manifestation, $default_values);
-    $form += bibdk_sbkopi_order_form_fields($manifestation, $fields);
+    $rebuild = $form_state['rebuild'];
+    $form += bibdk_sbkopi_order_form_fields($manifestation, $fields, $rebuild);
     return $form;
   }
 }
@@ -152,13 +153,12 @@ function bibdk_sbkopi_user_not_logged_in() {
 /**
  * Form for adding the final information before making an order
  *
- * @param $form
- * @param $form_state
- * @param $pid
- * @param FavouriteAgency $order_library
+ * @param $manifestation
+ * @param $sb_fields
+ * @param false $form_rebuilded
  * @return mixed
  */
-function bibdk_sbkopi_order_form_fields($manifestation, $sb_fields) {
+function bibdk_sbkopi_order_form_fields($manifestation, $sb_fields, $form_rebuilded = FALSE) {
   $form['manifestation'] = bibdk_sbkopi_manifestation_view($manifestation);
 
   $form['userinfo'] = array(
@@ -177,8 +177,8 @@ function bibdk_sbkopi_order_form_fields($manifestation, $sb_fields) {
     '#value' => t('sb_kopi_order', array(), array('context' => 'bibdk_sbkopi')),
     '#attributes' => array("onclick" => "
       jQuery(this).attr('disabled', true);
-      jQuery(this).parents('form').submit();"
-    ),
+      jQuery(this).parents('form').submit();",
+    )
   );
 
   $form['#submit'] = array('bibdk_sbkopi_order_form_submit');
@@ -227,11 +227,7 @@ function bibdk_sbkopi_order_form_submit($form, &$form_state) {
         ),
         'error'
       );
-      $form_state['buttons'][0]['#attributes'] = array(
-        "onclick" =>
-        "jQuery(this).attr('disabled', false);"
-      );
-      $form_state['rebuild'] = TRUE;
+      $form_state['redirect'] = array('reservation', array('query' => array('ids' => $pid)));
     }
   }
 }
