@@ -77,6 +77,8 @@ function bibdk_reservation_form_step_4_do_order() {
     $exactEdition = 'false';
   }
 
+  $params += array('requesterNote' => BibdkReservationOrderObject::GetObject()->getRequesterNote());
+
   $params += array('exactEdition' => $exactEdition);
 
   $params += (isset($userdata)) ? $userdata : array();

@@ -225,7 +225,7 @@ function bibdk_sbkopi_order_form_submit($form, &$form_state) {
         ),
         'error'
       );
-      $form_state['redirect'] = array('reservation', array('query' => array('ids' => $pid)));
+      $form_state['redirect'] = array('reservation', array('query' => array('ids' => $pid, 'sbcopy' => 'failed')));
     }
   }
 }
@@ -233,7 +233,8 @@ function bibdk_sbkopi_order_form_submit($form, &$form_state) {
 /**
  * Create view of manifestation being ordered
  *
- * @param $pid
+ * @param $manifestation
+ * @param string $title
  * @return array
  */
 function bibdk_sbkopi_manifestation_view($manifestation, $title = 'You are about to order the following') {
