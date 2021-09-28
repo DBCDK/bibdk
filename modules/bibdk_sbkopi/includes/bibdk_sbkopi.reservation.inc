@@ -152,10 +152,8 @@ function bibdk_sbkopi_user_not_logged_in() {
 /**
  * Form for adding the final information before making an order
  *
- * @param $form
- * @param $form_state
- * @param $pid
- * @param FavouriteAgency $order_library
+ * @param $manifestation
+ * @param $sb_fields
  * @return mixed
  */
 function bibdk_sbkopi_order_form_fields($manifestation, $sb_fields) {
@@ -177,8 +175,8 @@ function bibdk_sbkopi_order_form_fields($manifestation, $sb_fields) {
     '#value' => t('sb_kopi_order', array(), array('context' => 'bibdk_sbkopi')),
     '#attributes' => array("onclick" => "
       jQuery(this).attr('disabled', true);
-      jQuery(this).parents('form').submit();"
-    ),
+      jQuery(this).parents('form').submit();",
+    )
   );
 
   $form['#submit'] = array('bibdk_sbkopi_order_form_submit');
@@ -227,11 +225,7 @@ function bibdk_sbkopi_order_form_submit($form, &$form_state) {
         ),
         'error'
       );
-      $form_state['buttons'][0]['#attributes'] = array(
-        "onclick" =>
-        "jQuery(this).attr('disabled', false);"
-      );
-      $form_state['rebuild'] = TRUE;
+      $form_state['redirect'] = array('reservation', array('query' => array('ids' => $pid, 'sbcopy' => 'failed')));
     }
   }
 }
@@ -239,7 +233,8 @@ function bibdk_sbkopi_order_form_submit($form, &$form_state) {
 /**
  * Create view of manifestation being ordered
  *
- * @param $pid
+ * @param $manifestation
+ * @param string $title
  * @return array
  */
 function bibdk_sbkopi_manifestation_view($manifestation, $title = 'You are about to order the following') {

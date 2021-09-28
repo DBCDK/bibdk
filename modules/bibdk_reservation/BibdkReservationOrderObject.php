@@ -20,6 +20,7 @@ class BibdkReservationOrderObject {
   private $sbKopi;
   private $articleDirect;
   private $sbKopiUser;
+  private $requesterNote;
 
 
   public function getSbKopiUser() {
@@ -206,6 +207,15 @@ class BibdkReservationOrderObject {
   public function setFields($fields) {
     $this->fields = $fields;
     return $this;
+  }
+
+  public function setRequesterNote($requesterNode) {
+    $this->requesterNote = $requesterNode;
+    return $this;
+  }
+
+  public function getRequesterNote() {
+    return $this->requesterNote;
   }
 
   /**
