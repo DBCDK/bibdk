@@ -17,6 +17,13 @@ function bibdk_reservation_form_step_2($form, &$form_state) {
     $show_url = FALSE; // don't show not owned message and link to own catalog
   }
 
+  if (isset($_GET['sbcopy']) && $_GET['sbcopy'] === "failed") {
+    // If SB COPY for some reason fails, the visitor is allowed to make an manual order. But we need to tell the librarian.
+    BibdkReservationOrderObject::GetObject()->setRequesterNote(
+      t('sbcopy failed so user made custom order', array(), array('context' => 'bibdk_reservation'))
+    );
+  }
+
   // Render manifestation
   $manifestation = BibdkReservationOrderObject::GetObject()->getManifestation();
 
@@ -594,6 +601,8 @@ function bibdk_reservation_form_step_2_submit($form, &$form_state) {
     BibdkReservationOrderObject::GetObject()
       ->setArticleDirect($form_state['values']['self_pickup']);
   }
+
+
 
   // Do not display alert box.
   bibdk_reservation_form_step_2_already_ordered(FALSE);
