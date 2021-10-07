@@ -153,7 +153,6 @@ projects[howru][type] = module
 projects[howru][download][type] = git
 projects[howru][download][url] = gitlab@gitlab.dbc.dk:d-scrum/d7/modules/howru.git
 
-projects[idp][subdir] = common
 projects[idp][type] = module
 projects[idp][download][type] = git
 projects[idp][download][url] = gitlab@gitlab.dbc.dk:d-scrum/d7/modules/idp.git
