@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c918c72e45de12d02526a77863b4083f",
+    "content-hash": "c971473728c261aecf1c5c7a5cdfbf91",
     "packages": [
         {
             "name": "cache/adapter-common",
@@ -200,6 +200,65 @@
                 "source": "https://github.com/php-cache/tag-interop/tree/1.0.1"
             },
             "time": "2020-12-04T14:11:04+00:00"
+        },
+        {
+            "name": "dbc/php-idp",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "gitlab@gitlab.dbc.dk:pu/idp/idp-php.git",
+                "reference": "eeb66c7aa075b25a9edc2f72a15fc593022efa2f"
+            },
+            "require": {
+                "doctrine/common": "^3.0",
+                "ext-json": "*",
+                "ext-memcached": "^3.1",
+                "guzzlehttp/guzzle": "^7.0|^6.5",
+                "kevinrob/guzzle-cache-middleware": "^3.3",
+                "php": ">=7.2",
+                "predis/predis": "^1.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "develop"
+                }
+            },
+            "autoload": {
+                "exclude-from-classmap": [
+                    "tests/"
+                ],
+                "psr-4": {
+                    "DBC\\IDP\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "DBC\\IDP\\Tests\\": "tests/"
+                }
+            },
+            "license": [
+                "None"
+            ],
+            "authors": [
+                {
+                    "name": "DBC",
+                    "email": "support@dbc.dk"
+                }
+            ],
+            "description": "client library to access idp",
+            "homepage": "http://dbc.dk",
+            "keywords": [
+                "webservices"
+            ],
+            "support": {
+                "issues": "https://support.dbc.dk"
+            },
+            "time": "2021-10-07T10:02:25+00:00"
         },
         {
             "name": "dbc/php-vipcore",
@@ -2370,7 +2429,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "dbc/php-vipcore": 20
+        "dbc/php-vipcore": 20,
+        "dbc/php-idp": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
