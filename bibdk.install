@@ -761,3 +761,8 @@ function bibdk_update_7077() {
   $modules = array('bibdk_sbkopi');
   module_enable($modules);
 }
+
+/** Enable idp module */
+function bibdk_update_7078() {
+  module_enable(array('idp'));
+}

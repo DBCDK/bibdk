@@ -153,6 +153,11 @@ projects[howru][type] = module
 projects[howru][download][type] = git
 projects[howru][download][url] = gitlab@gitlab.dbc.dk:d-scrum/d7/modules/howru.git
 
+projects[idp][subdir] = common
+projects[idp][type] = module
+projects[idp][download][type] = git
+projects[idp][download][url] = gitlab@gitlab.dbc.dk:d-scrum/d7/modules/idp.git
+
 ; --- Non Ding2 or Bibliotek.dk specific
 
 projects[dbc_zabbix][type] = module
@@ -290,7 +295,7 @@ projects[slick][patch][] = https://www.drupal.org/files/issues/2021-03-18/slick-
 projects[strongarm][subdir] = contrib
 projects[strongarm][type] = module
 projects[strongarm][version] = 2.0
-  
+
 projects[variable][subdir] = contrib
 projects[variable][type] = module
 projects[variable][version] = 2.5
