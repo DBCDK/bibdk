@@ -762,7 +762,8 @@ function bibdk_update_7077() {
   module_enable($modules);
 }
 
-/** Enable idp module */
+/** Enable idp module and disable bibdk_forsrights */
 function bibdk_update_7078() {
   module_enable(array('idp'));
+  module_disable(array('bibdk_forsrights'));
 }

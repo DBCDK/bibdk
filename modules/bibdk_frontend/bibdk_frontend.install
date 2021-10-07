@@ -111,9 +111,6 @@ function bibdk_frontend_setup_cache() {
   // borchk
   variable_set('bibdk_borchk_cache_enable', 1);
   variable_set('bibdk_borchk_cache_lifetime', 20);
-  //forsrights
-  variable_set('bibdk_forsrights_cache_enable', 1);
-  variable_set('bibdk_forsrights_cache_lifetime', 1);
 }
 
 //TODO move modules to .info file as dependcies and only enable new ones through hook_update_N().
