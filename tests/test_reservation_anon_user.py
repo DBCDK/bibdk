@@ -235,6 +235,16 @@ class TestReservationAnonUser(helpers.BibdkUnitTestCase):
             not_found = True
         assert not_found
 
+        # Toggle work
+        work1 = wait.until(
+            EC.visibility_of_element_located(
+                (
+                    By.ID, "820030katalog512230"
+                )
+            )
+        )
+        work1.click()
+
         # Expand all manifestations
         all = wait.until(
             EC.visibility_of_element_located(
