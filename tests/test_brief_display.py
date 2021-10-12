@@ -20,7 +20,7 @@ class TestBriefDisplay(helpers.BibdkUnitTestCase):
 
         # Danish title (no language added)
         self.search_pid('870970-basis:51048830')
-        self.assertEqual(browser.find_element_by_css_selector('h2.searchresult-work-title').text, u'Fasandræberne : krimithriller')
+        self.assertEqual(browser.find_element_by_css_selector('h2.searchresult-work-title').text, u'Fasandræberne : krimithriller. Bind 1')
 
     # Helper method : Search for element with specific pid
     def search_pid(self, pid):
