@@ -57,7 +57,6 @@ function _bibdk_enable_modules() {
     'bibdk_holdingstatus',
     'bibdk_mypage',
     'bibdk_reviews',
-    'bibdk_forsrights',
     'bibdk_openuserstatus',
     'bibdk_usersettings',
     'bibdk_search_carousel',
@@ -108,6 +107,8 @@ function _bibdk_enable_modules() {
     'uuid',
     'me',
     'token',
+    'idp',
+    'vip_core'
   );
 
   if (!module_enable($module_list)) {
@@ -760,4 +761,10 @@ function bibdk_update_7076() {
 function bibdk_update_7077() {
   $modules = array('bibdk_sbkopi');
   module_enable($modules);
+}
+
+/** Enable idp module and disable bibdk_forsrights */
+function bibdk_update_7078() {
+  module_enable(array('idp'));
+  module_disable(array('bibdk_forsrights'));
 }

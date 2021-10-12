@@ -124,7 +124,8 @@ class TestReservationAnonUser(helpers.BibdkUnitTestCase):
         )
         if not 'bestilling er modtaget' in message.text:
             assert False
-
+    '''
+    # This test does not make sense anymore.
     def test_reservation_request_other_manifestation(self):
         browser = self.browser
         self._goto_frontpage()
@@ -185,7 +186,10 @@ class TestReservationAnonUser(helpers.BibdkUnitTestCase):
                 )
             )
         )
+    '''
 
+    # This test is designed to first choose one manifestation that cannot be reserved.
+    # Afterwards, we find a second manifestation that can.
     def test_reservation_no_request_button(self):
         browser = self.browser
         self._goto_frontpage()
@@ -235,15 +239,15 @@ class TestReservationAnonUser(helpers.BibdkUnitTestCase):
             not_found = True
         assert not_found
 
-        # Expand all manifestations
-        all = wait.until(
+        # Toggle work
+        work1 = wait.until(
             EC.visibility_of_element_located(
                 (
-                    By.CLASS_NAME, "manifestation-toggle-link"
+                    By.ID, "820030katalog512230"
                 )
             )
         )
-        all.click()
+        work1.click()
 
         # Check that second manifestation has order button
         second = wait.until(
