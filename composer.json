@@ -14,12 +14,17 @@
   ],
   "require": {
     "dbc/php-vipcore": "dev-master",
+    "dbc/php-idp": "dev-master",
     "symfony/cache": "^5.2"
   },
   "repositories": {
     "vc": {
       "type": "git",
       "url": "gitlab@gitlab.dbc.dk:pu/vip-core/vip-core-php.git"
+    },
+    "idp-php": {
+      "type": "git",
+      "url": "gitlab@gitlab.dbc.dk:pu/idp/idp-php.git"
     }
   }
 }
