@@ -122,10 +122,10 @@ pipeline {
       steps {
         script {
           if (BRANCH == 'master') {
-            build job: 'Bibliotek DK/Deployments/staging'
+            build job: 'BibliotekDK/Deployments/staging'
             NAMESPACE = 'frontend-staging'
           } else {
-            build job: 'Bibliotek DK/Deployments/features',
+            build job: 'BibliotekDK/Deployments/features',
                   parameters: [string(name: 'deploybranch', value: BRANCH),
                                booleanParam(name: 'test', value: false)]
           }
@@ -138,7 +138,7 @@ pipeline {
       }
       steps {
         script {
-          build job: 'Bibliotek DK/Tools/Test feature branch',
+          build job: 'BibliotekDK/Tools/Test feature branch',
                 parameters: [string(name: 'deploybranch', value: BRANCH_NAME)]
         }
       }
