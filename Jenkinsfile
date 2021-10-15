@@ -238,7 +238,7 @@ pipeline {
                 ${KUBECTL} exec -i deployment/${PRODUCT}-test-www-${BRANCH} -- /bin/bash -c 'php /var/www/html/scripts/run-tests-xunit.sh --php /usr/bin/php --xml /tmp/simpletest-bibdk.xml --url ${TESTWEBSITE} --concurrency 20 "Ting Client","Ting Openformat","Netpunkt / Bibliotek.dk","Ding! - WAYF","Bibliotek.dk - ADHL","Bibliotek.dk - Bibdk Behaviour","Bibliotek.dk - captcha","Bibliotek.dk - Cart","Bibliotek.dk - Facetbrowser","Bibliotek.dk - Favourites","Bibliotek.dk - Frontend","Bibliotek.dk - Further Search","Bibliotek.dk - Heimdal","Bibliotek.dk - Helpdesk","Bibliotek.dk - Holdingstatus","Bibliotek.dk - OpenOrder","Bibliotek.dk - Open Platform Client","Bibliotek.dk - OpenUserstatus","Bibliotek.dk - Provider","bibliotek.dk","Bibliotek.dk - SB Kopi" || true'
                 POD=\$(${KUBECTL} get pod -l app=${PRODUCT}-test-www-${BRANCH} -o jsonpath="{.items[0].metadata.name}")
                 ${KUBECTL} cp \${POD}:/tmp/simpletest-bibdk.xml ./simpletest-bibdk.xml
-                ${KUBECTL} exec -i deployment/${PRODUCT}-test-www-$BRANCH -- /bin/bash -c "drush -r /var/www/html dis -y simpletest"
+                ${KUBECTL} exec -i deployment/${PRODUCT}-test-www-${BRANCH} -- /bin/bash -c "drush -r /var/www/html dis -y simpletest"
               """
               stash name: "simpletest-bibdk", includes: "simpletest-bibdk.xml"
 
