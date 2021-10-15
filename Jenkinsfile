@@ -23,6 +23,7 @@ pipeline {
     DOCKER_REPO = "docker-dscrum.dbc.dk"
     BUILDNAME = "Bibliotek-dk :: ${BRANCH}"
     WEBSITE = "http://${PRODUCT}-www-${BRANCH}.${NAMESPACE}.svc.cloud.dbc.dk"
+    TESTWEBSITE = "http://${PRODUCT}-test-www-${BRANCH}.${NAMESPACE}.svc.cloud.dbc.dk"
     DISTROPATH = "https://raw.github.com/DBCDK/bibdk/develop/distro.make"
   }
   triggers {
@@ -128,23 +129,14 @@ pipeline {
             build job: 'BibliotekDK/Deployments/features',
                   parameters: [string(name: 'deploybranch', value: BRANCH),
                                booleanParam(name: 'test', value: false)]
+            build job: 'BibliotekDK/Deployments/features',
+                  parameters: [string(name: 'deploybranch', value: BRANCH),
+                              booleanParam(name: 'test', value: true)]
           }
         }
       }
     }
-    stage('Test') {
-      when {
-        expression { BRANCH != 'master'}
-      }
-      steps {
-        script {
-          build job: 'BibliotekDK/Tools/Test feature branch',
-                parameters: [string(name: 'deploybranch', value: BRANCH_NAME)]
-        }
-      }
-    }
-
-    /* stage('enabling mockup module') {
+    stage('enabling mockup module') {
       when {
         // Only run if branch is not master.
         expression { BRANCH != 'master' }
@@ -163,7 +155,7 @@ pipeline {
       steps {
         script {
           sh """
-            ${KUBECTL} exec -it deployment/${PRODUCT}-www-${BRANCH} -- /bin/bash -c "drush -r /var/www/html -y en bibdk_mockup"
+            ${KUBECTL} exec -it deployment/${PRODUCT}-test-www-${BRANCH} -- /bin/bash -c "drush -r /var/www/html -y en bibdk_mockup"
           """
         }
       }
@@ -201,10 +193,10 @@ pipeline {
               script {
                 withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'netpunkt-user', usernameVariable: 'NETPUNKT_USER', passwordVariable: 'NETPUNKT_PASS']]) {
                   sh """
-                    export FEATURE_BUILD_URL=${WEBSITE}
-                    export BIBDK_WEBDRIVER_URL=${WEBSITE}/
+                    export FEATURE_BUILD_URL=${TESTWEBSITE}
+                    export BIBDK_WEBDRIVER_URL=${TESTWEBSITE}/
                     export BIBDK_OPENUSERINFO_URL="http://openuserinfo-prod.frontend-prod.svc.cloud.dbc.dk/server.php"
-                    py.test --junitxml=selenium.xml --driver Remote --host selenium.dbc.dk --port 4444 --capability browserName firefox -v tests/ -o base_url=${WEBSITE} || true
+                    py.test --junitxml=selenium.xml --driver Remote --host selenium.dbc.dk --port 4444 --capability browserName firefox -v tests/ -o base_url=${TESTWEBSITE} || true
                     xsltproc xunit-transforms/pytest-selenium.xsl selenium.xml > selenium-result.xml
                   """
                 }
@@ -238,17 +230,16 @@ pipeline {
           }
           steps {
             script {
-              testURL = "http://bibliotek-dk-www-${BRANCH}.frontend-features.svc.cloud.dbc.dk"
               sh """
                 rm -rf simpletest
                 rm -f simpletest*.xml
-                ${KUBECTL} exec -i deployment/bibliotek-dk-www-$BRANCH -- /bin/bash -c "cd /tmp && rm -rf simpletest"
-                ${KUBECTL} exec -i deployment/bibliotek-dk-www-$BRANCH -- /bin/bash -c "drush -r /var/www/html en -y simpletest"
-                ${KUBECTL} exec -i deployment/bibliotek-dk-www-$BRANCH -- /bin/bash -c "php /var/www/html/scripts/run-tests-xunit.sh --clean"
-                ${KUBECTL} exec -i deployment/bibliotek-dk-www-$BRANCH -- /bin/bash -c 'php /var/www/html/scripts/run-tests-xunit.sh --php /usr/bin/php --xml /tmp/simpletest-bibdk.xml --url ${testURL} --concurrency 20 "Ting Client","Ting Openformat","Netpunkt / Bibliotek.dk","Ding! - WAYF","Bibliotek.dk - ADHL","Bibliotek.dk - Bibdk Behaviour","Bibliotek.dk - captcha","Bibliotek.dk - Cart","Bibliotek.dk - Facetbrowser","Bibliotek.dk - Favourites","Bibliotek.dk - Frontend","Bibliotek.dk - Further Search","Bibliotek.dk - Heimdal","Bibliotek.dk - Helpdesk","Bibliotek.dk - Holdingstatus","Bibliotek.dk - OpenOrder","Bibliotek.dk - Open Platform Client","Bibliotek.dk - OpenUserstatus","Bibliotek.dk - Provider","bibliotek.dk","Bibliotek.dk - SB Kopi" || true'
-                POD=\$(${KUBECTL} get pod -l app=bibliotek-dk-www-$BRANCH -o jsonpath="{.items[0].metadata.name}")
+                ${KUBECTL} exec -i deployment/${PRODUCT}-test-www-${BRANCH} -- /bin/bash -c "cd /tmp && rm -rf simpletest"
+                ${KUBECTL} exec -i deployment/${PRODUCT}-test-www-${BRANCH} -- /bin/bash -c "drush -r /var/www/html en -y simpletest"
+                ${KUBECTL} exec -i deployment/${PRODUCT}-test-www-${BRANCH} -- /bin/bash -c "php /var/www/html/scripts/run-tests-xunit.sh --clean"
+                ${KUBECTL} exec -i deployment/${PRODUCT}-test-www-${BRANCH} -- /bin/bash -c 'php /var/www/html/scripts/run-tests-xunit.sh --php /usr/bin/php --xml /tmp/simpletest-bibdk.xml --url ${TESTWEBSITE} --concurrency 20 "Ting Client","Ting Openformat","Netpunkt / Bibliotek.dk","Ding! - WAYF","Bibliotek.dk - ADHL","Bibliotek.dk - Bibdk Behaviour","Bibliotek.dk - captcha","Bibliotek.dk - Cart","Bibliotek.dk - Facetbrowser","Bibliotek.dk - Favourites","Bibliotek.dk - Frontend","Bibliotek.dk - Further Search","Bibliotek.dk - Heimdal","Bibliotek.dk - Helpdesk","Bibliotek.dk - Holdingstatus","Bibliotek.dk - OpenOrder","Bibliotek.dk - Open Platform Client","Bibliotek.dk - OpenUserstatus","Bibliotek.dk - Provider","bibliotek.dk","Bibliotek.dk - SB Kopi" || true'
+                POD=\$(${KUBECTL} get pod -l app=${PRODUCT}-test-www-${BRANCH} -o jsonpath="{.items[0].metadata.name}")
                 ${KUBECTL} cp \${POD}:/tmp/simpletest-bibdk.xml ./simpletest-bibdk.xml
-                ${KUBECTL} exec -i deployment/bibliotek-dk-www-$BRANCH -- /bin/bash -c "drush -r /var/www/html dis -y simpletest"
+                ${KUBECTL} exec -i deployment/${PRODUCT}-test-www-$BRANCH -- /bin/bash -c "drush -r /var/www/html dis -y simpletest"
               """
               stash name: "simpletest-bibdk", includes: "simpletest-bibdk.xml"
 
@@ -303,12 +294,14 @@ pipeline {
       steps {
         script {
           sh """
-            POD=\$(${KUBECTL} get pod -l app=bibliotek-dk-www-$BRANCH -o jsonpath="{.items[0].metadata.name}")
-            ${KUBECTL} exec -it \${POD} -- /bin/bash -c "drush -r /var/www/html -y dis bibdk_mockup"
-          """
+            ${KUBECTL} delete deployment,service ${PRODUCT}-test-www-${BRANCH}
+            ${KUBECTL} delete deployment,service ${PRODUCT}-test-memcached-${BRANCH}
+            ${KUBECTL} delete deployment,service ${PRODUCT}-test-db-${BRANCH}
+            ${KUBECTL} delete cronJob ${PRODUCT}-test-cron-${BRANCH}
+         """
         }
       }
-    } */
+    }
   }
   post {
     always {
