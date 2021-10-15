@@ -203,7 +203,6 @@ pipeline {
 
                 stash name: "selenium-result", includes: "selenium-result.xml"
 
-                 *//*
                 step([$class: 'XUnitBuilder', testTimeMargin: '3000', thresholdMode: 1,
                   thresholds: [
                     [$class: 'FailedThreshold', failureNewThreshold: '', failureThreshold: '0', unstableNewThreshold: '', unstableThreshold: ''],
@@ -211,7 +210,6 @@ pipeline {
                   tools     : [
                     [$class: 'JUnitType', deleteOutputFiles: true, failIfNotNew: true, pattern: 'selenium-result.xml', skipNoTestFiles: false, stopProcessingIfError: false]]
                 ])
-                 *//*
               }
             }
           }
