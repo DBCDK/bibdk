@@ -241,7 +241,6 @@ pipeline {
               """
               stash name: "simpletest-bibdk", includes: "simpletest-bibdk.xml"
 
-               *//*
               step([
                 $class: 'XUnitBuilder', testTimeMargin: '3000', thresholdMode: 1,
                 thresholds: [
@@ -252,7 +251,6 @@ pipeline {
                   [$class: 'JUnitType', deleteOutputFiles: true, failIfNotNew: true, pattern: 'simpletest*.xml', skipNoTestFiles: false, stopProcessingIfError: false]
                 ]
               ])
-               *//*
             }
           }
         }
