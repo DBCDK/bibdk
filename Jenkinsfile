@@ -127,11 +127,11 @@ pipeline {
             NAMESPACE = 'frontend-staging'
           } else {
             build job: 'BibliotekDK/Deployments/features',
-                  parameters: [string(name: 'BuildId', value: ${currentBuild.number}),
+                  parameters: [string(name: 'BuildId', value: currentBuild.number),
                                string(name: 'Branch', value: BRANCH),
                                booleanParam(name: 'test', value: false)]
             build job: 'BibliotekDK/Deployments/features',
-                  parameters: [string(name: 'BuildId', value: ${currentBuild.number}),
+                  parameters: [string(name: 'BuildId', value: currentBuild.number),
                                string(name: 'Branch', value: BRANCH),
                                booleanParam(name: 'test', value: true)]
           }
