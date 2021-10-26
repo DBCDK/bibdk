@@ -125,10 +125,12 @@ pipeline {
           if (BRANCH == 'master') {
             build job: 'BibliotekDK/Deployments/staging'
           } else {
+            // Website for manually testing.
             build job: 'BibliotekDK/Deployments/features',
                   parameters: [string(name: 'BuildId', value: "${currentBuild.number}"),
                                string(name: 'Branch', value: BRANCH),
                                booleanParam(name: 'test', value: false)]
+            // Website for automatically testing.
             build job: 'BibliotekDK/Deployments/features',
                   parameters: [string(name: 'BuildId', value: "${currentBuild.number}"),
                                string(name: 'Branch', value: BRANCH),
