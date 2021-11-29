@@ -50,8 +50,10 @@ function bibdk_favourite_remember_favourites_message() {
  */
 function bibdk_favourite_no_library_form($form, &$form_state) {
   if (isset($form_state['clicked_button']['#branch'])) {
+    /** @var \VipCoreFindLibrary $branch */
     $branch = $form_state['clicked_button']['#branch'];
-    $form = bibdk_favourite_user_form_fields($form, $form_state, $branch->branchId);
+    // BRANCH ID MAY NOT EXIST!
+    $form = bibdk_favourite_user_form_fields($form, $form_state, $branch->getBranchId());
   }
   else {
     $form = array(
