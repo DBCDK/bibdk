@@ -6,7 +6,7 @@ def k8sDeployEnvId = findLastSuccessfulBuildNumber('Docker-k8s-deploy-env')
 
 pipeline {
   agent {
-    node { label 'devel10-head' }
+    node { label 'devel10' }
   }
   options {
     buildDiscarder(logRotator(artifactDaysToKeepStr: "", artifactNumToKeepStr: "", daysToKeepStr: "", numToKeepStr: "5"))
@@ -16,15 +16,15 @@ pipeline {
     disableConcurrentBuilds()
   }
   environment {
-    PRODUCT = "bibliotek-dk"
     BRANCH = BRANCH_NAME.replaceAll('feature/', '').replaceAll('_', '-')
     // artifactory data
     NAMESPACE = 'frontend-features'
-    DOCKER_REPO = "docker-dscrum.dbc.dk"
-    BUILDNAME = "Bibliotek-dk :: ${BRANCH}"
-    WEBSITE = "http://${PRODUCT}-www-${BRANCH}.${NAMESPACE}.svc.cloud.dbc.dk"
-    TESTWEBSITE = "http://${PRODUCT}-test-www-${BRANCH}.${NAMESPACE}.svc.cloud.dbc.dk"
+    BASE_NAME = "docker-fbiscrum.artifacts.dbccloud.dk/bibliotekdk"
+    IMAGE_TAG = "${env.BRANCH_NAME.toLowerCase().replace("feature", "").replace("/", "").replace("_", "-").replace(".", "-")}-${BUILD_NUMBER}"
+    IMAGE_WWW_NAME = "${BASE_NAME}:${IMAGE_TAG}"
+    IMAGE_DB_NAME = "${BASE_NAME}-db:${IMAGE_TAG}"
     DISTROPATH = "https://raw.github.com/DBCDK/bibdk/develop/distro.make"
+    TESTWEBSITE = "http://bibliotekdk-test-www-${BRANCH}.fbiscrum-dev.svc.cloud.dbc.dk"
   }
   triggers {
     gitlab(
@@ -38,10 +38,13 @@ pipeline {
     stage('Docker Drupal Site') {
       steps {
         script {
-          docker.build("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:${currentBuild.number}",
-            "-f ./docker/www/Dockerfile --no-cache --build-arg BRANCH=${BRANCH_NAME} ./docker/www")
-          if (BRANCH == 'develop') {
-            docker.build("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:latest", "-f ./docker/www/Dockerfile --build-arg BRANCH=${BRANCH_NAME} --no-cache ./docker/www")
+
+          ansiColor("xterm") {
+            docker.withRegistry('https://docker-fbiscrum.artifacts.dbccloud.dk', 'DOCKER_LOGIN') {
+              docker.build(
+                "${IMAGE_WWW_NAME}", "-f ./docker/www/Dockerfile --no-cache --build-arg BRANCH=${BRANCH_NAME} ./docker/www"
+              ).push()
+            }
           }
         }
       }
@@ -56,85 +59,28 @@ pipeline {
       }
       steps {
         script {
-          docker.build("${DOCKER_REPO}/${PRODUCT}-db-${BRANCH}:${currentBuild.number}", "./docker/db -f ./docker/db/Dockerfile --no-cache")
-          // we need a latest tag for development setup
-          if (BRANCH == 'develop') {
-            docker.build("${DOCKER_REPO}/${PRODUCT}-db-${BRANCH}:latest", "./docker/db -f ./docker/db/Dockerfile --no-cache")
+          docker.withRegistry('https://docker-fbiscrum.artifacts.dbccloud.dk', 'DOCKER_LOGIN') {
+            docker.build(
+              "${IMAGE_DB_NAME}", "-f ./docker/db/Dockerfile --no-cache --build-arg BRANCH=${BRANCH_NAME} ./docker/db"
+            ).push()
           }
-        }
-      }
-    }
-    stage('Push to artifactory') {
-      steps {
-        script {
-          def artyServer = Artifactory.server 'arty'
-          def artyDocker = Artifactory.docker server: artyServer, host: env.DOCKER_HOST
-
-          def buildInfo_www = Artifactory.newBuildInfo()
-          buildInfo_www.name = BUILDNAME
-          buildInfo_www = artyDocker.push("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:${currentBuild.number}", 'docker-dscrum', buildInfo_www)
-          buildInfo_www.env.capture = true
-          buildInfo_www.env.collect()
-
-          if (BRANCH != 'master') {
-            def buildInfo_db = Artifactory.newBuildInfo()
-            buildInfo_db.name = BUILDNAME
-            buildInfo_db = artyDocker.push("${DOCKER_REPO}/${PRODUCT}-db-${BRANCH}:${currentBuild.number}", 'docker-dscrum', buildInfo_db)
-            buildInfo_www.append buildInfo_db
-          }
-          artyServer.publishBuildInfo buildInfo_www
-
-          // we need a latest tag for development setup
-          if (BRANCH == 'develop') {
-            def buildInfo_www_latest = Artifactory.newBuildInfo()
-            buildInfo_www_latest.name = BUILDNAME
-            buildInfo_www_latest = artyDocker.push("${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:latest", 'docker-dscrum', buildInfo_www_latest)
-            buildInfo_www_latest.env.capture = true
-            buildInfo_www_latest.env.collect()
-
-            def buildInfo_db_latest = Artifactory.newBuildInfo()
-            buildInfo_db_latest.name = BUILDNAME
-            buildInfo_db_latest = artyDocker.push("${DOCKER_REPO}/${PRODUCT}-db-${BRANCH}:latest", 'docker-dscrum', buildInfo_db_latest)
-
-            buildInfo_www_latest.append buildInfo_db_latest
-            artyServer.publishBuildInfo buildInfo_www_latest
-          }
-          if (BRANCH != 'master') {
-            sh """
-            	docker rmi ${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:${currentBuild.number}
-            	docker rmi ${DOCKER_REPO}/${PRODUCT}-db-${BRANCH}:${currentBuild.number}
-            """
-          } else {
-            sh """
-            	docker rmi ${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:${currentBuild.number}
-            """
-          }
-          // cleanup development setup
-          if (BRANCH == 'develop') {
-             sh """
-                docker rmi ${DOCKER_REPO}/${PRODUCT}-www-${BRANCH}:latest
-                docker rmi ${DOCKER_REPO}/${PRODUCT}-db-${BRANCH}:latest
-               """
-           }
         }
       }
     }
     stage('Deploy') {
       steps {
         script {
-          if (BRANCH == 'master') {
-            build job: 'BibliotekDK/Deployments/staging'
-          } else {
+          if (BRANCH != 'master') {
             // Website for manually testing.
-            build job: 'BibliotekDK/Deployments/features',
-                  parameters: [string(name: 'BuildId', value: "${currentBuild.number}"),
-                               string(name: 'Branch', value: BRANCH),
-                               booleanParam(name: 'test', value: false)]
+            build job: 'BibliotekDK/Deployments/dev',
+              parameters: [string(name: 'BuildId', value: "${currentBuild.number}"),
+                           string(name: 'Branch', value: BRANCH),
+                           booleanParam(name: 'test', value: false)]
             // Website for automatically testing.
-            build job: 'BibliotekDK/Deployments/features',
-                  parameters: [string(name: 'BuildId', value: "${currentBuild.number}"),
-                               string(name: 'Branch', value: BRANCH),
-                               booleanParam(name: 'test', value: true)]
+            build job: 'BibliotekDK/Deployments/dev',
+              parameters: [string(name: 'BuildId', value: "${currentBuild.number}"),
+                           string(name: 'Branch', value: BRANCH),
+                           booleanParam(name: 'test', value: true)]
           }
         }
       }
@@ -147,7 +93,7 @@ pipeline {
       agent {
         docker {
           image "docker.dbc.dk/k8s-deploy-env:latest"
-          label 'devel9'
+          label 'devel10'
           args '-u 0:0'
         }
       }
@@ -158,7 +104,7 @@ pipeline {
       steps {
         script {
           sh """
-            ${KUBECTL} exec -it deployment/${PRODUCT}-test-www-${BRANCH} -- /bin/bash -c "drush -r /var/www/html -y en bibdk_mockup"
+            ${KUBECTL} exec -it deployment/bibliotekdk-test-www-${BRANCH} -- /bin/bash -c "drush -r /var/www/html -y en bibdk_mockup"
           """
         }
       }
@@ -234,13 +180,13 @@ pipeline {
               sh """
                 rm -rf simpletest
                 rm -f simpletest*.xml
-                ${KUBECTL} exec -i deployment/${PRODUCT}-test-www-${BRANCH} -- /bin/bash -c "cd /tmp && rm -rf simpletest"
-                ${KUBECTL} exec -i deployment/${PRODUCT}-test-www-${BRANCH} -- /bin/bash -c "drush -r /var/www/html en -y simpletest"
-                ${KUBECTL} exec -i deployment/${PRODUCT}-test-www-${BRANCH} -- /bin/bash -c "php /var/www/html/scripts/run-tests-xunit.sh --clean"
-                ${KUBECTL} exec -i deployment/${PRODUCT}-test-www-${BRANCH} -- /bin/bash -c 'php /var/www/html/scripts/run-tests-xunit.sh --php /usr/bin/php --xml /tmp/simpletest-bibdk.xml --url ${TESTWEBSITE} --concurrency 20 "Ting Client","Ting Openformat","Netpunkt / Bibliotek.dk","Ding! - WAYF","Bibliotek.dk - ADHL","Bibliotek.dk - Bibdk Behaviour","Bibliotek.dk - captcha","Bibliotek.dk - Cart","Bibliotek.dk - Facetbrowser","Bibliotek.dk - Favourites","Bibliotek.dk - Frontend","Bibliotek.dk - Further Search","Bibliotek.dk - Heimdal","Bibliotek.dk - Helpdesk","Bibliotek.dk - Holdingstatus","Bibliotek.dk - OpenOrder","Bibliotek.dk - Open Platform Client","Bibliotek.dk - OpenUserstatus","Bibliotek.dk - Provider","bibliotek.dk","Bibliotek.dk - SB Kopi" || true'
-                POD=\$(${KUBECTL} get pod -l app=${PRODUCT}-test-www-${BRANCH} -o jsonpath="{.items[0].metadata.name}")
+                ${KUBECTL} exec -i deployment/bibliotekdk-test-www-${BRANCH} -- /bin/bash -c "cd /tmp && rm -rf simpletest"
+                ${KUBECTL} exec -i deployment/bibliotekdk-test-www-${BRANCH} -- /bin/bash -c "drush -r /var/www/html en -y simpletest"
+                ${KUBECTL} exec -i deployment/bibliotekdk-test-www-${BRANCH} -- /bin/bash -c "php /var/www/html/scripts/run-tests-xunit.sh --clean"
+                ${KUBECTL} exec -i deployment/bibliotekdk-test-www-${BRANCH} -- /bin/bash -c 'php /var/www/html/scripts/run-tests-xunit.sh --php /usr/bin/php --xml /tmp/simpletest-bibdk.xml --url ${TESTWEBSITE} --concurrency 20 "Ting Client","Ting Openformat","Netpunkt / Bibliotek.dk","Ding! - WAYF","Bibliotek.dk - ADHL","Bibliotek.dk - Bibdk Behaviour","Bibliotek.dk - captcha","Bibliotek.dk - Cart","Bibliotek.dk - Facetbrowser","Bibliotek.dk - Favourites","Bibliotek.dk - Frontend","Bibliotek.dk - Further Search","Bibliotek.dk - Heimdal","Bibliotek.dk - Helpdesk","Bibliotek.dk - Holdingstatus","Bibliotek.dk - OpenOrder","Bibliotek.dk - Open Platform Client","Bibliotek.dk - OpenUserstatus","Bibliotek.dk - Provider","bibliotek.dk","Bibliotek.dk - SB Kopi" || true'
+                POD=\$(${KUBECTL} get pod -l app=bibliotekdk-test-www-${BRANCH} -o jsonpath="{.items[0].metadata.name}")
                 ${KUBECTL} cp \${POD}:/tmp/simpletest-bibdk.xml ./simpletest-bibdk.xml
-                ${KUBECTL} exec -i deployment/${PRODUCT}-test-www-${BRANCH} -- /bin/bash -c "drush -r /var/www/html dis -y simpletest"
+                ${KUBECTL} exec -i deployment/bibliotekdk-test-www-${BRANCH} -- /bin/bash -c "drush -r /var/www/html dis -y simpletest"
               """
               stash name: "simpletest-bibdk", includes: "simpletest-bibdk.xml"
 
@@ -293,10 +239,10 @@ pipeline {
       steps {
         script {
           sh """
-            ${KUBECTL} delete deployment,service ${PRODUCT}-test-www-${BRANCH}
-            ${KUBECTL} delete deployment,service ${PRODUCT}-test-memcached-${BRANCH}
-            ${KUBECTL} delete deployment,service ${PRODUCT}-test-db-${BRANCH}
-            ${KUBECTL} delete cronJob ${PRODUCT}-test-cron-${BRANCH}
+            ${KUBECTL} delete deployment,service bibliotekdk-test-www-${BRANCH}
+            ${KUBECTL} delete deployment,service bibliotekdk-test-memcached-${BRANCH}
+            ${KUBECTL} delete deployment,service bibliotekdk-test-db-${BRANCH}
+            ${KUBECTL} delete cronJob bibliotekdk-test-cron-${BRANCH}
          """
         }
       }
