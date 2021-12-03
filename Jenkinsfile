@@ -18,7 +18,7 @@ pipeline {
   environment {
     BRANCH = BRANCH_NAME.replaceAll('feature/', '').replaceAll('_', '-')
     // artifactory data
-    NAMESPACE = 'frontend-features'
+    NAMESPACE = 'fbiscrum-dev'
     BASE_NAME = "docker-fbiscrum.artifacts.dbccloud.dk/bibliotekdk"
     IMAGE_TAG = "${env.BRANCH_NAME.toLowerCase().replace("feature", "").replace("/", "").replace("_", "-").replace(".", "-")}-${BUILD_NUMBER}"
     IMAGE_WWW_NAME = "${BASE_NAME}:${IMAGE_TAG}"
