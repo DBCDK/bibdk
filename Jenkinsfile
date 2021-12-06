@@ -98,7 +98,7 @@ pipeline {
         }
       }
       environment {
-        KUBECONFIG = credentials("kubecert-frontend")
+        KUBECONFIG = credentials("kubecert-fbiscrum")
         KUBECTL = "kubectl -n ${NAMESPACE} --kubeconfig '${KUBECONFIG}'"
       }
       steps {
@@ -172,7 +172,7 @@ pipeline {
             }
           }
           environment {
-             KUBECONFIG = credentials("kubecert-frontend")
+             KUBECONFIG = credentials("kubecert-fbiscrum")
              KUBECTL = "kubectl -n ${NAMESPACE} --kubeconfig '${KUBECONFIG}'"
           }
           steps {
@@ -233,7 +233,7 @@ pipeline {
         }
       }
       environment {
-        KUBECONFIG = credentials("kubecert-frontend")
+        KUBECONFIG = credentials("kubecert-fbiscrum")
         KUBECTL = "kubectl -n ${NAMESPACE} --kubeconfig '${KUBECONFIG}'"
       }
       steps {
