@@ -81,6 +81,34 @@ pipeline {
               parameters: [string(name: 'BuildId', value: "${currentBuild.number}"),
                            string(name: 'Branch', value: BRANCH),
                            booleanParam(name: 'test', value: true)]
+            if (BRANCH == 'develop') {
+              // FBS-TEST must be updated whenever develop is updated.
+              // Get ready for committing the code to Git.
+              def gitPath = 'd-scrum/deployments/netpunkt/netpunkt-deploy'
+              // Which files should we change and commit.
+              def files = [
+                [filename: "drupal-deployment", type: "deployment", imagetag: "${IMAGE_TAG}"],
+                [filename: "drush-job", type: "job", imagetag: "${IMAGE_TAG}"],
+                [filename: "drupal-cron", type: "cron", imagetag: "${IMAGE_TAG}"]
+              ]
+              // Which credential to use. The 'commitAndPush' uses 'dscrum_ssh_gitlab' as standard.
+              def credentialsId = 'gitlab-isworker'
+              // Let the magic begin.
+              dscrumUtil.commitAndPush(files, env.BUILD_NUMBER, gitPath, credentialsId, 'fbs-test')
+            }
+          } else {
+            // Get ready for committing the code to Git.
+            def gitPath = 'd-scrum/deployments/netpunkt/netpunkt-deploy'
+            // Which files should we change and commit.
+            def files = [
+             [filename: "drupal-deployment", type: "deployment", imagetag: "${IMAGE_TAG}"],
+              [filename: "drush-job", type: "job", imagetag: "${IMAGE_TAG}"],
+              [filename: "drupal-cron", type: "cron", imagetag: "${IMAGE_TAG}"]
+            ]
+            // Which credential to use. The 'commitAndPush' uses 'dscrum_ssh_gitlab' as standard.
+            def credentialsId = 'gitlab-isworker'
+            // Let the magic begin.
+            dscrumUtil.commitAndPush(files, env.BUILD_NUMBER, gitPath, credentialsId, 'staging')
           }
         }
       }
