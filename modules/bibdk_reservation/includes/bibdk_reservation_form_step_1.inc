@@ -184,27 +184,27 @@ function bibdk_reservation_agency_branch_get_action_link($branch) {
 
 /**
  * create button as a agency_link .
- * @param String $branch
+ * @param \VipCoreFindLibrary $branch
  * @return $form
  */
 function bibdk_reservation_get_agencyId_link($branch) {
 
-  if (empty($branch->agencyId)) {
+  if (empty($branch->getMainAgencyId())) {
     return;
   }
 
   $form['agency_searchId_fieldset']['searchId'] = array(
       '#type' => 'submit',
-      '#name' => 'branchId-' . $branch->agencyId,
-      '#agencyid' => $branch->agencyId,
+      '#name' => 'branchId-' . $branch->getBranchId(),
+      '#agencyid' => $branch->getMainAgencyId(),
       '#prefix' => '<div class="form-wrapper form-actions">',
       '#submit' => array('bibdk_reservation_wizard_goto_step_submit'),
       '#suffix' => '</div>',
-      '#value' => $branch->agencyName . ' ' . t( 'ting_show_all_libraries', array(), array('context' => 'bibdk_reservation')),
+      '#value' => $branch->getAgencyName() . ' ' . t( 'ting_show_all_libraries', array(), array('context' => 'bibdk_reservation')),
       '#step' => 1,
       '#attributes' => array(
         'class' => array('popover-button-list', 'button-as-link'),
-        'data-id' => $branch->agencyId,
+        'data-id' => $branch->getMainAgencyId(),
       )
   );
 
