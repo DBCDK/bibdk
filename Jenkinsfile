@@ -88,6 +88,7 @@ pipeline {
               // Which files should we change and commit.
               def files = [
                 [filename: "drupal-deployment", type: "deployment", imagetag: "${IMAGE_TAG}"],
+                [filename: "postgres-deployment", type: "deployment", imagetag: "${IMAGE_TAG}"],
                 [filename: "drush-job", type: "job", imagetag: "${IMAGE_TAG}"],
                 [filename: "drupal-cron", type: "cron", imagetag: "${IMAGE_TAG}"]
               ]
