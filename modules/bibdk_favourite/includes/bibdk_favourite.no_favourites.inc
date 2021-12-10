@@ -50,8 +50,9 @@ function bibdk_favourite_remember_favourites_message() {
  */
 function bibdk_favourite_no_library_form($form, &$form_state) {
   if (isset($form_state['clicked_button']['#branch'])) {
+    /** @var \VipCoreFindLibrary $branch */
     $branch = $form_state['clicked_button']['#branch'];
-    $form = bibdk_favourite_user_form_fields($form, $form_state, $branch->branchId);
+    $form = bibdk_favourite_user_form_fields($form, $form_state, $branch->getBranchId());
   }
   else {
     $form = array(
@@ -94,9 +95,10 @@ function bibdk_favourite_no_library_form_submit($form, &$form_state) {
 function bibdk_favourite_parse_agency_search_result($result) {
   $form = array();
 
+  /** @var \VipCoreFindLibrary $branch */
   foreach ($result as $branch) {
     $settings = array(
-      '#actions' => bibdk_favourite_get_agency_action($branch)
+      '#actions' => bibdk_favourite_get_agency_action($branch),
     );
     $form += bibdk_favourite_view_agency_branch($branch, $settings);
   }
@@ -106,13 +108,13 @@ function bibdk_favourite_parse_agency_search_result($result) {
 /**
  * Action for agency search result view
  *
- * @param $branch
+ * @param \VipCoreFindLibrary $branch
  * @return array
  */
 function bibdk_favourite_get_agency_action($branch) {
   return array(
     '#value' => t('select_favourite_library', array(), array('context' => 'bibdk_favourite')),
-    '#name' => 'branch-' . $branch->branchId,
+    '#name' => 'branch-' . $branch->getBranchId(),
     '#type' => 'submit',
     '#submit' => array('bibdk_favourite_select_library_submit'),
     '#branch' => $branch,
