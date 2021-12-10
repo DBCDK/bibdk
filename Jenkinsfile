@@ -84,7 +84,7 @@ pipeline {
             if (BRANCH == 'develop') {
               // FBS-TEST must be updated whenever develop is updated.
               // Get ready for committing the code to Git.
-              def gitPath = 'd-scrum/deployments/netpunkt/netpunkt-deploy'
+              def gitPath = 'd-scrum/deployments/bibliotek-dk/bibliotek-dk-deploy'
               // Which files should we change and commit.
               def files = [
                 [filename: "drupal-deployment", type: "deployment", imagetag: "${IMAGE_TAG}"],
@@ -98,7 +98,7 @@ pipeline {
             }
           } else {
             // Get ready for committing the code to Git.
-            def gitPath = 'd-scrum/deployments/netpunkt/netpunkt-deploy'
+            def gitPath = 'd-scrum/deployments/bibliotek-dk/bibliotek-dk-deploy'
             // Which files should we change and commit.
             def files = [
              [filename: "drupal-deployment", type: "deployment", imagetag: "${IMAGE_TAG}"],
