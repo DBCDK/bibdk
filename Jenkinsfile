@@ -38,7 +38,6 @@ pipeline {
     stage('Docker Drupal Site') {
       steps {
         script {
-
           ansiColor("xterm") {
             docker.withRegistry('https://docker-fbiscrum.artifacts.dbccloud.dk', 'DOCKER_LOGIN') {
               docker.build(
