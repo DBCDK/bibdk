@@ -9,7 +9,7 @@ FQDN_CONF=/etc/apache2/conf-available/fqdn.conf
 # location of configuration feature
 CONFIG=$APACHE_ROOT/profiles/bibdk/modules/bibdk_config/features/bibdk_webservice_settings_operational/bibdk_webservice_settings_operational.strongarm.inc
 
-if [[ "$NAMESPACE_NAME" != "frontend-prod" ]] ; then
+if [[ "$NAMESPACE_NAME" != "fbiscrum-prod" ]] ; then
   cd /tmp || return
   tar -xf files.tar.gz
   rm -rf /var/www/html/sites/default/files/*
