@@ -180,7 +180,7 @@ pipeline {
 
                 stash name: "selenium-result", includes: "selenium-result.xml"
 
-                step([$class: 'XUnitBuilder', testTimeMargin: '3000', thresholdMode: 1,
+                step([$class: 'XUnitPublisher', testTimeMargin: '3000', thresholdMode: 1,
                   thresholds: [
                     [$class: 'FailedThreshold', failureNewThreshold: '', failureThreshold: '0', unstableNewThreshold: '', unstableThreshold: ''],
                     [$class: 'SkippedThreshold', failureNewThreshold: '', failureThreshold: '', unstableNewThreshold: '', unstableThreshold: '']],
@@ -219,7 +219,7 @@ pipeline {
               stash name: "simpletest-bibdk", includes: "simpletest-bibdk.xml"
 
               step([
-                $class: 'XUnitBuilder', testTimeMargin: '3000', thresholdMode: 1,
+                $class: 'XUnitPublisher', testTimeMargin: '3000', thresholdMode: 1,
                 thresholds: [
                   [$class: 'FailedThreshold', failureNewThreshold: '', failureThreshold: '0', unstableNewThreshold: '', unstableThreshold: ''],
                   [$class: 'SkippedThreshold', failureNewThreshold: '', failureThreshold: '', unstableNewThreshold: '', unstableThreshold: '']
@@ -302,7 +302,7 @@ pipeline {
  */
 void generateTestReport(String pattern, String type = "JUnit") {
   if (type == "JUnit") {
-    step([$class        : 'XUnitBuilder',
+    step([$class        : 'XUnitPublisher',
           testTimeMargin: '3000',
           thresholdMode : 1,
           thresholds    : [failed(failureNewThreshold: '0',
@@ -316,7 +316,7 @@ void generateTestReport(String pattern, String type = "JUnit") {
             stopProcessingIfError: true)]])
   }
   if (type == "PHPUnit") {
-    step([$class        : 'XUnitBuilder',
+    step([$class        : 'XUnitPublisher',
           testTimeMargin: '3000',
           thresholdMode : 1,
           thresholds    : [failed(failureNewThreshold: '0',
