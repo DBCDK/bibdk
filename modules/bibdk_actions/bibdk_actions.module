@@ -26,6 +26,8 @@ function bibdk_actions_menu(){
     'access arguments' => array('access content'),
     'file' => 'bibdk_actions.refexport.inc',
   );
+  /*
+   * Due to fraud, the email function is now disabled.
   $items['email/cart/%'] = array(
     'title' => '',
     'page callback' => 'bibdk_actions_email_page',
@@ -33,6 +35,7 @@ function bibdk_actions_menu(){
     'access arguments' => array('access content'),
     'file' => 'bibdk_actions.email.inc',
   );
+  */
 
   //Admin
   $items['admin/config/system/site-information/actions'] = array(
@@ -67,7 +70,8 @@ function bibdk_actions_cart_actions($actions){
   $actions = bibdk_actions_get_mark_all_none_actions($actions);
   $actions = bibdk_actions_get_delete_selected_actions($actions);
   $actions = bibdk_actions_get_print_actions($actions);
-  $actions = bibdk_actions_get_email_actions($actions);
+  // Due to fraud, the email function is now disabled.
+  //$actions = bibdk_actions_get_email_actions($actions);
   $actions = bibdk_actions_get_refexport_actions($actions);
   drupal_add_js(drupal_get_path('module', 'bibdk_actions') . '/js/bibdk_actions.js');
   return $actions;
