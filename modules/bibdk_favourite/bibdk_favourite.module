@@ -141,10 +141,10 @@ function bibdk_favourite_theme() {
  * @return array; an array with agencyId as key, favourite-object as value
  */
 function bibdk_favourite_get_favourites() {
-  $agencies = isset($_SESSION['bibdk_favourites']) ? $_SESSION['bibdk_favourites'] : NULL;
-  if (empty($agencies)) {
+  if (!isset($_SESSION['bibdk_favourites']) || empty($_SESSION['bibdk_favourites'])) {
     _bibdk_favourite_set_agencies();
   }
+  $agencies = isset($_SESSION['bibdk_favourites']) ? $_SESSION['bibdk_favourites'] : NULL;
 
   $favourites = array();
   foreach ($agencies as $key => $serialized_agency) {
