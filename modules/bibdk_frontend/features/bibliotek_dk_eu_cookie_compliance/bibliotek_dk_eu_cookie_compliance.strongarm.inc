@@ -34,11 +34,11 @@ UUID',
     'consent_storage_method' => 'do_not_store',
     'popup_clicking_confirmation' => FALSE,
     'popup_info' => array(
-      'value' => '<b>Vi bruger cookies til at indsamle statistik over brugen af hjemmesiden. </b><br />
-Hvis du klikker på knappen \'Accepter\', godkender du, at vi sætter cookies til brug for statistik. <br />
-Statistikdata opsamles i vores eget system og deles ikke med andre. <br />
-Hvis du klikker på knappen \'Afvis\', sætter vi ikke cookies til statistik. <br />
-Vi benytter dog en cookie for at huske dit valg.',
+      'value' => '<p><b>Vi bruger cookies til at indsamle statistik over brugen af hjemmesiden. </b></p>
+<p>Hvis du klikker på knappen \'Accepter\', godkender du, at vi sætter cookies til brug for statistik.</p>
+<p>Statistikdata opsamles i vores eget system og deles ikke med andre.</p>
+<p>Hvis du klikker på knappen \'Afvis\', sætter vi ikke cookies til statistik.</p>
+<p>Vi benytter dog en cookie for at huske dit valg.</p>',
       'format' => 'html_5',
     ),
     'use_mobile_message' => 0,
