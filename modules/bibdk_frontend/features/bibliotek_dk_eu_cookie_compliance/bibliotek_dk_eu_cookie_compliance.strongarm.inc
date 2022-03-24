@@ -25,16 +25,20 @@ function bibliotek_dk_eu_cookie_compliance_strongarm() {
     'accept_all_categories_button_label' => 'Accept all cookies',
     'fix_first_cookie_category' => 1,
     'select_all_categories_by_default' => 0,
-    'disabled_javascripts' => '',
+    'disabled_javascripts' => 'profiles/bibdk/modules/bibdk_frontend/matomo/matomo.js
+https://stats.dbc.dk/piwik.js
+https://static.hotjar.com/c/hotjar-1787658.js?sv=6
+https://script.hotjar.com/modules.f622ea0eeded5efcf120.js',
     'whitelisted_cookies' => 'has_js
 UUID',
     'consent_storage_method' => 'do_not_store',
     'popup_clicking_confirmation' => FALSE,
     'popup_info' => array(
-      'value' => '<b>Vi bruger cookies til at indsamle statistik over brugen af hjemmesiden. </b><br/>
-Hvis du klikker på knappen \'Accepter\', godkender du, at vi sætter cookies til brug for statistik. <br/>
-Hvis du klikker på knappen \'Afvis\', sætter vi ikke cookies til statistik. <br/>
-Vi benytter dog en cookie for at huske dit valg.',
+      'value' => '<p><b>Vi bruger cookies til at indsamle statistik over brugen af hjemmesiden. </b></p>
+<p>Hvis du klikker på knappen \'Accepter\', godkender du, at vi sætter cookies til brug for statistik.</p>
+<p>Statistikdata opsamles i vores eget system og deles ikke med andre.</p>
+<p>Hvis du klikker på knappen \'Afvis\', sætter vi ikke cookies til statistik.</p>
+<p>Vi benytter dog en cookie for at huske dit valg.</p>',
       'format' => 'html_5',
     ),
     'use_mobile_message' => 0,
