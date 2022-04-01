@@ -5681,6 +5681,18 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option = new stdClass();
   $option->disabled = FALSE; /* Edit this to true to make a default option disabled initially */
   $option->api_version = 1;
+  $option->o_uuid = '9a50b2b2-8d6b-4848-9198-b348f371fdeb';
+  $option->v_uuid = 'da48923f-e5ba-5ef4-ad4f-c8aab6767a83';
+  $option->sort = -99;
+  $option->label = '2022';
+  $option->value = '"2022"';
+  $option->expand = '0';
+  $option->is_disabled = FALSE;
+  $export['9a50b2b2-8d6b-4848-9198-b348f371fdeb'] = $option;
+
+  $option = new stdClass();
+  $option->disabled = FALSE; /* Edit this to true to make a default option disabled initially */
+  $option->api_version = 1;
   $option->o_uuid = '9b33b447-3074-d254-71b3-f238446dd6c9';
   $option->v_uuid = 'da48923f-e5ba-5ef4-ad4f-c8aab6767a83';
   $option->sort = -63;
