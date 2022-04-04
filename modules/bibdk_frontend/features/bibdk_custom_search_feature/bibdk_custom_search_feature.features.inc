@@ -175,7 +175,7 @@ Skriv dit emne eller starten på det ord du søger noget om - skriver du flere o
   $element->element_title = 'musik_ophav1';
   $element->element_label = 'Medvirkende';
   $element->description = 'fx: netrebko';
-  $element->help_text = 'Medvirkende: 
+  $element->help_text = 'Medvirkende:
 i begge felter kan du søge på musikere, sangere, grupper og komponister. De to felter betyder at du kan kombinere to sangere eller en kunstner og en komponist og finde hvor de optræder sammen.';
   $element->sort = -59;
   $element->tab_index = 0;
@@ -666,7 +666,7 @@ Ex. pisa*';
   $element->element_title = 'net_forfatter';
   $element->element_label = 'Forfatter eller udgiver';
   $element->description = 'fx skat';
-  $element->help_text = 'Skriv den eller de dele af navnet, du er sikker på. 
+  $element->help_text = 'Skriv den eller de dele af navnet, du er sikker på.
 ';
   $element->sort = -78;
   $element->tab_index = 0;
@@ -2299,7 +2299,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '1176f607-7647-4252-bad3-5b5867d1532e';
   $option->v_uuid = 'da48923f-e5ba-5ef4-ad4f-c8aab6767a83';
-  $option->sort = -99;
+  $option->sort = -100;
   $option->label = '2021';
   $option->value = '"2021"';
   $option->expand = '0';
@@ -5227,7 +5227,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '87f0cc87-f579-8034-d5a6-fe85c004b864';
   $option->v_uuid = 'da48923f-e5ba-5ef4-ad4f-c8aab6767a83';
-  $option->sort = -100;
+  $option->sort = -102;
   $option->label = 'Alle';
   $option->value = '';
   $option->expand = '0';
@@ -5683,7 +5683,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->api_version = 1;
   $option->o_uuid = '9a50b2b2-8d6b-4848-9198-b348f371fdeb';
   $option->v_uuid = 'da48923f-e5ba-5ef4-ad4f-c8aab6767a83';
-  $option->sort = -99;
+  $option->sort = -101;
   $option->label = '2022';
   $option->value = '"2022"';
   $option->expand = '0';
