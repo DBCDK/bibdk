@@ -227,9 +227,15 @@ function bibdk_vejviser_get_agency_link($branch) {
     // vejviser?agencyId=710100 must show name and no link.
     return $branch->getAgencyName();
   } else {
+
+    $agencyId = $branch->getMainAgencyId();
+    if (is_null($agencyId)) {
+      $agencyId = $_REQUEST['agencyId'];
+    }
+
     return l($branch->getAgencyName(), 'vejviser/', array(
       'attributes' => array('class' => array('agencylist-link')),
-      'query' => array('agencyId' => $branch->getMainAgencyId())
+      'query' => array('agencyId' => $agencyId)
     ));
   }
 }
