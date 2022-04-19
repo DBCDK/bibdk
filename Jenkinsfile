@@ -1,8 +1,8 @@
 #! groovy
 @Library('pu-deploy')
-@Library('frontend-dscrum')
-
-def k8sDeployEnvId = findLastSuccessfulBuildNumber('Docker-k8s-deploy-env')
+@Library('frontend-dscrum') _
+// The job will fail, if we do not have the underscore above.
+// https://issues.jenkins.io/browse/JENKINS-42807
 
 pipeline {
   agent {
@@ -120,7 +120,7 @@ pipeline {
       }
       agent {
         docker {
-          image "docker.dbc.dk/k8s-deploy-env:latest"
+          image "docker-dbc.artifacts.dbccloud.dk/k8s-deploy-env:latest"
           label 'devel10'
           args '-u 0:0'
         }
@@ -194,7 +194,7 @@ pipeline {
         stage('Simpletest') {
           agent {
             docker {
-              image "docker.dbc.dk/k8s-deploy-env:latest"
+              image "docker-dbc.artifacts.dbccloud.dk/k8s-deploy-env:latest"
               label 'devel9'
               args '-u 0:0'
             }
