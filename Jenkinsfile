@@ -195,7 +195,7 @@ pipeline {
           agent {
             docker {
               image "docker-dbc.artifacts.dbccloud.dk/k8s-deploy-env:latest"
-              label 'devel9'
+              label 'devel10'
               args '-u 0:0'
             }
           }
@@ -255,8 +255,8 @@ pipeline {
       }
       agent {
         docker {
-          image "docker.dbc.dk/k8s-deploy-env:${k8sDeployEnvId}"
-          label 'devel9'
+          image "docker-dbc.artifacts.dbccloud.dk/k8s-deploy-env:latest"
+          label 'devel10'
           args '-u 0:0'
         }
       }
