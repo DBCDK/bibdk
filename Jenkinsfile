@@ -1,5 +1,4 @@
 #! groovy
-@Library('pu-deploy')
 @Library('frontend-dscrum') _
 // The job will fail, if we do not have the underscore above.
 // https://issues.jenkins.io/browse/JENKINS-42807
