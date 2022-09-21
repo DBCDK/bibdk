@@ -42,6 +42,8 @@ RUN apt-key add indexdata.asc
 COPY conf/yaz.list /etc/apt/sources.list.d/
 
 RUN apt-get update && \
+  wget http://ftp.us.debian.org/debian/pool/main/i/icu/libicu63_63.1-6+deb10u3_amd64.deb && \
+  $ sudo dpkg -i libicu63_63.1-6+deb10u3_amd64.deb && \
   apt-get -q -y install cron logrotate php-gd php-mbstring php-pear wget php-soap php-yaml php-memcached \
   make php-dev rsyslog sudo wget msmtp postgresql-client libyaz5 yaz libyaz5-dev && \
   pecl channel-update pecl.php.net && \
