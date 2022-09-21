@@ -1,6 +1,6 @@
 ARG BRANCH=develop
 
-FROM docker-dscrum.dbc.dk/d7-php7-builder as builder
+FROM docker-frontend.artifacts.dbccloud.dk/d7-php7-builder as builder
 ARG BRANCH
 ENV BRANCH=${BRANCH}
 
@@ -17,7 +17,7 @@ RUN cd /var/lib/jenkins/www/profiles/bibdk/themes/bibdk_theme/.npm && \
     npm install && \
     ./node_modules/gulp/bin/gulp.js build --production
 
-FROM docker.dbc.dk/dbc-apache-php7
+FROM docker-dbc.artifacts.dbccloud.dk/dbc-apache-php7
 MAINTAINER D-scrum <d-scrum@dbc.dk>
 
 # set environment variables
