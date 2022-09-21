@@ -46,17 +46,17 @@ ADD ["http://ftp.us.debian.org/debian/pool/main/r/readline/libreadline7_7.0-3_am
 RUN dpkg -i libreadline7_7.0-3_amd64.deb
 ADD ["http://ftp.us.debian.org/debian/pool/main/i/icu/libicu63_63.1-6+deb10u3_amd64.deb", "/"]
 RUN dpkg -i libicu63_63.1-6+deb10u3_amd64.deb
-ADD ["https://github.com/drush-ops/drush/releases/download/8.2.3/drush.phar", "/"]
+ADD ["https://github.com/drush-ops/drush/releases/download/8.4.11/drush.phar", "/"]
 
 RUN apt-get update && \
-  apt-get -q -y install wget sudo cron logrotate php-gd php-mbstring php-pear wget php-soap php-yaml php-memcached \
+  apt-get -q -y install tar sudo cron logrotate php-gd php-mbstring php-pear php-soap php-yaml php-memcached \
   make php-dev rsyslog msmtp postgresql-client libyaz5 yaz libyaz5-dev && \
   pecl channel-update pecl.php.net && \
   pecl install yaz && \
   rm -rf /var/lib/apt/lists/* && \
   php drush.phar core-status && \
-  chmod +x drush.phar && \
-  mv drush.phar /usr/local/bin/drush && \
+  chmod +x /drush.phar && \
+  mv /drush.phar /usr/local/bin/drush && \
   drush dl -y registry_rebuild-7.x-2.5 && \
   apt-get -q -y remove php-dev php-pear && \
   rm -rf /var/lib/apt/lists/* && \
@@ -92,7 +92,7 @@ RUN mkdir -p $APACHE_ROOT/private && \
   chmod 755 /healthcheck.sh && \
   chmod 755 /run_cron.sh && \
   chmod 755 /start_bibdk.sh && \
-  chmod 777 /etc/php/7.3/apache2/conf.d/20-yaz.ini && \
+  chmod 777 /etc/php/7.4/apache2/conf.d/20-yaz.ini && \
   sudo chown www-data:www-data $APACHE_ROOT/private && \
   sudo chown -R www-data:www-data $APACHE_ROOT/sites/default/files && \
   # Set up apache modules and configuration.
