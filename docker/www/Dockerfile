@@ -71,7 +71,7 @@ ADD conf/fqdn.conf /etc/apache2/conf-available
 ADD --chown=www-data:www-data ["https://is.dbc.dk/view/fbiscrum/job/BibliotekDK/job/Tools/job/Fetch%20Bibliotek%20DK%20files%20folder/lastSuccessfulBuild/artifact/files.tar.gz","/tmp"]
 COPY conf/robots.txt $APACHE_ROOT
 COPY conf/msmtprc /etc/
-COPY conf/20-yaz.ini /etc/php/7.3/apache2/conf.d/
+COPY conf/20-yaz.ini /etc/php/7.4/apache2/conf.d/
 
 # Copy startup scripts
 COPY script/run_cron.sh /
