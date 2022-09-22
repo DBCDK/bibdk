@@ -1,6 +1,6 @@
 ARG BRANCH=develop
 
-FROM docker-dscrum.dbc.dk/d7-php7-builder as builder
+FROM docker-frontend.artifacts.dbccloud.dk/d7-php7-builder as builder
 ARG BRANCH
 ENV BRANCH=${BRANCH}
 
@@ -17,7 +17,7 @@ RUN cd /var/lib/jenkins/www/profiles/bibdk/themes/bibdk_theme/.npm && \
     npm install && \
     ./node_modules/gulp/bin/gulp.js build --production
 
-FROM docker.dbc.dk/dbc-apache-php7
+FROM docker-dbc.artifacts.dbccloud.dk/dbc-apache-php7
 MAINTAINER D-scrum <d-scrum@dbc.dk>
 
 # set environment variables
@@ -41,16 +41,22 @@ ADD ["http://ftp.indexdata.dk/debian/indexdata.asc", "/"]
 RUN apt-key add indexdata.asc
 COPY conf/yaz.list /etc/apt/sources.list.d/
 
+RUN apt-get update && apt-get install -q -y libtinfo5
+ADD ["http://ftp.us.debian.org/debian/pool/main/r/readline/libreadline7_7.0-3_amd64.deb", "/"]
+RUN dpkg -i libreadline7_7.0-3_amd64.deb
+ADD ["http://ftp.us.debian.org/debian/pool/main/i/icu/libicu63_63.1-6+deb10u3_amd64.deb", "/"]
+RUN dpkg -i libicu63_63.1-6+deb10u3_amd64.deb
+ADD ["https://github.com/drush-ops/drush/releases/download/8.4.11/drush.phar", "/"]
+
 RUN apt-get update && \
-  apt-get -q -y install cron logrotate php-gd php-mbstring php-pear wget php-soap php-yaml php-memcached \
-  make php-dev rsyslog sudo wget msmtp postgresql-client libyaz5 yaz libyaz5-dev && \
+  apt-get -q -y install tar sudo cron logrotate php-gd php-mbstring php-pear php-soap php-yaml php-memcached \
+  make php-dev rsyslog msmtp postgresql-client libyaz5 yaz libyaz5-dev && \
   pecl channel-update pecl.php.net && \
   pecl install yaz && \
   rm -rf /var/lib/apt/lists/* && \
-  wget -q https://github.com/drush-ops/drush/releases/download/8.2.3/drush.phar && \
   php drush.phar core-status && \
-  chmod +x drush.phar && \
-  mv drush.phar /usr/local/bin/drush && \
+  chmod +x /drush.phar && \
+  mv /drush.phar /usr/local/bin/drush && \
   drush dl -y registry_rebuild-7.x-2.5 && \
   apt-get -q -y remove php-dev php-pear && \
   rm -rf /var/lib/apt/lists/* && \
@@ -71,7 +77,7 @@ ADD conf/fqdn.conf /etc/apache2/conf-available
 ADD --chown=www-data:www-data ["https://is.dbc.dk/view/fbiscrum/job/BibliotekDK/job/Tools/job/Fetch%20Bibliotek%20DK%20files%20folder/lastSuccessfulBuild/artifact/files.tar.gz","/tmp"]
 COPY conf/robots.txt $APACHE_ROOT
 COPY conf/msmtprc /etc/
-COPY conf/20-yaz.ini /etc/php/7.3/apache2/conf.d/
+COPY conf/20-yaz.ini /etc/php/7.4/apache2/conf.d/
 
 # Copy startup scripts
 COPY script/run_cron.sh /
@@ -86,7 +92,7 @@ RUN mkdir -p $APACHE_ROOT/private && \
   chmod 755 /healthcheck.sh && \
   chmod 755 /run_cron.sh && \
   chmod 755 /start_bibdk.sh && \
-  chmod 777 /etc/php/7.3/apache2/conf.d/20-yaz.ini && \
+  chmod 777 /etc/php/7.4/apache2/conf.d/20-yaz.ini && \
   sudo chown www-data:www-data $APACHE_ROOT/private && \
   sudo chown -R www-data:www-data $APACHE_ROOT/sites/default/files && \
   # Set up apache modules and configuration.

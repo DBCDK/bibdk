@@ -32,7 +32,7 @@ sed -i '/^\s*Alias/a RedirectPermanent /was https://www.was.digst.dk/bibliotek-d
 /bin/sh -c "cd $APACHE_ROOT/sites/default && ln -sf $APACHE_ROOT/profiles/bibdk/modules"
 
 # Update php ini to enable mail sending.
-PHPINI=/etc/php/7.3/apache2/php.ini
+PHPINI=/etc/php/7.4/apache2/php.ini
 # increase memory_limit
 sed -i 's/memory_limit = 128M/memory_limit = 512M/' $PHPINI
 # increase max_input_vars

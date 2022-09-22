@@ -6,9 +6,9 @@
       var to = $(element).attr("data-action-move-to");
       $("#" + from + " option:selected").each(function(i, option) {
         var label = $(option).text();
-        var value = $(option).val()
-        $("#" + to).append("<option value='" + value + "'>" + label + "</option>");
-        $("#" + from + " option[value='" + value + "']").remove();
+        var value = $(option).val();
+        $("#" + to).append(option);
+        $("#" + from + " option[value=\"" + value + "\"]").remove();
       });
     },
     save: function(element) {
@@ -17,7 +17,7 @@
       $("#" + from + " option").each(function(i, option) {
         var value = $(option).val();
         var label = $(option).html();
-        if($("input[value='" + value + "']").length === 0) {
+        if($("input[value=\"" + value + "\"]").length === 0) {
           var checkbox = "<div class=\"form-item form-type-checkbox\"><input class=\" form-checkbox\" type=\"checkbox\" checked=\"true\" name=\"" + term_type_wrapper + "[" + value + "]\" value=\"" + value + "\" tabindex=\"0\">  <label class=\"option\">" + label + "</label></div>";
           $(CustomSearchList.selector).before(checkbox);
         }
