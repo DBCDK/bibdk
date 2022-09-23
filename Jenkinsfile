@@ -145,7 +145,7 @@ pipeline {
         stage('Selenium') {
           agent {
             docker {
-              image "docker-dscrum.dbc.dk/selenium-tester:latest"
+              image "docker-fbiscrum.artifacts.dbccloud.dk/selenium-tester:latest"
               alwaysPull true
               label "devel10"
             }
