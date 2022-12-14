@@ -1,6 +1,6 @@
 ARG BRANCH=develop
 
-FROM docker-frontend.artifacts.dbccloud.dk/d7-php7-builder-bibdk923-node:2 as builder
+FROM docker-frontend.artifacts.dbccloud.dk/d7-php7-builder-bibdk923-node:3 as builder
 ARG BRANCH
 ENV BRANCH=${BRANCH}
 
