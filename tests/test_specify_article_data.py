@@ -39,7 +39,7 @@ class TestSpecifyArticleData(helpers.BibdkUnitTestCase, helpers.BibdkUser):
         #    self._logmein(browser)
 
         # ensure the fiels is shown as expected
-        browser.find_element_by_xpath("//fieldset[@id='edit-orderparameters']")
+        browser.find_element(BY.XPATH, "//fieldset[@id='edit-orderparameters']")
 
     def test_pid_3(self):
         browser = self.browser
@@ -53,7 +53,7 @@ class TestSpecifyArticleData(helpers.BibdkUnitTestCase, helpers.BibdkUser):
         #    self._logmein(browser)
 
         # ensure the fiels is shown as expected
-        browser.find_element_by_xpath("//fieldset[@id='edit-orderparameters']")
+        browser.find_element(BY.XPATH, "//fieldset[@id='edit-orderparameters']")
 
     def test_pid_4(self):
         browser = self.browser
@@ -71,19 +71,19 @@ class TestSpecifyArticleData(helpers.BibdkUnitTestCase, helpers.BibdkUser):
 
     def _logmein(self, browser):
         # click the login link
-        browser.find_element_by_class_name("bibdk-modal-login").click()
+        browser.find_element(BY.CLASS_NAME, "bibdk-modal-login").click()
 
         # wait for the form to be loaded in a modal overlay
         form = WebDriverWait(browser, 20).until(expected_conditions.visibility_of_element_located((By.ID, "user-login")))
 
         # input username
-        form.find_element_by_id("edit-name").send_keys(self._username)
+        form.find_element(BY.ID, "edit-name").send_keys(self._username)
 
         # input password
-        form.find_element_by_id("edit-pass").send_keys(self._password)
+        form.find_element(BY.ID, "edit-pass").send_keys(self._password)
 
         #submit
-        form.find_element_by_class_name("form-submit").click()
+        form.find_element(BY.CLASS_NAME, "form-submit").click()
 
         # wait for the modal window to be gone
         WebDriverWait(browser, 20).until(expected_conditions.invisibility_of_element_located((By.ID, "bibdk-modal")))

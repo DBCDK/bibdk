@@ -20,16 +20,16 @@ class TestOpenUserStatusWithNoLibrary(helpers.BibdkUnitTestCase):
 
 
         # Click Go to userstatus
-        browser.find_element_by_id("selid-mypage-userstatus").click()
+        browser.find_element(BY.ID, "selid-mypage-userstatus").click()
         time.sleep(10)
 
         browser.get(self.base_url + "user")
 
         # Click Go to userstatus
-        #browser.find_element_by_id("selid-mypage-userstatus").click()
+        #browser.find_element(BY.ID, "selid-mypage-userstatus").click()
 
         # Assert Check for label: message--warning label_userstatus_no_favourite
-        self.assertTrue(browser.find_element_by_class_name('message--warning'))
+        self.assertTrue(browser.find_element(BY.CLASS_NAME, 'message--warning'))
 
         # Logout and delete user
         self.assertTrue(user.logout())

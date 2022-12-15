@@ -38,11 +38,11 @@ class TestReservation(helpers.BibdkUnitTestCase):
 
         parent_handle = browser.current_window_handle
         # click the order link
-        browser.find_element_by_id("any_edtion_order_874310katalogdbb0701046").click()
+        browser.find_element(BY.ID, "any_edtion_order_874310katalogdbb0701046").click()
         handles = browser.window_handles
         browser.switch_to_window(handles[1])
 
-        pop = browser.find_element_by_id('popup')
+        pop = browser.find_element(BY.ID, 'popup')
         wait = WebDriverWait(browser, 5)
         link = wait.until((expected_conditions.presence_of_element_located((By.XPATH, "//span[@class='openformat-field']/a"))))
 
@@ -80,7 +80,7 @@ class TestReservation(helpers.BibdkUnitTestCase):
         order_btn.click()
 
         # click the order link
-        browser.find_element_by_id("any_edtion_order_870971tsart34276501").click()
+        browser.find_element(BY.ID, "any_edtion_order_870971tsart34276501").click()
 
         # wait for the PopUpWindow to visible
         WebDriverWait(browser, 20).until(self.found_window('PopUpWindowreservation'))
@@ -91,7 +91,7 @@ class TestReservation(helpers.BibdkUnitTestCase):
         # wait for the selector and select it when it's available
         browser.implicitly_wait(20)
 
-        link = browser.find_element_by_class_name("link-sbkopi")
+        link = browser.find_element(BY.CLASS_NAME, "link-sbkopi")
         # Get linktext
         # linktext = browser.find_element_by_link_text('sb_order_copy')
     '''

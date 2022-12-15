@@ -18,12 +18,12 @@ class TestCustomSearchList(helpers.BibdkUnitTestCase, helpers.BibdkUser):
         browser.get(self.base_url)
         self._check_pop_up()
         # open expanded search
-        browser.find_element_by_id('selid_custom_search_expand').click()
+        browser.find_element(BY.ID, 'selid_custom_search_expand').click()
         self._check_pop_up()
         wait = WebDriverWait(browser,20)
         # load list
         wait.until(expected_conditions.visibility_of_element_located((By.ID, "edit-namaterialetype-container-link-facet-type")))
-        link_all = browser.find_element_by_id('edit-namaterialetype-container-link-facet-type')
+        link_all = browser.find_element(BY.ID, 'edit-namaterialetype-container-link-facet-type')
 
         actions = ActionChains(self.browser)
         actions.move_to_element(link_all)
@@ -34,15 +34,15 @@ class TestCustomSearchList(helpers.BibdkUnitTestCase, helpers.BibdkUser):
         # select element form list
 
         facet = wait.until(expected_conditions.visibility_of_element_located((By.XPATH, "//option[@value=\"facet.type='billedbog'\"]")))
-        #browser.find_element_by_id('select-from-list-facet-type').find_element_by_css_selector("[value='facet.type=billedbog']").click()
+        #browser.find_element(BY.ID, 'select-from-list-facet-type').find_element(BY.CSS_SELECTOR, "[value='facet.type=billedbog']").click()
         facet.click()
-        browser.find_element_by_class_name('custom-search-list-action').click()
-        browser.find_element_by_class_name('custom-search-list-save').click()
+        browser.find_element(BY.CLASS_NAME, 'custom-search-list-action').click()
+        browser.find_element(BY.CLASS_NAME, 'custom-search-list-save').click()
         # Assert element is present
 
-        #browser.find_element_by_css_selector('input[value="facet.type=billedbog"]')
+        #browser.find_element(BY.CSS_SELECTOR, 'input[value="facet.type=billedbog"]')
         # Make search + assert element
         time.sleep(1)
         facet = wait.until(expected_conditions.visibility_of_element_located((By.XPATH, "//input[@value=\"facet.type='billedbog'\"]")))
-        browser.find_element_by_id("edit-submit").click()
+        browser.find_element(BY.ID, "edit-submit").click()
         WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located((By.ID, "selid-870970basis47558964")))

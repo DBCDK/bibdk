@@ -11,26 +11,26 @@ class TestBug18049messages(helpers.BibdkUnitTestCase, helpers.BibdkUser):
         browser.get(self.base_url)
 
         # click the loginlink
-        topbar = browser.find_element_by_class_name("topbar-links")
-        topbar.find_element_by_xpath("//a[contains(@href,'bibdk_modal/login')]").click()
+        topbar = browser.find_element(BY.CLASS_NAME, "topbar-links")
+        topbar.find_element(BY.XPATH, "//a[contains(@href,'bibdk_modal/login')]").click()
 
         WebDriverWait(browser, 20).until(expected_conditions.visibility_of_element_located((By.ID, 'edit-name')))
 
         # ensure a warning is displayed
-        #browser.find_element_by_class_name("message--warning")
+        #browser.find_element(BY.CLASS_NAME, "message--warning")
 
-        form = browser.find_element_by_id('user-login')
+        form = browser.find_element(BY.ID, 'user-login')
         username = self._username
         password = self._password
 
         # fill the fields
-        form.find_element_by_id("edit-name").send_keys(username)
-        form.find_element_by_id("edit-pass").send_keys(password)
+        form.find_element(BY.ID, "edit-name").send_keys(username)
+        form.find_element(BY.ID, "edit-pass").send_keys(password)
         time.sleep(1)
         self._check_pop_up()
 
         # login
-        form.find_element_by_class_name("form-submit").click()
+        form.find_element(BY.CLASS_NAME, "form-submit").click()
 
         # wait a little -- for the modal to disappear and the 'my page' link to be visible
         WebDriverWait(browser, 20).until(expected_conditions.presence_of_element_located((By.ID, "topbar-my-page-link")))

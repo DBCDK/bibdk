@@ -12,18 +12,18 @@ class TestBriefDisplay(helpers.BibdkUnitTestCase):
         # English title (Language added after title)
         browser.get(self.base_url)
         self.search_pid('870970-basis:45553973')
-        self.assertEqual(browser.find_element_by_css_selector('h2.searchresult-work-title').text, 'Washington, Oregon & the Pacific Northwest (Engelsk)')
+        self.assertEqual(browser.find_element(BY.CSS_SELECTOR, 'h2.searchresult-work-title').text, 'Washington, Oregon & the Pacific Northwest (Engelsk)')
 
         # Undefined language (no language added)
         self.search_pid('870971-tsart:34480990')
-        self.assertEqual(browser.find_element_by_css_selector('h2.searchresult-work-title').text, u'Køge Kyst')
+        self.assertEqual(browser.find_element(BY.CSS_SELECTOR, 'h2.searchresult-work-title').text, u'Køge Kyst')
 
         # Danish title (no language added)
         self.search_pid('870970-basis:51048830')
-        self.assertEqual(browser.find_element_by_css_selector('h2.searchresult-work-title').text, u'Fasandræberne : krimithriller. Bind 1')
+        self.assertEqual(browser.find_element(BY.CSS_SELECTOR, 'h2.searchresult-work-title').text, u'Fasandræberne : krimithriller. Bind 1')
 
     # Helper method : Search for element with specific pid
     def search_pid(self, pid):
-        self.browser.find_element_by_id("edit-search-block-form--2").clear()
-        self.browser.find_element_by_id("edit-search-block-form--2").send_keys("rec.id=" + pid)
-        self.browser.find_element_by_id("edit-submit").click()
+        self.browser.find_element(BY.ID, "edit-search-block-form--2").clear()
+        self.browser.find_element(BY.ID, "edit-search-block-form--2").send_keys("rec.id=" + pid)
+        self.browser.find_element(BY.ID, "edit-submit").click()
