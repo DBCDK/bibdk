@@ -18,7 +18,7 @@ class TestReservation(helpers.BibdkUnitTestCase):
         # got to reservation with no pids
         self._goto("reservation")
         # assert that errormessage is shown
-        browser.find_element(BY.CLASS_NAME, "message--error")
+        browser.find_element(By.CLASS_NAME, "message--error")
 
 
     ##
@@ -54,7 +54,7 @@ class TestReservation(helpers.BibdkUnitTestCase):
         order_btn.click()
 
         # click the order link
-        browser.find_element(BY.ID, "any_edtion_order_870970basis28373988").click()
+        browser.find_element(By.ID, "any_edtion_order_870970basis28373988").click()
 
         # wait for the PopUpWindow to visible
         WebDriverWait(browser, 20).until(self.found_window('PopUpWindowreservation'))
@@ -68,23 +68,23 @@ class TestReservation(helpers.BibdkUnitTestCase):
         Select(selector).select_by_value("100450")
 
         #click the next button
-        browser.find_element(BY.ID, "edit-next").click()
+        browser.find_element(By.ID, "edit-next").click()
 
         # click the next button again
-        ##browser.find_element(BY.XPATH, "//input[@id='edit-3' and not(@disabled)]")
-        ##browser.find_element(BY.ID, "edit-next").click()
+        ##browser.find_element(By.XPATH, "//input[@id='edit-3' and not(@disabled)]")
+        ##browser.find_element(By.ID, "edit-next").click()
 
         # esnure all steps are disabled  -- we are on the last page in the reservation flow
-        ##browser.find_element(BY.XPATH, "//input[@id='edit-1' and @disabled]")
-        ##browser.find_element(BY.XPATH, "//input[@id='edit-2' and @disabled]")
-        ##browser.find_element(BY.XPATH, "//input[@id='edit-3' and @disabled]")
-        ##browser.find_element(BY.XPATH, "//input[@id='edit-4' and @disabled]")
+        ##browser.find_element(By.XPATH, "//input[@id='edit-1' and @disabled]")
+        ##browser.find_element(By.XPATH, "//input[@id='edit-2' and @disabled]")
+        ##browser.find_element(By.XPATH, "//input[@id='edit-3' and @disabled]")
+        ##browser.find_element(By.XPATH, "//input[@id='edit-4' and @disabled]")
 
         # get the messages
-        messages = browser.find_element(BY.ID, "messages")
+        messages = browser.find_element(By.ID, "messages")
 
         # ensure a link is present
-        link = messages.find_element(BY.XPATH, "//a[contains(@href, '/bibdk_openuserstatus')]")
+        link = messages.find_element(By.XPATH, "//a[contains(@href, '/bibdk_openuserstatus')]")
 
         # click the link
         link.click()
@@ -97,14 +97,14 @@ class TestReservation(helpers.BibdkUnitTestCase):
 
         tabs = WebDriverWait(browser, 20).until(expected_conditions.presence_of_element_located((By.ID, "block-bibdk-frontend-bibdk-tabs")))
 
-        tabs.find_element(BY.XPATH, "//a[contains(@href, '/bibdk_openuserstatus')]")
+        tabs.find_element(By.XPATH, "//a[contains(@href, '/bibdk_openuserstatus')]")
         # ensurte the user have been redirected to the userstatus page
         txt = browser.current_url
         if not '/bibdk_openuserstatus' in txt:
             self.fail('wrong url')
 
         # also test on the classes on the body tag on the page
-        ##browser.find_element(BY.CLASS_NAME, "page-user-bibdk-openuserstatus")
+        ##browser.find_element(By.CLASS_NAME, "page-user-bibdk-openuserstatus")
 
     ##
     # Second of two tests that verifies that the user is shown a link when an
@@ -140,7 +140,7 @@ class TestReservation(helpers.BibdkUnitTestCase):
         order_btn.click()
 
         # click the order link
-        browser.find_element(BY.ID, "any_edtion_order_870970basis28373988").click()
+        browser.find_element(By.ID, "any_edtion_order_870970basis28373988").click()
 
         # wait for the PopUpWindow to visible
         WebDriverWait(browser, 20).until(self.found_window('PopUpWindowreservation'))
@@ -154,33 +154,33 @@ class TestReservation(helpers.BibdkUnitTestCase):
         Select(selector).select_by_value("790900")
 
         # we need to fill out userid for openorder to validate
-        browser.find_element(BY.ID, 'edit-userid').send_keys('fisk')
-        browser.find_element(BY.ID, 'edit-pincode').send_keys('123456')
+        browser.find_element(By.ID, 'edit-userid').send_keys('fisk')
+        browser.find_element(By.ID, 'edit-pincode').send_keys('123456')
         # click the next button
-        reserve_but = browser.find_element(BY.ID, "edit-next")
+        reserve_but = browser.find_element(By.ID, "edit-next")
         actions = ActionChains(self.browser)
         actions.move_to_element(reserve_but)
         actions.click(reserve_but)
         actions.perform()
 
         # click the next button again
-        #browser.find_element(BY.XPATH, "//input[@id='edit-3' and not(@disabled)]")
-        #browser.find_element(BY.ID, "edit-next").click()
+        #browser.find_element(By.XPATH, "//input[@id='edit-3' and not(@disabled)]")
+        #browser.find_element(By.ID, "edit-next").click()
 
         # esnure all steps are disabled  -- we are on the last page in the reservation flow
-        ##browser.find_element(BY.XPATH, "//input[@id='edit-1' and @disabled]")
-        ##browser.find_element(BY.XPATH, "//input[@id='edit-2' and @disabled]")
-        ##browser.find_element(BY.XPATH, "//input[@id='edit-3' and @disabled]")
-        #browser.find_element(BY.XPATH, "//input[@id='edit-4' and @disabled]")
+        ##browser.find_element(By.XPATH, "//input[@id='edit-1' and @disabled]")
+        ##browser.find_element(By.XPATH, "//input[@id='edit-2' and @disabled]")
+        ##browser.find_element(By.XPATH, "//input[@id='edit-3' and @disabled]")
+        #browser.find_element(By.XPATH, "//input[@id='edit-4' and @disabled]")
 
         # get the messages
-        messages = browser.find_element(BY.ID, "messages")
+        messages = browser.find_element(By.ID, "messages")
 
         # ensure we have a status message
-        messages.find_element(BY.CLASS_NAME, "message--error")
+        messages.find_element(By.CLASS_NAME, "message--error")
 
         # ensure a link is present
-        #link = messages.find_element(BY.XPATH, "//a[contains(@href, 'http://www.danbib.dk/vip_lånerstatus')]")
+        #link = messages.find_element(By.XPATH, "//a[contains(@href, 'http://www.danbib.dk/vip_lånerstatus')]")
 
         # click the link
         #link.click()

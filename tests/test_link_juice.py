@@ -20,7 +20,7 @@ class TestNoLogoPrefix(helpers.BibdkUnitTestCase):
         url = self.add_slash(self.base_url)
         self.assertFalse(re.match('/' + self.default_lang + '/$', url), 'Default langauge found at the end of base url.')
         browser.get(url)
-        logo_link = browser.find_element(BY.XPATH, "//div[@class='topbar-logo']/a")
+        logo_link = browser.find_element(By.XPATH, "//div[@class='topbar-logo']/a")
         href = logo_link.get_attribute('href')
         self.assertEqual(href, url, 'No language prefix found.')
 
@@ -32,6 +32,6 @@ class TestNoLogoPrefix(helpers.BibdkUnitTestCase):
         for lang in self.other_langauges:
             lang_url = url + lang
             browser.get(lang_url)
-            logo = browser.find_element(BY.CSS_SELECTOR, '.topbar-logo a[title="Go to frontpage"]')
+            logo = browser.find_element(By.CSS_SELECTOR, '.topbar-logo a[title="Go to frontpage"]')
             href = logo.get_attribute('href')
             self.assertEqual(href, lang_url, 'Logo link has prefix: ' + lang)

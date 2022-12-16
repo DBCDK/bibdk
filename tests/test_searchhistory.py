@@ -11,7 +11,7 @@ class TestSearhhistory(helpers.BibdkUnitTestCase):
         browser.get(self.base_url)
         wait = WebDriverWait(browser, 30)
         # search jungersen + book
-        self.browser.find_element(BY.ID, "edit-search-block-form--2").send_keys('jungersen')
+        self.browser.find_element(By.ID, "edit-search-block-form--2").send_keys('jungersen')
         # expand advanced search.
         expand = wait.until(
             expected_conditions.visibility_of_element_located(
@@ -30,8 +30,8 @@ class TestSearhhistory(helpers.BibdkUnitTestCase):
 
         toggle_books.click()
         # select printed books, and submit search.
-        browser.find_element(BY.ID, 'edit-namaterialetype-termtypebog').click()
-        browser.find_element(BY.ID, "edit-submit").click()
+        browser.find_element(By.ID, 'edit-namaterialetype-termtypebog').click()
+        browser.find_element(By.ID, "edit-submit").click()
 
         # search "huden jeg bor i" + spanish + movie
         browser.get(self.base_url)
@@ -48,7 +48,7 @@ class TestSearhhistory(helpers.BibdkUnitTestCase):
             )
         )
         # Material page select.
-        browser.find_element(BY.CSS_SELECTOR, 'select[name="select_material_type"] option[value="bibdk_frontpage/film"]').click()
+        browser.find_element(By.CSS_SELECTOR, 'select[name="select_material_type"] option[value="bibdk_frontpage/film"]').click()
 
         wait.until(
             expected_conditions.visibility_of_element_located(
@@ -56,7 +56,7 @@ class TestSearhhistory(helpers.BibdkUnitTestCase):
             )
         )
 
-        browser.find_element(BY.NAME, 'term_title[titel]').send_keys('huden jeg bor i')
+        browser.find_element(By.NAME, 'term_title[titel]').send_keys('huden jeg bor i')
 
         select_spanish_films = wait.until(
             expected_conditions.visibility_of_element_located(
@@ -81,12 +81,12 @@ class TestSearhhistory(helpers.BibdkUnitTestCase):
         actions.perform()
 
 
-        browser.find_element(BY.ID, "edit-submit").click()
+        browser.find_element(By.ID, "edit-submit").click()
 
         # search "du forsvinder"
         browser.get(self.base_url)
-        self.browser.find_element(BY.ID, "edit-search-block-form--2").send_keys('du forsvinder')
-        browser.find_element(BY.ID, "edit-submit").click()
+        self.browser.find_element(By.ID, "edit-search-block-form--2").send_keys('du forsvinder')
+        browser.find_element(By.ID, "edit-submit").click()
 
         # Test search history elements exists
         browser.get(self.base_url + 'user/searchhistory')
@@ -101,9 +101,9 @@ class TestSearhhistory(helpers.BibdkUnitTestCase):
         elements = browser.find_elements_by_class_name('combine-select')
         elements[1].click()
         elements[3].click()
-        browser.find_element(BY.ID, 'edit-and-or-radios-and-').click()
-        browser.find_element(BY.ID, 'edit-combine').click()
-        self.assertEqual(self.browser.find_element(BY.ID, "edit-search-block-form--2").get_attribute('value'), '((((term.type="bog"))) and (jungersen)) and ((du and forsvinder))')
+        browser.find_element(By.ID, 'edit-and-or-radios-and-').click()
+        browser.find_element(By.ID, 'edit-combine').click()
+        self.assertEqual(self.browser.find_element(By.ID, "edit-search-block-form--2").get_attribute('value'), '((((term.type="bog"))) and (jungersen)) and ((du and forsvinder))')
         #assert warning does not exist
         elementList = browser.find_elements_by_css_selector(".message--warning")
         self.assertTrue(len(elementList) == 0)
@@ -113,9 +113,9 @@ class TestSearhhistory(helpers.BibdkUnitTestCase):
         elements = browser.find_elements_by_class_name('combine-select')
         elements[1].click()
         elements[3].click()
-        browser.find_element(BY.ID, 'edit-and-or-radios-or-').click()
-        browser.find_element(BY.ID, 'edit-combine').click()
-        self.assertEqual(self.browser.find_element(BY.ID, "edit-search-block-form--2").get_attribute('value'), '((((term.type="bog"))) and (jungersen)) or ((du and forsvinder))')
+        browser.find_element(By.ID, 'edit-and-or-radios-or-').click()
+        browser.find_element(By.ID, 'edit-combine').click()
+        self.assertEqual(self.browser.find_element(By.ID, "edit-search-block-form--2").get_attribute('value'), '((((term.type="bog"))) and (jungersen)) or ((du and forsvinder))')
         #assert warning does not exist
         elementList = browser.find_elements_by_css_selector(".message--warning")
         self.assertTrue(len(elementList) == 0)
@@ -126,27 +126,27 @@ class TestSearhhistory(helpers.BibdkUnitTestCase):
 
         # search gamle hankat
         browser.get(self.base_url)
-        search = self.browser.find_element(BY.ID, "edit-search-block-form--2");
+        search = self.browser.find_element(By.ID, "edit-search-block-form--2");
         search.clear();
         search.send_keys('gammel hankat')
-        browser.find_element(BY.ID, "edit-submit").click()
+        browser.find_element(By.ID, "edit-submit").click()
 
          # search kim larsen
         browser.get(self.base_url)
-        search = self.browser.find_element(BY.ID, "edit-search-block-form--2");
+        search = self.browser.find_element(By.ID, "edit-search-block-form--2");
         search.clear();
         search.send_keys('kim larsen')
-        browser.find_element(BY.ID, "edit-submit").click()
+        browser.find_element(By.ID, "edit-submit").click()
 
         # test and combination
         browser.get(self.base_url + 'user/searchhistory')
         elements = browser.find_elements_by_class_name('combine-select')
         elements[1].click();
         elements[2].click();
-        browser.find_element(BY.ID, 'edit-and-or-radios-and-').click()
-        browser.find_element(BY.ID, 'edit-combine').click()
-        self.assertEqual(self.browser.find_element(BY.ID, "edit-search-block-form--2").get_attribute('value'), '((gammel and hankat)) and ((kim and larsen))')
-        browser.find_element(BY.XPATH, "//h2[text()='Gammel hankat']")
+        browser.find_element(By.ID, 'edit-and-or-radios-and-').click()
+        browser.find_element(By.ID, 'edit-combine').click()
+        self.assertEqual(self.browser.find_element(By.ID, "edit-search-block-form--2").get_attribute('value'), '((gammel and hankat)) and ((kim and larsen))')
+        browser.find_element(By.XPATH, "//h2[text()='Gammel hankat']")
 
         #assert warning does not exist
         elementList = browser.find_elements_by_css_selector(".message--warning")

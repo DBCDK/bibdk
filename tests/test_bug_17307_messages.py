@@ -9,10 +9,10 @@ class TestBug17307Messages(helpers.BibdkUnitTestCase, helpers.BibdkUser):
         self._goto("search/work")
 
         # get all messages
-        messages = browser.find_element(BY.ID, "messages")
+        messages = browser.find_element(By.ID, "messages")
 
         # ensure that we have a message og type warning
-        messages.find_element(BY.CLASS_NAME, "message--warning")
+        messages.find_element(By.CLASS_NAME, "message--warning")
 
         # do a actiual search request
         self._goto("search/work/master chief")
@@ -21,16 +21,16 @@ class TestBug17307Messages(helpers.BibdkUnitTestCase, helpers.BibdkUser):
         self._assert_no_class("message--warning")
 
         # ensure something is actually displayed
-        browser.find_element(BY.ID, "search-result-wrapper")
+        browser.find_element(By.ID, "search-result-wrapper")
 
         # do a empty search
         self._goto("search/work")
 
         # get all messages
-        messages = browser.find_element(BY.ID, "messages")
+        messages = browser.find_element(By.ID, "messages")
 
         # ensure that we have a message og type warning
-        messages.find_element(BY.CLASS_NAME, "message--warning")
+        messages.find_element(By.CLASS_NAME, "message--warning")
 
         # ensure no results are displayed
         self._assert_no_class("work-header")

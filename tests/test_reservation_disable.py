@@ -43,7 +43,7 @@ class TestReservation(helpers.BibdkUnitTestCase):
         order_btn.click()
 
         # click the order link
-        browser.find_element(BY.ID, "any_edtion_order_870970basis28373988").click()
+        browser.find_element(By.ID, "any_edtion_order_870970basis28373988").click()
 
         # wait for the PopUpWindow to visible
         WebDriverWait(browser, 20).until(self.found_window('PopUpWindowreservation'))
@@ -58,22 +58,22 @@ class TestReservation(helpers.BibdkUnitTestCase):
 
         # click the next button
         # remove this step - only three steps now
-        #browser.find_element(BY.ID, "edit-next").click()
+        #browser.find_element(By.ID, "edit-next").click()
 
         # click the next button again
-        #browser.find_element(BY.XPATH, "//input[@id='edit-next' and @class='already-clicked']")
-        #browser.find_element(BY.ID, "edit-next").click()
+        #browser.find_element(By.XPATH, "//input[@id='edit-next' and @class='already-clicked']")
+        #browser.find_element(By.ID, "edit-next").click()
 
 
 
         # Check for disabled order button
-        #browser.find_element(BY.XPATH, "//input[@id='edit-next' and (@disabled)]")
+        #browser.find_element(By.XPATH, "//input[@id='edit-next' and (@disabled)]")
 
         # esnure all steps are disabled  -- we are on the last page in the reservation flow
-        #browser.find_element(BY.XPATH, "//input[@id='edit-1' and @disabled]")
-        #browser.find_element(BY.XPATH, "//input[@id='edit-2' and @disabled]")
-        #browser.find_element(BY.XPATH, "//input[@id='edit-3' and @disabled]")
-        #browser.find_element(BY.XPATH, "//input[@id='edit-4' and @disabled]")
+        #browser.find_element(By.XPATH, "//input[@id='edit-1' and @disabled]")
+        #browser.find_element(By.XPATH, "//input[@id='edit-2' and @disabled]")
+        #browser.find_element(By.XPATH, "//input[@id='edit-3' and @disabled]")
+        #browser.find_element(By.XPATH, "//input[@id='edit-4' and @disabled]")
 
 
 

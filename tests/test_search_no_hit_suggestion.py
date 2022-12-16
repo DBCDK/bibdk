@@ -7,17 +7,17 @@ class TestNo_hit_suggestion(helpers.BibdkUnitTestCase, helpers.BibdkUser):
 
         # do a actiual search request
         self._goto("search/work/tjajkov")
-        browser.find_element(BY.ID, "edit-submit").click()
+        browser.find_element(By.ID, "edit-submit").click()
 
         # get all messages
-        messages = browser.find_element(BY.ID, "messages")
+        messages = browser.find_element(By.ID, "messages")
 
         # ensure that we have a message og type warning
-        messages.find_element(BY.CLASS_NAME, "message--warning")
+        messages.find_element(By.CLASS_NAME, "message--warning")
 
         # ensure some suggestion is actually displayed
         ## 05/17/05/2017: Suggestion service is disabled due to performance issues
-        ## browser.find_element(BY.CLASS_NAME, "bibdk-suggest-label")
+        ## browser.find_element(By.CLASS_NAME, "bibdk-suggest-label")
 
 
 

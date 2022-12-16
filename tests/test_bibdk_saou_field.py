@@ -25,7 +25,7 @@ class TestSaouField(helpers.BibdkUnitTestCase):
         path = self.base_url + "search/work/rec.id=" + self.pid2
         browser.get(path)
         text = "checkAccess Gentofte Bibliotekerne "
-        browser.find_element(BY.XPATH, "//div[contains(.,'"+text+"')]")
+        browser.find_element(By.XPATH, "//div[contains(.,'"+text+"')]")
 
     #bibdk_saou_click_here_for_access
 
@@ -41,7 +41,7 @@ class TestSaouField(helpers.BibdkUnitTestCase):
         path = self.base_url + "search/work/rec.id=" + self.pid1
         browser.get(path)
         text = "checkAccess Gentofte Bibliotekerne "
-        browser.find_element(BY.XPATH, "//div[contains(.,'"+text+"')]")
+        browser.find_element(By.XPATH, "//div[contains(.,'"+text+"')]")
 
 
     #saou_log_in_to_accesss_ressource
@@ -51,10 +51,10 @@ class TestSaouField(helpers.BibdkUnitTestCase):
         browser.implicitly_wait(10)
         path = self.base_url + "search/work/rec.id=" + self.pid1
         browser.get(path)
-        element = browser.find_element(BY.ID, "selid-150008academicebr10655298")
+        element = browser.find_element(By.ID, "selid-150008academicebr10655298")
         element.click()
         text = "saou_log_in_to_accesss_ressource"
-        browser.find_element(BY.XPATH, "//div[contains(.,'"+text+"')]")
+        browser.find_element(By.XPATH, "//div[contains(.,'"+text+"')]")
     '''
 
     def _pid_to_id(self, pid):
@@ -64,7 +64,7 @@ class TestSaouField(helpers.BibdkUnitTestCase):
 
     def text_is_present(self, element, text):
         try:
-            self.browser.find_element(BY.XPATH, "//div[contains(.,'"+text+"')]")
+            self.browser.find_element(By.XPATH, "//div[contains(.,'"+text+"')]")
         except NoSuchElementException:
                 return False
 
@@ -76,11 +76,11 @@ class TestSaouField(helpers.BibdkUnitTestCase):
         url = self.base_url + "user"
         browser.get(url)
         # @TODO id is selid-mypage-favorites. Fix when changes are merged
-        browser.find_element(BY.CLASS_NAME, "right-off-canvas-toggle").click()
-        browser.find_element(BY.XPATH, "//a[contains(@href,'bibdk_favourite_list')]").click()
+        browser.find_element(By.CLASS_NAME, "right-off-canvas-toggle").click()
+        browser.find_element(By.XPATH, "//a[contains(@href,'bibdk_favourite_list')]").click()
         # click 'set order library
         selector = "//a[contains(@href,'/favourite/add/" + bibno + "')]"
-        browser.find_element(BY.XPATH, selector).click()
+        browser.find_element(By.XPATH, selector).click()
 
 
 if __name__ == '__main__':

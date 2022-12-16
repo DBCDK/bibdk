@@ -160,14 +160,14 @@ class TestBibdkCart(helpers.BibdkUnitTestCase):
         browser.get(self.base_url + "user/cart")
 
         # assert that the pager is present
-        pager = browser.find_element(BY.ID, "bibdk-cart-pager")
+        pager = browser.find_element(By.ID, "bibdk-cart-pager")
 
         # with the default setting 20 items should be present on each page - that gives us to pages
         # first ensure that the current page is highlighted with the bold class
-        link_1 = pager.find_element(BY.CLASS_NAME, "bold")
+        link_1 = pager.find_element(By.CLASS_NAME, "bold")
         assert link_1.text == "1", "bold class was found on active link"
 
-        link_2 = pager.find_element(BY.XPATH, "//a[contains(@href, 'user/cart?page=2')]")
+        link_2 = pager.find_element(By.XPATH, "//a[contains(@href, 'user/cart?page=2')]")
         assert link_2.get_attribute('class') == "", "did not find bold class in active"
 
         # count items on the current page and verify that 20 items is visible
@@ -178,12 +178,12 @@ class TestBibdkCart(helpers.BibdkUnitTestCase):
         link_2.click()
 
         # assert that the pager is present
-        pager = browser.find_element(BY.ID, "bibdk-cart-pager")
+        pager = browser.find_element(By.ID, "bibdk-cart-pager")
 
-        link_2 = pager.find_element(BY.CLASS_NAME, "bold")
+        link_2 = pager.find_element(By.CLASS_NAME, "bold")
         assert link_2.text == "2", "bold class was found on active link"
 
-        link_1 = pager.find_element(BY.XPATH, "//a[contains(@href, 'user/cart?page=1')]")
+        link_1 = pager.find_element(By.XPATH, "//a[contains(@href, 'user/cart?page=1')]")
         assert link_1.get_attribute('class') == "", "did not find bold class in active"
 
         # count items on the current page and verify that 12 items is visible
@@ -234,15 +234,15 @@ class TestBibdkCart(helpers.BibdkUnitTestCase):
         browser.get(self.base_url + "user/cart")
 
         # verify that the item is in the cart
-        browser.find_element(BY.CLASS_NAME, "cart-item-id-870970-basis-51155963")
+        browser.find_element(By.CLASS_NAME, "cart-item-id-870970-basis-51155963")
 
 
         browser.execute_script("window.confirm = function(){return true;}")
         # remove item from cart
 
-        browser.find_element(BY.ID, "edit-cart-table-870970-basis51155963").click()
+        browser.find_element(By.ID, "edit-cart-table-870970-basis51155963").click()
 
-        browser.find_element(BY.CLASS_NAME, "cart-view-delete-selected").click()
+        browser.find_element(By.CLASS_NAME, "cart-view-delete-selected").click()
 
         #WebDriverWait(browser, 60).until(expected_conditions.invisibility_of_element_located((By.CLASS_NAME, "cart-item-id-870970-basis-51155963")))
 
@@ -261,7 +261,7 @@ class TestBibdkCart(helpers.BibdkUnitTestCase):
         browser.get(self.base_url + "user/cart")
 
         # verify that the item is in the cart
-        browser.find_element(BY.ID, "edit-cart-table-870970-basis51155963")
+        browser.find_element(By.ID, "edit-cart-table-870970-basis51155963")
 
         user.delete()
 
@@ -272,8 +272,8 @@ class TestBibdkCart(helpers.BibdkUnitTestCase):
         # goto /user
         browser.get(self.base_url + "user/cart")
 
-        table = browser.find_element(BY.CLASS_NAME, "table")
-        table.find_element(BY.CLASS_NAME, "empty")
+        table = browser.find_element(By.CLASS_NAME, "table")
+        table.find_element(By.CLASS_NAME, "empty")
 
         # search for a specific item and add to the cart
         self._add_item_to_cart('870970-basis:51155963', 'Bog')
@@ -281,8 +281,8 @@ class TestBibdkCart(helpers.BibdkUnitTestCase):
         # goto /user
         browser.get(self.base_url + "user/cart")
 
-        browser.find_element(BY.CLASS_NAME, "cart-actions")
-        cart_text = browser.find_element(BY.CLASS_NAME, "cart-view-delete-selected").text
+        browser.find_element(By.CLASS_NAME, "cart-actions")
+        cart_text = browser.find_element(By.CLASS_NAME, "cart-view-delete-selected").text
         assert cart_text != ""
 
     def test_cart_view_mobile_size(self):
@@ -298,8 +298,8 @@ class TestBibdkCart(helpers.BibdkUnitTestCase):
         browser.get(self.base_url + "user/cart")
 
         time.sleep(10)
-        table = browser.find_element(BY.CLASS_NAME, "table")
-        table.find_element(BY.CLASS_NAME, "empty")
+        table = browser.find_element(By.CLASS_NAME, "table")
+        table.find_element(By.CLASS_NAME, "empty")
 
         time.sleep(1)
         # search for a specific item and add to the cart
@@ -308,8 +308,8 @@ class TestBibdkCart(helpers.BibdkUnitTestCase):
         # goto /user
         browser.get(self.base_url + "user/cart")
 
-        browser.find_element(BY.CLASS_NAME, "cart-actions")
-        cart_text = browser.find_element(BY.CLASS_NAME, "cart-view-delete-selected").text
+        browser.find_element(By.CLASS_NAME, "cart-actions")
+        cart_text = browser.find_element(By.CLASS_NAME, "cart-view-delete-selected").text
         assert cart_text != ""
 
     def _test_add_remove_to_cart_as_logged_in_user_mobile_size(self):
@@ -349,15 +349,15 @@ class TestBibdkCart(helpers.BibdkUnitTestCase):
         browser.get(self.base_url + "user/cart")
 
         # verify that the item is in the cart
-        browser.find_element(BY.CLASS_NAME, "cart-item-id-870970-basis-51155963")
+        browser.find_element(By.CLASS_NAME, "cart-item-id-870970-basis-51155963")
 
 
         browser.execute_script("window.confirm = function(){return true;}")
         # remove item from cart
 
-        browser.find_element(BY.ID, "edit-cart-table-870970-basis51155963").click()
+        browser.find_element(By.ID, "edit-cart-table-870970-basis51155963").click()
 
-        browser.find_element(BY.CLASS_NAME, "cart-view-delete-selected").click()
+        browser.find_element(By.CLASS_NAME, "cart-view-delete-selected").click()
 
         browser.get(self.base_url + "user/cart")
 
@@ -375,7 +375,7 @@ class TestBibdkCart(helpers.BibdkUnitTestCase):
         browser.get(self.base_url + "user/cart")
 
         # verify that the item is in the cart
-        browser.find_element(BY.ID, "edit-cart-table-870970-basis51155963")
+        browser.find_element(By.ID, "edit-cart-table-870970-basis51155963")
 
         user.delete()
 
@@ -403,12 +403,12 @@ class TestBibdkCart(helpers.BibdkUnitTestCase):
         ActionChains(browser).move_to_element(wait.until(EC.visibility_of_element_located((By.ID, "selid-" + re.sub('[-:]', '', id))))).click().perform()
 
         # add item to cart, using the add any edition btn
-        browser.find_element(BY.ID, "any_edition_but_" + re.sub('[-:]', '', id)).click()
+        browser.find_element(By.ID, "any_edition_but_" + re.sub('[-:]', '', id)).click()
         id = re.sub('[:]', '', id)
-        browser.find_element(BY.ID, "cart-any-" + id).click()
+        browser.find_element(By.ID, "cart-any-" + id).click()
 
         time.sleep(10)
-        browser.find_element(BY.ID, "manifestation-toggle-button-" + type + "-" + id).click()
+        browser.find_element(By.ID, "manifestation-toggle-button-" + type + "-" + id).click()
         # wait for the AJAX to have finished
 
     def _check_pop_up(self):
@@ -432,14 +432,14 @@ class TestBibdkCart(helpers.BibdkUnitTestCase):
         browser.get(self.base_url + "search/work/rec.id=" + id)
 
         # unfold work
-        browser.find_element(BY.ID, "selid-" + re.sub('[-:]', '', id)).click()
+        browser.find_element(By.ID, "selid-" + re.sub('[-:]', '', id)).click()
 
         # wait for AJAX to be completed
 
         # add item to cart, using the add any edition btn
-        browser.find_element(BY.ID, "any_edition_but_" + re.sub('[-:]', '', id)).click()
+        browser.find_element(By.ID, "any_edition_but_" + re.sub('[-:]', '', id)).click()
         id = re.sub('[:]', '', id)
-        browser.find_element(BY.ID, "cart-any-" + id).click()
+        browser.find_element(By.ID, "cart-any-" + id).click()
 
-        browser.find_element(BY.ID, "manifestation-toggle-button-" + type + "-" + id).click()
+        browser.find_element(By.ID, "manifestation-toggle-button-" + type + "-" + id).click()
         # wait for the AJAX to have finished

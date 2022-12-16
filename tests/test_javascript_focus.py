@@ -18,7 +18,7 @@ class TestJavascriptFocus(helpers.BibdkUnitTestCase):
         'Main input search field has focus.')
 
         self._check_pop_up()
-        subject_element = browser.find_element(BY.ID, element_id)
+        subject_element = browser.find_element(By.ID, element_id)
         subject_element.click()
         WebDriverWait(browser, 15).until(expected_conditions.presence_of_element_located((By.CLASS_NAME, 'subjects-sublist-wrapper')))
 
@@ -44,7 +44,7 @@ class TestJavascriptFocus(helpers.BibdkUnitTestCase):
 
         # ensure that we can see a login link
         WebDriverWait(browser, 20).until(expected_conditions.presence_of_element_located((By.XPATH, "//a[contains(@href,'bibdk_modal/login')]")))
-        login_link = browser.find_element(BY.XPATH, "//a[contains(@href,'bibdk_modal/login')]")
+        login_link = browser.find_element(By.XPATH, "//a[contains(@href,'bibdk_modal/login')]")
 
         # click the login link
         login_link.click()

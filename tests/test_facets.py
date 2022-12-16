@@ -23,11 +23,11 @@ class TestFacets(helpers.BibdkUnitTestCase):
         browser.get(self.base_url + "search/work/danmark?page=2")
 
         #find the left column holding the facets
-        left_column = browser.find_element(BY.CLASS_NAME, "panel-left")
+        left_column = browser.find_element(By.CLASS_NAME, "panel-left")
 
         #enusre we have no throbber -- if this one fails it might be because facets are not being retrieved by AJAX see /admin/config/ting/facets
         self._assert_no_class("throbber", left_column)
-        left_column.find_element(BY.ID, "bibdk-facetbrowser-form")
+        left_column.find_element(By.ID, "bibdk-facetbrowser-form")
 
     def test_facetbrowser(self):
         browser = self.browser
@@ -57,18 +57,18 @@ class TestFacets(helpers.BibdkUnitTestCase):
         facets_deselected = browser.find_element(By.ID, "deselected-terms")
 
         # Check if the facetbrowser has a 'label_facet_select_unselect' and a 'label_facet_show_more' link
-        facet_select_unselect = browser.find_element(BY.XPATH, "//div[@data-expand='select'][@id='edit-filter']/a")
+        facet_select_unselect = browser.find_element(By.XPATH, "//div[@data-expand='select'][@id='edit-filter']/a")
         # open filter form
         facet_select_unselect.click()
         filter_form = wait.until(expected_conditions.presence_of_element_located((By.XPATH, "//form[@id='bibdk-facetbrowser-filter-form']")))
 
         # PJO outcommented - 'label_facet_deselect' is translated
-        #refine_facet_select = browser.find_element(BY.XPATH, "//div[contains(.,'label_facet_deselect')]")
+        #refine_facet_select = browser.find_element(By.XPATH, "//div[contains(.,'label_facet_deselect')]")
 
-        close = filter_form.find_element(BY.XPATH, "//input[@id='edit-close']")
+        close = filter_form.find_element(By.XPATH, "//input[@id='edit-close']")
         close.click()
         #self.assertEqual('label_facet_close', close.get_attribute('value'),'Close button found')
-        open = filter_form.find_element(BY.XPATH, "//input[@id='edit-submit']")
+        open = filter_form.find_element(By.XPATH, "//input[@id='edit-submit']")
 
     def test_facetbrowser_link_open(self):
         browser = self.browser
@@ -81,14 +81,14 @@ class TestFacets(helpers.BibdkUnitTestCase):
         WebDriverWait(browser, 20).until(expected_conditions.presence_of_element_located((By.ID, "bibdk-facetbrowser-form")))
 
         #find the left column holding the facets
-        left_column = browser.find_element(BY.CLASS_NAME, "panel-left")
+        left_column = browser.find_element(By.CLASS_NAME, "panel-left")
 
         #enusre we have no throbber -- if this one fails it might be because facets are not being retrieved by AJAX see /admin/config/ting/facets
         self._assert_no_class("throbber", left_column)
 
         #click on unfolded link
         self._check_pop_up()
-        left_column.find_element(BY.ID, "facet-form").find_element(BY.CLASS_NAME, "icon").click()
+        left_column.find_element(By.ID, "facet-form").find_element(By.CLASS_NAME, "icon").click()
 
         #Check for present of facet viser
-        facet_subject_viser = left_column.find_element(BY.ID, 'edit-form-viser')
+        facet_subject_viser = left_column.find_element(By.ID, 'edit-form-viser')
