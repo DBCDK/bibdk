@@ -44,12 +44,12 @@ class TestReservationBorchk(helpers.BibdkUnitTestCase):
         browser.find_element(By.ID, 'edit-next').click()
 
     def get_error_messages(self):
-        error_elements = self.browser.find_elements_by_class_name('message--error')
+        error_elements = self.browser.find_elements(By.CLASS_NAME, ('message--error')
         error_messages = map(lambda x : x.text, error_elements)
         return error_messages
 
     def get_warning_messages(self):
-        warning_elements = self.browser.find_elements_by_class_name('message--warning')
+        warning_elements = self.browser.find_elements(By.CLASS_NAME, ('message--warning')
         warning_messages = map(lambda x : x.text, warning_elements)
         return warning_messages
 

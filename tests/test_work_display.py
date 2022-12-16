@@ -51,11 +51,11 @@ class TestWorkDisplay(helpers.BibdkUnitTestCase):
         if not "Tarjei Vesaas" in creator.text:
             assert False
 
-        year = browser.find_elements_by_css_selector('.field-name-bibdk-mani-pub-year span.openformat-field')
+        year = browser.find_elements(By.CSS_SELECTOR, '.field-name-bibdk-mani-pub-year span.openformat-field')
         if not "2019" in year[0].text:
             assert False
 
-        shelf = browser.find_elements_by_css_selector('.field-name-bibdk-mani-shelf a')
+        shelf = browser.find_elements(By.CSS_SELECTOR, '.field-name-bibdk-mani-shelf a')
         if not u"skønlitteratur" in shelf[-1].text:
             assert False
         if not 'dkcclterm.dk%3D%22sk%22' in shelf[-1].get_attribute('href'):

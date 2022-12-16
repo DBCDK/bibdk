@@ -90,34 +90,34 @@ class TestSearhhistory(helpers.BibdkUnitTestCase):
 
         # Test search history elements exists
         browser.get(self.base_url + 'user/searchhistory')
-        elements = browser.find_elements_by_class_name('searchhistory-searchstring')
+        elements = browser.find_elements(By.CLASS_NAME, ('searchhistory-searchstring')
         self.assertEqual(len(elements), 3)
 
         # test cql is present (Bug 17914)
-        elements = browser.find_elements_by_class_name('searchhistory-cql')
+        elements = browser.find_elements(By.CLASS_NAME, ('searchhistory-cql')
         self.assertEqual(len(elements), 3)
 
         # test and combination
-        elements = browser.find_elements_by_class_name('combine-select')
+        elements = browser.find_elements(By.CLASS_NAME, ('combine-select')
         elements[1].click()
         elements[3].click()
         browser.find_element(By.ID, 'edit-and-or-radios-and-').click()
         browser.find_element(By.ID, 'edit-combine').click()
         self.assertEqual(self.browser.find_element(By.ID, "edit-search-block-form--2").get_attribute('value'), '((((term.type="bog"))) and (jungersen)) and ((du and forsvinder))')
         #assert warning does not exist
-        elementList = browser.find_elements_by_css_selector(".message--warning")
+        elementList = browser.find_elements(By.CSS_SELECTOR, ".message--warning")
         self.assertTrue(len(elementList) == 0)
 
         # test or combination
         browser.get(self.base_url + 'user/searchhistory')
-        elements = browser.find_elements_by_class_name('combine-select')
+        elements = browser.find_elements(By.CLASS_NAME, ('combine-select')
         elements[1].click()
         elements[3].click()
         browser.find_element(By.ID, 'edit-and-or-radios-or-').click()
         browser.find_element(By.ID, 'edit-combine').click()
         self.assertEqual(self.browser.find_element(By.ID, "edit-search-block-form--2").get_attribute('value'), '((((term.type="bog"))) and (jungersen)) or ((du and forsvinder))')
         #assert warning does not exist
-        elementList = browser.find_elements_by_css_selector(".message--warning")
+        elementList = browser.find_elements(By.CSS_SELECTOR, ".message--warning")
         self.assertTrue(len(elementList) == 0)
 
     # Test for bug 17975
@@ -140,7 +140,7 @@ class TestSearhhistory(helpers.BibdkUnitTestCase):
 
         # test and combination
         browser.get(self.base_url + 'user/searchhistory')
-        elements = browser.find_elements_by_class_name('combine-select')
+        elements = browser.find_elements(By.CLASS_NAME, ('combine-select')
         elements[1].click();
         elements[2].click();
         browser.find_element(By.ID, 'edit-and-or-radios-and-').click()
@@ -149,5 +149,5 @@ class TestSearhhistory(helpers.BibdkUnitTestCase):
         browser.find_element(By.XPATH, "//h2[text()='Gammel hankat']")
 
         #assert warning does not exist
-        elementList = browser.find_elements_by_css_selector(".message--warning")
+        elementList = browser.find_elements(By.CSS_SELECTOR, ".message--warning")
         self.assertTrue(len(elementList) == 0)

@@ -26,5 +26,5 @@ class testHeimdalLogin(helpers.BibdkUnitTestCase):
         time.sleep(2)
         #assert that heimdal login page is shown
         #browser.find_element(By.ID, 'libraryname-input')
-        browser.find_elements_by_xpath('//input[@id="libraryname-input"]')
+        browser.find_elements(By.XPATH, ('//input[@id="libraryname-input"]')
 

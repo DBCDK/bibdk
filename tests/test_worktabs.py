@@ -30,19 +30,19 @@ class TestWorktabs(helpers.BibdkUnitTestCase):
         browser.find_element(By.ID, 'edit-submit').click()
         browser.find_element(By.ID, self.work_href()).click()
         WebDriverWait(browser, 15).until(expected_conditions.presence_of_element_located((By.CSS_SELECTOR, '.worktabs')))
-        forms = browser.find_elements_by_css_selector(get_tab() + ' .tab-content form')
+        forms = browser.find_elements(By.CSS_SELECTOR, get_tab() + ' .tab-content form')
         browser.find_element(By.CSS_SELECTOR, 'a[href="' + get_tab() + '"]').click()
         # Asyncronous loading and no more waiting than 15 seconds in total
         # Check for removal of forms used for triggering ajax call
         WebDriverWait(browser, 15).until(lambda a: reduce(lambda b,e: expected_conditions.staleness_of(e)(None) and b, forms, True))
-        return browser.find_elements_by_css_selector('.worktabs-no-content')
+        return browser.find_elements(By.CSS_SELECTOR, '.worktabs-no-content')
 
     def load_reviews(self, count):
         no_contents = self.load_worktab(self.reviews_href)
         self.assertEqual(len(no_contents), count, str(count) + ' element(s) with class worktabs-no-content was found.')
         for no in no_contents:
             ancestor = no.find_element(By.XPATH, '../../..')
-            button_txts = ancestor.find_elements_by_class_name('toggle-text')
+            button_txts = ancestor.find_elements(By.CLASS_NAME, ('toggle-text')
             self.assertEqual(len(button_txts), 1, 'Two button texts found.')
             i = 1
             no_text = no.get_attribute('data-button-txt')
@@ -76,7 +76,7 @@ class TestWorktabs(helpers.BibdkUnitTestCase):
         self.assertEqual(len(no_contents), count, str(count) + ' element(s) with class worktabs-no-content was found.')
         for no in no_contents:
             ancestor = no.find_element(By.XPATH, '../..')
-            button_txts = ancestor.find_elements_by_class_name('toggle-text')
+            button_txts = ancestor.find_elements(By.CLASS_NAME, ('toggle-text')
             self.assertEqual(len(button_txts), 1, 'Three button texts found.' +
             str(len(button_txts)))
             i = 1

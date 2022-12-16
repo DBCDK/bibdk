@@ -98,10 +98,10 @@ class TestBibdkSubjectHierachy(helpers.BibdkUnitTestCase):
         breadcrumb = browser.find_element(By.CLASS_NAME, "subjects-breadcrumb")
 
         # verify that the breadcrumb has one item only
-        a_tags = breadcrumb.find_elements_by_tag_name("a")
+        a_tags = breadcrumb.find_elements(By.TAG_NAME, ("a")
         self.assertEqual(len(a_tags), 0, "No link is present in the breadcrumb")
 
-        div_tag = breadcrumb.find_elements_by_tag_name("div")
+        div_tag = breadcrumb.find_elements(By.TAG_NAME, ("div")
         self.assertEqual(len(div_tag), 1, "End element is present in the breadcrumb")
 
         # click the fourth item in the newly opened subjectbrowser
@@ -113,10 +113,10 @@ class TestBibdkSubjectHierachy(helpers.BibdkUnitTestCase):
         breadcrumb = browser.find_element(By.CLASS_NAME, "subjects-breadcrumb")
 
         # verify that the breadcrumb has one item only
-        a_tags = breadcrumb.find_elements_by_tag_name("a")
+        a_tags = breadcrumb.find_elements(By.TAG_NAME, ("a")
         self.assertEqual(len(a_tags), 1, "One link only is present in the breadcrumb")
 
-        div_tag = breadcrumb.find_elements_by_tag_name("div")
+        div_tag = breadcrumb.find_elements(By.TAG_NAME, ("div")
         self.assertEqual(len(div_tag), 1, "End element is present in the breadcrumb")
 
         # verify that the first link we clicked is the first link in the breadcrumb
@@ -132,10 +132,10 @@ class TestBibdkSubjectHierachy(helpers.BibdkUnitTestCase):
         breadcrumb = browser.find_element(By.CLASS_NAME, "subjects-breadcrumb")
 
         # verify that the breadcrumb has two item only
-        a_tags = breadcrumb.find_elements_by_tag_name("a")
+        a_tags = breadcrumb.find_elements(By.TAG_NAME, ("a")
         self.assertEqual(len(a_tags), 2, "Two links only is present in the breadcrumb")
 
-        div_tag = breadcrumb.find_elements_by_tag_name("div")
+        div_tag = breadcrumb.find_elements(By.TAG_NAME, ("div")
         self.assertEqual(len(div_tag), 1, "End element is present in the breadcrumb")
 
         # verify that the first link we clicked is the first link in the breadcrumb
@@ -156,7 +156,7 @@ class TestBibdkSubjectHierachy(helpers.BibdkUnitTestCase):
         breadcrumb = browser.find_element(By.CLASS_NAME, "subjects-breadcrumb")
 
         # verify that the breadcrumb has one item only
-        a_tags = breadcrumb.find_elements_by_tag_name("a")
+        a_tags = breadcrumb.find_elements(By.TAG_NAME, ("a")
         self.assertEqual(len(a_tags), 0, "No link is present in the breadcrumb")
 
         # verify heading
@@ -190,7 +190,7 @@ class TestBibdkSubjectHierachy(helpers.BibdkUnitTestCase):
 
         self._check_pop_up()
 
-        subject_hierachy_link_wrapper.find_elements_by_tag_name("a")[0].click()
+        subject_hierachy_link_wrapper.find_elements(By.TAG_NAME, ("a")[0].click()
         WebDriverWait(browser, 5).until(expected_conditions.element_to_be_clickable((By.ID, "edit-search-hierarchy-submit")))
 
         subject_hierachy_input = browser.find_element(By.ID, "edit-search-hierarchy-input")

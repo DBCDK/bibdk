@@ -7,9 +7,9 @@ class TestAdvancedSearchButtonToggle(helpers.BibdkUnitTestCase):
     def test_advanced_search_button_unfold(self):
         self._goto_frontpage()
         button = self.browser.find_element(By.ID, 'selid_custom_search_expand')
-        text_element1 = button.find_elements_by_css_selector('span[class="toggle-text"]')
+        text_element1 = button.find_elements(By.CSS_SELECTOR, 'span[class="toggle-text"]')
         button.click()
-        text_element2 = button.find_elements_by_css_selector('span[class="toggle-text"]')
+        text_element2 = button.find_elements(By.CSS_SELECTOR, 'span[class="toggle-text"]')
         self.assertNotEqual(text_element1, text_element2)
 
 
@@ -71,7 +71,7 @@ class TestAdvancedSearchButtonToggle(helpers.BibdkUnitTestCase):
 
         selector = browser.find_element(By.NAME, "select_material_type")
         # select the 'musik' option
-        for option in selector.find_elements_by_tag_name("option"):
+        for option in selector.find_elements(By.TAG_NAME, ("option"):
             if option.get_attribute("selected"):
                 self.assertEqual(option.get_attribute("value"), "bibdk_frontpage/musik", "value in dropdown wasn't set correctly")
                 break
