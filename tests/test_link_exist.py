@@ -23,7 +23,7 @@ class LinkMeTestCase(helpers.BibdkUnitTestCase):
         self._check_pop_up()
 
         # Click on 'vis mere'
-        show_more = browser.find_element_by_id("selid-870971tsart35908412")
+        show_more = browser.find_element(By.ID, "selid-870971tsart35908412")
         show_more.click()
 
         time.sleep(2)
@@ -36,7 +36,7 @@ class LinkMeTestCase(helpers.BibdkUnitTestCase):
         linkme.click()
 
         # Get linktext
-        linktext = browser.find_element_by_id('edit-link')
+        linktext = browser.find_element(By.ID, 'edit-link')
         href = linktext.get_attribute('value')
 
         expected="/linkme.php?rec.id=870971-tsart%3A35908412"

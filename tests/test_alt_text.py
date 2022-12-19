@@ -10,7 +10,7 @@ class TestAltTexts(helpers.BibdkUnitTestCase):
     browser = self.browser
     browser.get(self.base_url)
     self._check_pop_up()
-    img = browser.find_element_by_xpath("//div[contains(@class,'views-field-field-image')]//img")
+    img = browser.find_element(By.XPATH, "//div[contains(@class,'views-field-field-image')]//img")
     alt = img.get_attribute('alt')
     self.assertTrue(len(alt)>1, "alt text found on article image")
 
@@ -18,7 +18,7 @@ class TestAltTexts(helpers.BibdkUnitTestCase):
     browser = self.browser
     browser.get(self.base_url)
     self._check_pop_up()
-    img = browser.find_element_by_xpath("//div[contains(@class,'carousel-item-image')]//img")
+    img = browser.find_element(By.XPATH, "//div[contains(@class,'carousel-item-image')]//img")
     alt = img.get_attribute('alt')
     self.assertTrue(len(alt)>1, "alt text found on carousel image")
 
