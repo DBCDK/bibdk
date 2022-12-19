@@ -2,6 +2,7 @@ __author__ = 'ana'
 
 import helpers
 import time
+from selenium.webdriver.common.by import By
 
 class TestOpenUserStatusWithNoLibrary(helpers.BibdkUnitTestCase):
 

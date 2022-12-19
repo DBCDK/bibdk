@@ -1,5 +1,6 @@
 __author__ = 'vibjerg'
 
+from selenium.webdriver.common.by import By
 import helpers
 import time
 

@@ -1,10 +1,8 @@
 import unittest
 import time
-
-__author__ = 'vibjerg'
-
+from selenium.webdriver.common.by import By
 import helpers
-
+__author__ = 'vibjerg'
 
 class TestFavouriteLibraries(helpers.BibdkUnitTestCase):
 

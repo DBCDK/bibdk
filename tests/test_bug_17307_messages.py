@@ -1,4 +1,5 @@
 import helpers
+from selenium.webdriver.common.by import By
 
 
 class TestBug17307Messages(helpers.BibdkUnitTestCase, helpers.BibdkUser):

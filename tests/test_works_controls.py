@@ -1,5 +1,5 @@
 import helpers
-
+from selenium.webdriver.common.by import By
 
 class TestWorksControlsResponiveness(helpers.BibdkUnitTestCase):
 

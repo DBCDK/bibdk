@@ -1,5 +1,5 @@
 import helpers
-
+from selenium.webdriver.common.by import By
 
 class TestWorkIconsAltText(helpers.BibdkUnitTestCase):
     def test_alt_text(self):

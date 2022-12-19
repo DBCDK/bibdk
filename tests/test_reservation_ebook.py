@@ -40,7 +40,7 @@ class TestReservation(helpers.BibdkUnitTestCase):
         # click the order link
         browser.find_element(By.ID, "any_edtion_order_874310katalogdbb0701046").click()
         handles = browser.window_handles
-        browser.switch_to_window(handles[1])
+        browser.switch_to.window(handles[1])
 
         pop = browser.find_element(By.ID, 'popup')
         wait = WebDriverWait(browser, 5)

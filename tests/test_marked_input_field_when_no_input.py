@@ -1,5 +1,6 @@
 import helpers
 import time
+from selenium.webdriver.common.by import By
 
 class TestMarkedInputFieldWhenNoInput(helpers.BibdkUnitTestCase):
     def test_red_rings(self):

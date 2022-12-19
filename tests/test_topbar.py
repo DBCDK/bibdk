@@ -1,5 +1,6 @@
 import helpers
 import time
+from selenium.webdriver.common.by import By
 
 class TestTopbarResponiveness(helpers.BibdkUnitTestCase):
     def test_topbar_large(self):

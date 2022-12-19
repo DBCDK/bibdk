@@ -1,4 +1,5 @@
 import helpers
+from selenium.webdriver.common.by import By
 
 class TestNo_hit_suggestion(helpers.BibdkUnitTestCase, helpers.BibdkUser):
 

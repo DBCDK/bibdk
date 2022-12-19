@@ -41,7 +41,7 @@ class TestBibdkSubjectHierachy(helpers.BibdkUnitTestCase):
         subject_hierarchy.find_element(By.CLASS_NAME, "subjects-sublist")
 
         # extract a direct link
-        href = subject_hierarchy.find_element_by_link_text("Computere").get_attribute("href")
+        href = subject_hierarchy.find_element(By.LINK_TEXT, "Computere").get_attribute("href")
 
         # goto to the page
         browser.get(href)
