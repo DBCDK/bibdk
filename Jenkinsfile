@@ -177,7 +177,7 @@ pipeline {
                   """
                 }
 
-                stash name: "selenium-bibdk", includes: "selenium-bibdk.xml"
+                stash name: "selenium-bibdk", includes: "${env.WORKSPACE}/selenium-bibdk.xml"
               }
             }
           }
