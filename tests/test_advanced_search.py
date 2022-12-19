@@ -52,18 +52,12 @@ class TestAdvancedSearch(helpers.BibdkUnitTestCase):
         wait = WebDriverWait(browser, 30)
         # url: master chief
         #url = self.base_url + 'search/work/master chief'
-        url = self.base_url + 'search/work/51450515'
+        url = self.base_url + 'search/work/28014260'
         browser.get(url)
         self._check_pop_up()
 
-        self.assertTrue(browser.find_element(By.ID, '870970basis51450515'))
+        self.assertTrue(browser.find_element(By.ID, '870970basis28014260'))
 
-        #id_to_verify = '870970basis27143474'
-        #id_to_verify = '870970basis51010132'
-        #id_to_verify = '820010katalog3744833'
-        #id_to_verify = '870970basis29818967'
-        #id_to_verify = '870970basis44111543'
-        #id_to_verify =  '870970basis28014260'
         id_to_verify =  'selid-870970basis28014260'
 
         # url: term.workType=movie and term.accessType=online
@@ -72,7 +66,7 @@ class TestAdvancedSearch(helpers.BibdkUnitTestCase):
 
         time.sleep(10)
         self.assertTrue(browser.find_element(By.ID, id_to_verify))
-
+        '''
         url = self.base_url + 'search/work/term.workType="movie" and term.accessType="online" and mango'
         browser.get(url)
         time.sleep(10)
@@ -80,7 +74,7 @@ class TestAdvancedSearch(helpers.BibdkUnitTestCase):
         id_to_verify =  'selid-870970basis52312205'
         id_to_verify =  'selid-150052ekurser460'
         self.assertTrue(browser.find_element(By.ID, id_to_verify))
-
+        '''
         # searchpages: Online movies in spanish
         browser.get(self.base_url + '/bibdk_frontpage/film')
         # expand search options
