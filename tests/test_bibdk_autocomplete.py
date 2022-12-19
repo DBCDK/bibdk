@@ -27,7 +27,7 @@ class BibdkAutocompleteTestCase(helpers.BibdkUnitTestCase):
         # assert that there is only one Orson Welles
         auto = browser.find_element(By.ID, 'autocomplete')
         auto.find_element(By.XPATH, "//*[contains(text(), 'Orson Welles' )]")
-        list = auto.find_elements(By.TAG_NAME, ('li')
+        list = auto.find_elements(By.TAG_NAME, 'li')
         self.assertTrue(len(list) == 1)
 
     def test_escaping_character(self):
@@ -51,7 +51,7 @@ class BibdkAutocompleteTestCase(helpers.BibdkUnitTestCase):
                 )
             )
         )
-        list = auto.find_elements(By.TAG_NAME, ('li')
+        list = auto.find_elements(By.TAG_NAME, 'li')
         self.assertTrue(len(list) == 1)
 
         # Check that the '?' has been escaped

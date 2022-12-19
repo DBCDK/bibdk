@@ -50,7 +50,7 @@ class TestFacets(helpers.BibdkUnitTestCase):
         ActionChains(browser).move_to_element(more).click().perform()
 
         # Check if the facetbrowser has any content
-        facet_subject_instrumental = browser.find_elements(By.XPATH, ('input[@id="edit-subject-instrumental"]')
+        facet_subject_instrumental = browser.find_elements(By.XPATH, 'input[@id="edit-subject-instrumental"]')
 
         # Check if the facetbrowser has a 'selected' and a 'deselected' fieldset
         facets_selected = browser.find_element(By.ID, "selected-terms")

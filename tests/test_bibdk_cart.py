@@ -27,7 +27,7 @@ class TestBibdkCart(helpers.BibdkUnitTestCase):
         browser.get(self.base_url + "user/cart")
 
         # count items on the current page and verify that 1 item is visible
-        items = browser.find_elements(By.CLASS_NAME, ("manifestation-data")
+        items = browser.find_elements(By.CLASS_NAME, "manifestation-data")
         assert len(items) == 1, "1 item was found"
 
         username = str(int(time.time())) + 'bibdk_cart_test_01.bibdk@guesstimate.dbc.dk'
@@ -43,7 +43,7 @@ class TestBibdkCart(helpers.BibdkUnitTestCase):
         browser.get(self.base_url + "user/cart")
 
         # count items on the current page and verify that 1 item is visible
-        items = browser.find_elements(By.CLASS_NAME, ("manifestation-data")
+        items = browser.find_elements(By.CLASS_NAME, "manifestation-data")
         self.assertEqual(len(items), 1, "1 item was found")
 
         # add another item to the cart
@@ -54,7 +54,7 @@ class TestBibdkCart(helpers.BibdkUnitTestCase):
 
 
         # count items on the current page and verify that 2 items is visible
-        items = browser.find_elements(By.CLASS_NAME, ("manifestation-data")
+        items = browser.find_elements(By.CLASS_NAME, "manifestation-data")
         assert len(items) == 2, "2 items was found"
 
         # logout
@@ -64,7 +64,7 @@ class TestBibdkCart(helpers.BibdkUnitTestCase):
         browser.get(self.base_url + "user/cart")
 
         # count items on the current page and verify that 0 items are visible
-        items = browser.find_elements(By.CLASS_NAME, ("manifestation-data")
+        items = browser.find_elements(By.CLASS_NAME, "manifestation-data")
         assert len(items) == 0, "0 items was found"
 
         # login and verify that we still have two items in the cart
@@ -74,7 +74,7 @@ class TestBibdkCart(helpers.BibdkUnitTestCase):
         browser.get(self.base_url + "user/cart")
 
         # count items on the current page and verify that 2 items is visible
-        items = browser.find_elements(By.CLASS_NAME, ("manifestation-data")
+        items = browser.find_elements(By.CLASS_NAME, "manifestation-data")
         assert len(items) == 2, "2 items was found"
 
         #remove the two items from the cart
@@ -84,7 +84,7 @@ class TestBibdkCart(helpers.BibdkUnitTestCase):
         browser.get(self.base_url + "user/cart")
 
         # count items on the current page and verify that 1 item is visible
-        items = browser.find_elements(By.CLASS_NAME, ("manifestation-data")
+        items = browser.find_elements(By.CLASS_NAME, "manifestation-data")
         assert len(items) == 1, "1 item was found"
 
         # remove another item to the cart
@@ -94,7 +94,7 @@ class TestBibdkCart(helpers.BibdkUnitTestCase):
         browser.get(self.base_url + "user/cart")
 
         # count items on the current page and verify that 0 items are visible
-        items = browser.find_elements(By.CLASS_NAME, ("manifestation-data")
+        items = browser.find_elements(By.CLASS_NAME, "manifestation-data")
         assert len(items) == 0, "0 items was found"
 
         # logout and login again to verify that the items actually are gone from the cart
@@ -106,7 +106,7 @@ class TestBibdkCart(helpers.BibdkUnitTestCase):
         browser.get(self.base_url + "user/cart")
 
         # count items on the current page and verify that 0 items are visible
-        items = browser.find_elements(By.CLASS_NAME, ("manifestation-data")
+        items = browser.find_elements(By.CLASS_NAME, "manifestation-data")
         assert len(items) == 0, "0 items was found"
 
         # login and verify that we still have no items in the cart
@@ -115,7 +115,7 @@ class TestBibdkCart(helpers.BibdkUnitTestCase):
         browser.get(self.base_url + "user/cart")
 
         # count items on the current page and verify that 0 items are visible
-        items = browser.find_elements(By.CLASS_NAME, ("manifestation-data")
+        items = browser.find_elements(By.CLASS_NAME, "manifestation-data")
         # self.assertEqual(len(items), 0, "0 items was found")
 
         assert len(items) == 0, "0 items was found"
@@ -171,7 +171,7 @@ class TestBibdkCart(helpers.BibdkUnitTestCase):
         assert link_2.get_attribute('class') == "", "did not find bold class in active"
 
         # count items on the current page and verify that 20 items is visible
-        items = browser.find_elements(By.CLASS_NAME, ("manifestation-data")
+        items = browser.find_elements(By.CLASS_NAME, "manifestation-data")
         assert len(items) == 20, "20 items was found on page 1"
 
         # go to second page and verify that the bold class has moved
@@ -187,7 +187,7 @@ class TestBibdkCart(helpers.BibdkUnitTestCase):
         assert link_1.get_attribute('class') == "", "did not find bold class in active"
 
         # count items on the current page and verify that 12 items is visible
-        items = browser.find_elements(By.CLASS_NAME, ("manifestation-data")
+        items = browser.find_elements(By.CLASS_NAME, "manifestation-data")
 
         assert len(items) == 17, "17 items was found on page 2"
 
@@ -227,7 +227,7 @@ class TestBibdkCart(helpers.BibdkUnitTestCase):
         browser.get(self.base_url + "user/cart")
 
         # count items on the current page and verify that 1 item is visible
-        items = browser.find_elements(By.CLASS_NAME, ("manifestation-data")
+        items = browser.find_elements(By.CLASS_NAME, "manifestation-data")
         assert len(items) == 1, "1 item was found"
 
         # go to cart
@@ -342,7 +342,7 @@ class TestBibdkCart(helpers.BibdkUnitTestCase):
         browser.get(self.base_url + "user/cart")
 
         # count items on the current page and verify that 1 item is visible
-        items = browser.find_elements(By.CLASS_NAME, ("manifestation-data")
+        items = browser.find_elements(By.CLASS_NAME, "manifestation-data")
         assert len(items) == 1, "1 item was found"
 
         # go to cart

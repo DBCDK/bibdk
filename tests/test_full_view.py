@@ -22,7 +22,7 @@ class FullViewTestCase(helpers.BibdkUnitTestCase):
         url = self.base_search_url + self.searchterm + "?full_view=1"
         browser.get(url)
 
-        more_infos = browser.find_elements(By.CLASS_NAME, ('work')
+        more_infos = browser.find_elements(By.CLASS_NAME, 'work')
         count = len(more_infos)
         expected = 10
 
@@ -42,7 +42,7 @@ class FullViewTestCase(helpers.BibdkUnitTestCase):
         browser.get(url)
         self._check_pop_up()
 
-        more_infos = browser.find_elements(By.CLASS_NAME, ('work')
+        more_infos = browser.find_elements(By.CLASS_NAME, 'work')
         count = len(more_infos)
         expected = 10
 

@@ -90,15 +90,15 @@ class TestSearhhistory(helpers.BibdkUnitTestCase):
 
         # Test search history elements exists
         browser.get(self.base_url + 'user/searchhistory')
-        elements = browser.find_elements(By.CLASS_NAME, ('searchhistory-searchstring')
+        elements = browser.find_elements(By.CLASS_NAME, 'searchhistory-searchstring')
         self.assertEqual(len(elements), 3)
 
         # test cql is present (Bug 17914)
-        elements = browser.find_elements(By.CLASS_NAME, ('searchhistory-cql')
+        elements = browser.find_elements(By.CLASS_NAME, 'searchhistory-cql')
         self.assertEqual(len(elements), 3)
 
         # test and combination
-        elements = browser.find_elements(By.CLASS_NAME, ('combine-select')
+        elements = browser.find_elements(By.CLASS_NAME, 'combine-select')
         elements[1].click()
         elements[3].click()
         browser.find_element(By.ID, 'edit-and-or-radios-and-').click()
@@ -110,7 +110,7 @@ class TestSearhhistory(helpers.BibdkUnitTestCase):
 
         # test or combination
         browser.get(self.base_url + 'user/searchhistory')
-        elements = browser.find_elements(By.CLASS_NAME, ('combine-select')
+        elements = browser.find_elements(By.CLASS_NAME, 'combine-select')
         elements[1].click()
         elements[3].click()
         browser.find_element(By.ID, 'edit-and-or-radios-or-').click()
@@ -140,7 +140,7 @@ class TestSearhhistory(helpers.BibdkUnitTestCase):
 
         # test and combination
         browser.get(self.base_url + 'user/searchhistory')
-        elements = browser.find_elements(By.CLASS_NAME, ('combine-select')
+        elements = browser.find_elements(By.CLASS_NAME, 'combine-select')
         elements[1].click();
         elements[2].click();
         browser.find_element(By.ID, 'edit-and-or-radios-and-').click()

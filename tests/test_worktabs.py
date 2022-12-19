@@ -42,7 +42,7 @@ class TestWorktabs(helpers.BibdkUnitTestCase):
         self.assertEqual(len(no_contents), count, str(count) + ' element(s) with class worktabs-no-content was found.')
         for no in no_contents:
             ancestor = no.find_element(By.XPATH, '../../..')
-            button_txts = ancestor.find_elements(By.CLASS_NAME, ('toggle-text')
+            button_txts = ancestor.find_elements(By.CLASS_NAME, 'toggle-text')
             self.assertEqual(len(button_txts), 1, 'Two button texts found.')
             i = 1
             no_text = no.get_attribute('data-button-txt')
@@ -76,7 +76,7 @@ class TestWorktabs(helpers.BibdkUnitTestCase):
         self.assertEqual(len(no_contents), count, str(count) + ' element(s) with class worktabs-no-content was found.')
         for no in no_contents:
             ancestor = no.find_element(By.XPATH, '../..')
-            button_txts = ancestor.find_elements(By.CLASS_NAME, ('toggle-text')
+            button_txts = ancestor.find_elements(By.CLASS_NAME, 'toggle-text')
             self.assertEqual(len(button_txts), 1, 'Three button texts found.' +
             str(len(button_txts)))
             i = 1

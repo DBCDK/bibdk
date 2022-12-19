@@ -71,7 +71,7 @@ class TestAdvancedSearchButtonToggle(helpers.BibdkUnitTestCase):
 
         selector = browser.find_element(By.NAME, "select_material_type")
         # select the 'musik' option
-        for option in selector.find_elements(By.TAG_NAME, ("option"):
+        for option in selector.find_elements(By.TAG_NAME, "option"):
             if option.get_attribute("selected"):
                 self.assertEqual(option.get_attribute("value"), "bibdk_frontpage/musik", "value in dropdown wasn't set correctly")
                 break
