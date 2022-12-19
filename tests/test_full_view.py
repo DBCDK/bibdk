@@ -60,7 +60,7 @@ class FullViewTestCase(helpers.BibdkUnitTestCase):
         browser = self.browser
         browser.implicitly_wait(20)
 
-        pid = "870970basis38799053"
+        pid = "870970basis62484977"
         work_id = "selid-" + pid
         url = self.base_search_url + self.searchterm + "?full_view=0"
         browser.get(url)
