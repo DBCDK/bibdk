@@ -174,6 +174,8 @@ pipeline {
                     export BIBDK_OPENUSERINFO_URL="http://openuserinfo-prod.frontend-prod.svc.cloud.dbc.dk/server.php"
                     py.test --junitxml=selenium.xml -v tests/ -o base_url=${TESTWEBSITE} || true
                     xsltproc xunit-transforms/pytest-selenium.xsl selenium.xml > ${env.WORKSPACE}/selenium-bibdk.xml
+                    ls -hal ${env.WORKSPACE}
+                    ls -hal .
                   """
                 }
 
