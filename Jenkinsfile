@@ -151,36 +151,27 @@ pipeline {
             }
           }
           steps {
-            git branch: 'develop',
-              credentialsId: 'dscrum_ssh_gitlab',
-              url: 'gitlab@gitlab.dbc.dk:d-scrum/d7/BibdkWebdriver.git'
-
             dir('bibdk') {
+              dir('tests') {
+                checkout scm
+                git branch: 'develop',
+                  credentialsId: 'dscrum_ssh_gitlab',
+                  url: 'gitlab@gitlab.dbc.dk:d-scrum/d7/BibdkWebdriver.git'
+              }
+
               checkout scm
               dir('xunit-transforms') {
                 git credentialsId: 'dscrum_ssh_gitlab',
                     url: 'gitlab@gitlab.dbc.dk:d-scrum/jenkins-jobs/xunit-transform.git'
               }
-            }
-            sh """
-            mv helpers.py bibdk/tests
-            """
-            dir('bibdk') {
-              script {
-                withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'netpunkt-user', usernameVariable: 'NETPUNKT_USER', passwordVariable: 'NETPUNKT_PASS']]) {
-                  sh """
-                    export FEATURE_BUILD_URL=${TESTWEBSITE}
-                    export BIBDK_WEBDRIVER_URL=${TESTWEBSITE}/
-                    export BIBDK_OPENUSERINFO_URL="http://openuserinfo-prod.frontend-prod.svc.cloud.dbc.dk/server.php"
-                    py.test --junitxml=selenium.xml -v tests/ -o base_url=${TESTWEBSITE} || true
-                    xsltproc xunit-transforms/pytest-selenium.xsl selenium.xml > ${env.WORKSPACE}/selenium-bibdk.xml
-                    ls -hal ${env.WORKSPACE}
-                    ls -hal .
-                  """
-                }
-
-                stash name: "selenium-bibdk", includes: "${env.WORKSPACE}/selenium-bibdk.xml"
-              }
+              sh """
+                export FEATURE_BUILD_URL=${TESTWEBSITE}
+                export BIBDK_WEBDRIVER_URL=${TESTWEBSITE}/
+                export BIBDK_OPENUSERINFO_URL="http://openuserinfo-prod.frontend-prod.svc.cloud.dbc.dk/server.php"
+                py.test --junitxml=selenium.xml -v tests/ -o base_url=${TESTWEBSITE} || true
+                xsltproc xunit-transforms/pytest-selenium.xsl selenium.xml > selenium-bibdk.xml
+              """
+              stash name: "selenium-bibdk", includes: "selenium-bibdk.xml"
             }
           }
         }
