@@ -176,7 +176,7 @@ pipeline {
                   xsltproc xunit-transforms/pytest-selenium.xsl selenium.xml > selenium-bibdk.xml
                   ls -hal .
                 """
-                stash name: "selenium-bibdk", includes: "${env.WORKSPACE}/selenium-bibdk.xml"
+                stash name: "selenium-bibdk", includes: "selenium-bibdk.xml"
               }
             }
           }
