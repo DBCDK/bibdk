@@ -6,10 +6,10 @@ import helpers
 class TestAdvancedSearchButtonToggle(helpers.BibdkUnitTestCase):
     def test_advanced_search_button_unfold(self):
         self._goto_frontpage()
-        button = self.browser.find_element_by_id('selid_custom_search_expand')
-        text_element1 = button.find_elements_by_css_selector('span[class="toggle-text"]')
+        button = self.browser.find_element(By.ID, 'selid_custom_search_expand')
+        text_element1 = button.find_elements(By.CSS_SELECTOR, 'span[class="toggle-text"]')
         button.click()
-        text_element2 = button.find_elements_by_css_selector('span[class="toggle-text"]')
+        text_element2 = button.find_elements(By.CSS_SELECTOR, 'span[class="toggle-text"]')
         self.assertNotEqual(text_element1, text_element2)
 
 
@@ -17,11 +17,11 @@ class TestAdvancedSearchButtonToggle(helpers.BibdkUnitTestCase):
         browser = self.browser
         self._goto_frontpage()
 
-        button = browser.find_element_by_id('selid_custom_search_expand')
-        text_element1 = browser.find_element_by_id('selid_custom_search_expand').text
+        button = browser.find_element(By.ID, 'selid_custom_search_expand')
+        text_element1 = browser.find_element(By.ID, 'selid_custom_search_expand').text
         button.click()
         button.click()
-        text_element2 = browser.find_element_by_id('selid_custom_search_expand').text
+        text_element2 = browser.find_element(By.ID, 'selid_custom_search_expand').text
         self.assertEqual(text_element1, text_element2)
 
     def test_advanced_search_panel_loaded_by_ajax(self):
@@ -30,17 +30,17 @@ class TestAdvancedSearchButtonToggle(helpers.BibdkUnitTestCase):
         browser.get(self.base_url)
 
         WebDriverWait(browser, 10).until(expected_conditions.presence_of_element_located((By.CLASS_NAME, "forfatter")))
-        browser.find_element_by_id("search-advanced-panel").find_element_by_class_name("forfatter")
+        browser.find_element(By.ID, "search-advanced-panel").find_element(By.CLASS_NAME, "forfatter")
 
     def test_advanced_search_panel_loaded_by_ajax_on_search_result(self):
         browser = self.browser
         browser.implicitly_wait(10)
         browser.get(self.base_url)
-        browser.find_element_by_id("edit-search-block-form--2").send_keys("flodhest")
-        browser.find_element_by_id("edit-submit").click()
+        browser.find_element(By.ID, "edit-search-block-form--2").send_keys("flodhest")
+        browser.find_element(By.ID, "edit-submit").click()
 
         WebDriverWait(browser, 10).until(expected_conditions.presence_of_element_located((By.CLASS_NAME, "forfatter")))
-        browser.find_element_by_id("search-advanced-panel").find_element_by_class_name("forfatter")
+        browser.find_element(By.ID, "search-advanced-panel").find_element(By.CLASS_NAME, "forfatter")
 
     def test_material_dropdown_overrides_pagetype(self):
         browser = self.browser
@@ -56,22 +56,22 @@ class TestAdvancedSearchButtonToggle(helpers.BibdkUnitTestCase):
         browser.set_window_size(480, 768)
 
         self.assertTrue(
-            browser.find_element_by_name("select_material_type").is_displayed(),
+            browser.find_element(By.NAME, "select_material_type").is_displayed(),
             "element with name 'select_material_type' is hidden - it should be visible"
         )
 
-        selector = browser.find_element_by_name("select_material_type")
+        selector = browser.find_element(By.NAME, "select_material_type")
 
         # select the 'musik' option
-        option = browser.find_element_by_css_selector('select[name="select_material_type"] option[value="bibdk_frontpage/musik"]')
+        option = browser.find_element(By.CSS_SELECTOR, 'select[name="select_material_type"] option[value="bibdk_frontpage/musik"]')
         option.click()
 
-        browser.find_element_by_id("edit-search-block-form--2").send_keys("peter belli")
-        browser.find_element_by_id("edit-submit").click()
+        browser.find_element(By.ID, "edit-search-block-form--2").send_keys("peter belli")
+        browser.find_element(By.ID, "edit-submit").click()
 
-        selector = browser.find_element_by_name("select_material_type")
+        selector = browser.find_element(By.NAME, "select_material_type")
         # select the 'musik' option
-        for option in selector.find_elements_by_tag_name("option"):
+        for option in selector.find_elements(By.TAG_NAME, "option"):
             if option.get_attribute("selected"):
                 self.assertEqual(option.get_attribute("value"), "bibdk_frontpage/musik", "value in dropdown wasn't set correctly")
                 break

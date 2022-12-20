@@ -18,7 +18,7 @@ class TestJavascriptFocus(helpers.BibdkUnitTestCase):
         'Main input search field has focus.')
 
         self._check_pop_up()
-        subject_element = browser.find_element_by_id(element_id)
+        subject_element = browser.find_element(By.ID, element_id)
         subject_element.click()
         WebDriverWait(browser, 15).until(expected_conditions.presence_of_element_located((By.CLASS_NAME, 'subjects-sublist-wrapper')))
 
@@ -44,7 +44,7 @@ class TestJavascriptFocus(helpers.BibdkUnitTestCase):
 
         # ensure that we can see a login link
         WebDriverWait(browser, 20).until(expected_conditions.presence_of_element_located((By.XPATH, "//a[contains(@href,'bibdk_modal/login')]")))
-        login_link = browser.find_element_by_xpath("//a[contains(@href,'bibdk_modal/login')]")
+        login_link = browser.find_element(By.XPATH, "//a[contains(@href,'bibdk_modal/login')]")
 
         # click the login link
         login_link.click()
@@ -52,7 +52,7 @@ class TestJavascriptFocus(helpers.BibdkUnitTestCase):
         WebDriverWait(browser, 20).until(expected_conditions.presence_of_element_located((By.ID, user_input)))
         focus_element = browser.switch_to.active_element.get_attribute('id')
         self.assertEqual(focus_element, user_input, 'Focus is on input field for username.')
-    '''    
+    '''
 
     def test_user_register_form(self):
         browser = self.browser

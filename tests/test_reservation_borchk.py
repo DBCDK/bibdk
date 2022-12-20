@@ -1,7 +1,7 @@
 # coding=utf-8
 import helpers
 import time
-
+from selenium.webdriver.common.by import By
 
 class TestReservationBorchk(helpers.BibdkUnitTestCase):
 
@@ -32,24 +32,24 @@ class TestReservationBorchk(helpers.BibdkUnitTestCase):
         browser = self.browser
         browser.implicitly_wait(20)
         self._goto("reservation?ids=" + item)
-        search_field = browser.find_element_by_id('edit-anyfield')
+        search_field = browser.find_element(By.ID, 'edit-anyfield')
         search_field.send_keys(library_no)
-        browser.find_element_by_id('edit-search').click()
-        browser.find_element_by_name('branch-' + library_no).click()
+        browser.find_element(By.ID, 'edit-search').click()
+        browser.find_element(By.NAME, 'branch-' + library_no).click()
 
         # time.sleep(10)
         for i in userdata:
-            browser.find_element_by_id('edit-' + i).send_keys(userdata[i])
+            browser.find_element(By.ID, 'edit-' + i).send_keys(userdata[i])
 
-        browser.find_element_by_id('edit-next').click()
+        browser.find_element(By.ID, 'edit-next').click()
 
     def get_error_messages(self):
-        error_elements = self.browser.find_elements_by_class_name('message--error')
+        error_elements = self.browser.find_elements(By.CLASS_NAME, 'message--error')
         error_messages = map(lambda x : x.text, error_elements)
         return error_messages
 
     def get_warning_messages(self):
-        warning_elements = self.browser.find_elements_by_class_name('message--warning')
+        warning_elements = self.browser.find_elements(By.CLASS_NAME, 'message--warning')
         warning_messages = map(lambda x : x.text, warning_elements)
         return warning_messages
 
@@ -73,7 +73,7 @@ class TestReservationBorchk(helpers.BibdkUnitTestCase):
         ]
         for f in missing_fields:
             self.assertIn(f, error_messages, 'Field: %s is missing in error messages' % f)
-        step3 = browser.find_element_by_id('edit-3')
+        step3 = browser.find_element(By.ID, 'edit-3')
         self.assertIn('inactive', step3.get_attribute('class'), 'Still at step 2.')
 
     def test_reservation_accept_unknown_user(self):
@@ -87,7 +87,7 @@ class TestReservationBorchk(helpers.BibdkUnitTestCase):
         browser = self.browser
         #self.bootstrap_reservation(self.pid, self.dummy_bestil, self.dummy_userdata)
         self.bootstrap_reservation(self.pid, self.aabenraa, self.dummy_userdata)
-        step3 = browser.find_element_by_id('edit-3')
+        step3 = browser.find_element(By.ID, 'edit-3')
         #self.assertNotIn('inactive', step3.get_attribute('class'), 'Not advanced to step 3.')
         self.assertIn('inactive', step3.get_attribute('class'), 'Not advanced to step 3.')
         self.check_available_service()
@@ -100,7 +100,7 @@ class TestReservationBorchk(helpers.BibdkUnitTestCase):
         #Library accepts only orders from known user.
         browser = self.browser
         self.bootstrap_reservation(self.pid, self.guldborgsund, self.guldborgsund_dummy_data)
-        step3 = browser.find_element_by_id('edit-3')
+        step3 = browser.find_element(By.ID, 'edit-3')
         self.assertIn('inactive', step3.get_attribute('class'), 'Still at step 2.')
         error_messages = self.get_error_messages()
         self.check_available_service()
@@ -118,7 +118,7 @@ class TestReservationBorchk(helpers.BibdkUnitTestCase):
         """
         browser = self.browser
         self.bootstrap_reservation(self.pid, self.guldborgsund, self.guldborgsund_testuser)
-        step3 = browser.find_element_by_id('edit-3')
+        step3 = browser.find_element(By.ID, 'edit-3')
         self.assertNotIn('inactive', step3.get_attribute('class'), 'Library should not reject known users.')
         error_messages = self.get_error_messages()
         self.assertEqual(error_messages, []) # No error messages here, please!

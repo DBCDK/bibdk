@@ -21,12 +21,12 @@ class TestMobileFacets(helpers.BibdkUnitTestCase):
 
         # check that the desktop facetbrowser is hidden
         WebDriverWait(browser, 60).until(expected_conditions.presence_of_element_located((By.ID, "bibdk-facetbrowser-form")))
-        desktop_facetbrowser = browser.find_element_by_id("bibdk-facetbrowser-form")
+        desktop_facetbrowser = browser.find_element(By.ID, "bibdk-facetbrowser-form")
         self.assertFalse(desktop_facetbrowser.is_displayed(), "bibdk-facetbrowser-form should not be visible")
 
         # check that link to mobile bacetbrowser is visible
-        # mobile_facetbrowser_link = browser.find_element_by_class_name("bibdk-facets-mobile")
-        mobile_facetbrowser_link = browser.find_element_by_id("selid-bibdk-facets-mobile")
+        # mobile_facetbrowser_link = browser.find_element(By.CLASS_NAME, "bibdk-facets-mobile")
+        mobile_facetbrowser_link = browser.find_element(By.ID, "selid-bibdk-facets-mobile")
         self.assertTrue(mobile_facetbrowser_link.is_displayed(), "mobile_facetbrowser link should be visible")
 
         # select 'material type' facets, and submit form
@@ -39,11 +39,11 @@ class TestMobileFacets(helpers.BibdkUnitTestCase):
         time.sleep(1)
 
         # check that the reset facet link  is visible
-        reset_facet_link  = browser.find_element_by_class_name("reset-facets")
+        reset_facet_link  = browser.find_element(By.CLASS_NAME, "reset-facets")
         self.assertTrue(reset_facet_link.is_displayed(), "reset facet link should be visible")
 
         # check that the material type facet is visible
-        material_type_facet = browser.find_element_by_id("facet-mobile-type")
+        material_type_facet = browser.find_element(By.ID, "facet-mobile-type")
         self.assertTrue(material_type_facet.is_displayed(), "material type facet element should be visible")
 
         # check that the material type facet is clickable
@@ -51,7 +51,7 @@ class TestMobileFacets(helpers.BibdkUnitTestCase):
         WebDriverWait(browser, 60).until(expected_conditions.element_to_be_clickable((By.NAME, "facetgroup-facet.type")))
 
         # select 'material type' facets, and submit form
-        material_type_facet.find_element_by_class_name("form-submit").click()
+        material_type_facet.find_element(By.CLASS_NAME, "form-submit").click()
 
 
         # facet values form is shown
@@ -59,20 +59,20 @@ class TestMobileFacets(helpers.BibdkUnitTestCase):
         WebDriverWait(browser, 10).until(expected_conditions.presence_of_element_located((By.XPATH,"//form[@id='bibdk-facetbrowser-mobile-form--2']")))
 
         # check that the facet checkmark for bog is invisible
-        facet_value_bog = browser.find_element_by_id("mobile-facet-value-bog")
+        facet_value_bog = browser.find_element(By.ID, "mobile-facet-value-bog")
 
-        checkmark = facet_value_bog.find_element_by_class_name("svg-icon")
+        checkmark = facet_value_bog.find_element(By.CLASS_NAME, "svg-icon")
         self.assertFalse(checkmark.is_displayed(), "checkmark should be hidden")
 
         # check that the mobile-facet-value-bog is clickable
         WebDriverWait(browser, 60).until(expected_conditions.element_to_be_clickable((By.ID, "mobile-facet-value-bog")))
-        browser.find_element_by_id("mobile-facet-value-bog").click()
+        browser.find_element(By.ID, "mobile-facet-value-bog").click()
 
         self.assertTrue(checkmark.is_displayed(), "checkmark should be visible")
 
         # submit form
         WebDriverWait(browser, 60).until(expected_conditions.element_to_be_clickable((By.NAME, "facetgroup-facet.type")))
-        browser.find_element_by_name("facetgroup-facet.type").click()
+        browser.find_element(By.NAME, "facetgroup-facet.type").click()
 
 
         # new search is executed

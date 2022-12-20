@@ -14,7 +14,7 @@ class TestRecommender(helpers.BibdkUnitTestCase):
         search_field = wait.until(EC.visibility_of_element_located((By.XPATH, "//input[starts-with(@id, 'edit-search-block-form')]")))
         search_field.send_keys("flaskepost fra p")
         #time.sleep(5)
-        search_but = browser.find_element_by_xpath("//div[@id='search-block-primary']//input[@id='edit-submit']")
+        search_but = browser.find_element(By.XPATH, "//div[@id='search-block-primary']//input[@id='edit-submit']")
         search_but.click()
         #find and click first result in search
         search_result = wait.until(EC.visibility_of_element_located((By.CLASS_NAME, "work-header")))

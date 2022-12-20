@@ -22,8 +22,8 @@ class TestModalLogin(helpers.BibdkUnitTestCase, helpers.BibdkUser):
         #do a search
         self.searchFormSubmit(wait, searchterm)
         #open a manifestation
-        container = browser.find_element_by_id('870970basis27002609')
-        div = container.find_element_by_class_name('work-header')
+        container = browser.find_element(By.ID, '870970basis27002609')
+        div = container.find_element(By.CLASS_NAME, 'work-header')
         div.click()
         time.sleep(1)
         # login - bug 18342 login fails after a manifestatin has been opened
@@ -38,7 +38,7 @@ class TestModalLogin(helpers.BibdkUnitTestCase, helpers.BibdkUser):
         # find the loginlink and click it
         modallogin.click()
         # store the modal container
-        modal = browser.find_element_by_id("bibdk-modal")
+        modal = browser.find_element(By.ID, "bibdk-modal")
         # wait for the presence of "edit-name. If it ain't found within 10 secs a
         # TimeoutException will be thrown.
         # If the element is found, it is returned for further use
@@ -46,11 +46,11 @@ class TestModalLogin(helpers.BibdkUnitTestCase, helpers.BibdkUser):
         # input username
         user.send_keys("wrong_username")
         # get password field
-        passw = browser.find_element_by_id("edit-pass")
+        passw = browser.find_element(By.ID, "edit-pass")
         # insert (wrong) password
         passw.send_keys("wrong_password")
         # submit the form
-        modal.find_element_by_id("bibdk-login-submit").click()
+        modal.find_element(By.ID, "bibdk-login-submit").click()
 
         # ensure that we get a warning and an error
         # we haven't typed an emailadress
@@ -58,15 +58,15 @@ class TestModalLogin(helpers.BibdkUnitTestCase, helpers.BibdkUser):
         wait.until(expected_conditions.presence_of_element_located((By.CLASS_NAME, "error")))
 
         # get the modal-content element to ensure that the error and warning are placed witin it
-        modal = browser.find_element_by_id("bibdk-modal")
+        modal = browser.find_element(By.ID, "bibdk-modal")
 
-        modal.find_element_by_class_name("message--warning")
-        modal.find_element_by_class_name("message--error")
+        modal.find_element(By.CLASS_NAME, "message--warning")
+        modal.find_element(By.CLASS_NAME, "message--error")
 
         # close the window
         # as there might be more elements in the DOM with the class "close" we
         # will start out with selecting our modal window
-        modal.find_element_by_class_name("close-reveal-modal").click()
+        modal.find_element(By.CLASS_NAME, "close-reveal-modal").click()
 
     def test_successfull_login_desktop(self):
         browser = self.browser
@@ -88,13 +88,13 @@ class TestModalLogin(helpers.BibdkUnitTestCase, helpers.BibdkUser):
         # wait for the name input field to be visible
         wait.until(expected_conditions.visibility_of_element_located((By.NAME, "name")))
         # get the modal box
-        modal = browser.find_element_by_id("bibdk-modal")
+        modal = browser.find_element(By.ID, "bibdk-modal")
         # input username
-        modal.find_element_by_name("name").send_keys(username)
+        modal.find_element(By.NAME, "name").send_keys(username)
         # input password
-        modal.find_element_by_name("pass").send_keys(password)
+        modal.find_element(By.NAME, "pass").send_keys(password)
         # click the input button
-        modal.find_element_by_name("op").click()
+        modal.find_element(By.NAME, "op").click()
         # wait for the actions to happen by waiting for the #modalContent to be invisible
         wait.until(expected_conditions.invisibility_of_element_located((By.ID, "bibdk-modal")))
 
@@ -102,8 +102,8 @@ class TestModalLogin(helpers.BibdkUnitTestCase, helpers.BibdkUser):
         wait.until(expected_conditions.visibility_of_element_located((By.ID, "topbar-my-page-link")))
 
         # ensure we are logged in by checking for the 'my page' link
-        topbar_links = browser.find_element_by_class_name("topbar-links")
-        topbar_links.find_element_by_xpath("//a[contains(@href,'/user')]")
+        topbar_links = browser.find_element(By.CLASS_NAME, "topbar-links")
+        topbar_links.find_element(By.XPATH, "//a[contains(@href,'/user')]")
 
     def test_forgot_password_desktop(self):
         browser = self.browser
@@ -131,27 +131,27 @@ class TestModalLogin(helpers.BibdkUnitTestCase, helpers.BibdkUser):
         wait.until(expected_conditions.visibility_of_element_located((By.CLASS_NAME, "forgot-pword-link")))
 
         # get the modal box
-        modal = browser.find_element_by_id("bibdk-modal")
+        modal = browser.find_element(By.ID, "bibdk-modal")
 
         WebDriverWait(modal, 30).until(expected_conditions.visibility_of_element_located((By.CLASS_NAME, 'ajax-processed')))
 
         # get and click the forgot password link
-        modal.find_element_by_class_name("forgot-pword-link").click()
+        modal.find_element(By.CLASS_NAME, "forgot-pword-link").click()
 
         # wait for the new form to be loaded
         wait.until(expected_conditions.presence_of_element_located((By.XPATH, "//form[@id='user-pass']")))
 
         # select the entire form, input out username and submit it
-        form = browser.find_element_by_xpath("//form[@id='user-pass']")
-        form.find_element_by_name("name").send_keys(username)
-        form.find_element_by_name("op").click()
+        form = browser.find_element(By.XPATH, "//form[@id='user-pass']")
+        form.find_element(By.NAME, "name").send_keys(username)
+        form.find_element(By.NAME, "op").click()
 
         # wait for the actions to happen by waiting for the #modalContent to be invisible
         wait.until(expected_conditions.invisibility_of_element_located((By.ID, "bibdk-modal")))
 
         messages = WebDriverWait(browser, 60).until(expected_conditions.visibility_of_element_located((By.ID, "messages")))
         # ensure that a confirmation message is displayed to the user
-        messages.find_element_by_class_name("message--status")
+        messages.find_element(By.CLASS_NAME, "message--status")
 
     def test_create_new_user_desktop(self):
         browser = self.browser
@@ -170,32 +170,32 @@ class TestModalLogin(helpers.BibdkUnitTestCase, helpers.BibdkUser):
         # wait for the register link to be visible
         wait.until(expected_conditions.visibility_of_element_located((By.CLASS_NAME, "register-link")))
         # get the modal box
-        modal = browser.find_element_by_id("bibdk-modal")
+        modal = browser.find_element(By.ID, "bibdk-modal")
         WebDriverWait(modal, 60).until(expected_conditions.visibility_of_element_located((By.CLASS_NAME, 'ajax-processed')))
         # get the modal box
-        modal = browser.find_element_by_id("bibdk-modal")
+        modal = browser.find_element(By.ID, "bibdk-modal")
         # get and click the create new user
-        modal.find_element_by_class_name("register-link").click()
+        modal.find_element(By.CLASS_NAME, "register-link").click()
         # wait for the new form to be loaded and store it in a local variable
         form = wait.until(expected_conditions.visibility_of_element_located((By.XPATH, "//form[@id='user-register-form']")))
         # assert that the email imput field is displayed
-        form.find_element_by_id("edit-mail")
+        form.find_element(By.ID, "edit-mail")
         # assert that the captcha is displayed
-        #form.find_element_by_id("bibdkcaptcha-controls")
+        #form.find_element(By.ID, "bibdkcaptcha-controls")
         # assert that a input field for the captcha riddle is displayed
-        form.find_element_by_id("edit-captcha-response")
+        form.find_element(By.ID, "edit-captcha-response")
         # assert that we have a submit button
-        action = form.find_element_by_class_name("form-submit")
+        action = form.find_element(By.CLASS_NAME, "form-submit")
 
         # do a submit. Use an already existing user
         user = self.getTestUser('190101')
         username = user['mail']
 
-        form.find_element_by_id("edit-mail").send_keys(username)
+        form.find_element(By.ID, "edit-mail").send_keys(username)
         action.click()
 
         # assert that an error is displayed
-        browser.find_element_by_class_name('message--error')
+        browser.find_element(By.CLASS_NAME, 'message--error')
 
 
     '''
@@ -219,7 +219,7 @@ class TestModalLogin(helpers.BibdkUnitTestCase, helpers.BibdkUser):
 
         # wait for the login form to be present
         WebDriverWait(browser, 20).until(expected_conditions.presence_of_element_located((By.XPATH, "//form[@id='user-register-form']")))
-    '''    
+    '''
 
     def test_redirect_after_login(self):
         browser = self.browser
@@ -257,11 +257,11 @@ class TestModalLogin(helpers.BibdkUnitTestCase, helpers.BibdkUser):
         browser.get(self.base_url + "reservation?ids=870970-basis%3A44673215")
 
         # as we're not logged we should get a message (status) shown
-        messages = browser.find_element_by_id("messages")
-        messages.find_element_by_class_name("message--warning")
+        messages = browser.find_element(By.ID, "messages")
+        messages.find_element(By.CLASS_NAME, "message--warning")
 
         # ensure that we have a login link shown within the messages
-        login = messages.find_element_by_xpath("//a[contains(@href,'bibdk_modal/login')]")
+        login = messages.find_element(By.XPATH, "//a[contains(@href,'bibdk_modal/login')]")
 
         # click the login link
         login.click()
@@ -273,16 +273,16 @@ class TestModalLogin(helpers.BibdkUnitTestCase, helpers.BibdkUser):
         WebDriverWait(browser, 30).until(expected_conditions.visibility_of_element_located((By.XPATH, "//form[@id='user-login']")))
 
         # close the modal
-        modal.find_element_by_class_name("close-reveal-modal").click()
+        modal.find_element(By.CLASS_NAME, "close-reveal-modal").click()
 
         # get the form
-        form = browser.find_element_by_id("bibdk-reservation-create-wizard-form")
+        form = browser.find_element(By.ID, "bibdk-reservation-create-wizard-form")
 
         # get the agency search box and input Guldborgsund
-        form.find_element_by_id("edit-anyfield").send_keys("Guldborgsund")
+        form.find_element(By.ID, "edit-anyfield").send_keys("Guldborgsund")
 
         # submit the form
-        form.find_element_by_class_name("form-submit").click()
+        form.find_element(By.CLASS_NAME, "form-submit").click()
 
         # wait for the search results to be displayed
         select_lib = WebDriverWait(browser, 30).until(expected_conditions.presence_of_element_located((By.NAME, "branch-737600")))
@@ -294,11 +294,11 @@ class TestModalLogin(helpers.BibdkUnitTestCase, helpers.BibdkUser):
         WebDriverWait(browser, 20).until(expected_conditions.presence_of_element_located((By.ID, "edit-manifestation")))
 
         # as we're not logged we should get a message (status) shown
-        messages = browser.find_element_by_id("messages")
-        messages.find_element_by_class_name("message--warning")
+        messages = browser.find_element(By.ID, "messages")
+        messages.find_element(By.CLASS_NAME, "message--warning")
 
         # ensure that we have a login link shown within the messages
-        login = messages.find_element_by_xpath("//a[contains(@href,'bibdk_modal/login')]")
+        login = messages.find_element(By.XPATH, "//a[contains(@href,'bibdk_modal/login')]")
 
         # click the login link
         login.click()
@@ -310,7 +310,7 @@ class TestModalLogin(helpers.BibdkUnitTestCase, helpers.BibdkUser):
         WebDriverWait(browser, 30).until(expected_conditions.visibility_of_element_located((By.XPATH, "//form[@id='user-login']")))
 
         # close the modal
-        modal.find_element_by_class_name("close-reveal-modal").click()
+        modal.find_element(By.CLASS_NAME, "close-reveal-modal").click()
     '''
 
     #############################################
@@ -318,5 +318,5 @@ class TestModalLogin(helpers.BibdkUnitTestCase, helpers.BibdkUser):
     #############################################
     def _click_login(self):
         browser = self.browser
-        topbar_links = browser.find_element_by_class_name("topbar-links")
-        topbar_links.find_element_by_xpath("//a[contains(@href, 'bibdk_modal/login')]").click()
+        topbar_links = browser.find_element(By.CLASS_NAME, "topbar-links")
+        topbar_links.find_element(By.XPATH, "//a[contains(@href, 'bibdk_modal/login')]").click()

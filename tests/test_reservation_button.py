@@ -12,16 +12,16 @@ class TestReservationButton(helpers.BibdkUnitTestCase):
         browser.get(self.base_url + "search/work/rec.id=870970-basis:50789748")
 
         #find the inner order button
-        inner_oder_btn = browser.find_element_by_id("any_edtion_order_870970basis50789748")
+        inner_oder_btn = browser.find_element(By.ID, "any_edtion_order_870970basis50789748")
         # find the memo button
-        memo_btn = browser.find_element_by_id("cart-any-870970-basis50789748")
+        memo_btn = browser.find_element(By.ID, "cart-any-870970-basis50789748")
 
         # assert the inner order btn and the memo button to be not visible
         self.assertFalse(inner_oder_btn.is_displayed(), "The order button is not visible")
         self.assertFalse(memo_btn.is_displayed(), "The order button is not visible")
 
         #find the order_any_edition button
-        order_any_edition_btn = browser.find_element_by_id("any_edition_but_870970basis50789748")
+        order_any_edition_btn = browser.find_element(By.ID, "any_edition_but_870970basis50789748")
 
         # click the order any edition button
         order_any_edition_btn.click()

@@ -23,8 +23,8 @@ class TestBibdkUsersettings(helpers.BibdkUnitTestCase):
         language = wait.until(expected_conditions.element_to_be_clickable((By.XPATH, "//a[contains(@href, '#bibdk_language')]")))
         language.click()
 
-        browser.find_element_by_id("edit-elements-bibdk-language-locale-language-da")
-        browser.find_element_by_id("edit-elements-bibdk-language-locale-language-en-gb")
+        browser.find_element(By.ID, "edit-elements-bibdk-language-locale-language-da")
+        browser.find_element(By.ID, "edit-elements-bibdk-language-locale-language-en-gb")
 
     def test_tabs_is_present(self):
         browser = self.browser
@@ -44,8 +44,8 @@ class TestBibdkUsersettings(helpers.BibdkUnitTestCase):
         settings.click()
 
         wait.until(expected_conditions.element_to_be_clickable((By.XPATH, "//a[contains(@href, '#start_page')]")))
-        browser.find_element_by_xpath("//a[contains(@href, '#bibdk_language')]")
-        browser.find_element_by_xpath("//a[contains(@href, '#view')]")
+        browser.find_element(By.XPATH, "//a[contains(@href, '#bibdk_language')]")
+        browser.find_element(By.XPATH, "//a[contains(@href, '#view')]")
 
     def create_user(self, password):
         name = time.time()

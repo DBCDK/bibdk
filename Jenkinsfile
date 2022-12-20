@@ -167,25 +167,16 @@ pipeline {
             """
             dir('bibdk') {
               script {
-                withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'netpunkt-user', usernameVariable: 'NETPUNKT_USER', passwordVariable: 'NETPUNKT_PASS']]) {
-                  sh """
-                    export FEATURE_BUILD_URL=${TESTWEBSITE}
-                    export BIBDK_WEBDRIVER_URL=${TESTWEBSITE}/
-                    export BIBDK_OPENUSERINFO_URL="http://openuserinfo-prod.frontend-prod.svc.cloud.dbc.dk/server.php"
-                    py.test --junitxml=selenium.xml --driver Remote --host selenium.dbc.dk --port 4444 --capability browserName firefox -v tests/ -o base_url=${TESTWEBSITE} || true
-                    xsltproc xunit-transforms/pytest-selenium.xsl selenium.xml > selenium-result.xml
-                  """
-                }
-
-                stash name: "selenium-result", includes: "selenium-result.xml"
-
-                step([$class: 'XUnitPublisher', testTimeMargin: '3000', thresholdMode: 1,
-                  thresholds: [
-                    [$class: 'FailedThreshold', failureNewThreshold: '', failureThreshold: '0', unstableNewThreshold: '', unstableThreshold: ''],
-                    [$class: 'SkippedThreshold', failureNewThreshold: '', failureThreshold: '', unstableNewThreshold: '', unstableThreshold: '']],
-                  tools     : [
-                    [$class: 'JUnitType', deleteOutputFiles: true, failIfNotNew: true, pattern: 'selenium-result.xml', skipNoTestFiles: false, stopProcessingIfError: false]]
-                ])
+                sh """
+                  export FEATURE_BUILD_URL=${TESTWEBSITE}
+                  export BIBDK_WEBDRIVER_URL=${TESTWEBSITE}/
+                  export BIBDK_OPENUSERINFO_URL="http://openuserinfo-prod.frontend-prod.svc.cloud.dbc.dk/server.php"
+                  py.test --junitxml=selenium.xml -v tests/ -o base_url=${TESTWEBSITE} || true
+                  ls -hal .
+                  xsltproc xunit-transforms/pytest-selenium.xsl selenium.xml > selenium-bibdk.xml
+                  ls -hal .
+                """
+                stash name: "selenium-bibdk", includes: "selenium-bibdk.xml"
               }
             }
           }
@@ -216,24 +207,13 @@ pipeline {
                 ${KUBECTL} exec -i deployment/bibliotekdk-test-www-${BRANCH} -- /bin/bash -c "drush -r /var/www/html dis -y simpletest"
               """
               stash name: "simpletest-bibdk", includes: "simpletest-bibdk.xml"
-
-              step([
-                $class: 'XUnitPublisher', testTimeMargin: '3000', thresholdMode: 1,
-                thresholds: [
-                  [$class: 'FailedThreshold', failureNewThreshold: '', failureThreshold: '0', unstableNewThreshold: '', unstableThreshold: ''],
-                  [$class: 'SkippedThreshold', failureNewThreshold: '', failureThreshold: '', unstableNewThreshold: '', unstableThreshold: '']
-                ],
-                tools: [
-                  [$class: 'JUnitType', deleteOutputFiles: true, failIfNotNew: true, pattern: 'simpletest*.xml', skipNoTestFiles: false, stopProcessingIfError: false]
-                ]
-              ])
             }
           }
         }
       }
     }
 
-    stage('simpletest report') {
+    stage('simpletest / Selenium report') {
       when {
         // Only run if branch is not master.
         expression { BRANCH != 'master' }
@@ -242,8 +222,8 @@ pipeline {
         unstash name: "simpletest-bibdk"
         generateTestReport('simpletest-bibdk.xml')
 
-        unstash name: "selenium-result"
-        generateTestReport('selenium-result.xml')
+        unstash name: "selenium-bibdk"
+        generateTestReport('selenium-bibdk.xml')
       }
     }
 

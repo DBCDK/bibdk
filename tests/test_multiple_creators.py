@@ -28,10 +28,10 @@ class TestMultipleCreators(helpers.BibdkUnitTestCase):
         ophav2 = 'input-medvirkende-3'
         creator1 = 'nash'
         creator2 = 'crosby'
-        browser.find_element_by_id(ophav1).send_keys(creator1)
-        browser.find_element_by_id(ophav2).send_keys(creator2)
-        browser.find_element_by_id('edit-submit').click()
-        creator1_result = browser.find_element_by_id(ophav1).get_attribute('value')
-        creator2_result = browser.find_element_by_id(ophav2).get_attribute('value')
+        browser.find_element(By.ID, ophav1).send_keys(creator1)
+        browser.find_element(By.ID, ophav2).send_keys(creator2)
+        browser.find_element(By.ID, 'edit-submit').click()
+        creator1_result = browser.find_element(By.ID, ophav1).get_attribute('value')
+        creator2_result = browser.find_element(By.ID, ophav2).get_attribute('value')
         self.assertEqual(creator1, creator1_result)
         self.assertEqual(creator2, creator2_result)
