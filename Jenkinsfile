@@ -151,19 +151,18 @@ pipeline {
             }
           }
           steps {
+            git branch: 'develop',
+              credentialsId: 'dscrum_ssh_gitlab',
+              url: 'gitlab@gitlab.dbc.dk:d-scrum/d7/BibdkWebdriver.git'
             dir('bibdk') {
-              dir('tests') {
-                git branch: 'develop',
-                  credentialsId: 'dscrum_ssh_gitlab',
-                  url: 'gitlab@gitlab.dbc.dk:d-scrum/d7/BibdkWebdriver.git'
-              }
-
               checkout scm
               dir('xunit-transforms') {
                 git credentialsId: 'dscrum_ssh_gitlab',
                     url: 'gitlab@gitlab.dbc.dk:d-scrum/jenkins-jobs/xunit-transform.git'
               }
+
               sh """
+                mv helpers.py bibdk/tests
                 export FEATURE_BUILD_URL=${TESTWEBSITE}
                 export BIBDK_WEBDRIVER_URL=${TESTWEBSITE}/
                 export BIBDK_OPENUSERINFO_URL="http://openuserinfo-prod.frontend-prod.svc.cloud.dbc.dk/server.php"
