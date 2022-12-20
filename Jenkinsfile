@@ -154,6 +154,9 @@ pipeline {
             git branch: 'develop',
               credentialsId: 'dscrum_ssh_gitlab',
               url: 'gitlab@gitlab.dbc.dk:d-scrum/d7/BibdkWebdriver.git'
+            sh """
+              mv helpers.py bibdk/tests
+              """
             dir('bibdk') {
               checkout scm
               dir('xunit-transforms') {
@@ -162,7 +165,6 @@ pipeline {
               }
 
               sh """
-                mv helpers.py bibdk/tests
                 export FEATURE_BUILD_URL=${TESTWEBSITE}
                 export BIBDK_WEBDRIVER_URL=${TESTWEBSITE}/
                 export BIBDK_OPENUSERINFO_URL="http://openuserinfo-prod.frontend-prod.svc.cloud.dbc.dk/server.php"
