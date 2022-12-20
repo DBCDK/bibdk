@@ -153,7 +153,6 @@ pipeline {
           steps {
             dir('bibdk') {
               dir('tests') {
-                checkout scm
                 git branch: 'develop',
                   credentialsId: 'dscrum_ssh_gitlab',
                   url: 'gitlab@gitlab.dbc.dk:d-scrum/d7/BibdkWebdriver.git'
