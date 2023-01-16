@@ -15,7 +15,9 @@
   "require": {
     "dbc/php-vipcore": "dev-master",
     "dbc/php-idp": "dev-master",
-    "symfony/cache": "^5.2"
+    "symfony/cache": "^5.2",
+    "setasign/fpdf": "1.8.*",
+    "setasign/fpdi": "^2.0"
   },
   "repositories": {
     "vc": {

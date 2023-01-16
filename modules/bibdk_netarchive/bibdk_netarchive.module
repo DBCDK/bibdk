@@ -55,9 +55,6 @@ function bibdk_netarchive_moreinfo_callback($local_id = NULL) {
     return t('pdf ID is missing', array(), array('context' => 'bibdk_netarchive:error'));
   }
 
-  require_once('lib/fpdf/fpdf.php');
-  require_once('lib/fpdi/fpdi.php');
-
   $local_id = urldecode($local_id);
 
   // get bibliographic data
@@ -91,14 +88,14 @@ function bibdk_netarchive_moreinfo_callback($local_id = NULL) {
 
     // Original Pdf
     // Get the page size of the original document
-    $original = new FPDI();
+    $original = new setasign\Fpdi\Fpdi();
     $original->setSourceFile($archive_path);
     $pageId = $original->importPage(1);
     $size = $original->getTemplateSize($pageId);
     $orientation = $size['w'] > $size['h'] ? 'L' : 'P';
 
     // initiate FPDI
-    $pdf = new FPDI($orientation, 'mm', array($size['w'], $size['h']));
+    $pdf = new \setasign\Fpdi\Fpdi($orientation, 'mm', array($size['w'], $size['h']));
 
     // add a page
     $pdf->AddPage();
@@ -134,13 +131,13 @@ function bibdk_netarchive_moreinfo_callback($local_id = NULL) {
     $pdf->Output();
 
   }
-  catch (fpdfSystemExit $e) {
+  catch (\setasign\Fpdi\PdfParser\PdfParserException | setasign\Fpdi\PdfReader\PdfReaderException $e) {
 
     // pdfi "apron" failed. Return original
     if (file_exists($archive_path)) {
-      $src =
-        $GLOBALS['base_url'] . '/sites/default/files/moreinfo/netarchivePdfUrl/' . md5($local_id) .
-        '.pdf';
+      $splitted_archive_path = explode("/", $archive_path);
+
+      $src = $GLOBALS['base_url'] . '/sites/default/files/moreinfo/netarchivePdfUrl/' . end($splitted_archive_path);
       $output = '<object data="' . $src .
         '?page=1&amp;view=Fit" type="application/pdf" width="590" height="890"><p>' .
         t('It appears you don\'t have a PDF plugin for this browser. No biggie... you can <a href="' .
