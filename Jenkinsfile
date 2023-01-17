@@ -15,7 +15,7 @@ pipeline {
     disableConcurrentBuilds()
   }
   environment {
-    BRANCH = BRANCH_NAME.replaceAll('feature/', '').replaceAll('_', '-')
+    BRANCH = BRANCH_NAME.toLowerCase().replaceAll('feature/', '').replaceAll('_', '-')
     // artifactory data
     NAMESPACE = 'fbiscrum-dev'
     BASE_NAME = "docker-fbiscrum.artifacts.dbccloud.dk/bibliotekdk"
