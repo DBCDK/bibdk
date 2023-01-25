@@ -84,74 +84,21 @@ function bibdk_netarchive_moreinfo_callback($local_id = NULL) {
     return drupal_render($items);
   }
 
-  try {
+  if (file_exists($archive_path)) {
+    $splitted_archive_path = explode("/", $archive_path);
 
-    // Original Pdf
-    // Get the page size of the original document
-    $original = new setasign\Fpdi\Fpdi();
-    $original->setSourceFile($archive_path);
-    $pageId = $original->importPage(1);
-    $size = $original->getTemplateSize($pageId);
-    $orientation = $size['w'] > $size['h'] ? 'L' : 'P';
-
-    // initiate FPDI
-    $pdf = new \setasign\Fpdi\Fpdi($orientation, 'mm', array($size['w'], $size['h']));
-
-    // add a page
-    $pdf->AddPage();
-
-    $pdf->SetXY(0, 40);
-    $pdf->SetFont('Times', '', 32);
-    $pdf->Cell(0, 0, t("netarchive_cover_header", array(), array('context' => 'bibdk_netarchive')),
-      0, 0, 'C');
-
-    $pdf->SetXY(0, 70);
-    $pdf->SetFont('Times', '', 24);
-    $pdf->Cell(0, 0,
-      t("netarchive_cover_leadtext", array(), array('context' => 'bibdk_netarchive')), 0, 0, 'C');
-
-    $pdf->ln(10);
-    $pdf->MultiCell(0, 15, utf8_decode($for_tit), 0, 'C');
-
-    $pdf->SetXY(0, 200);
-    $pdf->SetFont('Times', '', 16);
-    $pdf->MultiCell(0, 8,
-      t("netarchive_cover_footer", array(), array('context' => 'bibdk_netarchive')), 0, 'C');
-
-    // set the source file
-    $page_count = $pdf->setSourceFile($archive_path);
-
-    for ($n = 1; $n <= $page_count; $n++) {
-      $tplIdx = $pdf->importPage($n);
-      $pdf->AddPage();
-      // use the imported page and place it at point 0, 0
-      $pdf->useTemplate($tplIdx, 0, 0);
-    }
-
-    $pdf->Output();
-
+    $src = $GLOBALS['base_url'] . '/sites/default/files/moreinfo/netarchivePdfUrl/' . end($splitted_archive_path);
+    $output = '<object data="' . $src .
+      '?page=1&amp;view=Fit" type="application/pdf" width="590" height="890"><p>' .
+      t('It appears you don\'t have a PDF plugin for this browser. No biggie... you can <a href="' .
+        $src . '">click here to download the PDF file.</a>', array('@src' => $src),
+        array('context' => 'ting_covers:error')) . '</p></object>';
+    return $output;
   }
-  catch (\setasign\Fpdi\PdfParser\PdfParserException | setasign\Fpdi\PdfReader\PdfReaderException $e) {
-
-    // pdfi "apron" failed. Return original
-    if (file_exists($archive_path)) {
-      $splitted_archive_path = explode("/", $archive_path);
-
-      $src = $GLOBALS['base_url'] . '/sites/default/files/moreinfo/netarchivePdfUrl/' . end($splitted_archive_path);
-      $output = '<object data="' . $src .
-        '?page=1&amp;view=Fit" type="application/pdf" width="590" height="890"><p>' .
-        t('It appears you don\'t have a PDF plugin for this browser. No biggie... you can <a href="' .
-          $src . '">click here to download the PDF file.</a>', array('@src' => $src),
-          array('context' => 'ting_covers:error')) . '</p></object>';
-      return $output;
-    }
-    else {
-      return t("pdf \"@lid\" not found.", array('@lid' => $local_id),
-        array('context' => 'ting_covers:error'));
-    }
-
+  else {
+    return t("pdf \"@lid\" not found.", array('@lid' => $local_id),
+      array('context' => 'ting_covers:error'));
   }
-
 }
 
 
