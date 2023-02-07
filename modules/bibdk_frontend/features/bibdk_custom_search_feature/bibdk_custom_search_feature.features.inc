@@ -2133,7 +2133,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->v_uuid = 'e1bf5870-5dec-51d4-a968-5a9c01b08d89';
   $option->sort = -93;
   $option->label = 'e-bøger NOTA';
-  $option->value = 'term.type="ebog" and (fl="nota" or fl="blindebibliotek")';
+  $option->value = '(term.type="ebog" or phrase.type="e-bog") and (fl="nota" or fl="blindebibliotek"))';
   $option->expand = '0';
   $option->is_disabled = FALSE;
   $export['07f728f5-2087-4d5f-aadf-c10c6cd19df0'] = $option;
@@ -2985,7 +2985,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->v_uuid = '819ed112-ec85-8f64-2573-a5a88f7ac3d9';
   $option->sort = -98;
   $option->label = 'e-bøger Nota';
-  $option->value = '(term.type="ebog" and (fl="nota" or fl="blindebibliotek"))';
+  $option->value = '((term.type="ebog" or term.type="e-bog") and (fl="nota" or fl="blindebibliotek"))';
   $option->expand = '0';
   $option->is_disabled = FALSE;
   $export['29893f3f-8988-4322-94b0-c94e11fcab6d'] = $option;
@@ -4545,7 +4545,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->v_uuid = '819ed112-ec85-8f64-2573-a5a88f7ac3d9';
   $option->sort = -100;
   $option->label = 'e-bøger';
-  $option->value = 'term.type="ebog"';
+  $option->value = 'term.type="ebog" or term.type="e-bog"';
   $option->expand = '0';
   $option->is_disabled = FALSE;
   $export['6d38c576-ff8a-4d24-8937-5d3e4d954fc7'] = $option;
@@ -4761,7 +4761,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->v_uuid = 'f6e38171-96d3-4852-9dcc-f66cb3a6a13f';
   $option->sort = -97;
   $option->label = 'e-bøger';
-  $option->value = 'term.type="ebog"';
+  $option->value = 'term.type="ebog" or term.type="e-bog"';
   $option->expand = '0';
   $option->is_disabled = FALSE;
   $export['750b3939-6e55-4e7b-bf08-54b8971890b1'] = $option;
@@ -7509,7 +7509,7 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->v_uuid = 'e1bf5870-5dec-51d4-a968-5a9c01b08d89';
   $option->sort = -95;
   $option->label = 'e-bøger';
-  $option->value = 'term.type="ebog"';
+  $option->value = 'term.type="ebog" or term.type="e-bog"';
   $option->expand = '0';
   $option->is_disabled = FALSE;
   $export['dd426e9b-de57-a084-119c-6f21259ee71f'] = $option;

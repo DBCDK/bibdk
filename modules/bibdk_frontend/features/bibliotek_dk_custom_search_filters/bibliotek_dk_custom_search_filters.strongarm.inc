@@ -17,7 +17,7 @@ function bibliotek_dk_custom_search_filters_strongarm() {
   $strongarm->value = array(
     'e_b_ger_fra_not' => (object) array(
       'description' => 'e-bøger fra NOTA',
-      'value' => 'term.publisher="DBBNOTA" and term.type="ebog"',
+      'value' => 'term.publisher="DBBNOTA" and (term.type="ebog" or term.type="e-bog")',
       'weight' => '-10',
       'id' => 'e_b_ger_fra_not',
       'pid' => 0,
