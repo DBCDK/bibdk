@@ -28,7 +28,7 @@ sed -i '/^\s*Alias/a SetEnvIf X-Forwarded-Proto https HTTPS=on' $APACHE_CONF
 # We need a redirect for https://bibliotek.dk/was to https://www.was.digst.dk/bibliotek-dk
 sed -i '/^\s*Alias/a RedirectPermanent /was https://www.was.digst.dk/bibliotek-dk' $APACHE_CONF
 # We need a redirect for https://bibliotek.dk/da/work/870970-basis%3A52353971 to https://bibliotek-dk
-sed -i '/^\s*Alias/a RedirectPermanent /da/work/870970-basis%3A52353971 https://bibliotek.dk' $APACHE_CONF
+sed -i '/^\s*Alias/a RedirectPermanent /da/work/870970-basis:52353971 https://bibliotek.dk' $APACHE_CONF
 
 # make a symbolic link to modules - for simpletest to run
 /bin/sh -c "cd $APACHE_ROOT/sites/default && ln -sf $APACHE_ROOT/profiles/bibdk/modules"
