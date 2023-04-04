@@ -51,7 +51,7 @@ UUID',
     'show_disagree_button' => TRUE,
     'popup_disagree_button_message' => 'Læs mere om vores brug af cookies',
     'disagree_button_label' => 'Afvis',
-    'withdraw_enabled' => 0,
+    'withdraw_enabled' => 1,
     'withdraw_button_on_info_popup' => 0,
     'withdraw_message' => array(
       'value' => '<h2>We use cookies on this site to enhance your user experience</h2><p>You have given your consent for us to set cookies.</p>',
