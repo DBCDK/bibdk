@@ -40,7 +40,7 @@ pipeline {
           ansiColor("xterm") {
             docker.withRegistry('https://docker-fbiscrum.artifacts.dbccloud.dk', 'DOCKER_LOGIN') {
               docker.build(
-                "${IMAGE_WWW_NAME}", "-f ./docker/www/Dockerfile --no-cache --build-arg BRANCH=${BRANCH_NAME} ./docker/www"
+                "${IMAGE_WWW_NAME}", "-f ./docker/www/Dockerfile --pull --no-cache --build-arg BRANCH=${BRANCH_NAME} ./docker/www"
               ).push()
             }
           }
