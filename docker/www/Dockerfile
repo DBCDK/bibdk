@@ -42,7 +42,7 @@ RUN apt-key add indexdata.asc
 COPY conf/yaz.list /etc/apt/sources.list.d/
 
 RUN apt-get update && apt-get install -q -y libtinfo5
-ADD ["http://ftp.us.debian.org/debian/pool/main/r/readline/libreadline7_7.0-3_amd64.deb", "/"]
+ADD ["http://ftp.us.debian.org/debian/pool/main/r/readline/libreadline7_7.0-5_amd64.deb", "/"]
 RUN dpkg -i libreadline7_7.0-3_amd64.deb
 ADD ["http://ftp.us.debian.org/debian/pool/main/i/icu/libicu63_63.1-6+deb10u3_amd64.deb", "/"]
 RUN dpkg -i libicu63_63.1-6+deb10u3_amd64.deb
