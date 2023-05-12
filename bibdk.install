@@ -768,3 +768,8 @@ function bibdk_update_7078() {
   module_enable(array('idp'));
   module_disable(array('bibdk_forsrights'));
 }
+
+function bibdk_update_7079() {
+  module_disable(array('eu_cookie_compliance', 'bibliotek_dk_eu_cookie_compliance'));
+  module_enable(array('cookiebot', 'matomo', 'bibliotek_dk_cookiebot', 'bibliotek_dk_matomo'));
+}
