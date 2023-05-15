@@ -132,6 +132,7 @@ pipeline {
         script {
           sh """
             ${KUBECTL} exec -it deployment/bibliotekdk-test-www-${BRANCH} -- /bin/bash -c "drush -r /var/www/html -y en bibdk_mockup"
+            ${KUBECTL} exec -it deployment/bibliotekdk-test-www-${BRANCH} -- /bin/bash -c "drush -r /var/www/html -y dis cookiebot"
           """
         }
       }
