@@ -199,6 +199,10 @@ projects[captcha][subdir] = contrib
 projects[captcha][type] = module
 projects[captcha][version] = 1.3
 
+projects[cookiebot][subdir] = contrib
+projects[cookiebot][type] = module
+projects[cookiebot][version] = 1.0-beta3
+
 projects[ctools][subdir] = contrib
 projects[ctools][type] = module
 projects[ctools][version] = 1.15
@@ -211,10 +215,6 @@ projects[date][version] = 2.10
 projects[entity][subdir] = contrib
 projects[entity][type] = module
 projects[entity][version] = 1.9
-
-projects[eu_cookie_compliance][subdir] = contrib
-projects[eu_cookie_compliance][type] = module
-projects[eu_cookie_compliance][version] = 1.31
 
 projects[hotjar][subdir] = contrib
 projects[hotjar][type] = module
@@ -239,6 +239,10 @@ projects[ie6nomore][version] = 1.0-beta4
 projects[libraries][subdir] = contrib
 projects[libraries][type] = module
 projects[libraries][version] = 2.5
+
+projects[matomo][subdir] = contrib
+projects[matomo][type] = module
+projects[matomo][version] = 2.14
 
 projects[memcache][subdir] = contrib
 projects[memcache][type] = module

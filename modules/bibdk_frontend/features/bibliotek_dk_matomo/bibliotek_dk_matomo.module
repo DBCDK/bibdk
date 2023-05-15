@@ -1,0 +1,8 @@
+<?php
+
+/**
+ * @file
+ * Code for the Bibliotek.dk - Matomo feature.
+ */
+
+include_once 'bibliotek_dk_matomo.features.inc';

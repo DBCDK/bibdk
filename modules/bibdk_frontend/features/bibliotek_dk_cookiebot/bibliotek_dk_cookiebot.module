@@ -1,0 +1,8 @@
+<?php
+
+/**
+ * @file
+ * Code for the Bibliotek.dk - Cookiebot feature.
+ */
+
+include_once 'bibliotek_dk_cookiebot.features.inc';
