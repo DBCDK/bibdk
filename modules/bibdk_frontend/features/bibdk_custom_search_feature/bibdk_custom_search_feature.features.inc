@@ -2549,6 +2549,18 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option = new stdClass();
   $option->disabled = FALSE; /* Edit this to true to make a default option disabled initially */
   $option->api_version = 1;
+  $option->o_uuid = '1c1b312a-8df6-4400-9e29-17c306dd8c40';
+  $option->v_uuid = 'da48923f-e5ba-5ef4-ad4f-c8aab6767a83';
+  $option->sort = -23;
+  $option->label = '2023';
+  $option->value = '"2023"';
+  $option->expand = '0';
+  $option->is_disabled = FALSE;
+  $export['1c1b312a-8df6-4400-9e29-17c306dd8c40'] = $option;
+
+  $option = new stdClass();
+  $option->disabled = FALSE; /* Edit this to true to make a default option disabled initially */
+  $option->api_version = 1;
   $option->o_uuid = '1c3cbec4-6dc2-484e-9253-ff269c1b0973';
   $option->v_uuid = '2dfa5ad4-131f-4fb8-881f-3607e4e1d4d1';
   $option->sort = -88;
@@ -6245,6 +6257,18 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option = new stdClass();
   $option->disabled = FALSE; /* Edit this to true to make a default option disabled initially */
   $option->api_version = 1;
+  $option->o_uuid = 'aeb2ba38-8ced-4ea9-8330-6b1d52641015';
+  $option->v_uuid = '95788824-6d40-ebd4-8912-ce2194f48d62';
+  $option->sort = -71;
+  $option->label = 'ukrainsk';
+  $option->value = 'term.language="ukr"';
+  $option->expand = '0';
+  $option->is_disabled = FALSE;
+  $export['aeb2ba38-8ced-4ea9-8330-6b1d52641015'] = $option;
+
+  $option = new stdClass();
+  $option->disabled = FALSE; /* Edit this to true to make a default option disabled initially */
+  $option->api_version = 1;
   $option->o_uuid = 'af10d043-4c89-5ef4-c15a-e04e5e2c82cd';
   $option->v_uuid = '6918cf0f-f206-d494-f9da-32aa0d945ab9';
   $option->sort = -86;
@@ -6869,6 +6893,18 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option = new stdClass();
   $option->disabled = FALSE; /* Edit this to true to make a default option disabled initially */
   $option->api_version = 1;
+  $option->o_uuid = 'c526dc87-d6d5-4cfc-88b8-678f8d39053b';
+  $option->v_uuid = '3c0f6ff4-63f2-8a54-4500-6198904477ba';
+  $option->sort = 10;
+  $option->label = 'Xbox Series X';
+  $option->value = 'term.type="xbox series"';
+  $option->expand = '0';
+  $option->is_disabled = FALSE;
+  $export['c526dc87-d6d5-4cfc-88b8-678f8d39053b'] = $option;
+
+  $option = new stdClass();
+  $option->disabled = FALSE; /* Edit this to true to make a default option disabled initially */
+  $option->api_version = 1;
   $option->o_uuid = 'c60ce4e1-aca1-4bb4-c9a4-62139d9a2612';
   $option->v_uuid = '8e7bda97-5430-9774-e54c-4d2b0005a06b';
   $option->sort = -92;
@@ -7313,6 +7349,18 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option = new stdClass();
   $option->disabled = FALSE; /* Edit this to true to make a default option disabled initially */
   $option->api_version = 1;
+  $option->o_uuid = 'd5995fd5-7a58-416f-81be-80372f374052';
+  $option->v_uuid = '4ed2c5d5-656b-be14-b55f-fbc7c1aff047';
+  $option->sort = -81;
+  $option->label = 'ukrainsk';
+  $option->value = 'term.language="ukr"';
+  $option->expand = '0';
+  $option->is_disabled = FALSE;
+  $export['d5995fd5-7a58-416f-81be-80372f374052'] = $option;
+
+  $option = new stdClass();
+  $option->disabled = FALSE; /* Edit this to true to make a default option disabled initially */
+  $option->api_version = 1;
   $option->o_uuid = 'd617e830-2cae-a074-4d03-63822deef1c8';
   $option->v_uuid = 'e8258795-3bbe-5e34-fda2-04a8b420d93f';
   $option->sort = -79;
@@ -7489,6 +7537,18 @@ function bibdk_custom_search_feature_default_bibdk_custom_search_option() {
   $option->expand = '0';
   $option->is_disabled = FALSE;
   $export['daa6ccc2-6fb9-8434-016b-76182091b65a'] = $option;
+
+  $option = new stdClass();
+  $option->disabled = FALSE; /* Edit this to true to make a default option disabled initially */
+  $option->api_version = 1;
+  $option->o_uuid = 'dc5755b1-d3ee-4f8f-839b-cb569201e2f7';
+  $option->v_uuid = '3c0f6ff4-63f2-8a54-4500-6198904477ba';
+  $option->sort = -93;
+  $option->label = 'Playstation 5';
+  $option->value = 'term.type="playstation 5"';
+  $option->expand = '0';
+  $option->is_disabled = FALSE;
+  $export['dc5755b1-d3ee-4f8f-839b-cb569201e2f7'] = $option;
 
   $option = new stdClass();
   $option->disabled = FALSE; /* Edit this to true to make a default option disabled initially */
