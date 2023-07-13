@@ -95,7 +95,7 @@ function bibdk_cart_view_form($form, &$form_state) {
   if ($user->uid && arg(1) == 'cart') {
     $options = array();
     if (!empty($_GET['page'])) {
-      $options['query'] = array('page' => $_GET['page']);
+      $options['query'] = array('page' => check_plain($_GET['page']));
     }
     if (module_exists('me')) {
       drupal_goto('user/me/cart', $options);
@@ -144,7 +144,7 @@ function bibdk_cart_get_form($form, &$form_state) {
   $cartcount = count($cart);
 
   $items_per_page = variable_get('bibdk_cart_posts_per_page', 20);
-  $requested_page = (!empty($_GET['page']) && is_numeric($_GET['page'])) ? $_GET['page'] : 1;
+  $requested_page = (!empty($_GET['page']) && is_numeric($_GET['page'])) ? check_plain($_GET['page']) : 1;
   $total_num_pages = ceil($cartcount / $items_per_page);
   $current_page = ($requested_page > $total_num_pages) ? $total_num_pages : $requested_page;
 
