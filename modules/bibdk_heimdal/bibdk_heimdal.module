@@ -92,7 +92,7 @@ function bibdk_heimdal_menu() {
  */
 function bibdk_heimdal_init() {
   if (isset($_GET['message'])) {
-    drupal_set_message($_GET['message']);
+    drupal_set_message(check_plain($_GET['message']));
   }
 
   // check if error is et in $_GET - if so abort
@@ -120,7 +120,7 @@ function bibdk_heimdal_init() {
 function bibdk_heimdal_check_for_errors() {
   $error = $_GET['error'] ?? '';
   if (!empty($error)) {
-    $message = t($_GET['error'], array(), array('context' => 'heimdal'));
+    $message = t(check_plain($_GET['error']), array(), array('context' => 'heimdal'));
     bibdk_heimdal_cleanup_and_exit($message);
   }
 }
@@ -428,7 +428,7 @@ function bibdk_heimdal_custom_drupal_logout() {
   $logged_in = bibdk_heimdal_drupal_logout();
   if ($logged_in) {
     if (isset($_GET['message'])) {
-      $message = t($_GET['message'], array(), array('context' => 'heimdal'));
+      $message = t(check_plain($_GET['message']), array(), array('context' => 'heimdal'));
       drupal_set_message($message);
     }
   }
