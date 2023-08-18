@@ -5,7 +5,7 @@ version = 7.x-0.24
 package = Bibliotek.dk
 core = 7.x
 
-dependencies[] = open_holdingstatus
+dependencies[] = holdings
 dependencies[] = bibdk_favourite
 
 files[] = BibdkHoldings.php

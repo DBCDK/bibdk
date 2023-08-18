@@ -20,7 +20,7 @@ class BibdkHoldingstatusBibdkHoldingsUnitTestCase extends DrupalUnitTestCase {
   public function testBibdkHoldingsClass() {
     module_load_include('php', 'bibdk_holdingstatus', 'BibdkHoldings');
     module_load_include('php', 'bibdk_holdingstatus', 'bibdk_holdingstatus');
-    module_load_include('module', 'open_holdingstatus', 'open_holdingstatus');
+    module_load_include('module', 'holdings', 'holdings');
 
     // No result
     $holding = new BibdkHoldings(NULL);
