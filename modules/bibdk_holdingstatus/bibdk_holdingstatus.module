@@ -93,12 +93,10 @@ function bibdk_holdingstatus_get_localisation($pids, $ref=NULL) {
   if ($agency_id) {
     $logged_in_and_favourite_order_Agency = true;
     $result = holdings_get_localizations($agency_id, $ids);
-    //$result = open_holdingstatus_localisationRequest($ids, $agency_id);
   }
   else {
     $logged_in_and_favourite_order_Agency = false;
     $result = holdings_get_localizations(DEFAULT_AGENCYID, $ids);
-    //$result = open_holdingstatus_localisationRequest($ids);
   }
 
   $error_messages = array();

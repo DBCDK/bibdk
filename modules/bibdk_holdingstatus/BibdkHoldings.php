@@ -62,7 +62,7 @@ class BibdkHoldings {
   }
 
   public function getColor() {
-    return $this->data->color;
+    return $this->data->color ?? "red";
   }
 
   /**
