@@ -108,6 +108,6 @@ class BibdkHoldings {
   public function message() {
     $message = $this->rawMessage();
 
-    return t($message['message'], $message['options'], array('context' => 'bibdk_holdingstatus'));;
+    return t($message['message'], $message['options'], array('context' => 'bibdk_holdingstatus'));
   }
 }
