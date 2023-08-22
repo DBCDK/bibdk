@@ -169,7 +169,7 @@ class TestWorkDisplay(helpers.BibdkUnitTestCase):
                 )
             )
         )
-        if not 'phrase.subject="venskab"' in new_input.get_attribute('value'):
+        if not 'phrase.subject="lgbtqia+"' in new_input.get_attribute('value'):
             assert False
 
     def test_work_display_further_search_author(self):
