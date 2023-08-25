@@ -207,7 +207,7 @@
             "source": {
                 "type": "git",
                 "url": "gitlab@gitlab.dbc.dk:pu/holdings/holdings-php.git",
-                "reference": "db5b6a3733993d84b321e6392e20c71d2bc1820f"
+                "reference": "3fe148516b56cd78d7a2572af5a8b650ebb2e832"
             },
             "require": {
                 "ext-json": "*",
@@ -254,7 +254,7 @@
             "support": {
                 "issues": "https://support.dbc.dk"
             },
-            "time": "2023-08-15T07:48:53+00:00"
+            "time": "2023-08-22T12:22:52+00:00"
         },
         {
             "name": "dbc/php-idp",

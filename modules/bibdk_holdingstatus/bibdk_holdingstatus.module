@@ -260,7 +260,6 @@ function bibdk_holdingstatus_get_holdings($agencyIds, $pids) {
   $items = array();
   foreach ($pids as $pid) {
     $results = holdings_get_holdings($agencyIds, $pid);
-    //$results = open_holdingstatus_holdingsRequest($agencyIds, $pid);
     if (count($results->error) > 0) {
       $error = $results->error;
       foreach ($error as $result) {

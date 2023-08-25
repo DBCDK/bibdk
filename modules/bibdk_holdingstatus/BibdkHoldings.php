@@ -61,16 +61,12 @@ class BibdkHoldings {
     return $this->data->note ?? false;
   }
 
-  public function getColor() {
-    return $this->data->color ?? "red";
-  }
-
   /**
    * return the holding status ()
    * @return string green, yellow or red
    */
   public function status() {
-    return $this->getColor();
+    return $this->data->color ?? "red";
   }
 
   /**
