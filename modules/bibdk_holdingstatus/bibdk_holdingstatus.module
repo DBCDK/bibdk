@@ -267,7 +267,7 @@ function bibdk_holdingstatus_get_holdings($agencyIds, $pids) {
         $result->color = $results->availability->color;
         $items[$holding->getResponderId()][$pid] = $result;
       }
-    } // somekind of error should be logged
+    }
     $responder = $results->responder;
     foreach ($responder as $result) {
       $holding = new BibdkHoldings($result);
