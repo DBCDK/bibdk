@@ -7,3 +7,8 @@
 function bibdk_holdingstatus_update_7002() {
   field_delete_field('bibdk_holdingstatus_favourite');
 }
+
+/** set the holdings_role variable for the new Holding library */
+function bibdk_holdingstatus_update_7003() {
+  variable_set('holdings_role', 'bibdk');
+}
