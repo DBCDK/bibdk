@@ -65,7 +65,10 @@ function bibdk_holdingstatus_get_status() {
   }
 
   $holding = bibdk_holdingstatus_get_holdings($lid, $localisationPid);
-  $display = bibdk_holdingstatus_status_display($holding[$lid][$localisationPid]);
+  // $lid 800022 gives a $holding[800010] - we cannot find that in $holding... *sigh*
+  // So we'll just use the first item found.
+  $holding_item = $holding[$lid][$localisationPid] ?? $holding[array_key_first($holding)][$localisationPid];
+  $display = bibdk_holdingstatus_status_display($holding_item);
 
   $return = array(
     'pid' => $pid,
