@@ -31,19 +31,19 @@ class BibdkHoldings {
   }
 
   public function getResponderId() {
-    return isset($this->data->responderId) ? $this->data->responderId->{'$'} : NULL;
+    return $this->data->responderId ?? NULL;
   }
 
   private function getWillLend() {
-    return isset($this->data->willLend) ? $this->data->willLend->{'$'} == 'true' : false;
+    return isset($this->data->willLend) && ($this->data->willLend || $this->data->willLend === "true");
   }
 
   private function getExpectedDelivery() {
-    return isset($this->data->expectedDelivery) ? strtotime($this->data->expectedDelivery->{'$'}) : null;
+    return isset($this->data->expectedDelivery) ? strtotime($this->data->expectedDelivery) : null;
   }
 
   private function getErrorMessage() {
-    return isset($this->data->errorMessage) ? $this->data->errorMessage->{'$'} : null;
+    return $this->data->errorMessage ?? null;
   }
 
   /**
@@ -54,11 +54,11 @@ class BibdkHoldings {
     if (!$this->getExpectedDelivery()) {
       return false;
     }
-    return (time() - $this->getExpectedDelivery() < 0) ? false : true;
+    return !((time() - $this->getExpectedDelivery() < 0));
   }
 
   public function hasNote() {
-    return isset($this->data->note) ? $this->data->note->{'$'} : false;
+    return $this->data->note ?? false;
   }
 
   /**
@@ -66,23 +66,13 @@ class BibdkHoldings {
    * @return string green, yellow or red
    */
   public function status() {
-    if ($this->getWillLend()) {
-      if ($this->isItHome()) {
-        return 'green';
-      }
-      else {
-        return 'yellow';
-      }
-    }
-    else {
-      return 'red';
-    }
+    return $this->data->color ?? "red";
   }
 
   /**
    * return an untranslated message
    */
-  public function rawMessage(){
+  public function rawMessage() {
     $return = array(
       'message' => '',
       'options' => array(),
@@ -94,11 +84,11 @@ class BibdkHoldings {
       $return['message'] = 'bibdk_holding_material_will_be_home @date';
       $return['options'] = array('@date' => format_date($this->getExpectedDelivery(), 'custom', 'd.m.Y'));
     }
-    else if ($note = $this->hasNote()){
+    else if ($note = $this->hasNote()) {
       $return['message'] = $note;
     }
     else if ($error = $this->getErrorMessage()) {
-      $return['message'] = $error;
+      $return['message'] = strtolower($error);
     }
     else {
       $return['message'] = 'bibdk_holding_someting_went_wrong';
@@ -114,6 +104,6 @@ class BibdkHoldings {
   public function message() {
     $message = $this->rawMessage();
 
-    return t($message['message'], $message['options'], array('context' => 'bibdk_holdingstatus'));;
+    return t($message['message'], $message['options'], array('context' => 'bibdk_holdingstatus'));
   }
 }

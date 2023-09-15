@@ -146,8 +146,10 @@ projects[dbc_composer][download][url] = gitlab@gitlab.dbc.dk:d-scrum/d7/modules/
 projects[vip_core][type] = module
 projects[vip_core][download][type] = git
 projects[vip_core][download][url] = gitlab@gitlab.dbc.dk:d-scrum/d7/modules/vip_core.git
-projects[vip_core][download][branch] = feature/1089_vip_core
-projects[vip_core][download][revision] = a835b9850b8fc6920c51ac5fe1f76385074f41a5
+
+projects[holdings][type] = module
+projects[holdings][download][type] = git
+projects[holdings][download][url] = gitlab@gitlab.dbc.dk:d-scrum/d7/modules/holdings.git
 
 projects[howru][type] = module
 projects[howru][download][type] = git

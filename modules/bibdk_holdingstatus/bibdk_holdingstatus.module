@@ -2,6 +2,8 @@
 
 module_load_include('inc', 'bibdk_holdingstatus', 'bibdk_holdingstatus.favorite');
 
+const DEFAULT_AGENCYID = "DK-870970";
+
 /**
  * Implements hook_menu();
  */
@@ -35,7 +37,6 @@ function bibdk_holdingstatus_menu() {
 
 function bibdk_holdingstatus_get_favourites() {
   $pid = $_REQUEST['pid'];
-
   $html = bibdk_holdingstatus_holdings_for_favourites_view($pid);
   $data['html'] = $html;
   $data['pid'] = $pid;
@@ -52,11 +53,9 @@ function bibdk_holdingstatus_get_status() {
 
   $loks = bibdk_holdingstatus_ajax_get_localizations($pid);
 
-  $localisationPid = isset($loks['agencies'][$lid]['holdings'][$pid]['localisationPid']) ?
-  $loks['agencies'][$lid]['holdings'][$pid]['localisationPid'] : NULL;
+  $localisationPid = $loks['agencies'][$lid]['holdings'][$pid]['localisationPid'] ?? NULL;
 
-  $localIdentifier = isset($loks['agencies'][$lid]['holdings'][$pid]['localIdentifier']) ?
-  $loks['agencies'][$lid]['holdings'][$pid]['localIdentifier'] : NULL;
+  $localIdentifier = $loks['agencies'][$lid]['holdings'][$pid]['localIdentifier'] ?? NULL;
   // use pid as default
   if (empty($localisationPid)){
     $localisationPid = $pid;
@@ -66,7 +65,10 @@ function bibdk_holdingstatus_get_status() {
   }
 
   $holding = bibdk_holdingstatus_get_holdings($lid, $localisationPid);
-  $display = bibdk_holdingstatus_status_display($holding[$lid][$localisationPid]);
+  // $lid 800022 gives a $holding[800010] - we cannot find that in $holding... *sigh*
+  // So we'll just use the first item found.
+  $holding_item = $holding[$lid][$localisationPid] ?? $holding[array_key_first($holding)][$localisationPid];
+  $display = bibdk_holdingstatus_status_display($holding_item);
 
   $return = array(
     'pid' => $pid,
@@ -78,8 +80,7 @@ function bibdk_holdingstatus_get_status() {
 }
 
 function bibdk_holdingstatus_ajax_get_localizations($pid) {
-  $result = open_holdingstatus_localisationRequest($pid);
-  return $result;
+  return holdings_get_localizations(DEFAULT_AGENCYID, $pid);
 }
 
 function bibdk_holdingstatus_get_localisation($pids, $ref=NULL) {
@@ -93,11 +94,11 @@ function bibdk_holdingstatus_get_localisation($pids, $ref=NULL) {
   $agency_id = get_favourit_lib(bibdk_favourite_get_favourites());
   if ($agency_id) {
     $logged_in_and_favourite_order_Agency = true;
-    $result = open_holdingstatus_localisationRequest($ids, $agency_id);
+    $result = holdings_get_localizations($agency_id, $ids);
   }
   else {
     $logged_in_and_favourite_order_Agency = false;
-    $result = open_holdingstatus_localisationRequest($ids);
+    $result = holdings_get_localizations(DEFAULT_AGENCYID, $ids);
   }
 
   $error_messages = array();
@@ -122,7 +123,7 @@ function bibdk_holdingstatus_get_localisation($pids, $ref=NULL) {
         $error_messages[] = t('library_not_found');
       }
       else {
-        if ( $ref == 'worldcat' && $information->getIsOclcRsLibrary() ) {
+        if ( $ref === 'worldcat' && $information->getIsOclcRsLibrary() ) {
           $worldcat_info['sortkey'] = '01';
           $worldcat_info['rs_library'] = TRUE;
         } else {
@@ -144,7 +145,7 @@ function bibdk_holdingstatus_get_localisation($pids, $ref=NULL) {
     }
   }
 
-  if ( $ref == 'worldcat' ) {
+  if ( $ref === 'worldcat' ) {
     if ( $worldcat_info['rs_library'] == TRUE ) {
       $RSlibrarySubheader1['#theme'] = 'localisation_agencies';
       $RSlibrarySubheader1['#RSlibrarySubheader'] = t("subheader_do_accept_international_requests", array(), array('context' => 'bibdk_holdingstatus'));
@@ -258,17 +259,24 @@ function bibdk_holdingstatus_paget($count_localisations, $num_per_page){
  * @return array
  */
 function bibdk_holdingstatus_get_holdings($agencyIds, $pids) {
-  $agencyIds = !is_array($agencyIds) ? array($agencyIds) : $agencyIds;
   $pids = !is_array($pids) ? array($pids) : $pids;
   $items = array();
   foreach ($pids as $pid) {
-    $results = open_holdingstatus_holdingsRequest($agencyIds, $pid);
-    if (!isset($results)) {
-      continue;
-    } // somekind of error should be logged
-    foreach ($results as $result) {
+    $results = holdings_get_holdings($agencyIds, $pid);
+    if (count($results->error) > 0) {
+      $error = $results->error;
+      foreach ($error as $result) {
+        $holding = new BibdkHoldings($result);
+        $result->color = $results->availability->color;
+        $items[$holding->getResponderId()][$pid] = $result;
+      }
+    }
+    $responder = $results->responder;
+    foreach ($responder as $result) {
       $holding = new BibdkHoldings($result);
+      $result->color = $results->availability->color;
       $items[$holding->getResponderId()][$pid] = $result;
+      $items[$holding->getResponderId()][$pid]->expectedDelivery = $results->availability->expectedDelivery;
     }
   }
   return $items;
@@ -477,7 +485,7 @@ function _bibdk_holdingstatus_create_lookupUrl($lookupUrl, $localIdentifier, $no
       'note' => ($note) ? array(
         '#prefix' => '<span>(',
         '#type' => 'markup',
-        '#markup' => $note, array(), array('context' => 'open_holdingstatus'),
+        '#markup' => $note, array(), array('context' => 'holdings'),
         '#suffix' => ')</span>',
           ) : NULL,
     ),
