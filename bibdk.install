@@ -798,4 +798,8 @@ function bibdk_update_7080() {
   t('error_searching_localizations', array(), array('context' => 'holdings'));
   t('no_holdings_specified_by_library', array(), array('context' => 'holdings'));
   t('agency_not_found', array(), array('context' => 'holdings'));
+
+  variable_set('holdings_role', 'bibdk');
+  variable_del('openHoldingStatus_role');
+
 }
