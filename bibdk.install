@@ -769,7 +769,37 @@ function bibdk_update_7078() {
   module_disable(array('bibdk_forsrights'));
 }
 
+/** Changing the cookie warning to a new system used on all DBCs websites */
 function bibdk_update_7079() {
   module_disable(array('eu_cookie_compliance', 'bibliotek_dk_eu_cookie_compliance'));
   module_enable(array('cookiebot', 'matomo', 'bibliotek_dk_cookiebot', 'bibliotek_dk_matomo'));
+}
+
+/** Enable new holding module that should improve the status of the lights */
+function bibdk_update_7080() {
+  module_disable(array('open_holdingstatus'));
+  module_enable(array('holdings'));
+
+  t('error_in_request', array(), array('context' => 'bibdk_holdingstatus'));
+  t('error_getting_library_configuration', array(), array('context' => 'bibdk_holdingstatus'));
+  t('cannot_parse_library_answer', array(), array('context' => 'bibdk_holdingstatus'));
+  t('item_not_found', array(), array('context' => 'bibdk_holdingstatus'));
+  t('error_in_library_configuration', array(), array('context' => 'bibdk_holdingstatus'));
+  t('error_searching_library', array(), array('context' => 'bibdk_holdingstatus'));
+  t('error_searching_localizations', array(), array('context' => 'bibdk_holdingstatus'));
+  t('no_holdings_specified_by_library', array(), array('context' => 'bibdk_holdingstatus'));
+  t('agency_not_found', array(), array('context' => 'bibdk_holdingstatus'));
+  t('error_in_request', array(), array('context' => 'holdings'));
+  t('error_getting_library_configuration', array(), array('context' => 'holdings'));
+  t('cannot_parse_library_answer', array(), array('context' => 'holdings'));
+  t('item_not_found', array(), array('context' => 'holdings'));
+  t('error_in_library_configuration', array(), array('context' => 'holdings'));
+  t('error_searching_library', array(), array('context' => 'holdings'));
+  t('error_searching_localizations', array(), array('context' => 'holdings'));
+  t('no_holdings_specified_by_library', array(), array('context' => 'holdings'));
+  t('agency_not_found', array(), array('context' => 'holdings'));
+
+  variable_set('holdings_role', 'bibdk');
+  variable_del('openHoldingStatus_role');
+
 }
