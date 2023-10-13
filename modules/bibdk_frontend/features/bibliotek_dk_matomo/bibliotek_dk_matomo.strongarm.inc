@@ -29,8 +29,7 @@ function bibliotek_dk_matomo_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'matomo_codesnippet_before';
-  $strongarm->value = '_paq.push([\'requireConsent\']);
-_paq.push([\'requireCookieConsent\']);';
+  $strongarm->value = '_paq.push([\'requireCookieConsent\']);';
   $export['matomo_codesnippet_before'] = $strongarm;
 
   $strongarm = new stdClass();
