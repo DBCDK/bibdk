@@ -1,6 +1,7 @@
 libraries
 modules/idp
 modules/howru
+modules/holdings
 modules/dbc_composer
 modules/vip_core
 modules/ding_*
