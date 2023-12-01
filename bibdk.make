@@ -31,7 +31,7 @@ libraries[audit][download][url] = gitlab@gitlab.dbc.dk:pu/audit/audit-trail-php-
 projects[bibdk_theme][type] = theme
 projects[bibdk_theme][download][type] = git
 projects[bibdk_theme][download][url] = git@github.com:DBCDK/bibdk_theme.git
-projects[bibdk_theme][download][tag] = 7.x-1.7
+;projects[bibdk_theme][download][tag] = 7.x-1.7
 
 
 ; --- Bibliotek.dk versions of Ding2 modules ---
