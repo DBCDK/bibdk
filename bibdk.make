@@ -204,6 +204,7 @@ projects[captcha][version] = 1.3
 projects[cookiebot][subdir] = contrib
 projects[cookiebot][type] = module
 projects[cookiebot][version] = 1.0-beta3
+projects[cookiebot][patch][] = https://raw.githubusercontent.com/DBCDK/patches/master/select_cdn_location.patch
 
 projects[ctools][subdir] = contrib
 projects[ctools][type] = module
