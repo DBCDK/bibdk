@@ -47,8 +47,8 @@ function bibdk_linkme_admin() {
   $form['linkme_url'] = array(
     '#type' => 'textfield',
     '#title' => t('Linkme base url'),
-    '#default_value' => variable_get('linkme_url', "http://bibliotek.dk/linkme.php"),
-    '#description' => t("e.g. http://bibliotek.dk/linkme.php"),
+    '#default_value' => variable_get('linkme_url', "http://old.bibliotek.dk/linkme.php"),
+    '#description' => t("e.g. http://old.bibliotek.dk/linkme.php"),
     '#required' => TRUE,
   );
 
