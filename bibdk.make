@@ -118,11 +118,6 @@ projects[open_saou][download][type] = git
 projects[open_saou][download][url] = git@github.com:DBCDK/open_saou.git
 projects[open_saou][download][tag] = 7.x-1.0
 
-projects[open_platform_client][type] = module
-projects[open_platform_client][download][type] = git
-projects[open_platform_client][download][url] = git@github.com:DBCDK/open_platform_client.git
-projects[open_platform_client][download][tag] = 7.x-1.9
-
 projects[cql_strict_parser][type] = module
 projects[cql_strict_parser][download][type] = git
 projects[cql_strict_parser][download][url] = git@github.com:DBCDK/cql_strict_parser.git
@@ -158,6 +153,10 @@ projects[howru][download][url] = gitlab@gitlab.dbc.dk:d-scrum/d7/modules/howru.g
 projects[idp][type] = module
 projects[idp][download][type] = git
 projects[idp][download][url] = gitlab@gitlab.dbc.dk:d-scrum/d7/modules/idp.git
+
+projects[fbi_api][type] = module
+projects[fbi_api][download][type] = git
+projects[fbi_api][download][url] = gitlab@gitlab.dbc.dk:d-scrum/d7/modules/fbi_api.git
 
 ; --- Non Ding2 or Bibliotek.dk specific
 

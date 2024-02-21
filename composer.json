@@ -14,6 +14,7 @@
   ],
   "require": {
     "dbc/php-vipcore": "dev-master",
+    "dbc/php-fbiapi": "dev-main",
     "dbc/php-idp": "dev-master",
     "dbc/php-holdings": "dev-master",
     "symfony/cache": "^5.2",
@@ -32,6 +33,10 @@
     "holdings": {
       "type": "git",
       "url": "gitlab@gitlab.dbc.dk:pu/holdings/holdings-php.git"
+    },
+    "fbiapi-php": {
+      "type": "git",
+      "url": "gitlab@gitlab.dbc.dk:d-scrum/php-libraries/fbi-api.git"
     }
   }
 }

@@ -803,3 +803,9 @@ function bibdk_update_7080() {
   variable_del('openHoldingStatus_role');
 
 }
+
+/** Enable fbi_api module and disable open_platform_client module. */
+function bibdk_update_7081() {
+  module_disable(array('open_platform_client'));
+  module_enable(array('fbi_api'));
+}
