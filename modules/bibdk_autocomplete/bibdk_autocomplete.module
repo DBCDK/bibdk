@@ -101,10 +101,12 @@ function bibdk_autocomplete_callback($p_uuid, $v_uuid, $string = '') {
 
   }
 
+  $query = array('query' => check_plain($search_string)) + $value_vars + $settings;
+
   try {
     switch ($operation) {
       case 'suggest':
-        $result = open_platform_client_request('Suggest', $options);
+        $result = fbi_api_suggest($query['index'], $query['query']);
         break;
       default:
         break;
@@ -116,18 +118,16 @@ function bibdk_autocomplete_callback($p_uuid, $v_uuid, $string = '') {
 
   switch ($operation) {
     case 'suggest':
-      if (empty($result['data'])) {
-        bibdk_autocomplete_callback_error($action, $options);
+      if (empty($result['data']['suggest']['result'])) {
+        bibdk_autocomplete_callback_error("suggest", $query);
       }
-      foreach ($result['data'] as $key => $val) {
-        // Escape '?' in order to ba able to use it in search ('\?').
-        $term = preg_replace('/(\?)/', '\\\\?', $val['term']);
-        if (strpos($term, ' ')) {
+      foreach ($result['data']['suggest']['result'] as $kay => $val) {
+        if (strpos($val['term'], ' ')) {
           // contains blank
-          $items['"' . bibdk_autocomplete_truncate(html_entity_decode(strip_tags($term)), 64) . '"'] = $term;
+          $items['"' . bibdk_autocomplete_truncate(html_entity_decode(strip_tags($val['term'])), 64) . '"'] = $val['term'];
         }
         else {
-          $items[bibdk_autocomplete_truncate(html_entity_decode(strip_tags($term)), 64)] = $term;
+          $items[bibdk_autocomplete_truncate(html_entity_decode(strip_tags($val['term'])), 64)] = $val['term'];
         }
       }
       break;
